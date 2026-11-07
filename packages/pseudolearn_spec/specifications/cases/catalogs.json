@@ -63,8 +63,8 @@
       },
       {
         "effect": true,
-        "en": "write",
-        "es": "Escribir",
+        "en": "writeText",
+        "es": "EscribirTexto",
         "fallible": true,
         "family": "io",
         "identity": "console_write",
@@ -1186,7 +1186,14 @@
     "aperturas": [
       "algorithm",
       "classKeyword",
-      "subroutine"
+      "subroutine",
+      "constantKeyword",
+      "enumKeyword",
+      "recordKeyword",
+      "interfaceKeyword",
+      "variantKeyword",
+      "publicVisibility",
+      "privateVisibility"
     ],
     "codigos_salida": {
       "0": "éxito",
@@ -6927,12 +6934,15 @@
                 "token": "immutableType"
               },
               {
+                "join": true,
                 "token": "lessThan"
               },
               {
+                "join": true,
                 "slot": "type"
               },
               {
+                "join": true,
                 "token": "greaterThan"
               },
               {
@@ -8339,7 +8349,7 @@
               {
                 "case": "C5",
                 "kind": "executable",
-                "note": "edad vale 15, así que la condición de ser mayor o igual que 18 es falsa. Se hace la parte de SiNo y se muestra Menor.",
+                "note": "edad vale 15, así que la condición de ser mayor o igual que 18 es falsa. Se hace la parte de Sino y se muestra Menor.",
                 "specification": "LANG.CONTROL.IF",
                 "version": "1.0.0"
               }
@@ -8365,7 +8375,7 @@
             "rules": [
               "La condición debe dar verdadero o falso; un número solo no sirve.",
               "Se hace solo una de las dos partes, nunca ambas.",
-              "Para elegir entre más de dos caminos, pon otro Si dentro de la parte SiNo.",
+              "Para elegir entre más de dos caminos, pon otro Si dentro de la parte Sino.",
               "Cierra siempre con FinSi."
             ],
             "slots": [
@@ -8382,7 +8392,7 @@
               {
                 "id": "else_steps",
                 "label": "si no se cumple",
-                "text": "Las instrucciones que se hacen cuando la condición es falsa. Si no las necesitas, quita SiNo y esta parte."
+                "text": "Las instrucciones que se hacen cuando la condición es falsa. Si no las necesitas, quita Sino y esta parte."
               }
             ],
             "summary": "Permite que el programa tome una decisión: si la condición se cumple hace unas cosas y, si no, hace otras.",
@@ -9872,6 +9882,7 @@
                 "token": "subroutine"
               },
               {
+                "join": true,
                 "token": "leftParenthesis"
               },
               {
@@ -13637,7 +13648,7 @@
               {
                 "case": "C3",
                 "kind": "executable",
-                "note": "encendida empieza en Verdadero, así que muestra Luz encendida. Después pasa a Falso, el segundo Si va por SiNo y muestra Luz apagada.",
+                "note": "encendida empieza en Verdadero, así que muestra Luz encendida. Después pasa a Falso, el segundo Si va por Sino y muestra Luz apagada.",
                 "specification": "LANG.TYPES.BOOLEAN",
                 "version": "1.0.0"
               }
@@ -15245,7 +15256,7 @@
           "en": {
             "common_errors": [
               {
-                "text": "In the Spanish profile, writing Si NO abierto Entonces without parentheses: Si NO is read as SiNo and errors appear. Write Si (NO abierto) Entonces."
+                "text": "Writing Not age = 15 to say that age is not 15: Not applies only to age, which is neither true nor false, and an error appears. Write Not (age = 15)."
               }
             ],
             "examples": [
@@ -15278,7 +15289,6 @@
             "result": "With the minus or plus sign, a number; with Not, true or false.",
             "rules": [
               "The minus sign is applied before the power: -2 to the power of 2 gives 4. To get -4, put the power in parentheses.",
-              "In the Spanish profile, right after Si write NO in parentheses, as in Si (NO abierto) Entonces.",
               "Not is applied before And and Or."
             ],
             "slots": [
@@ -15299,7 +15309,7 @@
           "es": {
             "common_errors": [
               {
-                "text": "Escribir Si NO abierto Entonces sin paréntesis: el programa lee Si NO como si fuera SiNo y muestra errores. Escribe Si (NO abierto) Entonces."
+                "text": "Escribir NO edad = 15 para decir que edad no vale 15: NO se aplica solo a edad, que no es verdadero ni falso, y aparece un error. Escribe NO (edad = 15)."
               }
             ],
             "examples": [
@@ -15332,7 +15342,6 @@
             "result": "Con el signo menos o más, un número; con NO, verdadero o falso.",
             "rules": [
               "El signo menos se aplica antes que la potencia: -2 elevado a 2 da 4. Para obtener -4, pon la potencia entre paréntesis.",
-              "Justo después de Si, escribe NO entre paréntesis, como Si (NO abierto) Entonces.",
               "NO se aplica antes que Y y O."
             ],
             "slots": [
@@ -17215,12 +17224,15 @@
                 "token": "optionalType"
               },
               {
+                "join": true,
                 "token": "lessThan"
               },
               {
+                "join": true,
                 "slot": "type"
               },
               {
+                "join": true,
                 "token": "greaterThan"
               },
               {
@@ -17250,6 +17262,7 @@
                 "token": "someVariant"
               },
               {
+                "join": true,
                 "token": "leftParenthesis"
               },
               {
@@ -17845,12 +17858,15 @@
                 "token": "vectorType"
               },
               {
+                "join": true,
                 "token": "lessThan"
               },
               {
+                "join": true,
                 "slot": "type"
               },
               {
+                "join": true,
                 "token": "greaterThan"
               },
               {
@@ -18258,9 +18274,11 @@
                 "token": "dictionaryType"
               },
               {
+                "join": true,
                 "token": "lessThan"
               },
               {
+                "join": true,
                 "slot": "key_type"
               },
               {
@@ -18271,6 +18289,7 @@
                 "slot": "value_type"
               },
               {
+                "join": true,
                 "token": "greaterThan"
               },
               {
@@ -19632,9 +19651,11 @@
                 "token": "resultType"
               },
               {
+                "join": true,
                 "token": "lessThan"
               },
               {
+                "join": true,
                 "token": "bytesType"
               },
               {
@@ -19645,6 +19666,7 @@
                 "token": "ioErrorType"
               },
               {
+                "join": true,
                 "token": "greaterThan"
               }
             ]
@@ -22004,6 +22026,7 @@
                 "token": "successVariant"
               },
               {
+                "join": true,
                 "token": "leftParenthesis"
               },
               {
@@ -22030,6 +22053,7 @@
                 "token": "errorVariant"
               },
               {
+                "join": true,
                 "token": "leftParenthesis"
               },
               {
@@ -22388,6 +22412,13 @@
             ],
             "examples": [
               {
+                "case": "C38",
+                "kind": "executable",
+                "note": "jsonBoolean turns the true value of passed into JSON data. jsonText shows it as true and kind() answers JsonBoolean.",
+                "specification": "LIB.JSON",
+                "version": "1.0.0"
+              },
+              {
                 "case": "C23",
                 "kind": "executable",
                 "note": "Here the value true comes from reading a JSON text. Its kind is JsonBoolean and asBoolean gives it back as true, the same data jsonBoolean(true) creates.",
@@ -22422,6 +22453,13 @@
               }
             ],
             "examples": [
+              {
+                "case": "C38",
+                "kind": "executable",
+                "note": "JsonLogico convierte el Verdadero de aprobado en un dato JSON. TextoJson lo muestra como true y Tipo() responde JsonLogico.",
+                "specification": "LIB.JSON",
+                "version": "1.0.0"
+              },
               {
                 "case": "C23",
                 "kind": "executable",
@@ -23230,7 +23268,7 @@
                 "text": "Asks a piece of JSON data what kind it is."
               }
             ],
-            "result": "One of six values: Null, JsonBoolean, JsonNumber, JsonStringKind, Array or Object. You can show it with Write or keep it in a variable of type JsonKind.",
+            "result": "One of six values: Null, JsonBoolean, JsonNumber, JsonStringKind, Array or Object. You can show it with Write, keep it in a variable of type JsonKind or compare it with the kind of other data.",
             "rules": [
               "Whole numbers and numbers with decimals give the same kind: JsonNumber."
             ],
@@ -23272,7 +23310,7 @@
                 "text": "Pregunta a un dato JSON de qué tipo es."
               }
             ],
-            "result": "Uno de seis valores: Nulo, JsonLogico, JsonNumero, CadenaJson, Arreglo u Objeto. Puedes mostrarlo con Escribir o guardarlo en una variable de tipo TipoJson.",
+            "result": "Uno de seis valores: Nulo, JsonLogico, JsonNumero, CadenaJson, Arreglo u Objeto. Puedes mostrarlo con Escribir, guardarlo en una variable de tipo TipoJson o compararlo con el tipo de otro dato.",
             "rules": [
               "Los números enteros y los que tienen decimales dan el mismo tipo: JsonNumero."
             ],
@@ -23490,6 +23528,7 @@
                 "token": "someVariant"
               },
               {
+                "join": true,
                 "token": "leftParenthesis"
               },
               {
@@ -23718,6 +23757,7 @@
                 "token": "someVariant"
               },
               {
+                "join": true,
                 "token": "leftParenthesis"
               },
               {
@@ -23940,6 +23980,7 @@
                 "token": "someVariant"
               },
               {
+                "join": true,
                 "token": "leftParenthesis"
               },
               {
@@ -24166,6 +24207,7 @@
                 "token": "someVariant"
               },
               {
+                "join": true,
                 "token": "leftParenthesis"
               },
               {
@@ -24268,6 +24310,7 @@
             ],
             "result": "A whole number with how many elements or fields there are.",
             "rules": [
+              "With data that is not a list or an object, such as a JSON text or a number, it gives 0: it does not count the letters of a text.",
               "Use it with JSON lists and objects.",
               "An empty list or object gives 0."
             ],
@@ -24304,6 +24347,7 @@
             ],
             "result": "Un número entero con la cantidad de elementos o de campos.",
             "rules": [
+              "Con un dato que no es lista ni objeto, como un texto JSON o un número, da 0: no cuenta las letras de un texto.",
               "Úsalo con listas y objetos JSON.",
               "Una lista o un objeto vacío da 0."
             ],
@@ -24555,6 +24599,7 @@
                 "token": "someVariant"
               },
               {
+                "join": true,
                 "token": "leftParenthesis"
               },
               {
@@ -24809,6 +24854,7 @@
                 "token": "someVariant"
               },
               {
+                "join": true,
                 "token": "leftParenthesis"
               },
               {
@@ -25831,6 +25877,7 @@
                 "token": "errorVariant"
               },
               {
+                "join": true,
                 "token": "leftParenthesis"
               },
               {
@@ -28433,9 +28480,9 @@
             "common_errors": [],
             "examples": [
               {
-                "case": "C83",
+                "case": "C98",
                 "kind": "executable",
-                "note": "Shows that the console key can write: the notice appears between Inicio and Código: 1, in the order it was written.",
+                "note": "writeText shows Hola, Ana on the normal output and gives back 10, the number of bytes of the text with its line break.",
                 "specification": "LIB.IO",
                 "version": "1.0.0"
               }
@@ -28464,15 +28511,15 @@
               }
             ],
             "summary": "Writes a text to the normal output using the console key, with no line break at the end. It tells you how many bytes it wrote.",
-            "title": "Console.write"
+            "title": "Console.writeText"
           },
           "es": {
             "common_errors": [],
             "examples": [
               {
-                "case": "C83",
+                "case": "C98",
                 "kind": "executable",
-                "note": "Muestra que la llave de la consola sirve para escribir: el aviso aparece entre Inicio y Código: 1, en el orden en que se escribió.",
+                "note": "EscribirTexto muestra Hola, Ana en la salida normal y entrega 10, la cantidad de bytes del texto con su salto de línea.",
                 "specification": "LIB.IO",
                 "version": "1.0.0"
               }
@@ -28501,7 +28548,7 @@
               }
             ],
             "summary": "Escribe un texto en la salida normal usando la llave de la consola, sin salto de línea al final. Te dice cuántos bytes escribió.",
-            "title": "Consola.Escribir"
+            "title": "Consola.EscribirTexto"
           }
         },
         "form": [
@@ -36623,12 +36670,7 @@
               {
                 "join": true,
                 "token": "comma"
-              }
-            ]
-          },
-          {
-            "indent": 1,
-            "segments": [
+              },
               {
                 "slot": "minute"
               },
@@ -40510,6 +40552,7 @@
                 "token": "someVariant"
               },
               {
+                "join": true,
                 "token": "leftParenthesis"
               },
               {
@@ -40633,7 +40676,7 @@
               {
                 "case": "C32",
                 "kind": "executable",
-                "note": "Luis está en la lista, así que se muestra Luis puede pasar. Eva no está, así que el segundo Si va por SiNo.",
+                "note": "Luis está en la lista, así que se muestra Luis puede pasar. Eva no está, así que el segundo Si va por Sino.",
                 "specification": "LANG.TYPES.VECTOR",
                 "version": "1.0.0"
               }
@@ -41392,7 +41435,7 @@
               {
                 "case": "C54",
                 "kind": "executable",
-                "note": "Shows 0 and 10. WinCopy adds points to a copy of luis, who stays at 0; Win gets ana by reference and her points stay.",
+                "note": "Shows 0 and then 10. WinCopy adds points to a copy of ana, so ana stays at 0; Win gets ana by reference and her points stay.",
                 "specification": "LANG.TYPES.RECORD",
                 "version": "1.0.0"
               }
@@ -41448,7 +41491,7 @@
               {
                 "case": "C54",
                 "kind": "executable",
-                "note": "Muestra 0 y 10. GanarCopia suma puntos a una copia de luis, que sigue en 0; Ganar recibe a ana Por Referencia y su suma sí queda.",
+                "note": "Muestra 0 y después 10. GanarCopia suma puntos a una copia de ana, así que ana sigue en 0; Ganar recibe a ana Por Referencia y su suma sí queda.",
                 "specification": "LANG.TYPES.RECORD",
                 "version": "1.0.0"
               }
@@ -42224,12 +42267,15 @@
                 "slot": "name"
               },
               {
+                "join": true,
                 "token": "lessThan"
               },
               {
+                "join": true,
                 "slot": "param"
               },
               {
+                "join": true,
                 "token": "greaterThan"
               }
             ]
@@ -42274,12 +42320,15 @@
                 "slot": "name"
               },
               {
+                "join": true,
                 "token": "lessThan"
               },
               {
+                "join": true,
                 "slot": "arg"
               },
               {
+                "join": true,
                 "token": "greaterThan"
               },
               {
@@ -42304,15 +42353,19 @@
                 "slot": "name"
               },
               {
+                "join": true,
                 "token": "lessThan"
               },
               {
+                "join": true,
                 "slot": "arg"
               },
               {
+                "join": true,
                 "token": "greaterThan"
               },
               {
+                "join": true,
                 "token": "leftParenthesis"
               },
               {
@@ -42540,12 +42593,15 @@
                 "slot": "name"
               },
               {
+                "join": true,
                 "token": "lessThan"
               },
               {
+                "join": true,
                 "slot": "param"
               },
               {
+                "join": true,
                 "token": "greaterThan"
               }
             ]
@@ -42603,12 +42659,15 @@
                 "slot": "name"
               },
               {
+                "join": true,
                 "token": "lessThan"
               },
               {
+                "join": true,
                 "slot": "arg"
               },
               {
+                "join": true,
                 "token": "greaterThan"
               }
             ]
@@ -42864,9 +42923,11 @@
                 "slot": "name"
               },
               {
+                "join": true,
                 "token": "lessThan"
               },
               {
+                "join": true,
                 "slot": "param"
               },
               {
@@ -42877,9 +42938,11 @@
                 "slot": "constraint"
               },
               {
+                "join": true,
                 "token": "greaterThan"
               },
               {
+                "join": true,
                 "token": "leftParenthesis"
               },
               {
@@ -46845,14 +46908,11 @@
     "elseKeyword": {
       "alias": {
         "en": [],
-        "es": [
-          "Sino",
-          "Si No"
-        ]
+        "es": []
       },
       "lexemas": {
         "en": "else",
-        "es": "SiNo"
+        "es": "Sino"
       }
     },
     "endAlgorithm": {
@@ -47144,46 +47204,10 @@
         "es": "Entero"
       }
     },
-    "jsonErrorCodeDepthExceeded": {
-      "lexemas": {
-        "en": "DepthExceeded",
-        "es": "ProfundidadExcedida"
-      }
-    },
-    "jsonErrorCodeDuplicateKey": {
-      "lexemas": {
-        "en": "DuplicateKey",
-        "es": "ClaveDuplicada"
-      }
-    },
-    "jsonErrorCodeInvalidEscape": {
-      "lexemas": {
-        "en": "InvalidEscape",
-        "es": "EscapeInvalido"
-      }
-    },
-    "jsonErrorCodeInvalidSyntax": {
-      "lexemas": {
-        "en": "InvalidSyntax",
-        "es": "SintaxisInvalida"
-      }
-    },
-    "jsonErrorCodeTrailingContent": {
-      "lexemas": {
-        "en": "TrailingContent",
-        "es": "ContenidoSobrante"
-      }
-    },
     "jsonErrorCodeType": {
       "lexemas": {
         "en": "JsonErrorCode",
         "es": "CodigoErrorJson"
-      }
-    },
-    "jsonErrorCodeUnexpectedEnd": {
-      "lexemas": {
-        "en": "UnexpectedEnd",
-        "es": "FinInesperado"
       }
     },
     "jsonErrorColumnField": {
@@ -47202,42 +47226,6 @@
       "lexemas": {
         "en": "JsonError",
         "es": "ErrorJson"
-      }
-    },
-    "jsonKindArray": {
-      "lexemas": {
-        "en": "Array",
-        "es": "Arreglo"
-      }
-    },
-    "jsonKindBoolean": {
-      "lexemas": {
-        "en": "JsonBoolean",
-        "es": "JsonLogico"
-      }
-    },
-    "jsonKindNull": {
-      "lexemas": {
-        "en": "Null",
-        "es": "Nulo"
-      }
-    },
-    "jsonKindNumber": {
-      "lexemas": {
-        "en": "JsonNumber",
-        "es": "JsonNumero"
-      }
-    },
-    "jsonKindObject": {
-      "lexemas": {
-        "en": "Object",
-        "es": "Objeto"
-      }
-    },
-    "jsonKindString": {
-      "lexemas": {
-        "en": "JsonStringKind",
-        "es": "CadenaJson"
       }
     },
     "jsonKindType": {

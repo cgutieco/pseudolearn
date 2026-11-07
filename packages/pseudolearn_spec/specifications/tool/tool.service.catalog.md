@@ -354,7 +354,7 @@
   "id": "R9",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El texto editorial de una ficha es texto plano: no contiene marcado ni etiquetas, ni caracteres de control o de dirección, ni esquemas de URI activos ni recursos remotos, y respeta límites de longitud por campo (título 80 caracteres, etiqueta de hueco 40 con solo letras, dígitos y espacios, y el resto 280), de cantidad (16 partes, 12 huecos, 8 reglas, 6 errores comunes y 4 ejemplos), de plantilla (12 líneas y 16 segmentos por línea) y de tamaño por idioma (4 096 bytes). Los clientes proyectan la prosa escapándola como texto y el código de plantilla y ejemplos como bloque literal con su sangría, sin caracteres de control salvo el salto de línea: sin enlaces, sin HTML, sin imágenes y sin ejecutar ejemplos; la proyección no supera 8 KiB y un contenido mayor produce un valor tipado de exceso, nunca un truncado silencioso.",
+  "texto": "El texto editorial de una ficha es texto plano: no contiene marcado ni etiquetas, ni caracteres de control o de dirección, ni esquemas de URI activos ni recursos remotos, y respeta límites de longitud por campo (título 80 caracteres, etiqueta de hueco 40 con solo letras, dígitos y espacios, y el resto 280), de cantidad (16 partes, 12 huecos, 8 reglas, 6 errores comunes y 4 ejemplos), de plantilla (12 líneas y 20 segmentos por línea, para que una llamada de hasta ocho argumentos quepa en una sola línea) y de tamaño por idioma (4 096 bytes). Los clientes proyectan la prosa escapándola como texto y el código de plantilla y ejemplos como bloque literal con su sangría, sin caracteres de control salvo el salto de línea: sin enlaces, sin HTML, sin imágenes y sin ejecutar ejemplos; la proyección no supera 8 KiB y un contenido mayor produce un valor tipado de exceso, nunca un truncado silencioso.",
   "justificacion": "La ayuda se muestra dentro de editores y de la aplicación; si el catálogo admitiera marcado, una ficha o un nombre del programa podría abrir recursos o alterar la presentación. Rechazar el marcado en el origen y escapar en cada proyección son dos defensas independientes.",
   "verificacion": [
     "estructural"
@@ -758,13 +758,16 @@
                 "token": "immutableType"
               },
               {
-                "token": "lessThan"
+                "token": "lessThan",
+                "join": true
               },
               {
-                "slot": "type"
+                "slot": "type",
+                "join": true
               },
               {
-                "token": "greaterThan"
+                "token": "greaterThan",
+                "join": true
               },
               {
                 "token": "assignment"
@@ -3703,7 +3706,8 @@
                 "token": "subroutine"
               },
               {
-                "token": "leftParenthesis"
+                "token": "leftParenthesis",
+                "join": true
               },
               {
                 "slot": "params",
@@ -11034,13 +11038,16 @@
                 "token": "optionalType"
               },
               {
-                "token": "lessThan"
+                "token": "lessThan",
+                "join": true
               },
               {
-                "slot": "type"
+                "slot": "type",
+                "join": true
               },
               {
-                "token": "greaterThan"
+                "token": "greaterThan",
+                "join": true
               },
               {
                 "token": "semicolon",
@@ -11069,7 +11076,8 @@
                 "token": "someVariant"
               },
               {
-                "token": "leftParenthesis"
+                "token": "leftParenthesis",
+                "join": true
               },
               {
                 "slot": "name",
@@ -11648,13 +11656,16 @@
                 "token": "vectorType"
               },
               {
-                "token": "lessThan"
+                "token": "lessThan",
+                "join": true
               },
               {
-                "slot": "type"
+                "slot": "type",
+                "join": true
               },
               {
-                "token": "greaterThan"
+                "token": "greaterThan",
+                "join": true
               },
               {
                 "token": "assignment"
@@ -12051,10 +12062,12 @@
                 "token": "dictionaryType"
               },
               {
-                "token": "lessThan"
+                "token": "lessThan",
+                "join": true
               },
               {
-                "slot": "key_type"
+                "slot": "key_type",
+                "join": true
               },
               {
                 "token": "comma",
@@ -12064,7 +12077,8 @@
                 "slot": "value_type"
               },
               {
-                "token": "greaterThan"
+                "token": "greaterThan",
+                "join": true
               },
               {
                 "token": "assignment"
@@ -13473,10 +13487,12 @@
                 "token": "resultType"
               },
               {
-                "token": "lessThan"
+                "token": "lessThan",
+                "join": true
               },
               {
-                "token": "bytesType"
+                "token": "bytesType",
+                "join": true
               },
               {
                 "token": "comma",
@@ -13486,7 +13502,8 @@
                 "token": "ioErrorType"
               },
               {
-                "token": "greaterThan"
+                "token": "greaterThan",
+                "join": true
               }
             ]
           },
@@ -15775,7 +15792,8 @@
                 "token": "successVariant"
               },
               {
-                "token": "leftParenthesis"
+                "token": "leftParenthesis",
+                "join": true
               },
               {
                 "slot": "value",
@@ -15801,7 +15819,8 @@
                 "token": "errorVariant"
               },
               {
-                "token": "leftParenthesis"
+                "token": "leftParenthesis",
+                "join": true
               },
               {
                 "slot": "problem",
@@ -16366,6 +16385,13 @@
               {
                 "specification": "LIB.JSON",
                 "version": "1.0.0",
+                "case": "C38",
+                "kind": "executable",
+                "note": "JsonLogico convierte el Verdadero de aprobado en un dato JSON. TextoJson lo muestra como true y Tipo() responde JsonLogico."
+              },
+              {
+                "specification": "LIB.JSON",
+                "version": "1.0.0",
                 "case": "C23",
                 "kind": "executable",
                 "note": "Aquí el valor true viene de leer un texto JSON. Su tipo es JsonLogico y ComoLogico lo devuelve como Verdadero, el mismo dato que crea JsonLogico(Verdadero)."
@@ -16398,6 +16424,13 @@
               }
             ],
             "examples": [
+              {
+                "specification": "LIB.JSON",
+                "version": "1.0.0",
+                "case": "C38",
+                "kind": "executable",
+                "note": "jsonBoolean turns the true value of passed into JSON data. jsonText shows it as true and kind() answers JsonBoolean."
+              },
               {
                 "specification": "LIB.JSON",
                 "version": "1.0.0",
@@ -17179,7 +17212,7 @@
                 "text": "El dato JSON que quieres revisar, por ejemplo alumno."
               }
             ],
-            "result": "Uno de seis valores: Nulo, JsonLogico, JsonNumero, CadenaJson, Arreglo u Objeto. Puedes mostrarlo con Escribir o guardarlo en una variable de tipo TipoJson.",
+            "result": "Uno de seis valores: Nulo, JsonLogico, JsonNumero, CadenaJson, Arreglo u Objeto. Puedes mostrarlo con Escribir, guardarlo en una variable de tipo TipoJson o compararlo con el tipo de otro dato.",
             "rules": [
               "Los números enteros y los que tienen decimales dan el mismo tipo: JsonNumero."
             ],
@@ -17221,7 +17254,7 @@
                 "text": "The JSON data you want to check, for example student."
               }
             ],
-            "result": "One of six values: Null, JsonBoolean, JsonNumber, JsonStringKind, Array or Object. You can show it with Write or keep it in a variable of type JsonKind.",
+            "result": "One of six values: Null, JsonBoolean, JsonNumber, JsonStringKind, Array or Object. You can show it with Write, keep it in a variable of type JsonKind or compare it with the kind of other data.",
             "rules": [
               "Whole numbers and numbers with decimals give the same kind: JsonNumber."
             ],
@@ -17321,7 +17354,8 @@
                 "token": "someVariant"
               },
               {
-                "token": "leftParenthesis"
+                "token": "leftParenthesis",
+                "join": true
               },
               {
                 "slot": "name",
@@ -17541,7 +17575,8 @@
                 "token": "someVariant"
               },
               {
-                "token": "leftParenthesis"
+                "token": "leftParenthesis",
+                "join": true
               },
               {
                 "slot": "name",
@@ -17769,7 +17804,8 @@
                 "token": "someVariant"
               },
               {
-                "token": "leftParenthesis"
+                "token": "leftParenthesis",
+                "join": true
               },
               {
                 "slot": "name",
@@ -17991,7 +18027,8 @@
                 "token": "someVariant"
               },
               {
-                "token": "leftParenthesis"
+                "token": "leftParenthesis",
+                "join": true
               },
               {
                 "slot": "name",
@@ -18224,6 +18261,7 @@
             ],
             "result": "Un número entero con la cantidad de elementos o de campos.",
             "rules": [
+              "Con un dato que no es lista ni objeto, como un texto JSON o un número, da 0: no cuenta las letras de un texto.",
               "Úsalo con listas y objetos JSON.",
               "Una lista o un objeto vacío da 0."
             ],
@@ -18260,6 +18298,7 @@
             ],
             "result": "A whole number with how many elements or fields there are.",
             "rules": [
+              "With data that is not a list or an object, such as a JSON text or a number, it gives 0: it does not count the letters of a text.",
               "Use it with JSON lists and objects.",
               "An empty list or object gives 0."
             ],
@@ -18356,7 +18395,8 @@
                 "token": "someVariant"
               },
               {
-                "token": "leftParenthesis"
+                "token": "leftParenthesis",
+                "join": true
               },
               {
                 "slot": "name",
@@ -18610,7 +18650,8 @@
                 "token": "someVariant"
               },
               {
-                "token": "leftParenthesis"
+                "token": "leftParenthesis",
+                "join": true
               },
               {
                 "slot": "name",
@@ -19694,7 +19735,8 @@
                 "token": "errorVariant"
               },
               {
-                "token": "leftParenthesis"
+                "token": "leftParenthesis",
+                "join": true
               },
               {
                 "slot": "problem",
@@ -22395,7 +22437,7 @@
         ],
         "content": {
           "es": {
-            "title": "Consola.Escribir",
+            "title": "Consola.EscribirTexto",
             "summary": "Escribe un texto en la salida normal usando la llave de la consola, sin salto de línea al final. Te dice cuántos bytes escribió.",
             "parts": [
               {
@@ -22425,14 +22467,14 @@
               {
                 "specification": "LIB.IO",
                 "version": "1.0.0",
-                "case": "C83",
+                "case": "C98",
                 "kind": "executable",
-                "note": "Muestra que la llave de la consola sirve para escribir: el aviso aparece entre Inicio y Código: 1, en el orden en que se escribió."
+                "note": "EscribirTexto muestra Hola, Ana en la salida normal y entrega 10, la cantidad de bytes del texto con su salto de línea."
               }
             ]
           },
           "en": {
-            "title": "Console.write",
+            "title": "Console.writeText",
             "summary": "Writes a text to the normal output using the console key, with no line break at the end. It tells you how many bytes it wrote.",
             "parts": [
               {
@@ -22462,9 +22504,9 @@
               {
                 "specification": "LIB.IO",
                 "version": "1.0.0",
-                "case": "C83",
+                "case": "C98",
                 "kind": "executable",
-                "note": "Shows that the console key can write: the notice appears between Inicio and Código: 1, in the order it was written."
+                "note": "writeText shows Hola, Ana on the normal output and gives back 10, the number of bytes of the text with its line break."
               }
             ]
           }
@@ -30404,12 +30446,7 @@
               {
                 "token": "comma",
                 "join": true
-              }
-            ]
-          },
-          {
-            "indent": 1,
-            "segments": [
+              },
               {
                 "slot": "minute"
               },
@@ -34335,7 +34372,8 @@
                 "token": "someVariant"
               },
               {
-                "token": "leftParenthesis"
+                "token": "leftParenthesis",
+                "join": true
               },
               {
                 "slot": "position",
@@ -35414,7 +35452,7 @@
                 "version": "1.0.0",
                 "case": "C54",
                 "kind": "executable",
-                "note": "Muestra 0 y 10. GanarCopia suma puntos a una copia de luis, que sigue en 0; Ganar recibe a ana Por Referencia y su suma sí queda."
+                "note": "Muestra 0 y después 10. GanarCopia suma puntos a una copia de ana, así que ana sigue en 0; Ganar recibe a ana Por Referencia y su suma sí queda."
               }
             ]
           },
@@ -35470,7 +35508,7 @@
                 "version": "1.0.0",
                 "case": "C54",
                 "kind": "executable",
-                "note": "Shows 0 and 10. WinCopy adds points to a copy of luis, who stays at 0; Win gets ana by reference and her points stay."
+                "note": "Shows 0 and then 10. WinCopy adds points to a copy of ana, so ana stays at 0; Win gets ana by reference and her points stay."
               }
             ]
           }
@@ -36025,13 +36063,16 @@
                 "slot": "name"
               },
               {
-                "token": "lessThan"
+                "token": "lessThan",
+                "join": true
               },
               {
-                "slot": "param"
+                "slot": "param",
+                "join": true
               },
               {
-                "token": "greaterThan"
+                "token": "greaterThan",
+                "join": true
               }
             ]
           },
@@ -36075,13 +36116,16 @@
                 "slot": "name"
               },
               {
-                "token": "lessThan"
+                "token": "lessThan",
+                "join": true
               },
               {
-                "slot": "arg"
+                "slot": "arg",
+                "join": true
               },
               {
-                "token": "greaterThan"
+                "token": "greaterThan",
+                "join": true
               },
               {
                 "token": "semicolon",
@@ -36105,16 +36149,20 @@
                 "slot": "name"
               },
               {
-                "token": "lessThan"
+                "token": "lessThan",
+                "join": true
               },
               {
-                "slot": "arg"
+                "slot": "arg",
+                "join": true
               },
               {
-                "token": "greaterThan"
+                "token": "greaterThan",
+                "join": true
               },
               {
-                "token": "leftParenthesis"
+                "token": "leftParenthesis",
+                "join": true
               },
               {
                 "slot": "args",
@@ -36351,13 +36399,16 @@
                 "slot": "name"
               },
               {
-                "token": "lessThan"
+                "token": "lessThan",
+                "join": true
               },
               {
-                "slot": "param"
+                "slot": "param",
+                "join": true
               },
               {
-                "token": "greaterThan"
+                "token": "greaterThan",
+                "join": true
               }
             ]
           },
@@ -36414,13 +36465,16 @@
                 "slot": "name"
               },
               {
-                "token": "lessThan"
+                "token": "lessThan",
+                "join": true
               },
               {
-                "slot": "arg"
+                "slot": "arg",
+                "join": true
               },
               {
-                "token": "greaterThan"
+                "token": "greaterThan",
+                "join": true
               }
             ]
           },
@@ -36659,10 +36713,12 @@
                 "slot": "name"
               },
               {
-                "token": "lessThan"
+                "token": "lessThan",
+                "join": true
               },
               {
-                "slot": "param"
+                "slot": "param",
+                "join": true
               },
               {
                 "token": "branchSeparator",
@@ -36672,10 +36728,12 @@
                 "slot": "constraint"
               },
               {
-                "token": "greaterThan"
+                "token": "greaterThan",
+                "join": true
               },
               {
-                "token": "leftParenthesis"
+                "token": "leftParenthesis",
+                "join": true
               },
               {
                 "slot": "params",

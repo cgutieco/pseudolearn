@@ -50,9 +50,10 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El traductor convierte todas las palabras clave, tipos primitivos, operadores verbales y llamadas a funciones estándar no sombreadas del perfil de origen al perfil de destino, conservando la modalidad.",
+  "texto": "El traductor convierte todas las palabras clave, tipos primitivos, operadores verbales y llamadas a funciones estándar no sombreadas del perfil de origen al perfil de destino, conservando la modalidad. También convierte las palabras contextuales en su posición propia, como Suspendible tras SubProceso y Recibir y Desde en una rama de Elegir, y las escribe con la misma grafía que el formateador.",
   "verificacion": [
-    "C1"
+    "C1",
+    "C5"
   ]
 }
 ```
@@ -198,5 +199,27 @@
   "propiedad": "La doble traducción sobre la forma canónica es la identidad.",
   "oraculo": "Igualdad byte a byte entre el programa canónico de origen y la doble traducción.",
   "justificacion": "La ejecuta el sujeto service mediante comprobación de doble traducción."
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "traducido": "Subroutine Suspendable Tomar(c As Channel<Integer>)\n  Select\n    Receive x From c:\n      Write x;\n    Receive z From c:\n      Write z;\n  EndSelect\nEndSubroutine\n\nAlgorithm P\n  Define base As Vector<Integer> <- vector();\n  Define datos As Immutable<Vector<Integer>> <- snapshot(base);\n  For Each d In datos Do\n    Write d;\n  EndFor\nEndAlgorithm\n"
+    }
+  },
+  "servicio": {
+    "suboperacion": "translate",
+    "documento": "SubProceso Suspendible Tomar(c Como Canal<Entero>)\n  Elegir\n    Recibir x Desde c:\n      Escribir x;\n    Recibir z Desde c:\n      Escribir z;\n  FinElegir\nFinSubProceso\n\nAlgoritmo P\n  Definir base Como Vector<Entero> <- Vector();\n  Definir datos Como Inmutable<Vector<Entero>> <- Instantanea(base);\n  Para Cada d En datos Hacer\n    Escribir d;\n  FinPara\nFinAlgoritmo\n",
+    "hacia": "en"
+  }
 }
 ```

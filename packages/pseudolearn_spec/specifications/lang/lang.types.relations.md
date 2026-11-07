@@ -425,8 +425,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso Produce() Como Resultado < Entero, Cadena >\n  Retornar Exito (1);\nFinSubProceso\n\nAlgoritmo Main\n  Produce();\nFinAlgoritmo\n",
-    "en": "Subroutine Produce() As Result < Integer, String >\n  Return Success (1);\nEndSubroutine\n\nAlgorithm Main\n  Produce();\nEndAlgorithm\n"
+    "es": "SubProceso Produce() Como Resultado<Entero, Cadena>\n  Retornar Exito(1);\nFinSubProceso\n\nAlgoritmo Main\n  Produce();\nFinAlgoritmo\n",
+    "en": "Subroutine Produce() As Result<Integer, String>\n  Return Success(1);\nEndSubroutine\n\nAlgorithm Main\n  Produce();\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -786,8 +786,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso Buscar(codigo Como Entero) Como Opcional < Cadena >\n  Si codigo = 1 Entonces\n    Retornar Algo (\"Ana\");\n  FinSi\n  Retornar Nada;\nFinSubProceso\n\nAlgoritmo Agenda\n  Segun Buscar(1) Hacer\n    Algo (nombre): Escribir nombre;\n    Nada: Escribir \"?\";\n  FinSegun\n  Segun Buscar(7) Hacer\n    Algo (nombre): Escribir nombre;\n    Nada: Escribir \"?\";\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Find(code As Integer) As Optional < String >\n  If code = 1 Then\n    Return Some (\"Ana\");\n  EndIf\n  Return None;\nEndSubroutine\n\nAlgorithm Contacts\n  Switch Find(1) Do\n    Some (name): Write name;\n    None: Write \"?\";\n  EndSwitch\n  Switch Find(7) Do\n    Some (name): Write name;\n    None: Write \"?\";\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Buscar(codigo Como Entero) Como Opcional<Cadena>\n  Si codigo = 1 Entonces\n    Retornar Algo(\"Ana\");\n  FinSi\n  Retornar Nada;\nFinSubProceso\n\nAlgoritmo Agenda\n  Segun Buscar(1) Hacer\n    Algo(nombre): Escribir nombre;\n    Nada: Escribir \"?\";\n  FinSegun\n  Segun Buscar(7) Hacer\n    Algo(nombre): Escribir nombre;\n    Nada: Escribir \"?\";\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Find(code As Integer) As Optional<String>\n  If code = 1 Then\n    Return Some(\"Ana\");\n  EndIf\n  Return None;\nEndSubroutine\n\nAlgorithm Contacts\n  Switch Find(1) Do\n    Some(name): Write name;\n    None: Write \"?\";\n  EndSwitch\n  Switch Find(7) Do\n    Some(name): Write name;\n    None: Write \"?\";\n  EndSwitch\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

@@ -122,7 +122,7 @@
   ],
   "programas": {
     "es": "Algoritmo Main\n  Dimension values[1, 1] Como Entero;\n  Para Cada value En values Hacer\n    Escribir value;\n  FinPara\nFinAlgoritmo\n",
-    "en": "Algorithm Main\n  Dimension values[1, 1] As Integer;\n  For each value in values Do\n    Write value;\n  EndFor\nEndAlgorithm\n"
+    "en": "Algorithm Main\n  Dimension values[1, 1] As Integer;\n  For Each value In values Do\n    Write value;\n  EndFor\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -162,8 +162,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Main\n  Definir values Como Vector < Entero > <- Vector();\n  values.Agregar(1);\n  Para Cada value En values Hacer\n    values.Agregar(value);\n  FinPara\nFinAlgoritmo\n",
-    "en": "Algorithm Main\n  Define values As vector < Integer > <- vector();\n  values.append(1);\n  For each value in values Do\n    values.append(value);\n  EndFor\nEndAlgorithm\n"
+    "es": "Algoritmo Main\n  Definir values Como Vector<Entero> <- Vector();\n  values.Agregar(1);\n  Para Cada value En values Hacer\n    values.Agregar(value);\n  FinPara\nFinAlgoritmo\n",
+    "en": "Algorithm Main\n  Define values As Vector<Integer> <- vector();\n  values.append(1);\n  For Each value In values Do\n    values.append(value);\n  EndFor\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -271,8 +271,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Total\n  Definir notas Como Vector < Entero > <- Vector();\n  Definir suma Como Entero <- 0;\n  notas.Agregar(7);\n  notas.Agregar(9);\n  notas.Agregar(8);\n  Para Cada nota En notas Hacer\n    suma <- suma + nota;\n  FinPara\n  Escribir suma;\nFinAlgoritmo\n",
-    "en": "Algorithm Total\n  Define grades As vector < Integer > <- vector();\n  Define sum As Integer <- 0;\n  grades.append(7);\n  grades.append(9);\n  grades.append(8);\n  For each grade in grades Do\n    sum <- sum + grade;\n  EndFor\n  Write sum;\nEndAlgorithm\n"
+    "es": "Algoritmo Total\n  Definir notas Como Vector<Entero> <- Vector();\n  Definir suma Como Entero <- 0;\n  notas.Agregar(7);\n  notas.Agregar(9);\n  notas.Agregar(8);\n  Para Cada nota En notas Hacer\n    suma <- suma + nota;\n  FinPara\n  Escribir suma;\nFinAlgoritmo\n",
+    "en": "Algorithm Total\n  Define grades As Vector<Integer> <- vector();\n  Define sum As Integer <- 0;\n  grades.append(7);\n  grades.append(9);\n  grades.append(8);\n  For Each grade In grades Do\n    sum <- sum + grade;\n  EndFor\n  Write sum;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

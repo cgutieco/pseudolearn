@@ -120,8 +120,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\n  Definir captured Como Entero <- 1;\n  Definir callback Como SubProceso () Como Entero <- SubProceso () Como Entero;\n      Retornar captured;\n    FinSubProceso;\n    captured <- 2;\n    Escribir callback();\n  FinAlgoritmo\n",
-    "en": "Algorithm P\n  Define captured As Integer <- 1;\n  Define callback As Subroutine () As Integer <- Subroutine () As Integer;\n      Return captured;\n    EndSubroutine;\n    captured <- 2;\n    Write callback();\n  EndAlgorithm\n"
+    "es": "Algoritmo P\n  Definir captured Como Entero <- 1;\n  Definir callback Como SubProceso() Como Entero <- SubProceso() Como Entero;\n    Retornar captured;\n  FinSubProceso;\n  captured <- 2;\n  Escribir callback();\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Define captured As Integer <- 1;\n  Define callback As Subroutine() As Integer <- Subroutine() As Integer;\n    Return captured;\n  EndSubroutine;\n  captured <- 2;\n  Write callback();\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -704,8 +704,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Funciones\n  Definir extra Como Entero <- 3;\n  Definir sumarExtra Como SubProceso (Entero) Como Entero <- SubProceso (numero Como Entero) Como Entero;\n      Retornar numero + extra;\n    FinSubProceso;\n    Escribir sumarExtra(4);\n    Escribir sumarExtra(10);\n  FinAlgoritmo\n",
-    "en": "Algorithm Functions\n  Define extra As Integer <- 3;\n  Define addExtra As Subroutine (Integer) As Integer <- Subroutine (number As Integer) As Integer;\n      Return number + extra;\n    EndSubroutine;\n    Write addExtra(4);\n    Write addExtra(10);\n  EndAlgorithm\n"
+    "es": "Algoritmo Funciones\n  Definir extra Como Entero <- 3;\n  Definir sumarExtra Como SubProceso(Entero) Como Entero <- SubProceso(numero Como Entero) Como Entero;\n    Retornar numero + extra;\n  FinSubProceso;\n  Escribir sumarExtra(4);\n  Escribir sumarExtra(10);\nFinAlgoritmo\n",
+    "en": "Algorithm Functions\n  Define extra As Integer <- 3;\n  Define addExtra As Subroutine(Integer) As Integer <- Subroutine(number As Integer) As Integer;\n    Return number + extra;\n  EndSubroutine;\n  Write addExtra(4);\n  Write addExtra(10);\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

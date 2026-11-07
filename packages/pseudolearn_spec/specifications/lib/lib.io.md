@@ -179,8 +179,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado < Cadena, ErrorES >\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Definir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\n  Retornar file.LeerTexto();\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Probe() As Result < String, IoError >\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Define file As FileCap <- Propagate directory.open(\"a\", \"read\");\n  Return file.readText();\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): Write value;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Definir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\n  Retornar file.LeerTexto();\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito(value): Escribir value;\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result<String, IoError>\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Define file As FileCap <- Propagate directory.open(\"a\", \"read\");\n  Return file.readText();\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success(value): Write value;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -352,8 +352,8 @@
     }
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado < Entero, ErrorES >\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Definir file Como ArchivoCap <- Propagar directory.Abrir(\"missing\", \"lectura\");\n  Retornar Exito (0);\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Probe() As Result < Integer, IoError >\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Define file As FileCap <- Propagate directory.open(\"missing\", \"read\");\n  Return Success (0);\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): Write value;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Definir file Como ArchivoCap <- Propagar directory.Abrir(\"missing\", \"lectura\");\n  Retornar Exito(0);\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito(value): Escribir value;\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result<Integer, IoError>\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Define file As FileCap <- Propagate directory.open(\"missing\", \"read\");\n  Return Success(0);\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success(value): Write value;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -412,8 +412,8 @@
     }
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado < Entero, ErrorES >\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Definir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\n  Descartar file.Cerrar();\n  Definir content Como Bytes <- Propagar file.LeerBytes();\n  Retornar Exito (0);\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Probe() As Result < Integer, IoError >\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Define file As FileCap <- Propagate directory.open(\"a\", \"read\");\n  Discard file.close();\n  Define content As Bytes <- Propagate file.readBytes();\n  Return Success (0);\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): Write value;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Definir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\n  Descartar file.Cerrar();\n  Definir content Como Bytes <- Propagar file.LeerBytes();\n  Retornar Exito(0);\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito(value): Escribir value;\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result<Integer, IoError>\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Define file As FileCap <- Propagate directory.open(\"a\", \"read\");\n  Discard file.close();\n  Define content As Bytes <- Propagate file.readBytes();\n  Return Success(0);\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success(value): Write value;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -600,8 +600,8 @@
     }
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado < Entero, ErrorES >\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Definir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\n  Definir content Como Bytes <- Propagar file.LeerBytes();\n  Escribir content.En(3);\n  Retornar Exito (0);\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Probe() As Result < Integer, IoError >\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Define file As FileCap <- Propagate directory.open(\"a\", \"read\");\n  Define content As Bytes <- Propagate file.readBytes();\n  Write content.at(3);\n  Return Success (0);\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): Write value;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Definir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\n  Definir content Como Bytes <- Propagar file.LeerBytes();\n  Escribir content.En(3);\n  Retornar Exito(0);\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito(value): Escribir value;\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result<Integer, IoError>\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Define file As FileCap <- Propagate directory.open(\"a\", \"read\");\n  Define content As Bytes <- Propagate file.readBytes();\n  Write content.at(3);\n  Return Success(0);\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success(value): Write value;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -1155,8 +1155,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado < Vector < Cadena >, ErrorES >\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Retornar directory.Listar(\"a\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (names): Escribir names.Longitud(), \":\", Unir(names, \",\");\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Probe() As Result < vector < String >, IoError >\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Return directory.list(\"a\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (names): Write names.length(), \":\", join(names, \",\");\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Vector<Cadena>, ErrorES>\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Retornar directory.Listar(\"a\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito(names): Escribir names.Longitud(), \":\", Unir(names, \",\");\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result<Vector<String>, IoError>\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Return directory.list(\"a\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success(names): Write names.length(), \":\", join(names, \",\");\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -1280,8 +1280,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado < Logico, ErrorES >\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Retornar directory.Borrar(\"d\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Probe() As Result < Boolean, IoError >\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Return directory.delete(\"d\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): If value Then Write 1; Else Write 0; EndIf\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Retornar directory.Borrar(\"d\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result<Boolean, IoError>\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Return directory.delete(\"d\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success(value): If value Then Write 1; Else Write 0; EndIf\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -1456,8 +1456,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado < Logico, ErrorES >\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Retornar directory.Renombrar(\"a\", \"b\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Probe() As Result < Boolean, IoError >\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Return directory.rename(\"a\", \"b\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): If value Then Write 1; Else Write 0; EndIf\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Retornar directory.Renombrar(\"a\", \"b\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result<Boolean, IoError>\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Return directory.rename(\"a\", \"b\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success(value): If value Then Write 1; Else Write 0; EndIf\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -1657,8 +1657,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado < Logico, ErrorES >\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Retornar directory.CrearDirectorio(\"p/n\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Probe() As Result < Boolean, IoError >\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Return directory.createDirectory(\"p/n\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): If value Then Write 1; Else Write 0; EndIf\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Retornar directory.CrearDirectorio(\"p/n\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result<Boolean, IoError>\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Return directory.createDirectory(\"p/n\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success(value): If value Then Write 1; Else Write 0; EndIf\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "grabar_y_reproducir": true
@@ -1692,7 +1692,7 @@
   "id": "R10",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "ArchivoCap.AgregarTexto(texto) y ArchivoCap.AgregarBytes(bytes) escriben al final del contenido actual del archivo, lo crean si el archivo ya no existe y devuelven el número de octetos escritos; AgregarTexto escribe el UTF-8 del texto sin transformarlo. Exigen el derecho de escritura de la capacidad de archivo y no modifican los modos de Abrir, por lo que abrir en escritura sigue vaciando el archivo.",
+  "texto": "ArchivoCap.AgregarTexto(texto) y ArchivoCap.AgregarBytes(bytes) escriben al final del contenido actual del archivo, lo crean si el archivo ya no existe y devuelven el número de octetos escritos; AgregarTexto escribe el UTF-8 del texto sin transformarlo. Exigen el derecho de escritura de la capacidad de archivo y no modifican los modos de Abrir: Abrir en escritura o en lectura_escritura crea el archivo si no existe y lo vacía si existe, de modo que una lectura posterior solo ve lo escrito después de abrir; Abrir en lectura no crea ni vacía el archivo.",
   "verificacion": [
     "C54",
     "C55",
@@ -1701,7 +1701,9 @@
     "C58",
     "C59",
     "C92",
-    "C93"
+    "C93",
+    "C100",
+    "C101"
   ]
 }
 ```
@@ -1814,8 +1816,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado < Entero, ErrorES >\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Definir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\n  Retornar file.AgregarTexto(\"z\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Probe() As Result < Integer, IoError >\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Define file As FileCap <- Propagate directory.open(\"a\", \"read\");\n  Return file.appendText(\"z\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): Write value;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Definir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\n  Retornar file.AgregarTexto(\"z\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito(value): Escribir value;\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result<Integer, IoError>\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Define file As FileCap <- Propagate directory.open(\"a\", \"read\");\n  Return file.appendText(\"z\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success(value): Write value;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -1881,8 +1883,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado < Logico, ErrorES >\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Definir inner Como DirectorioCap <- Propagar directory.Subdirectorio(\"d\", \"lectura\");\n  Retornar inner.CrearDirectorio(\"n\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Probe() As Result < Boolean, IoError >\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Define inner As DirCap <- Propagate directory.subdirectory(\"d\", \"lectura\");\n  Return inner.createDirectory(\"n\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): If value Then Write 1; Else Write 0; EndIf\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Definir inner Como DirectorioCap <- Propagar directory.Subdirectorio(\"d\", \"lectura\");\n  Retornar inner.CrearDirectorio(\"n\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result<Boolean, IoError>\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Define inner As DirCap <- Propagate directory.subdirectory(\"d\", \"lectura\");\n  Return inner.createDirectory(\"n\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success(value): If value Then Write 1; Else Write 0; EndIf\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -1960,8 +1962,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado < Logico, ErrorES >\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Definir inner Como DirectorioCap <- Propagar directory.Subdirectorio(\"d\", \"escritura\");\n  Retornar inner.Existe(\"a\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Probe() As Result < Boolean, IoError >\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Define inner As DirCap <- Propagate directory.subdirectory(\"d\", \"escritura\");\n  Return inner.exists(\"a\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): If value Then Write 1; Else Write 0; EndIf\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Definir inner Como DirectorioCap <- Propagar directory.Subdirectorio(\"d\", \"escritura\");\n  Retornar inner.Existe(\"a\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result<Boolean, IoError>\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Define inner As DirCap <- Propagate directory.subdirectory(\"d\", \"escritura\");\n  Return inner.exists(\"a\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success(value): If value Then Write 1; Else Write 0; EndIf\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -1986,8 +1988,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado < Logico, ErrorES >\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Definir inner Como DirectorioCap <- Propagar directory.Subdirectorio(\"d\", \"lectura_escritura\");\n  Retornar inner.Existe(\"../a\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Probe() As Result < Boolean, IoError >\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Define inner As DirCap <- Propagate directory.subdirectory(\"d\", \"lectura_escritura\");\n  Return inner.exists(\"../a\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): If value Then Write 1; Else Write 0; EndIf\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Definir inner Como DirectorioCap <- Propagar directory.Subdirectorio(\"d\", \"lectura_escritura\");\n  Retornar inner.Existe(\"../a\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result<Boolean, IoError>\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Define inner As DirCap <- Propagate directory.subdirectory(\"d\", \"lectura_escritura\");\n  Return inner.exists(\"../a\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success(value): If value Then Write 1; Else Write 0; EndIf\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -2067,8 +2069,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado < Logico, ErrorES >\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Descartar directory.Cerrar();\n  Retornar directory.Existe(\"a\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Probe() As Result < Boolean, IoError >\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Discard directory.close();\n  Return directory.exists(\"a\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): If value Then Write 1; Else Write 0; EndIf\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Descartar directory.Cerrar();\n  Retornar directory.Existe(\"a\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito(value): Si value Entonces Escribir 1; Sino Escribir 0; FinSi\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result<Boolean, IoError>\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Discard directory.close();\n  Return directory.exists(\"a\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success(value): If value Then Write 1; Else Write 0; EndIf\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -2147,8 +2149,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado < Entero, ErrorES >\n  Definir env Como Entorno <- Propagar SolicitarEntorno();\n  Segun env.Obtener(\"\") Hacer\n    Exito (value): Escribir \"ok\";\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\n  Segun env.Obtener(\"A=B\") Hacer\n    Exito (value): Escribir \"ok\";\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\n  Segun env.Obtener(\"PL_PRESENT\") Hacer\n    Exito (value): Escribir \"ok\";\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\n  Retornar Exito (0);\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Probe() As Result < Integer, IoError >\n  Define env As Environment <- Propagate requestEnvironment();\n  Switch env.get(\"\") Do\n    Success (value): Write \"ok\";\n    Failure (problem): Write problem.code;\n  EndSwitch\n  Switch env.get(\"A=B\") Do\n    Success (value): Write \"ok\";\n    Failure (problem): Write problem.code;\n  EndSwitch\n  Switch env.get(\"PL_PRESENT\") Do\n    Success (value): Write \"ok\";\n    Failure (problem): Write problem.code;\n  EndSwitch\n  Return Success (0);\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): Write value;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\n  Definir env Como Entorno <- Propagar SolicitarEntorno();\n  Segun env.Obtener(\"\") Hacer\n    Exito(value): Escribir \"ok\";\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\n  Segun env.Obtener(\"A=B\") Hacer\n    Exito(value): Escribir \"ok\";\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\n  Segun env.Obtener(\"PL_PRESENT\") Hacer\n    Exito(value): Escribir \"ok\";\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\n  Retornar Exito(0);\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito(value): Escribir value;\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result<Integer, IoError>\n  Define env As Environment <- Propagate requestEnvironment();\n  Switch env.get(\"\") Do\n    Success(value): Write \"ok\";\n    Failure(problem): Write problem.code;\n  EndSwitch\n  Switch env.get(\"A=B\") Do\n    Success(value): Write \"ok\";\n    Failure(problem): Write problem.code;\n  EndSwitch\n  Switch env.get(\"PL_PRESENT\") Do\n    Success(value): Write \"ok\";\n    Failure(problem): Write problem.code;\n  EndSwitch\n  Return Success(0);\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success(value): Write value;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "environment": {
@@ -2361,8 +2363,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado < Entero, ErrorES >\n  Definir con Como Consola <- Propagar SolicitarConsola();\n  Segun con.EstablecerCodigoSalida(256) Hacer\n    Exito (value): Escribir \"ok\";\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\n  Segun con.EstablecerCodigoSalida(-1) Hacer\n    Exito (value): Escribir \"ok\";\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\n  Retornar Exito (0);\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Probe() As Result < Integer, IoError >\n  Define con As Console <- Propagate requestConsole();\n  Switch con.setExitCode(256) Do\n    Success (value): Write \"ok\";\n    Failure (problem): Write problem.code;\n  EndSwitch\n  Switch con.setExitCode(-1) Do\n    Success (value): Write \"ok\";\n    Failure (problem): Write problem.code;\n  EndSwitch\n  Return Success (0);\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): Write value;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\n  Definir con Como Consola <- Propagar SolicitarConsola();\n  Segun con.EstablecerCodigoSalida(256) Hacer\n    Exito(value): Escribir \"ok\";\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\n  Segun con.EstablecerCodigoSalida(-1) Hacer\n    Exito(value): Escribir \"ok\";\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\n  Retornar Exito(0);\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito(value): Escribir value;\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result<Integer, IoError>\n  Define con As Console <- Propagate requestConsole();\n  Switch con.setExitCode(256) Do\n    Success(value): Write \"ok\";\n    Failure(problem): Write problem.code;\n  EndSwitch\n  Switch con.setExitCode(-1) Do\n    Success(value): Write \"ok\";\n    Failure(problem): Write problem.code;\n  EndSwitch\n  Return Success(0);\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success(value): Write value;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   }
 }
 ```
@@ -2372,11 +2374,13 @@
   "id": "R16",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Consola.EscribirError(texto) devuelve Resultado<Entero, ErrorES> con la cantidad de bytes UTF-8 del texto, que queda escrito en el flujo de error del programa. La salida combinada del programa conserva el texto de ambos flujos en el orden en que se escribieron, y la respuesta de la API informa en error_ranges los tramos de bytes de esa salida que pertenecen al flujo de error. La CLI escribe esos tramos en la salida de error estándar y el resto en la salida estándar; la sesión de depuración los informa con la categoría de salida de error; los demás consumidores pueden mostrar la salida combinada. El texto vacío escribe cero bytes. Se graba en la cinta bajo capability_kind console.",
+  "texto": "Consola.EscribirTexto(texto) y Consola.EscribirError(texto) devuelven Resultado<Entero, ErrorES> con la cantidad de bytes UTF-8 del texto, que queda escrito tal cual, sin salto de línea añadido, en el flujo normal o en el flujo de error del programa respectivamente. La salida combinada del programa conserva el texto de ambos flujos en el orden en que se escribieron, y la respuesta de la API informa en error_ranges los tramos de bytes de esa salida que pertenecen al flujo de error. La CLI escribe esos tramos en la salida de error estándar y el resto en la salida estándar; la sesión de depuración los informa con la categoría de salida de error; los demás consumidores pueden mostrar la salida combinada. El texto vacío escribe cero bytes. Se graba en la cinta bajo capability_kind console.",
   "verificacion": [
     "C75",
     "C76",
-    "C97"
+    "C97",
+    "C98",
+    "C99"
   ]
 }
 ```
@@ -2417,8 +2421,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado < Entero, ErrorES >\n  Definir con Como Consola <- Propagar SolicitarConsola();\n  Definir vacio Como Entero <- Propagar con.EscribirError(\"\");\n  Definir tilde Como Entero <- Propagar con.EscribirError(\"é\");\n  Escribir vacio;\n  Escribir tilde;\n  Retornar Exito (0);\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Probe() As Result < Integer, IoError >\n  Define con As Console <- Propagate requestConsole();\n  Define vacio As Integer <- Propagate con.writeError(\"\");\n  Define tilde As Integer <- Propagate con.writeError(\"é\");\n  Write vacio;\n  Write tilde;\n  Return Success (0);\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): Write value;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\n  Definir con Como Consola <- Propagar SolicitarConsola();\n  Definir vacio Como Entero <- Propagar con.EscribirError(\"\");\n  Definir tilde Como Entero <- Propagar con.EscribirError(\"é\");\n  Escribir vacio;\n  Escribir tilde;\n  Retornar Exito(0);\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito(value): Escribir value;\n    Error(problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result<Integer, IoError>\n  Define con As Console <- Propagate requestConsole();\n  Define vacio As Integer <- Propagate con.writeError(\"\");\n  Define tilde As Integer <- Propagate con.writeError(\"é\");\n  Write vacio;\n  Write tilde;\n  Return Success(0);\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success(value): Write value;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   }
 }
 ```
@@ -2438,8 +2442,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso LeerColores() Como Resultado < Bytes, ErrorES >\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir archivo Como ArchivoCap <- Propagar carpeta.Abrir(\"colores.bin\", \"lectura\");\n  Retornar archivo.LeerBytes();\nFinSubProceso\n\nAlgoritmo MostrarBytes\n  Segun LeerColores() Hacer\n    Exito (datos):\n      Escribir \"Total: \", datos.Longitud();\n      Escribir datos.En(0);\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine ReadColors() As Result < Bytes, IoError >\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define file As FileCap <- Propagate folder.open(\"colores.bin\", \"read\");\n  Return file.readBytes();\nEndSubroutine\n\nAlgorithm ShowBytes\n  Switch ReadColors() Do\n    Success (data):\n      Write \"Total: \", data.length();\n      Write data.at(0);\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso LeerColores() Como Resultado<Bytes, ErrorES>\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir archivo Como ArchivoCap <- Propagar carpeta.Abrir(\"colores.bin\", \"lectura\");\n  Retornar archivo.LeerBytes();\nFinSubProceso\n\nAlgoritmo MostrarBytes\n  Segun LeerColores() Hacer\n    Exito(datos):\n      Escribir \"Total: \", datos.Longitud();\n      Escribir datos.En(0);\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine ReadColors() As Result<Bytes, IoError>\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define file As FileCap <- Propagate folder.open(\"colores.bin\", \"read\");\n  Return file.readBytes();\nEndSubroutine\n\nAlgorithm ShowBytes\n  Switch ReadColors() Do\n    Success(data):\n      Write \"Total: \", data.length();\n      Write data.at(0);\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -2468,8 +2472,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso LeerSaludo() Como Resultado < Cadena, ErrorES >\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir archivo Como ArchivoCap <- Propagar carpeta.Abrir(\"saludo.txt\", \"lectura\");\n  Retornar archivo.LeerTexto();\nFinSubProceso\n\nAlgoritmo MostrarSaludo\n  Segun LeerSaludo() Hacer\n    Exito (texto): Escribir texto;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine ReadGreeting() As Result < String, IoError >\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define file As FileCap <- Propagate folder.open(\"saludo.txt\", \"read\");\n  Return file.readText();\nEndSubroutine\n\nAlgorithm ShowGreeting\n  Switch ReadGreeting() Do\n    Success (text): Write text;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso LeerSaludo() Como Resultado<Cadena, ErrorES>\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir archivo Como ArchivoCap <- Propagar carpeta.Abrir(\"saludo.txt\", \"lectura\");\n  Retornar archivo.LeerTexto();\nFinSubProceso\n\nAlgoritmo MostrarSaludo\n  Segun LeerSaludo() Hacer\n    Exito(texto): Escribir texto;\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine ReadGreeting() As Result<String, IoError>\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define file As FileCap <- Propagate folder.open(\"saludo.txt\", \"read\");\n  Return file.readText();\nEndSubroutine\n\nAlgorithm ShowGreeting\n  Switch ReadGreeting() Do\n    Success(text): Write text;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -2494,8 +2498,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso LeerDosVeces() Como Resultado < Cadena, ErrorES >\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir archivo Como ArchivoCap <- Propagar carpeta.Abrir(\"saludo.txt\", \"lectura\");\n  Definir texto Como Cadena <- Propagar archivo.LeerTexto();\n  Escribir texto;\n  Definir cerrado Como Logico <- Propagar archivo.Cerrar();\n  Si cerrado Entonces\n    Escribir \"OK\";\n  FinSi\n  Retornar archivo.LeerTexto();\nFinSubProceso\n\nAlgoritmo CerrarArchivo\n  Segun LeerDosVeces() Hacer\n    Exito (texto): Escribir texto;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine ReadTwice() As Result < String, IoError >\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define file As FileCap <- Propagate folder.open(\"saludo.txt\", \"read\");\n  Define text As String <- Propagate file.readText();\n  Write text;\n  Define closed As Boolean <- Propagate file.close();\n  If closed Then\n    Write \"OK\";\n  EndIf\n  Return file.readText();\nEndSubroutine\n\nAlgorithm CloseFile\n  Switch ReadTwice() Do\n    Success (text): Write text;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso LeerDosVeces() Como Resultado<Cadena, ErrorES>\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir archivo Como ArchivoCap <- Propagar carpeta.Abrir(\"saludo.txt\", \"lectura\");\n  Definir texto Como Cadena <- Propagar archivo.LeerTexto();\n  Escribir texto;\n  Definir cerrado Como Logico <- Propagar archivo.Cerrar();\n  Si cerrado Entonces\n    Escribir \"OK\";\n  FinSi\n  Retornar archivo.LeerTexto();\nFinSubProceso\n\nAlgoritmo CerrarArchivo\n  Segun LeerDosVeces() Hacer\n    Exito(texto): Escribir texto;\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine ReadTwice() As Result<String, IoError>\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define file As FileCap <- Propagate folder.open(\"saludo.txt\", \"read\");\n  Define text As String <- Propagate file.readText();\n  Write text;\n  Define closed As Boolean <- Propagate file.close();\n  If closed Then\n    Write \"OK\";\n  EndIf\n  Return file.readText();\nEndSubroutine\n\nAlgorithm CloseFile\n  Switch ReadTwice() Do\n    Success(text): Write text;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -2520,8 +2524,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso GuardarNota() Como Resultado < Cadena, ErrorES >\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir archivo Como ArchivoCap <- Propagar carpeta.Abrir(\"nota.txt\", \"escritura\");\n  Definir cantidad Como Entero <- Propagar archivo.EscribirTexto(\"Comprar pan\");\n  Escribir \"Bytes: \", cantidad;\n  Definir lector Como ArchivoCap <- Propagar carpeta.Abrir(\"nota.txt\", \"lectura\");\n  Retornar lector.LeerTexto();\nFinSubProceso\n\nAlgoritmo Notas\n  Segun GuardarNota() Hacer\n    Exito (texto): Escribir texto;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine SaveNote() As Result < String, IoError >\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define file As FileCap <- Propagate folder.open(\"nota.txt\", \"write\");\n  Define count As Integer <- Propagate file.writeText(\"Comprar pan\");\n  Write \"Bytes: \", count;\n  Define reader As FileCap <- Propagate folder.open(\"nota.txt\", \"read\");\n  Return reader.readText();\nEndSubroutine\n\nAlgorithm Notes\n  Switch SaveNote() Do\n    Success (text): Write text;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso GuardarNota() Como Resultado<Cadena, ErrorES>\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir archivo Como ArchivoCap <- Propagar carpeta.Abrir(\"nota.txt\", \"escritura\");\n  Definir cantidad Como Entero <- Propagar archivo.EscribirTexto(\"Comprar pan\");\n  Escribir \"Bytes: \", cantidad;\n  Definir lector Como ArchivoCap <- Propagar carpeta.Abrir(\"nota.txt\", \"lectura\");\n  Retornar lector.LeerTexto();\nFinSubProceso\n\nAlgoritmo Notas\n  Segun GuardarNota() Hacer\n    Exito(texto): Escribir texto;\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine SaveNote() As Result<String, IoError>\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define file As FileCap <- Propagate folder.open(\"nota.txt\", \"write\");\n  Define count As Integer <- Propagate file.writeText(\"Comprar pan\");\n  Write \"Bytes: \", count;\n  Define reader As FileCap <- Propagate folder.open(\"nota.txt\", \"read\");\n  Return reader.readText();\nEndSubroutine\n\nAlgorithm Notes\n  Switch SaveNote() Do\n    Success(text): Write text;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {}
 }
@@ -2542,8 +2546,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso GuardarBytes() Como Resultado < Bytes, ErrorES >\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir archivo Como ArchivoCap <- Propagar carpeta.Abrir(\"copia.bin\", \"escritura\");\n  Definir datos Como Bytes <- BytesDesdeTexto(\"Sol\");\n  Definir cantidad Como Entero <- Propagar archivo.EscribirBytes(datos);\n  Escribir \"Bytes: \", cantidad;\n  Definir lector Como ArchivoCap <- Propagar carpeta.Abrir(\"copia.bin\", \"lectura\");\n  Retornar lector.LeerBytes();\nFinSubProceso\n\nAlgoritmo CopiarBytes\n  Segun GuardarBytes() Hacer\n    Exito (leidos): Escribir leidos.En(0);\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine SaveBytes() As Result < Bytes, IoError >\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define file As FileCap <- Propagate folder.open(\"copia.bin\", \"write\");\n  Define data As Bytes <- bytesFromText(\"Sol\");\n  Define count As Integer <- Propagate file.writeBytes(data);\n  Write \"Bytes: \", count;\n  Define reader As FileCap <- Propagate folder.open(\"copia.bin\", \"read\");\n  Return reader.readBytes();\nEndSubroutine\n\nAlgorithm CopyBytes\n  Switch SaveBytes() Do\n    Success (loaded): Write loaded.at(0);\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso GuardarBytes() Como Resultado<Bytes, ErrorES>\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir archivo Como ArchivoCap <- Propagar carpeta.Abrir(\"copia.bin\", \"escritura\");\n  Definir datos Como Bytes <- BytesDesdeTexto(\"Sol\");\n  Definir cantidad Como Entero <- Propagar archivo.EscribirBytes(datos);\n  Escribir \"Bytes: \", cantidad;\n  Definir lector Como ArchivoCap <- Propagar carpeta.Abrir(\"copia.bin\", \"lectura\");\n  Retornar lector.LeerBytes();\nFinSubProceso\n\nAlgoritmo CopiarBytes\n  Segun GuardarBytes() Hacer\n    Exito(leidos): Escribir leidos.En(0);\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine SaveBytes() As Result<Bytes, IoError>\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define file As FileCap <- Propagate folder.open(\"copia.bin\", \"write\");\n  Define data As Bytes <- bytesFromText(\"Sol\");\n  Define count As Integer <- Propagate file.writeBytes(data);\n  Write \"Bytes: \", count;\n  Define reader As FileCap <- Propagate folder.open(\"copia.bin\", \"read\");\n  Return reader.readBytes();\nEndSubroutine\n\nAlgorithm CopyBytes\n  Switch SaveBytes() Do\n    Success(loaded): Write loaded.at(0);\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {}
 }
@@ -2564,8 +2568,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso LeerNombres() Como Resultado < Vector < Cadena >, ErrorES >\n  Definir argumentos Como Argumentos <- Propagar SolicitarArgumentos();\n  Retornar argumentos.Valores();\nFinSubProceso\n\nAlgoritmo Saludos\n  Segun LeerNombres() Hacer\n    Exito (nombres):\n      Para Cada nombre En nombres Hacer\n        Escribir \"Hola, \", nombre;\n      FinPara\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine ReadNames() As Result < vector < String >, IoError >\n  Define arguments As Arguments <- Propagate requestArguments();\n  Return arguments.values();\nEndSubroutine\n\nAlgorithm Greetings\n  Switch ReadNames() Do\n    Success (names):\n      For each name in names Do\n        Write \"Hola, \", name;\n      EndFor\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso LeerNombres() Como Resultado<Vector<Cadena>, ErrorES>\n  Definir argumentos Como Argumentos <- Propagar SolicitarArgumentos();\n  Retornar argumentos.Valores();\nFinSubProceso\n\nAlgoritmo Saludos\n  Segun LeerNombres() Hacer\n    Exito(nombres):\n      Para Cada nombre En nombres Hacer\n        Escribir \"Hola, \", nombre;\n      FinPara\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine ReadNames() As Result<Vector<String>, IoError>\n  Define arguments As Arguments <- Propagate requestArguments();\n  Return arguments.values();\nEndSubroutine\n\nAlgorithm Greetings\n  Switch ReadNames() Do\n    Success(names):\n      For Each name In names Do\n        Write \"Hola, \", name;\n      EndFor\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "args": [
@@ -2591,8 +2595,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Avisar() Como Resultado < Entero, ErrorES >\n  Definir consola Como Consola <- Propagar SolicitarConsola();\n  Descartar consola.EscribirError(\"Falta un dato\\n\");\n  Retornar consola.EstablecerCodigoSalida(1);\nFinSubProceso\n\nAlgoritmo Revisar\n  Escribir \"Inicio\";\n  Segun Avisar() Hacer\n    Exito (codigo): Escribir \"Código: \", codigo;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Warn() As Result < Integer, IoError >\n  Define console As Console <- Propagate requestConsole();\n  Discard console.writeError(\"Falta un dato\\n\");\n  Return console.setExitCode(1);\nEndSubroutine\n\nAlgorithm Check\n  Write \"Inicio\";\n  Switch Warn() Do\n    Success (exitCode): Write \"Código: \", exitCode;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Avisar() Como Resultado<Entero, ErrorES>\n  Definir consola Como Consola <- Propagar SolicitarConsola();\n  Descartar consola.EscribirError(\"Falta un dato\\n\");\n  Retornar consola.EstablecerCodigoSalida(1);\nFinSubProceso\n\nAlgoritmo Revisar\n  Escribir \"Inicio\";\n  Segun Avisar() Hacer\n    Exito(codigo): Escribir \"Código: \", codigo;\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Warn() As Result<Integer, IoError>\n  Define console As Console <- Propagate requestConsole();\n  Discard console.writeError(\"Falta un dato\\n\");\n  Return console.setExitCode(1);\nEndSubroutine\n\nAlgorithm Check\n  Write \"Inicio\";\n  Switch Warn() Do\n    Success(exitCode): Write \"Código: \", exitCode;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {}
 }
@@ -2613,8 +2617,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso VerFotos() Como Resultado < Vector < Cadena >, ErrorES >\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir fotos Como DirectorioCap <- Propagar carpeta.Subdirectorio(\"fotos\", \"lectura\");\n  Retornar fotos.Listar(\".\");\nFinSubProceso\n\nAlgoritmo Album\n  Segun VerFotos() Hacer\n    Exito (nombres):\n      Para Cada nombre En nombres Hacer\n        Escribir nombre;\n      FinPara\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine SeePhotos() As Result < vector < String >, IoError >\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define photos As DirCap <- Propagate folder.subdirectory(\"fotos\", \"read\");\n  Return photos.list(\".\");\nEndSubroutine\n\nAlgorithm Album\n  Switch SeePhotos() Do\n    Success (names):\n      For each name in names Do\n        Write name;\n      EndFor\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso VerFotos() Como Resultado<Vector<Cadena>, ErrorES>\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir fotos Como DirectorioCap <- Propagar carpeta.Subdirectorio(\"fotos\", \"lectura\");\n  Retornar fotos.Listar(\".\");\nFinSubProceso\n\nAlgoritmo Album\n  Segun VerFotos() Hacer\n    Exito(nombres):\n      Para Cada nombre En nombres Hacer\n        Escribir nombre;\n      FinPara\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine SeePhotos() As Result<Vector<String>, IoError>\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define photos As DirCap <- Propagate folder.subdirectory(\"fotos\", \"read\");\n  Return photos.list(\".\");\nEndSubroutine\n\nAlgorithm Album\n  Switch SeePhotos() Do\n    Success(names):\n      For Each name In names Do\n        Write name;\n      EndFor\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -2641,8 +2645,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Revisar() Como Resultado < Logico, ErrorES >\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir cerrada Como Logico <- Propagar carpeta.Cerrar();\n  Si cerrada Entonces\n    Escribir \"Carpeta cerrada\";\n  FinSi\n  Retornar carpeta.Existe(\"nota.txt\");\nFinSubProceso\n\nAlgoritmo CerrarCarpeta\n  Segun Revisar() Hacer\n    Exito (existe):\n      Si existe Entonces\n        Escribir \"1\";\n      FinSi\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Check() As Result < Boolean, IoError >\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define closed As Boolean <- Propagate folder.close();\n  If closed Then\n    Write \"Carpeta cerrada\";\n  EndIf\n  Return folder.exists(\"nota.txt\");\nEndSubroutine\n\nAlgorithm CloseFolder\n  Switch Check() Do\n    Success (found):\n      If found Then\n        Write \"1\";\n      EndIf\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Revisar() Como Resultado<Logico, ErrorES>\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir cerrada Como Logico <- Propagar carpeta.Cerrar();\n  Si cerrada Entonces\n    Escribir \"Carpeta cerrada\";\n  FinSi\n  Retornar carpeta.Existe(\"nota.txt\");\nFinSubProceso\n\nAlgoritmo CerrarCarpeta\n  Segun Revisar() Hacer\n    Exito(existe):\n      Si existe Entonces\n        Escribir \"1\";\n      FinSi\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Check() As Result<Boolean, IoError>\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define closed As Boolean <- Propagate folder.close();\n  If closed Then\n    Write \"Carpeta cerrada\";\n  EndIf\n  Return folder.exists(\"nota.txt\");\nEndSubroutine\n\nAlgorithm CloseFolder\n  Switch Check() Do\n    Success(found):\n      If found Then\n        Write \"1\";\n      EndIf\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -2667,8 +2671,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Buscar(nombre Como Cadena) Como Resultado < Logico, ErrorES >\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Retornar carpeta.Existe(nombre);\nFinSubProceso\n\nSubProceso Informar(nombre Como Cadena)\n  Segun Buscar(nombre) Hacer\n    Exito (existe):\n      Si existe Entonces\n        Escribir nombre, \": 1\";\n      Sino\n        Escribir nombre, \": 0\";\n      FinSi\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinSubProceso\n\nAlgoritmo BuscarArchivos\n  Informar(\"tareas.txt\");\n  Informar(\"compras.txt\");\nFinAlgoritmo\n",
-    "en": "Subroutine Find(name As String) As Result < Boolean, IoError >\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Return folder.exists(name);\nEndSubroutine\n\nSubroutine Report(name As String)\n  Switch Find(name) Do\n    Success (found):\n      If found Then\n        Write name, \": 1\";\n      Else\n        Write name, \": 0\";\n      EndIf\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndSubroutine\n\nAlgorithm FindFiles\n  Report(\"tareas.txt\");\n  Report(\"compras.txt\");\nEndAlgorithm\n"
+    "es": "SubProceso Buscar(nombre Como Cadena) Como Resultado<Logico, ErrorES>\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Retornar carpeta.Existe(nombre);\nFinSubProceso\n\nSubProceso Informar(nombre Como Cadena)\n  Segun Buscar(nombre) Hacer\n    Exito(existe):\n      Si existe Entonces\n        Escribir nombre, \": 1\";\n      Sino\n        Escribir nombre, \": 0\";\n      FinSi\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinSubProceso\n\nAlgoritmo BuscarArchivos\n  Informar(\"tareas.txt\");\n  Informar(\"compras.txt\");\nFinAlgoritmo\n",
+    "en": "Subroutine Find(name As String) As Result<Boolean, IoError>\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Return folder.exists(name);\nEndSubroutine\n\nSubroutine Report(name As String)\n  Switch Find(name) Do\n    Success(found):\n      If found Then\n        Write name, \": 1\";\n      Else\n        Write name, \": 0\";\n      EndIf\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndSubroutine\n\nAlgorithm FindFiles\n  Report(\"tareas.txt\");\n  Report(\"compras.txt\");\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -2693,8 +2697,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso EsCarpeta(ruta Como Cadena) Como Resultado < Logico, ErrorES >\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Retornar carpeta.EsDirectorio(ruta);\nFinSubProceso\n\nSubProceso Informar(ruta Como Cadena)\n  Segun EsCarpeta(ruta) Hacer\n    Exito (esCarpeta):\n      Si esCarpeta Entonces\n        Escribir ruta, \": 1\";\n      Sino\n        Escribir ruta, \": 0\";\n      FinSi\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinSubProceso\n\nAlgoritmo RevisarRutas\n  Informar(\"fotos\");\n  Informar(\"fotos/playa.jpg\");\nFinAlgoritmo\n",
-    "en": "Subroutine IsFolder(path As String) As Result < Boolean, IoError >\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Return folder.isDirectory(path);\nEndSubroutine\n\nSubroutine Report(path As String)\n  Switch IsFolder(path) Do\n    Success (isFolder):\n      If isFolder Then\n        Write path, \": 1\";\n      Else\n        Write path, \": 0\";\n      EndIf\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndSubroutine\n\nAlgorithm CheckPaths\n  Report(\"fotos\");\n  Report(\"fotos/playa.jpg\");\nEndAlgorithm\n"
+    "es": "SubProceso EsCarpeta(ruta Como Cadena) Como Resultado<Logico, ErrorES>\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Retornar carpeta.EsDirectorio(ruta);\nFinSubProceso\n\nSubProceso Informar(ruta Como Cadena)\n  Segun EsCarpeta(ruta) Hacer\n    Exito(esCarpeta):\n      Si esCarpeta Entonces\n        Escribir ruta, \": 1\";\n      Sino\n        Escribir ruta, \": 0\";\n      FinSi\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinSubProceso\n\nAlgoritmo RevisarRutas\n  Informar(\"fotos\");\n  Informar(\"fotos/playa.jpg\");\nFinAlgoritmo\n",
+    "en": "Subroutine IsFolder(path As String) As Result<Boolean, IoError>\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Return folder.isDirectory(path);\nEndSubroutine\n\nSubroutine Report(path As String)\n  Switch IsFolder(path) Do\n    Success(isFolder):\n      If isFolder Then\n        Write path, \": 1\";\n      Else\n        Write path, \": 0\";\n      EndIf\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndSubroutine\n\nAlgorithm CheckPaths\n  Report(\"fotos\");\n  Report(\"fotos/playa.jpg\");\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -2719,8 +2723,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso VerCanciones() Como Resultado < Vector < Cadena >, ErrorES >\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Retornar carpeta.Listar(\"musica\");\nFinSubProceso\n\nAlgoritmo Canciones\n  Segun VerCanciones() Hacer\n    Exito (nombres):\n      Para Cada nombre En nombres Hacer\n        Escribir nombre;\n      FinPara\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine SeeSongs() As Result < vector < String >, IoError >\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Return folder.list(\"musica\");\nEndSubroutine\n\nAlgorithm Songs\n  Switch SeeSongs() Do\n    Success (names):\n      For each name in names Do\n        Write name;\n      EndFor\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso VerCanciones() Como Resultado<Vector<Cadena>, ErrorES>\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Retornar carpeta.Listar(\"musica\");\nFinSubProceso\n\nAlgoritmo Canciones\n  Segun VerCanciones() Hacer\n    Exito(nombres):\n      Para Cada nombre En nombres Hacer\n        Escribir nombre;\n      FinPara\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine SeeSongs() As Result<Vector<String>, IoError>\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Return folder.list(\"musica\");\nEndSubroutine\n\nAlgorithm Songs\n  Switch SeeSongs() Do\n    Success(names):\n      For Each name In names Do\n        Write name;\n      EndFor\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -2747,8 +2751,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso BorrarBorrador() Como Resultado < Logico, ErrorES >\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir borrado Como Logico <- Propagar carpeta.Borrar(\"borrador.txt\");\n  Si borrado Entonces\n    Escribir \"Borrado\";\n  FinSi\n  Retornar carpeta.Existe(\"borrador.txt\");\nFinSubProceso\n\nAlgoritmo Limpiar\n  Segun BorrarBorrador() Hacer\n    Exito (existe):\n      Si existe Entonces\n        Escribir \"1\";\n      Sino\n        Escribir \"0\";\n      FinSi\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine DeleteDraft() As Result < Boolean, IoError >\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define deleted As Boolean <- Propagate folder.delete(\"borrador.txt\");\n  If deleted Then\n    Write \"Borrado\";\n  EndIf\n  Return folder.exists(\"borrador.txt\");\nEndSubroutine\n\nAlgorithm CleanUp\n  Switch DeleteDraft() Do\n    Success (found):\n      If found Then\n        Write \"1\";\n      Else\n        Write \"0\";\n      EndIf\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso BorrarBorrador() Como Resultado<Logico, ErrorES>\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir borrado Como Logico <- Propagar carpeta.Borrar(\"borrador.txt\");\n  Si borrado Entonces\n    Escribir \"Borrado\";\n  FinSi\n  Retornar carpeta.Existe(\"borrador.txt\");\nFinSubProceso\n\nAlgoritmo Limpiar\n  Segun BorrarBorrador() Hacer\n    Exito(existe):\n      Si existe Entonces\n        Escribir \"1\";\n      Sino\n        Escribir \"0\";\n      FinSi\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine DeleteDraft() As Result<Boolean, IoError>\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define deleted As Boolean <- Propagate folder.delete(\"borrador.txt\");\n  If deleted Then\n    Write \"Borrado\";\n  EndIf\n  Return folder.exists(\"borrador.txt\");\nEndSubroutine\n\nAlgorithm CleanUp\n  Switch DeleteDraft() Do\n    Success(found):\n      If found Then\n        Write \"1\";\n      Else\n        Write \"0\";\n      EndIf\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -2773,8 +2777,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso CambiarNombre() Como Resultado < Cadena, ErrorES >\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir movido Como Logico <- Propagar carpeta.Renombrar(\"foto1.jpg\", \"playa.jpg\");\n  Si movido Entonces\n    Escribir \"OK\";\n  FinSi\n  Definir archivo Como ArchivoCap <- Propagar carpeta.Abrir(\"playa.jpg\", \"lectura\");\n  Retornar archivo.LeerTexto();\nFinSubProceso\n\nAlgoritmo Renombrar\n  Segun CambiarNombre() Hacer\n    Exito (texto): Escribir texto;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine ChangeName() As Result < String, IoError >\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define moved As Boolean <- Propagate folder.rename(\"foto1.jpg\", \"playa.jpg\");\n  If moved Then\n    Write \"OK\";\n  EndIf\n  Define file As FileCap <- Propagate folder.open(\"playa.jpg\", \"read\");\n  Return file.readText();\nEndSubroutine\n\nAlgorithm RenameFile\n  Switch ChangeName() Do\n    Success (text): Write text;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso CambiarNombre() Como Resultado<Cadena, ErrorES>\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir movido Como Logico <- Propagar carpeta.Renombrar(\"foto1.jpg\", \"playa.jpg\");\n  Si movido Entonces\n    Escribir \"OK\";\n  FinSi\n  Definir archivo Como ArchivoCap <- Propagar carpeta.Abrir(\"playa.jpg\", \"lectura\");\n  Retornar archivo.LeerTexto();\nFinSubProceso\n\nAlgoritmo Renombrar\n  Segun CambiarNombre() Hacer\n    Exito(texto): Escribir texto;\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine ChangeName() As Result<String, IoError>\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define moved As Boolean <- Propagate folder.rename(\"foto1.jpg\", \"playa.jpg\");\n  If moved Then\n    Write \"OK\";\n  EndIf\n  Define file As FileCap <- Propagate folder.open(\"playa.jpg\", \"read\");\n  Return file.readText();\nEndSubroutine\n\nAlgorithm RenameFile\n  Switch ChangeName() Do\n    Success(text): Write text;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "files": {
@@ -2799,8 +2803,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Crear(nombre Como Cadena) Como Resultado < Logico, ErrorES >\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Retornar carpeta.CrearDirectorio(nombre);\nFinSubProceso\n\nSubProceso Informar(nombre Como Cadena)\n  Segun Crear(nombre) Hacer\n    Exito (creada):\n      Si creada Entonces\n        Escribir nombre, \": OK\";\n      FinSi\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinSubProceso\n\nAlgoritmo NuevaCarpeta\n  Informar(\"proyectos\");\n  Informar(\"proyectos\");\nFinAlgoritmo\n",
-    "en": "Subroutine Create(name As String) As Result < Boolean, IoError >\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Return folder.createDirectory(name);\nEndSubroutine\n\nSubroutine Report(name As String)\n  Switch Create(name) Do\n    Success (created):\n      If created Then\n        Write name, \": OK\";\n      EndIf\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndSubroutine\n\nAlgorithm NewFolder\n  Report(\"proyectos\");\n  Report(\"proyectos\");\nEndAlgorithm\n"
+    "es": "SubProceso Crear(nombre Como Cadena) Como Resultado<Logico, ErrorES>\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Retornar carpeta.CrearDirectorio(nombre);\nFinSubProceso\n\nSubProceso Informar(nombre Como Cadena)\n  Segun Crear(nombre) Hacer\n    Exito(creada):\n      Si creada Entonces\n        Escribir nombre, \": OK\";\n      FinSi\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinSubProceso\n\nAlgoritmo NuevaCarpeta\n  Informar(\"proyectos\");\n  Informar(\"proyectos\");\nFinAlgoritmo\n",
+    "en": "Subroutine Create(name As String) As Result<Boolean, IoError>\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Return folder.createDirectory(name);\nEndSubroutine\n\nSubroutine Report(name As String)\n  Switch Create(name) Do\n    Success(created):\n      If created Then\n        Write name, \": OK\";\n      EndIf\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndSubroutine\n\nAlgorithm NewFolder\n  Report(\"proyectos\");\n  Report(\"proyectos\");\nEndAlgorithm\n"
   },
   "anfitrion": {}
 }
@@ -2821,8 +2825,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso HacerLista() Como Resultado < Cadena, ErrorES >\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir archivo Como ArchivoCap <- Propagar carpeta.Abrir(\"lista.txt\", \"lectura_escritura\");\n  Definir primero Como Entero <- Propagar archivo.AgregarTexto(\"pan\");\n  Definir segundo Como Entero <- Propagar archivo.AgregarTexto(\", leche\");\n  Escribir \"Bytes: \", primero + segundo;\n  Retornar archivo.LeerTexto();\nFinSubProceso\n\nAlgoritmo ListaCompras\n  Segun HacerLista() Hacer\n    Exito (texto): Escribir texto;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine MakeList() As Result < String, IoError >\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define file As FileCap <- Propagate folder.open(\"lista.txt\", \"read_write\");\n  Define first As Integer <- Propagate file.appendText(\"pan\");\n  Define second As Integer <- Propagate file.appendText(\", leche\");\n  Write \"Bytes: \", first + second;\n  Return file.readText();\nEndSubroutine\n\nAlgorithm ShoppingList\n  Switch MakeList() Do\n    Success (text): Write text;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso HacerLista() Como Resultado<Cadena, ErrorES>\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir archivo Como ArchivoCap <- Propagar carpeta.Abrir(\"lista.txt\", \"lectura_escritura\");\n  Definir primero Como Entero <- Propagar archivo.AgregarTexto(\"pan\");\n  Definir segundo Como Entero <- Propagar archivo.AgregarTexto(\", leche\");\n  Escribir \"Bytes: \", primero + segundo;\n  Retornar archivo.LeerTexto();\nFinSubProceso\n\nAlgoritmo ListaCompras\n  Segun HacerLista() Hacer\n    Exito(texto): Escribir texto;\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine MakeList() As Result<String, IoError>\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define file As FileCap <- Propagate folder.open(\"lista.txt\", \"read_write\");\n  Define first As Integer <- Propagate file.appendText(\"pan\");\n  Define second As Integer <- Propagate file.appendText(\", leche\");\n  Write \"Bytes: \", first + second;\n  Return file.readText();\nEndSubroutine\n\nAlgorithm ShoppingList\n  Switch MakeList() Do\n    Success(text): Write text;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {}
 }
@@ -2843,8 +2847,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Juntar() Como Resultado < Cadena, ErrorES >\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir archivo Como ArchivoCap <- Propagar carpeta.Abrir(\"datos.bin\", \"lectura_escritura\");\n  Definir primero Como Entero <- Propagar archivo.AgregarBytes(BytesDesdeTexto(\"Hola\"));\n  Definir segundo Como Entero <- Propagar archivo.AgregarBytes(BytesDesdeTexto(\"!\"));\n  Escribir primero + segundo;\n  Retornar archivo.LeerTexto();\nFinSubProceso\n\nAlgoritmo AgregarDatos\n  Segun Juntar() Hacer\n    Exito (texto): Escribir texto;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Combine() As Result < String, IoError >\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define file As FileCap <- Propagate folder.open(\"datos.bin\", \"read_write\");\n  Define first As Integer <- Propagate file.appendBytes(bytesFromText(\"Hola\"));\n  Define second As Integer <- Propagate file.appendBytes(bytesFromText(\"!\"));\n  Write first + second;\n  Return file.readText();\nEndSubroutine\n\nAlgorithm AddData\n  Switch Combine() Do\n    Success (text): Write text;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Juntar() Como Resultado<Cadena, ErrorES>\n  Definir carpeta Como DirectorioCap <- Propagar SolicitarDirectorio(\".\");\n  Definir archivo Como ArchivoCap <- Propagar carpeta.Abrir(\"datos.bin\", \"lectura_escritura\");\n  Definir primero Como Entero <- Propagar archivo.AgregarBytes(BytesDesdeTexto(\"Hola\"));\n  Definir segundo Como Entero <- Propagar archivo.AgregarBytes(BytesDesdeTexto(\"!\"));\n  Escribir primero + segundo;\n  Retornar archivo.LeerTexto();\nFinSubProceso\n\nAlgoritmo AgregarDatos\n  Segun Juntar() Hacer\n    Exito(texto): Escribir texto;\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Combine() As Result<String, IoError>\n  Define folder As DirCap <- Propagate requestDirectory(\".\");\n  Define file As FileCap <- Propagate folder.open(\"datos.bin\", \"read_write\");\n  Define first As Integer <- Propagate file.appendBytes(bytesFromText(\"Hola\"));\n  Define second As Integer <- Propagate file.appendBytes(bytesFromText(\"!\"));\n  Write first + second;\n  Return file.readText();\nEndSubroutine\n\nAlgorithm AddData\n  Switch Combine() Do\n    Success(text): Write text;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {}
 }
@@ -2865,8 +2869,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso LeerUsuario() Como Resultado < Opcional < Cadena >, ErrorES >\n  Definir entorno Como Entorno <- Propagar SolicitarEntorno();\n  Retornar entorno.Obtener(\"USUARIO\");\nFinSubProceso\n\nAlgoritmo Bienvenida\n  Segun LeerUsuario() Hacer\n    Exito (usuario):\n      Segun usuario Hacer\n        Algo (nombre): Escribir \"Hola, \", nombre;\n        Nada: Escribir \"Hola\";\n      FinSegun\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine ReadUser() As Result < Optional < String >, IoError >\n  Define environment As Environment <- Propagate requestEnvironment();\n  Return environment.get(\"USUARIO\");\nEndSubroutine\n\nAlgorithm Welcome\n  Switch ReadUser() Do\n    Success (user):\n      Switch user Do\n        Some (name): Write \"Hola, \", name;\n        None: Write \"Hola\";\n      EndSwitch\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso LeerUsuario() Como Resultado<Opcional<Cadena>, ErrorES>\n  Definir entorno Como Entorno <- Propagar SolicitarEntorno();\n  Retornar entorno.Obtener(\"USUARIO\");\nFinSubProceso\n\nAlgoritmo Bienvenida\n  Segun LeerUsuario() Hacer\n    Exito(usuario):\n      Segun usuario Hacer\n        Algo(nombre): Escribir \"Hola, \", nombre;\n        Nada: Escribir \"Hola\";\n      FinSegun\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine ReadUser() As Result<Optional<String>, IoError>\n  Define environment As Environment <- Propagate requestEnvironment();\n  Return environment.get(\"USUARIO\");\nEndSubroutine\n\nAlgorithm Welcome\n  Switch ReadUser() Do\n    Success(user):\n      Switch user Do\n        Some(name): Write \"Hola, \", name;\n        None: Write \"Hola\";\n      EndSwitch\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "environment": {
@@ -2891,8 +2895,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso VerVariable(nombre Como Cadena) Como Resultado < Entero, ErrorES >\n  Definir entorno Como Entorno <- Propagar SolicitarEntorno();\n  Definir valor Como Opcional < Cadena > <- Propagar entorno.Obtener(nombre);\n  Segun valor Hacer\n    Algo (texto): Escribir nombre, \" = \", texto;\n    Nada: Escribir nombre, \" no existe\";\n  FinSegun\n  Retornar Exito (0);\nFinSubProceso\n\nAlgoritmo VerVariables\n  Descartar VerVariable(\"IDIOMA\");\n  Descartar VerVariable(\"COLOR\");\nFinAlgoritmo\n",
-    "en": "Subroutine ShowVariable(name As String) As Result < Integer, IoError >\n  Define environment As Environment <- Propagate requestEnvironment();\n  Define value As Optional < String > <- Propagate environment.get(name);\n  Switch value Do\n    Some (text): Write name, \" = \", text;\n    None: Write name, \" no existe\";\n  EndSwitch\n  Return Success (0);\nEndSubroutine\n\nAlgorithm SeeVariables\n  Discard ShowVariable(\"IDIOMA\");\n  Discard ShowVariable(\"COLOR\");\nEndAlgorithm\n"
+    "es": "SubProceso VerVariable(nombre Como Cadena) Como Resultado<Entero, ErrorES>\n  Definir entorno Como Entorno <- Propagar SolicitarEntorno();\n  Definir valor Como Opcional<Cadena> <- Propagar entorno.Obtener(nombre);\n  Segun valor Hacer\n    Algo(texto): Escribir nombre, \" = \", texto;\n    Nada: Escribir nombre, \" no existe\";\n  FinSegun\n  Retornar Exito(0);\nFinSubProceso\n\nAlgoritmo VerVariables\n  Descartar VerVariable(\"IDIOMA\");\n  Descartar VerVariable(\"COLOR\");\nFinAlgoritmo\n",
+    "en": "Subroutine ShowVariable(name As String) As Result<Integer, IoError>\n  Define environment As Environment <- Propagate requestEnvironment();\n  Define value As Optional<String> <- Propagate environment.get(name);\n  Switch value Do\n    Some(text): Write name, \" = \", text;\n    None: Write name, \" no existe\";\n  EndSwitch\n  Return Success(0);\nEndSubroutine\n\nAlgorithm SeeVariables\n  Discard ShowVariable(\"IDIOMA\");\n  Discard ShowVariable(\"COLOR\");\nEndAlgorithm\n"
   },
   "anfitrion": {
     "environment": {
@@ -2917,8 +2921,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso MarcarFallo() Como Resultado < Entero, ErrorES >\n  Definir consola Como Consola <- Propagar SolicitarConsola();\n  Retornar consola.EstablecerCodigoSalida(3);\nFinSubProceso\n\nAlgoritmo CodigoDeSalida\n  Segun MarcarFallo() Hacer\n    Exito (codigo): Escribir \"Código: \", codigo;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\n  Escribir \"Fin\";\nFinAlgoritmo\n",
-    "en": "Subroutine MarkFailure() As Result < Integer, IoError >\n  Define console As Console <- Propagate requestConsole();\n  Return console.setExitCode(3);\nEndSubroutine\n\nAlgorithm ExitCode\n  Switch MarkFailure() Do\n    Success (exitCode): Write \"Código: \", exitCode;\n    Failure (problem): Write problem.code;\n  EndSwitch\n  Write \"Fin\";\nEndAlgorithm\n"
+    "es": "SubProceso MarcarFallo() Como Resultado<Entero, ErrorES>\n  Definir consola Como Consola <- Propagar SolicitarConsola();\n  Retornar consola.EstablecerCodigoSalida(3);\nFinSubProceso\n\nAlgoritmo CodigoDeSalida\n  Segun MarcarFallo() Hacer\n    Exito(codigo): Escribir \"Código: \", codigo;\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\n  Escribir \"Fin\";\nFinAlgoritmo\n",
+    "en": "Subroutine MarkFailure() As Result<Integer, IoError>\n  Define console As Console <- Propagate requestConsole();\n  Return console.setExitCode(3);\nEndSubroutine\n\nAlgorithm ExitCode\n  Switch MarkFailure() Do\n    Success(exitCode): Write \"Código: \", exitCode;\n    Failure(problem): Write problem.code;\n  EndSwitch\n  Write \"Fin\";\nEndAlgorithm\n"
   },
   "anfitrion": {}
 }
@@ -2939,9 +2943,115 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Advertir() Como Resultado < Entero, ErrorES >\n  Definir consola Como Consola <- Propagar SolicitarConsola();\n  Retornar consola.EscribirError(\"Sin datos\\n\");\nFinSubProceso\n\nAlgoritmo Advertencia\n  Escribir \"Calculando\";\n  Segun Advertir() Hacer\n    Exito (bytes): Escribir \"Bytes: \", bytes;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine Warn() As Result < Integer, IoError >\n  Define console As Console <- Propagate requestConsole();\n  Return console.writeError(\"Sin datos\\n\");\nEndSubroutine\n\nAlgorithm Warning\n  Write \"Calculando\";\n  Switch Warn() Do\n    Success (count): Write \"Bytes: \", count;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso Advertir() Como Resultado<Entero, ErrorES>\n  Definir consola Como Consola <- Propagar SolicitarConsola();\n  Retornar consola.EscribirError(\"Sin datos\\n\");\nFinSubProceso\n\nAlgoritmo Advertencia\n  Escribir \"Calculando\";\n  Segun Advertir() Hacer\n    Exito(bytes): Escribir \"Bytes: \", bytes;\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Warn() As Result<Integer, IoError>\n  Define console As Console <- Propagate requestConsole();\n  Return console.writeError(\"Sin datos\\n\");\nEndSubroutine\n\nAlgorithm Warning\n  Write \"Calculando\";\n  Switch Warn() Do\n    Success(count): Write \"Bytes: \", count;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {}
+}
+```
+
+```caso
+{
+  "id": "C98",
+  "regla": "R16",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Hola, Ana\nBytes: 10\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Saludar() Como Resultado<Entero, ErrorES>\n  Definir consola Como Consola <- Propagar SolicitarConsola();\n  Retornar consola.EscribirTexto(\"Hola, Ana\\n\");\nFinSubProceso\n\nAlgoritmo Saludo\n  Segun Saludar() Hacer\n    Exito(bytes): Escribir \"Bytes: \", bytes;\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Greet() As Result<Integer, IoError>\n  Define console As Console <- Propagate requestConsole();\n  Return console.writeText(\"Hola, Ana\\n\");\nEndSubroutine\n\nAlgorithm Greeting\n  Switch Greet() Do\n    Success(count): Write \"Bytes: \", count;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "anfitrion": {}
+}
+```
+
+```caso
+{
+  "id": "C99",
+  "regla": "R16",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "aé\n0\n3\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir con Como Consola <- Propagar SolicitarConsola();\nDefinir vacio Como Entero <- Propagar con.EscribirTexto(\"\");\nDefinir sinSalto Como Entero <- Propagar con.EscribirTexto(\"aé\");\nEscribir \"\";\nEscribir vacio;\nEscribir sinSalto;\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Descartar value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine con as Console <- propagate requestConsole();\ndefine empty as integer <- propagate con.writeText(\"\");\ndefine noBreak as integer <- propagate con.writeText(\"aé\");\nwrite \"\";\nwrite empty;\nwrite noBreak;\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): discard value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {}
+}
+```
+
+```caso
+{
+  "id": "C100",
+  "regla": "R10",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "[]\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura_escritura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir \"[\", value, \"]\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read_write\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write \"[\", value, \"]\";\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "files": {
+      "a": [
+        104,
+        111,
+        108,
+        97
+      ]
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C101",
+  "regla": "R10",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "[hola]\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir \"[\", value, \"]\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine directory as DirCap <- propagate requestDirectory(\"root\");\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\nreturn file.readText();\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write \"[\", value, \"]\";\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "files": {
+      "a": [
+        104,
+        111,
+        108,
+        97
+      ]
+    }
+  }
 }
 ```

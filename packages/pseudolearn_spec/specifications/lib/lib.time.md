@@ -597,8 +597,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso MedirEspera() Como Resultado < Entero, ErrorES >\n  Definir reloj Como Reloj <- Propagar SolicitarReloj();\n  Definir antes Como Entero <- Propagar reloj.Ahora();\n  Definir despues Como Entero <- Propagar reloj.Ahora();\n  Escribir antes;\n  Retornar Exito (despues - antes);\nFinSubProceso\n\nAlgoritmo Cronometro\n  Segun MedirEspera() Hacer\n    Exito (nanosegundos):\n      Escribir nanosegundos;\n      Escribir nanosegundos / 1000000000;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine MeasureWait() As Result < Integer, IoError >\n  Define clock As Clock <- Propagate requestClock();\n  Define before As Integer <- Propagate clock.now();\n  Define after As Integer <- Propagate clock.now();\n  Write before;\n  Return Success (after - before);\nEndSubroutine\n\nAlgorithm Stopwatch\n  Switch MeasureWait() Do\n    Success (nanoseconds):\n      Write nanoseconds;\n      Write nanoseconds / 1000000000;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso MedirEspera() Como Resultado<Entero, ErrorES>\n  Definir reloj Como Reloj <- Propagar SolicitarReloj();\n  Definir antes Como Entero <- Propagar reloj.Ahora();\n  Definir despues Como Entero <- Propagar reloj.Ahora();\n  Escribir antes;\n  Retornar Exito(despues - antes);\nFinSubProceso\n\nAlgoritmo Cronometro\n  Segun MedirEspera() Hacer\n    Exito(nanosegundos):\n      Escribir nanosegundos;\n      Escribir nanosegundos / 1000000000;\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine MeasureWait() As Result<Integer, IoError>\n  Define clock As Clock <- Propagate requestClock();\n  Define before As Integer <- Propagate clock.now();\n  Define after As Integer <- Propagate clock.now();\n  Write before;\n  Return Success(after - before);\nEndSubroutine\n\nAlgorithm Stopwatch\n  Switch MeasureWait() Do\n    Success(nanoseconds):\n      Write nanoseconds;\n      Write nanoseconds / 1000000000;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "clock": [
@@ -625,8 +625,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso PausaCorta() Como Resultado < Entero, ErrorES >\n  Definir reloj Como Reloj <- Propagar SolicitarReloj();\n  Definir temporizador Como Temporizador <- Propagar SolicitarTemporizador();\n  Definir antes Como Entero <- Propagar reloj.Ahora();\n  Definir despues Como Entero <- Propagar temporizador.Esperar(2000000000);\n  Retornar Exito (despues - antes);\nFinSubProceso\n\nAlgoritmo Pausa\n  Segun PausaCorta() Hacer\n    Exito (nanosegundos): Escribir nanosegundos / 1000000000;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine ShortPause() As Result < Integer, IoError >\n  Define clock As Clock <- Propagate requestClock();\n  Define timer As Timer <- Propagate requestTimer();\n  Define before As Integer <- Propagate clock.now();\n  Define after As Integer <- Propagate timer.wait(2000000000);\n  Return Success (after - before);\nEndSubroutine\n\nAlgorithm Pause\n  Switch ShortPause() Do\n    Success (nanoseconds): Write nanoseconds / 1000000000;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso PausaCorta() Como Resultado<Entero, ErrorES>\n  Definir reloj Como Reloj <- Propagar SolicitarReloj();\n  Definir temporizador Como Temporizador <- Propagar SolicitarTemporizador();\n  Definir antes Como Entero <- Propagar reloj.Ahora();\n  Definir despues Como Entero <- Propagar temporizador.Esperar(2000000000);\n  Retornar Exito(despues - antes);\nFinSubProceso\n\nAlgoritmo Pausa\n  Segun PausaCorta() Hacer\n    Exito(nanosegundos): Escribir nanosegundos / 1000000000;\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine ShortPause() As Result<Integer, IoError>\n  Define clock As Clock <- Propagate requestClock();\n  Define timer As Timer <- Propagate requestTimer();\n  Define before As Integer <- Propagate clock.now();\n  Define after As Integer <- Propagate timer.wait(2000000000);\n  Return Success(after - before);\nEndSubroutine\n\nAlgorithm Pause\n  Switch ShortPause() Do\n    Success(nanoseconds): Write nanoseconds / 1000000000;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "clock": [
@@ -652,8 +652,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso MostrarHoraLocal() Como Resultado < Entero, ErrorES >\n  Definir reloj Como Reloj <- Propagar SolicitarReloj();\n  Definir momento Como FechaHora <- Propagar reloj.AhoraLocal();\n  Escribir momento.FormatoIso();\n  Retornar Exito (momento.Hora());\nFinSubProceso\n\nAlgoritmo HoraDeMiCiudad\n  Segun MostrarHoraLocal() Hacer\n    Exito (hora): Escribir hora;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Subroutine ShowLocalTime() As Result < Integer, IoError >\n  Define clock As Clock <- Propagate requestClock();\n  Define moment As DateTime <- Propagate clock.localNow();\n  Write moment.isoFormat();\n  Return Success (moment.hour());\nEndSubroutine\n\nAlgorithm MyCityTime\n  Switch ShowLocalTime() Do\n    Success (localHour): Write localHour;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "SubProceso MostrarHoraLocal() Como Resultado<Entero, ErrorES>\n  Definir reloj Como Reloj <- Propagar SolicitarReloj();\n  Definir momento Como FechaHora <- Propagar reloj.AhoraLocal();\n  Escribir momento.FormatoIso();\n  Retornar Exito(momento.Hora());\nFinSubProceso\n\nAlgoritmo HoraDeMiCiudad\n  Segun MostrarHoraLocal() Hacer\n    Exito(hora): Escribir hora;\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine ShowLocalTime() As Result<Integer, IoError>\n  Define clock As Clock <- Propagate requestClock();\n  Define moment As DateTime <- Propagate clock.localNow();\n  Write moment.isoFormat();\n  Return Success(moment.hour());\nEndSubroutine\n\nAlgorithm MyCityTime\n  Switch ShowLocalTime() Do\n    Success(localHour): Write localHour;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "clock": [
@@ -701,8 +701,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "Algoritmo Cumpleanos\n  Segun FechaHoraDe(2026, 7, 20, 18, 30, 0, 0, -18000) Hacer\n    Nada: Escribir \"---\";\n    Algo (fiesta): Escribir fiesta.FormatoIso();\n  FinSegun\n  Segun FechaHoraDe(2026, 2, 30, 18, 30, 0, 0, -18000) Hacer\n    Nada: Escribir \"---\";\n    Algo (fiesta): Escribir fiesta.FormatoIso();\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Algorithm Birthday\n  Switch dateTimeOf(2026, 7, 20, 18, 30, 0, 0, -18000) Do\n    None: Write \"---\";\n    Some (party): Write party.isoFormat();\n  EndSwitch\n  Switch dateTimeOf(2026, 2, 30, 18, 30, 0, 0, -18000) Do\n    None: Write \"---\";\n    Some (party): Write party.isoFormat();\n  EndSwitch\nEndAlgorithm\n"
+    "es": "Algoritmo Cumpleanos\n  Segun FechaHoraDe(2026, 7, 20, 18, 30, 0, 0, -18000) Hacer\n    Nada: Escribir \"---\";\n    Algo(fiesta): Escribir fiesta.FormatoIso();\n  FinSegun\n  Segun FechaHoraDe(2026, 2, 30, 18, 30, 0, 0, -18000) Hacer\n    Nada: Escribir \"---\";\n    Algo(fiesta): Escribir fiesta.FormatoIso();\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm Birthday\n  Switch dateTimeOf(2026, 7, 20, 18, 30, 0, 0, -18000) Do\n    None: Write \"---\";\n    Some(party): Write party.isoFormat();\n  EndSwitch\n  Switch dateTimeOf(2026, 2, 30, 18, 30, 0, 0, -18000) Do\n    None: Write \"---\";\n    Some(party): Write party.isoFormat();\n  EndSwitch\nEndAlgorithm\n"
   }
 }
 ```
@@ -722,8 +722,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "Algoritmo LeerFecha\n  Segun AnalizarFechaHora(\"2026-07-20T18:30:00-05:00\") Hacer\n    Nada: Escribir \"---\";\n    Algo (fecha): Escribir fecha.Dia(), \"/\", fecha.Mes(), \"/\", fecha.Anio();\n  FinSegun\n  Segun AnalizarFechaHora(\"20/07/2026\") Hacer\n    Nada: Escribir \"---\";\n    Algo (fecha): Escribir fecha.Dia(), \"/\", fecha.Mes(), \"/\", fecha.Anio();\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Algorithm ReadDate\n  Switch parseDateTime(\"2026-07-20T18:30:00-05:00\") Do\n    None: Write \"---\";\n    Some (date): Write date.day(), \"/\", date.month(), \"/\", date.year();\n  EndSwitch\n  Switch parseDateTime(\"20/07/2026\") Do\n    None: Write \"---\";\n    Some (date): Write date.day(), \"/\", date.month(), \"/\", date.year();\n  EndSwitch\nEndAlgorithm\n"
+    "es": "Algoritmo LeerFecha\n  Segun AnalizarFechaHora(\"2026-07-20T18:30:00-05:00\") Hacer\n    Nada: Escribir \"---\";\n    Algo(fecha): Escribir fecha.Dia(), \"/\", fecha.Mes(), \"/\", fecha.Anio();\n  FinSegun\n  Segun AnalizarFechaHora(\"20/07/2026\") Hacer\n    Nada: Escribir \"---\";\n    Algo(fecha): Escribir fecha.Dia(), \"/\", fecha.Mes(), \"/\", fecha.Anio();\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm ReadDate\n  Switch parseDateTime(\"2026-07-20T18:30:00-05:00\") Do\n    None: Write \"---\";\n    Some(date): Write date.day(), \"/\", date.month(), \"/\", date.year();\n  EndSwitch\n  Switch parseDateTime(\"20/07/2026\") Do\n    None: Write \"---\";\n    Some(date): Write date.day(), \"/\", date.month(), \"/\", date.year();\n  EndSwitch\nEndAlgorithm\n"
   }
 }
 ```
@@ -743,8 +743,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "Algoritmo FinDeAnio\n  Segun FechaHoraDe(2026, 12, 31, 22, 0, 0, 0, -18000) Hacer\n    Nada: Escribir \"---\";\n    Algo (fiesta):\n      Escribir fiesta.Anio();\n      Escribir fiesta.Mes();\n      Escribir fiesta.Dia();\n      Escribir FechaHoraUtc(fiesta.Instante()).Anio();\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Algorithm YearEnd\n  Switch dateTimeOf(2026, 12, 31, 22, 0, 0, 0, -18000) Do\n    None: Write \"---\";\n    Some (party):\n      Write party.year();\n      Write party.month();\n      Write party.day();\n      Write dateTimeUtc(party.instant()).year();\n  EndSwitch\nEndAlgorithm\n"
+    "es": "Algoritmo FinDeAnio\n  Segun FechaHoraDe(2026, 12, 31, 22, 0, 0, 0, -18000) Hacer\n    Nada: Escribir \"---\";\n    Algo(fiesta):\n      Escribir fiesta.Anio();\n      Escribir fiesta.Mes();\n      Escribir fiesta.Dia();\n      Escribir FechaHoraUtc(fiesta.Instante()).Anio();\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm YearEnd\n  Switch dateTimeOf(2026, 12, 31, 22, 0, 0, 0, -18000) Do\n    None: Write \"---\";\n    Some(party):\n      Write party.year();\n      Write party.month();\n      Write party.day();\n      Write dateTimeUtc(party.instant()).year();\n  EndSwitch\nEndAlgorithm\n"
   }
 }
 ```
@@ -764,8 +764,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "Algoritmo PartesDeLaHora\n  Segun AnalizarFechaHora(\"2026-07-20T09:15:30.25Z\") Hacer\n    Nada: Escribir \"---\";\n    Algo (carrera):\n      Escribir carrera.Hora();\n      Escribir carrera.Minuto();\n      Escribir carrera.Segundo();\n      Escribir carrera.Nanosegundo();\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Algorithm TimeParts\n  Switch parseDateTime(\"2026-07-20T09:15:30.25Z\") Do\n    None: Write \"---\";\n    Some (race):\n      Write race.hour();\n      Write race.minute();\n      Write race.second();\n      Write race.nanosecond();\n  EndSwitch\nEndAlgorithm\n"
+    "es": "Algoritmo PartesDeLaHora\n  Segun AnalizarFechaHora(\"2026-07-20T09:15:30.25Z\") Hacer\n    Nada: Escribir \"---\";\n    Algo(carrera):\n      Escribir carrera.Hora();\n      Escribir carrera.Minuto();\n      Escribir carrera.Segundo();\n      Escribir carrera.Nanosegundo();\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm TimeParts\n  Switch parseDateTime(\"2026-07-20T09:15:30.25Z\") Do\n    None: Write \"---\";\n    Some(race):\n      Write race.hour();\n      Write race.minute();\n      Write race.second();\n      Write race.nanosecond();\n  EndSwitch\nEndAlgorithm\n"
   }
 }
 ```
@@ -785,8 +785,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "Algoritmo HoraEnLima\n  Segun AnalizarFechaHora(\"2026-07-20T09:00:00-05:00\") Hacer\n    Nada: Escribir \"---\";\n    Algo (lima):\n      Escribir lima.DesplazamientoUtc();\n      Escribir lima.Instante();\n      Escribir FechaHoraUtc(lima.Instante()).FormatoIso();\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Algorithm TimeInLima\n  Switch parseDateTime(\"2026-07-20T09:00:00-05:00\") Do\n    None: Write \"---\";\n    Some (lima):\n      Write lima.utcOffset();\n      Write lima.instant();\n      Write dateTimeUtc(lima.instant()).isoFormat();\n  EndSwitch\nEndAlgorithm\n"
+    "es": "Algoritmo HoraEnLima\n  Segun AnalizarFechaHora(\"2026-07-20T09:00:00-05:00\") Hacer\n    Nada: Escribir \"---\";\n    Algo(lima):\n      Escribir lima.DesplazamientoUtc();\n      Escribir lima.Instante();\n      Escribir FechaHoraUtc(lima.Instante()).FormatoIso();\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm TimeInLima\n  Switch parseDateTime(\"2026-07-20T09:00:00-05:00\") Do\n    None: Write \"---\";\n    Some(lima):\n      Write lima.utcOffset();\n      Write lima.instant();\n      Write dateTimeUtc(lima.instant()).isoFormat();\n  EndSwitch\nEndAlgorithm\n"
   }
 }
 ```
@@ -806,8 +806,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "Algoritmo DiaDeLaSemanaDeHoy\n  Segun AnalizarFechaHora(\"2026-07-20\") Hacer\n    Nada: Escribir \"---\";\n    Algo (lunes): Escribir lunes.DiaDeLaSemana();\n  FinSegun\n  Segun AnalizarFechaHora(\"2026-07-26\") Hacer\n    Nada: Escribir \"---\";\n    Algo (domingo): Escribir domingo.DiaDeLaSemana();\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Algorithm WeekdayCheck\n  Switch parseDateTime(\"2026-07-20\") Do\n    None: Write \"---\";\n    Some (monday): Write monday.weekday();\n  EndSwitch\n  Switch parseDateTime(\"2026-07-26\") Do\n    None: Write \"---\";\n    Some (sunday): Write sunday.weekday();\n  EndSwitch\nEndAlgorithm\n"
+    "es": "Algoritmo DiaDeLaSemanaDeHoy\n  Segun AnalizarFechaHora(\"2026-07-20\") Hacer\n    Nada: Escribir \"---\";\n    Algo(lunes): Escribir lunes.DiaDeLaSemana();\n  FinSegun\n  Segun AnalizarFechaHora(\"2026-07-26\") Hacer\n    Nada: Escribir \"---\";\n    Algo(domingo): Escribir domingo.DiaDeLaSemana();\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm WeekdayCheck\n  Switch parseDateTime(\"2026-07-20\") Do\n    None: Write \"---\";\n    Some(monday): Write monday.weekday();\n  EndSwitch\n  Switch parseDateTime(\"2026-07-26\") Do\n    None: Write \"---\";\n    Some(sunday): Write sunday.weekday();\n  EndSwitch\nEndAlgorithm\n"
   }
 }
 ```
@@ -827,8 +827,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "Algoritmo DosFormatos\n  Segun AnalizarFechaHora(\"2026-07-20T09:15:30.25-05:00\") Hacer\n    Nada: Escribir \"---\";\n    Algo (llegada):\n      Escribir llegada.FormatoIso();\n      Escribir llegada.FormatoIsoPreciso();\n  FinSegun\n  Escribir FechaHoraUtc(0).FormatoIso();\nFinAlgoritmo\n",
-    "en": "Algorithm TwoFormats\n  Switch parseDateTime(\"2026-07-20T09:15:30.25-05:00\") Do\n    None: Write \"---\";\n    Some (arrival):\n      Write arrival.isoFormat();\n      Write arrival.isoFormatPrecise();\n  EndSwitch\n  Write dateTimeUtc(0).isoFormat();\nEndAlgorithm\n"
+    "es": "Algoritmo DosFormatos\n  Segun AnalizarFechaHora(\"2026-07-20T09:15:30.25-05:00\") Hacer\n    Nada: Escribir \"---\";\n    Algo(llegada):\n      Escribir llegada.FormatoIso();\n      Escribir llegada.FormatoIsoPreciso();\n  FinSegun\n  Escribir FechaHoraUtc(0).FormatoIso();\nFinAlgoritmo\n",
+    "en": "Algorithm TwoFormats\n  Switch parseDateTime(\"2026-07-20T09:15:30.25-05:00\") Do\n    None: Write \"---\";\n    Some(arrival):\n      Write arrival.isoFormat();\n      Write arrival.isoFormatPrecise();\n  EndSwitch\n  Write dateTimeUtc(0).isoFormat();\nEndAlgorithm\n"
   }
 }
 ```

@@ -83,7 +83,7 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\n  Escribir 1 Div 0;\nFinAlgoritmo\n",
+    "es": "Algoritmo P\n  Escribir 1 div 0;\nFinAlgoritmo\n",
     "en": "Algorithm P\n  Write 1 Div 0;\nEndAlgorithm\n"
   },
   "origen": "derivado",

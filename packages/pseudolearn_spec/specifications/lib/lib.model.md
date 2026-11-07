@@ -28,6 +28,11 @@
       "id": "DIAG.MODEL",
       "version": ">=1.0.0, <2.0.0",
       "tipo": "requiere"
+    },
+    {
+      "id": "LANG.PROFILE.VOCABULARY",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
     }
   ],
   "revisado_por": [
@@ -727,7 +732,7 @@
   "id": "M2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Dentro de cada perfil, las funciones sin receptor tienen formas únicas; las operaciones con receptor tienen pares únicos de receptor y forma. Una forma no puede identificar dos símbolos distintos en el mismo contexto.",
+  "texto": "Dentro de cada perfil, las funciones sin receptor tienen formas únicas; las operaciones con receptor tienen pares únicos de receptor y forma. Una forma no puede identificar dos símbolos distintos en el mismo contexto. Ninguna forma ni alias coincide, tras normalizar mayúsculas y tildes según el perfil, con un lexema o alias del vocabulario reservado de LANG.PROFILE.VOCABULARY D1, porque una palabra reservada no puede nombrar un símbolo en ninguna posición.",
   "verificacion": [
     "estructural"
   ],
@@ -923,8 +928,8 @@
         "identity": "console_write",
         "family": "io",
         "receiver": "console",
-        "es": "Escribir",
-        "en": "write",
+        "es": "EscribirTexto",
+        "en": "writeText",
         "parameters": [
           "text"
         ],

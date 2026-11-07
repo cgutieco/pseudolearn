@@ -653,8 +653,8 @@
     "en"
   ],
   "programas": {
-    "es": "Clase Caja < T >\n  Definir valor Como T;\n  Metodo Constructor(inicial Como T)\n    Este.valor <- inicial;\n  FinMetodo\n  Metodo actual() Como T\n    Retornar Este.valor;\n  FinMetodo\n  Metodo guardar(otro Como T)\n    Este.valor <- otro;\n  FinMetodo\nFinClase\n\nAlgoritmo P\n  Escribir Nuevo Caja(5).actual();\nFinAlgoritmo\n",
-    "en": "Class Box < T >\n  Define content As T;\n  Method Constructor(initial As T)\n    This.content <- initial;\n  EndMethod\n  Method current() As T\n    Return This.content;\n  EndMethod\n  Method store(fresh As T)\n    This.content <- fresh;\n  EndMethod\nEndClass\n\nAlgorithm P\n  Write New Box(5).current();\nEndAlgorithm\n"
+    "es": "Clase Caja<T>\n  Definir valor Como T;\n  Metodo Constructor(inicial Como T)\n    Este.valor <- inicial;\n  FinMetodo\n  Metodo actual() Como T\n    Retornar Este.valor;\n  FinMetodo\n  Metodo guardar(otro Como T)\n    Este.valor <- otro;\n  FinMetodo\nFinClase\n\nAlgoritmo P\n  Escribir Nuevo Caja(5).actual();\nFinAlgoritmo\n",
+    "en": "Class Box<T>\n  Define content As T;\n  Method Constructor(initial As T)\n    This.content <- initial;\n  EndMethod\n  Method current() As T\n    Return This.content;\n  EndMethod\n  Method store(fresh As T)\n    This.content <- fresh;\n  EndMethod\nEndClass\n\nAlgorithm P\n  Write New Box(5).current();\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -851,8 +851,8 @@
     "en"
   ],
   "programas": {
-    "es": "Interfaz Medible < T >\n  Metodo medir() Como T;\nFinInterfaz\n\nClase Mal Realiza Medible < Entero >\n  Metodo medir() Como Cadena\n    Retornar \"xy\";\n  FinMetodo\nFinClase\n\nAlgoritmo P\nFinAlgoritmo\n",
-    "en": "interface Measurable < T >\n  Method measure() As T;\nendInterface\n\nClass Wrong implements Measurable < Integer >\n  Method measure() As String\n    Return \"xy\";\n  EndMethod\nEndClass\n\nAlgorithm P\nEndAlgorithm\n"
+    "es": "Interfaz Medible<T>\n  Metodo medir() Como T;\nFinInterfaz\n\nClase Mal Realiza Medible<Entero>\n  Metodo medir() Como Cadena\n    Retornar \"xy\";\n  FinMetodo\nFinClase\n\nAlgoritmo P\nFinAlgoritmo\n",
+    "en": "Interface Measurable<T>\n  Method measure() As T;\nEndInterface\n\nClass Wrong Implements Measurable<Integer>\n  Method measure() As String\n    Return \"xy\";\n  EndMethod\nEndClass\n\nAlgorithm P\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -898,8 +898,8 @@
     "en"
   ],
   "programas": {
-    "es": "Clase Suma < T >\n  Definir a Como T;\n  Metodo doble() Como T\n    Retornar Este.a + Este.a;\n  FinMetodo\nFinClase\n\nAlgoritmo P\n  Escribir \"listo\";\nFinAlgoritmo\n",
-    "en": "Class Sum < T >\n  Define a As T;\n  Method twice() As T\n    Return This.a + This.a;\n  EndMethod\nEndClass\n\nAlgorithm P\n  Write \"listo\";\nEndAlgorithm\n"
+    "es": "Clase Suma<T>\n  Definir a Como T;\n  Metodo doble() Como T\n    Retornar Este.a + Este.a;\n  FinMetodo\nFinClase\n\nAlgoritmo P\n  Escribir \"listo\";\nFinAlgoritmo\n",
+    "en": "Class Sum<T>\n  Define a As T;\n  Method twice() As T\n    Return This.a + This.a;\n  EndMethod\nEndClass\n\nAlgorithm P\n  Write \"listo\";\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -2282,8 +2282,8 @@
     "en"
   ],
   "programas": {
-    "es": "Clase Caja < T >\n  Definir contenido Como T;\n  Metodo Constructor(inicial Como T)\n    Este.contenido <- inicial;\n  FinMetodo\n  Metodo Abrir() Como T\n    Retornar Este.contenido;\n  FinMetodo\nFinClase\n\nAlgoritmo Regalos\n  Definir numeros Como Caja < Entero > <- Nuevo Caja < Entero > (7);\n  Definir textos Como Caja < Cadena > <- Nuevo Caja < Cadena > (\"Hola\");\n  Escribir numeros.Abrir() + 1;\n  Escribir textos.Abrir();\nFinAlgoritmo\n",
-    "en": "Class Box < T >\n  Define content As T;\n  Method Constructor(initial As T)\n    This.content <- initial;\n  EndMethod\n  Method Open() As T\n    Return This.content;\n  EndMethod\nEndClass\n\nAlgorithm Gifts\n  Define numbers As Box < Integer > <- New Box < Integer > (7);\n  Define texts As Box < String > <- New Box < String > (\"Hola\");\n  Write numbers.Open() + 1;\n  Write texts.Open();\nEndAlgorithm\n"
+    "es": "Clase Caja<T>\n  Definir contenido Como T;\n  Metodo Constructor(inicial Como T)\n    Este.contenido <- inicial;\n  FinMetodo\n  Metodo Abrir() Como T\n    Retornar Este.contenido;\n  FinMetodo\nFinClase\n\nAlgoritmo Regalos\n  Definir numeros Como Caja<Entero> <- Nuevo Caja<Entero>(7);\n  Definir textos Como Caja<Cadena> <- Nuevo Caja<Cadena>(\"Hola\");\n  Escribir numeros.Abrir() + 1;\n  Escribir textos.Abrir();\nFinAlgoritmo\n",
+    "en": "Class Box<T>\n  Define content As T;\n  Method Constructor(initial As T)\n    This.content <- initial;\n  EndMethod\n  Method Open() As T\n    Return This.content;\n  EndMethod\nEndClass\n\nAlgorithm Gifts\n  Define numbers As Box<Integer> <- New Box<Integer>(7);\n  Define texts As Box<String> <- New Box<String>(\"Hola\");\n  Write numbers.Open() + 1;\n  Write texts.Open();\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -2303,8 +2303,8 @@
     "en"
   ],
   "programas": {
-    "es": "Interfaz Contenedor < T >\n  Metodo Sacar() Como T;\nFinInterfaz\n\nClase Frasco Realiza Contenedor < Entero >\n  Metodo Sacar() Como Entero\n    Retornar 5;\n  FinMetodo\nFinClase\n\nClase Sobre Realiza Contenedor < Cadena >\n  Metodo Sacar() Como Cadena\n    Retornar \"carta\";\n  FinMetodo\nFinClase\n\nAlgoritmo Cocina\n  Definir frasco Como Frasco <- Nuevo Frasco();\n  Definir sobre Como Sobre <- Nuevo Sobre();\n  Escribir frasco.Sacar();\n  Escribir sobre.Sacar();\nFinAlgoritmo\n",
-    "en": "interface Container < T >\n  Method TakeOut() As T;\nendInterface\n\nClass Jar implements Container < Integer >\n  Method TakeOut() As Integer\n    Return 5;\n  EndMethod\nEndClass\n\nClass Envelope implements Container < String >\n  Method TakeOut() As String\n    Return \"carta\";\n  EndMethod\nEndClass\n\nAlgorithm Kitchen\n  Define jar As Jar <- New Jar();\n  Define envelope As Envelope <- New Envelope();\n  Write jar.TakeOut();\n  Write envelope.TakeOut();\nEndAlgorithm\n"
+    "es": "Interfaz Contenedor<T>\n  Metodo Sacar() Como T;\nFinInterfaz\n\nClase Frasco Realiza Contenedor<Entero>\n  Metodo Sacar() Como Entero\n    Retornar 5;\n  FinMetodo\nFinClase\n\nClase Sobre Realiza Contenedor<Cadena>\n  Metodo Sacar() Como Cadena\n    Retornar \"carta\";\n  FinMetodo\nFinClase\n\nAlgoritmo Cocina\n  Definir frasco Como Frasco <- Nuevo Frasco();\n  Definir sobre Como Sobre <- Nuevo Sobre();\n  Escribir frasco.Sacar();\n  Escribir sobre.Sacar();\nFinAlgoritmo\n",
+    "en": "Interface Container<T>\n  Method TakeOut() As T;\nEndInterface\n\nClass Jar Implements Container<Integer>\n  Method TakeOut() As Integer\n    Return 5;\n  EndMethod\nEndClass\n\nClass Envelope Implements Container<String>\n  Method TakeOut() As String\n    Return \"carta\";\n  EndMethod\nEndClass\n\nAlgorithm Kitchen\n  Define jar As Jar <- New Jar();\n  Define envelope As Envelope <- New Envelope();\n  Write jar.TakeOut();\n  Write envelope.TakeOut();\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -2324,8 +2324,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso Escoger < T > (usarPrimero Como Logico, primero Como T, segundo Como T) Como T\n  Si usarPrimero Entonces\n    Retornar primero;\n  FinSi\n  Retornar segundo;\nFinSubProceso\n\nAlgoritmo Sorteo\n  Escribir Escoger(Verdadero, 3, 9);\n  Escribir Escoger(Falso, \"cara\", \"cruz\");\nFinAlgoritmo\n",
-    "en": "Subroutine Pick < T > (useFirst As Boolean, first As T, second As T) As T\n  If useFirst Then\n    Return first;\n  EndIf\n  Return second;\nEndSubroutine\n\nAlgorithm Draw\n  Write Pick(True, 3, 9);\n  Write Pick(False, \"cara\", \"cruz\");\nEndAlgorithm\n"
+    "es": "SubProceso Escoger<T>(usarPrimero Como Logico, primero Como T, segundo Como T) Como T\n  Si usarPrimero Entonces\n    Retornar primero;\n  FinSi\n  Retornar segundo;\nFinSubProceso\n\nAlgoritmo Sorteo\n  Escribir Escoger(Verdadero, 3, 9);\n  Escribir Escoger(Falso, \"cara\", \"cruz\");\nFinAlgoritmo\n",
+    "en": "Subroutine Pick<T>(useFirst As Boolean, first As T, second As T) As T\n  If useFirst Then\n    Return first;\n  EndIf\n  Return second;\nEndSubroutine\n\nAlgorithm Draw\n  Write Pick(True, 3, 9);\n  Write Pick(False, \"cara\", \"cruz\");\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -2345,8 +2345,8 @@
     "en"
   ],
   "programas": {
-    "es": "Interfaz Medible\n  Metodo Medir() Como Entero;\nFinInterfaz\n\nClase Regla Realiza Medible\n  Metodo Medir() Como Entero\n    Retornar 30;\n  FinMetodo\nFinClase\n\nSubProceso Tamano < T: Medible > (cosa Como T) Como Entero\n  Retornar cosa.Medir();\nFinSubProceso\n\nAlgoritmo Taller\n  Definir regla Como Regla <- Nuevo Regla();\n  Escribir Tamano(regla);\nFinAlgoritmo\n",
-    "en": "interface Measurable\n  Method Measure() As Integer;\nendInterface\n\nClass Ruler implements Measurable\n  Method Measure() As Integer\n    Return 30;\n  EndMethod\nEndClass\n\nSubroutine Size < T: Measurable > (thing As T) As Integer\n  Return thing.Measure();\nEndSubroutine\n\nAlgorithm Workshop\n  Define ruler As Ruler <- New Ruler();\n  Write Size(ruler);\nEndAlgorithm\n"
+    "es": "Interfaz Medible\n  Metodo Medir() Como Entero;\nFinInterfaz\n\nClase Regla Realiza Medible\n  Metodo Medir() Como Entero\n    Retornar 30;\n  FinMetodo\nFinClase\n\nSubProceso Tamano<T: Medible>(cosa Como T) Como Entero\n  Retornar cosa.Medir();\nFinSubProceso\n\nAlgoritmo Taller\n  Definir regla Como Regla <- Nuevo Regla();\n  Escribir Tamano(regla);\nFinAlgoritmo\n",
+    "en": "Interface Measurable\n  Method Measure() As Integer;\nEndInterface\n\nClass Ruler Implements Measurable\n  Method Measure() As Integer\n    Return 30;\n  EndMethod\nEndClass\n\nSubroutine Size<T: Measurable>(thing As T) As Integer\n  Return thing.Measure();\nEndSubroutine\n\nAlgorithm Workshop\n  Define ruler As Ruler <- New Ruler();\n  Write Size(ruler);\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

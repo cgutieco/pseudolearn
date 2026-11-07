@@ -32,7 +32,7 @@ revisado_por:
   "id": "B1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Bytes es inmutable y transferible. BytesDesdeTexto codifica los puntos de código como UTF-8 sin BOM. Segmento y Unir devuelven secuencias nuevas. Segmento fuera de rango atrapa con bytesRangeOutOfBounds en el sitio de la llamada.",
+  "texto": "Bytes es inmutable y transferible. BytesDesdeTexto codifica los puntos de código como UTF-8 sin BOM. Segmento y Unir devuelven secuencias nuevas. Segmento fuera de rango atrapa con bytesRangeOutOfBounds en el sitio de la llamada. En(i) devuelve como Entero entre 0 y 255 el octeto de la posición i, contada desde cero; un índice negativo o mayor o igual que la longitud atrapa con arrayIndexOutOfRange en el sitio de la llamada, con el índice pedido como argumento index y la longitud como argumento size.",
   "verificacion": [
     "C2",
     "C3",
@@ -44,7 +44,9 @@ revisado_por:
     "C9",
     "C10",
     "C11",
-    "C12"
+    "C12",
+    "C13",
+    "C14"
   ]
 }
 ```
@@ -303,14 +305,80 @@ revisado_por:
     "en"
   ],
   "programas": {
-    "es": "Algoritmo BytesATexto\n  Definir datos Como Bytes <- BytesDesdeTexto(\"Hola\");\n  Segun datos.Segmento(1, 2).TextoUtf8() Hacer\n    Exito (texto): Escribir texto;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Algorithm BytesToText\n  Define data As Bytes <- bytesFromText(\"Hola\");\n  Switch data.segment(1, 2).utf8Text() Do\n    Success (text): Write text;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "Algoritmo BytesATexto\n  Definir datos Como Bytes <- BytesDesdeTexto(\"Hola\");\n  Segun datos.Segmento(1, 2).TextoUtf8() Hacer\n    Exito(texto): Escribir texto;\n    Error(problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm BytesToText\n  Define data As Bytes <- bytesFromText(\"Hola\");\n  Switch data.segment(1, 2).utf8Text() Do\n    Success(text): Write text;\n    Failure(problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
     "salida": "ol\n",
     "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "B1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir datos Como Bytes <- BytesDesdeTexto(\"ab\");\nEscribir datos.En(1);\nEscribir datos.En(2);\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine data as Bytes <- bytesFromText(\"ab\");\nwrite data.at(1);\nwrite data.at(2);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "fallo": {
+      "codigo": "arrayIndexOutOfRange"
+    },
+    "diagnosticos": [
+      {
+        "codigo": "arrayIndexOutOfRange",
+        "severidad": "error",
+        "argumentos": {
+          "index": 2,
+          "size": 2
+        }
+      }
+    ],
+    "salida": "98\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "B1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir vacio Como Bytes <- Bytes();\nEscribir vacio.En(-1);\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine empty as Bytes <- Bytes();\nwrite empty.at(-1);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "fallo": {
+      "codigo": "arrayIndexOutOfRange"
+    },
+    "diagnosticos": [
+      {
+        "codigo": "arrayIndexOutOfRange",
+        "severidad": "error",
+        "argumentos": {
+          "index": -1,
+          "size": 0
+        }
+      }
+    ],
+    "salida": ""
   }
 }
 ```

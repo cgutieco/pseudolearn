@@ -370,8 +370,9 @@ Los casos pueden restringir `sujetos` a un subconjunto explícito de los declara
   también con `file_write_text`), de modo que la incertidumbre de `Renombrar` se cubre en `pseudolearn_api/tests/directory_effects.rs`.
 - Hallazgos registrados al reescribir los casos: la ortografía `Funcion`/`function` es un alias de `SubProceso`, de
   modo que la traducción automática de `perfil_base` a inglés convierte una función pura en subprograma; los casos de
-  pureza declaran por eso ambos programas. El método `Escribir`/`write` de `Consola` coincide con una palabra reservada y
-  no puede invocarse desde un programa; el caso de consola de la cinta usa argumentos en su lugar.
+  pureza declaran por eso ambos programas. La operación de escritura de `Consola` se llamaba `Escribir`/`write`, igual que una
+  palabra reservada, y no podía invocarse; ahora se llama `EscribirTexto`/`writeText` (identidad `console_write` sin
+  cambios) y `LIB.MODEL#M2` prohíbe que una forma de biblioteca coincida con una palabra reservada.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
@@ -567,3 +568,49 @@ una forma más del registro de unicidad (M2). Alternativas descartadas: duplicar
 de un archivo); su perfil `en` se excluye con justificación porque ese pseudocódigo está escrito en español y cada
 construcción se verifica en inglés en su propia regla. `aot` queda pendiente hasta que el código nativo implemente el azar
 entero.
+
+## Vocabulario, biblioteca y formato canónico (revisión de 2026-11)
+
+- **Una sola grafía de la rama contraria.** Por decisión de la persona, `LANG.PROFILE.VOCABULARY` ya no declara el alias
+  `Si No`: con él, `Si NO x Entonces` se leía como `Sino`. El lexema es `Sino`, que el formateador ya escribía, y todos los
+  programas del corpus, la ayuda, la base de conocimiento de la app y las pruebas usan esa grafía. Los casos C6 y C7
+  cubren `Si NO x` y el rechazo de `Si No` como rama; la ficha «Signos y NO» ya no advierte del problema y
+  `LANG.OPS.PRECEDENCE` C3 escribe `Si NO abierto Entonces` sin paréntesis.
+- **Formas de biblioteca frente a palabras reservadas.** `JsonLogico(...)` y `consola.Escribir(...)` fallaban porque su
+  forma coincidía con una palabra de D1. `library_reserved` (`SEE-LIB-RESERVED`, regla `LIB.MODEL#M2`) pliega mayúsculas y
+  tildes y rechaza cualquier forma o alias de función u operación que coincida con un lexema o alias reservado del mismo
+  perfil. Con esa comprobación aparecieron exactamente las dos colisiones conocidas. La de consola se resolvió renombrando
+  la operación; la de JSON, sacando de D1 los doce valores de `TipoJson` y `CodigoErrorJson`, que ya estaban en D2. El
+  corpus no pide escribir esos valores como expresiones (`LIB.JSON#J8`): se obtienen de `Tipo()` y de `Codigo` y se
+  comparan entre sí; un nombre como `Arreglo` escrito en una expresión es una variable no declarada (C40). Se descartó
+  renombrar la función a `LogicoJson`, porque dejaba reservadas palabras tan comunes como `objeto` o `arreglo`.
+- **Lexemas contextuales en los esperados.** `cases/vocabulary.json` incluye las entradas de D2 con el prefijo
+  `contextual:`. `{{lexema:jsonKindBoolean}}` las encuentra cuando no hay identidad reservada con ese nombre, y el traductor
+  léxico las ignora, de modo que una variable `objeto` no se traduce a `Object`.
+- **Casos fuera de la verificación de su regla.** `references` (`SEE-REFERENCE`) exige que cada caso o propiedad figure en
+  la `verificacion` de la regla que declara; un caso puede verificar además otras reglas. Aparecieron quince
+  discrepancias, no solo las tres conocidas: `LIB.IO` C19–C21 prueban rutas del sistema y pasan a declarar R3;
+  `LANG.TASK.ISOLATION` C11 y C13 prueban `Instantanea` y pasan de la verificación de R3 a la de R4; `API.PROJECT.LOCK`
+  C16 pasa de R2 a R1 y C14 de R1 a R5; el resto (`API.PROGRAM.VIEW` C6, `API.VERSIONING` C3 y C4, `LANG.TASK.SCOPE` C22,
+  `LIB.CORE.MATH` P1, `LIB.HTTP.POLICY` C7, `TOOL.SERVICE.NAVIGATION` C7 y `TOOL.SERVICE.WORKSPACE` C8) se añade a la
+  verificación de la regla que ya declaraba.
+- **Aperturas de perfil.** `TOOL.CLI.CONVENTIONS#D1` enumera todas las aperturas de nivel superior, incluidas interfaz,
+  variante y visibilidad, y el motor genera la detección desde esa lista. `SEE-PROFILE-OPENERS` busca también en D2.
+- **Lagunas cerradas.** `ConTiempoMaximo` recibe nanosegundos (`LIB.HTTP#R2`, `#R7`), como `Reloj` y `Temporizador`.
+  `LIB.JSON#J4` cuenta columnas en puntos de código y sitúa `FinInesperado` tras el último carácter (C41, C42); el motor
+  informaba bytes y el último carácter. `Longitud` de un dato JSON que no es arreglo ni objeto vale 0 (`#J6`, C43).
+  `LIB.IO#R10` hace normativo que abrir en escritura o en lectura_escritura crea o vacía el archivo, como ya decía la
+  prosa de `LIB.MODEL` y hacen ambos anfitriones (C100, C101). `LIB.CORE.BYTES#B1` define `En` y los argumentos de su
+  `arrayIndexOutOfRange` (C13, C14).
+- **Forma canónica.** `TOOL.FORMAT.STYLE` fija qué abre un nivel de sangría (toda construcción con cierre de la gramática),
+  dónde no va `;`, que los ángulos de tipo no llevan espacios y la grafía: el lexema tal cual en español (`div`, `mod`,
+  `Sino`) con la excepción histórica de `Algoritmo`/`FinAlgoritmo`, y mayúscula inicial por palabra en inglés, como ya
+  fijaba C4, también para las palabras contextuales en posición de palabra clave. Los esperados de C5–C7 de esa
+  especificación y de `TOOL.TRANSLATE.ROUND-TRIP` C5 se obtuvieron ejecutando el formateador y se contrastaron línea a
+  línea con las reglas; no llevan `revisado_por` y requieren revisión independiente. Los 290 programas de ejemplo de la
+  ayuda que cambiaban de forma se regeneraron con el formateador, y las plantillas `form` pegan los ángulos genéricos y el
+  paréntesis tras `Algo`, `Exito`, `Error` y `SubProceso`. El tope de segmentos por línea de plantilla sube de 16 a 20
+  para que `FechaHora(...)` quepa en una línea (fixture `crowded-form-line`).
+- **Conflicto abierto.** `LANG.PROFILE.VOCABULARY` declara `Proceso`/`FinProceso` como lexemas canónicos y
+  `Algoritmo`/`FinAlgoritmo` como alias, pero el formateador, la ayuda y casi todo el corpus escriben `Algoritmo`. Se
+  documentó la excepción en `TOOL.FORMAT.STYLE#R2` sin cambiar el vocabulario; queda pendiente de decisión.

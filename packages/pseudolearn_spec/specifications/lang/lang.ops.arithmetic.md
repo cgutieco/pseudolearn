@@ -154,7 +154,7 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Manzanas\n  Definir manzanas Como Entero <- 17;\n  Escribir manzanas + 3;\n  Escribir manzanas - 7;\n  Escribir manzanas * 2;\n  Escribir manzanas / 2;\n  Escribir manzanas Div 5;\n  Escribir manzanas Mod 5;\nFinAlgoritmo\n",
+    "es": "Algoritmo Manzanas\n  Definir manzanas Como Entero <- 17;\n  Escribir manzanas + 3;\n  Escribir manzanas - 7;\n  Escribir manzanas * 2;\n  Escribir manzanas / 2;\n  Escribir manzanas div 5;\n  Escribir manzanas mod 5;\nFinAlgoritmo\n",
     "en": "Algorithm Apples\n  Define apples As Integer <- 17;\n  Write apples + 3;\n  Write apples - 7;\n  Write apples * 2;\n  Write apples / 2;\n  Write apples Div 5;\n  Write apples Mod 5;\nEndAlgorithm\n"
   },
   "origen": "derivado",

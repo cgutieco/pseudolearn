@@ -370,8 +370,8 @@
   "origen": "derivado",
   "operacion": "analyze",
   "programas": {
-    "es": "Algoritmo Main\n  Definir values Como Vector < Entero > <- Vector();\n  values.Agregar(7);\n  Definir frozen Como Inmutable < Vector < Entero > > <- Instantanea(values);\n  frozen[0] <- 9;\nFinAlgoritmo\n",
-    "en": "Algorithm Main\n  Define values As vector < Integer > <- vector();\n  values.append(7);\n  Define frozen As immutable < vector < Integer > > <- snapshot(values);\n  frozen[0] <- 9;\nEndAlgorithm\n"
+    "es": "Algoritmo Main\n  Definir values Como Vector<Entero> <- Vector();\n  values.Agregar(7);\n  Definir frozen Como Inmutable<Vector<Entero>> <- Instantanea(values);\n  frozen[0] <- 9;\nFinAlgoritmo\n",
+    "en": "Algorithm Main\n  Define values As Vector<Integer> <- vector();\n  values.append(7);\n  Define frozen As Immutable<Vector<Integer>> <- snapshot(values);\n  frozen[0] <- 9;\nEndAlgorithm\n"
   },
   "espera": {
     "arbol": "presente",
@@ -654,8 +654,8 @@
   "origen": "derivado",
   "operacion": "analyze",
   "programas": {
-    "es": "Clase Customer\nFinClase\n\nAlgoritmo Main\n  Definir value Como Customer <- Nuevo Customer();\n  Definir frozen Como Inmutable < Customer > <- Instantanea(value);\nFinAlgoritmo\n",
-    "en": "Class Customer\nEndClass\n\nAlgorithm Main\n  Define value As Customer <- New Customer();\n  Define frozen As immutable < Customer > <- snapshot(value);\nEndAlgorithm\n"
+    "es": "Clase Customer\nFinClase\n\nAlgoritmo Main\n  Definir value Como Customer <- Nuevo Customer();\n  Definir frozen Como Inmutable<Customer> <- Instantanea(value);\nFinAlgoritmo\n",
+    "en": "Class Customer\nEndClass\n\nAlgorithm Main\n  Define value As Customer <- New Customer();\n  Define frozen As Immutable<Customer> <- snapshot(value);\nEndAlgorithm\n"
   },
   "espera": {
     "arbol": "presente",
@@ -772,8 +772,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo CopiaCongelada\n  Definir notas Como Vector < Entero > <- Vector();\n  notas.Agregar(10);\n  Definir copia Como Inmutable < Vector < Entero > > <- Instantanea(notas);\n  notas[0] <- 5;\n  Escribir copia[0];\n  Escribir notas[0];\nFinAlgoritmo\n",
-    "en": "Algorithm FrozenCopy\n  Define grades As vector < Integer > <- vector();\n  grades.append(10);\n  Define copy As immutable < vector < Integer > > <- snapshot(grades);\n  grades[0] <- 5;\n  Write copy[0];\n  Write grades[0];\nEndAlgorithm\n"
+    "es": "Algoritmo CopiaCongelada\n  Definir notas Como Vector<Entero> <- Vector();\n  notas.Agregar(10);\n  Definir copia Como Inmutable<Vector<Entero>> <- Instantanea(notas);\n  notas[0] <- 5;\n  Escribir copia[0];\n  Escribir notas[0];\nFinAlgoritmo\n",
+    "en": "Algorithm FrozenCopy\n  Define grades As Vector<Integer> <- vector();\n  grades.append(10);\n  Define copy As Immutable<Vector<Integer>> <- snapshot(grades);\n  grades[0] <- 5;\n  Write copy[0];\n  Write grades[0];\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -793,8 +793,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo SoloLectura\n  Definir precios Como Vector < Entero > <- Vector();\n  precios.Agregar(20);\n  precios.Agregar(35);\n  Definir fijos Como Inmutable < Vector < Entero > > <- Instantanea(precios);\n  Escribir fijos[0] + fijos[1];\nFinAlgoritmo\n",
-    "en": "Algorithm ReadOnly\n  Define prices As vector < Integer > <- vector();\n  prices.append(20);\n  prices.append(35);\n  Define frozen As immutable < vector < Integer > > <- snapshot(prices);\n  Write frozen[0] + frozen[1];\nEndAlgorithm\n"
+    "es": "Algoritmo SoloLectura\n  Definir precios Como Vector<Entero> <- Vector();\n  precios.Agregar(20);\n  precios.Agregar(35);\n  Definir fijos Como Inmutable<Vector<Entero>> <- Instantanea(precios);\n  Escribir fijos[0] + fijos[1];\nFinAlgoritmo\n",
+    "en": "Algorithm ReadOnly\n  Define prices As Vector<Integer> <- vector();\n  prices.append(20);\n  prices.append(35);\n  Define frozen As Immutable<Vector<Integer>> <- snapshot(prices);\n  Write frozen[0] + frozen[1];\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

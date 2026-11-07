@@ -79,8 +79,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Main\n  Definir values Como Diccionario < Cadena, Entero > <- Diccionario();\n  Escribir values[\"absent\"];\nFinAlgoritmo\n",
-    "en": "Algorithm Main\n  Define values As dictionary < String, Integer > <- dictionary();\n  Write values[\"absent\"];\nEndAlgorithm\n"
+    "es": "Algoritmo Main\n  Definir values Como Diccionario<Cadena, Entero> <- Diccionario();\n  Escribir values[\"absent\"];\nFinAlgoritmo\n",
+    "en": "Algorithm Main\n  Define values As Dictionary<String, Integer> <- dictionary();\n  Write values[\"absent\"];\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -102,8 +102,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Main\n  Definir values Como Diccionario < Real, Entero > <- Diccionario();\nFinAlgoritmo\n",
-    "en": "Algorithm Main\n  Define values As dictionary < Real, Integer > <- dictionary();\nEndAlgorithm\n"
+    "es": "Algoritmo Main\n  Definir values Como Diccionario<Real, Entero> <- Diccionario();\nFinAlgoritmo\n",
+    "en": "Algorithm Main\n  Define values As Dictionary<Real, Integer> <- dictionary();\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -407,8 +407,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Edades\n  Definir edades Como Diccionario < Cadena, Entero > <- Diccionario();\n  edades[\"Ana\"] <- 15;\n  edades[\"Luis\"] <- 17;\n  edades[\"Ana\"] <- 16;\n  Escribir edades[\"Ana\"];\n  Escribir edades.Longitud();\nFinAlgoritmo\n",
-    "en": "Algorithm Ages\n  Define ages As dictionary < String, Integer > <- dictionary();\n  ages[\"Ana\"] <- 15;\n  ages[\"Luis\"] <- 17;\n  ages[\"Ana\"] <- 16;\n  Write ages[\"Ana\"];\n  Write ages.length();\nEndAlgorithm\n"
+    "es": "Algoritmo Edades\n  Definir edades Como Diccionario<Cadena, Entero> <- Diccionario();\n  edades[\"Ana\"] <- 15;\n  edades[\"Luis\"] <- 17;\n  edades[\"Ana\"] <- 16;\n  Escribir edades[\"Ana\"];\n  Escribir edades.Longitud();\nFinAlgoritmo\n",
+    "en": "Algorithm Ages\n  Define ages As Dictionary<String, Integer> <- dictionary();\n  ages[\"Ana\"] <- 15;\n  ages[\"Luis\"] <- 17;\n  ages[\"Ana\"] <- 16;\n  Write ages[\"Ana\"];\n  Write ages.length();\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -428,8 +428,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Lista\n  Definir edades Como Diccionario < Cadena, Entero > <- Diccionario();\n  edades[\"Luis\"] <- 17;\n  edades[\"Ana\"] <- 15;\n  Para Cada nombre En edades.Claves() Hacer\n    Escribir nombre;\n  FinPara\nFinAlgoritmo\n",
-    "en": "Algorithm Roster\n  Define ages As dictionary < String, Integer > <- dictionary();\n  ages[\"Luis\"] <- 17;\n  ages[\"Ana\"] <- 15;\n  For each name in ages.keys() Do\n    Write name;\n  EndFor\nEndAlgorithm\n"
+    "es": "Algoritmo Lista\n  Definir edades Como Diccionario<Cadena, Entero> <- Diccionario();\n  edades[\"Luis\"] <- 17;\n  edades[\"Ana\"] <- 15;\n  Para Cada nombre En edades.Claves() Hacer\n    Escribir nombre;\n  FinPara\nFinAlgoritmo\n",
+    "en": "Algorithm Roster\n  Define ages As Dictionary<String, Integer> <- dictionary();\n  ages[\"Luis\"] <- 17;\n  ages[\"Ana\"] <- 15;\n  For Each name In ages.keys() Do\n    Write name;\n  EndFor\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

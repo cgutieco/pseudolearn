@@ -194,7 +194,7 @@
   ],
   "programas": {
     "es": "Interfaz Readable\n  Metodo readValue() Como Entero;\nFinInterfaz\n\nClase Reader Realiza Readable\nFinClase\n\nAlgoritmo Main\n\nFinAlgoritmo\n",
-    "en": "interface Readable\n  Method readValue() As Integer;\nendInterface\n\nClass Reader implements Readable\nEndClass\n\nAlgorithm Main\n\nEndAlgorithm\n"
+    "en": "Interface Readable\n  Method readValue() As Integer;\nEndInterface\n\nClass Reader Implements Readable\nEndClass\n\nAlgorithm Main\n\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -451,7 +451,7 @@
   ],
   "programas": {
     "es": "Interfaz Figura\n  Metodo Area() Como Entero;\nFinInterfaz\n\nClase Cuadrado Realiza Figura\n  Definir lado Como Entero;\n  Metodo Area() Como Entero\n    Retornar Este.lado * Este.lado;\n  FinMetodo\nFinClase\n\nAlgoritmo Geometria\n  Definir baldosa Como Cuadrado <- Nuevo Cuadrado();\n  baldosa.lado <- 3;\n  Escribir baldosa.Area();\nFinAlgoritmo\n",
-    "en": "interface Shape\n  Method Area() As Integer;\nendInterface\n\nClass Square implements Shape\n  Define side As Integer;\n  Method Area() As Integer\n    Return This.side * This.side;\n  EndMethod\nEndClass\n\nAlgorithm Geometry\n  Define tile As Square <- New Square();\n  tile.side <- 3;\n  Write tile.Area();\nEndAlgorithm\n"
+    "en": "Interface Shape\n  Method Area() As Integer;\nEndInterface\n\nClass Square Implements Shape\n  Define side As Integer;\n  Method Area() As Integer\n    Return This.side * This.side;\n  EndMethod\nEndClass\n\nAlgorithm Geometry\n  Define tile As Square <- New Square();\n  tile.side <- 3;\n  Write tile.Area();\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

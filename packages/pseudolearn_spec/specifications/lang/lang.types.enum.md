@@ -356,8 +356,8 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
     "en"
   ],
   "programas": {
-    "es": "Enumerado Color\nRojo, Rojo;\nFinEnumerado\nAlgoritmo P\nFinAlgoritmo\n",
-    "en": "Enum Color\nRojo, Rojo;\nEndEnum\nAlgorithm P\nEndAlgorithm\n"
+    "es": "Enumerado Color\n  Rojo, Rojo;\nFinEnumerado\n\nAlgoritmo P\nFinAlgoritmo\n",
+    "en": "Enum Color\n  Rojo, Rojo;\nEndEnum\n\nAlgorithm P\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -408,8 +408,8 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
     "en"
   ],
   "programas": {
-    "es": "Enumerado Talla\nS, M, L;\nFinEnumerado\nAlgoritmo Tienda\n  Definir camiseta Como Talla <- Talla.M;\n  Escribir camiseta;\n  Si camiseta = Talla.M Entonces\n    Escribir \"OK\";\n  FinSi\nFinAlgoritmo\n",
-    "en": "Enum Size\nS, M, L;\nEndEnum\nAlgorithm Shop\n  Define shirt As Size <- Size.M;\n  Write shirt;\n  If shirt = Size.M Then\n    Write \"OK\";\n  EndIf\nEndAlgorithm\n"
+    "es": "Enumerado Talla\n  S, M, L;\nFinEnumerado\n\nAlgoritmo Tienda\n  Definir camiseta Como Talla <- Talla.M;\n  Escribir camiseta;\n  Si camiseta = Talla.M Entonces\n    Escribir \"OK\";\n  FinSi\nFinAlgoritmo\n",
+    "en": "Enum Size\n  S, M, L;\nEndEnum\n\nAlgorithm Shop\n  Define shirt As Size <- Size.M;\n  Write shirt;\n  If shirt = Size.M Then\n    Write \"OK\";\n  EndIf\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

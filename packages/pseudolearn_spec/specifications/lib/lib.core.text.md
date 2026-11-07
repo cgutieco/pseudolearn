@@ -1395,8 +1395,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo BuscarArroba\n  Definir correo Como Cadena;\n  correo <- \"ana@mail.com\";\n  Segun PosicionDe(correo, \"@\") Hacer\n    Nada: Escribir -1;\n    Algo (posicion): Escribir posicion;\n  FinSegun\n  Segun PosicionDe(correo, \"#\") Hacer\n    Nada: Escribir -1;\n    Algo (posicion): Escribir posicion;\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Algorithm FindAtSign\n  Define email As String;\n  email <- \"ana@mail.com\";\n  Switch indexOf(email, \"@\") Do\n    None: Write -1;\n    Some (position): Write position;\n  EndSwitch\n  Switch indexOf(email, \"#\") Do\n    None: Write -1;\n    Some (position): Write position;\n  EndSwitch\nEndAlgorithm\n"
+    "es": "Algoritmo BuscarArroba\n  Definir correo Como Cadena;\n  correo <- \"ana@mail.com\";\n  Segun PosicionDe(correo, \"@\") Hacer\n    Nada: Escribir -1;\n    Algo(posicion): Escribir posicion;\n  FinSegun\n  Segun PosicionDe(correo, \"#\") Hacer\n    Nada: Escribir -1;\n    Algo(posicion): Escribir posicion;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm FindAtSign\n  Define email As String;\n  email <- \"ana@mail.com\";\n  Switch indexOf(email, \"@\") Do\n    None: Write -1;\n    Some(position): Write position;\n  EndSwitch\n  Switch indexOf(email, \"#\") Do\n    None: Write -1;\n    Some(position): Write position;\n  EndSwitch\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -1479,8 +1479,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo SepararNombres\n  Definir nombres Como Vector < Cadena > <- Dividir(\"Ana,Luis,Marta\", \",\");\n  Escribir nombres.Longitud();\n  Escribir nombres[0];\n  Escribir nombres[2];\nFinAlgoritmo\n",
-    "en": "Algorithm SplitNames\n  Define names As vector < String > <- split(\"Ana,Luis,Marta\", \",\");\n  Write names.length();\n  Write names[0];\n  Write names[2];\nEndAlgorithm\n"
+    "es": "Algoritmo SepararNombres\n  Definir nombres Como Vector<Cadena> <- Dividir(\"Ana,Luis,Marta\", \",\");\n  Escribir nombres.Longitud();\n  Escribir nombres[0];\n  Escribir nombres[2];\nFinAlgoritmo\n",
+    "en": "Algorithm SplitNames\n  Define names As Vector<String> <- split(\"Ana,Luis,Marta\", \",\");\n  Write names.length();\n  Write names[0];\n  Write names[2];\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -1500,8 +1500,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo ListaDeNombres\n  Definir nombres Como Vector < Cadena > <- Dividir(\"Ana Luis Marta\", \" \");\n  Escribir Unir(nombres, \", \");\nFinAlgoritmo\n",
-    "en": "Algorithm NameList\n  Define names As vector < String > <- split(\"Ana Luis Marta\", \" \");\n  Write join(names, \", \");\nEndAlgorithm\n"
+    "es": "Algoritmo ListaDeNombres\n  Definir nombres Como Vector<Cadena> <- Dividir(\"Ana Luis Marta\", \" \");\n  Escribir Unir(nombres, \", \");\nFinAlgoritmo\n",
+    "en": "Algorithm NameList\n  Define names As Vector<String> <- split(\"Ana Luis Marta\", \" \");\n  Write join(names, \", \");\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

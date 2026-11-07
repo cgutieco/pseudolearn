@@ -261,8 +261,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Vacio\nFinRegistro\nAlgoritmo P\nFinAlgoritmo\n",
-    "en": "Record Vacio\nEndRecord\nAlgorithm P\nEndAlgorithm\n"
+    "es": "Registro Vacio\nFinRegistro\n\nAlgoritmo P\nFinAlgoritmo\n",
+    "en": "Record Vacio\nEndRecord\n\nAlgorithm P\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -744,8 +744,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nAlgoritmo P\n  Dimension a[1] Como Punto;\n  a[0].x <- 1;\n  Escribir a[0].x;\n  Escribir a[0].z;\nFinAlgoritmo\n",
-    "en": "Record Punto\nDefine x, z As Integer;\nEndRecord\nAlgorithm P\n  Dimension a[1] As Punto;\n  a[0].x <- 1;\n  Write a[0].x;\n  Write a[0].z;\nEndAlgorithm\n"
+    "es": "Registro Punto\n  Definir x, z Como Entero;\nFinRegistro\n\nAlgoritmo P\n  Dimension a[1] Como Punto;\n  a[0].x <- 1;\n  Escribir a[0].x;\n  Escribir a[0].z;\nFinAlgoritmo\n",
+    "en": "Record Punto\n  Define x, z As Integer;\nEndRecord\n\nAlgorithm P\n  Dimension a[1] As Punto;\n  a[0].x <- 1;\n  Write a[0].x;\n  Write a[0].z;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -984,8 +984,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nSubProceso mover(p Como Punto Por Referencia)\n  p.x <- 1;\nFinSubProceso\n\nAlgoritmo P\n  mover(Punto(1, 2));\nFinAlgoritmo\n",
-    "en": "Record Punto\nDefine x, z As Integer;\nEndRecord\nSubroutine mover(p As Punto By Reference)\n  p.x <- 1;\nEndSubroutine\n\nAlgorithm P\n  mover(Punto(1, 2));\nEndAlgorithm\n"
+    "es": "Registro Punto\n  Definir x, z Como Entero;\nFinRegistro\n\nSubProceso mover(p Como Punto Por Referencia)\n  p.x <- 1;\nFinSubProceso\n\nAlgoritmo P\n  mover(Punto(1, 2));\nFinAlgoritmo\n",
+    "en": "Record Punto\n  Define x, z As Integer;\nEndRecord\n\nSubroutine mover(p As Punto By Reference)\n  p.x <- 1;\nEndSubroutine\n\nAlgorithm P\n  mover(Punto(1, 2));\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -1115,8 +1115,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Punto\nDefinir x, z Como Entero;\nFinRegistro\nClase Caja\n  Definir p Como Punto;\nFinClase\n\nAlgoritmo P\n  Definir c Como Caja <- Nuevo Caja();\n  Escribir c.p.x;\nFinAlgoritmo\n",
-    "en": "Record Punto\nDefine x, z As Integer;\nEndRecord\nClass Caja\n  Define p As Punto;\nEndClass\n\nAlgorithm P\n  Define c As Caja <- New Caja();\n  Write c.p.x;\nEndAlgorithm\n"
+    "es": "Registro Punto\n  Definir x, z Como Entero;\nFinRegistro\n\nClase Caja\n  Definir p Como Punto;\nFinClase\n\nAlgoritmo P\n  Definir c Como Caja <- Nuevo Caja();\n  Escribir c.p.x;\nFinAlgoritmo\n",
+    "en": "Record Punto\n  Define x, z As Integer;\nEndRecord\n\nClass Caja\n  Define p As Punto;\nEndClass\n\nAlgorithm P\n  Define c As Caja <- New Caja();\n  Write c.p.x;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -1288,8 +1288,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Alumno\nDefinir nombre Como Cadena;\nDefinir edad Como Entero;\nFinRegistro\nAlgoritmo Escuela\n  Definir ana Como Alumno <- Alumno(\"Ana\", 15);\n  ana.edad <- ana.edad + 1;\n  Escribir ana.nombre;\n  Escribir ana.edad;\nFinAlgoritmo\n",
-    "en": "Record Student\nDefine name As String;\nDefine age As Integer;\nEndRecord\nAlgorithm School\n  Define ana As Student <- Student(\"Ana\", 15);\n  ana.age <- ana.age + 1;\n  Write ana.name;\n  Write ana.age;\nEndAlgorithm\n"
+    "es": "Registro Alumno\n  Definir nombre Como Cadena;\n  Definir edad Como Entero;\nFinRegistro\n\nAlgoritmo Escuela\n  Definir ana Como Alumno <- Alumno(\"Ana\", 15);\n  ana.edad <- ana.edad + 1;\n  Escribir ana.nombre;\n  Escribir ana.edad;\nFinAlgoritmo\n",
+    "en": "Record Student\n  Define name As String;\n  Define age As Integer;\nEndRecord\n\nAlgorithm School\n  Define ana As Student <- Student(\"Ana\", 15);\n  ana.age <- ana.age + 1;\n  Write ana.name;\n  Write ana.age;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -1309,8 +1309,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Producto\nDefinir nombre Como Cadena;\nDefinir precio Como Entero;\nFinRegistro\nAlgoritmo Tienda\n  Dimension estante[2] Como Producto;\n  estante[0] <- Producto(\"Pan\", 2);\n  estante[1] <- Producto(\"Leche\", 3);\n  estante[1].precio <- 4;\n  Escribir estante[1].nombre;\n  Escribir estante[0].precio + estante[1].precio;\nFinAlgoritmo\n",
-    "en": "Record Product\nDefine name As String;\nDefine price As Integer;\nEndRecord\nAlgorithm Shop\n  Dimension shelf[2] As Product;\n  shelf[0] <- Product(\"Pan\", 2);\n  shelf[1] <- Product(\"Leche\", 3);\n  shelf[1].price <- 4;\n  Write shelf[1].name;\n  Write shelf[0].price + shelf[1].price;\nEndAlgorithm\n"
+    "es": "Registro Producto\n  Definir nombre Como Cadena;\n  Definir precio Como Entero;\nFinRegistro\n\nAlgoritmo Tienda\n  Dimension estante[2] Como Producto;\n  estante[0] <- Producto(\"Pan\", 2);\n  estante[1] <- Producto(\"Leche\", 3);\n  estante[1].precio <- 4;\n  Escribir estante[1].nombre;\n  Escribir estante[0].precio + estante[1].precio;\nFinAlgoritmo\n",
+    "en": "Record Product\n  Define name As String;\n  Define price As Integer;\nEndRecord\n\nAlgorithm Shop\n  Dimension shelf[2] As Product;\n  shelf[0] <- Product(\"Pan\", 2);\n  shelf[1] <- Product(\"Leche\", 3);\n  shelf[1].price <- 4;\n  Write shelf[1].name;\n  Write shelf[0].price + shelf[1].price;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -1330,8 +1330,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Fecha\nDefinir dia Como Entero;\nDefinir mes Como Entero;\nFinRegistro\nClase Evento\n  Definir fecha Como Fecha;\nFinClase\n\nAlgoritmo Agenda\n  Definir fiesta Como Evento <- Nuevo Evento();\n  fiesta.fecha <- Fecha(24, 12);\n  fiesta.fecha.dia <- 31;\n  Escribir fiesta.fecha.dia;\n  Escribir fiesta.fecha.mes;\nFinAlgoritmo\n",
-    "en": "Record Date\nDefine day As Integer;\nDefine month As Integer;\nEndRecord\nClass Event\n  Define date As Date;\nEndClass\n\nAlgorithm Planner\n  Define party As Event <- New Event();\n  party.date <- Date(24, 12);\n  party.date.day <- 31;\n  Write party.date.day;\n  Write party.date.month;\nEndAlgorithm\n"
+    "es": "Registro Fecha\n  Definir dia Como Entero;\n  Definir mes Como Entero;\nFinRegistro\n\nClase Evento\n  Definir fecha Como Fecha;\nFinClase\n\nAlgoritmo Agenda\n  Definir fiesta Como Evento <- Nuevo Evento();\n  fiesta.fecha <- Fecha(24, 12);\n  fiesta.fecha.dia <- 31;\n  Escribir fiesta.fecha.dia;\n  Escribir fiesta.fecha.mes;\nFinAlgoritmo\n",
+    "en": "Record Date\n  Define day As Integer;\n  Define month As Integer;\nEndRecord\n\nClass Event\n  Define date As Date;\nEndClass\n\nAlgorithm Planner\n  Define party As Event <- New Event();\n  party.date <- Date(24, 12);\n  party.date.day <- 31;\n  Write party.date.day;\n  Write party.date.month;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -1351,8 +1351,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Punto\nDefinir fila Como Entero;\nDefinir columna Como Entero;\nFinRegistro\nClase Tablero\n  Metodo Mover(origen Como Punto) Como Punto\n    Retornar Punto(origen.fila + 1, origen.columna + 1);\n  FinMetodo\nFinClase\n\nAlgoritmo Juego\n  Definir tablero Como Tablero <- Nuevo Tablero();\n  Definir inicio Como Punto <- Punto(2, 5);\n  Definir destino Como Punto <- tablero.Mover(inicio);\n  Escribir destino.fila;\n  Escribir destino.columna;\n  Escribir inicio.fila;\nFinAlgoritmo\n",
-    "en": "Record Point\nDefine row As Integer;\nDefine column As Integer;\nEndRecord\nClass Board\n  Method Move(origin As Point) As Point\n    Return Point(origin.row + 1, origin.column + 1);\n  EndMethod\nEndClass\n\nAlgorithm Game\n  Define board As Board <- New Board();\n  Define start As Point <- Point(2, 5);\n  Define target As Point <- board.Move(start);\n  Write target.row;\n  Write target.column;\n  Write start.row;\nEndAlgorithm\n"
+    "es": "Registro Punto\n  Definir fila Como Entero;\n  Definir columna Como Entero;\nFinRegistro\n\nClase Tablero\n  Metodo Mover(origen Como Punto) Como Punto\n    Retornar Punto(origen.fila + 1, origen.columna + 1);\n  FinMetodo\nFinClase\n\nAlgoritmo Juego\n  Definir tablero Como Tablero <- Nuevo Tablero();\n  Definir inicio Como Punto <- Punto(2, 5);\n  Definir destino Como Punto <- tablero.Mover(inicio);\n  Escribir destino.fila;\n  Escribir destino.columna;\n  Escribir inicio.fila;\nFinAlgoritmo\n",
+    "en": "Record Point\n  Define row As Integer;\n  Define column As Integer;\nEndRecord\n\nClass Board\n  Method Move(origin As Point) As Point\n    Return Point(origin.row + 1, origin.column + 1);\n  EndMethod\nEndClass\n\nAlgorithm Game\n  Define board As Board <- New Board();\n  Define start As Point <- Point(2, 5);\n  Define target As Point <- board.Move(start);\n  Write target.row;\n  Write target.column;\n  Write start.row;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -1372,8 +1372,8 @@ Un registro agrupa campos en un valor que se copia, a diferencia de un objeto de
     "en"
   ],
   "programas": {
-    "es": "Registro Jugador\nDefinir puntos Como Entero;\nFinRegistro\nSubProceso GanarCopia(copia Como Jugador)\n  copia.puntos <- copia.puntos + 10;\nFinSubProceso\n\nSubProceso Ganar(jugador Como Jugador Por Referencia)\n  jugador.puntos <- jugador.puntos + 10;\nFinSubProceso\n\nAlgoritmo Partida\n  Definir ana Como Jugador <- Jugador(0);\n  Definir luis Como Jugador <- Jugador(0);\n  GanarCopia(luis);\n  Ganar(ana);\n  Escribir luis.puntos;\n  Escribir ana.puntos;\nFinAlgoritmo\n",
-    "en": "Record Player\nDefine points As Integer;\nEndRecord\nSubroutine WinCopy(copy As Player)\n  copy.points <- copy.points + 10;\nEndSubroutine\n\nSubroutine Win(player As Player By Reference)\n  player.points <- player.points + 10;\nEndSubroutine\n\nAlgorithm Match\n  Define ana As Player <- Player(0);\n  Define luis As Player <- Player(0);\n  WinCopy(luis);\n  Win(ana);\n  Write luis.points;\n  Write ana.points;\nEndAlgorithm\n"
+    "es": "Registro Jugador\n  Definir puntos Como Entero;\nFinRegistro\n\nSubProceso GanarCopia(copia Como Jugador)\n  copia.puntos <- copia.puntos + 10;\nFinSubProceso\n\nSubProceso Ganar(jugador Como Jugador Por Referencia)\n  jugador.puntos <- jugador.puntos + 10;\nFinSubProceso\n\nAlgoritmo Partida\n  Definir ana Como Jugador <- Jugador(0);\n  GanarCopia(ana);\n  Escribir ana.puntos;\n  Ganar(ana);\n  Escribir ana.puntos;\nFinAlgoritmo\n",
+    "en": "Record Player\n  Define points As Integer;\nEndRecord\n\nSubroutine WinCopy(copy As Player)\n  copy.points <- copy.points + 10;\nEndSubroutine\n\nSubroutine Win(player As Player By Reference)\n  player.points <- player.points + 10;\nEndSubroutine\n\nAlgorithm Match\n  Define ana As Player <- Player(0);\n  WinCopy(ana);\n  Write ana.points;\n  Win(ana);\n  Write ana.points;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

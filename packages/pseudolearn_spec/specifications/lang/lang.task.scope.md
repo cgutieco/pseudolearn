@@ -326,7 +326,7 @@
   ],
   "programas": {
     "es": "SubProceso Suspendible Work()\nFinSubProceso\n\nAlgoritmo P\n  Lanzar Work();\nFinAlgoritmo\n",
-    "en": "Subroutine suspendable Work()\nEndSubroutine\n\nAlgorithm P\n  Spawn Work();\nEndAlgorithm\n"
+    "en": "Subroutine Suspendable Work()\nEndSubroutine\n\nAlgorithm P\n  Spawn Work();\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -1112,8 +1112,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Contar(desde Como Entero)\n  Escribir desde;\n  Escribir desde + 1;\nFinSubProceso\n\nAlgoritmo Equipo\n  Tareas\n  Lanzar Contar(10);\n  Lanzar Contar(20);\n  FinTareas\n  Escribir 0;\nFinAlgoritmo\n",
-    "en": "Subroutine Suspendable Count(start As Integer)\n  Write start;\n  Write start + 1;\nEndSubroutine\n\nAlgorithm Team\n  Tasks\n  Spawn Count(10);\n  Spawn Count(20);\n  EndTasks\n  Write 0;\nEndAlgorithm\n"
+    "es": "SubProceso Suspendible Contar(desde Como Entero)\n  Escribir desde;\n  Escribir desde + 1;\nFinSubProceso\n\nAlgoritmo Equipo\n  Tareas\n    Lanzar Contar(10);\n    Lanzar Contar(20);\n  FinTareas\n  Escribir 0;\nFinAlgoritmo\n",
+    "en": "Subroutine Suspendable Count(start As Integer)\n  Write start;\n  Write start + 1;\nEndSubroutine\n\nAlgorithm Team\n  Tasks\n    Spawn Count(10);\n    Spawn Count(20);\n  EndTasks\n  Write 0;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

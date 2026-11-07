@@ -1115,42 +1115,6 @@
         "en": "JsonErrorCode"
       }
     },
-    "jsonKindNull": {
-      "lexemas": {
-        "es": "Nulo",
-        "en": "Null"
-      }
-    },
-    "jsonKindBoolean": {
-      "lexemas": {
-        "es": "JsonLogico",
-        "en": "JsonBoolean"
-      }
-    },
-    "jsonKindNumber": {
-      "lexemas": {
-        "es": "JsonNumero",
-        "en": "JsonNumber"
-      }
-    },
-    "jsonKindString": {
-      "lexemas": {
-        "es": "CadenaJson",
-        "en": "JsonStringKind"
-      }
-    },
-    "jsonKindArray": {
-      "lexemas": {
-        "es": "Arreglo",
-        "en": "Array"
-      }
-    },
-    "jsonKindObject": {
-      "lexemas": {
-        "es": "Objeto",
-        "en": "Object"
-      }
-    },
     "jsonErrorLineField": {
       "lexemas": {
         "es": "JsonLinea",
@@ -1161,42 +1125,6 @@
       "lexemas": {
         "es": "JsonColumna",
         "en": "jsonColumn"
-      }
-    },
-    "jsonErrorCodeInvalidSyntax": {
-      "lexemas": {
-        "es": "SintaxisInvalida",
-        "en": "InvalidSyntax"
-      }
-    },
-    "jsonErrorCodeUnexpectedEnd": {
-      "lexemas": {
-        "es": "FinInesperado",
-        "en": "UnexpectedEnd"
-      }
-    },
-    "jsonErrorCodeDuplicateKey": {
-      "lexemas": {
-        "es": "ClaveDuplicada",
-        "en": "DuplicateKey"
-      }
-    },
-    "jsonErrorCodeDepthExceeded": {
-      "lexemas": {
-        "es": "ProfundidadExcedida",
-        "en": "DepthExceeded"
-      }
-    },
-    "jsonErrorCodeInvalidEscape": {
-      "lexemas": {
-        "es": "EscapeInvalido",
-        "en": "InvalidEscape"
-      }
-    },
-    "jsonErrorCodeTrailingContent": {
-      "lexemas": {
-        "es": "ContenidoSobrante",
-        "en": "TrailingContent"
       }
     }
   }

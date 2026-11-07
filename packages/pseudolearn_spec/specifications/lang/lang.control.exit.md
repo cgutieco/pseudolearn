@@ -79,7 +79,7 @@
   ],
   "programas": {
     "es": "Algoritmo Main\n  Salir;\nFinAlgoritmo\n",
-    "en": "Algorithm Main\n  break;\nEndAlgorithm\n"
+    "en": "Algorithm Main\n  Break;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -147,7 +147,7 @@
   ],
   "programas": {
     "es": "Algoritmo Detener\n  Para numero <- 1 Hasta 10 Hacer\n    Si numero = 4 Entonces\n      Salir;\n    FinSi\n    Escribir numero;\n  FinPara\n  Escribir \"Fin\";\nFinAlgoritmo\n",
-    "en": "Algorithm Stop\n  For number <- 1 To 10 Do\n    If number = 4 Then\n      break;\n    EndIf\n    Write number;\n  EndFor\n  Write \"Fin\";\nEndAlgorithm\n"
+    "en": "Algorithm Stop\n  For number <- 1 To 10 Do\n    If number = 4 Then\n      Break;\n    EndIf\n    Write number;\n  EndFor\n  Write \"Fin\";\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

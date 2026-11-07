@@ -99,6 +99,302 @@
     "en": "constructor",
     "es": "Constructor"
   },
+  "contextual:alternativeKeyword": {
+    "en": "case",
+    "es": "Alternativa"
+  },
+  "contextual:argumentsCapabilityType": {
+    "en": "Arguments",
+    "es": "Argumentos"
+  },
+  "contextual:breakKeyword": {
+    "en": "break",
+    "es": "Salir"
+  },
+  "contextual:bytesType": {
+    "en": "Bytes",
+    "es": "Bytes"
+  },
+  "contextual:channelClose": {
+    "en": "close",
+    "es": "Cerrar"
+  },
+  "contextual:channelReceive": {
+    "en": "receive",
+    "es": "Recibir"
+  },
+  "contextual:channelSend": {
+    "en": "send",
+    "es": "Enviar"
+  },
+  "contextual:channelType": {
+    "en": "channel",
+    "es": "Canal"
+  },
+  "contextual:clockCapabilityType": {
+    "en": "Clock",
+    "es": "Reloj"
+  },
+  "contextual:collectionLength": {
+    "en": "length",
+    "es": "Longitud"
+  },
+  "contextual:collectionRemove": {
+    "en": "remove",
+    "es": "Eliminar"
+  },
+  "contextual:consoleCapabilityType": {
+    "en": "Console",
+    "es": "Consola"
+  },
+  "contextual:dateTimeType": {
+    "en": "DateTime",
+    "es": "FechaHora"
+  },
+  "contextual:deferKeyword": {
+    "en": "defer",
+    "es": "Diferir"
+  },
+  "contextual:dictionaryFind": {
+    "en": "find",
+    "es": "Buscar"
+  },
+  "contextual:dictionaryKeys": {
+    "en": "keys",
+    "es": "Claves"
+  },
+  "contextual:dictionaryType": {
+    "en": "dictionary",
+    "es": "Diccionario"
+  },
+  "contextual:directoryCapabilityType": {
+    "en": "DirCap",
+    "es": "DirectorioCap"
+  },
+  "contextual:eachKeyword": {
+    "en": "each",
+    "es": "Cada"
+  },
+  "contextual:endDefer": {
+    "en": "endDefer",
+    "es": "FinDiferir"
+  },
+  "contextual:endInterface": {
+    "en": "endInterface",
+    "es": "FinInterfaz"
+  },
+  "contextual:endVariant": {
+    "en": "endVariant",
+    "es": "FinVariante"
+  },
+  "contextual:environmentCapabilityType": {
+    "en": "Environment",
+    "es": "Entorno"
+  },
+  "contextual:fileCapabilityType": {
+    "en": "FileCap",
+    "es": "ArchivoCap"
+  },
+  "contextual:httpMethodType": {
+    "en": "HttpMethod",
+    "es": "MetodoHttp"
+  },
+  "contextual:httpRequestType": {
+    "en": "HttpRequest",
+    "es": "PeticionHttp"
+  },
+  "contextual:httpResponseType": {
+    "en": "HttpResponse",
+    "es": "RespuestaHttp"
+  },
+  "contextual:immutableType": {
+    "en": "immutable",
+    "es": "Inmutable"
+  },
+  "contextual:implementsKeyword": {
+    "en": "implements",
+    "es": "Realiza"
+  },
+  "contextual:inKeyword": {
+    "en": "in",
+    "es": "En"
+  },
+  "contextual:interfaceKeyword": {
+    "en": "interface",
+    "es": "Interfaz"
+  },
+  "contextual:ioErrorType": {
+    "en": "IoError",
+    "es": "ErrorES"
+  },
+  "contextual:jsonErrorCodeDepthExceeded": {
+    "en": "DepthExceeded",
+    "es": "ProfundidadExcedida"
+  },
+  "contextual:jsonErrorCodeDuplicateKey": {
+    "en": "DuplicateKey",
+    "es": "ClaveDuplicada"
+  },
+  "contextual:jsonErrorCodeField": {
+    "en": "code",
+    "es": "Codigo"
+  },
+  "contextual:jsonErrorCodeInvalidEscape": {
+    "en": "InvalidEscape",
+    "es": "EscapeInvalido"
+  },
+  "contextual:jsonErrorCodeInvalidSyntax": {
+    "en": "InvalidSyntax",
+    "es": "SintaxisInvalida"
+  },
+  "contextual:jsonErrorCodeTrailingContent": {
+    "en": "TrailingContent",
+    "es": "ContenidoSobrante"
+  },
+  "contextual:jsonErrorCodeType": {
+    "en": "JsonErrorCode",
+    "es": "CodigoErrorJson"
+  },
+  "contextual:jsonErrorCodeUnexpectedEnd": {
+    "en": "UnexpectedEnd",
+    "es": "FinInesperado"
+  },
+  "contextual:jsonErrorColumnField": {
+    "en": "jsonColumn",
+    "es": "JsonColumna"
+  },
+  "contextual:jsonErrorLineField": {
+    "en": "jsonLine",
+    "es": "JsonLinea"
+  },
+  "contextual:jsonErrorType": {
+    "en": "JsonError",
+    "es": "ErrorJson"
+  },
+  "contextual:jsonKindArray": {
+    "en": "Array",
+    "es": "Arreglo"
+  },
+  "contextual:jsonKindBoolean": {
+    "en": "JsonBoolean",
+    "es": "JsonLogico"
+  },
+  "contextual:jsonKindNull": {
+    "en": "Null",
+    "es": "Nulo"
+  },
+  "contextual:jsonKindNumber": {
+    "en": "JsonNumber",
+    "es": "JsonNumero"
+  },
+  "contextual:jsonKindObject": {
+    "en": "Object",
+    "es": "Objeto"
+  },
+  "contextual:jsonKindString": {
+    "en": "JsonStringKind",
+    "es": "CadenaJson"
+  },
+  "contextual:jsonKindType": {
+    "en": "JsonKind",
+    "es": "TipoJson"
+  },
+  "contextual:jsonValueType": {
+    "en": "JsonValue",
+    "es": "ValorJson"
+  },
+  "contextual:networkCapabilityType": {
+    "en": "NetworkCap",
+    "es": "RedCap"
+  },
+  "contextual:receiveSource": {
+    "en": "from",
+    "es": "Desde"
+  },
+  "contextual:requestArguments": {
+    "en": "requestArguments",
+    "es": "SolicitarArgumentos"
+  },
+  "contextual:requestClock": {
+    "en": "requestClock",
+    "es": "SolicitarReloj"
+  },
+  "contextual:requestConsole": {
+    "en": "requestConsole",
+    "es": "SolicitarConsola"
+  },
+  "contextual:requestDirectory": {
+    "en": "requestDirectory",
+    "es": "SolicitarDirectorio"
+  },
+  "contextual:requestEnvironment": {
+    "en": "requestEnvironment",
+    "es": "SolicitarEntorno"
+  },
+  "contextual:requestTimer": {
+    "en": "requestTimer",
+    "es": "SolicitarTemporizador"
+  },
+  "contextual:snapshotBuiltin": {
+    "en": "snapshot",
+    "es": "Instantanea"
+  },
+  "contextual:suspendibleModifier": {
+    "en": "suspendable",
+    "es": "Suspendible"
+  },
+  "contextual:taskAssociatedErrors": {
+    "en": "associated",
+    "es": "Asociados"
+  },
+  "contextual:taskCancelledCount": {
+    "en": "cancelled",
+    "es": "Canceladas"
+  },
+  "contextual:taskFailureType": {
+    "en": "taskFailure",
+    "es": "FalloTareas"
+  },
+  "contextual:taskFirstError": {
+    "en": "first",
+    "es": "Primero"
+  },
+  "contextual:timerCapabilityType": {
+    "en": "Timer",
+    "es": "Temporizador"
+  },
+  "contextual:variantKeyword": {
+    "en": "variant",
+    "es": "Variante"
+  },
+  "contextual:vectorAppend": {
+    "en": "append",
+    "es": "Agregar"
+  },
+  "contextual:vectorContains": {
+    "en": "contains",
+    "es": "Contiene"
+  },
+  "contextual:vectorIndexOf": {
+    "en": "indexOf",
+    "es": "PosicionDe"
+  },
+  "contextual:vectorInsert": {
+    "en": "insert",
+    "es": "Insertar"
+  },
+  "contextual:vectorReverse": {
+    "en": "reverse",
+    "es": "Invertir"
+  },
+  "contextual:vectorSort": {
+    "en": "sort",
+    "es": "Ordenar"
+  },
+  "contextual:vectorType": {
+    "en": "vector",
+    "es": "Vector"
+  },
   "declare": {
     "en": "define",
     "es": "Definir"
@@ -141,15 +437,7 @@
   },
   "elseKeyword": {
     "en": "else",
-    "es": "SiNo"
-  },
-  "elseKeyword.alias.es.0": {
-    "en": "else",
     "es": "Sino"
-  },
-  "elseKeyword.alias.es.1": {
-    "en": "else",
-    "es": "Si No"
   },
   "endAlgorithm": {
     "en": "endAlgorithm",
@@ -575,33 +863,9 @@
     "en": "integer",
     "es": "Entero"
   },
-  "jsonErrorCodeDepthExceeded": {
-    "en": "DepthExceeded",
-    "es": "ProfundidadExcedida"
-  },
-  "jsonErrorCodeDuplicateKey": {
-    "en": "DuplicateKey",
-    "es": "ClaveDuplicada"
-  },
-  "jsonErrorCodeInvalidEscape": {
-    "en": "InvalidEscape",
-    "es": "EscapeInvalido"
-  },
-  "jsonErrorCodeInvalidSyntax": {
-    "en": "InvalidSyntax",
-    "es": "SintaxisInvalida"
-  },
-  "jsonErrorCodeTrailingContent": {
-    "en": "TrailingContent",
-    "es": "ContenidoSobrante"
-  },
   "jsonErrorCodeType": {
     "en": "JsonErrorCode",
     "es": "CodigoErrorJson"
-  },
-  "jsonErrorCodeUnexpectedEnd": {
-    "en": "UnexpectedEnd",
-    "es": "FinInesperado"
   },
   "jsonErrorColumnField": {
     "en": "jsonColumn",
@@ -614,30 +878,6 @@
   "jsonErrorType": {
     "en": "JsonError",
     "es": "ErrorJson"
-  },
-  "jsonKindArray": {
-    "en": "Array",
-    "es": "Arreglo"
-  },
-  "jsonKindBoolean": {
-    "en": "JsonBoolean",
-    "es": "JsonLogico"
-  },
-  "jsonKindNull": {
-    "en": "Null",
-    "es": "Nulo"
-  },
-  "jsonKindNumber": {
-    "en": "JsonNumber",
-    "es": "JsonNumero"
-  },
-  "jsonKindObject": {
-    "en": "Object",
-    "es": "Objeto"
-  },
-  "jsonKindString": {
-    "en": "JsonStringKind",
-    "es": "CadenaJson"
   },
   "jsonKindType": {
     "en": "JsonKind",

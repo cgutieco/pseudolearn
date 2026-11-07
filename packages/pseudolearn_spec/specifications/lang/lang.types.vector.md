@@ -99,8 +99,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Main\n  Definir values Como Vector < Entero > <- Vector();\n  Escribir values[0];\nFinAlgoritmo\n",
-    "en": "Algorithm Main\n  Define values As vector < Integer > <- vector();\n  Write values[0];\nEndAlgorithm\n"
+    "es": "Algoritmo Main\n  Definir values Como Vector<Entero> <- Vector();\n  Escribir values[0];\nFinAlgoritmo\n",
+    "en": "Algorithm Main\n  Define values As Vector<Integer> <- vector();\n  Write values[0];\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -178,8 +178,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Main\n  Definir values Como Vector < Entero > <- Vector();\n  values.Insertar(1, 7);\nFinAlgoritmo\n",
-    "en": "Algorithm Main\n  Define values As vector < Integer > <- vector();\n  values.insert(1, 7);\nEndAlgorithm\n"
+    "es": "Algoritmo Main\n  Definir values Como Vector<Entero> <- Vector();\n  values.Insertar(1, 7);\nFinAlgoritmo\n",
+    "en": "Algorithm Main\n  Define values As Vector<Integer> <- vector();\n  values.insert(1, 7);\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -737,8 +737,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Puntos\n  Definir puntos Como Vector < Entero > <- Vector();\n  puntos.Agregar(10);\n  puntos.Agregar(30);\n  puntos.Insertar(1, 20);\n  Escribir puntos;\n  puntos.Eliminar(0);\n  Escribir puntos;\n  Escribir puntos.Longitud();\nFinAlgoritmo\n",
-    "en": "Algorithm Points\n  Define points As vector < Integer > <- vector();\n  points.append(10);\n  points.append(30);\n  points.insert(1, 20);\n  Write points;\n  points.remove(0);\n  Write points;\n  Write points.length();\nEndAlgorithm\n"
+    "es": "Algoritmo Puntos\n  Definir puntos Como Vector<Entero> <- Vector();\n  puntos.Agregar(10);\n  puntos.Agregar(30);\n  puntos.Insertar(1, 20);\n  Escribir puntos;\n  puntos.Eliminar(0);\n  Escribir puntos;\n  Escribir puntos.Longitud();\nFinAlgoritmo\n",
+    "en": "Algorithm Points\n  Define points As Vector<Integer> <- vector();\n  points.append(10);\n  points.append(30);\n  points.insert(1, 20);\n  Write points;\n  points.remove(0);\n  Write points;\n  Write points.length();\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -758,8 +758,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Ordenar\n  Definir edades Como Vector < Entero > <- Vector();\n  edades.Agregar(15);\n  edades.Agregar(9);\n  edades.Agregar(12);\n  edades.Ordenar();\n  Escribir edades;\nFinAlgoritmo\n",
-    "en": "Algorithm SortAges\n  Define ages As vector < Integer > <- vector();\n  ages.append(15);\n  ages.append(9);\n  ages.append(12);\n  ages.sort();\n  Write ages;\nEndAlgorithm\n"
+    "es": "Algoritmo Ordenar\n  Definir edades Como Vector<Entero> <- Vector();\n  edades.Agregar(15);\n  edades.Agregar(9);\n  edades.Agregar(12);\n  edades.Ordenar();\n  Escribir edades;\nFinAlgoritmo\n",
+    "en": "Algorithm SortAges\n  Define ages As Vector<Integer> <- vector();\n  ages.append(15);\n  ages.append(9);\n  ages.append(12);\n  ages.sort();\n  Write ages;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -779,8 +779,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo DarVuelta\n  Definir numeros Como Vector < Entero > <- Vector();\n  numeros.Agregar(1);\n  numeros.Agregar(2);\n  numeros.Agregar(3);\n  numeros.Invertir();\n  Escribir numeros;\nFinAlgoritmo\n",
-    "en": "Algorithm Flip\n  Define numbers As vector < Integer > <- vector();\n  numbers.append(1);\n  numbers.append(2);\n  numbers.append(3);\n  numbers.reverse();\n  Write numbers;\nEndAlgorithm\n"
+    "es": "Algoritmo DarVuelta\n  Definir numeros Como Vector<Entero> <- Vector();\n  numeros.Agregar(1);\n  numeros.Agregar(2);\n  numeros.Agregar(3);\n  numeros.Invertir();\n  Escribir numeros;\nFinAlgoritmo\n",
+    "en": "Algorithm Flip\n  Define numbers As Vector<Integer> <- vector();\n  numbers.append(1);\n  numbers.append(2);\n  numbers.append(3);\n  numbers.reverse();\n  Write numbers;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -800,8 +800,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Buscar\n  Definir numeros Como Vector < Entero > <- Vector();\n  numeros.Agregar(4);\n  numeros.Agregar(8);\n  Segun numeros.PosicionDe(8) Hacer\n    Algo (posicion): Escribir posicion;\n    Nada: Escribir \"No está\";\n  FinSegun\n  Segun numeros.PosicionDe(5) Hacer\n    Algo (posicion): Escribir posicion;\n    Nada: Escribir \"No está\";\n  FinSegun\nFinAlgoritmo\n",
-    "en": "Algorithm Search\n  Define numbers As vector < Integer > <- vector();\n  numbers.append(4);\n  numbers.append(8);\n  Switch numbers.indexOf(8) Do\n    Some (position): Write position;\n    None: Write \"No está\";\n  EndSwitch\n  Switch numbers.indexOf(5) Do\n    Some (position): Write position;\n    None: Write \"No está\";\n  EndSwitch\nEndAlgorithm\n"
+    "es": "Algoritmo Buscar\n  Definir numeros Como Vector<Entero> <- Vector();\n  numeros.Agregar(4);\n  numeros.Agregar(8);\n  Segun numeros.PosicionDe(8) Hacer\n    Algo(posicion): Escribir posicion;\n    Nada: Escribir \"No está\";\n  FinSegun\n  Segun numeros.PosicionDe(5) Hacer\n    Algo(posicion): Escribir posicion;\n    Nada: Escribir \"No está\";\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm Search\n  Define numbers As Vector<Integer> <- vector();\n  numbers.append(4);\n  numbers.append(8);\n  Switch numbers.indexOf(8) Do\n    Some(position): Write position;\n    None: Write \"No está\";\n  EndSwitch\n  Switch numbers.indexOf(5) Do\n    Some(position): Write position;\n    None: Write \"No está\";\n  EndSwitch\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -821,8 +821,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Invitados\n  Definir invitados Como Vector < Cadena > <- Vector();\n  invitados.Agregar(\"Ana\");\n  invitados.Agregar(\"Luis\");\n  Si invitados.Contiene(\"Luis\") Entonces\n    Escribir \"Luis puede pasar\";\n  FinSi\n  Si invitados.Contiene(\"Eva\") Entonces\n    Escribir \"Eva puede pasar\";\n  Sino\n    Escribir \"Eva no está en la lista\";\n  FinSi\nFinAlgoritmo\n",
-    "en": "Algorithm Guests\n  Define guests As vector < String > <- vector();\n  guests.append(\"Ana\");\n  guests.append(\"Luis\");\n  If guests.contains(\"Luis\") Then\n    Write \"Luis puede pasar\";\n  EndIf\n  If guests.contains(\"Eva\") Then\n    Write \"Eva puede pasar\";\n  Else\n    Write \"Eva no está en la lista\";\n  EndIf\nEndAlgorithm\n"
+    "es": "Algoritmo Invitados\n  Definir invitados Como Vector<Cadena> <- Vector();\n  invitados.Agregar(\"Ana\");\n  invitados.Agregar(\"Luis\");\n  Si invitados.Contiene(\"Luis\") Entonces\n    Escribir \"Luis puede pasar\";\n  FinSi\n  Si invitados.Contiene(\"Eva\") Entonces\n    Escribir \"Eva puede pasar\";\n  Sino\n    Escribir \"Eva no está en la lista\";\n  FinSi\nFinAlgoritmo\n",
+    "en": "Algorithm Guests\n  Define guests As Vector<String> <- vector();\n  guests.append(\"Ana\");\n  guests.append(\"Luis\");\n  If guests.contains(\"Luis\") Then\n    Write \"Luis puede pasar\";\n  EndIf\n  If guests.contains(\"Eva\") Then\n    Write \"Eva puede pasar\";\n  Else\n    Write \"Eva no está en la lista\";\n  EndIf\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

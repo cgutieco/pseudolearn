@@ -205,7 +205,7 @@
   ],
   "programas": {
     "es": "SubProceso value() Como Entero\n  Diferir\n    Retornar 1;\n  FinDiferir\n  Retornar 2;\nFinSubProceso\n\nAlgoritmo Main\n\nFinAlgoritmo\n",
-    "en": "Subroutine value() As Integer\n  defer\n    Return 1;\n  endDefer\n  Return 2;\nEndSubroutine\n\nAlgorithm Main\n\nEndAlgorithm\n"
+    "en": "Subroutine value() As Integer\n  Defer\n    Return 1;\n  EndDefer\n  Return 2;\nEndSubroutine\n\nAlgorithm Main\n\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -397,7 +397,7 @@
   ],
   "programas": {
     "es": "Algoritmo Ordenado\n  Escribir \"Abrir\";\n  Diferir\n    Escribir \"Cerrar\";\n  FinDiferir\n  Escribir \"Trabajar\";\nFinAlgoritmo\n",
-    "en": "Algorithm Tidy\n  Write \"Abrir\";\n  defer\n    Write \"Cerrar\";\n  endDefer\n  Write \"Trabajar\";\nEndAlgorithm\n"
+    "en": "Algorithm Tidy\n  Write \"Abrir\";\n  Defer\n    Write \"Cerrar\";\n  EndDefer\n  Write \"Trabajar\";\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

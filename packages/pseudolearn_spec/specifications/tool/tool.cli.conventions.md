@@ -66,7 +66,14 @@
     "aperturas": [
       "algorithm",
       "classKeyword",
-      "subroutine"
+      "subroutine",
+      "constantKeyword",
+      "enumKeyword",
+      "recordKeyword",
+      "interfaceKeyword",
+      "variantKeyword",
+      "publicVisibility",
+      "privateVisibility"
     ]
   }
 }
@@ -294,11 +301,14 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El vocabulario de un archivo se autodeclara: la primera palabra significativa después del BOM y la trivia es la apertura de una unidad de nivel superior de uno de los perfiles, y ese perfil se usa. --vocabulario lo fuerza. Si la apertura no se reconoce y no se fuerza, se usa el español, que informa su diagnóstico de inicio. Ninguna apertura comparte lexema ni alias con el otro perfil.",
+  "texto": "El vocabulario de un archivo se autodeclara: la primera palabra significativa después del BOM y la trivia es la apertura de una unidad de nivel superior de uno de los perfiles, y ese perfil se usa. Las aperturas son las identidades de la lista aperturas de D1: algoritmo, clase, subprograma, constante, enumerado, registro, interfaz, variante y la visibilidad que puede precederlas. --vocabulario lo fuerza. Si la apertura no se reconoce y no se fuerza, se usa el español, que informa su diagnóstico de inicio. Ninguna apertura comparte lexema ni alias con el otro perfil.",
   "verificacion": [
     "C9",
     "C10",
-    "C11"
+    "C11",
+    "C33",
+    "C34",
+    "C35"
   ]
 }
 ```
@@ -1094,6 +1104,87 @@ Cada caso cli declara su entorno completo: el sujeto ejecuta pseudo con exactame
     ],
     "entorno": {},
     "archivos": {}
+  }
+}
+```
+
+```caso
+{
+  "id": "C33",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "1\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "interface Shape\nsubroutine area() as real\nendInterface\nalgorithm P\nwrite 1;\nendAlgorithm\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C34",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "1\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "public subroutine One() as integer\nreturn 1;\nendSubroutine\nalgorithm P\nwrite One();\nendAlgorithm\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C35",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "1\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "// header\nvariant Shape\ncase Dot\nendVariant\nalgorithm P\nwrite 1;\nendAlgorithm\n"
+    }
   }
 }
 ```
