@@ -6,7 +6,7 @@ use crate::rails_grammar::RailNode;
 
 pub const BOX_HEIGHT: f64 = 28.0;
 pub const GAP: f64 = 14.0;
-pub const GUTTER: f64 = 18.0;
+pub const GUTTER: f64 = 16.0;
 pub const SIDE: f64 = 14.0;
 pub const PADDING: f64 = 10.0;
 pub const AVAILABLE: f64 = 340.0 - 2.0 * SIDE;

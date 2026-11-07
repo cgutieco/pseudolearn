@@ -155,6 +155,22 @@
     "whitespace": "whitespace"
   },
   "figures": {
+    "ampliaciones": {
+      "titulo": "The three widenings",
+      "descripcion": "Three green arrows: from Integer to Real, from Character to String and from a subclass to its superclass. Below, in red, the conversions that never happen by themselves: Real to Integer, Boolean to number and number to text.",
+      "subclase": "Subclass",
+      "superclase": "Superclass",
+      "nunca": "Never happen by themselves:",
+      "n1": "Real → Integer · String → Character",
+      "n2": "Boolean → number · number → text"
+    },
+    "arreglo-casillas": {
+      "titulo": "The boxes of an array",
+      "descripcion": "Four boxes in a row with the values 7, 9, 6 and 8 and the indices 0, 1, 2 and 3 below. On the right, a fifth dashed, crossed-out box with index 4, which does not exist.",
+      "notas": "notas",
+      "tamano": "Size 4: indices 0 to 3",
+      "fuera": "notas[4] → arrayIndexOutOfRange"
+    },
     "cadena-caracter": {
       "titulo": "Character or string",
       "descripcion": "At the top, A between single quotes and between double quotes both lead to the Character type. Below, empty quotes and a two-letter text lead to the String type.",
@@ -207,6 +223,13 @@
       "salida": "Output",
       "salida-texto": "what the engine wrote"
     },
+    "declarar-antes": {
+      "titulo": "Declare before use",
+      "descripcion": "A Define total As Integer line creates an empty box named total. Below, the assignment total gets 10 stores a value in that box. A note recalls that assigning to an undeclared name is an error.",
+      "total": "total",
+      "sin-valor": "no value yet",
+      "prohibido": "Assigning to a name without Define: error"
+    },
     "determinismo": {
       "titulo": "Same seed, same sequence",
       "descripcion": "A box with seed 42 from which two runs leave. Both produce the sequence 1, 1, 6 and an equals sign joins them.",
@@ -215,6 +238,15 @@
       "ejecucion-b": "Run B",
       "nota": "Same program, inputs and seed",
       "nota2": "→ same output, trace and termination"
+    },
+    "diccionario": {
+      "titulo": "Keys pointing to values",
+      "descripcion": "Two columns, keys and values. The key Ana points to the value 13, marked as replaced; the key Luis points to 11. A note explains that keys keep the order in which they were inserted.",
+      "claves": "keys",
+      "valores": "values",
+      "ana": "\"Ana\"",
+      "luis": "\"Luis\"",
+      "nota": "Keys stay in the order they came in"
     },
     "ecosistema": {
       "titulo": "One language, one engine, three doors",
@@ -238,6 +270,18 @@
       "tipos": "A single type policy",
       "preludio": "Fixed prelude",
       "preludio-ejemplos": "length · sqrt · Optional · vector…"
+    },
+    "enumerado": {
+      "titulo": "The members of an enumeration",
+      "descripcion": "A box with the type Semaforo and its three members: Rojo, Amarillo and Verde. A variable luz, outside the box, points to the member Verde.",
+      "tipo": "Semaforo",
+      "rojo": "Rojo",
+      "amarillo": "Amarillo",
+      "verde": "Verde",
+      "luz": "luz",
+      "variable": "variable",
+      "cerrada": "Closed list:",
+      "cerrada2": "there are no other values"
     },
     "error-lexico": {
       "titulo": "A lexical error and recovery",
@@ -350,6 +394,22 @@
       "simples": "✓ simple statements: end in ;",
       "bloques": "∅ block openings and closings: no ;"
     },
+    "registro-copia": {
+      "titulo": "Assigning a record copies it",
+      "descripcion": "Two cards, a and b, with the fields fila and columna. Both had fila 1 and columna 2; after changing b.fila to 10, only b shows 10 and a still has 1.",
+      "fila": "fila",
+      "columna": "columna",
+      "copia": "b <- a copies both fields",
+      "separado": "afterwards, each card changes on its own"
+    },
+    "regla-reales": {
+      "titulo": "The ruler with gaps",
+      "descripcion": "A horizontal ruler with separate marks. The literal 0.3 points at one mark; the result of 0.1 plus 0.2 points at the neighbouring mark, 0.30000000000000004.",
+      "literal": "0.3 written as it is",
+      "suma": "0.1 + 0.2",
+      "nota": "There is no Real between two marks",
+      "nota2": "The marks are very close, but they never touch"
+    },
     "si-ordinograma": {
       "titulo": "Step-by-step run of Montana",
       "descripcion": "A flowchart with the start, the assignment of estatura, a diamond asking whether estatura is greater than or equal to 120, two boxes with the Write of each branch, the point where they join and the end. Each step highlights the part being run.",
@@ -373,6 +433,21 @@
       "effect": "awaiting_effect",
       "pausas": "Pauses: once the data arrives, they run again"
     },
+    "tipos-cajas": {
+      "titulo": "The five primitive types",
+      "descripcion": "Five boxes. Integer with the value 42; Real with 3.14; Boolean with its two values, True and False; Character with a single letter L; and String with the letters of Lucía in five boxes numbered 0 to 4.",
+      "entero": "no decimals, exact",
+      "real": "with decimals",
+      "logico": "yes or no",
+      "letra": "L",
+      "caracter": "a single symbol",
+      "c0": "L",
+      "c1": "u",
+      "c2": "c",
+      "c3": "í",
+      "c4": "a",
+      "posiciones": "positions"
+    },
     "tres-trabajos": {
       "titulo": "Analysing, running and observing",
       "descripcion": "A program with three arrows leaving it towards Analyse, Run and Observe. Below each one, what it produces: diagnostics, colours and help; output, termination and failures; trace, memory and timeline. A green line joins Run and Observe because both go through the instructions.",
@@ -391,6 +466,14 @@
       "o3": "timeline",
       "sin-ejecutar": "runs nothing",
       "recorren": "go through the instructions"
+    },
+    "vector-crece": {
+      "titulo": "A vector that changes size",
+      "descripcion": "A dashed box representing the vector lista, with positions numbered 0, 1 and 2. Stepping forward, pan and leche appear; then fruta at the start, shifting the others; finally pan disappears and leche moves to position 1.",
+      "lista": "lista",
+      "pan": "\"pan\"",
+      "leche": "\"leche\"",
+      "fruta": "\"fruta\""
     },
     "viaje": {
       "titulo": "The five stages of the engine",

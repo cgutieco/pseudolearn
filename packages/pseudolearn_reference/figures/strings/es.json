@@ -155,6 +155,22 @@
     "whitespace": "espacio"
   },
   "figures": {
+    "ampliaciones": {
+      "titulo": "Las tres ampliaciones",
+      "descripcion": "Tres flechas verdes: de Entero a Real, de Caracter a Cadena y de una subclase a su superclase. Debajo, en rojo, las conversiones que nunca ocurren solas: de Real a Entero, de Logico a número y de número a texto.",
+      "subclase": "Subclase",
+      "superclase": "Superclase",
+      "nunca": "Nunca ocurren solas:",
+      "n1": "Real → Entero · Cadena → Caracter",
+      "n2": "Logico → número · número → texto"
+    },
+    "arreglo-casillas": {
+      "titulo": "Las casillas de un arreglo",
+      "descripcion": "Cuatro casillas seguidas con los valores 7, 9, 6 y 8 y los índices 0, 1, 2 y 3 debajo. A la derecha, una quinta casilla punteada y tachada con el índice 4, que no existe.",
+      "notas": "notas",
+      "tamano": "Tamaño 4: índices de 0 a 3",
+      "fuera": "notas[4] → arrayIndexOutOfRange"
+    },
     "cadena-caracter": {
       "titulo": "Carácter o cadena",
       "descripcion": "Arriba, A entre comillas simples y entre comillas dobles llevan al tipo Caracter. Abajo, unas comillas vacías y un texto de dos letras llevan al tipo Cadena.",
@@ -207,6 +223,13 @@
       "salida": "Salida",
       "salida-texto": "lo que escribió el motor"
     },
+    "declarar-antes": {
+      "titulo": "Declarar antes de usar",
+      "descripcion": "Una línea Definir total Como Entero crea una caja vacía con el nombre total. Debajo, la asignación total recibe 10 guarda un valor en esa caja. Una nota recuerda que asignar a un nombre no declarado es un error.",
+      "total": "total",
+      "sin-valor": "sin valor todavía",
+      "prohibido": "Asignar a un nombre sin Definir: error"
+    },
     "determinismo": {
       "titulo": "Misma semilla, misma secuencia",
       "descripcion": "Una caja con la semilla 42 de la que salen dos ejecuciones. Las dos producen la secuencia 1, 1, 6 y un signo igual las une.",
@@ -215,6 +238,15 @@
       "ejecucion-b": "Ejecución B",
       "nota": "Mismo programa, entradas y semilla",
       "nota2": "→ misma salida, traza y terminación"
+    },
+    "diccionario": {
+      "titulo": "Claves que apuntan a valores",
+      "descripcion": "Dos columnas, claves y valores. La clave Ana apunta al valor 13, marcado como reemplazado; la clave Luis apunta al 11. Una nota explica que las claves conservan el orden en que se insertaron.",
+      "claves": "claves",
+      "valores": "valores",
+      "ana": "\"Ana\"",
+      "luis": "\"Luis\"",
+      "nota": "Las claves se quedan en el orden en que entraron"
     },
     "ecosistema": {
       "titulo": "Un lenguaje, un motor, tres puertas",
@@ -238,6 +270,18 @@
       "tipos": "Una sola política de tipos",
       "preludio": "Preludio fijo",
       "preludio-ejemplos": "Longitud · rc · Opcional · Vector…"
+    },
+    "enumerado": {
+      "titulo": "Los miembros de un enumerado",
+      "descripcion": "Un recuadro con el tipo Semaforo y sus tres miembros: Rojo, Amarillo y Verde. Una variable luz, fuera del recuadro, apunta al miembro Verde.",
+      "tipo": "Semaforo",
+      "rojo": "Rojo",
+      "amarillo": "Amarillo",
+      "verde": "Verde",
+      "luz": "luz",
+      "variable": "variable",
+      "cerrada": "Lista cerrada:",
+      "cerrada2": "no hay otros valores"
     },
     "error-lexico": {
       "titulo": "Un error léxico y la recuperación",
@@ -350,6 +394,22 @@
       "simples": "✓ sentencias simples: terminan en ;",
       "bloques": "∅ aperturas y cierres de bloque: sin ;"
     },
+    "registro-copia": {
+      "titulo": "Asignar un registro lo copia",
+      "descripcion": "Dos fichas, a y b, con los campos fila y columna. Las dos tenían fila 1 y columna 2; después de cambiar b.fila a 10, solo b muestra el 10 y a sigue con 1.",
+      "fila": "fila",
+      "columna": "columna",
+      "copia": "b <- a copia los dos campos",
+      "separado": "después, cada ficha cambia por su cuenta"
+    },
+    "regla-reales": {
+      "titulo": "La regla con huecos",
+      "descripcion": "Una regla horizontal con marcas separadas. El literal 0.3 apunta a una marca; el resultado de 0.1 más 0.2 apunta a la marca vecina, 0.30000000000000004.",
+      "literal": "0.3 escrito tal cual",
+      "suma": "0.1 + 0.2",
+      "nota": "Entre dos marcas no hay ningún Real",
+      "nota2": "Las marcas están muy juntas, pero no se tocan"
+    },
     "si-ordinograma": {
       "titulo": "Ejecución paso a paso de Montana",
       "descripcion": "Un ordinograma con el inicio, la asignación de estatura, un rombo con la pregunta estatura mayor o igual que 120, dos cajas con los Escribir de cada rama, el punto donde se juntan y el fin. Cada paso resalta la parte que se está ejecutando.",
@@ -373,6 +433,21 @@
       "effect": "awaiting_effect",
       "pausas": "Pausas: al recibir el dato, vuelven a ejecutar"
     },
+    "tipos-cajas": {
+      "titulo": "Los cinco tipos primitivos",
+      "descripcion": "Cinco recuadros. Entero con el valor 42; Real con 3.14; Logico con sus dos valores, Verdadero y Falso; Caracter con una sola letra L; y Cadena con las letras de Lucía en cinco casillas numeradas de 0 a 4.",
+      "entero": "sin decimales, exacto",
+      "real": "con decimales",
+      "logico": "sí o no",
+      "letra": "L",
+      "caracter": "un solo símbolo",
+      "c0": "L",
+      "c1": "u",
+      "c2": "c",
+      "c3": "í",
+      "c4": "a",
+      "posiciones": "posiciones"
+    },
     "tres-trabajos": {
       "titulo": "Analizar, ejecutar y observar",
       "descripcion": "Un programa del que salen tres flechas hacia Analizar, Ejecutar y Observar. Debajo de cada uno, lo que produce: diagnósticos, colores y ayuda; salida, terminación y fallos; traza, memoria y línea de tiempo. Una línea verde une Ejecutar y Observar porque los dos recorren las instrucciones.",
@@ -391,6 +466,14 @@
       "o3": "línea de tiempo",
       "sin-ejecutar": "no ejecuta nada",
       "recorren": "recorren las instrucciones"
+    },
+    "vector-crece": {
+      "titulo": "Un vector que cambia de tamaño",
+      "descripcion": "Un recuadro punteado que representa el vector lista, con posiciones numeradas 0, 1 y 2. Al avanzar, aparecen pan y leche; después fruta al principio, desplazando a los demás; por último desaparece pan y leche se corre a la posición 1.",
+      "lista": "lista",
+      "pan": "\"pan\"",
+      "leche": "\"leche\"",
+      "fruta": "\"fruta\""
     },
     "viaje": {
       "titulo": "Las cinco etapas del motor",

@@ -1,0 +1,14 @@
+<svg viewBox="0 0 340 260">
+  <caja x="10" y="10" ancho="120" alto="38" rol="tipo" fondo="0.12" negrita="" texto="{{lex:integerType}}"/>
+  <flecha puntos="130,29 206,29" rol="exito" trazo="2"/>
+  <caja x="210" y="10" ancho="120" alto="38" rol="tipo" fondo="0.12" negrita="" texto="{{lex:realType}}"/>
+  <caja x="10" y="70" ancho="120" alto="38" rol="tipo" fondo="0.12" negrita="" texto="{{lex:characterType}}"/>
+  <flecha puntos="130,89 206,89" rol="exito" trazo="2"/>
+  <caja x="210" y="70" ancho="120" alto="38" rol="tipo" fondo="0.12" negrita="" texto="{{lex:stringType}}"/>
+  <caja x="10" y="130" ancho="120" alto="38" rol="acento-objetos" fondo="0.12" texto="{{t:subclase}}"/>
+  <flecha puntos="130,149 206,149" rol="exito" trazo="2"/>
+  <caja x="210" y="130" ancho="120" alto="38" rol="acento-objetos" fondo="0.12" texto="{{t:superclase}}"/>
+  <text x="12" y="200" font-size="13" fill="@error" font-weight="600">{{t:nunca}}</text>
+  <text x="12" y="222" font-size="13" fill="@error">{{t:n1}}</text>
+  <text x="12" y="244" font-size="13" fill="@error">{{t:n2}}</text>
+</svg>
