@@ -8,3 +8,6 @@ mod help_catalog;
 mod lexicon;
 #[path = "resources/library_facets.rs"]
 mod library_facets;
+
+#[path = "resources/library_reserved.rs"]
+mod library_reserved;

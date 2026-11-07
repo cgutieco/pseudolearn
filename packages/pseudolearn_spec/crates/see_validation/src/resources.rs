@@ -10,6 +10,7 @@ pub mod grammar;
 pub mod help_catalog;
 pub mod lexicon;
 pub mod library_facets;
+pub mod library_reserved;
 pub mod spanish_neutrality;
 pub mod structural;
 pub mod textmate_grammar;
