@@ -1440,6 +1440,23 @@
       "cancelado": "Cancelado",
       "motivo": "reason",
       "pie": "each state carries only its data"
+    },
+    "ruta-tres-kioscos": {
+      "titulo": "Three kiosks",
+      "descripcion": "The same receipt in three steps. First, orders that keep changing the total: add 9, add 10, take the discount off. Then, a till that keeps its total and a main algorithm that asks it to sell. Finally, an expression that computes the total with discount from the lines.",
+      "imp-1": "total ← total + 9",
+      "imp-2": "total ← total + 10",
+      "imp-3": "total ← total - 1",
+      "imperativa": "orders that change boxes",
+      "caja": "Till",
+      "obj-1": "keeps its total",
+      "obj-2": "knows the discount",
+      "principal": "main",
+      "obj-3": "asks it to sell",
+      "objetos": "pieces that work together",
+      "fun-1": "ConDescuento(",
+      "fun-2": "Linea(3, 3) + Linea(5, 2))",
+      "funcional": "functions that transform"
     }
   }
 }

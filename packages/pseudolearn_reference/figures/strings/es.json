@@ -1440,6 +1440,23 @@
       "cancelado": "Cancelado",
       "motivo": "motivo",
       "pie": "cada estado lleva solo sus datos"
+    },
+    "ruta-tres-kioscos": {
+      "titulo": "Tres kioscos",
+      "descripcion": "El mismo ticket en tres pasos. Primero, órdenes que van cambiando el total: se suma 9, se suma 10, se descuenta. Después, una caja que guarda su total y un principal que le pide vender. Al final, una expresión que calcula el total con descuento a partir de las líneas.",
+      "imp-1": "total ← total + 9",
+      "imp-2": "total ← total + 10",
+      "imp-3": "total ← total - 1",
+      "imperativa": "órdenes que cambian cajas",
+      "caja": "Caja",
+      "obj-1": "guarda su total",
+      "obj-2": "sabe descontar",
+      "principal": "principal",
+      "obj-3": "le pide vender",
+      "objetos": "piezas que colaboran",
+      "fun-1": "ConDescuento(",
+      "fun-2": "Linea(3, 3) + Linea(5, 2))",
+      "funcional": "funciones que transforman"
     }
   }
 }
