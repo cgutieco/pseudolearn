@@ -1,4 +1,5 @@
 import 'package:pseudolearn_app/application/editor/editor_cubit.dart';
+import 'package:pseudolearn_app/application/editor/help/help_program_highlighter.dart';
 import 'package:pseudolearn_app/application/editor/help/syntax_help_cubit.dart';
 import 'package:pseudolearn_app/composition/rust_engine_services.dart';
 import 'package:pseudolearn_app/domain/model/help/help_query_result.dart';
@@ -7,6 +8,8 @@ import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/domain/ports/clock.dart';
 import 'package:pseudolearn_app/domain/ports/document_repository.dart';
 import 'package:pseudolearn_app/domain/ports/text_entry_modality.dart';
+import 'package:pseudolearn_app/engine/rust/rust_analysis_api.dart';
+import 'package:pseudolearn_app/engine/rust/rust_program_analyzer.dart';
 import 'package:pseudolearn_app/engine/rust/rust_syntax_help_source.dart';
 import 'package:pseudolearn_app/engine/rust/rust_transport.dart';
 
@@ -29,7 +32,10 @@ Future<Map<String, Object?>> runHelpRevisionScenario(
   RustTransport transport,
   Map<String, Object?> input,
 ) async {
-  final cubit = SyntaxHelpCubit(source: RustSyntaxHelpSource(transport));
+  final cubit = SyntaxHelpCubit(
+    source: RustSyntaxHelpSource(transport),
+    highlighter: _highlighter(transport),
+  );
   for (final event in (input['events'] as List<Object?>).cast<Map<String, Object?>>()) {
     final revision = event['revision'] as int;
     if (event['type'] == 'document_changed') {
@@ -98,7 +104,10 @@ Future<Map<String, Object?>> _explicitQuery(
   );
   final before = editor.state;
   final recorder = _RecordingTransport(transport);
-  final help = SyntaxHelpCubit(source: RustSyntaxHelpSource(recorder));
+  final help = SyntaxHelpCubit(
+    source: RustSyntaxHelpSource(recorder),
+    highlighter: _highlighter(transport),
+  );
   help.request(
     sourceCode: editor.state.sourceCode,
     profileId: SyntaxProfileId.classicSpanish,
@@ -205,3 +214,6 @@ final class _UnusedRepository implements DocumentRepository {
   @override
   dynamic noSuchMethod(Invocation invocation) => null;
 }
+
+HelpProgramHighlighter _highlighter(RustTransport transport) =>
+    HelpProgramHighlighter(RustProgramAnalyzer(RustAnalysisApi(transport)));

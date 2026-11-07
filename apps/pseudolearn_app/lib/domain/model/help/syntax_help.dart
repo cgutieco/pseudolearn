@@ -1,73 +1,60 @@
 import 'package:equatable/equatable.dart';
 import '../editor/caret_range.dart';
-
-final class HelpPart extends Equatable {
-  final String identity;
-  final String text;
-
-  const HelpPart({required this.identity, required this.text});
-
-  @override
-  List<Object?> get props => [identity, text];
-}
-
-final class HelpExampleLink extends Equatable {
-  final String specification;
-  final String version;
-  final String caseId;
-  final String profile;
-  final String kind;
-  final String label;
-
-  const HelpExampleLink({
-    required this.specification,
-    required this.version,
-    required this.caseId,
-    required this.profile,
-    required this.kind,
-    required this.label,
-  });
-
-  @override
-  List<Object?> get props => [
-    specification,
-    version,
-    caseId,
-    profile,
-    kind,
-    label,
-  ];
-}
+import 'help_form.dart';
+import 'help_part.dart';
+import 'help_program.dart';
 
 final class HelpCardSections extends Equatable {
   final String id;
   final String title;
   final String summary;
-  final String purpose;
+  final HelpCategory? category;
+  final List<HelpFormLine> form;
   final List<HelpPart> parts;
-  final List<String> constraints;
-  final List<String> commonErrors;
-  final List<HelpExampleLink> examples;
+  final String? result;
+  final List<String> rules;
+  final List<HelpCommonError> commonErrors;
+  final List<HelpExample> examples;
 
   const HelpCardSections({
     required this.id,
     required this.title,
     required this.summary,
-    this.purpose = '',
+    this.category,
+    this.form = const [],
     this.parts = const [],
-    this.constraints = const [],
+    this.result,
+    this.rules = const [],
     this.commonErrors = const [],
     this.examples = const [],
   });
+
+  HelpCardSections withPrograms({
+    required List<HelpCommonError> commonErrors,
+    required List<HelpExample> examples,
+  }) => HelpCardSections(
+    id: id,
+    title: title,
+    summary: summary,
+    category: category,
+    form: form,
+    parts: parts,
+    result: result,
+    rules: rules,
+    commonErrors: commonErrors,
+    examples: examples,
+  );
 
   @override
   List<Object?> get props => [
     id,
     title,
     summary,
-    purpose,
+    category,
+    form,
     parts,
-    constraints,
+    result,
+    rules,
     commonErrors,
     examples,
   ];
@@ -87,6 +74,14 @@ final class SyntaxHelp extends Equatable {
     this.card,
     this.isPartial = false,
   });
+
+  SyntaxHelp withCard(HelpCardSections? value) => SyntaxHelp(
+    headline: headline,
+    range: range,
+    description: description,
+    card: value,
+    isPartial: isPartial,
+  );
 
   @override
   List<Object?> get props => [headline, description, card, range, isPartial];

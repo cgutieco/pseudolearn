@@ -5,7 +5,6 @@ import '../application/dashboard/dashboard_loader.dart';
 import '../application/diagram/diagram_cubit.dart';
 import '../application/diagram/diagram_projection.dart';
 import '../application/editor/editor_cubit.dart';
-import '../application/editor/help/syntax_help_cubit.dart';
 import '../application/execution/execution_cubit.dart';
 import '../application/execution/execution_history_cubit.dart';
 import '../application/export/export_cubit.dart';
@@ -26,6 +25,7 @@ import '../application/settings/settings_cubit.dart';
 import '../application/sync/sync_cubit.dart';
 import '../application/trace/trace_cubit.dart';
 import 'app_dependencies.dart';
+import 'syntax_help_provider.dart';
 import '../engine/execution/task_flow_projection.dart';
 import '../engine/execution/task_structure_projection.dart';
 
@@ -102,14 +102,6 @@ BlocProvider<EditorCubit> createEditorProvider(AppDependencies dependencies) {
       textEntry: dependencies.textEntryModality,
       clock: dependencies.clock,
     ),
-  );
-}
-
-BlocProvider<SyntaxHelpCubit> createSyntaxHelpProvider(
-  AppDependencies dependencies,
-) {
-  return BlocProvider<SyntaxHelpCubit>(
-    create: (_) => SyntaxHelpCubit(source: dependencies.syntaxHelpSource),
   );
 }
 

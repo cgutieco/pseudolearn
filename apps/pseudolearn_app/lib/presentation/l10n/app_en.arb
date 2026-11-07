@@ -1956,37 +1956,65 @@
   "@helpSymbolNote": {
     "description": "Nota para un símbolo del usuario sin ficha"
   },
-  "helpSectionPurpose": "Purpose",
-  "@helpSectionPurpose": {
-    "description": "Encabezado de la sección de propósito de una ficha"
+  "helpSectionHowToWrite": "How to write it",
+  "@helpSectionHowToWrite": {
+    "description": "Heading of a card's writing template"
   },
-  "helpSectionParts": "Parts",
-  "@helpSectionParts": {
-    "description": "Encabezado de la sección de partes de una ficha"
+  "helpSectionEachPart": "Each part",
+  "@helpSectionEachPart": {
+    "description": "Heading that explains each word and slot of the template"
   },
-  "helpSectionConstraints": "Constraints",
-  "@helpSectionConstraints": {
-    "description": "Encabezado de la sección de restricciones de una ficha"
+  "helpSectionResult": "Returns",
+  "@helpSectionResult": {
+    "description": "Heading of what a function or symbol returns"
   },
-  "helpSectionCommonErrors": "Common errors",
+  "helpSectionRules": "Rules",
+  "@helpSectionRules": {
+    "description": "Heading of a card's rules"
+  },
+  "helpSectionCommonErrors": "Common mistakes",
   "@helpSectionCommonErrors": {
-    "description": "Encabezado de la sección de errores comunes de una ficha"
+    "description": "Heading of a card's common errors section"
+  },
+  "helpSectionExample": "Example",
+  "@helpSectionExample": {
+    "description": "Heading of the examples section when there is only one"
   },
   "helpSectionExamples": "Examples",
   "@helpSectionExamples": {
-    "description": "Encabezado de la sección de ejemplos de una ficha"
+    "description": "Heading of the examples section when there are several"
   },
-  "helpExampleExecutable": "Runs",
-  "@helpExampleExecutable": {
-    "description": "Clase de ejemplo: programa que se ejecuta"
+  "helpExampleOutput": "Output",
+  "@helpExampleOutput": {
+    "description": "Label of the output an example produces"
   },
-  "helpExampleAccepted": "Valid",
-  "@helpExampleAccepted": {
-    "description": "Clase de ejemplo: programa válido que se analiza"
-  },
-  "helpExampleDiagnostic": "Deliberate diagnostic",
+  "helpExampleDiagnostic": "This program shows an error",
   "@helpExampleDiagnostic": {
-    "description": "Clase de ejemplo: programa con un diagnóstico deliberado"
+    "description": "Notice for an example that produces an error on purpose"
+  },
+  "helpCategoryBlock": "Block",
+  "@helpCategoryBlock": {
+    "description": "Card category: block with an opening and a closing"
+  },
+  "helpCategoryInstruction": "Instruction",
+  "@helpCategoryInstruction": {
+    "description": "Card category: one-line instruction"
+  },
+  "helpCategorySymbol": "Symbol",
+  "@helpCategorySymbol": {
+    "description": "Card category: operator or sign"
+  },
+  "helpCategoryFunction": "Function",
+  "@helpCategoryFunction": {
+    "description": "Card category: function that returns a result"
+  },
+  "helpCategoryType": "Data type",
+  "@helpCategoryType": {
+    "description": "Card category: data type"
+  },
+  "helpCategoryValue": "Value",
+  "@helpCategoryValue": {
+    "description": "Card category: fixed value"
   },
   "diagramRelationGeneralization": "Generalization",
   "@diagramRelationGeneralization": {

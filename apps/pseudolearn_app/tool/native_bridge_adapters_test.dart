@@ -359,8 +359,8 @@ void main() {
     final spanish = ask(UiLanguageId.spanish);
     final english = ask(UiLanguageId.english);
     expect(spanish.outcome, HelpOutcome.help);
-    expect(spanish.help?.card?.title, 'Bucle Mientras');
-    expect(english.help?.card?.title, 'While loop');
+    expect(spanish.help?.card?.title, 'Mientras');
+    expect(english.help?.card?.title, 'While');
     expect(english.help?.range, spanish.help?.range);
     expect(english.help?.card?.examples, isNotEmpty);
   });

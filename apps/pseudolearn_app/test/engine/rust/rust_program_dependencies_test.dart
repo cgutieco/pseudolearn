@@ -172,11 +172,11 @@ void main() {
 
     expect(english.outcome, HelpOutcome.help);
     expect(english.help?.card?.id, 'help.module-import');
-    expect(english.help?.card?.title, 'Module or symbol import');
+    expect(english.help?.card?.title, 'import');
     expect(english.help?.card?.examples, isNotEmpty);
     expect(spanish.outcome, HelpOutcome.help);
     expect(spanish.help?.card?.id, 'help.module-import');
-    expect(spanish.help?.card?.title, 'Importación de módulo o símbolo');
+    expect(spanish.help?.card?.title, 'Importar');
     expect(spanish.help?.card?.examples, isNotEmpty);
     expect(exportEnglish.outcome, HelpOutcome.help);
     expect(exportEnglish.help?.card?.id, 'help.module-export');

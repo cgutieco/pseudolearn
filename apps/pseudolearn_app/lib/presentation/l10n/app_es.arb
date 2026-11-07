@@ -2046,37 +2046,65 @@
   "@helpSymbolNote": {
     "description": "Nota para un símbolo del usuario sin ficha"
   },
-  "helpSectionPurpose": "Propósito",
-  "@helpSectionPurpose": {
-    "description": "Encabezado de la sección de propósito de una ficha"
+  "helpSectionHowToWrite": "Cómo se escribe",
+  "@helpSectionHowToWrite": {
+    "description": "Encabezado de la plantilla de escritura de una ficha"
   },
-  "helpSectionParts": "Partes",
-  "@helpSectionParts": {
-    "description": "Encabezado de la sección de partes de una ficha"
+  "helpSectionEachPart": "Cada parte",
+  "@helpSectionEachPart": {
+    "description": "Encabezado de la explicación de cada palabra y hueco de la plantilla"
   },
-  "helpSectionConstraints": "Restricciones",
-  "@helpSectionConstraints": {
-    "description": "Encabezado de la sección de restricciones de una ficha"
+  "helpSectionResult": "Devuelve",
+  "@helpSectionResult": {
+    "description": "Encabezado de lo que devuelve una función o un símbolo"
+  },
+  "helpSectionRules": "Reglas",
+  "@helpSectionRules": {
+    "description": "Encabezado de las reglas de una ficha"
   },
   "helpSectionCommonErrors": "Errores comunes",
   "@helpSectionCommonErrors": {
     "description": "Encabezado de la sección de errores comunes de una ficha"
   },
+  "helpSectionExample": "Ejemplo",
+  "@helpSectionExample": {
+    "description": "Encabezado de la sección de ejemplos cuando hay uno solo"
+  },
   "helpSectionExamples": "Ejemplos",
   "@helpSectionExamples": {
-    "description": "Encabezado de la sección de ejemplos de una ficha"
+    "description": "Encabezado de la sección de ejemplos cuando hay varios"
   },
-  "helpExampleExecutable": "Se ejecuta",
-  "@helpExampleExecutable": {
-    "description": "Clase de ejemplo: programa que se ejecuta"
+  "helpExampleOutput": "Resultado",
+  "@helpExampleOutput": {
+    "description": "Etiqueta de la salida que produce un ejemplo"
   },
-  "helpExampleAccepted": "Válido",
-  "@helpExampleAccepted": {
-    "description": "Clase de ejemplo: programa válido que se analiza"
-  },
-  "helpExampleDiagnostic": "Diagnóstico deliberado",
+  "helpExampleDiagnostic": "Este programa muestra un error",
   "@helpExampleDiagnostic": {
-    "description": "Clase de ejemplo: programa con un diagnóstico deliberado"
+    "description": "Aviso de un ejemplo que produce un error a propósito"
+  },
+  "helpCategoryBlock": "Bloque",
+  "@helpCategoryBlock": {
+    "description": "Categoría de una ficha: bloque con apertura y cierre"
+  },
+  "helpCategoryInstruction": "Instrucción",
+  "@helpCategoryInstruction": {
+    "description": "Categoría de una ficha: instrucción de una línea"
+  },
+  "helpCategorySymbol": "Símbolo",
+  "@helpCategorySymbol": {
+    "description": "Categoría de una ficha: operador o signo"
+  },
+  "helpCategoryFunction": "Función",
+  "@helpCategoryFunction": {
+    "description": "Categoría de una ficha: función que devuelve un resultado"
+  },
+  "helpCategoryType": "Tipo de dato",
+  "@helpCategoryType": {
+    "description": "Categoría de una ficha: tipo de dato"
+  },
+  "helpCategoryValue": "Valor",
+  "@helpCategoryValue": {
+    "description": "Categoría de una ficha: valor fijo"
   },
   "diagramRelationGeneralization": "Herencia",
   "@diagramRelationGeneralization": {

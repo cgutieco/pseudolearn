@@ -4,14 +4,19 @@ import '../../../domain/model/analysis/source_range.dart';
 import '../../../domain/model/profiles/syntax_profile_id.dart';
 import '../../../domain/model/settings/ui_language_id.dart';
 import '../../../domain/ports/syntax_help_source.dart';
+import 'help_program_highlighter.dart';
 import 'syntax_help_state.dart';
 
 final class SyntaxHelpCubit extends Cubit<SyntaxHelpState> {
   final SyntaxHelpSource _source;
+  final HelpProgramHighlighter _highlighter;
 
-  SyntaxHelpCubit({required SyntaxHelpSource source})
-    : _source = source,
-      super(const SyntaxHelpState());
+  SyntaxHelpCubit({
+    required SyntaxHelpSource source,
+    required HelpProgramHighlighter highlighter,
+  }) : _source = source,
+       _highlighter = highlighter,
+       super(const SyntaxHelpState());
 
   void documentChanged(int revision) {
     if (revision <= state.documentRevision &&
@@ -39,7 +44,15 @@ final class SyntaxHelpCubit extends Cubit<SyntaxHelpState> {
       revision: revision,
     );
     if (isClosed || result.revision < state.documentRevision) return;
-    emit(state.showing(result));
+    emit(
+      state.showing(
+        _highlighter.highlight(
+          result,
+          profileId: profileId,
+          languageId: languageId,
+        ),
+      ),
+    );
   }
 
   void dismiss() {

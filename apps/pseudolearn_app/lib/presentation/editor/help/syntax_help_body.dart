@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../domain/model/help/help_part.dart';
 import '../../../domain/model/help/help_query_result.dart';
 import '../../../domain/model/help/syntax_help.dart';
 import '../../components/typography/app_text.dart';
@@ -72,15 +73,8 @@ final class _HelpHeadline extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AppText(help.headline, variant: AppTextVariant.codeInline),
-        if (card != null) ...[
-          const SizedBox(height: SpacingTokens.space2),
-          Semantics(
-            header: true,
-            child: AppText(card.title, variant: AppTextVariant.heading4),
-          ),
-          AppText(card.summary, variant: AppTextVariant.bodyDefault),
-        ],
-        if (description != null) ...[
+        if (card != null) _CardHeadline(card: card),
+        if (card == null && description != null) ...[
           const SizedBox(height: SpacingTokens.space2),
           AppText(description, variant: AppTextVariant.bodyDefault),
         ],
@@ -88,6 +82,46 @@ final class _HelpHeadline extends StatelessWidget {
     );
   }
 }
+
+final class _CardHeadline extends StatelessWidget {
+  final HelpCardSections card;
+
+  const _CardHeadline({required this.card});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = AppThemeExtension.of(context);
+    final category = card.category;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: SpacingTokens.space2),
+        if (category != null)
+          AppText(
+            helpCategoryLabel(l10n, category),
+            variant: AppTextVariant.caption,
+            color: theme.colors.text.secondary,
+          ),
+        Semantics(
+          header: true,
+          child: AppText(card.title, variant: AppTextVariant.heading4),
+        ),
+        AppText(card.summary, variant: AppTextVariant.bodyDefault),
+      ],
+    );
+  }
+}
+
+String helpCategoryLabel(AppLocalizations l10n, HelpCategory category) =>
+    switch (category) {
+      HelpCategory.block => l10n.helpCategoryBlock,
+      HelpCategory.instruction => l10n.helpCategoryInstruction,
+      HelpCategory.symbol => l10n.helpCategorySymbol,
+      HelpCategory.function => l10n.helpCategoryFunction,
+      HelpCategory.type => l10n.helpCategoryType,
+      HelpCategory.value => l10n.helpCategoryValue,
+    };
 
 final class _HelpNotes extends StatelessWidget {
   final bool isSymbol;

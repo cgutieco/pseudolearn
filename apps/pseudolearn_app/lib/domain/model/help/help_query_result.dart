@@ -25,6 +25,9 @@ final class HelpQueryResult extends Equatable {
   const HelpQueryResult.failure({required int revision})
     : this._(HelpOutcome.failure, revision, null);
 
+  HelpQueryResult withHelp(SyntaxHelp value) =>
+      HelpQueryResult._(outcome, revision, value);
+
   @override
   List<Object?> get props => [outcome, revision, help];
 }

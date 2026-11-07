@@ -1,4 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pseudolearn_app/domain/model/help/help_form.dart';
+import 'package:pseudolearn_app/domain/model/help/help_part.dart';
+import 'package:pseudolearn_app/domain/model/help/help_program.dart';
 import 'package:pseudolearn_app/domain/model/help/help_query_result.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
@@ -79,20 +82,49 @@ void main() {
             'id': 'help.while',
             'title': 'While loop',
             'summary': 'Repeats.',
-            'purpose': 'Checks first.',
-            'parts': [
-              {'identity': 'whileKeyword', 'text': 'Starts.'},
+            'category': 'block',
+            'form': [
+              {
+                'indent': 0,
+                'segments': [
+                  {'kind': 'word', 'text': 'Mientras', 'joined': false},
+                  {'kind': 'slot', 'text': 'condición', 'slot': 'condition', 'joined': false},
+                ],
+              },
+              {
+                'indent': 1,
+                'segments': [
+                  {'kind': 'ellipsis', 'text': '...', 'joined': false},
+                ],
+              },
+              {
+                'indent': 0,
+                'segments': [
+                  {'kind': 'symbol', 'text': ';', 'joined': true},
+                ],
+              },
             ],
-            'constraints': <Object?>[],
-            'common_errors': <Object?>[],
+            'parts': [
+              {'kind': 'word', 'identity': 'whileKeyword', 'name': 'Mientras', 'text': 'Starts.'},
+              {'kind': 'slot', 'identity': 'condition', 'name': 'condición', 'text': 'A question.'},
+            ],
+            'result': 'Nothing.',
+            'rules': ['Close it.'],
+            'common_errors': [
+              {
+                'text': 'Forgetting the update.',
+                'program': {'source': 'Mientras x Hacer\nFinMientras\n'},
+              },
+              {'text': 'No code.'},
+            ],
             'examples': [
               {
                 'specification': 'LANG.CONTROL.WHILE',
                 'version': '1.0.0',
                 'case': 'C1',
-                'profile': 'en',
                 'kind': 'executable',
-                'label': 'Runs',
+                'note': 'Counts to three.',
+                'program': {'source': 'Escribir 1;\n', 'output': '1\n'},
               },
             ],
           },
@@ -104,7 +136,21 @@ void main() {
       expect(result.help?.range.start, 14);
       expect(result.help?.range.end, 22);
       expect(result.help?.card?.title, 'While loop');
-      expect(result.help?.card?.examples.single.caseId, 'C1');
+      final card = result.help?.card;
+      expect(card?.category, HelpCategory.block);
+      expect(card?.form.first.segments.first.kind, HelpFormSegmentKind.word);
+      expect(card?.form.first.segments.last.kind, HelpFormSegmentKind.slot);
+      expect(card?.form[1].indent, 1);
+      expect(card?.form[1].segments.single.kind, HelpFormSegmentKind.ellipsis);
+      expect(card?.form.last.segments.single.kind, HelpFormSegmentKind.symbol);
+      expect(card?.form.last.segments.single.joined, isTrue);
+      expect(card?.parts.last.kind, HelpPartKind.slot);
+      expect(card?.result, 'Nothing.');
+      expect(card?.rules, ['Close it.']);
+      expect(card?.commonErrors.first.program?.source, startsWith('Mientras'));
+      expect(card?.commonErrors.last.program, isNull);
+      expect(card?.examples.single.kind, HelpExampleKind.executable);
+      expect(card?.examples.single.program.output, '1\n');
       expect(result.help?.description, 'Starts a loop.');
       expect(result.help?.headline, 'Mientras');
     });
