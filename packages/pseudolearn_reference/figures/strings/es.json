@@ -1325,6 +1325,15 @@
       "motivo-2a": "fuera",
       "motivo-2b": "de rango",
       "pie": "el primer filtro que falla da el motivo"
+    },
+    "ruta-kiosco-modulos": {
+      "titulo": "Los módulos del kiosco",
+      "descripcion": "Cuatro cajas: principal arriba; tickets y ventas en el medio; inventario abajo. Las flechas van de principal a los otros tres, de tickets a ventas y de ventas a inventario. Ninguna flecha vuelve hacia atrás.",
+      "principal": "principal",
+      "tickets": "tickets",
+      "ventas": "ventas",
+      "inventario": "inventario",
+      "pie": "la flecha va de quien usa a quien es usado"
     }
   }
 }

@@ -1325,6 +1325,15 @@
       "motivo-2a": "out",
       "motivo-2b": "of range",
       "pie": "the first filter that fails gives the reason"
+    },
+    "ruta-kiosco-modulos": {
+      "titulo": "The kiosk modules",
+      "descripcion": "Four boxes: principal at the top; tickets and ventas in the middle; inventario at the bottom. The arrows go from principal to the other three, from tickets to ventas and from ventas to inventario. No arrow goes back.",
+      "principal": "principal",
+      "tickets": "tickets",
+      "ventas": "ventas",
+      "inventario": "inventario",
+      "pie": "the arrow goes from whoever uses to whoever is used"
     }
   }
 }

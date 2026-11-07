@@ -1,0 +1,12 @@
+<svg viewBox="0 0 340 220">
+  <caja x="110" y="8" ancho="120" alto="34" rol="acento-procedimental" fondo="0.2" texto="{{t:principal}}" tamano="13" fuente="mono"/>
+  <caja x="4" y="92" ancho="100" alto="34" rol="acento-procedimental" fondo="0.12" texto="{{t:tickets}}" tamano="13" fuente="mono"/>
+  <caja x="120" y="92" ancho="100" alto="34" rol="acento-procedimental" fondo="0.12" texto="{{t:ventas}}" tamano="13" fuente="mono"/>
+  <caja x="236" y="160" ancho="100" alto="34" rol="acento-procedimental" fondo="0.12" texto="{{t:inventario}}" tamano="13" fuente="mono"/>
+  <flecha puntos="140,42 64,88" rol="tinta"/>
+  <flecha puntos="170,42 170,88" rol="tinta"/>
+  <flecha puntos="210,42 286,156" rol="tinta"/>
+  <flecha puntos="104,109 116,109" rol="tinta"/>
+  <flecha puntos="200,126 250,156" rol="tinta"/>
+  <text x="170" y="212" font-size="12" text-anchor="middle" fill="@atenuado">{{t:pie}}</text>
+</svg>

@@ -89,5 +89,8 @@
   "valor-opcional": {"etiqueta": "valor que puede faltar", "formas": ["valor que puede faltar"], "estricto": true, "receta": false},
   "resultado-con-error": {"etiqueta": "resultado con error", "formas": ["resultado con error"], "estricto": true, "receta": false},
   "propagar": {"etiqueta": "propagar un error", "formas": ["propagar"], "estricto": true, "receta": true},
-  "validar": {"etiqueta": "validar", "formas": ["validar", "validación"], "estricto": false, "receta": false}
+  "validar": {"etiqueta": "validar", "formas": ["validar", "validación"], "estricto": false, "receta": false},
+  "modulo": {"etiqueta": "módulo", "formas": ["módulo", "módulos"], "estricto": true, "receta": true},
+  "importar": {"etiqueta": "importar", "formas": ["importar", "importación"], "estricto": true, "receta": false},
+  "visibilidad": {"etiqueta": "visibilidad", "formas": ["visibilidad", "público", "privado"], "estricto": true, "receta": false}
 }

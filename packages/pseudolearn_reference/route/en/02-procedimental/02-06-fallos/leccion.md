@@ -60,7 +60,7 @@ No se puede dividir entre 0
 
 When a subprogram receives a `Result` it does not know how to handle, it can [[def:propagar|propagate]] the error: `Propagate` takes out the value if it was a success and, if it was an error, gives it straight back to whoever called. The details are in [the Specification](especificacion:tipos.opcional-resultado).
 
-To [[def:validar|validate]] is to check an input before using it. To turn a text into a number there is `AEntero`, but with a text that is not a number it stops the program. That is why, before converting, the sign-up checks with its own function that the text is a number.
+To [[def:validar|validate]] is to check an input before using it. To turn a text into a number there is `toInteger`, but with a text that is not a number it stops the program. That is why, before converting, the sign-up checks with its own function that the text is a number.
 
 ::: especificacion
 - tipos.opcional-resultado

@@ -58,7 +58,7 @@ Jugo 3
 
 An [[def:enumerado|enumeration]] is a type with a closed list of named values, like the days of the week: there is no eighth day that can be written by mistake.
 
-A [[def:vector|vector]] is a list that can grow: it starts empty and elements are added with `Add`. It is useful when you do not know how much data there will be.
+A [[def:vector|vector]] is a list that can grow: it starts empty and elements are added with `append`. It is useful when you do not know how much data there will be.
 
 A [[def:diccionario|dictionary]] keeps values that are found by a [[def:clave|key]], like a phone looked up by name. It remembers the order in which the keys were added.
 

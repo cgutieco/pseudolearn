@@ -89,5 +89,8 @@
   "valor-opcional": {"etiqueta": "optional value", "formas": ["optional value", "optional values"], "estricto": true, "receta": false},
   "resultado-con-error": {"etiqueta": "result with error", "formas": ["result with error"], "estricto": true, "receta": false},
   "propagar": {"etiqueta": "propagate", "formas": ["propagate", "propagates"], "estricto": true, "receta": true},
-  "validar": {"etiqueta": "validate", "formas": ["validate", "validates", "validation"], "estricto": false, "receta": false}
+  "validar": {"etiqueta": "validate", "formas": ["validate", "validates", "validation"], "estricto": false, "receta": false},
+  "modulo": {"etiqueta": "module", "formas": ["module", "modules"], "estricto": true, "receta": true},
+  "importar": {"etiqueta": "import", "formas": ["import", "imports"], "estricto": true, "receta": false},
+  "visibilidad": {"etiqueta": "visibility", "formas": ["visibility"], "estricto": true, "receta": false}
 }

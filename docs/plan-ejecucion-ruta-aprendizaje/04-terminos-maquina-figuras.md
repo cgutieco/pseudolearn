@@ -112,7 +112,7 @@ superficie en español; la edición inglesa define las suyas.
 | `propagar` | propagar un error | propagar | sí | sí | 2.6 |
 | `validar` | validar | validar, validación | — | — | 2.6 |
 | `modulo` | módulo | módulo, módulos | sí | sí | 2.7 |
-| `importar` | importar | importar, importa | sí | — | 2.7 |
+| `importar` | importar | importar, importación | sí | — | 2.7 |
 | `visibilidad` | visibilidad | visibilidad, público, privado | sí | — | 2.7 |
 
 ### Parte III
