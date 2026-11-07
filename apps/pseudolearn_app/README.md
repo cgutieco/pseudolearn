@@ -116,7 +116,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Resaltado y unidades de foco en la ruta Rust                    | `RustProgramAnalyzer` proyecta los tokens de `analyze`; `RustFocusTracker` deriva `unitId` de la vista pública del programa                | Resuelto                                                                                              |
 | Pruebas de widgets con el puente real                           | Los widgets se prueban con fakes; solo `ExecutionCubit` se ejercita contra la biblioteca nativa en `tool/native_bridge_adapters_test.dart` | Abierto |
 | Ficha de ayuda de `Importar` y `Exportar` | Catálogo `TOOL.SERVICE.CATALOG` y resolución contextual del servicio; el pegado aislado conserva su diagnóstico, mientras la consulta sobre la directiva y su alias devuelve la ficha propia | Resuelto en PG-A.08; no enlaza paquetes ni habilita E/S |
-| Ampliar el subconjunto de código equivalente | Emisores Python y Rust: `Segun` en Python (exige 3.10 comprobable), arreglos con base 1, clases y valores de retorno en Rust, lógicos en la salida; cada ampliación necesita su caso diferencial (§4.11) | Abierto |
+| Ampliar el código equivalente | El núcleo traduce el lenguaje completo salvo los pendientes declarados en el README de `pseudolearn_transpiler` (capacidades, `Tareas` con captura de fallos, `Elegir`) | Abierto en el núcleo |
 | Valor de un parámetro `Canal` en la vista Variables | La página de valores de `debug_state` aplana el canal como registro con la hoja interna `identity` y la muestra como `stream.identity = Nulo`; la API debería publicar el canal como un valor propio (número de canal). La app no oculta la hoja por nombre, porque ocultaría también un campo de usuario llamado igual | Abierto; reportado desde el rediseño de la pestaña `Tareas` |
 
 ---
@@ -903,59 +903,32 @@ La capa `host` comparte el anillo 2 con engine y data; solo importa model y port
     - *Sincronización mediante eventos en `presentation/` (BlocListener cruzados):* Descartado porque introduce
       orquestación en la interfaz y produce desincronizaciones de estado.
 
-### 4.11 Emisión de código equivalente (Python y Rust) para subprogramas, POO y funciones predefinidas
+### 4.11 Código equivalente (Python y Rust)
 
-- **Problema:** Enseñar programación estructurada y orientada a objetos requiere contrastar el pseudocódigo con
-  implementaciones en lenguajes industriales sin depender de herramientas externas.
-- **Elección:** En `engine/export/`, `PythonCodeEmitter` y `RustCodeEmitter` traducen el AST del programa. Cada emisor
-  se
-  descompone en emisores especializados de sentencias y expresiones:
-    - **Python:** Clases con `def __init__(self, ...)`, métodos con parámetro `self`, invocaciones a superclase con
-      `super()`, y mapeo de funciones predefinidas (`math.sqrt`, `len`, `str`, `random.random`) con imports
-      condicionales.
-    - **Rust:** Estructuras `struct` con `#[derive(Default, Clone)]`, composición de base para herencia, bloques `impl`
-      con métodos `&mut self`, constructor estático `pub fn new() -> Self`, y tipado estricto con funciones
-      idiomáticas (
-      `parse::<i64>()`, `.sqrt()`, `format!`).
-- **Exportación (`engine/rust/export/`):** `RustProgramExporter` consume `API.PROGRAM.VIEW` y rechaza
-  errores de análisis. Los emisores reciben formas con operadores, literales, incorporadas resueltas,
-  receptores, parámetros y tipos abstractos; no reinterpretan lexemas del perfil. La firma del código
-  equivalente tiene un dueño compartido. Se descartan emisores que dependan de un AST de otro lenguaje.
-- **Código equivalente honesto (`API.PROGRAM.VIEW#R17`/`R18`):** una traducción es equivalente solo si el programa
-  entero cae en el subconjunto comprobado de ese destino. `ExportSupport` (datos por destino) lista los
-  `syntax_kind` admitidos, las incorporadas, los operadores, literales y tipos que un destino no prueba;
-  `ExportCoverage` recorre todos los nodos de la vista y las unidades que ningún emisor lee, y `RustProgramExporter`
-  devuelve `ExportUnavailable` con una lista de `ExportBlocker` (construcción por su identidad pública, nodo y rango)
-  antes de emitir una sola línea. Un lector que descarta una unidad o una sentencia ya no produce un programa
-  parcial: `UnsupportedShape` y sus comentarios de relleno desaparecieron. Para programa mixto manda la construcción
-  menos soportada, un error de análisis sigue siendo `ExportAnalysisError`, y cada revisión nueva reemplaza el
-  resultado y limpia código y líneas de foco anteriores. La disponibilidad se decide por destino. Se descartó una
-  categoría de «ilustración»: no existe contenido rotulado ni pruebas que impidan copiarlo como equivalente.
-  - **Evidencia.** `test/engine/rust/export/export_differential_test.dart` ejecuta cada programa del subconjunto en el
-    motor y en `python3 -I` o `rustc --edition=2021` y compara la salida byte a byte (31 comparaciones). Es evidencia
-    de equivalencia para esos programas; las pruebas de cadenas emitidas no lo son. Límites: salida determinista, sin
-    entrada del usuario, sin concurrencia y con las versiones del host (`python3` 3.9, `rustc` 1.99).
-  - **Python:** comprobado para aritmética entera y real, `/` y `^`, salida (con `sep=""`), selección, `Mientras`,
-    `Repetir`, `Para`, subprogramas con y sin valor, recursión, clases con herencia y `Super`, concatenación de
-    textos y las incorporadas `Raiz`, `Longitud`, `ConvertirATexto` y `Trunc`. No disponible: `Segun` (`match`
-    exige Python 3.10 y el host de prueba tiene 3.9), arreglos (`Dimension` es base 1 en el motor y base 0 en el
-    emisor), `Leer`, `Abs`, `Redon` (el redondeo de Python difiere), `Azar`, `\`, salida de valores lógicos
-    (`True` frente a `Verdadero`) y toda construcción fuera de la lista.
-  - **Rust:** comprobado para enteros, textos, selección, `Mientras`, `Repetir`, `Para`, `Segun`, procedimientos,
-    llamadas, salida y `Longitud`, `ConvertirATexto` y `Trunc`. No disponible: clases e instanciación (`self`
-    inexistente en constructores), subprogramas con valor de retorno, valores reales, `/`, `^`, concatenación de
-    textos, `Raiz`, arreglos, `Leer` y lo mismo que Python no admite.
-  - **Azar en Rust.** `Azar`, `Aleatorio` y `AzarReal` no son exportables a Rust: la biblioteca estándar de Rust no
-    trae generador y el código exportado no añade dependencias, así que no existe una traducción que reproduzca la
-    secuencia sembrada del motor. Como no están entre las incorporadas de `rustExportSupport`, `ExportCoverage` las
-    nombra como `builtin:random`, `builtin:randomBetween` y `builtin:randomUnit` con su nodo y rango, igual que una
-    capacidad. Se retiraron de `RustExpressionRules` las traducciones a valores fijos (`0`, el límite inferior y
-    `0.0`), que no eran equivalentes y solo habrían aparecido si alguien ampliaba la lista de incorporadas
-    (`rust_program_exporter_availability_test.dart`). Se descartó emitir una dependencia de azar en el código
-    exportado.
-  - **Construcciones de PG-L.** Clases genéricas (`type_parameters`), variantes declaradas (`variant_unit`) y arreglos de registros (`record_unit` con `dimension_declaration`) no están en el subconjunto comprobado de ningún destino: la exportación devuelve `ExportUnavailable` y nombra la construcción, sin traducción parcial (`rust_program_exporter_availability_test.dart`).
-  - **Arreglo conjunto de emisores.** La salida con varios argumentos añadía un espacio que el motor no escribe;
-    Python emite `sep=""` y Rust une los marcadores sin separador.
+- **Problema:** Enseñar programación estructurada, orientada a objetos y concurrente requiere contrastar el
+  pseudocódigo con implementaciones en lenguajes industriales sin depender de herramientas externas, y el código
+  mostrado tiene que ser realmente equivalente.
+- **Elección:** La traducción pertenece al núcleo. `RustProgramExporter` (`engine/rust/export/`) lee primero la vista
+  del programa; si el análisis tiene errores, incluidas las dependencias sin enlazar, responde error de análisis sin
+  invocar otra operación (`API.PROGRAM.VIEW#R16`). Si no, crea un documento, llama a la operación `equivalent_code`
+  del puente con el destino y libera el documento. El núcleo traduce el programa analizado completo desde su
+  representación tipada y responde `ready` (código y nodo de origen de cada línea), `unavailable` (construcciones
+  pendientes con su nodo) o `analysis_error`. La app antepone la línea de cabecera (`targetCodeHeader`), convierte los
+  nodos en `ProgramNodeId` y toma de la vista el rango de cada construcción pendiente. Las decisiones de traducción, las correspondencias de cada
+  construcción y sus pendientes viven en el README de `pseudolearn_transpiler`.
+- **Código equivalente honesto (`API.PROGRAM.VIEW#R17`/`R18`):** el destino Python exige 3.11 y el destino Rust la
+  edición 2024; ambos usan solo su biblioteca estándar. Si alguna construcción queda pendiente, no se entrega un
+  programa parcial: la pestaña muestra el mensaje localizado con las construcciones y la línea de la primera. Cada
+  revisión nueva reemplaza el resultado y limpia código y líneas de foco anteriores.
+- **Evidencia:** El barrido diferencial del núcleo (`pseudolearn_api/tests/equivalent_code_sweep.rs`) ejecuta cada
+  caso `execute` del corpus en el motor, compila o interpreta la traducción y compara la salida byte a byte. En los
+  casos de `lang.*` que terminan con normalidad, Python reproduce 726 de 812 y Rust 715 de 812; el resto son
+  construcciones pendientes declaradas (capacidades, `Tareas` con captura de fallos, `Elegir`) o diferencias
+  registradas en el README del traductor. `test/engine/rust/export/rust_program_exporter_test.dart` comprueba el
+  contrato por el puente real.
+- **Alternativas descartadas y por qué:** Emisores en Dart sobre la vista del programa. Reconstruían en la app los
+  tipos que el motor ya resuelve, y cada construcción nueva exigía duplicar semántica. Por eso casi ningún programa
+  con tareas, variantes o clases tenía equivalente. Se retiraron junto con su prueba diferencial en Dart.
 
 - **Diagramas con errores semánticos:** La vista estructural permite representar clases o controles
   cuando hay errores semánticos, incluidos ciclos de herencia, siempre que la sintaxis sea válida.

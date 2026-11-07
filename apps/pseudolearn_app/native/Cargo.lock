@@ -987,6 +987,7 @@ dependencies = [
  "pseudolearn_source",
  "pseudolearn_syntax",
  "pseudolearn_timeline",
+ "pseudolearn_transpiler",
  "pseudolearn_vm",
  "serde",
  "serde_json",
@@ -1149,6 +1150,15 @@ dependencies = [
  "pseudolearn_diagnostics",
  "pseudolearn_runtime",
  "pseudolearn_vm",
+]
+
+[[package]]
+name = "pseudolearn_transpiler"
+version = "0.1.0"
+dependencies = [
+ "pseudolearn_lexicon",
+ "pseudolearn_semantic",
+ "pseudolearn_source",
 ]
 
 [[package]]
