@@ -1,0 +1,142 @@
+[
+  {
+    "id": "parte-0",
+    "numero": "0",
+    "prefijo": "0",
+    "titulo": "How to read this specification",
+    "resumen": "Conventions, figures and profiles: what helps to know before you start."
+  },
+  {
+    "id": "parte-1",
+    "numero": "I",
+    "prefijo": "1",
+    "titulo": "Overview",
+    "resumen": "What PseudoLearn is and what happens to a program from the moment you write it until it ends."
+  },
+  {
+    "id": "parte-2",
+    "numero": "II",
+    "prefijo": "2",
+    "titulo": "Lexical structure",
+    "resumen": "The smallest pieces of the text: words, numbers, texts, signs and comments."
+  },
+  {
+    "id": "parte-3",
+    "numero": "III",
+    "prefijo": "3",
+    "titulo": "Types and values",
+    "resumen": "Which kinds of data exist, how much they hold and how they relate."
+  },
+  {
+    "id": "parte-4",
+    "numero": "IV",
+    "prefijo": "4",
+    "titulo": "Expressions and operators",
+    "resumen": "How things are computed: arithmetic, comparisons, logic and the order of operations."
+  },
+  {
+    "id": "parte-5",
+    "numero": "V",
+    "prefijo": "5",
+    "titulo": "Declarations and statements",
+    "resumen": "Creating variables and constants, giving them values and ending each instruction."
+  },
+  {
+    "id": "parte-6",
+    "numero": "VI",
+    "prefijo": "6",
+    "titulo": "Control flow",
+    "resumen": "Deciding, repeating, leaving early and leaving clean-up for the end."
+  },
+  {
+    "id": "parte-7",
+    "numero": "VII",
+    "prefijo": "7",
+    "titulo": "Subroutines",
+    "resumen": "Naming a piece of a program, passing it data and receiving a result."
+  },
+  {
+    "id": "parte-8",
+    "numero": "VIII",
+    "prefijo": "8",
+    "titulo": "Programs, modules and profiles",
+    "resumen": "How a program is organised into files and two languages."
+  },
+  {
+    "id": "parte-9",
+    "numero": "IX",
+    "prefijo": "9",
+    "titulo": "Objects",
+    "resumen": "Classes, attributes, methods, inheritance and interfaces."
+  },
+  {
+    "id": "parte-10",
+    "numero": "X",
+    "prefijo": "10",
+    "titulo": "Errors and diagnostics",
+    "resumen": "How the engine warns that something is wrong, and why."
+  },
+  {
+    "id": "parte-11",
+    "numero": "XI",
+    "prefijo": "11",
+    "titulo": "Concurrency and asynchrony",
+    "resumen": "Several tasks that take turns, talk to each other and wait for the outside world."
+  },
+  {
+    "id": "parte-12",
+    "numero": "XII",
+    "prefijo": "12",
+    "titulo": "Library",
+    "resumen": "Ready-to-use functions: text, mathematics, files, JSON, network and time."
+  },
+  {
+    "id": "parte-13",
+    "numero": "XIII",
+    "prefijo": "13",
+    "titulo": "The engine inside",
+    "resumen": "The parts of the engine that analyse, translate and run every program."
+  },
+  {
+    "id": "parte-a",
+    "numero": "A",
+    "prefijo": "A",
+    "titulo": "Appendix A — Grammar",
+    "resumen": "The complete grammar, generated from the corpus."
+  },
+  {
+    "id": "parte-b",
+    "numero": "B",
+    "prefijo": "B",
+    "titulo": "Appendix B — Reserved words",
+    "resumen": "Every word in Spanish and English, generated from the corpus."
+  },
+  {
+    "id": "parte-c",
+    "numero": "C",
+    "prefijo": "C",
+    "titulo": "Appendix C — Diagnostics",
+    "resumen": "The complete catalogue of engine messages."
+  },
+  {
+    "id": "parte-d",
+    "numero": "D",
+    "prefijo": "D",
+    "titulo": "Appendix D — Built-in functions",
+    "resumen": "Every function and operation of the library."
+  },
+  {
+    "id": "parte-e",
+    "numero": "E",
+    "prefijo": "E",
+    "titulo": "Appendix E — Glossary",
+    "resumen": "The technical words of this specification, explained."
+  },
+  {
+    "id": "parte-f",
+    "numero": "F",
+    "prefijo": "F",
+    "titulo": "Appendix F — Alphabetical index",
+    "resumen": "Everything in the specification, ordered from A to Z."
+  }
+]

@@ -1,0 +1,23 @@
+[package]
+name = "reference_cli"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+reference_model = { path = "../reference_model", version = "=0.1.0" }
+reference_corpus = { path = "../reference_corpus", version = "=0.1.0" }
+reference_figures = { path = "../reference_figures", version = "=0.1.0" }
+reference_format = { path = "../reference_format", version = "=0.1.0" }
+reference_engine = { path = "../reference_engine", version = "=0.1.0" }
+reference_resolve = { path = "../reference_resolve", version = "=0.1.0" }
+reference_verify = { path = "../reference_verify", version = "=0.1.0" }
+reference_export = { path = "../reference_export", version = "=0.1.0" }
+serde_json = "1"
+
+[[bin]]
+name = "reference"
+path = "src/main.rs"

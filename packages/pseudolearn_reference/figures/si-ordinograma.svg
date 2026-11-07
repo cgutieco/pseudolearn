@@ -1,0 +1,25 @@
+<svg viewBox="0 0 340 430">
+  <caja x="110" y="8" ancho="120" alto="34" esquina="17" rol="atenuado" texto="{{t:inicio}}"/>
+  <flecha puntos="170,42 170,66"/>
+  <caja x="75" y="66" ancho="190" alto="40" rol="tinta" fondo="0.04" fuente="mono" texto="{{codigo:estatura &lt;- 128}}"/>
+  <flecha puntos="170,106 170,130"/>
+  <polygon points="170,130 270,180 170,230 70,180" fill="@acento-estructurado" fill-opacity="0.12" stroke="@acento-estructurado" stroke-width="1.5"/>
+  <text x="170" y="185" text-anchor="middle" font-size="13" font-family="mono" font-weight="600">{{codigo:estatura >= 120}}</text>
+  <flecha puntos="70,180 70,268" rol="exito"/>
+  <text x="78" y="246" font-size="13" fill="@exito" font-weight="600">{{lex:booleanTrue}}</text>
+  <flecha puntos="270,180 270,268" rol="error"/>
+  <text x="262" y="246" text-anchor="end" font-size="13" fill="@error" font-weight="600">{{lex:booleanFalse}}</text>
+  <caja x="4" y="268" ancho="132" alto="56" rol="tinta" fondo="0.04" fuente="mono" tamano="12" texto="{{lex:write}}¶{{t:texto-si}}"/>
+  <caja x="204" y="268" ancho="132" alto="56" rol="tinta" fondo="0.04" fuente="mono" tamano="12" texto="{{lex:write}}¶{{t:texto-no}}"/>
+  <path d="M 70 324 V 352 H 164" fill="none" stroke="@tinta" stroke-width="1.5"/>
+  <path d="M 270 324 V 352 H 176" fill="none" stroke="@tinta" stroke-width="1.5"/>
+  <circle cx="170" cy="352" r="6" fill="@tinta"/>
+  <text x="182" y="372" font-size="12" fill="@atenuado">{{t:juntan}}</text>
+  <flecha puntos="170,358 170,384"/>
+  <caja x="110" y="384" ancho="120" alto="34" esquina="17" rol="atenuado" texto="{{t:fin}}"/>
+  <g data-paso="1" data-hasta="1"><rect x="70" y="61" width="200" height="50" rx="9" fill="none" stroke="@acento-procedimental" stroke-width="3"/></g>
+  <g data-paso="2" data-hasta="2"><polygon points="170,123 282,180 170,237 58,180" fill="none" stroke="@acento-procedimental" stroke-width="3"/></g>
+  <g data-paso="3" data-hasta="3"><path d="M 70 180 V 266" fill="none" stroke="@acento-procedimental" stroke-width="4"/><rect x="0" y="263" width="140" height="66" rx="9" fill="none" stroke="@acento-procedimental" stroke-width="3"/></g>
+  <g data-paso="4"><caja x="204" y="268" ancho="132" alto="56" rol="error" fondo="0.16" colortexto="error" negrita="" texto="{{t:no-se-ejecuta}}"/></g>
+  <g data-paso="5" data-hasta="5"><path d="M 70 324 V 352 H 164 M 170 358 V 382" fill="none" stroke="@acento-procedimental" stroke-width="4"/><rect x="105" y="379" width="130" height="44" rx="21" fill="none" stroke="@acento-procedimental" stroke-width="3"/></g>
+</svg>
