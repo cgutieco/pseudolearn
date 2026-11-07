@@ -16,10 +16,10 @@ Antes de ejecutar un programa, el motor lo parte en piezas, comprueba que tiene 
 Cuando pulsas «Ejecutar», el texto del programa recorre un camino de cinco etapas. Cada etapa produce algo nuevo a partir de lo anterior. Avanza por la figura para seguir el programa `Doble` en su viaje.
 
 ```programa id=doble titulo="El programa que viaja" ejecutar
-Proceso Doble
+Algoritmo Doble
   Definir n Como Entero <- 21;
   Escribir n * 2;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -28,8 +28,8 @@ FinProceso
 
 ```figura id=viaje
 pie: Las cinco etapas del motor. Las tres primeras ocurren antes de ejecutar nada; si alguna encuentra errores, el programa no llega a ejecutarse.
-paso: **Análisis léxico.** El texto se parte en piezas llamadas tokens: `Proceso`, `Doble`, `Definir`, `n`, `Como`, `Entero`… Los espacios y los comentarios se guardan aparte.
-paso: **Análisis sintáctico.** Los tokens se agrupan en un árbol: un proceso que contiene una definición y una escritura.
+paso: **Análisis léxico.** El texto se parte en piezas llamadas tokens: `Algoritmo`, `Doble`, `Definir`, `n`, `Como`, `Entero`… Los espacios y los comentarios se guardan aparte.
+paso: **Análisis sintáctico.** Los tokens se agrupan en un árbol: un algoritmo que contiene una definición y una escritura.
 paso: **Análisis semántico.** El motor comprueba los nombres y los tipos: `n` existe, es un `Entero` y `n * 2` también lo es.
 paso: **Traducción.** El árbol se convierte en una representación intermedia y luego en instrucciones simples para la máquina virtual.
 paso: **Ejecución.** La máquina virtual ejecuta las instrucciones una a una y escribe 42.

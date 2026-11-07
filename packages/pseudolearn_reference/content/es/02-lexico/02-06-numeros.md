@@ -26,12 +26,12 @@ pie: Qué se lee como entero, qué como real y qué no es un número.
 El signo menos no forma parte del literal: `-5` es el operador menos aplicado a `5`.
 
 ```programa id=numeros titulo="Enteros y reales escritos tal cual" ejecutar
-Proceso Numeros
+Algoritmo Numeros
   Definir edad Como Entero <- 12;
   Definir pi Como Real <- 3.14159;
   Definir mitad Como Real <- 0.5;
   Escribir edad, " ", pi, " ", mitad, " ", -7;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -46,9 +46,9 @@ Un literal entero tiene que caber en 64 bits con signo: el mayor es 922337203685
 Un entero demasiado grande se detecta antes de ejecutar:
 
 ```programa id=enorme titulo="Un entero que no cabe" ejecutar
-Proceso Enorme
+Algoritmo Enorme
   Definir x Como Entero <- 9223372036854775808;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

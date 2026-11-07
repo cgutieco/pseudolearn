@@ -36,7 +36,7 @@ Hasta Que «condición»
 Es el reflejo de [`Mientras`](#control.mientras): la pregunta va al final y su sentido es el contrario. `Mientras` sigue con `Verdadero`; `Repetir` **para** con `Verdadero`.
 
 ```programa id=dado titulo="Tirar hasta sacar un 6" ejecutar
-Proceso Dado
+Algoritmo Dado
   Definir tirada Como Entero;
   Definir intentos Como Entero <- 0;
   Repetir
@@ -44,7 +44,7 @@ Proceso Dado
     intentos <- intentos + 1;
   Hasta Que tirada = 6
   Escribir "Salió el 6 en el intento ", intentos;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -60,13 +60,13 @@ pie: En `Repetir` el cuerpo va antes que la pregunta. Aunque la condición ya se
 Como el cuerpo va primero, lo que asigna sirve para la condición y vale después del bucle: una variable sin valor inicial que el cuerpo asigna queda con valor.
 
 ```programa id=una-vez titulo="Una vuelta aunque la condición ya se cumpla" ejecutar
-Proceso UnaVez
+Algoritmo UnaVez
   Definir n Como Entero <- 10;
   Repetir
     Escribir "Vuelta con n = ", n;
     n <- n + 1;
   Hasta Que n > 5
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -75,12 +75,12 @@ Vuelta con n = 10
 
 ::: errores
 ```programa id=repetir-numero titulo="Hasta Que con un número" ejecutar
-Proceso RepetirNumero
+Algoritmo RepetirNumero
   Definir n Como Entero <- 3;
   Repetir
     n <- n - 1;
   Hasta Que n
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

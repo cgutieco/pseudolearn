@@ -24,10 +24,10 @@ pie: Las tres formas de mostrar el lenguaje: píldora de código, hueco y bloque
 Los programas completos van en bloques numerados. Debajo de cada bloque aparece la salida que produjo el motor y cómo terminó la ejecución. El botón «Probar en el editor» lo abre como documento nuevo.
 
 ```programa id=edad titulo="Un programa con su salida" ejecutar
-Proceso Edad
+Algoritmo Edad
   Definir edad Como Entero <- 12;
   Escribir "Tengo ", edad, " años";
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -36,7 +36,7 @@ Tengo 12 años
 
 ## Colores {#colores}
 
-Los colores siguen al editor. Las palabras que estructuran el programa (`Si`, `Mientras`, `Proceso`) tienen un color; las de subprogramas (`SubProceso`, `Retornar`) otro; las de objetos (`Clase`, `Nuevo`) un tercero. Los números, los textos y los valores lógicos tienen el suyo. El color ayuda, pero nunca es la única pista: el texto siempre dice lo mismo sin color.
+Los colores siguen al editor. Las palabras que estructuran el programa (`Si`, `Mientras`, `Algoritmo`) tienen un color; las de subprogramas (`SubProceso`, `Retornar`) otro; las de objetos (`Clase`, `Nuevo`) un tercero. Los números, los textos y los valores lógicos tienen el suyo. El color ayuda, pero nunca es la única pista: el texto siempre dice lo mismo sin color.
 
 ::: resumen
 - Las palabras del lenguaje aparecen como píldoras de código.

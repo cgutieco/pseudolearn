@@ -25,7 +25,7 @@ A subprogram is a named piece of program: it is written once and used as many ti
 - `Subroutine` opens a subprogram. The parentheses are required even with no parameters.
 - `As` «type» is optional: with it, the subprogram **returns** a value; without it, it only does things.
 - `Function` declares a function with a **result variable**: the value «result» holds at the end is what is returned.
-- `EndSubroutine` and `End Function` close each form.
+- `EndSubroutine` and `EndFunction` close each form.
 :::
 
 ## How it works {#funciona}

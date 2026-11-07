@@ -27,14 +27,14 @@ Definir «nombre» Como Diccionario<«tipo clave», «tipo valor»> <- Diccionar
 Escribir `d[k] <- v` guarda el valor `v` con la clave `k`: si la clave no existía, la añade al final; si ya existía, reemplaza su valor sin moverla. Leer `d[k]` devuelve el valor de esa clave. Los diccionarios **recuerdan el orden de inserción**: al escribirlos o pedir sus claves, salen en el orden en que se añadieron.
 
 ```programa id=edades titulo="Una agenda de edades" ejecutar
-Proceso Edades
+Algoritmo Edades
   Definir edades Como Diccionario<Cadena, Entero> <- Diccionario();
   edades["Ana"] <- 12;
   edades["Luis"] <- 11;
   edades["Ana"] <- 13;
   Escribir edades, " ", edades.Longitud();
   Escribir edades["Ana"], " ", edades.Claves();
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -51,14 +51,14 @@ pie: Cada clave apunta a un valor. Reemplazar el valor de una clave no la mueve 
 Leer una clave que no existe es un fallo. Cuando no sabes si está, usa `Buscar`: devuelve `Algo(valor)` o `Nada`, y lo tratas con `Segun`.
 
 ```programa id=buscar titulo="Preguntar antes de leer" ejecutar
-Proceso Buscar
+Algoritmo Buscar
   Definir edades Como Diccionario<Cadena, Entero> <- Diccionario();
   edades["Ana"] <- 12;
   Segun edades.Buscar("Eva") Hacer
     Algo(edad): Escribir "tiene ", edad;
     Nada: Escribir "no está";
   FinSegun
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -75,10 +75,10 @@ no está
 Leer una clave ausente detiene el programa:
 
 ```programa id=ausente titulo="Una clave que no está" ejecutar termina=failed
-Proceso Ausente
+Algoritmo Ausente
   Definir d Como Diccionario<Cadena, Entero> <- Diccionario();
   Escribir d["nadie"];
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -88,9 +88,9 @@ missingDictionaryKey
 Y no cualquier tipo sirve como clave:
 
 ```programa id=clave-real titulo="Una clave real" ejecutar
-Proceso ClaveReal
+Algoritmo ClaveReal
   Definir d Como Diccionario<Real, Entero>;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

@@ -18,7 +18,7 @@ Cuando un programa deja de avanzar, el motor dice exactamente por qué. Ese moti
 
 | Terminación | Qué significa | ¿Puede seguir? |
 |---|---|---|
-| `completed` | El proceso llegó a su `FinProceso` | No: terminó |
+| `completed` | El algoritmo llegó a su `FinAlgoritmo` | No: terminó |
 | `failed` | Un fallo de ejecución lo detuvo | No |
 | `awaiting_input` | Un `Leer` necesita un valor que aún no llegó | Sí, al recibirlo |
 | `awaiting_effect` | Espera la respuesta de un archivo, reloj o red | Sí, al recibirla |
@@ -32,9 +32,9 @@ pie: Desde «ejecutando» se llega a uno de seis estados. Dos de ellos son pausa
 El caso normal es `completed`:
 
 ```programa id=bien titulo="Termina con normalidad" ejecutar
-Proceso Bien
+Algoritmo Bien
   Escribir "Fin del programa";
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -44,12 +44,12 @@ Fin del programa
 Un fallo de ejecución detiene el programa en la sentencia exacta. Lo que ya se escribió se conserva:
 
 ```programa id=falla titulo="Termina por un fallo" ejecutar termina=failed
-Proceso Falla
+Algoritmo Falla
   Definir divisor Como Entero <- 0;
   Escribir "Antes del fallo";
   Escribir 10 div divisor;
   Escribir "Esto nunca se escribe";
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -63,12 +63,12 @@ divisionByZero
 Si un `Leer` no recibe valor, el programa queda en pausa. El editor te pide el dato y la ejecución continúa donde se quedó:
 
 ```programa id=espera titulo="Espera una entrada" ejecutar termina=awaiting_input
-Proceso Espera
+Algoritmo Espera
   Definir edad Como Entero <- 0;
   Escribir "¿Cuántos años tienes?";
   Leer edad;
   Escribir "El año que viene tendrás ", edad + 1;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

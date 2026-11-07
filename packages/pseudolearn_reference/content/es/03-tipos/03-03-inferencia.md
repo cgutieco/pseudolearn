@@ -21,12 +21,12 @@ pie: Primero se declara la caja con su forma; después se pueden guardar valores
 ```
 
 ```programa id=declarar titulo="Declarar y después asignar" ejecutar
-Proceso Declarar
+Algoritmo Declarar
   Definir total Como Entero;
   total <- 10;
   total <- total * 2;
   Escribir total;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -36,9 +36,9 @@ FinProceso
 Asignar a un nombre que nadie declaró no crea una variable: es un error. Así una errata como `contdor` en lugar de `contador` se descubre antes de ejecutar, en vez de crear en silencio una variable nueva.
 
 ```programa id=sin-declarar titulo="Asignar sin declarar" ejecutar
-Proceso SinDeclarar
+Algoritmo SinDeclarar
   contador <- 1;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

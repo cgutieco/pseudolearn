@@ -18,7 +18,7 @@ To read or write files you ask for a folder capability, open the file with it, a
 The path is always the same:
 
 1. `requestDirectory(path)` gives a `DirCap` for that folder.
-2. `folder.open(name, mode)` gives a `FileCap`, with mode `"lectura"` or `"escritura"`.
+2. `folder.open(name, mode)` gives a `FileCap`. With `"lectura"` it only reads; `"escritura"` creates or empties the file; `"lectura_escritura"` creates it if missing and keeps what it had.
 3. `readText`, `writeText`, `appendText` and their `Bytes` versions do the work.
 
 Every step can fail, so it returns `Result<…, IoError>`. With `Propagate`, a failure is returned to the caller without writing the `Switch` by hand.

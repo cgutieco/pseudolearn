@@ -69,28 +69,10 @@ pub fn target_code(resolution: &Resolution<'_>, spanish: &str) -> String {
             .map(|token| token.text)
             .collect()
     };
-    if uses_alias(resolution, spanish) {
-        return lexical();
-    }
     resolution
         .engine
         .translate(spanish, resolution.profile)
         .unwrap_or_else(|_| lexical())
-}
-
-fn uses_alias(resolution: &Resolution<'_>, spanish: &str) -> bool {
-    let characters: Vec<char> = spanish.chars().collect();
-    resolution
-        .engine
-        .tokenize(spanish, Profile::Spanish)
-        .iter()
-        .any(|token| {
-            let text: String = characters
-                .get(token.start..token.end)
-                .map(|part| part.iter().collect())
-                .unwrap_or_default();
-            resolution.aliases.contains(&text, Profile::Spanish)
-        })
 }
 
 fn run(

@@ -27,10 +27,10 @@ SubProceso VerTotal()
   Escribir total;
 FinSubProceso
 
-Proceso Principal
+Algoritmo Principal
   Definir total Como Entero <- 10;
   VerTotal();
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -40,14 +40,14 @@ undeclaredVariable
 Una variable declarada dentro de un bloque deja de existir al cerrarlo:
 
 ```programa id=fuera-ambito titulo="Usar una variable fuera de su bloque" ejecutar
-Proceso FueraAmbito
+Algoritmo FueraAmbito
   Definir n Como Entero <- 3;
   Si n > 0 Entonces
     Definir doble Como Entero <- n * 2;
     Escribir doble;
   FinSi
   Escribir doble;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -57,14 +57,14 @@ bindingOutsideScope
 Declarar dentro un nombre que ya existe fuera es válido, pero **oculta** el de fuera mientras dura el bloque, y produce una advertencia:
 
 ```programa id=ocultar titulo="Un nombre que oculta a otro" ejecutar
-Proceso Ambitos
+Algoritmo Ambitos
   Definir x Como Entero <- 1;
   Si x > 0 Entonces
     Definir x Como Entero <- 2;
     Escribir "dentro: ", x;
   FinSi
   Escribir "fuera: ", x;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

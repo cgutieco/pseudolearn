@@ -26,11 +26,11 @@ pie: Qué se comprueba en cada momento. Cuanto antes se descubre un error, más 
 Este programa es correcto para el análisis, porque dividir dos enteros tiene sentido. Pero al ejecutar, el divisor vale cero:
 
 ```programa id=dividir-cero titulo="Correcto al analizar, falla al ejecutar" ejecutar termina=failed
-Proceso DividirCero
+Algoritmo DividirCero
   Definir edad Como Entero <- 10;
   Definir divisor Como Entero <- 0;
   Escribir edad div divisor;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -40,9 +40,9 @@ divisionByZero
 En cambio, guardar un texto en una variable entera se descubre sin ejecutar nada:
 
 ```programa id=tipo-mal titulo="Un error que se ve antes" ejecutar
-Proceso TipoMal
+Algoritmo TipoMal
   Definir edad Como Entero <- "diez";
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

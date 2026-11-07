@@ -34,9 +34,9 @@ pie: Las clases de diagnóstico a lo largo del viaje del programa. Las tres prim
 Un error sintáctico:
 
 ```programa id=sin-punto titulo="Falta el punto y coma" ejecutar
-Proceso SinPunto
+Algoritmo SinPunto
   Escribir "hola"
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -46,9 +46,9 @@ missingStatementTerminator
 Un error semántico:
 
 ```programa id=sin-definir titulo="Una variable que no existe" ejecutar
-Proceso SinDefinir
+Algoritmo SinDefinir
   Escribir total;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -58,11 +58,11 @@ undeclaredVariable
 Una advertencia: el programa se ejecuta igualmente.
 
 ```programa id=sin-uso titulo="Una variable que sobra" ejecutar
-Proceso SinUso
+Algoritmo SinUso
   Definir usada Como Entero <- 3;
   Definir sobrante Como Entero;
   Escribir usada;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -76,13 +76,13 @@ variableDeclaredNeverUsed
 Un fallo de ejecución: el análisis no podía saber que el índice 3 no existe.
 
 ```programa id=fuera titulo="Un índice fuera del arreglo" ejecutar termina=failed
-Proceso Fuera
+Algoritmo Fuera
   Dimension notas[3] Como Entero;
   notas[0] <- 7;
   notas[1] <- 9;
   notas[2] <- 6;
   Escribir notas[3];
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

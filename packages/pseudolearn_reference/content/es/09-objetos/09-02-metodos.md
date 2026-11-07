@@ -86,7 +86,6 @@ FinAlgoritmo
 
 ```diagnosticos
 identifierMatchesFieldWithoutThis
-undeclaredVariable
 ```
 :::
 

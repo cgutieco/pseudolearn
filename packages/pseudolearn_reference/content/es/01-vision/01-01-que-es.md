@@ -15,14 +15,14 @@ PseudoLearn es un lenguaje de pseudocódigo que se ejecuta de verdad: lo que esc
 
 El **pseudocódigo** es una forma de escribir algoritmos con palabras cercanas al idioma de cada día. Muchos libros lo usan para explicar ideas sin depender de un lenguaje concreto. PseudoLearn toma esa tradición y le da reglas exactas, de modo que una máquina puede comprobar cada programa y ejecutarlo.
 
-Un programa de PseudoLearn tiene siempre un **proceso** con nombre: empieza con `Proceso` y termina con `FinProceso`. Dentro van las instrucciones, una debajo de otra.
+Un programa de PseudoLearn tiene siempre un **algoritmo** con nombre: empieza con `Algoritmo` y termina con `FinAlgoritmo`. Dentro van las instrucciones, una debajo de otra.
 
 ```programa id=media titulo="La media de dos notas" ejecutar
-Proceso Media
+Algoritmo Media
   Definir primera Como Real <- 7.5;
   Definir segunda Como Real <- 9;
   Escribir "La media es ", (primera + segunda) / 2;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -43,7 +43,7 @@ PseudoLearn es como una receta escrita por alguien muy cuidadoso: dice exactamen
 
 ::: resumen
 - PseudoLearn es pseudocódigo con reglas exactas.
-- Todo programa tiene un `Proceso` con nombre y su `FinProceso`.
+- Todo programa tiene un `Algoritmo` con nombre y su `FinAlgoritmo`.
 - El mismo motor está detrás del editor, la línea de órdenes y la web.
 - El pseudocódigo clásico funciona con punto y coma, índices desde cero y sin valores inventados.
 :::

@@ -23,10 +23,10 @@ pie: Los niveles de precedencia, del que liga más fuerte (arriba) al que liga m
 Cuando dos operadores del mismo nivel están seguidos, decide la **asociatividad**. Casi todos asocian a la izquierda: `10 - 4 - 3` es `(10 - 4) - 3`, que vale 3. Los unarios y la potencia asocian a la derecha.
 
 ```programa id=precedencia titulo="Quién va primero" ejecutar
-Proceso Precedencia
+Algoritmo Precedencia
   Escribir 2 + 3 * 4, " ", (2 + 3) * 4, " ", 10 - 4 - 3, " ", 2 ^ 3 ^ 2;
   Escribir 1 + 2 < 4 Y NO Falso, " ", 2 * 3 = 6 O Falso;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

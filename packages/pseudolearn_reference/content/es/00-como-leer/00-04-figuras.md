@@ -37,11 +37,11 @@ panel Traza 3: escribe · 5
 Este es el programa que cuenta la figura:
 
 ```programa id=suma titulo="Sumar y escribir" ejecutar
-Proceso Suma
+Algoritmo Suma
   Definir total Como Entero <- 0;
   total <- total + 5;
   Escribir total;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

@@ -35,7 +35,7 @@ FinDiferir
 Cuando la ejecución llega a `Diferir`, el cuerpo **no se ejecuta**: se apunta en una pila. Al salir del bloque que contiene el `Diferir` —por el final, por `Salir`, por `Retornar` o por un error propagado— se ejecutan las limpiezas apuntadas, **de la última a la primera**.
 
 ```programa id=puerta-luz titulo="Lo último que se abre, lo primero que se cierra" ejecutar
-Proceso Ordenado
+Algoritmo Ordenado
   Escribir "abro la puerta";
   Diferir
     Escribir "cierro la puerta";
@@ -45,7 +45,7 @@ Proceso Ordenado
     Escribir "apago la luz";
   FinDiferir
   Escribir "leo un rato";
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -66,7 +66,7 @@ paso: Al terminar el bloque se saca primero la de arriba, «apago la luz», y de
 Solo cuenta lo que se **alcanza**: un `Diferir` que está en una rama no tomada no apunta nada. Dentro de un bucle, cada vuelta apunta sus propias limpiezas y las ejecuta al terminar esa vuelta:
 
 ```programa id=vueltas-diferir titulo="Limpiezas por vuelta" ejecutar
-Proceso Vueltas
+Algoritmo Vueltas
   Para i <- 1 Hasta 3 Hacer
     Diferir
       Escribir "fin de la vuelta ", i;
@@ -76,7 +76,7 @@ Proceso Vueltas
     FinSi
     Escribir "vuelta ", i;
   FinPara
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -93,13 +93,13 @@ fin de la vuelta 2
 
 ::: errores
 ```programa id=diferir-salir titulo="Salir dentro de una limpieza" ejecutar
-Proceso LimpiezaMala
+Algoritmo LimpiezaMala
   Para i <- 1 Hasta 2 Hacer
     Diferir
       Salir;
     FinDiferir
   FinPara
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

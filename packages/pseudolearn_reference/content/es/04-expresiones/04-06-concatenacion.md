@@ -22,11 +22,11 @@ pie: Cada pieza se copia a continuación de la anterior, de izquierda a derecha,
 ```
 
 ```programa id=saludo titulo="Pegar textos" ejecutar
-Proceso Saludo
+Algoritmo Saludo
   Definir nombre Como Cadena <- "Ana";
   Escribir "Hola, " + nombre + '!';
   Escribir 'a' + 'b', " ", Longitud('a' + 'b');
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -37,11 +37,11 @@ ab 2
 La concatenación **no convierte** números ni lógicos a texto. Para meter un número en un mensaje hay dos caminos: convertirlo con `ConvertirATexto`, o separar las piezas con comas en `Escribir`.
 
 ```programa id=con-numero titulo="Un número dentro de un texto" ejecutar
-Proceso ConNumero
+Algoritmo ConNumero
   Definir edad Como Entero <- 12;
   Escribir "Tienes " + ConvertirATexto(edad) + " años";
   Escribir "Tienes ", edad, " años";
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -51,9 +51,9 @@ Tienes 12 años
 
 ::: errores
 ```programa id=texto-mas-numero titulo="Sumar un texto y un número" ejecutar
-Proceso TextoMasNumero
+Algoritmo TextoMasNumero
   Escribir "Edad: " + 5;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

@@ -17,10 +17,10 @@ terminos: [potencia, exponente]
 La **potencia** `a ^ b` multiplica `a` por sí mismo `b` veces. Igual que en los otros operadores, el tipo del resultado depende de los operandos: dos enteros dan un entero exacto; si alguno es real, el resultado es real.
 
 ```programa id=potencias titulo="Potencias enteras y reales" ejecutar
-Proceso Potencias
+Algoritmo Potencias
   Escribir 2 ^ 10, " ", 2 ^ 0.5, " ", 0 ^ 0, " ", 2.0 ^ 3;
   Escribir 2 ^ 3 ^ 2, " ", -2 ^ 2;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -45,9 +45,9 @@ pie: La potencia se agrupa de derecha a izquierda. Primero se calcula 3 ^ 2 y de
 
 ::: errores
 ```programa id=exponente-negativo titulo="Exponente negativo entre enteros" ejecutar
-Proceso ExponenteNegativo
+Algoritmo ExponenteNegativo
   Escribir 2 ^ -1;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

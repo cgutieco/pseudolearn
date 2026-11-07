@@ -33,13 +33,13 @@ pie: Las tres piezas de un diagrama de sintaxis: tramo fijo, desvío opcional y 
 Este programa rellena la forma de `Mientras` con una condición y una instrucción:
 
 ```programa id=cuenta titulo="Rellenar la forma" ejecutar
-Proceso Cuenta
+Algoritmo Cuenta
   Definir n Como Entero <- 1;
   Mientras n <= 3 Hacer
     Escribir n;
     n <- n + 1;
   FinMientras
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

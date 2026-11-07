@@ -27,9 +27,9 @@ SubProceso Factorial(n Como Entero) Como Entero
   Retornar n * Factorial(n - 1);
 FinSubProceso
 
-Proceso Principal
+Algoritmo Principal
   Escribir Factorial(5);
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -63,9 +63,9 @@ SubProceso EsImpar(n Como Entero) Como Logico
   Retornar EsPar(n - 1);
 FinSubProceso
 
-Proceso Principal
+Algoritmo Principal
   Escribir EsPar(10), " ", EsImpar(7);
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -82,9 +82,9 @@ SubProceso SinFin(n Como Entero) Como Entero
   Retornar SinFin(n + 1);
 FinSubProceso
 
-Proceso Principal
+Algoritmo Principal
   Escribir SinFin(0);
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

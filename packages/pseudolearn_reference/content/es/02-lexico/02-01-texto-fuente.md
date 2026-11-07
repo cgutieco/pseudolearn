@@ -24,10 +24,10 @@ pie: Cada carácter tiene línea y columna. Un diagnóstico apunta a un tramo qu
 Los textos conservan exactamente lo que escribiste, también los caracteres fuera del alfabeto latino:
 
 ```programa id=unicode titulo="Unicode dentro de un texto" ejecutar
-Proceso Saludos
+Algoritmo Saludos
   Escribir "¡Hola! ¿Qué tal?";
   Escribir "Ñandú, pingüino, café";
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

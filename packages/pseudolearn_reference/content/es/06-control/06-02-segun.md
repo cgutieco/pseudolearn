@@ -40,7 +40,7 @@ FinSegun
 El selector se calcula **una vez**. Después se busca la rama con esa etiqueta, se ejecuta y se sale: no hay «caída» a la rama siguiente. Si ninguna coincide y no hay `De Otro Modo`, no se hace nada.
 
 ```programa id=dia-semana titulo="¿Hay clase hoy?" ejecutar
-Proceso DiaSemana
+Algoritmo DiaSemana
   Definir dia Como Entero <- 6;
   Segun dia Hacer
     1, 2, 3, 4, 5:
@@ -50,7 +50,7 @@ Proceso DiaSemana
     De Otro Modo:
       Escribir "Ese día no existe";
   FinSegun
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -74,7 +74,7 @@ Si el selector es un enumerado, las ramas tienen que cubrir **todos** sus miembr
 Enumerado Semaforo
   Rojo, Ambar, Verde
 FinEnumerado
-Proceso Cruce
+Algoritmo Cruce
   Definir luz Como Semaforo <- Semaforo.Ambar;
   Segun luz Hacer
     Semaforo.Rojo:
@@ -82,7 +82,7 @@ Proceso Cruce
     Semaforo.Verde:
       Escribir "Pasa";
   FinSegun
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -93,7 +93,7 @@ El mensaje nombra los miembros que faltan, en el orden en que se declararon. `Se
 
 ::: errores
 ```programa id=etiqueta-repetida titulo="Una etiqueta repetida" ejecutar
-Proceso Repetida
+Algoritmo Repetida
   Definir n Como Entero <- 1;
   Segun n Hacer
     1:
@@ -101,7 +101,7 @@ Proceso Repetida
     1:
       Escribir "otra vez uno";
   FinSegun
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -109,13 +109,13 @@ duplicateSwitchCaseLabel
 ```
 
 ```programa id=segun-texto titulo="Un selector de texto" ejecutar
-Proceso TextoSel
+Algoritmo TextoSel
   Definir t Como Cadena <- "a";
   Segun t Hacer
     "a":
       Escribir "a";
   FinSegun
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

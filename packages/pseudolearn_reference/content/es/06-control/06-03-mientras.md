@@ -37,14 +37,14 @@ FinMientras
 Cada **iteración** empieza comprobando la condición. Si es `Verdadero`, se ejecuta el cuerpo y se vuelve arriba. Si es `Falso`, el bucle termina y el programa sigue después de `FinMientras`. Si la condición es falsa desde el principio, el cuerpo no se ejecuta **ninguna** vez.
 
 ```programa id=cuenta-atras titulo="Cuenta atrás" ejecutar
-Proceso CuentaAtras
+Algoritmo CuentaAtras
   Definir n Como Entero <- 3;
   Mientras n > 0 Hacer
     Escribir n;
     n <- n - 1;
   FinMientras
   Escribir "¡Despegue!";
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -65,12 +65,12 @@ Algo dentro del cuerpo tiene que acercar la condición a `Falso`. Si nada la cam
 
 ::: errores
 ```programa id=mientras-numero titulo="Una condición numérica" ejecutar
-Proceso MientrasNumero
+Algoritmo MientrasNumero
   Definir n Como Entero <- 3;
   Mientras n Hacer
     n <- n - 1;
   FinMientras
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

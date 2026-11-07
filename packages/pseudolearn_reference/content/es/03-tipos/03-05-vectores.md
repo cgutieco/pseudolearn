@@ -28,7 +28,7 @@ Definir «nombre» Como Vector<«tipo»> <- Vector();
 A diferencia de un arreglo, un **vector** no tiene un tamaño fijo. Empieza vacío y crece con `Agregar` (al final) o `Insertar` (en una posición); se encoge con `Eliminar`. Las posiciones se cuentan desde cero y `Longitud` dice cuántos elementos tiene.
 
 ```programa id=compra titulo="La lista de la compra" ejecutar
-Proceso Compra
+Algoritmo Compra
   Definir lista Como Vector<Cadena> <- Vector();
   lista.Agregar("pan");
   lista.Agregar("leche");
@@ -37,7 +37,7 @@ Proceso Compra
   lista.Eliminar(1);
   lista.Ordenar();
   Escribir lista, " ", lista.Contiene("pan");
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -58,12 +58,12 @@ paso: `Eliminar(1)` quita la posición 1 y el resto se corre a la izquierda.
 Un vector es una **referencia**: dos variables pueden apuntar al mismo vector. Si se modifica a través de una, la otra ve el cambio, porque no hay dos vectores sino uno.
 
 ```programa id=compartido titulo="Dos nombres, un solo vector" ejecutar
-Proceso Compartido
+Algoritmo Compartido
   Definir a Como Vector<Entero> <- Vector();
   Definir b Como Vector<Entero> <- a;
   b.Agregar(5);
   Escribir a.Longitud(), " ", a;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -96,10 +96,10 @@ Para obtener una copia independiente se usa `Copiar`.
 Leer o eliminar una posición que no existe detiene el programa:
 
 ```programa id=vacio titulo="Eliminar de un vector vacío" ejecutar termina=failed
-Proceso Vacio
+Algoritmo Vacio
   Definir v Como Vector<Entero> <- Vector();
   v.Eliminar(0);
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -112,10 +112,10 @@ Y un vector cuyos elementos no se pueden escribir no admite `Escribir`:
 Registro Caja
   Definir valor Como Entero;
 FinRegistro
-Proceso NoImprimible
+Algoritmo NoImprimible
   Definir cajas Como Vector<Caja> <- Vector();
   Escribir cajas;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

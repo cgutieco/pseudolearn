@@ -18,13 +18,13 @@ terminos: [inmutable, instantánea, copia profunda]
 Vectores, diccionarios y arreglos se comparten: si alguien los modifica, todos lo ven. A veces hace falta lo contrario, un valor que **no** pueda cambiar. `Instantanea(x)` copia `x` entero, con todo lo que contiene, y devuelve un `Inmutable` de ese tipo.
 
 ```programa id=congelar titulo="Una foto que no cambia" ejecutar
-Proceso Congelar
+Algoritmo Congelar
   Definir notas Como Vector<Entero> <- Vector();
   notas.Agregar(7);
   Definir foto Como Inmutable<Vector<Entero>> <- Instantanea(notas);
   notas.Agregar(9);
   Escribir foto.Longitud(), " ", notas.Longitud(), " ", foto[0];
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -38,11 +38,11 @@ pie: La instantánea copia el contenido completo. Lo que le pase después al ori
 Un `Inmutable` admite todas las lecturas, pero ninguna escritura ni método que modifique:
 
 ```programa id=escribir-foto titulo="Intentar cambiar la foto" ejecutar
-Proceso EscribirFoto
+Algoritmo EscribirFoto
   Definir notas Como Vector<Entero> <- Vector();
   Definir foto Como Inmutable<Vector<Entero>> <- Instantanea(notas);
   foto.Agregar(9);
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

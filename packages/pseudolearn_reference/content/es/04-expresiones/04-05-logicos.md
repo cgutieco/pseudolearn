@@ -25,11 +25,11 @@ Los tres operadores solo aceptan valores `Logico` y devuelven un `Logico`.
 | `Falso` | `Falso` | `Falso` | `Falso` | `Verdadero` |
 
 ```programa id=logica titulo="Combinar condiciones" ejecutar
-Proceso Logica
+Algoritmo Logica
   Definir edad Como Entero <- 15;
   Definir socio Como Logico <- Falso;
   Escribir edad >= 12 Y edad < 18, " ", NO socio, " ", edad < 12 O socio;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -48,9 +48,9 @@ pie: Con `Y`, una izquierda falsa decide sin mirar la derecha. Con `O`, lo hace 
 ```
 
 ```programa id=cortocircuito titulo="La derecha que nunca se calcula" ejecutar
-Proceso Cortocircuito
+Algoritmo Cortocircuito
   Escribir Verdadero O 1 div 0 = 0, " ", Falso Y 1 div 0 = 0;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

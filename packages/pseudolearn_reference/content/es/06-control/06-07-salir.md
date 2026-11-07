@@ -32,7 +32,7 @@ Salir;
 `Salir` abandona el bucle **más interior** que lo contiene y el programa sigue después de su cierre. Es útil cuando se busca algo: en cuanto aparece, no hace falta seguir mirando.
 
 ```programa id=primero-mayor titulo="Buscar el primero que cumple" ejecutar
-Proceso Buscar
+Algoritmo Buscar
   Dimension numeros[5] Como Entero;
   Para i <- 0 Hasta 4 Hacer
     numeros[i] <- (i + 1) * 7;
@@ -44,7 +44,7 @@ Proceso Buscar
     FinSi
     Escribir "Reviso ", n;
   FinPara
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -61,9 +61,9 @@ Si dentro del bucle hay limpiezas registradas con [`Diferir`](#control.diferir),
 
 ::: errores
 ```programa id=salir-fuera titulo="Salir fuera de un bucle" ejecutar
-Proceso FueraBucle
+Algoritmo FueraBucle
   Salir;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

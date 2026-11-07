@@ -31,7 +31,7 @@ pie: The engine points at the guilty fragment and keeps reading. Semantic phases
 ```programa id=arroba titulo="A character that does not exist in the language"
 ```
 
-The second diagnostic is a consequence of the first: having skipped the `@`, the engine no longer recognises the end of the statement where it expected it.
+There is a single diagnostic: the engine discards the `@` and does not report errors caused by the gap it leaves, such as a missing semicolon.
 
 ::: limite
 Analysis accepts up to 256 constructs nested at once: parentheses, unary operators, chained powers and compound statements inside others. The next one produces `analysisNestingLimitExceeded`. The limit protects the engine; no reasonable program gets close to it.

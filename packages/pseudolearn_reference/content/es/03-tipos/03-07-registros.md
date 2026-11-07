@@ -27,18 +27,18 @@ FinRegistro
 
 ## Cómo funciona {#funciona}
 
-Un **registro** se declara fuera del proceso, con un nombre y sus **campos**. Después se usa como un tipo más: se construye escribiendo su nombre con un valor por campo, en el orden en que se declararon, y cada campo se lee o se cambia con un punto.
+Un **registro** se declara fuera del algoritmo, con un nombre y sus **campos**. Después se usa como un tipo más: se construye escribiendo su nombre con un valor por campo, en el orden en que se declararon, y cada campo se lee o se cambia con un punto.
 
 ```programa id=alumno titulo="La ficha de un alumno" ejecutar
 Registro Alumno
   Definir nombre Como Cadena;
   Definir nota Como Real;
 FinRegistro
-Proceso Ficha
+Algoritmo Ficha
   Definir ana Como Alumno <- Alumno("Ana", 8.5);
   ana.nota <- ana.nota + 1;
   Escribir ana.nombre, ": ", ana.nota;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -53,12 +53,12 @@ Un registro es un **valor**, no una referencia. Asignarlo, pasarlo a un subprogr
 Registro Casilla
   Definir fila, columna Como Entero;
 FinRegistro
-Proceso Tablero
+Algoritmo Tablero
   Definir a Como Casilla <- Casilla(1, 2);
   Definir b Como Casilla <- a;
   b.fila <- 10;
   Escribir a.fila, " ", b.fila, " ", a = b;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -85,9 +85,9 @@ Un registro no se escribe de una vez:
 Registro Casilla
   Definir fila, columna Como Entero;
 FinRegistro
-Proceso EscribirRegistro
+Algoritmo EscribirRegistro
   Escribir Casilla(1, 2);
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -100,9 +100,9 @@ Y la construcción necesita un valor por campo:
 Registro Casilla
   Definir fila, columna Como Entero;
 FinRegistro
-Proceso Faltan
+Algoritmo Faltan
   Definir c Como Casilla <- Casilla(1);
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

@@ -20,7 +20,7 @@ Each profile has its list of **reserved words**: those that form the instruction
 pie: Reserved words are grouped by family. Each family's colour is the same one the editor uses.
 ```
 
-Several words have **aliases**: other spellings the engine recognises and treats the same. In the Spanish profile, `Algoritmo` is an alias of `Proceso` and `Mostrar` of `Escribir`. The engine accepts aliases, but when formatting or translating it converts them to the main form.
+Several words have **aliases**: other spellings the engine recognises and treats the same. In the Spanish profile, `Proceso` is an alias of `Algoritmo` and `Mostrar` of `Escribir`. The engine accepts aliases, but when formatting or translating it converts them to the main form.
 
 ```programa id=alias titulo="Accepted aliases"
 ```

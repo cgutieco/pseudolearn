@@ -43,9 +43,9 @@ SubProceso PrimerNegativo(a Como Entero, b Como Entero, c Como Entero) Como Ente
   Retornar c;
 FinSubProceso
 
-Proceso Principal
+Algoritmo Principal
   Escribir PrimerNegativo(4, -2, -7);
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -66,10 +66,10 @@ SubProceso Signo(n Como Entero) Como Cadena
   FinSi
 FinSubProceso
 
-Proceso Principal
+Algoritmo Principal
   Escribir Signo(5);
   Escribir Signo(-1);
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

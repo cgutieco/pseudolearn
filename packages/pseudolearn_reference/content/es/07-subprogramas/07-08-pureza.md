@@ -30,9 +30,9 @@ Funcion r <- Cuadrado(n Como Entero)
   r <- n * n;
 FinFuncion
 
-Proceso Principal
+Algoritmo Principal
   Escribir Cuadrado(3);
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -56,9 +56,9 @@ Funcion r <- Triple(n Como Entero)
   r <- n * 3;
 FinFuncion
 
-Proceso Principal
+Algoritmo Principal
   Escribir Triple(3);
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

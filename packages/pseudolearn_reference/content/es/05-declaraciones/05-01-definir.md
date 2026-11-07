@@ -37,13 +37,13 @@ Definir «nombre», «nombre» Como «tipo»;
 Una **variable** es un nombre ligado a un lugar de la memoria. `Definir` crea ese lugar con el tipo indicado. Si lleva valor inicial, el valor se guarda en el momento; si no, la caja queda vacía hasta la primera asignación.
 
 ```programa id=mochila titulo="Variables de una mochila" ejecutar
-Proceso Mochila
+Algoritmo Mochila
   Definir libros, cuadernos Como Entero;
   Definir nombre Como Cadena <- "Leo";
   libros <- 3;
   cuadernos <- libros * 2;
   Escribir nombre, " lleva ", libros, " libros y ", cuadernos, " cuadernos";
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -66,10 +66,10 @@ Toda variable declarada con `Definir` se puede cambiar después. Para un valor q
 El valor inicial solo vale con un nombre. Con varios, no está claro a cuál se refiere:
 
 ```programa id=varios-nombres titulo="Valor inicial con dos nombres" ejecutar
-Proceso Varios
+Algoritmo Varios
   Definir a, b Como Entero <- 0;
   Escribir a;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -79,11 +79,11 @@ initializerWithMultipleNames
 Un nombre solo puede declararse una vez en el mismo ámbito:
 
 ```programa id=repetido titulo="Un nombre declarado dos veces" ejecutar
-Proceso Repetido
+Algoritmo Repetido
   Definir x Como Entero <- 1;
   Definir x Como Entero <- 2;
   Escribir x;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

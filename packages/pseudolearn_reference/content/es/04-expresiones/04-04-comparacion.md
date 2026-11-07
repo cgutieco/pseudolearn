@@ -31,10 +31,10 @@ Qué se puede comparar:
 - **Objetos**: igualdad de identidad (si son el mismo objeto).
 
 ```programa id=comparar titulo="Comparar distintos tipos" ejecutar
-Proceso Comparar
+Algoritmo Comparar
   Escribir 3 < 3.5, " ", "abc" < "abd", " ", 'a' = "a";
   Escribir "Zeta" < "alfa", " ", Verdadero <> Falso;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

@@ -26,14 +26,14 @@ pie: Tres trabajos con el mismo programa. Cada uno produce algo distinto; solo e
 Este programa se analiza sin errores, se ejecuta y deja una traza con una decisión:
 
 ```programa id=par titulo="¿Par o impar?" ejecutar
-Proceso Paridad
+Algoritmo Paridad
   Definir numero Como Entero <- 14;
   Si numero mod 2 = 0 Entonces
     Escribir numero, " es par";
   Sino
     Escribir numero, " es impar";
   FinSi
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

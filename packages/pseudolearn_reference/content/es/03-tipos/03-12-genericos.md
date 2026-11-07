@@ -21,11 +21,11 @@ A veces la misma idea sirve para muchos tipos: una caja que guarda un valor, un 
 SubProceso identidad<T>(valor Como T) Como T
   Retornar valor;
 FinSubProceso
-Proceso Identidad
+Algoritmo Identidad
   Escribir identidad(4);
   Escribir identidad(2.5);
   Escribir identidad("hola");
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -43,10 +43,10 @@ FinRegistro
 SubProceso abrir<T>(c Como Caja<T>) Como T
   Retornar c.contenido;
 FinSubProceso
-Proceso Cajas
+Algoritmo Cajas
   Definir numeros Como Caja<Entero> <- Caja(7);
   Escribir abrir(numeros), " ", abrir(Caja("x"));
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -68,9 +68,9 @@ SubProceso mayor<T>(a Como T, b Como T) Como T
   FinSi
   Retornar b;
 FinSubProceso
-Proceso Mayor
+Algoritmo Mayor
   Escribir mayor(1, 2);
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

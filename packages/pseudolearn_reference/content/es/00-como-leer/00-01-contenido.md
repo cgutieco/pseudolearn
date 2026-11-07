@@ -24,9 +24,9 @@ pie: El recorrido de la especificación. Las partes de arriba sostienen a las de
 Todos los programas de esta especificación se ejecutaron con el motor real de PseudoLearn. Debajo de cada uno ves lo que escribió y cómo terminó. Si algún día el motor cambiara su comportamiento, la especificación dejaría de construirse hasta corregir el texto.
 
 ```programa id=hola titulo="El primer programa" ejecutar
-Proceso Hola
+Algoritmo Hola
   Escribir "Hola, mundo";
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

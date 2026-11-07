@@ -30,10 +30,10 @@ pie: El mismo diagnóstico visto como dato y como mensaje. El mensaje se constru
 ```
 
 ```programa id=texto-en-entero titulo="Un diagnóstico con argumentos" ejecutar
-Proceso Mezcla
+Algoritmo Mezcla
   Definir total Como Entero <- "diez";
   Escribir total;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

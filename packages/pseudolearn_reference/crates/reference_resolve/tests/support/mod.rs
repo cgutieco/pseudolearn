@@ -3,7 +3,7 @@ use reference_model::{
     CodeEngine, EngineDiagnostic, ExecutionReport, ExecutionRequest, Profile, RawToken,
     SourceDocument, TraceRecord,
 };
-use reference_resolve::{AliasTable, CategoryTable, LanguagePack, SectionIndex};
+use reference_resolve::{CategoryTable, LanguagePack, SectionIndex};
 use std::cell::Cell;
 use std::collections::BTreeMap;
 
@@ -14,7 +14,8 @@ const EXPORT: &str = r#"{
       "then": {"alias": {"en": [], "es": []}, "lexemas": {"en": "then", "es": "Entonces"}},
       "endIf": {"alias": {"en": [], "es": []}, "lexemas": {"en": "endIf", "es": "FinSi"}},
       "write": {"alias": {"en": [], "es": []}, "lexemas": {"en": "write", "es": "Escribir"}},
-      "subroutine": {"alias": {"en": ["function"], "es": ["Funcion"]}, "lexemas": {"en": "subroutine", "es": "SubProceso"}}
+      "subroutine": {"alias": {"en": [], "es": []}, "lexemas": {"en": "subroutine", "es": "SubProceso"}},
+      "function": {"alias": {"en": [], "es": []}, "lexemas": {"en": "function", "es": "Funcion"}}
     },
     "contextualVocabulary": {"vectorAppend": {"lexemas": {"en": "append", "es": "Agregar"}}},
     "functions": {"textLength": {"alias": {"en": [], "es": []}, "family": "text", "lexemas": {"en": "length", "es": "Longitud"}, "parametros": ["text"], "retorno": "integer"}},
@@ -30,7 +31,7 @@ pub const KEYWORDS: [(&str, &str); 6] = [
     ("FinSi", "endIf"),
     ("Escribir", "write"),
     ("SubProceso", "subroutine"),
-    ("Funcion", "subroutine"),
+    ("Funcion", "function"),
 ];
 
 #[derive(Default)]
@@ -67,7 +68,9 @@ impl CodeEngine for FakeEngine {
         if code.contains("roto") {
             return Err("ParseFailure".to_owned());
         }
-        Ok(code.replace("Escribir", "Write"))
+        Ok(code
+            .replace("Escribir", "Write")
+            .replace("Funcion", "Function"))
     }
 
     fn execute(&self, request: &ExecutionRequest) -> ExecutionReport {
@@ -217,8 +220,4 @@ pub fn index() -> SectionIndex {
             },
         )]),
     }
-}
-
-pub fn aliases() -> AliasTable {
-    AliasTable::from_json(r#"[{"es": "Funcion", "en": "Function"}]"#).unwrap_or_default()
 }

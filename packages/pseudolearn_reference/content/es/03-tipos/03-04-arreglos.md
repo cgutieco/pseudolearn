@@ -33,7 +33,7 @@ pie: Un arreglo de tamaño 4 tiene las casillas 0 a 3. La casilla 4 no existe.
 ```
 
 ```programa id=notas titulo="Las notas de la semana" ejecutar
-Proceso Notas
+Algoritmo Notas
   Dimension notas[4] Como Entero;
   notas[0] <- 7;
   notas[1] <- 9;
@@ -44,7 +44,7 @@ Proceso Notas
     suma <- suma + notas[i];
   FinPara
   Escribir "Media: ", suma / 4;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -54,7 +54,7 @@ Media: 7.5
 Un arreglo puede tener varias **dimensiones**. Una tabla de 2 filas y 3 columnas se declara con dos tamaños y cada casilla se nombra con dos índices dentro de los mismos corchetes:
 
 ```programa id=tabla titulo="Una tabla de multiplicar pequeña" ejecutar
-Proceso Tabla
+Algoritmo Tabla
   Dimension tabla[2, 3] Como Entero;
   Para f <- 0 Hasta 1 Hacer
     Para c <- 0 Hasta 2 Hacer
@@ -62,7 +62,7 @@ Proceso Tabla
     FinPara
   FinPara
   Escribir tabla[0, 2], " ", tabla[1, 2];
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -88,10 +88,10 @@ Un arreglo entero no se puede asignar, comparar, escribir ni devolver. Solo sus 
 Salirse del arreglo detiene el programa en ese acceso:
 
 ```programa id=fuera titulo="La casilla que no existe" ejecutar termina=failed
-Proceso Fuera
+Algoritmo Fuera
   Dimension v[3] Como Entero;
   v[3] <- 1;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -101,10 +101,10 @@ arrayIndexOutOfRange
 Usar un número de índices distinto del de dimensiones se detecta antes de ejecutar:
 
 ```programa id=indices titulo="Un índice de menos" ejecutar
-Proceso Indices
+Algoritmo Indices
   Dimension m[2, 2] Como Entero;
   m[0] <- 1;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -114,12 +114,12 @@ arrayDimensionCountMismatch
 Y un arreglo completo no puede escribirse:
 
 ```programa id=escribir-arreglo titulo="Escribir el arreglo entero" ejecutar
-Proceso EscribirArreglo
+Algoritmo EscribirArreglo
   Dimension v[2] Como Entero;
   v[0] <- 1;
   v[1] <- 2;
   Escribir v;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

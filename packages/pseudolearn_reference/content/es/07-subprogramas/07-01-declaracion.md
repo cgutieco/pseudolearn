@@ -48,10 +48,10 @@ SubProceso Doble(n Como Entero) Como Entero
   Retornar n * 2;
 FinSubProceso
 
-Proceso Principal
+Algoritmo Principal
   Saludar("Ana");
   Escribir Doble(21);
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -71,9 +71,9 @@ Funcion area <- AreaRectangulo(base Como Real, alto Como Real)
   area <- base * alto;
 FinFuncion
 
-Proceso Principal
+Algoritmo Principal
   Escribir AreaRectangulo(3.0, 4.5);
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -95,9 +95,9 @@ SubProceso Siete() Como Entero
   Escribir "sin retorno";
 FinSubProceso
 
-Proceso Principal
+Algoritmo Principal
   Escribir Siete();
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

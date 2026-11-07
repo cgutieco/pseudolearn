@@ -30,13 +30,13 @@ pie: Los mismos símbolos, separados de otra forma, son otras piezas. El espacio
 ```
 
 ```programa id=flecha titulo="Asignar no es comparar" ejecutar
-Proceso Flecha
+Algoritmo Flecha
   Definir x Como Entero <- 5;
   x<-1;
   Escribir x;
   Escribir x < -1;
   Escribir x = 1;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

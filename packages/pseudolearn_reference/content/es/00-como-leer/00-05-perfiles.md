@@ -22,12 +22,12 @@ pie: El mismo programa en los dos perfiles. Cada palabra tiene su pareja exacta;
 El motor sabe **traducir** un programa de un perfil al otro. La traducción cambia solo las palabras del lenguaje; respeta los nombres que inventaste, los textos entre comillas y los comentarios.
 
 ```programa id=saludo titulo="Un programa en perfil español" ejecutar
-Proceso Saludo
+Algoritmo Saludo
   Definir nombre Como Cadena <- "Ana";
   Si Longitud(nombre) > 2 Entonces
     Escribir "Hola, ", nombre;
   FinSi
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

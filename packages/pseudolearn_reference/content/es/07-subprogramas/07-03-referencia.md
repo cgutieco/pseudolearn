@@ -25,11 +25,11 @@ SubProceso Dividir(a Como Entero, b Como Entero, cociente Como Entero Por Refere
   resto <- a mod b;
 FinSubProceso
 
-Proceso Principal
+Algoritmo Principal
   Definir c, r Como Entero;
   Dividir(17, 5, c, r);
   Escribir c, " ", r;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -54,9 +54,9 @@ SubProceso Incrementar(n Como Entero Por Referencia)
   n <- n + 1;
 FinSubProceso
 
-Proceso Principal
+Algoritmo Principal
   Incrementar(5);
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

@@ -29,17 +29,16 @@ pie: El motor señala el fragmento culpable y sigue leyendo. Las fases semántic
 ```
 
 ```programa id=arroba titulo="Un carácter que no existe en el lenguaje" ejecutar
-Proceso Arroba
+Algoritmo Arroba
   Escribir "correo" @ "dominio";
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
 unrecognizedCharacter
-missingStatementTerminator
 ```
 
-El segundo diagnóstico es consecuencia del primero: al saltarse la `@`, el motor ya no reconoce el final de la sentencia donde lo esperaba.
+Hay un solo diagnóstico: el motor descarta la `@` y no informa errores derivados del hueco que deja, como un punto y coma que falta.
 
 ::: limite
 El análisis admite hasta 256 construcciones anidadas a la vez: paréntesis, operadores unarios, potencias encadenadas y sentencias compuestas dentro de otras. La siguiente produce `analysisNestingLimitExceeded`. El límite protege al motor; ningún programa razonable se acerca a él.

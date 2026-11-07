@@ -20,13 +20,13 @@ pie: Lo que hay a la derecha de las dos barras es comentario hasta el final de l
 ```
 
 ```programa id=comentarios titulo="Comentarios en su sitio" ejecutar
-Proceso Comentarios
+Algoritmo Comentarios
   // Calcula el área de un rectángulo
   Definir base Como Entero <- 4;
   Definir altura Como Entero <- 3;
   Escribir base * altura; // 4 por 3
   Escribir "// esto no es un comentario";
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

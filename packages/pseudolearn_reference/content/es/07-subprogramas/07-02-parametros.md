@@ -26,13 +26,13 @@ SubProceso Copia(n Como Entero)
   n <- n + 1;
 FinSubProceso
 
-Proceso Principal
+Algoritmo Principal
   Definir x Como Entero <- 5;
   Copia(x);
   Escribir x;
   Incrementar(x);
   Escribir x;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

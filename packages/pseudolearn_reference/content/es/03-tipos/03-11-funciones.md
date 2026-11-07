@@ -36,10 +36,10 @@ FinSubProceso
 SubProceso aplicar(f Como SubProceso(Entero) Como Entero, valor Como Entero) Como Entero
   Retornar f(valor);
 FinSubProceso
-Proceso Aplicar
+Algoritmo Aplicar
   Definir operacion Como SubProceso(Entero) Como Entero <- doble;
   Escribir operacion(4), " ", aplicar(doble, 10);
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -56,11 +56,11 @@ SubProceso multiplicador(factor Como Entero) Como SubProceso(Entero) Como Entero
     Retornar x * factor;
   FinSubProceso;
 FinSubProceso
-Proceso Clausuras
+Algoritmo Clausuras
   Definir doble Como SubProceso(Entero) Como Entero <- multiplicador(2);
   Definir triple Como SubProceso(Entero) Como Entero <- multiplicador(3);
   Escribir doble(5), " ", triple(5);
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -81,14 +81,14 @@ pie: Cada clausura se lleva su propia copia de `factor`. Por eso `doble` y `trip
 Capturar una variable que después cambia es un error, porque la clausura vería un valor y el resto del programa otro:
 
 ```programa id=captura-mutable titulo="Capturar algo que cambia" ejecutar
-Proceso CapturaMutable
+Algoritmo CapturaMutable
   Definir n Como Entero <- 1;
   Definir f Como SubProceso() Como Entero <- SubProceso() Como Entero
     Retornar n;
   FinSubProceso;
   n <- 2;
   Escribir f();
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

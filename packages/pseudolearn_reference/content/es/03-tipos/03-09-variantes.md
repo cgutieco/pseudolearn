@@ -43,11 +43,11 @@ SubProceso area(f Como Forma) Como Entero
   FinSegun
   Retornar total;
 FinSubProceso
-Proceso Areas
+Algoritmo Areas
   Escribir area(Forma.Circulo(1));
   Escribir area(Forma.Rectangulo(3, 4));
   Escribir area(Forma.Punto);
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -67,12 +67,12 @@ Variante Forma
   Alternativa Circulo(radio Como Entero)
   Alternativa Punto
 FinVariante
-Proceso Incompleto
+Algoritmo Incompleto
   Definir f Como Forma <- Forma.Punto;
   Segun f Hacer
     Forma.Circulo(r): Escribir r;
   FinSegun
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -91,8 +91,8 @@ Una variante sin alternativas no tiene ningún valor posible:
 ```programa id=sin-alternativas titulo="Una variante vacía" ejecutar
 Variante Vacia
 FinVariante
-Proceso P
-FinProceso
+Algoritmo P
+FinAlgoritmo
 ```
 
 ```diagnosticos

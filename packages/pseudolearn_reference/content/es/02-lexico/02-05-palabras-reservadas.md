@@ -20,16 +20,16 @@ Cada perfil tiene su lista de **palabras reservadas**: las que forman las instru
 pie: Las palabras reservadas se agrupan por familia. El color de cada familia es el mismo que usa el editor.
 ```
 
-Varias palabras tienen **alias**: otras grafías que el motor reconoce y trata igual. `Algoritmo` es alias de `Proceso` y `Mostrar` lo es de `Escribir`. El motor acepta los alias, pero al formatear o traducir los convierte a la forma principal.
+Varias palabras tienen **alias**: otras grafías que el motor reconoce y trata igual. `Proceso` es alias de `Algoritmo` y `Mostrar` lo es de `Escribir`. El motor acepta los alias, pero al formatear o traducir los convierte a la forma principal.
 
 ```programa id=alias titulo="Alias aceptados" ejecutar
-Algoritmo Alias
+Proceso Alias
   Definir hecho Como Logico <- Verdadero;
   Mostrar "El alias funciona";
   Si NO hecho O hecho Entonces
     Escribir 7 mod 3;
   FinSi
-FinAlgoritmo
+FinProceso
 ```
 
 ```salida
@@ -45,9 +45,9 @@ Algunas palabras solo son especiales en un sitio concreto. Por ejemplo, `Cada` s
 Usar una palabra reservada como nombre produce un error que dice cuál es:
 
 ```programa id=reservada titulo="Una variable llamada como una palabra reservada" ejecutar
-Proceso Reservada
+Algoritmo Reservada
   Definir Si Como Entero <- 1;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

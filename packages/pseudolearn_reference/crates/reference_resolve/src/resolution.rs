@@ -1,4 +1,4 @@
-use crate::{AliasTable, CategoryTable, LanguagePack, SectionIndex};
+use crate::{CategoryTable, LanguagePack, SectionIndex};
 use reference_corpus::Corpus;
 use reference_model::{
     CodeEngine, ExampleCheck, Profile, ProgramSource, PublishedSection, RuleId, Violation,
@@ -15,7 +15,6 @@ pub struct Resolution<'resolution> {
     pub engine: &'resolution dyn CodeEngine,
     pub corpus: &'resolution Corpus,
     pub categories: &'resolution CategoryTable,
-    pub aliases: &'resolution AliasTable,
     pub pack: &'resolution LanguagePack,
     pub figures: &'resolution BTreeMap<String, String>,
     pub index: &'resolution SectionIndex,

@@ -17,12 +17,12 @@ Tras un error de sintaxis, el motor busca un punto seguro para seguir leyendo: a
 Cuando una sentencia está mal escrita, el análisis no se detiene. Descarta lo que no entiende hasta un punto de **sincronización** —el fin de línea, un `;` o el borde de un bloque— y continúa desde ahí. Cada sentencia rota produce **como mucho un** diagnóstico principal, y los errores que caen sobre lo descartado no se informan.
 
 ```programa id=dos-errores titulo="Dos errores independientes" ejecutar
-Proceso Dos
+Algoritmo Dos
   Definir a Como Entero <- 1
   Escribir a;
   Escribir (a + ;
   Escribir "fin";
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -37,11 +37,11 @@ pie: Cada error descarta hasta el siguiente punto seguro y el análisis sigue. L
 Un bloque que queda sin cerrar produce **un solo** diagnóstico, con un tramo relacionado que apunta a su apertura, aunque haya otros bloques exteriores pendientes:
 
 ```programa id=bloques-abiertos titulo="Dos bloques sin cerrar" ejecutar
-Proceso Abierto
+Algoritmo Abierto
   Mientras Verdadero Hacer
     Si Verdadero Entonces
       Escribir 1;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

@@ -26,10 +26,10 @@ pie: La edición 2026 reúne una sola gramática, una sola política de tipos y 
 Todo programa de la edición 2026 ve desde el principio un **preludio**: un conjunto fijo de funciones y tipos incorporados, como `Longitud` o `Opcional`. No hace falta importarlo y no se lee de ningún archivo del ordenador. Si declaras un subprograma con el mismo nombre que una función incorporada, el tuyo la oculta.
 
 ```programa id=preludio titulo="Usar el preludio sin importar nada" ejecutar
-Proceso Preludio
+Algoritmo Preludio
   Escribir Longitud("PseudoLearn");
   Escribir rc(81);
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

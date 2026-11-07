@@ -29,12 +29,12 @@ pie: Las únicas tres flechas que el motor sigue por su cuenta. Las flechas tach
 La ampliación se aplica al inicializar, al asignar, al pasar un argumento por valor, al devolver un resultado y al guardar en una colección. También al comparar: un carácter comparado con una cadena se amplía a cadena antes de comparar.
 
 ```programa id=amplia titulo="Ampliaciones automáticas" ejecutar
-Proceso Amplia
+Algoritmo Amplia
   Definir r Como Real <- 3;
   Definir letra Como Caracter <- 'a';
   Definir texto Como Cadena <- letra;
   Escribir r, " ", texto, " ", letra = "a";
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -44,9 +44,9 @@ FinProceso
 En sentido contrario no hay ampliación: un `Real` no se convierte solo en `Entero`, un `Logico` no es un número y un número no se convierte solo en texto.
 
 ```programa id=no-amplia titulo="Un entero no es un texto" ejecutar
-Proceso NoAmplia
+Algoritmo NoAmplia
   Definir t Como Cadena <- 5;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

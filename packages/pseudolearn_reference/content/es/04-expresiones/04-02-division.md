@@ -27,10 +27,10 @@ pie: Siete caramelos entre dos personas: tres para cada una y sobra uno.
 ```
 
 ```programa id=dividir titulo="Tres maneras de dividir" ejecutar
-Proceso Dividir
+Algoritmo Dividir
   Escribir 7 / 2, " ", 7 div 2, " ", 7 mod 2;
   Escribir -7 div 2, " ", -7 mod 2;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -50,10 +50,10 @@ FinProceso
 
 ::: errores
 ```programa id=entre-cero titulo="Dividir entre cero" ejecutar termina=failed
-Proceso EntreCero
+Algoritmo EntreCero
   Definir divisor Como Entero <- 0;
   Escribir 10 / divisor;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

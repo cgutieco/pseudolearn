@@ -101,26 +101,16 @@ fn spell(resolution: &Resolution<'_>, token: &RawToken, place: &Place<'_>) -> To
 
 fn keyword_token(resolution: &Resolution<'_>, identity: &str, place: &Place<'_>) -> Token {
     let target = resolution.profile;
-    let alias = (place.written_in != target)
-        .then(|| {
-            resolution
-                .aliases
-                .translate(place.text, place.written_in, target)
-        })
+    let spelled = (place.written_in != target)
+        .then(|| resolution.corpus.lexicon.lexeme(identity, target))
         .flatten()
-        .map(str::to_owned);
-    let spelled = alias.or_else(|| {
-        (place.written_in != target)
-            .then(|| resolution.corpus.lexicon.lexeme(identity, target))
-            .flatten()
-            .map(|lexeme| {
-                if place.previous == "." {
-                    lexeme.to_owned()
-                } else {
-                    canonical_spelling(lexeme, target)
-                }
-            })
-    });
+        .map(|lexeme| {
+            if place.previous == "." {
+                lexeme.to_owned()
+            } else {
+                canonical_spelling(lexeme, target)
+            }
+        });
     Token {
         text: spelled.unwrap_or_else(|| place.text.to_owned()),
         category: resolution

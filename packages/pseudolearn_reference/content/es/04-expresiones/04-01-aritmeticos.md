@@ -29,12 +29,12 @@ pie: Dos enteros dan un entero; basta un real para que el resultado sea real.
 ```
 
 ```programa id=aritmetica titulo="Las cuatro cuentas básicas" ejecutar
-Proceso Aritmetica
+Algoritmo Aritmetica
   Definir precio Como Entero <- 7;
   Definir cantidad Como Entero <- 3;
   Escribir precio + cantidad, " ", precio - cantidad, " ", precio * cantidad;
   Escribir precio * 1.5, " ", -precio;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

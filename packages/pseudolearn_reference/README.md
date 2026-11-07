@@ -76,7 +76,6 @@ content/<es|en>/<NN-parte>/<NN-MM-tema>.md     una sección por archivo; mismo i
 figures/<id>.svg                               figuras con colores por rol y textos por clave
 figures/strings/<es|en>.json                   textos de figuras, etiquetas de producciones y frases de interfaz
 categories.json                                categoría de resaltado de cada identidad del vocabulario
-aliases.json                                   grafías alternativas con significado propio y su pareja en el otro perfil
 coverage-exclusions.json                       exclusiones de cobertura con motivo
 reference.lock.json                            huella revisada de cada ancla
 fixtures/                                      violaciones deliberadas usadas por los tests
@@ -229,12 +228,15 @@ Anatomía por tipo:
 - **Problema:** `REF-INLINE-CODE` no puede distinguir el «Si» de una oración española de la palabra
   reservada. **Elección:** solo marca palabras con mayúscula fuera del inicio de frase o con mayúscula
   interna (`FinSi`, `EndIf`).
-- **Problema:** el vocabulario declara `Funcion` como alias de `SubProceso`, pero la pureza depende de la
-  grafía, y el traductor del motor la canoniza a `Subroutine`: el programa traducido pierde la pureza y
-  `REF-EXAMPLE-VERIFIED` lo detecta. **Elección:** `aliases.json` declara como datos las grafías que hay que
-  conservar (`Funcion` ↔ `Function`, `FinFuncion` ↔ `End Function`); el código en línea las traduce por
-  pareja y un programa que las usa se traduce por léxico en vez de con el traductor. Pendiente: que el corpus
-  resuelva el conflicto entre el alias y la regla de pureza y que el traductor conserve la familia de alias.
+- **Problema:** el vocabulario declaraba `Funcion` como alias de `SubProceso`, aunque la pureza depende de
+  esa palabra, y el traductor del motor la canonizaba a `Subroutine`: el programa traducido perdía la pureza.
+  El miembro lo parcheaba con una tabla `aliases.json` y una traducción léxica de los programas que la usaban.
+  **Elección:** desde que el corpus declara `function`/`endFunction` como identidades propias, el traductor y el
+  léxico del corpus escriben `Function`/`EndFunction` por identidad; la tabla, `AliasTable` y la traducción
+  léxica de esos programas se retiraron porque no cubrían ninguna otra grafía.
+- **Problema:** el vocabulario hacía canónico `Proceso` y casi todo lo demás escribía `Algoritmo`. **Elección:**
+  con `Algoritmo` canónico en el corpus, los programas, las formas y la prosa del libro usan `Algoritmo` y
+  `FinAlgoritmo`; `Proceso` aparece solo donde se explica como alias (2.5) o como estilo clásico (8.1).
 - **Problema:** los diagnósticos son 284 y casi ninguno merece una sección propia. **Elección:** el
   Apéndice C los genera todos desde el corpus; `links.json` lleva cada código a la sección que lo explica
   (cabecera `diagnosticos`) o, si ninguna lo hace, al apéndice.
@@ -273,9 +275,6 @@ Pendientes declarados:
 
 - La categoría de resaltado debería salir del corpus (ver §4).
 - Los textos de los programas no se traducen en la edición inglesa.
-- `aliases.json` existe porque el traductor del motor canoniza `Funcion` a `Subroutine` y el corpus declara
-  `Funcion` como alias de `SubProceso` aunque la pureza dependa de esa grafía (§4). Cuando el corpus y el
-  traductor resuelvan el conflicto, la tabla y la traducción léxica de programas con alias se retiran.
 - La comilla (`quote`) está excluida de la cobertura de vocabulario: nunca aparece como ficha suelta.
 
 ## 8. Fuentes consultadas y genealogía conceptual

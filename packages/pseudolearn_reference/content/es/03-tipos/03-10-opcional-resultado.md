@@ -38,7 +38,7 @@ SubProceso dividir(a Como Entero, b Como Entero) Como Resultado<Entero, Cadena>
   FinSi
   Retornar Exito(a div b);
 FinSubProceso
-Proceso Division
+Algoritmo Division
   Segun dividir(10, 2) Hacer
     Exito(cociente): Escribir "Cociente: ", cociente;
     Error(motivo): Escribir "Error: ", motivo;
@@ -47,7 +47,7 @@ Proceso Division
     Exito(cociente): Escribir "Cociente: ", cociente;
     Error(motivo): Escribir "Error: ", motivo;
   FinSegun
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -74,12 +74,12 @@ SubProceso mitadDelCociente(a Como Entero, b Como Entero) Como Resultado<Entero,
   Definir c Como Entero <- Propagar dividir(a, b);
   Retornar Exito(c div 2);
 FinSubProceso
-Proceso Encadenar
+Algoritmo Encadenar
   Segun mitadDelCociente(20, 0) Hacer
     Exito(valor): Escribir valor;
     Error(motivo): Escribir "Falló: ", motivo;
   FinSegun
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -105,9 +105,9 @@ SubProceso dividir(a Como Entero, b Como Entero) Como Resultado<Entero, Cadena>
   FinSi
   Retornar Exito(a div b);
 FinSubProceso
-Proceso Olvido
+Algoritmo Olvido
   dividir(4, 2);
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

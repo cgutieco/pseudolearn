@@ -35,12 +35,12 @@ Dentro de un texto, la barra invertida inicia una **secuencia de escape** para e
 | `\'` | comilla simple |
 
 ```programa id=escapes titulo="Comillas y escapes" ejecutar
-Proceso Escapes
+Algoritmo Escapes
   Definir inicial Como Caracter <- 'A';
   Escribir "Primera línea\nSegunda línea";
   Escribir "Dijo: \"hola\"";
   Escribir 'Comillas simples', " y la inicial ", inicial;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -58,9 +58,9 @@ Un carácter es un único punto de código de Unicode, también los que están f
 Un escape que no existe y unas comillas sin cerrar se detectan antes de ejecutar:
 
 ```programa id=mal-escape titulo="Un escape inventado" ejecutar
-Proceso MalEscape
+Algoritmo MalEscape
   Escribir "a\q";
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -68,9 +68,9 @@ invalidEscapeSequence
 ```
 
 ```programa id=sin-cerrar titulo="Comillas sin cerrar" ejecutar
-Proceso SinCerrar
+Algoritmo SinCerrar
   Escribir "hola;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

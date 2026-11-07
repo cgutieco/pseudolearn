@@ -29,9 +29,9 @@ pie: Dos ejecuciones con la misma semilla producen la misma secuencia. Cambiar l
 Esta especificación se construye siempre con la semilla 42. Por eso este programa escribe los mismos números cada vez:
 
 ```programa id=dados titulo="Tres tiradas de dado" ejecutar
-Proceso Dados
+Algoritmo Dados
   Escribir Aleatorio(1, 6), " ", Aleatorio(1, 6), " ", Aleatorio(1, 6);
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

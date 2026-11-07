@@ -31,7 +31,7 @@ pie: Los cinco tipos primitivos. Dos guardan números, uno una respuesta de sí 
 Una variable se declara con `Definir`, su nombre, la palabra `Como` y su tipo. Desde ese momento solo acepta valores de ese tipo, y su tipo no cambia mientras el programa se ejecuta.
 
 ```programa id=ficha titulo="La ficha de Lucía" ejecutar
-Proceso FichaDeLucia
+Algoritmo FichaDeLucia
   Definir edad Como Entero <- 11;
   Definir altura Como Real <- 1.42;
   Definir inicial Como Caracter <- 'L';
@@ -40,7 +40,7 @@ Proceso FichaDeLucia
   Escribir nombre + " (" + inicial + ")";
   Escribir edad, " años, ", altura, " m";
   Escribir aprobada;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -70,11 +70,11 @@ Un `Entero` es un número sin parte decimal. Las operaciones con enteros dan el 
 Un `Real` es un número con parte decimal. Al escribirse muestra siempre al menos un decimal, para que se distinga de un entero a simple vista.
 
 ```programa id=precios titulo="Los reales muestran su punto" ejecutar
-Proceso Precios
+Algoritmo Precios
   Definir precio Como Real <- 7;
   Escribir precio;
   Escribir 0.1 + 0.2;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -97,11 +97,11 @@ Un `Logico` tiene exactamente dos valores, `Verdadero` y `Falso`. Es el tipo de 
 Un `Caracter` es un único símbolo: una letra, una cifra, un signo, un espacio o un emoji. Una `Cadena` es una fila de caracteres que puede estar vacía. Las posiciones dentro de una cadena se cuentan desde cero.
 
 ```programa id=textos titulo="Medir y mirar dentro de un texto" ejecutar
-Proceso Textos
+Algoritmo Textos
   Definir cara Como Caracter <- "😀";
   Escribir Longitud(""), " ", Longitud("año"), " ", CaracterEn("Hola", 0);
   Escribir cara, " ", CodigoDe(cara), " ", CaracterDesde(76);
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -114,10 +114,10 @@ FinProceso
 El lenguaje solo convierte un valor por su cuenta cuando es imposible perder información: de `Entero` a `Real` y de `Caracter` a `Cadena`. Todo lo demás se pide con una función, porque la decisión de cómo convertir es de quien escribe el programa.
 
 ```programa id=conversiones titulo="Conversiones pedidas" ejecutar
-Proceso Conversiones
+Algoritmo Conversiones
   Definir nota Como Real <- -8.7;
   Escribir trunc(nota), " ", redon(nota), " ", ATexto(1.5) + "!";
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -137,10 +137,10 @@ FinProceso
 Pasarse del máximo de un entero detiene el programa sin escribir nada:
 
 ```programa id=desborde titulo="Pasarse del máximo" ejecutar termina=failed
-Proceso Desborde
+Algoritmo Desborde
   Definir grande Como Entero <- 9223372036854775807;
   Escribir grande + 1;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -150,14 +150,14 @@ integerOverflow
 Comparar reales con `=` funciona, pero el motor avisa, porque dos cálculos que deberían coincidir pueden caer en marcas vecinas:
 
 ```programa id=comparar titulo="Comparar reales con =" ejecutar
-Proceso Comparar
+Algoritmo Comparar
   Definir a Como Real <- 0.1 + 0.2;
   Si a = 0.3 Entonces
     Escribir "iguales";
   Sino
     Escribir "distintos";
   FinSi
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -171,9 +171,9 @@ realEqualityComparison
 Un número no se pega a un texto con `+`; hay que convertirlo o separar con comas:
 
 ```programa id=mezcla titulo="Un número no se pega a un texto" ejecutar
-Proceso Mezcla
+Algoritmo Mezcla
   Escribir "Tengo " + 11;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -183,9 +183,9 @@ cannotConcatenateNumberWithText
 Y un real no entra solo en un entero:
 
 ```programa id=sin-perder titulo="Un real no entra en un entero" ejecutar
-Proceso SinPerder
+Algoritmo SinPerder
   Definir cantidad Como Entero <- 2.5;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

@@ -17,14 +17,14 @@ Antes de ejecutar, el motor recorre todos los caminos posibles del programa y re
 Una variable declarada sin valor inicial está vacía. No vale 0 ni nada parecido. Leerla en un punto al que algún camino llega sin haberle dado valor es el error `variableUsedUninitialized`, y se detecta **antes de ejecutar**.
 
 ```programa id=sin-rama titulo="Una rama que no da valor" ejecutar
-Proceso SinValor
+Algoritmo SinValor
   Definir premio Como Entero;
   Definir puntos Como Entero <- 40;
   Si puntos > 50 Entonces
     premio <- 10;
   FinSi
   Escribir premio;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -44,7 +44,7 @@ paso: Los caminos se juntan. Como uno llega sin valor, leer `premio` es un error
 Basta con dar valor en **todos** los caminos:
 
 ```programa id=con-rama titulo="Las dos ramas dan valor" ejecutar
-Proceso ConValor
+Algoritmo ConValor
   Definir premio Como Entero;
   Definir puntos Como Entero <- 40;
   Si puntos > 50 Entonces
@@ -53,7 +53,7 @@ Proceso ConValor
     premio <- 0;
   FinSi
   Escribir premio;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -73,7 +73,7 @@ El mensaje del error dice **por qué** falta el valor:
 | `Segun` sin `De Otro Modo` | un valor del selector no entra en ninguna rama |
 
 ```programa id=bucle-sin-valor titulo="Un bucle que podría no ejecutarse" ejecutar
-Proceso Bucle
+Algoritmo Bucle
   Definir ultimo Como Entero;
   Definir i Como Entero <- 0;
   Mientras i < 3 Hacer
@@ -81,7 +81,7 @@ Proceso Bucle
     i <- i + 1;
   FinMientras
   Escribir ultimo;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

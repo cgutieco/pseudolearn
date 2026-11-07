@@ -18,7 +18,7 @@ Para leer o escribir archivos se pide la capacidad de una carpeta, se abre el ar
 El camino es siempre el mismo:
 
 1. `SolicitarDirectorio(ruta)` da una `DirectorioCap` para esa carpeta.
-2. `carpeta.Abrir(nombre, modo)` da una `ArchivoCap`, con modo `"lectura"` o `"escritura"`.
+2. `carpeta.Abrir(nombre, modo)` da una `ArchivoCap`. Con `"lectura"` solo se lee; `"escritura"` crea o vacía el archivo; `"lectura_escritura"` lo crea si falta y conserva lo que tenía.
 3. `LeerTexto`, `EscribirTexto`, `AgregarTexto` y sus versiones con `Bytes` hacen el trabajo.
 
 Cada paso puede fallar, así que devuelve `Resultado<…, ErrorES>`. Con `Propagar`, un fallo se devuelve a quien llamó sin escribir el `Segun` a mano.

@@ -22,13 +22,13 @@ pie: Qué puede ir al principio de un nombre y qué puede ir después. Los núme
 Los nombres se comparan **exactamente**: `edad` y `Edad` son dos variables distintas, igual que `ano` y `año`. Las palabras reservadas, en cambio, no distinguen mayúsculas ni tildes en el perfil español: da igual escribirlas en minúsculas, en mayúsculas o sin tilde.
 
 ```programa id=nombres titulo="Nombres que parecen iguales" ejecutar
-Proceso Nombres
+Algoritmo Nombres
   Definir edad Como Entero <- 1;
   Definir Edad Como Entero <- 2;
   Definir año Como Entero <- 2026;
   Definir _total1 Como Entero <- edad + Edad;
   Escribir edad, " ", Edad, " ", año, " ", _total1;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

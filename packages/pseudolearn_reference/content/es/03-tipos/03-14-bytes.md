@@ -27,12 +27,12 @@ Definir «nombre» Como Bytes <- BytesDesdeTexto(«texto»);
 Un texto es una fila de caracteres; los **bytes** son la forma en que ese texto se guarda en un archivo o viaja por la red. `BytesDesdeTexto` convierte un texto en bytes con la codificación UTF-8. Las letras sin tilde ocupan un octeto, pero la ñ ocupa dos.
 
 ```programa id=octetos titulo="Los octetos de una palabra" ejecutar
-Proceso Octetos
+Algoritmo Octetos
   Definir datos Como Bytes <- BytesDesdeTexto("año");
   Escribir datos.Longitud(), " ", datos.En(0), " ", datos.En(1), " ", datos.En(2);
   Definir vacio Como Bytes <- Bytes();
   Escribir vacio.Longitud();
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -47,13 +47,13 @@ pie: «año» tiene tres caracteres pero cuatro octetos: la ñ se codifica con d
 `TextoUtf8` hace el camino inverso y devuelve un `Resultado`, porque no cualquier secuencia de bytes es un texto válido:
 
 ```programa id=decodificar titulo="De bytes a texto" ejecutar
-Proceso Decodificar
+Algoritmo Decodificar
   Definir datos Como Bytes <- BytesDesdeTexto("año");
   Segun datos.TextoUtf8() Hacer
     Exito(texto): Escribir texto, " (", Longitud(texto), " caracteres)";
     De Otro Modo: Escribir "no es UTF-8";
   FinSegun
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -71,10 +71,10 @@ año (3 caracteres)
 Un segmento que se sale de la secuencia detiene el programa en la llamada:
 
 ```programa id=segmento titulo="Un segmento demasiado largo" ejecutar termina=failed
-Proceso Segmento
+Algoritmo Segmento
   Definir datos Como Bytes <- BytesDesdeTexto("hola");
   Escribir datos.Segmento(1, 5).Longitud();
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

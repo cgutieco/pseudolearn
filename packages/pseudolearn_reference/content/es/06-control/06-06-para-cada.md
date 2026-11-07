@@ -40,7 +40,7 @@ FinPara
 La colección se calcula una vez. Después se visita cada elemento en orden: de la posición 0 en adelante para vectores y arreglos, y en orden de inserción para diccionarios. Una colección vacía no ejecuta el cuerpo.
 
 ```programa id=lista-compra titulo="Recorrer un vector" ejecutar
-Proceso Mochila
+Algoritmo Mochila
   Definir lista Como Vector<Cadena> <- Vector();
   lista.Agregar("pan");
   lista.Agregar("leche");
@@ -48,7 +48,7 @@ Proceso Mochila
   Para Cada producto En lista Hacer
     Escribir "- ", producto;
   FinPara
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -67,14 +67,14 @@ paso: Tercera vuelta: `producto` vale `"huevos"`. No quedan más y el recorrido 
 Con un diccionario se piden dos nombres, la clave y el valor:
 
 ```programa id=recorrer-edades titulo="Recorrer un diccionario" ejecutar
-Proceso Edades
+Algoritmo Edades
   Definir edades Como Diccionario<Cadena, Entero> <- Diccionario();
   edades["Ana"] <- 12;
   edades["Leo"] <- 11;
   Para Cada nombre, edad En edades Hacer
     Escribir nombre, ": ", edad;
   FinPara
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -88,14 +88,14 @@ Durante el recorrido la colección no puede cambiar de **estructura**: añadir o
 
 ::: errores
 ```programa id=modificar-recorrido titulo="Añadir mientras se recorre" ejecutar termina=failed
-Proceso Modificar
+Algoritmo Modificar
   Definir lista Como Vector<Entero> <- Vector();
   lista.Agregar(1);
   lista.Agregar(2);
   Para Cada n En lista Hacer
     lista.Agregar(n);
   FinPara
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

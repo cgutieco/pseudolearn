@@ -38,10 +38,10 @@ SubProceso Doble(n Como Entero) Como Entero
   Retornar n * 2;
 FinSubProceso
 
-Proceso Principal
+Algoritmo Principal
   Doble(3);
   Escribir Doble(2, 3);
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

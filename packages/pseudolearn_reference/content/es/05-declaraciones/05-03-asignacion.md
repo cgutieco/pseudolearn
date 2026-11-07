@@ -42,7 +42,7 @@ Por eso `contador <- contador + 1` funciona: la derecha lee el valor viejo y el 
 El ejemplo clásico es intercambiar dos valores. Hace falta una tercera variable, porque al asignar se pierde lo anterior:
 
 ```programa id=intercambio titulo="Intercambiar dos variables" ejecutar
-Proceso Intercambio
+Algoritmo Intercambio
   Definir a Como Entero <- 1;
   Definir b Como Entero <- 2;
   Definir auxiliar Como Entero;
@@ -50,7 +50,7 @@ Proceso Intercambio
   a <- b;
   b <- auxiliar;
   Escribir a, " ", b;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -71,11 +71,11 @@ Asignar un objeto copia la **referencia**, no el objeto: después las dos variab
 El tipo de la derecha tiene que encajar con el destino:
 
 ```programa id=asignar-tipo titulo="Un texto en una variable entera" ejecutar
-Proceso Tipos
+Algoritmo Tipos
   Definir x Como Entero <- 1;
   x <- "uno";
   Escribir x;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -85,10 +85,10 @@ incompatibleTypesInAssignment
 Un índice fuera de rango solo se descubre al ejecutar:
 
 ```programa id=asignar-fuera titulo="Asignar fuera del arreglo" ejecutar termina=failed
-Proceso Fuera
+Algoritmo Fuera
   Dimension notas[3] Como Entero;
   notas[3] <- 1;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

@@ -23,7 +23,7 @@ pie: Punto y coma al final de cada sentencia simple; ninguno en las líneas de a
 ```
 
 ```programa id=terminacion titulo="Dónde va el punto y coma" ejecutar
-Proceso Terminacion
+Algoritmo Terminacion
   Definir i Como Entero <- 0;
   Mientras i < 2 Hacer
     Escribir "vuelta ", i;
@@ -31,7 +31,7 @@ Proceso Terminacion
   FinMientras
   Definir a Como Entero <- 1; Definir b Como Entero <- 2;
   Escribir a + b;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -46,10 +46,10 @@ Varias sentencias pueden compartir línea si cada una lleva su punto y coma. Las
 Un punto y coma olvidado se detecta antes de ejecutar y el mensaje señala dónde debería estar:
 
 ```programa id=olvido titulo="Un punto y coma olvidado" ejecutar
-Proceso Olvido
+Algoritmo Olvido
   Escribir "uno"
   Escribir "dos";
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

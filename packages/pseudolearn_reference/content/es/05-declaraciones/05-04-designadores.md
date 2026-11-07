@@ -30,14 +30,14 @@ pie: A la izquierda, designadores: nombran un lugar. A la derecha, expresiones q
 Los índices y el receptor de un designador se evalúan **una sola vez**, antes de guardar:
 
 ```programa id=designadores titulo="Casillas como destino" ejecutar
-Proceso Designadores
+Algoritmo Designadores
   Dimension notas[3] Como Entero;
   Definir i Como Entero <- 0;
   notas[0] <- 7;
   notas[i + 1] <- notas[0] + 1;
   notas[2] <- 10;
   Escribir notas[0], " ", notas[1], " ", notas[2];
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -48,9 +48,9 @@ En `notas[i + 1]` el índice es una expresión cualquiera, pero `notas[…]` en 
 
 ::: errores
 ```programa id=leer-literal titulo="Leer en un número" ejecutar
-Proceso LeerLiteral
+Algoritmo LeerLiteral
   Leer 5;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

@@ -36,11 +36,11 @@ El motor calcula el valor de cada constante **al analizar el programa**. Usarla 
 ```programa id=factura titulo="Constantes de una factura" ejecutar
 Constante IVA Como Real <- 0.21;
 Constante SEMANA Como Entero <- 7 * 24;
-Proceso Factura
+Algoritmo Factura
   Constante SALUDO Como Cadena <- "Total: ";
   Definir base Como Real <- 100.0;
   Escribir SALUDO, base * (1 + IVA), " (", SEMANA, " horas)";
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -67,10 +67,10 @@ Una constante no admite asignación:
 
 ```programa id=cambiar-constante titulo="Intentar cambiar una constante" ejecutar
 Constante LIMITE Como Entero <- 10;
-Proceso Cambiar
+Algoritmo Cambiar
   LIMITE <- 20;
   Escribir LIMITE;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -81,9 +81,9 @@ Y su valor tiene que poder calcularse sin ejecutar nada:
 
 ```programa id=constante-potencia titulo="Una potencia en una constante" ejecutar
 Constante POT Como Entero <- 2 ^ 3;
-Proceso Potencia
+Algoritmo Potencia
   Escribir POT;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

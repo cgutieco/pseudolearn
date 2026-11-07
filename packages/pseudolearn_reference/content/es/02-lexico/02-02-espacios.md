@@ -22,12 +22,12 @@ pie: Dos escrituras del mismo programa. Los espacios cambian la forma, no el con
 Este programa tiene una sangría descuidada y espacios de más; aun así se ejecuta igual que uno bien escrito:
 
 ```programa id=desordenado titulo="Sangría descuidada" ejecutar
-Proceso   Desordenado
+Algoritmo   Desordenado
       Definir   n   Como Entero <- 3;
 Si n > 2 Entonces
 Escribir    "mayor que dos";
       FinSi
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida

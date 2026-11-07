@@ -34,11 +34,11 @@ Las clases siguen el recorrido del programa: **léxica** y **sintáctica** al le
 Una advertencia no detiene nada. Al leer un valor que no encaja con el tipo, el motor avisa y **vuelve a pedirlo**, sin cambiar la variable:
 
 ```programa id=leer-mal titulo="Una lectura que se repite" ejecutar
-Proceso Edad
+Algoritmo Edad
   Definir edad Como Entero;
   Leer edad;
   Escribir "Tienes ", edad;
-FinProceso
+FinAlgoritmo
 ```
 
 ```entrada

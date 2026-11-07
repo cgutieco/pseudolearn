@@ -32,12 +32,12 @@ Un **enumerado** declara un tipo nuevo cuyos únicos valores son los **miembros*
 Enumerado Semaforo
   Rojo, Amarillo, Verde
 FinEnumerado
-Proceso Cruce
+Algoritmo Cruce
   Definir luz Como Semaforo <- Semaforo.Verde;
   Si luz = Semaforo.Verde Entonces
     Escribir "Cruzar con ", luz;
   FinSi
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -54,14 +54,14 @@ Los enumerados combinan muy bien con `Segun`, que puede tener un caso por miembr
 Enumerado Semaforo
   Rojo, Amarillo, Verde
 FinEnumerado
-Proceso Indicacion
+Algoritmo Indicacion
   Definir luz Como Semaforo <- Semaforo.Amarillo;
   Segun luz Hacer
     Semaforo.Rojo: Escribir "Para";
     Semaforo.Amarillo: Escribir "Precaución";
     Semaforo.Verde: Escribir "Adelante";
   FinSegun
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
@@ -82,9 +82,9 @@ Un miembro que no existe se detecta antes de ejecutar:
 Enumerado Semaforo
   Rojo, Amarillo, Verde
 FinEnumerado
-Proceso Azul
+Algoritmo Azul
   Definir luz Como Semaforo <- Semaforo.Azul;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -97,9 +97,9 @@ Y los miembros no se ordenan:
 Enumerado Semaforo
   Rojo, Amarillo, Verde
 FinEnumerado
-Proceso OrdenEnum
+Algoritmo OrdenEnum
   Escribir Semaforo.Rojo < Semaforo.Verde;
-FinProceso
+FinAlgoritmo
 ```
 
 ```diagnosticos

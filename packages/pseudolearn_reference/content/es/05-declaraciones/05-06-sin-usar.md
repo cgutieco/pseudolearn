@@ -24,13 +24,13 @@ El motor distingue dos descuidos:
 Las dos son **advertencias**: no impiden ejecutar. Suelen señalar un nombre mal escrito, un cálculo que se olvidó mostrar o un resto de una versión anterior.
 
 ```programa id=limpieza titulo="Dos variables que sobran" ejecutar
-Proceso Limpieza
+Algoritmo Limpieza
   Definir usada Como Entero <- 1;
   Definir olvidada Como Entero;
   Definir escrita Como Entero;
   escrita <- 5;
   Escribir usada;
-FinProceso
+FinAlgoritmo
 ```
 
 ```salida
