@@ -178,7 +178,7 @@ Paga 4
 
 ::: docentes
 - **«One or the other, but not both».** The opposite happens: `a Or b` is also true when both are. Try it with `True Or True`.
-- **Forgetting the brackets.** Show the compound version without brackets and look with the class for a year that breaks it.
+- **Forgetting the brackets.** Show the compound version without brackets and look with the group for a year that breaks it.
 - **The general condition before the specific one.** The figure of the two orders shows it with 1900.
 :::
 

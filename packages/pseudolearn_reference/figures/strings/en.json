@@ -1334,6 +1334,13 @@
       "ventas": "ventas",
       "inventario": "inventario",
       "pie": "the arrow goes from whoever uses to whoever is used"
+    },
+    "ruta-molde": {
+      "titulo": "The cutter and the biscuits",
+      "descripcion": "First step: a star-shaped cutter, which is the class. Second step: three biscuits with the same shape and different decoration, which are three objects with their own state.",
+      "molde": "the cutter: the class",
+      "galletas": "three biscuits: three objects",
+      "pie": "same shape, different state"
     }
   }
 }

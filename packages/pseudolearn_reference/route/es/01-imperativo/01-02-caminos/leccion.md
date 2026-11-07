@@ -237,7 +237,7 @@ Paga 4
 
 ::: docentes
 - **«Uno u otro, pero no los dos».** Pasa lo contrario: `a O b` también es verdadera cuando las dos lo son. Pruébalo con `Verdadero O Verdadero`.
-- **Olvidar los paréntesis.** Muestra la versión compuesta sin paréntesis y busca con la clase un año que la rompa.
+- **Olvidar los paréntesis.** Muestra la versión compuesta sin paréntesis y busca con el grupo un año que la rompa.
 - **La condición general antes de la específica.** La figura de los dos órdenes lo muestra con 1900.
 :::
 

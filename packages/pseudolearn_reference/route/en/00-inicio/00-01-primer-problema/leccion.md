@@ -7,7 +7,6 @@ duracion: 15
 problema_breve: How many pizzas should we order for the party?
 introduce: [problema, ejemplo-a-mano, programa, instruccion, ejecutar, salida, funcion-ya-hecha, ciclo-pseudolearn]
 pieza: 1
-menciones_cotidianas: [clase]
 ---
 
 ::: frase
@@ -189,7 +188,7 @@ No exercise tells you what to write. It gives you a problem, and the cycle is yo
 :::
 
 ::: docentes
-- **«The computer understands what I meant».** The first party attempt shows 8.625. Ask the class to predict the output before running it: almost nobody expects decimals.
+- **«The computer understands what I meant».** The first party attempt shows 8.625. Ask the group to predict the output before running it: almost nobody expects decimals.
 - **Forgotten quotes.** Many write `Write Hola;` without quotes. The engine message mentions things not seen yet: just say «the quotes are missing» and move on.
 - **Skipping step 1.** Demand the two worked examples before opening the editor. The 8-people one is what breaks Beto's solution in the exercises.
 :::

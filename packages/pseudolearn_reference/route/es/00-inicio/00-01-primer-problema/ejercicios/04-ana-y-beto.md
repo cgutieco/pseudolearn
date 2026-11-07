@@ -23,5 +23,5 @@ Beto suma 1 «por si sobra algo». Cuando la división es exacta no sobra nada, 
 :::
 
 ::: docentes
-Es el primer contacto con la idea de buscar el caso que rompe una solución, que la lección 0.4 desarrolla. Pide a la clase otra cantidad que también la rompa: 8, 24 o 32.
+Es el primer contacto con la idea de buscar el caso que rompe una solución, que la lección 0.4 desarrolla. Pide al grupo otra cantidad que también la rompa: 8, 24 o 32.
 :::

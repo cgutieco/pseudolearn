@@ -7,7 +7,6 @@ duracion: 15
 problema_breve: ¿Cuántas pizzas pedir para la fiesta?
 introduce: [problema, ejemplo-a-mano, programa, instruccion, ejecutar, salida, funcion-ya-hecha, ciclo-pseudolearn]
 pieza: 1
-menciones_cotidianas: [clase]
 ---
 
 ::: frase
@@ -17,7 +16,7 @@ Programar es resolver un problema y después explicarle la solución a una compu
 ## El problema {#problema}
 
 ::: problema
-La clase de quinto organiza la fiesta de fin de curso en el kiosco de la escuela. Van **23 personas**. Cada una come **3 porciones** de pizza, y cada pizza trae **8 porciones**.
+Los chicos de quinto organizan la fiesta de fin de curso en el kiosco de la escuela. Van **23 personas**. Cada una come **3 porciones** de pizza, y cada pizza trae **8 porciones**.
 
 **¿Cuántas pizzas hay que pedir?**
 :::
@@ -205,7 +204,7 @@ Ningún ejercicio te dice qué escribir. Te da un problema, y el ciclo es tuyo.
 :::
 
 ::: docentes
-- **«La computadora entiende lo que quise decir».** El primer intento de la fiesta muestra 8.625. Pide a la clase que prediga la salida antes de ejecutarlo: casi nadie espera decimales.
+- **«La computadora entiende lo que quise decir».** El primer intento de la fiesta muestra 8.625. Pide al grupo que prediga la salida antes de ejecutarlo: casi nadie espera decimales.
 - **Comillas olvidadas.** Muchos escriben `Escribir Hola;` sin comillas. El mensaje del motor habla de cosas que todavía no se vieron: di solo «faltan las comillas» y sigue.
 - **Saltarse el paso 1.** Exige los dos ejemplos a mano antes de abrir el editor. El de 8 personas es el que desarma la solución de Beto en los ejercicios.
 :::

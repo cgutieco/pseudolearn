@@ -34,7 +34,7 @@ The first is missing a semicolon at the end of a line. The second divides by the
 
 ## Understand {#entender fase=1}
 
-What is asked is not a new program. It is to classify the failures and find a method to discover them before someone else does.
+What is asked is not a new program. It is to classify the failures and find a way to discover them before someone else does.
 
 ## Plan {#planear fase=2}
 

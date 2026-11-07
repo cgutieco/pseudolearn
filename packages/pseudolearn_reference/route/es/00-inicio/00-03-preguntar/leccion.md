@@ -161,5 +161,5 @@ Queda una pregunta incómoda: ¿y si alguien escribe 0 amigos? No lo ejecutes to
 :::
 
 ::: siguiente
-Tu compañero probó la calculadora de propinas con 0 amigos y algo salió muy mal. ¿Qué clases de fallas existen y cómo se encuentran antes de que las encuentre otro?
+Tu compañero probó la calculadora de propinas con 0 amigos y algo salió muy mal. ¿Qué tipos de fallas existen y cómo se encuentran antes de que las encuentre otro?
 :::

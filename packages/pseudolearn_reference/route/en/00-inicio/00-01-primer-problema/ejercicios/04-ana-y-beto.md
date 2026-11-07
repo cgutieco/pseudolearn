@@ -23,5 +23,5 @@ Beto adds 1 «just in case something is left over». When the division is exact 
 :::
 
 ::: docentes
-It is the first contact with the idea of looking for the case that breaks a solution, which lesson 0.4 develops. Ask the class for another number that also breaks it: 8, 24 or 32.
+It is the first contact with the idea of looking for the case that breaks a solution, which lesson 0.4 develops. Ask the group for another number that also breaks it: 8, 24 or 32.
 :::

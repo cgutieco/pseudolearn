@@ -8,7 +8,7 @@ titulo: Tres cajones de errores
 ---
 
 ::: enunciado
-Ubica cada falla en la clase a la que pertenece.
+Ubica cada falla en el tipo al que pertenece.
 :::
 
 ```categorias

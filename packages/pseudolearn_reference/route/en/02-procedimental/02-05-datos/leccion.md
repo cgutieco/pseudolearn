@@ -4,7 +4,7 @@ numero: "2.5"
 tipo: leccion
 titulo: Giving data a shape
 duracion: 40
-problema_breve: The class contact list
+problema_breve: The group's contact list
 necesita: [procedimental.recursion]
 introduce: [registro, campo, enumerado, vector, diccionario, clave]
 usa: [arreglo, indice, subprograma, esquema, caso-borde]
@@ -17,7 +17,7 @@ Choosing how to keep the data is half the solution.
 ## The problem {#problema}
 
 ::: problema
-The class contact list keeps, for each classmate, their **name**, their **phone number** and their **birthday month**. New classmates join every year. You have to be able to **find someone's phone number by their name** and know **how many have birthdays each month**.
+The group's contact list keeps, for each classmate, their **name**, their **phone number** and their **birthday month**. New classmates join every year. You have to be able to **find someone's phone number by their name** and know **how many have birthdays each month**.
 
 **How should the contact list be kept?**
 :::

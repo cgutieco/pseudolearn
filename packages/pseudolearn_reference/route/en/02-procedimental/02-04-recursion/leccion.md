@@ -136,5 +136,5 @@ The cost grows fast: with 20 discs there are more than a million moves. Recursio
 :::
 
 ::: siguiente
-The class contacts have a name, a phone number and a birthday month. How do you keep something that has several parts?
+The contacts of the group have a name, a phone number and a birthday month. How do you keep something that has several parts?
 :::

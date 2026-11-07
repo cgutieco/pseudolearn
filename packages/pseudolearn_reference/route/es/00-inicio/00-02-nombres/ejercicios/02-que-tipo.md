@@ -8,7 +8,7 @@ titulo: Cada valor en su caja
 ---
 
 ::: enunciado
-Ubica cada valor en la clase de caja que puede guardarlo.
+Ubica cada valor en el tipo de caja que puede guardarlo.
 :::
 
 ```categorias

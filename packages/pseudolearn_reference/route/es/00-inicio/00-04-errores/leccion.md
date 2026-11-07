@@ -34,7 +34,7 @@ A la primera le falta un punto y coma al final de una línea. La segunda divide 
 
 ## Entender {#entender fase=1}
 
-Lo que se pide no es un programa nuevo. Es clasificar las fallas y encontrar un método para descubrirlas antes de que las descubra otra persona.
+Lo que se pide no es un programa nuevo. Es clasificar las fallas y encontrar una forma de descubrirlas antes de que las descubra otra persona.
 
 ## Planear {#planear fase=2}
 
@@ -46,7 +46,7 @@ Para cada versión, tres preguntas en orden:
 
 ## La herramienta nueva {#herramienta}
 
-Cada pregunta del plan descubre una clase de falla distinta.
+Cada pregunta del plan descubre un tipo de falla distinto.
 
 - Un [[def:error-de-compilacion|error al compilar]] es un texto que el motor no puede entender: el programa no llega a empezar.
 - Un [[def:error-de-ejecucion|error al ejecutar]] aparece en el camino: el programa empieza, pero se detiene en una instrucción que no puede hacer.

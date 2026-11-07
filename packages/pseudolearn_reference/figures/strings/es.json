@@ -1334,6 +1334,13 @@
       "ventas": "ventas",
       "inventario": "inventario",
       "pie": "la flecha va de quien usa a quien es usado"
+    },
+    "ruta-molde": {
+      "titulo": "El molde y las galletas",
+      "descripcion": "Primer paso: un molde con forma de estrella, que es la clase. Segundo paso: tres galletas con la misma forma y distinta decoración, que son tres objetos con su propio estado.",
+      "molde": "el molde: la clase",
+      "galletas": "tres galletas: tres objetos",
+      "pie": "la misma forma, distinto estado"
     }
   }
 }

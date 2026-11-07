@@ -8,7 +8,7 @@ titulo: Organising the school trip
 ---
 
 ::: enunciado
-Organising the class trip can be split into three smaller problems: transport, food and permissions. Place each job in its own.
+Organising the school trip can be split into three smaller problems: transport, food and permissions. Place each job in its own.
 :::
 
 ```categorias

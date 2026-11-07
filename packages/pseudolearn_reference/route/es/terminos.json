@@ -92,5 +92,12 @@
   "validar": {"etiqueta": "validar", "formas": ["validar", "validación"], "estricto": false, "receta": false},
   "modulo": {"etiqueta": "módulo", "formas": ["módulo", "módulos"], "estricto": true, "receta": true},
   "importar": {"etiqueta": "importar", "formas": ["importar", "importación"], "estricto": true, "receta": false},
-  "visibilidad": {"etiqueta": "visibilidad", "formas": ["visibilidad", "público", "privado"], "estricto": true, "receta": false}
+  "visibilidad": {"etiqueta": "visibilidad", "formas": ["visibilidad", "público", "privado"], "estricto": true, "receta": false},
+  "programacion-orientada-a-objetos": {"etiqueta": "programación orientada a objetos", "formas": ["orientada a objetos"], "estricto": true, "receta": false},
+  "objeto": {"etiqueta": "objeto", "formas": ["objeto", "objetos"], "estricto": true, "receta": true},
+  "clase": {"etiqueta": "clase", "formas": ["clase", "clases"], "estricto": true, "receta": true},
+  "atributo": {"etiqueta": "atributo", "formas": ["atributo", "atributos"], "estricto": true, "receta": true},
+  "metodo": {"etiqueta": "método", "formas": ["método", "métodos"], "estricto": true, "receta": true},
+  "constructor": {"etiqueta": "constructor", "formas": ["constructor", "constructores"], "estricto": true, "receta": true},
+  "instancia": {"etiqueta": "instancia", "formas": ["instancia", "instancias"], "estricto": true, "receta": false}
 }

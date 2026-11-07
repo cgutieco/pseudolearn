@@ -55,7 +55,7 @@ Primero, los ejemplos a mano de los tres días:
 
 Mientras se ejecuta, un programa guarda datos en la [[def:memoria|memoria]] de la computadora. Imagínala como un estante de cajas. Cada caja tiene un nombre y guarda un [[def:valor|valor]]: un número, un texto. Una caja con nombre es una [[def:variable|variable]].
 
-Antes de usar una caja hay que [[def:declarar|declararla]]: decir su nombre y qué clase de valor guarda. Esa clase es su [[def:tipo-de-dato|tipo de dato]]. Por ahora alcanzan tres: `Entero` para números sin decimales, `Real` para números con decimales y `Cadena` para textos.
+Antes de usar una caja hay que [[def:declarar|declararla]]: decir su nombre y qué valores puede guardar, que es su [[def:tipo-de-dato|tipo de dato]]. Por ahora alcanzan tres: `Entero` para números sin decimales, `Real` para números con decimales y `Cadena` para textos.
 
 ```figura-especificacion seccion=declaraciones.definir figura=cajas-variables
 ```
