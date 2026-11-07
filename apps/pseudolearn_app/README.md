@@ -2353,6 +2353,7 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   Las peticiones API aceptan una llamada o una secuencia; `resource_from` resuelve los recursos desde las respuestas
   anteriores para que los casos de negociación y ciclo de vida recorran el puente real.
   Un paso `input` con solo `text` toma `resource_id`, `task_id` y `request_id` de la última `pending_input` recibida, igual que el adaptador del motor; sin solicitud pendiente la API lo rechaza.
+  Una ejecución devuelve sus eventos solo si la petición pide `observe: events`; si no, la respuesta lleva la lista vacía, como exige el protocolo para un sujeto que anuncia `observe`. Antes los devolvía siempre y el primer caso `execute` del sujeto (`LANG.PROGRAM.STRUCTURE` C6) cortaba la sesión con `SEE-PROTOCOL`.
   `conformance.yaml` mantiene los vínculos pendientes hasta que una verificación ejecutada respalde cada vínculo.
 - **Comparación de datos:** `candidates_include` comprueba pertenencia sin imponer el orden de presentación y
   `next_cursor: "opaque"` acepta cualquier cursor no vacío. Se descarta fijar un orden o una codificación que el

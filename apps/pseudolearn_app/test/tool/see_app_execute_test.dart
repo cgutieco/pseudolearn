@@ -25,6 +25,7 @@ void main() {
       });
       final result = executeThroughTransport(transport, {
         'include_program_view': true,
+        'observe': 'events',
       });
       expect(result['events'], [0, 1]);
       expect(result['program_view'], {'revision': 1});
@@ -52,4 +53,24 @@ void main() {
       expect(transport.calls.last, 'release');
     },
   );
+
+  test('returns no events when the request does not observe them', () {
+    var batches = 0;
+    final transport = FakeRustTransport({
+      'create_analysis': (_) => {'document': 1, 'resource': 2},
+      'analysis': (_) => {'tree': true, 'diagnostics': <Object?>[]},
+      'start': (_) => {'resource': 3},
+      'advance': (_) => {
+        'events': [batches++],
+        'output': 'Hola\n',
+        'termination': {'kind': batches == 2 ? 'completed' : 'running'},
+      },
+      'release': (_) => null,
+    });
+    final result = executeThroughTransport(transport, {});
+    expect(result['events'], isEmpty);
+    expect(result['output'], 'Hola\n');
+    expect(result['termination'], {'kind': 'completed'});
+    expect(batches, 2);
+  });
 }

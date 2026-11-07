@@ -28,6 +28,9 @@ Map<String, Object?> executeThroughTransport(
         transport.call('start', {...request, 'analysis': created['resource']})
             as Map<String, Object?>;
     final result = _drain(transport, started['resource']);
+    if (request['observe'] != 'events') {
+      result['events'] = <Object?>[];
+    }
     if (request['include_program_view'] == true) {
       result['program_view'] = transport.call('program_view', {
         'resource': document,
