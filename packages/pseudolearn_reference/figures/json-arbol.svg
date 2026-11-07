@@ -1,0 +1,14 @@
+<svg viewBox="0 0 340 190">
+  <caja x="110" y="8" ancho="120" alto="32" rol="logico" fondo="0.14" tamano="12" texto="{{t:objeto}}"/>
+  <path d="M 170 40 V 54 M 60 54 H 280 M 60 54 V 70 M 170 54 V 70 M 280 54 V 70" fill="none" stroke="@atenuado" stroke-width="1.5"/>
+  <caja x="20" y="72" ancho="80" alto="32" rol="texto" fondo="0.14" fuente="mono" tamano="12" texto="{{codigo:&quot;Ana&quot;}}"/>
+  <caja x="130" y="72" ancho="80" alto="32" rol="numero" fondo="0.14" fuente="mono" tamano="12" texto="15"/>
+  <caja x="240" y="72" ancho="80" alto="32" rol="logico" fondo="0.10" tamano="12" texto="{{t:arreglo}}"/>
+  <text x="60" y="122" font-size="12" text-anchor="middle" fill="@atenuado">{{t:k1}}</text>
+  <text x="170" y="122" font-size="12" text-anchor="middle" fill="@atenuado">{{t:k2}}</text>
+  <text x="280" y="122" font-size="12" text-anchor="middle" fill="@atenuado">{{t:k3}}</text>
+  <path d="M 280 104 V 132 M 250 132 H 310 M 250 132 V 144 M 310 132 V 144" fill="none" stroke="@atenuado" stroke-width="1.5"/>
+  <caja x="226" y="146" ancho="48" alto="30" rol="numero" fondo="0.14" fuente="mono" tamano="12" texto="7"/>
+  <caja x="286" y="146" ancho="48" alto="30" rol="numero" fondo="0.14" fuente="mono" tamano="12" texto="9"/>
+  <text x="120" y="164" font-size="12" text-anchor="middle" fill="@acento-procedimental">{{codigo:ficha.Campo(&quot;edad&quot;)}}</text>
+</svg>

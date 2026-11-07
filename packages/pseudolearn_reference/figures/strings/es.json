@@ -204,6 +204,10 @@
       "titulo": "El árbol de 2 + 3 * 4",
       "descripcion": "La expresión 2 + 3 * 4 se agrupa en un árbol con + en la raíz, 2 a la izquierda y 3 * 4 a la derecha. El producto se reduce a 12 y la suma a 14."
     },
+    "archivo-capas": {
+      "titulo": "De la carpeta al contenido",
+      "descripcion": "DirectorioCap lleva con Abrir a ArchivoCap, que lleva con LeerTexto al contenido \"Comprar pan\". Cada paso puede terminar en Error(ErrorES)."
+    },
     "arreglo-casillas": {
       "titulo": "Las casillas de un arreglo",
       "descripcion": "Cuatro casillas seguidas con los valores 7, 9, 6 y 8 y los índices 0, 1, 2 y 3 debajo. A la derecha, una quinta casilla punteada y tachada con el índice 4, que no existe.",
@@ -341,6 +345,11 @@
       "salida": "Salida",
       "salida-texto": "lo que escribió el motor"
     },
+    "conversiones": {
+      "titulo": "Ida y vuelta entre texto y número",
+      "descripcion": "Arriba, el texto \"42\" pasa a número con AEntero y vuelve con ATexto. Abajo, el texto \"doce\" no se puede convertir y AEntero falla.",
+      "falla": "falla"
+    },
     "cortocircuito": {
       "titulo": "El cortocircuito",
       "descripcion": "Arriba, Falso Y una división entre cero tachada: el resultado es Falso sin calcular la derecha. Abajo, Verdadero O la misma división: el resultado es Verdadero.",
@@ -454,6 +463,21 @@
       "archivo": "tienda.psl",
       "unico": "exactamente uno"
     },
+    "familias-biblioteca": {
+      "titulo": "Familias de la biblioteca",
+      "descripcion": "Dos columnas. A la izquierda, las familias que solo calculan: texto, números, colecciones, JSON y bytes. A la derecha, las que necesitan una capacidad: entrada y salida, tiempo, red y tareas.",
+      "puras": "solo calculan",
+      "efectos": "necesitan capacidad",
+      "texto": "texto",
+      "numeros": "números",
+      "colecciones": "colecciones",
+      "json": "JSON",
+      "bytes": "bytes",
+      "io": "entrada y salida",
+      "tiempo": "tiempo",
+      "red": "red",
+      "tareas": "tareas"
+    },
     "familias-palabras": {
       "titulo": "Familias de palabras reservadas",
       "descripcion": "Seis franjas de colores: estructura del programa, subprogramas, objetos, tipos, valores lógicos y operadores escritos con letras, cada una con ejemplos.",
@@ -464,6 +488,14 @@
       "valores": "Valores",
       "operadores": "Operadores con letras",
       "nota": "La lista completa está en el Apéndice B"
+    },
+    "fecha-hora": {
+      "titulo": "Instante y desplazamiento",
+      "descripcion": "Una FechaHora une un instante en nanosegundos desde 1970 y un desplazamiento de +3600 segundos. Juntos dan la hora local 2026-11-07T18:30:00+01:00.",
+      "instante": "instante (ns)",
+      "desplazamiento": "desplazamiento +3600 s",
+      "local": "hora local",
+      "iso": "2026-11-07T18:30:00+01:00"
     },
     "generico": {
       "titulo": "Una plantilla y sus usos",
@@ -487,6 +519,16 @@
       "bien": "correcto",
       "nuncaUsada": "nunca usada",
       "nuncaLeida": "nunca leída"
+    },
+    "http-ida-vuelta": {
+      "titulo": "Petición y respuesta",
+      "descripcion": "El programa envía una petición GET al servidor y recibe una respuesta 200 con su cuerpo. Las respuestas, también 404 y 500, son Exito; los fallos de transporte son Error.",
+      "programa": "programa",
+      "servidor": "servidor",
+      "get": "GET /hoy",
+      "respuesta": "200 · Soleado, 25",
+      "exito": "200, 404, 500: Exito con la respuesta",
+      "error": "sin conexión: Error(ErrorES)"
     },
     "identificadores": {
       "titulo": "Alfabeto de los identificadores",
@@ -522,6 +564,22 @@
     "interfaz-promesa": {
       "titulo": "Una interfaz y dos clases",
       "descripcion": "La interfaz Figura con el método Area. Las clases Cuadrado y Circulo la realizan. Debajo, Describir con el parámetro T: Figura, que acepta las dos."
+    },
+    "json-arbol": {
+      "titulo": "Árbol JSON",
+      "descripcion": "Un objeto con tres campos: nombre con \"Ana\", edad con 15 y notas con un arreglo de 7 y 9. Campo(\"edad\") baja hasta el 15.",
+      "objeto": "objeto",
+      "arreglo": "arreglo",
+      "k1": "nombre",
+      "k2": "edad",
+      "k3": "notas"
+    },
+    "leer-escribir": {
+      "titulo": "Entrada, variables y salida",
+      "descripcion": "La entrada tiene 3 y 4. Leer los guarda en a y b. Escribir muestra 3 + 4 = 7 en la salida.",
+      "entrada": "entrada",
+      "salida": "salida",
+      "nota": "Leer pide un valor por destino, en orden"
     },
     "leer-figura": {
       "titulo": "Ejemplo de figura por pasos",
@@ -698,6 +756,11 @@
       "descripcion": "Cuatro marcos apilados de Factorial(4) a Factorial(1). El caso base devuelve 1 y cada marco multiplica: 2, 6 y 24.",
       "casoBase": "caso base"
     },
+    "redondeos": {
+      "titulo": "Redondear -2.5",
+      "descripcion": "Una recta con -3, -2 y -1 y el punto -2.5. piso y redon lo llevan a -3; techo y trunc lo llevan a -2.",
+      "nota": "redon aleja los empates del cero"
+    },
     "referencia-salida": {
       "titulo": "Parámetros de salida",
       "descripcion": "A la izquierda, las cajas c y r del principal con 3 y 2. A la derecha, Dividir con cociente y resto, que son flechas hacia c y r.",
@@ -754,6 +817,13 @@
       "finde": "fin de semana",
       "noExiste": "no existe"
     },
+    "semilla": {
+      "titulo": "Misma semilla, misma secuencia",
+      "descripcion": "Dos ejecuciones con la misma semilla sacan la misma secuencia 1, 1, 6, 15. Una ejecución con la semilla 7 saca otra distinta.",
+      "semilla42": "semilla 42",
+      "semilla7": "semilla 7",
+      "iguales": "iguales"
+    },
     "severidad-clases": {
       "titulo": "Clases y severidades",
       "descripcion": "Arriba, las cuatro clases en orden: léxica, sintáctica y semántica antes de ejecutar, y ejecución durante. Abajo, las cuatro letras de severidad: A error, C higiene, D información y E lectura.",
@@ -787,6 +857,19 @@
       "descripcion": "Cuatro líneas. La primera y la tercera tienen un error y una marca que salta al siguiente punto seguro; la segunda y la cuarta se reconocen con normalidad.",
       "sigue": "sigue",
       "nota": "un error principal por sentencia rota"
+    },
+    "subcadena-posiciones": {
+      "titulo": "Posiciones de un texto",
+      "descripcion": "El texto Hola, mundo en casillas numeradas de 0 a 10. Las cuatro primeras, de 0 a 3, están resaltadas como resultado de Subcadena(t, 0, 3).",
+      "c0": "H",
+      "c1": "o",
+      "c2": "l",
+      "c3": "a",
+      "c6": "m",
+      "c7": "u",
+      "c8": "n",
+      "c9": "d",
+      "c10": "o"
     },
     "subprograma-caja": {
       "titulo": "Un subprograma como caja",

@@ -204,6 +204,10 @@
       "titulo": "The tree of 2 + 3 * 4",
       "descripcion": "The expression 2 + 3 * 4 is grouped as a tree with + at the root, 2 on the left and 3 * 4 on the right. The product reduces to 12 and the sum to 14."
     },
+    "archivo-capas": {
+      "titulo": "From folder to contents",
+      "descripcion": "DirCap leads with open to FileCap, which leads with readText to the contents \"Comprar pan\". Every step can end in Error(IoError)."
+    },
     "arreglo-casillas": {
       "titulo": "The boxes of an array",
       "descripcion": "Four boxes in a row with the values 7, 9, 6 and 8 and the indices 0, 1, 2 and 3 below. On the right, a fifth dashed, crossed-out box with index 4, which does not exist.",
@@ -341,6 +345,11 @@
       "salida": "Output",
       "salida-texto": "what the engine wrote"
     },
+    "conversiones": {
+      "titulo": "Back and forth between text and number",
+      "descripcion": "At the top, the text \"42\" becomes a number with toInteger and comes back with toText. Below, the text \"doce\" cannot be converted and toInteger fails.",
+      "falla": "fails"
+    },
     "cortocircuito": {
       "titulo": "Short circuit",
       "descripcion": "At the top, False And a crossed-out division by zero: the result is False without computing the right side. Below, True Or the same division: the result is True.",
@@ -454,6 +463,21 @@
       "archivo": "tienda.psl",
       "unico": "exactly one"
     },
+    "familias-biblioteca": {
+      "titulo": "Library families",
+      "descripcion": "Two columns. On the left, the families that only compute: text, numbers, collections, JSON and bytes. On the right, those that need a capability: input and output, time, network and tasks.",
+      "puras": "compute only",
+      "efectos": "need a capability",
+      "texto": "text",
+      "numeros": "numbers",
+      "colecciones": "collections",
+      "json": "JSON",
+      "bytes": "bytes",
+      "io": "input and output",
+      "tiempo": "time",
+      "red": "network",
+      "tareas": "tasks"
+    },
     "familias-palabras": {
       "titulo": "Families of reserved words",
       "descripcion": "Six coloured bands: program structure, subroutines, objects, types, boolean values and operators written with letters, each with examples.",
@@ -464,6 +488,14 @@
       "valores": "Values",
       "operadores": "Operators with letters",
       "nota": "The full list is in Appendix B"
+    },
+    "fecha-hora": {
+      "titulo": "Instant and offset",
+      "descripcion": "A DateTime joins an instant in nanoseconds since 1970 and an offset of +3600 seconds. Together they give the local time 2026-11-07T18:30:00+01:00.",
+      "instante": "instant (ns)",
+      "desplazamiento": "offset +3600 s",
+      "local": "local time",
+      "iso": "2026-11-07T18:30:00+01:00"
     },
     "generico": {
       "titulo": "A template and its uses",
@@ -487,6 +519,16 @@
       "bien": "correct",
       "nuncaUsada": "never used",
       "nuncaLeida": "never read"
+    },
+    "http-ida-vuelta": {
+      "titulo": "Request and response",
+      "descripcion": "The program sends a GET request to the server and receives a 200 response with its body. Responses, including 404 and 500, are Success; transport failures are Error.",
+      "programa": "program",
+      "servidor": "server",
+      "get": "GET /hoy",
+      "respuesta": "200 · Soleado, 25",
+      "exito": "200, 404, 500: Success with the response",
+      "error": "no connection: Error(IoError)"
     },
     "identificadores": {
       "titulo": "Identifier alphabet",
@@ -522,6 +564,22 @@
     "interfaz-promesa": {
       "titulo": "An interface and two classes",
       "descripcion": "The interface Figura with the method Area. The classes Cuadrado and Circulo realize it. Below, Describir with the parameter T: Figura, which accepts both."
+    },
+    "json-arbol": {
+      "titulo": "JSON tree",
+      "descripcion": "An object with three fields: nombre with \"Ana\", edad with 15 and notas with an array of 7 and 9. field(\"edad\") goes down to 15.",
+      "objeto": "object",
+      "arreglo": "array",
+      "k1": "nombre",
+      "k2": "edad",
+      "k3": "notas"
+    },
+    "leer-escribir": {
+      "titulo": "Input, variables and output",
+      "descripcion": "The input holds 3 and 4. Read stores them in a and b. Write shows 3 + 4 = 7 on the output.",
+      "entrada": "input",
+      "salida": "output",
+      "nota": "Read asks for one value per target, in order"
     },
     "leer-figura": {
       "titulo": "Example of a stepped figure",
@@ -698,6 +756,11 @@
       "descripcion": "Four frames stacked from Factorial(4) to Factorial(1). The base case returns 1 and every frame multiplies: 2, 6 and 24.",
       "casoBase": "base case"
     },
+    "redondeos": {
+      "titulo": "Rounding -2.5",
+      "descripcion": "A line with -3, -2 and -1 and the point -2.5. floor and round take it to -3; ceil and trunc take it to -2.",
+      "nota": "round takes ties away from zero"
+    },
     "referencia-salida": {
       "titulo": "Output parameters",
       "descripcion": "On the left, the main boxes c and r with 3 and 2. On the right, Dividir with cociente and resto, which are arrows to c and r.",
@@ -754,6 +817,13 @@
       "finde": "weekend",
       "noExiste": "does not exist"
     },
+    "semilla": {
+      "titulo": "Same seed, same sequence",
+      "descripcion": "Two runs with the same seed draw the same sequence 1, 1, 6, 15. A run with seed 7 draws a different one.",
+      "semilla42": "seed 42",
+      "semilla7": "seed 7",
+      "iguales": "equal"
+    },
     "severidad-clases": {
       "titulo": "Classes and severities",
       "descripcion": "At the top, the four classes in order: lexical, syntactic and semantic before running, and runtime during. Below, the four severity letters: A error, C hygiene, D information and E reading.",
@@ -787,6 +857,19 @@
       "descripcion": "Four lines. The first and third have an error and a mark that jumps to the next safe point; the second and fourth are recognised as usual.",
       "sigue": "continues",
       "nota": "one main error per broken statement"
+    },
+    "subcadena-posiciones": {
+      "titulo": "Positions in a text",
+      "descripcion": "The text Hola, mundo in cells numbered from 0 to 10. The first four, from 0 to 3, are highlighted as the result of substring(t, 0, 3).",
+      "c0": "H",
+      "c1": "o",
+      "c2": "l",
+      "c3": "a",
+      "c6": "m",
+      "c7": "u",
+      "c8": "n",
+      "c9": "d",
+      "c10": "o"
     },
     "subprograma-caja": {
       "titulo": "A subprogram as a box",
