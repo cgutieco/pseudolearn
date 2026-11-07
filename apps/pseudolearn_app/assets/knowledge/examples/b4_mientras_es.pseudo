@@ -1,8 +1,0 @@
-Proceso CuentaRegresiva
-    Definir i Como Entero;
-    Leer i;
-    Mientras i > 0 Hacer
-        Escribir i;
-        i <- i - 1;
-    FinMientras
-FinProceso

@@ -60,7 +60,7 @@ const List<_ProductShot> _shots = <_ProductShot>[
     language: UiLanguageId.spanish,
     documentId: 'demostracion-guiada',
     documentTitle: 'Demostración Guiada',
-    sourcePath: 'assets/knowledge/examples/guided_demo_es.pseudo',
+    sourcePath: 'assets/demo/guided_demo_es.pseudo',
     profileId: SyntaxProfileId.classicSpanish,
   ),
   _ProductShot(
@@ -70,7 +70,7 @@ const List<_ProductShot> _shots = <_ProductShot>[
     language: UiLanguageId.spanish,
     documentId: 'demostracion-guiada',
     documentTitle: 'Demostración Guiada',
-    sourcePath: 'assets/knowledge/examples/guided_demo_es.pseudo',
+    sourcePath: 'assets/demo/guided_demo_es.pseudo',
     profileId: SyntaxProfileId.classicSpanish,
   ),
   _ProductShot(
@@ -80,7 +80,7 @@ const List<_ProductShot> _shots = <_ProductShot>[
     language: UiLanguageId.spanish,
     documentId: 'demostracion-guiada',
     documentTitle: 'Demostración Guiada',
-    sourcePath: 'assets/knowledge/examples/guided_demo_es.pseudo',
+    sourcePath: 'assets/demo/guided_demo_es.pseudo',
     profileId: SyntaxProfileId.classicSpanish,
   ),
   _ProductShot(
@@ -90,7 +90,7 @@ const List<_ProductShot> _shots = <_ProductShot>[
     language: UiLanguageId.spanish,
     documentId: 'demostracion-guiada',
     documentTitle: 'Demostración Guiada',
-    sourcePath: 'assets/knowledge/examples/guided_demo_es.pseudo',
+    sourcePath: 'assets/demo/guided_demo_es.pseudo',
     profileId: SyntaxProfileId.classicSpanish,
   ),
   _ProductShot(
@@ -100,7 +100,7 @@ const List<_ProductShot> _shots = <_ProductShot>[
     language: UiLanguageId.english,
     documentId: 'guided-demo',
     documentTitle: 'Guided Demo',
-    sourcePath: 'assets/knowledge/examples/guided_demo_en.pseudo',
+    sourcePath: 'assets/demo/guided_demo_en.pseudo',
     profileId: SyntaxProfileId.english,
   ),
   _ProductShot(
@@ -110,7 +110,7 @@ const List<_ProductShot> _shots = <_ProductShot>[
     language: UiLanguageId.english,
     documentId: 'guided-demo',
     documentTitle: 'Guided Demo',
-    sourcePath: 'assets/knowledge/examples/guided_demo_en.pseudo',
+    sourcePath: 'assets/demo/guided_demo_en.pseudo',
     profileId: SyntaxProfileId.english,
   ),
   _ProductShot(
@@ -120,7 +120,7 @@ const List<_ProductShot> _shots = <_ProductShot>[
     language: UiLanguageId.english,
     documentId: 'guided-demo',
     documentTitle: 'Guided Demo',
-    sourcePath: 'assets/knowledge/examples/guided_demo_en.pseudo',
+    sourcePath: 'assets/demo/guided_demo_en.pseudo',
     profileId: SyntaxProfileId.english,
   ),
   _ProductShot(
@@ -130,7 +130,7 @@ const List<_ProductShot> _shots = <_ProductShot>[
     language: UiLanguageId.english,
     documentId: 'guided-demo',
     documentTitle: 'Guided Demo',
-    sourcePath: 'assets/knowledge/examples/guided_demo_en.pseudo',
+    sourcePath: 'assets/demo/guided_demo_en.pseudo',
     profileId: SyntaxProfileId.english,
   ),
 ];

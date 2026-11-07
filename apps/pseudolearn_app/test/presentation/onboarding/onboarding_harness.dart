@@ -11,8 +11,7 @@ import 'package:pseudolearn_app/domain/model/analysis/program_node_id.dart';
 import 'package:pseudolearn_app/domain/model/analysis/source_range.dart';
 import 'package:pseudolearn_app/domain/model/diagram/diagram_notation.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_focus.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/exercise_level.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/learning_track.dart';
+import 'package:pseudolearn_app/domain/model/route/route_kinds.dart';
 import 'package:pseudolearn_app/domain/model/onboarding/guided_demo_surface.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
 import 'package:pseudolearn_app/domain/model/execution/watch_row.dart';
@@ -35,29 +34,17 @@ const String demoCode = 'Clase Termometro\n'
     'FinProceso';
 
 const KnowledgeHighlights demoHighlights = KnowledgeHighlights(
-  tracks: [
-    LearningTrackHighlight(
-      track: LearningTrack.foundations,
-      moduleCount: 2,
-      firstModuleTitle: 'Que es un algoritmo',
-    ),
-    LearningTrackHighlight(
-      track: LearningTrack.imperative,
-      moduleCount: 8,
-      firstModuleTitle: 'Variables y tipos',
-    ),
-    LearningTrackHighlight(
-      track: LearningTrack.objectOriented,
-      moduleCount: 5,
-      firstModuleTitle: 'Clases y objetos',
-    ),
+  parts: [
+    RoutePartHighlight(number: '0', title: 'Empezar de cero', lessonCount: 4),
+    RoutePartHighlight(number: 'I', title: 'Imperativo y estructurado', lessonCount: 9),
+    RoutePartHighlight(number: 'II', title: 'Procedimental y modular', lessonCount: 8),
   ],
   exerciseLevels: [
-    ExerciseLevelHighlight(level: ExerciseLevel.reproduce, count: 40),
-    ExerciseLevelHighlight(level: ExerciseLevel.compose, count: 35),
-    ExerciseLevelHighlight(level: ExerciseLevel.design, count: 20),
+    ExerciseLevelHighlight(level: RouteLevel.seed, count: 40),
+    ExerciseLevelHighlight(level: RouteLevel.sprout, count: 35),
+    ExerciseLevelHighlight(level: RouteLevel.tree, count: 20),
   ],
-  moduleCount: 15,
+  lessonCount: 21,
   specificationCount: 22,
   exerciseCount: 95,
 );

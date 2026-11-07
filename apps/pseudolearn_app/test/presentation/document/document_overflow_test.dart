@@ -3,13 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pseudolearn_app/composition/cubit_scope.dart';
 import 'package:pseudolearn_app/domain/model/documents/document.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/exercise.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise_case.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/exercise_kind.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/exercise_level.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/expected_value_kind.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
-import '../../fakes/fake_knowledge_repository.dart';
+import '../../fakes/fake_route_repository.dart';
+import '../../fakes/route_fixtures.dart';
+import 'package:pseudolearn_app/domain/model/route/route_evaluation.dart';
+import 'package:pseudolearn_app/domain/model/route/route_exercise.dart';
 import '../../fakes/in_memory_document_repository.dart';
 import '../../fakes/pump_app.dart';
 import '../../fakes/test_dependencies.dart';
@@ -132,32 +132,8 @@ void main() {
       exerciseId: 'CON-A2-E1',
     );
 
-    final knowledgeRepo = FakeKnowledgeRepository(
-      exercisesByPath: {
-        'CON-A2-E1': const Exercise(
-          id: 'CON-A2-E1',
-          title: 'Segundos en un intervalo de minutos',
-          statement:
-              'Lee una cantidad de minutos y escribe cuántos segundos son.',
-          level: ExerciseLevel.reproduce,
-          kind: ExerciseKind.create,
-          moduleId: 'CON-A2',
-          visibleCases: [
-            ExerciseCase(
-              inputs: ['2'],
-              expectedOutputs: ['120'],
-              expectedValueKind: ExpectedValueKind.numeric,
-            ),
-            ExerciseCase(
-              inputs: ['5'],
-              expectedOutputs: ['300'],
-              expectedValueKind: ExpectedValueKind.numeric,
-            ),
-          ],
-          hiddenCases: [],
-          assertions: [],
-        ),
-      },
+    final knowledgeRepo = FakeRouteRepository(
+      exercises: {'CON-A2-E1': _minutesExercise},
     );
 
     final errors = await collectLayoutErrors(() async {
@@ -172,7 +148,7 @@ void main() {
       await tester.pumpWidget(CubitScope(
         dependencies: buildTestDependencies(
           repository: repo,
-          knowledgeRepository: knowledgeRepo,
+          routeRepository: knowledgeRepo,
         ),
       ));
       await tester.pumpAndSettle();
@@ -205,32 +181,8 @@ void main() {
       exerciseId: 'CON-A2-E1',
     );
 
-    final knowledgeRepo = FakeKnowledgeRepository(
-      exercisesByPath: {
-        'CON-A2-E1': const Exercise(
-          id: 'CON-A2-E1',
-          title: 'Segundos en un intervalo de minutos',
-          statement:
-              'Lee una cantidad de minutos y escribe cuántos segundos son.',
-          level: ExerciseLevel.reproduce,
-          kind: ExerciseKind.create,
-          moduleId: 'CON-A2',
-          visibleCases: [
-            ExerciseCase(
-              inputs: ['2'],
-              expectedOutputs: ['120'],
-              expectedValueKind: ExpectedValueKind.numeric,
-            ),
-            ExerciseCase(
-              inputs: ['5'],
-              expectedOutputs: ['300'],
-              expectedValueKind: ExpectedValueKind.numeric,
-            ),
-          ],
-          hiddenCases: [],
-          assertions: [],
-        ),
-      },
+    final knowledgeRepo = FakeRouteRepository(
+      exercises: {'CON-A2-E1': _minutesExercise},
     );
 
     final errors = await collectLayoutErrors(() async {
@@ -245,7 +197,7 @@ void main() {
       await tester.pumpWidget(CubitScope(
         dependencies: buildTestDependencies(
           repository: repo,
-          knowledgeRepository: knowledgeRepo,
+          routeRepository: knowledgeRepo,
         ),
       ));
       await tester.pumpAndSettle();
@@ -262,3 +214,24 @@ void main() {
     );
   });
 }
+
+final RouteExercise _minutesExercise = sampleExercise(
+  'CON-A2-E1',
+  CasesEvaluation(
+    visibleCases: [
+      const ExerciseCase(
+        inputs: ['2'],
+        expectedOutputs: ['120'],
+        expectedValueKind: ExpectedValueKind.numeric,
+      ),
+      const ExerciseCase(
+        inputs: ['5'],
+        expectedOutputs: ['300'],
+        expectedValueKind: ExpectedValueKind.numeric,
+      ),
+    ],
+    hiddenCases: const [],
+    assertions: const [],
+    reference: '',
+  ),
+);

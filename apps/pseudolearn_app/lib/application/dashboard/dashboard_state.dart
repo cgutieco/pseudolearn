@@ -2,19 +2,19 @@ import '../../domain/model/dashboard/activity_timeline.dart';
 import '../../domain/model/dashboard/concept_coverage.dart';
 import '../../domain/model/dashboard/exercise_coverage.dart';
 import '../../domain/model/dashboard/library_metrics.dart';
-import '../../domain/model/dashboard/next_module.dart';
+import '../../domain/model/dashboard/next_lesson.dart';
+import '../../domain/model/dashboard/part_coverage.dart';
 import '../../domain/model/dashboard/specification_coverage.dart';
 import '../../domain/model/dashboard/sync_health.dart';
-import '../../domain/model/dashboard/track_coverage.dart';
 
 enum DashboardStatus { initial, loading, success, error }
 
 final class DashboardState {
   final DashboardStatus status;
   final LibraryMetrics library;
-  final List<TrackCoverage> route;
+  final List<PartCoverage> route;
   final ExerciseCoverage exercises;
-  final NextModule? nextModule;
+  final NextLesson? nextLesson;
   final SyncHealth sync;
   final ConceptCoverage concepts;
   final SpecificationCoverage specification;
@@ -26,7 +26,7 @@ final class DashboardState {
     this.library = const LibraryMetrics.empty(),
     this.route = const [],
     this.exercises = const ExerciseCoverage.empty(),
-    this.nextModule,
+    this.nextLesson,
     this.sync = const SyncHealth.empty(),
     this.concepts = const ConceptCoverage.empty(),
     this.specification = const SpecificationCoverage.empty(),
@@ -43,8 +43,8 @@ final class DashboardState {
 
   int get _visitedModules {
     var visited = 0;
-    for (final track in route) {
-      visited += track.modules.done;
+    for (final part in route) {
+      visited += part.lessons.done;
     }
     return visited;
   }

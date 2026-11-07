@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pseudolearn_app/application/knowledge/session/exercise_session_state.dart';
+import 'package:pseudolearn_app/application/route/session/exercise_session_state.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/expected_value_kind.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise_case.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise_check_outcome.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise_check_result.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/exercise_kind.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/exercise_level.dart';
+import 'package:pseudolearn_app/domain/model/route/route_kinds.dart';
 import 'package:pseudolearn_app/presentation/document/components/exercise_strip.dart';
 import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.dart';
 import 'package:pseudolearn_app/presentation/shell/design_canvas.dart';
@@ -19,9 +18,9 @@ const _sampleExercise = Exercise(
   title: 'Suma de dos números',
   statement:
       'Escribe un programa que lea dos números enteros por teclado y escriba su suma.',
-  level: ExerciseLevel.reproduce,
-  kind: ExerciseKind.create,
-  moduleId: 'CON-B1',
+  level: RouteLevel.seed,
+  kind: RouteExerciseKind.solve,
+  lessonId: 'CON-B1',
   visibleCases: [
     ExerciseCase(
       inputs: ['2', '3'],

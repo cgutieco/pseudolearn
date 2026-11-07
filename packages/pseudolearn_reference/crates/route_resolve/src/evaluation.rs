@@ -93,6 +93,10 @@ pub fn evaluation(
         ExerciseKind::Solve | ExerciseKind::Modify | ExerciseKind::FindError => Evaluation::Cases {
             cases: reference_cases(context, parts, "casos"),
             assertions: crate::evaluation_order::assertions(parts),
+            reference: parts
+                .program("referencia")
+                .map(|program| edition_code(context, program))
+                .unwrap_or_default(),
         },
     }
 }

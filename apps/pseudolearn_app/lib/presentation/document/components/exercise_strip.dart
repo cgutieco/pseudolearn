@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../application/knowledge/session/exercise_session_state.dart';
+import '../../../application/route/session/exercise_session_state.dart';
 import '../../../domain/model/knowledge/exercise.dart';
 import '../../../domain/model/knowledge/exercise_check_result.dart';
 import '../../components/button/app_button.dart';
@@ -42,9 +42,13 @@ final class ExerciseStrip extends StatelessWidget {
         children: [
           header,
           if (isExpanded)
-            _ExerciseStripBodyDispatcher(
-              exerciseId: exerciseId,
-              sessionState: sessionState,
+            Flexible(
+              child: SingleChildScrollView(
+                child: _ExerciseStripBodyDispatcher(
+                  exerciseId: exerciseId,
+                  sessionState: sessionState,
+                ),
+              ),
             ),
         ],
       ),

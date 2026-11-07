@@ -1,6 +1,5 @@
+import '../route/route_kinds.dart';
 import 'exercise_case.dart';
-import 'exercise_kind.dart';
-import 'exercise_level.dart';
 import 'list_equality.dart';
 import 'structural_assertion.dart';
 
@@ -8,13 +7,12 @@ final class Exercise {
   final String id;
   final String title;
   final String statement;
-  final ExerciseLevel level;
-  final ExerciseKind kind;
-  final String? moduleId;
+  final RouteLevel level;
+  final RouteExerciseKind kind;
+  final String? lessonId;
   final List<ExerciseCase> visibleCases;
   final List<ExerciseCase> hiddenCases;
   final List<StructuralAssertion> assertions;
-  final List<String> specificationCases;
   final String? starterCode;
 
   const Exercise({
@@ -25,9 +23,8 @@ final class Exercise {
     required this.kind,
     required this.visibleCases,
     required this.hiddenCases,
-    this.moduleId,
+    this.lessonId,
     this.assertions = const [],
-    this.specificationCases = const [],
     this.starterCode,
   });
 
@@ -43,11 +40,10 @@ final class Exercise {
           statement == other.statement &&
           level == other.level &&
           kind == other.kind &&
-          moduleId == other.moduleId &&
+          lessonId == other.lessonId &&
           listEquals(visibleCases, other.visibleCases) &&
           listEquals(hiddenCases, other.hiddenCases) &&
           listEquals(assertions, other.assertions) &&
-          listEquals(specificationCases, other.specificationCases) &&
           starterCode == other.starterCode;
 
   @override
@@ -57,11 +53,10 @@ final class Exercise {
     statement,
     level,
     kind,
-    moduleId,
+    lessonId,
     Object.hashAll(visibleCases),
     Object.hashAll(hiddenCases),
     Object.hashAll(assertions),
-    Object.hashAll(specificationCases),
     starterCode,
   );
 }

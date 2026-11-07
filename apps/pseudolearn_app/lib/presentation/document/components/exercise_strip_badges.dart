@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import '../../../domain/model/knowledge/exercise_check_result.dart';
-import '../../../domain/model/knowledge/exercise_kind.dart';
-import '../../../domain/model/knowledge/exercise_level.dart';
+import '../../../domain/model/route/route_kinds.dart';
 import '../../components/typography/app_text.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../route/route_labels.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/tokens/radii.dart';
 import '../../theme/tokens/spacing.dart';
 import 'exercise_strip_feedback.dart';
 
 final class StripLevelBadge extends StatelessWidget {
-  final ExerciseLevel level;
+  final RouteLevel level;
 
   const StripLevelBadge({super.key, required this.level});
 
@@ -18,11 +18,7 @@ final class StripLevelBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = AppThemeExtension.of(context);
-    final label = switch (level) {
-      ExerciseLevel.reproduce => l10n.exerciseLevelShort1,
-      ExerciseLevel.compose => l10n.exerciseLevelShort2,
-      ExerciseLevel.design => l10n.exerciseLevelShort3,
-    };
+    final label = routeLevelLabel(level, l10n);
     final color = theme.colors.actions.primary.bgDefault;
 
     return Container(
@@ -41,7 +37,7 @@ final class StripLevelBadge extends StatelessWidget {
 }
 
 final class StripKindBadge extends StatelessWidget {
-  final ExerciseKind kind;
+  final RouteExerciseKind kind;
 
   const StripKindBadge({super.key, required this.kind});
 
@@ -49,12 +45,7 @@ final class StripKindBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = AppThemeExtension.of(context);
-    final label = switch (kind) {
-      ExerciseKind.predict => l10n.exerciseKindPredict,
-      ExerciseKind.complete => l10n.exerciseKindComplete,
-      ExerciseKind.modify => l10n.exerciseKindModify,
-      ExerciseKind.create => l10n.exerciseKindCreate,
-    };
+    final label = routeKindLabel(kind, l10n);
 
     return Container(
       padding: const EdgeInsets.symmetric(

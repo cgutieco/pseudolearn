@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:pseudolearn_app/composition/app_dependencies.dart';
-import 'package:pseudolearn_app/data/knowledge/bundled_knowledge_repository.dart';
+import 'package:pseudolearn_app/data/demo/bundled_demo_program_source.dart';
 import 'package:pseudolearn_app/data/reference/bundled_reference_repository.dart';
-import 'package:pseudolearn_app/data/knowledge/marker_resolver.dart';
+import 'package:pseudolearn_app/data/route/bundled_route_repository.dart';
 import 'package:pseudolearn_app/domain/model/documents/document.dart';
 import 'package:pseudolearn_app/domain/model/settings/app_preferences.dart';
 import 'package:pseudolearn_app/domain/model/settings/app_theme_mode.dart';
@@ -31,11 +31,12 @@ AppDependencies buildProductDependencies({
         language: language,
       ),
     ),
-    syntaxReferenceSource: engine.syntaxReferenceSource,
-    knowledgeRepository: BundledKnowledgeRepository(
-      markers: MarkerResolver(reference: engine.syntaxReferenceSource),
+    referenceRepository: BundledReferenceRepository(
       assetLoader: rootBundle.loadString,
-      reference: BundledReferenceRepository(assetLoader: rootBundle.loadString),
+    ),
+    routeRepository: BundledRouteRepository(assetLoader: rootBundle.loadString),
+    demoProgramSource: BundledDemoProgramSource(
+      assetLoader: rootBundle.loadString,
     ),
     engine: engine,
   );

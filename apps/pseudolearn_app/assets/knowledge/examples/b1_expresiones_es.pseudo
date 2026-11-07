@@ -1,8 +1,0 @@
-Proceso Expresiones
-    Definir base Como Entero <- 2;
-    Definir altura Como Entero <- 3;
-    Definir sinParentesis Como Entero <- base + altura * 2;
-    Definir conParentesis Como Entero <- (base + altura) * 2;
-    Escribir sinParentesis;
-    Escribir conParentesis;
-FinProceso

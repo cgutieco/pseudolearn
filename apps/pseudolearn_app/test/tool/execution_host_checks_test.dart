@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
-import '../../tool/content/execution_host_checks.dart';
+import '../../tool/execution_host_checks.dart';
 
 void main() {
   test('product sources only reference physical execution hosts', () async {

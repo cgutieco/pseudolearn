@@ -27,6 +27,25 @@ ReferenceRun parseRun(Object? value) {
       term: textOf(source, 'term'),
       text: textOf(source, 'text'),
     ),
+    final other => _routeRun(other, source),
+  };
+}
+
+ReferenceRun _routeRun(String type, Map<String, Object?> source) {
+  return switch (type) {
+    'definition' => ReferenceDefinitionRun(
+      term: textOf(source, 'term'),
+      text: textOf(source, 'text'),
+    ),
+    'spec_link' => ReferenceSpecLinkRun(
+      sectionId: textOf(source, 'section'),
+      anchor: source['anchor'] is String ? source['anchor'] as String : null,
+      text: textOf(source, 'text'),
+    ),
+    'lesson_link' => ReferenceLessonLinkRun(
+      lessonId: textOf(source, 'lesson'),
+      text: textOf(source, 'text'),
+    ),
     final other => throw FormatException('unknown run $other'),
   };
 }

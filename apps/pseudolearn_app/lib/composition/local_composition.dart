@@ -9,8 +9,8 @@ import '../data/auth/supabase_account_deletion_gateway.dart';
 import '../data/auth/supabase_auth_gateway.dart';
 import '../data/auth/supabase_session_persistence.dart';
 import '../data/index/metadata_index.dart';
-import '../data/knowledge/bundled_knowledge_repository.dart';
-import '../data/knowledge/marker_resolver.dart';
+import '../data/demo/bundled_demo_program_source.dart';
+import '../data/route/bundled_route_repository.dart';
 import '../data/reference/bundled_reference_repository.dart';
 import '../data/platform/app_links_incoming_link_source.dart';
 import '../data/platform/platform_app_version_source.dart';
@@ -28,7 +28,6 @@ import '../domain/ports/incoming_link_source.dart';
 import '../domain/ports/local_progress_store.dart';
 import '../domain/ports/preferences_store.dart';
 import '../domain/ports/progress_history.dart';
-import '../domain/ports/syntax_reference_source.dart';
 import 'app_dependencies.dart';
 import '../engine/rust/rust_transport.dart';
 import 'engine_services.dart';
@@ -175,11 +174,10 @@ AppDependencies _assembleDependencies(_DependencyAssembly assembly) {
     editorKeySource: assembly.engine.editorKeySource,
     textEntryModality: const PlatformTextEntryModality(),
     appVersionSource: const PlatformAppVersionSource(),
-    knowledgeRepository: _buildKnowledgeRepository(
-      assembly.engine.syntaxReferenceSource,
-    ),
+    routeRepository: _routeRepository,
+    demoProgramSource: _demoProgramSource,
+    routeEvaluators: assembly.engine.routeEvaluators,
     referenceRepository: _referenceRepository,
-    syntaxReferenceSource: assembly.engine.syntaxReferenceSource,
     syntaxHelpSource: assembly.engine.syntaxHelpSource,
     programExporter: assembly.engine.programExporter,
     localProgressStore: assembly.stores.progress,
@@ -192,12 +190,10 @@ AppDependencies _assembleDependencies(_DependencyAssembly assembly) {
 final BundledReferenceRepository _referenceRepository =
     BundledReferenceRepository(assetLoader: rootBundle.loadString);
 
-BundledKnowledgeRepository _buildKnowledgeRepository(
-  SyntaxReferenceSource syntaxRef,
-) {
-  return BundledKnowledgeRepository(
-    markers: MarkerResolver(reference: syntaxRef),
-    assetLoader: rootBundle.loadString,
-    reference: _referenceRepository,
-  );
-}
+final BundledRouteRepository _routeRepository = BundledRouteRepository(
+  assetLoader: rootBundle.loadString,
+);
+
+final BundledDemoProgramSource _demoProgramSource = BundledDemoProgramSource(
+  assetLoader: rootBundle.loadString,
+);

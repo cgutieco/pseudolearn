@@ -3,6 +3,7 @@ import '../../domain/model/execution/task_flow_scene.dart';
 import '../components/typography/app_text.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../theme/app_theme.dart';
+import '../theme/tokens/color_primitives.dart';
 import '../theme/tokens/spacing.dart';
 import 'task_event_sentence.dart';
 import 'task_event_tone.dart';
@@ -45,7 +46,7 @@ final class TaskTimelineRow extends StatelessWidget {
         row.event.line,
       ),
       child: Material(
-        color: isSelected ? colors.surfaces.brandSubtle : Colors.transparent,
+        color: isSelected ? colors.surfaces.brandSubtle : ColorPrimitives.transparent,
         child: InkWell(
           onTap: onTap,
           child: _RowContent(row: this, sentence: sentence),

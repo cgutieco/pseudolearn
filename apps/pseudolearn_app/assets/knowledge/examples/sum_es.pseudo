@@ -1,6 +1,0 @@
-Proceso Suma
-    Definir a Como Entero <- 15;
-    Definir b Como Entero <- 27;
-    Definir total Como Entero <- a + b;
-    Escribir "Resultado: ", total;
-FinProceso

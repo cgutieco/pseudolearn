@@ -7,7 +7,7 @@ import 'package:pseudolearn_app/engine/rust/rust_flowchart_builder.dart';
 import 'package:pseudolearn_app/engine/rust/rust_program_analyzer.dart';
 import 'package:pseudolearn_app/engine/rust/rust_program_execution.dart';
 import 'package:pseudolearn_app/engine/rust/rust_structogram_builder.dart';
-import 'package:pseudolearn_app/engine/rust/rust_syntax_reference_source.dart';
+import 'package:pseudolearn_app/domain/model/route/route_kinds.dart';
 
 import '../fakes/fake_rust_transport.dart';
 import '../fakes/test_dependencies.dart';
@@ -25,7 +25,11 @@ void main() {
     expect(services.structogramBuilder, isA<RustStructogramBuilder>());
     expect(services.classDiagramBuilder, isA<RustClassDiagramBuilder>());
     expect(services.contextualCompletionSource, isA<RustCompletionSource>());
-    expect(services.syntaxReferenceSource, isA<RustSyntaxReferenceSource>());
+    expect(
+      services.routeEvaluators.keys,
+      isNot(contains(RouteExerciseKind.solve)),
+    );
+    expect(services.routeEvaluators, contains(RouteExerciseKind.breakIt));
     expect(services.programExporter, isA<RustProgramExporter>());
   });
 
@@ -38,10 +42,7 @@ void main() {
 
       expect(dependencies.programAnalyzer, same(services.analyzer));
       expect(dependencies.programExporter, same(services.programExporter));
-      expect(
-        dependencies.syntaxReferenceSource,
-        same(services.syntaxReferenceSource),
-      );
+      expect(dependencies.routeEvaluators, same(services.routeEvaluators));
       expect(dependencies.exerciseChecker, same(services.exerciseChecker));
       expect(
         dependencies.contextualCompletionSource,

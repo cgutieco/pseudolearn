@@ -921,50 +921,6 @@
   "@knowledgeSectionExercises": {
     "description": "Nombre de la sección de ejercicios"
   },
-  "knowledgeRouteTrackFoundations": "Tramo A · Fundamentos",
-  "@knowledgeRouteTrackFoundations": {
-    "description": "Encabezado del primer tramo de la ruta de aprendizaje"
-  },
-  "knowledgeRouteTrackImperative": "Tramo B · Imperativo y estructurado",
-  "@knowledgeRouteTrackImperative": {
-    "description": "Encabezado del segundo tramo de la ruta de aprendizaje"
-  },
-  "knowledgeRouteTrackObjectOriented": "Tramo C · Orientación a objetos",
-  "@knowledgeRouteTrackObjectOriented": {
-    "description": "Encabezado del tercer tramo de la ruta de aprendizaje"
-  },
-  "knowledgeModuleVisited": "Visitado",
-  "@knowledgeModuleVisited": {
-    "description": "Marca de un módulo ya visitado en la ruta de aprendizaje"
-  },
-  "knowledgeTypeModule": "Módulo",
-  "@knowledgeTypeModule": {
-    "description": "Etiqueta para tipo módulo"
-  },
-  "knowledgeTypeSpecification": "Especificación",
-  "@knowledgeTypeSpecification": {
-    "description": "Etiqueta para tipo sección de especificación"
-  },
-  "knowledgeTypePrediction": "Predicción",
-  "@knowledgeTypePrediction": {
-    "description": "Etiqueta para tipo actividad de predicción"
-  },
-  "knowledgeTypeIllustration": "Ilustración",
-  "@knowledgeTypeIllustration": {
-    "description": "Etiqueta para tipo ilustración"
-  },
-  "knowledgeTypeExample": "Ejemplo",
-  "@knowledgeTypeExample": {
-    "description": "Etiqueta para tipo ejemplo"
-  },
-  "knowledgeTypeExercise": "Ejercicio",
-  "@knowledgeTypeExercise": {
-    "description": "Etiqueta para tipo ejercicio"
-  },
-  "knowledgeTypeReference": "Referencia",
-  "@knowledgeTypeReference": {
-    "description": "Etiqueta para tipo referencia"
-  },
   "knowledgeEmptyTitle": "Sin contenido",
   "@knowledgeEmptyTitle": {
     "description": "Título cuando no hay contenido en la base de conocimiento"
@@ -987,10 +943,6 @@
       }
     }
   },
-  "knowledgeErrorTitle": "Error de contenido",
-  "@knowledgeErrorTitle": {
-    "description": "Título en caso de error al cargar el contenido"
-  },
   "knowledgeErrorDescription": "No se pudo cargar la base de conocimiento.",
   "@knowledgeErrorDescription": {
     "description": "Mensaje en caso de error al cargar el contenido"
@@ -999,87 +951,13 @@
   "@knowledgeActionRetry": {
     "description": "Botón para reintentar la carga"
   },
-  "knowledgeDetailOpenInNewDocument": "Abrir en un documento nuevo",
-  "@knowledgeDetailOpenInNewDocument": {
-    "description": "Botón para abrir un ejemplo en un nuevo documento"
-  },
   "knowledgeDetailCopied": "Copiado",
   "@knowledgeDetailCopied": {
     "description": "Tooltip de confirmación de copiado"
   },
-  "knowledgeDetailNotFoundTitle": "Elemento no encontrado",
-  "@knowledgeDetailNotFoundTitle": {
-    "description": "Título cuando no se encuentra el detalle de una entrada"
-  },
-  "knowledgeDetailNotFoundDescription": "El elemento solicitado no existe en la base de conocimiento.",
-  "@knowledgeDetailNotFoundDescription": {
-    "description": "Descripción cuando no se encuentra la entrada"
-  },
-  "knowledgeDetailBack": "Volver a la base de conocimiento",
-  "@knowledgeDetailBack": {
-    "description": "Botón para regresar al listado de conocimiento"
-  },
   "knowledgeDetailSections": "Secciones",
   "@knowledgeDetailSections": {
     "description": "Etiqueta para la lista de encabezados navegables"
-  },
-  "knowledgeModulePartQuestion": "Pregunta",
-  "@knowledgeModulePartQuestion": {
-    "description": "Encabezado de la parte 1 del módulo"
-  },
-  "knowledgeModulePartMachineModel": "Qué cambia en tu modelo de la máquina",
-  "@knowledgeModulePartMachineModel": {
-    "description": "Encabezado de la parte 2 del módulo"
-  },
-  "knowledgeModulePartDevelopment": "Desarrollo",
-  "@knowledgeModulePartDevelopment": {
-    "description": "Encabezado de la parte 3 del módulo"
-  },
-  "knowledgeModulePartPrediction": "Predice y ejecuta",
-  "@knowledgeModulePartPrediction": {
-    "description": "Encabezado de la parte 4 del módulo"
-  },
-  "knowledgeModulePartCommonErrors": "Errores frecuentes",
-  "@knowledgeModulePartCommonErrors": {
-    "description": "Encabezado de la parte 5 del módulo"
-  },
-  "knowledgeModulePartSpecification": "En la especificación",
-  "@knowledgeModulePartSpecification": {
-    "description": "Encabezado de la parte 6 del módulo"
-  },
-  "knowledgeModulePartExercises": "Ejercicios",
-  "@knowledgeModulePartExercises": {
-    "description": "Encabezado de la parte 7 del módulo"
-  },
-  "knowledgePredictionCheck": "Ejecutar",
-  "@knowledgePredictionCheck": {
-    "description": "Botón para ejecutar y contrastar la predicción"
-  },
-  "knowledgePredictionRetry": "Intentar de nuevo",
-  "@knowledgePredictionRetry": {
-    "description": "Botón para reintentar la actividad de predicción"
-  },
-  "knowledgePredictionMatch": "Coincide",
-  "@knowledgePredictionMatch": {
-    "description": "Mensaje cuando la predicción coincide con el valor de la máquina"
-  },
-  "knowledgePredictionMismatch": "Esperabas {predicted}, la máquina tiene {actual}",
-  "@knowledgePredictionMismatch": {
-    "description": "Mensaje cuando la predicción no coincide con el valor de la máquina",
-    "placeholders": {
-      "predicted": {
-        "type": "String",
-        "example": "7"
-      },
-      "actual": {
-        "type": "String",
-        "example": "4"
-      }
-    }
-  },
-  "knowledgePredictionEmptyHint": "Escribe tu predicción",
-  "@knowledgePredictionEmptyHint": {
-    "description": "Placeholder del campo de texto de predicción"
   },
   "knowledgePredictionNotReached": "El programa no llega al paso {step}",
   "@knowledgePredictionNotReached": {
@@ -1101,46 +979,6 @@
       }
     }
   },
-  "exerciseLevel1": "Nivel 1 · Reproducir",
-  "@exerciseLevel1": {
-    "description": "Nombre del nivel 1 de dificultad"
-  },
-  "exerciseLevel2": "Nivel 2 · Componer",
-  "@exerciseLevel2": {
-    "description": "Nombre del nivel 2 de dificultad"
-  },
-  "exerciseLevel3": "Nivel 3 · Diseñar",
-  "@exerciseLevel3": {
-    "description": "Nombre del nivel 3 de dificultad"
-  },
-  "exerciseLevelShort1": "Nivel 1",
-  "@exerciseLevelShort1": {
-    "description": "Etiqueta corta del nivel 1"
-  },
-  "exerciseLevelShort2": "Nivel 2",
-  "@exerciseLevelShort2": {
-    "description": "Etiqueta corta del nivel 2"
-  },
-  "exerciseLevelShort3": "Nivel 3",
-  "@exerciseLevelShort3": {
-    "description": "Etiqueta corta del nivel 3"
-  },
-  "exerciseKindPredict": "Predecir",
-  "@exerciseKindPredict": {
-    "description": "Tipo de ejercicio: predecir"
-  },
-  "exerciseKindComplete": "Completar",
-  "@exerciseKindComplete": {
-    "description": "Tipo de ejercicio: completar"
-  },
-  "exerciseKindModify": "Modificar",
-  "@exerciseKindModify": {
-    "description": "Tipo de ejercicio: modificar"
-  },
-  "exerciseKindCreate": "Crear",
-  "@exerciseKindCreate": {
-    "description": "Tipo de ejercicio: crear"
-  },
   "exerciseCompletedBadge": "Superado",
   "@exerciseCompletedBadge": {
     "description": "Insignia que indica que el ejercicio ya fue completado con éxito"
@@ -1156,62 +994,6 @@
   "exerciseFilterConstruct": "Construcción",
   "@exerciseFilterConstruct": {
     "description": "Etiqueta de filtro por construcción requerida"
-  },
-  "exerciseFilterAllLevels": "Todos los niveles",
-  "@exerciseFilterAllLevels": {
-    "description": "Opción para no filtrar por nivel"
-  },
-  "exerciseFilterAllConstructs": "Todas las construcciones",
-  "@exerciseFilterAllConstructs": {
-    "description": "Opción para no filtrar por construcción"
-  },
-  "exerciseConstructConditional": "Condicional",
-  "@exerciseConstructConditional": {
-    "description": "Nombre de la construcción condicional Si/Sino"
-  },
-  "exerciseConstructMultipleSelection": "Selección múltiple",
-  "@exerciseConstructMultipleSelection": {
-    "description": "Nombre de la construcción selección múltiple Según"
-  },
-  "exerciseConstructConditionalLoop": "Bucle condicional",
-  "@exerciseConstructConditionalLoop": {
-    "description": "Nombre del bucle Mientras"
-  },
-  "exerciseConstructPostConditionalLoop": "Bucle posterior",
-  "@exerciseConstructPostConditionalLoop": {
-    "description": "Nombre del bucle Repetir-Hasta que"
-  },
-  "exerciseConstructCountedLoop": "Bucle contado",
-  "@exerciseConstructCountedLoop": {
-    "description": "Nombre del bucle Para"
-  },
-  "exerciseConstructArrayDeclaration": "Arreglos",
-  "@exerciseConstructArrayDeclaration": {
-    "description": "Nombre de la construcción de arreglos / Dimension"
-  },
-  "exerciseConstructSubprogram": "Subprogramas",
-  "@exerciseConstructSubprogram": {
-    "description": "Nombre de la construcción de funciones y procedimientos"
-  },
-  "exerciseConstructClassDeclaration": "Clases",
-  "@exerciseConstructClassDeclaration": {
-    "description": "Nombre de la construcción de clases y objetos"
-  },
-  "exerciseConstructInterfaceDeclaration": "Interfaces",
-  "@exerciseConstructInterfaceDeclaration": {
-    "description": "Nombre de la declaración de interfaz"
-  },
-  "exerciseClearFilters": "Limpiar filtros",
-  "@exerciseClearFilters": {
-    "description": "Botón para restablecer los filtros de ejercicios"
-  },
-  "exerciseBankEmptyTitle": "Sin ejercicios",
-  "@exerciseBankEmptyTitle": {
-    "description": "Título cuando no hay ejercicios en el catálogo"
-  },
-  "exerciseBankEmptyDescription": "No hay ejercicios disponibles en la base de conocimiento.",
-  "@exerciseBankEmptyDescription": {
-    "description": "Descripción cuando el catálogo de ejercicios está vacío"
   },
   "exerciseBankEmptyFilterTitle": "Sin resultados",
   "@exerciseBankEmptyFilterTitle": {
@@ -1453,28 +1235,6 @@
   "@onboardingKnowledgeRouteDescription": {
     "description": "Descripción de la tarjeta de ruta de aprendizaje"
   },
-  "onboardingKnowledgeTrackFoundations": "Fundamentos",
-  "@onboardingKnowledgeTrackFoundations": {
-    "description": "Nombre del primer tramo de la ruta"
-  },
-  "onboardingKnowledgeTrackImperative": "Programación imperativa",
-  "@onboardingKnowledgeTrackImperative": {
-    "description": "Nombre del segundo tramo de la ruta"
-  },
-  "onboardingKnowledgeTrackObjectOriented": "Objetos con pseudocódigo",
-  "@onboardingKnowledgeTrackObjectOriented": {
-    "description": "Nombre del tercer tramo de la ruta"
-  },
-  "onboardingKnowledgeModuleCount": "{count, plural, =1{1 módulo} other{{count} módulos}}",
-  "@onboardingKnowledgeModuleCount": {
-    "description": "Recuento de módulos de un tramo",
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "8"
-      }
-    }
-  },
   "onboardingKnowledgeSpecificationTitle": "Especificación de sintaxis",
   "@onboardingKnowledgeSpecificationTitle": {
     "description": "Título de la tarjeta de especificación"
@@ -1508,20 +1268,6 @@
       "count": {
         "type": "int",
         "example": "95"
-      }
-    }
-  },
-  "onboardingKnowledgeLevelCount": "Nivel {level}: {count}",
-  "@onboardingKnowledgeLevelCount": {
-    "description": "Recuento de ejercicios de un nivel de dificultad",
-    "placeholders": {
-      "level": {
-        "type": "int",
-        "example": "1"
-      },
-      "count": {
-        "type": "int",
-        "example": "30"
       }
     }
   },
@@ -1655,10 +1401,6 @@
   "@settingsContactTitle": {
     "description": "Título de la pantalla de contacto"
   },
-  "settingsContactEmpty": "No hay información de contacto disponible.",
-  "@settingsContactEmpty": {
-    "description": "Mensaje cuando no hay información de contacto"
-  },
   "settingsContactTipsTitle": "Consejos para reportar incidencias",
   "@settingsContactTipsTitle": {
     "description": "Título de la tarjeta de consejos para reporte de problemas"
@@ -1734,34 +1476,6 @@
   "executionRuntimeError": "Error en tiempo de ejecución",
   "@executionRuntimeError": {
     "description": "Mensaje por defecto cuando la ejecución se detiene sin motivo propio"
-  },
-  "illustrationMemoryBoxesSemanticLabel": "Ilustración: tres casillas de memoria, cada una con su nombre encima y su valor dentro.",
-  "@illustrationMemoryBoxesSemanticLabel": {
-    "description": "Descripción accesible de la ilustración de cajas de memoria"
-  },
-  "illustrationMemoryBoxesVariable1": "contador",
-  "@illustrationMemoryBoxesVariable1": {
-    "description": "Nombre de la primera casilla de memoria de la ilustración"
-  },
-  "illustrationMemoryBoxesValue1": "3",
-  "@illustrationMemoryBoxesValue1": {
-    "description": "Valor de la primera casilla de memoria de la ilustración"
-  },
-  "illustrationMemoryBoxesVariable2": "total",
-  "@illustrationMemoryBoxesVariable2": {
-    "description": "Nombre de la segunda casilla de memoria de la ilustración"
-  },
-  "illustrationMemoryBoxesValue2": "12.5",
-  "@illustrationMemoryBoxesValue2": {
-    "description": "Valor de la segunda casilla de memoria de la ilustración"
-  },
-  "illustrationMemoryBoxesVariable3": "activo",
-  "@illustrationMemoryBoxesVariable3": {
-    "description": "Nombre de la tercera casilla de memoria de la ilustración"
-  },
-  "illustrationMemoryBoxesValue3": "verdadero",
-  "@illustrationMemoryBoxesValue3": {
-    "description": "Valor de la tercera casilla de memoria de la ilustración"
   },
   "settingsAccount": "Cuenta",
   "@settingsAccount": {
@@ -2578,5 +2292,107 @@
   "referenceTerminationCompleted": "Terminó con normalidad",
   "referenceTerminationFailed": "Se detuvo por un fallo",
   "referenceTerminationRejected": "No se ejecutó: el análisis encontró errores",
-  "referenceTerminationOther": "Terminó de forma anticipada"
+  "referenceTerminationOther": "Terminó de forma anticipada",
+  "routeLessonMinutes": "{minutes} min",
+  "@routeLessonMinutes": {"placeholders": {"minutes": {"type": "int"}}},
+  "routeLessonCompleted": "Completada",
+  "routeLessonVisited": "En curso",
+  "routeNextLesson": "Sigue esta",
+  "routeIndexErrorTitle": "No se pudo cargar la ruta",
+  "routeLessonNotFoundTitle": "No se encontró la lección",
+  "routeExerciseNotFoundTitle": "No se encontró el ejercicio",
+  "routeLessonNeeds": "Necesitas",
+  "routeLessonNeedsNothing": "nada, esta lección empieza de cero",
+  "routeLessonLearn": "Vas a aprender",
+  "routeProblemLabel": "Problema",
+  "routeAttemptReveal": "Ya lo intenté: ver la respuesta",
+  "routeAttemptHide": "Ocultar la respuesta",
+  "routePhaseUnderstand": "Entender",
+  "routePhasePlan": "Planear",
+  "routePhaseWrite": "Escribir",
+  "routePhaseTest": "Probar",
+  "routePhaseImprove": "Mejorar",
+  "routeBriefTitle": "Ficha del problema",
+  "routeBriefInputs": "Entra",
+  "routeBriefOutputs": "Sale",
+  "routeBriefRelation": "Relación",
+  "routeBriefExamples": "Ejemplos a mano",
+  "routeParadigmTitle": "Un paradigma nuevo",
+  "routeParadigmQuestion": "La pregunta",
+  "routeParadigmMetaphor": "La metáfora",
+  "routeParadigmHistory": "La historia",
+  "routeParadigmCost": "Lo que cuesta",
+  "routeRolesTitle": "Roles",
+  "routeRecallTitle": "Recuerda",
+  "routeRecallLesson": "Lección {number}",
+  "@routeRecallLesson": {"placeholders": {"number": {"type": "String"}}},
+  "routeSpecLinkLabel": "Especificación §{number}",
+  "@routeSpecLinkLabel": {"placeholders": {"number": {"type": "String"}}},
+  "routeSpecFigureOrigin": "De la Especificación §{number}",
+  "@routeSpecFigureOrigin": {"placeholders": {"number": {"type": "String"}}},
+  "routeUnderTheHood": "Bajo el capó",
+  "routeDeepen": "Profundizar",
+  "routeNextTitle": "Siguiente",
+  "routePracticeRequired": "Obligatorio",
+  "routePracticeDone": "Resuelto",
+  "routeKindPredict": "Predecir",
+  "routeKindTrace": "Rastrear",
+  "routeKindOrder": "Ordenar",
+  "routeKindFindError": "Encontrar el error",
+  "routeKindBreak": "Romperlo",
+  "routeKindDesignTests": "Diseñar las pruebas",
+  "routeKindModify": "Modificar",
+  "routeKindSolve": "Resolver",
+  "routeKindCompare": "Comparar",
+  "routeKindClassify": "Clasificar",
+  "routeKindExplain": "Explicar",
+  "routeLevelSeed": "Semilla",
+  "routeLevelSprout": "Brote",
+  "routeLevelTree": "Árbol",
+  "routeExerciseCheck": "Comprobar",
+  "routeExerciseSolved": "¡Resuelto!",
+  "routeExerciseOpenEditor": "Resolver en el editor",
+  "routeExerciseHint": "Ver una pista",
+  "routeExerciseHintNumber": "Pista {number}",
+  "@routeExerciseHintNumber": {"placeholders": {"number": {"type": "int"}}},
+  "routeExerciseReveal": "Ver la respuesta",
+  "routeExerciseVariant": "Variante",
+  "routeExerciseExplanation": "Explicación",
+  "routeAnswerPlaceholder": "Escribe la salida exacta, una línea por renglón",
+  "routeAnswerInput": "Valor {number}",
+  "@routeAnswerInput": {"placeholders": {"number": {"type": "int"}}},
+  "routeDesignAddCase": "Agregar un caso",
+  "routeDesignInputs": "Entradas, separadas por ;",
+  "routeDesignExpected": "Salida esperada",
+  "routeDesignRemove": "Quitar el caso",
+  "routeOrderUp": "Subir",
+  "routeOrderDown": "Bajar",
+  "routeClassifyChoose": "Elige",
+  "routeFeedbackLine": "No coincide a partir de la línea {line}.",
+  "@routeFeedbackLine": {"placeholders": {"line": {"type": "int"}}},
+  "routeFeedbackCells": "Hay {count} celdas que no coinciden; están marcadas en rojo.",
+  "@routeFeedbackCells": {"placeholders": {"count": {"type": "int"}}},
+  "routeFeedbackCase": "El programa armado no pasa uno de los casos. Revisa el orden.",
+  "routeFeedbackUnbroken": "Con esa entrada los dos programas responden lo mismo: {output}.",
+  "@routeFeedbackUnbroken": {"placeholders": {"output": {"type": "String"}}},
+  "routeFeedbackReferenceRejects": "El caso {number} no lo cumple ni el programa correcto, que responde: {output}.",
+  "@routeFeedbackReferenceRejects": {"placeholders": {"number": {"type": "int"}, "output": {"type": "String"}}},
+  "routeFeedbackSurvivors": "{count} versiones con errores pasan todos tus casos.",
+  "@routeFeedbackSurvivors": {"placeholders": {"count": {"type": "int"}}},
+  "routeFeedbackWrongCount": "Escribe entre {minimum} y {maximum} casos.",
+  "@routeFeedbackWrongCount": {"placeholders": {"minimum": {"type": "int"}, "maximum": {"type": "int"}}},
+  "routeFeedbackMisplaced": "Hay {count} respuestas que no coinciden.",
+  "@routeFeedbackMisplaced": {"placeholders": {"count": {"type": "int"}}},
+  "routeFeedbackNotYet": "Todavía no. Revisa tu respuesta.",
+  "routeLearnInRoute": "Aprender en la ruta",
+  "settingsContactIntro": "Si tienes dudas sobre el funcionamiento de PseudoLearn, encuentras algún comportamiento inesperado o deseas compartir propuestas educativas, estamos a tu disposición para ayudarte.",
+  "settingsContactChannelEmail": "Correo electrónico: support@pseudolearn.com",
+  "settingsContactChannelWebsite": "Sitio web oficial: https://pseudolearn.app",
+  "settingsContactChannelSupport": "Asistencia y soporte web: https://pseudolearn.app/contact",
+  "settingsContactPedagogicalTitle": "Sugerencias pedagógicas",
+  "settingsContactPedagogicalBody": "Agradecemos los comentarios de docentes, estudiantes y autodidactas sobre la ruta de aprendizaje, la progresión de los ejercicios y los ejemplos incluidos en la aplicación. Si tienes ideas para enriquecer el aprendizaje de algoritmos, nos encantará leerte.",
+  "onboardingKnowledgeLessonCount": "{count, plural, =1{1 lección} other{{count} lecciones}}",
+  "@onboardingKnowledgeLessonCount": {"placeholders": {"count": {"type": "int"}}},
+  "onboardingKnowledgeLevelNamedCount": "{level}: {count}",
+  "@onboardingKnowledgeLevelNamedCount": {"placeholders": {"level": {"type": "String"}, "count": {"type": "int"}}}
 }

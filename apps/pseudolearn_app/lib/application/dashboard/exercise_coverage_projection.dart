@@ -1,33 +1,31 @@
 import '../../domain/model/dashboard/coverage_count.dart';
 import '../../domain/model/dashboard/exercise_coverage.dart';
-import '../../domain/model/knowledge/exercise_kind.dart';
-import '../../domain/model/knowledge/exercise_level.dart';
-import '../../domain/model/knowledge/knowledge_entry.dart';
-import '../../domain/model/knowledge/learning_track.dart';
+import '../../domain/model/knowledge/content_progress.dart';
+import '../../domain/model/route/route_kinds.dart';
+import '../../domain/model/route/route_toc.dart';
+import '../route/route_progress.dart';
 
 ExerciseCoverage projectExerciseCoverage({
-  required List<KnowledgeEntry> exercises,
-  required Map<String, LearningTrack> trackByModuleId,
-  required Set<String> completedIds,
+  required RouteToc toc,
+  required ContentProgress progress,
 }) {
-  final byTrack = <LearningTrack, CoverageCount>{};
-  final byLevel = <ExerciseLevel, CoverageCount>{};
-  final byKind = <ExerciseKind, CoverageCount>{};
-
+  final route = RouteProgress(progress);
+  final byPart = <String, CoverageCount>{};
+  final byLevel = <RouteLevel, CoverageCount>{};
+  final byKind = <RouteExerciseKind, CoverageCount>{};
+  var done = 0;
+  final exercises = toc.exercises;
   for (final exercise in exercises) {
-    final isDone = completedIds.contains(exercise.id);
-    final track = trackByModuleId[exercise.moduleId];
-    if (track != null) _accumulate(byTrack, track, isDone);
-    final level = exercise.level;
-    if (level != null) _accumulate(byLevel, level, isDone);
-    final kind = exercise.kind;
-    if (kind != null) _accumulate(byKind, kind, isDone);
+    final isDone = route.isExerciseDone(exercise.id);
+    if (isDone) done++;
+    final part = toc.partOf(exercise.lessonId);
+    if (part != null) _accumulate(byPart, part.id, isDone);
+    _accumulate(byLevel, exercise.level, isDone);
+    _accumulate(byKind, exercise.kind, isDone);
   }
-
-  final done = exercises.where((e) => completedIds.contains(e.id)).length;
   return ExerciseCoverage(
     overall: CoverageCount(done: done, total: exercises.length),
-    byTrack: byTrack,
+    byPart: byPart,
     byLevel: byLevel,
     byKind: byKind,
   );

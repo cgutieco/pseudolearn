@@ -1,9 +1,0 @@
-algorithm Swap
-    define a as integer <- 7;
-    define b as integer <- 4;
-    define auxiliary as integer <- a;
-    a <- b;
-    b <- auxiliary;
-    write a;
-    write b;
-endAlgorithm

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../domain/model/knowledge/content_block.dart';
 import '../../brand/brand_lockup.dart';
 import '../../components/card/app_card_surface.dart';
 import '../../components/typography/app_text.dart';
-import '../../knowledge/detail/components/content_block_view.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../shell/design_canvas.dart';
 import '../../theme/app_theme.dart';
@@ -41,9 +39,7 @@ final class ContactHeroCard extends StatelessWidget {
 }
 
 final class ContactPedagogicalCard extends StatelessWidget {
-  final List<ContentBlock> blocks;
-
-  const ContactPedagogicalCard({super.key, required this.blocks});
+  const ContactPedagogicalCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +53,17 @@ final class ContactPedagogicalCard extends StatelessWidget {
         children: [
           Icon(Icons.school_outlined, size: 28, color: theme.colors.text.link),
           SizedBox(height: canvas.scaled(SpacingTokens.space2)),
-          for (final block in blocks) ContentBlockView(block: block),
+          AppText(
+            AppLocalizations.of(context)!.settingsContactPedagogicalTitle,
+            variant: AppTextVariant.heading3,
+            color: theme.colors.text.primary,
+          ),
+          SizedBox(height: canvas.scaled(SpacingTokens.space2)),
+          AppText(
+            AppLocalizations.of(context)!.settingsContactPedagogicalBody,
+            variant: AppTextVariant.bodyDefault,
+            color: theme.colors.text.secondary,
+          ),
         ],
       ),
     );

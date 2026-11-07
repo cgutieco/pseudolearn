@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pseudolearn_app/application/knowledge/session/exercise_session_state.dart';
+import 'package:pseudolearn_app/application/route/session/exercise_session_state.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/expected_value_kind.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise_case.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise_case_failure.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise_check_outcome.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise_check_result.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/exercise_kind.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/exercise_level.dart';
+import 'package:pseudolearn_app/domain/model/route/route_kinds.dart';
 import 'package:pseudolearn_app/presentation/components/button/app_icon_button.dart';
 import 'package:pseudolearn_app/presentation/document/components/exercise_strip.dart';
 import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.dart';
@@ -38,9 +37,9 @@ void main() {
     id: 'CON-B1-E1',
     title: 'Suma de dos números',
     statement: 'Escribe un programa que lea dos números y escriba su suma.',
-    level: ExerciseLevel.reproduce,
-    kind: ExerciseKind.create,
-    moduleId: 'CON-B1',
+    level: RouteLevel.seed,
+    kind: RouteExerciseKind.solve,
+    lessonId: 'CON-B1',
     visibleCases: [
       ExerciseCase(
         inputs: ['2', '3'],
@@ -80,8 +79,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Ejercicio: Suma de dos números'), findsOneWidget);
-      expect(find.text('Nivel 1'), findsOneWidget);
-      expect(find.text('Crear'), findsOneWidget);
+      expect(find.text('Semilla'), findsOneWidget);
+      expect(find.text('Resolver'), findsOneWidget);
       expect(
           find.text(
               'Escribe un programa que lea dos números y escriba su suma.'),
@@ -320,7 +319,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Superado'), findsOneWidget);
-      expect(find.text('Crear'), findsNothing);
+      expect(find.text('Resolver'), findsNothing);
     });
 
     testWidgets('A collapsed strip still shows the latest case ratio',

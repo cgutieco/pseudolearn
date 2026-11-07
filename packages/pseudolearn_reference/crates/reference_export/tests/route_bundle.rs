@@ -64,6 +64,7 @@ fn exercise() -> PublishedExercise {
                 hidden: false,
             }],
             assertions: Vec::new(),
+            reference: String::new(),
         },
     }
 }

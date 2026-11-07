@@ -8,8 +8,9 @@ import '../../application/execution/execution_cubit.dart';
 import '../../application/execution/execution_state.dart';
 import '../../application/execution/step_pace.dart';
 import '../../application/export/export_cubit.dart';
-import '../../application/knowledge/session/exercise_session_cubit.dart';
-import '../../application/knowledge/session/exercise_session_state.dart';
+import '../../application/route/session/exercise_session_cubit.dart';
+import '../../application/route/session/exercise_session_state.dart';
+import '../../domain/model/reference/reference_edition.dart';
 import '../../application/settings/settings_cubit.dart';
 import '../../domain/model/profiles/syntax_profile_id.dart';
 import 'components/document_scaffold_body.dart';
@@ -87,8 +88,8 @@ final class _DocumentPageState extends State<DocumentPage> {
     final exerciseId = editorState.document?.exerciseId;
     if (exerciseId != null) {
       context.read<ExerciseSessionCubit>().loadExercise(
-        exerciseIdOrPath: exerciseId,
-        languageId: languageId,
+        exerciseId: exerciseId,
+        edition: ReferenceEdition(language: languageId, profile: profileId),
       );
     }
   }

@@ -57,7 +57,7 @@ final class _DashboardWithSyncMoment extends StatelessWidget {
       builder: (context, syncState) => DashboardView(
         state: state,
         lastSyncAt: syncState.lastSyncAt,
-        onOpenModule: (moduleId) => context.push('/conocimiento/$moduleId'),
+        onOpenModule: (lessonId) => context.push('/conocimiento/ruta/$lessonId'),
       ),
     );
   }

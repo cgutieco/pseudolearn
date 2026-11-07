@@ -8,10 +8,11 @@ import '../domain/ports/program_analyzer.dart';
 import '../domain/ports/program_construct_reader.dart';
 import '../domain/ports/program_execution.dart';
 import '../domain/ports/program_exporter.dart';
+import '../domain/ports/route_answer_evaluator.dart';
+import '../domain/model/route/route_kinds.dart';
 import '../domain/ports/source_editor.dart';
 import '../domain/ports/structogram_builder.dart';
 import '../domain/ports/syntax_help_source.dart';
-import '../domain/ports/syntax_reference_source.dart';
 import 'program_execution_session.dart';
 
 abstract interface class EngineServices {
@@ -35,8 +36,6 @@ abstract interface class EngineServices {
 
   EditorKeySource get editorKeySource;
 
-  SyntaxReferenceSource get syntaxReferenceSource;
-
   SyntaxHelpSource get syntaxHelpSource;
 
   ProgramExporter get programExporter;
@@ -44,4 +43,6 @@ abstract interface class EngineServices {
   ProgramConstructReader get programConstructReader;
 
   ExerciseChecker get exerciseChecker;
+
+  Map<RouteExerciseKind, RouteAnswerEvaluator> get routeEvaluators;
 }

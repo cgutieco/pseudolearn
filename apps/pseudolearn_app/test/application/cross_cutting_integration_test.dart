@@ -31,7 +31,9 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import '../fakes/fake_clock.dart';
 import '../fakes/fake_text_entry_modality.dart';
 import '../fakes/fake_identifier_generator.dart';
-import '../fakes/fake_knowledge_repository.dart';
+import '../fakes/fake_demo_program_source.dart';
+import '../fakes/fake_reference_repository.dart';
+import '../fakes/fake_route_repository.dart';
 import '../fakes/in_memory_document_repository.dart';
 import '../fakes/in_memory_preferences_store.dart';
 
@@ -45,7 +47,7 @@ void main() {
     late InMemoryDocumentRepository docRepo;
     late FakeIdentifierGenerator idGen;
     late FakeClock clock;
-    late FakeKnowledgeRepository knowledgeRepo;
+    late FakeDemoProgramSource demoSource;
     late ProgramAnalyzer analyzer;
     late ProgramExecution execution;
     late FlowchartBuilder flowchartLayout;
@@ -64,11 +66,11 @@ FinProceso
       docRepo = InMemoryDocumentRepository();
       idGen = FakeIdentifierGenerator(['doc-101', 'doc-102', 'doc-103']);
       clock = FakeClock(DateTime(2026, 8, 15, 12, 0));
-      knowledgeRepo = FakeKnowledgeRepository(
-        rawContentByPath: {
-          'examples/guided_demo_es.pseudo': sampleDemoCode,
-          'examples/guided_demo_en.pseudo': sampleDemoCode,
-          'examples/condicional_es.pseudo': '''
+      demoSource = FakeDemoProgramSource(
+        programs: {
+          'guided_demo_es.pseudo': sampleDemoCode,
+          'guided_demo_en.pseudo': sampleDemoCode,
+          'condicional_es.pseudo': '''
 Algoritmo EjemploCondicional
   Definir n Como Entero <- 0;
   n <- 42;
@@ -90,7 +92,8 @@ FinAlgoritmo
       () async {
         final onboardingCubit = OnboardingCubit(
           preferences: preferences,
-          knowledgeRepository: knowledgeRepo,
+          routeRepository: FakeRouteRepository(),
+          referenceRepository: FakeReferenceRepository(),
         );
 
         expect(onboardingCubit.state.isCompleted, isFalse);
@@ -269,9 +272,7 @@ FinProceso
           idGenerator: idGen,
           clock: clock,
         );
-        final rawExample = await knowledgeRepo.getRawContent(
-          'examples/condicional_es.pseudo',
-        );
+        final rawExample = await demoSource.load('condicional_es.pseudo');
         expect(rawExample, isNotEmpty);
 
         final createdDoc = await libraryCubit.createDocument(
@@ -493,7 +494,8 @@ FinAlgoritmo
         );
         final onboardingCubit = OnboardingCubit(
           preferences: preferences,
-          knowledgeRepository: knowledgeRepo,
+          routeRepository: FakeRouteRepository(),
+          referenceRepository: FakeReferenceRepository(),
         );
 
         await settingsCubit.init();

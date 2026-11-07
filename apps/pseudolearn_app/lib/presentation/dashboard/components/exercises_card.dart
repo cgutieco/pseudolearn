@@ -1,8 +1,7 @@
 import 'package:flutter/widgets.dart';
 import '../../../domain/model/dashboard/exercise_coverage.dart';
-import '../../../domain/model/knowledge/exercise_kind.dart';
-import '../../../domain/model/knowledge/exercise_level.dart';
-import '../../../domain/model/knowledge/learning_track.dart';
+import '../../../domain/model/dashboard/part_coverage.dart';
+import '../../../domain/model/route/route_kinds.dart';
 import '../../components/typography/app_text.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../shell/design_canvas.dart';
@@ -14,8 +13,9 @@ import 'dashboard_labels.dart';
 
 final class ExercisesCard extends StatelessWidget {
   final ExerciseCoverage coverage;
+  final List<PartCoverage> parts;
 
-  const ExercisesCard({super.key, required this.coverage});
+  const ExercisesCard({super.key, required this.coverage, required this.parts});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ final class ExercisesCard extends StatelessWidget {
             label: l10n.dashboardExercisesTitle,
             count: coverage.overall,
           ),
-          _TrackGroup(coverage: coverage),
+          _PartGroup(coverage: coverage, parts: parts),
           _LevelGroup(coverage: coverage),
           _KindGroup(coverage: coverage),
         ],
@@ -60,10 +60,11 @@ final class _GroupTitle extends StatelessWidget {
   }
 }
 
-final class _TrackGroup extends StatelessWidget {
+final class _PartGroup extends StatelessWidget {
   final ExerciseCoverage coverage;
+  final List<PartCoverage> parts;
 
-  const _TrackGroup({required this.coverage});
+  const _PartGroup({required this.coverage, required this.parts});
 
   @override
   Widget build(BuildContext context) {
@@ -73,10 +74,10 @@ final class _TrackGroup extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _GroupTitle(text: l10n.dashboardExercisesByTrack),
-        for (final track in LearningTrack.values)
+        for (final part in parts)
           CoverageMeter(
-            label: trackLabelOf(track, l10n),
-            count: coverage.ofTrack(track),
+            label: '${part.number} · ${part.title}',
+            count: coverage.ofPart(part.partId),
           ),
       ],
     );
@@ -96,7 +97,7 @@ final class _LevelGroup extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _GroupTitle(text: l10n.dashboardExercisesByLevel),
-        for (final level in ExerciseLevel.values)
+        for (final level in RouteLevel.values)
           CoverageMeter(
             label: levelLabelOf(level, l10n),
             count: coverage.ofLevel(level),
@@ -119,7 +120,7 @@ final class _KindGroup extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _GroupTitle(text: l10n.dashboardExercisesByKind),
-        for (final kind in ExerciseKind.values)
+        for (final kind in RouteExerciseKind.values)
           CoverageMeter(
             label: kindLabelOf(kind, l10n),
             count: coverage.ofKind(kind),

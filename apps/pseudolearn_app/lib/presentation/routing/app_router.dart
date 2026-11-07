@@ -1,11 +1,12 @@
 import 'package:go_router/go_router.dart';
 import '../document/document_page.dart';
-import '../knowledge/detail/knowledge_detail_page.dart';
 import '../dashboard/dashboard_page.dart';
 import '../knowledge/knowledge_page.dart';
 import '../library/library_page.dart';
 import '../onboarding/onboarding_page.dart';
 import '../reference/reference_section_page.dart';
+import '../route/route_exercise_page.dart';
+import '../route/route_lesson_page.dart';
 import '../settings/account/account_page.dart';
 import '../settings/contact/contact_support_page.dart';
 import '../settings/diagram/diagram_settings_page.dart';
@@ -51,12 +52,19 @@ StatefulShellBranch _knowledgeBranch() {
             ),
           ),
           GoRoute(
-            path: ':id',
-            builder: (context, state) => KnowledgeDetailPage(
-              entryId: state.pathParameters['id'] ?? '',
-              anchor: state.uri.queryParameters['anchor'],
-              fromModuleId: state.uri.queryParameters['fromModule'],
+            path: 'ruta/:leccion',
+            builder: (context, state) => RouteLessonPage(
+              lessonId: state.pathParameters['leccion'] ?? '',
             ),
+            routes: [
+              GoRoute(
+                path: ':ejercicio',
+                builder: (context, state) => RouteExercisePage(
+                  lessonId: state.pathParameters['leccion'] ?? '',
+                  exerciseId: state.pathParameters['ejercicio'] ?? '',
+                ),
+              ),
+            ],
           ),
         ],
       ),

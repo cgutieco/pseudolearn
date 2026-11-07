@@ -56,5 +56,40 @@ final class ReferenceTermRun extends ReferenceRun {
   String get plainText => text;
 }
 
+final class ReferenceDefinitionRun extends ReferenceRun {
+  final String term;
+  final String text;
+
+  const ReferenceDefinitionRun({required this.term, required this.text});
+
+  @override
+  String get plainText => text;
+}
+
+final class ReferenceSpecLinkRun extends ReferenceRun {
+  final String sectionId;
+  final String? anchor;
+  final String text;
+
+  const ReferenceSpecLinkRun({
+    required this.sectionId,
+    required this.text,
+    this.anchor,
+  });
+
+  @override
+  String get plainText => text;
+}
+
+final class ReferenceLessonLinkRun extends ReferenceRun {
+  final String lessonId;
+  final String text;
+
+  const ReferenceLessonLinkRun({required this.lessonId, required this.text});
+
+  @override
+  String get plainText => text;
+}
+
 String plainTextOf(List<ReferenceRun> runs) =>
     runs.map((run) => run.plainText).join();

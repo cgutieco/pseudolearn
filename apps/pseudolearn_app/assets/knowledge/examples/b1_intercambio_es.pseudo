@@ -1,9 +1,0 @@
-Proceso Intercambio
-    Definir a Como Entero <- 7;
-    Definir b Como Entero <- 4;
-    Definir auxiliar Como Entero <- a;
-    a <- b;
-    b <- auxiliar;
-    Escribir a;
-    Escribir b;
-FinProceso

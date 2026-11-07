@@ -1,8 +1,0 @@
-Proceso Saludo
-    Definir nombre Como Cadena <- "";
-    Definir edad Como Entero <- 0;
-    Leer nombre;
-    Leer edad;
-    Escribir "Hola, ", nombre, ". " Sin Saltar;
-    Escribir "Tienes ", edad, " años.";
-FinProceso

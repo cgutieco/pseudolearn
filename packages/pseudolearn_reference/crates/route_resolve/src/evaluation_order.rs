@@ -18,9 +18,7 @@ pub fn order(
             .filter_map(|position| steps.get(*position))
             .map(|step| resolve_runs(context.resolution, step))
             .collect();
-        let solution = (0..steps.len())
-            .filter_map(|wanted| order.iter().position(|position| *position == wanted))
-            .collect();
+        let solution = restoring_order(&order);
         return Evaluation::OrderSteps {
             steps: shuffled,
             solution,
@@ -39,8 +37,15 @@ pub fn order(
             .iter()
             .filter_map(|position| blocks.get(*position).cloned())
             .collect(),
+        solution: restoring_order(&order),
         cases: reference_cases(context, parts, "casos"),
     }
+}
+
+fn restoring_order(order: &[usize]) -> Vec<usize> {
+    (0..order.len())
+        .filter_map(|wanted| order.iter().position(|position| *position == wanted))
+        .collect()
 }
 
 pub fn program_blocks(code: &str) -> (String, Vec<String>, String) {

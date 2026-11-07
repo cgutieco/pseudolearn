@@ -56,11 +56,7 @@ flutter:
   generate: true
   assets:
     - assets/fonts/
-    - assets/knowledge/
-    - assets/knowledge/examples/
-    - assets/knowledge/exercises/
-    - assets/knowledge/modules/
-    - assets/knowledge/support/
+    - assets/demo/
     - assets/reference/es/es/
     - assets/reference/es/es/sections/
     - assets/reference/es/en/
@@ -69,6 +65,18 @@ flutter:
     - assets/reference/en/es/sections/
     - assets/reference/en/en/
     - assets/reference/en/en/sections/
+    - assets/route/es/es/
+    - assets/route/es/es/lessons/
+    - assets/route/es/es/exercises/
+    - assets/route/es/en/
+    - assets/route/es/en/lessons/
+    - assets/route/es/en/exercises/
+    - assets/route/en/es/
+    - assets/route/en/es/lessons/
+    - assets/route/en/es/exercises/
+    - assets/route/en/en/
+    - assets/route/en/en/lessons/
+    - assets/route/en/en/exercises/
 
   fonts:
     - family: IBMPlexSans

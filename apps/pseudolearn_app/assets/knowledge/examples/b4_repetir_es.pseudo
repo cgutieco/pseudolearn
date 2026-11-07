@@ -1,9 +1,0 @@
-Proceso SumaHastaCero
-    Definir n Como Entero <- 0;
-    Definir total Como Entero <- 0;
-    Repetir
-        Leer n;
-        total <- total + n;
-    Hasta Que n = 0;
-    Escribir total;
-FinProceso

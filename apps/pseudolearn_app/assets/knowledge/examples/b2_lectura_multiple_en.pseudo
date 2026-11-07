@@ -1,6 +1,0 @@
-algorithm SumInOneRead
-    define a as integer <- 0;
-    define b as integer <- 0;
-    read a, b;
-    write a + b;
-endAlgorithm

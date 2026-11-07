@@ -257,6 +257,8 @@ Extiende §3.2; todo lo que allí existe vale igual. Cabecera de lección: `id`,
 manifiesto de la Especificación de la misma edición y SHA-256 de cada archivo). El esquema está en
 `schemas/route-bundle.schema.json` y un test de `reference_export` valida contra él cada archivo de un paquete.
 
+- `toc.json` lista las partes con su lema y, por lección, cada ejercicio como objeto `{id, kind, level, required,
+  title}`: la app arma el banco de ejercicios y el panel de progreso con el índice, sin abrir cada ejercicio.
 - Una lección publicada reutiliza los bloques de la Especificación (`heading`, `paragraph`, `list`, `table`,
   `program`, `figure`, `summary`) y agrega `phrase`, `problem`, `attempt`, `cycle`, `phase_heading`, `brief`,
   `roles`, `paradigm`, `recall`, `spec_links`, `deepen`, `practice`, `next`, `spec_figure` y `callout`.

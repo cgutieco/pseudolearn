@@ -12,7 +12,10 @@ import '../domain/ports/exercise_checker.dart';
 import '../domain/ports/flowchart_builder.dart';
 import '../domain/ports/identifier_generator.dart';
 import '../domain/ports/incoming_link_source.dart';
-import '../domain/ports/knowledge_repository.dart';
+import '../domain/ports/demo_program_source.dart';
+import '../domain/model/route/route_kinds.dart';
+import '../domain/ports/route_answer_evaluator.dart';
+import '../domain/ports/route_repository.dart';
 import '../domain/ports/reference_repository.dart';
 import '../domain/ports/local_account_data_purger.dart';
 import '../domain/ports/local_progress_store.dart';
@@ -28,7 +31,6 @@ import '../domain/ports/structogram_builder.dart';
 import '../domain/ports/sync_coordinator.dart';
 import '../domain/ports/sync_queue.dart';
 import '../domain/ports/syntax_help_source.dart';
-import '../domain/ports/syntax_reference_source.dart';
 import '../domain/ports/text_entry_modality.dart';
 import 'program_execution_session.dart';
 
@@ -57,9 +59,10 @@ final class AppDependencies {
   final EditorKeySource editorKeySource;
   final TextEntryModality textEntryModality;
   final AppVersionSource appVersionSource;
-  final KnowledgeRepository knowledgeRepository;
+  final RouteRepository routeRepository;
+  final DemoProgramSource demoProgramSource;
+  final Map<RouteExerciseKind, RouteAnswerEvaluator> routeEvaluators;
   final ReferenceRepository referenceRepository;
-  final SyntaxReferenceSource syntaxReferenceSource;
   final SyntaxHelpSource syntaxHelpSource;
   final ProgramExporter programExporter;
   final LocalProgressStore localProgressStore;
@@ -92,9 +95,10 @@ final class AppDependencies {
     required this.editorKeySource,
     required this.textEntryModality,
     required this.appVersionSource,
-    required this.knowledgeRepository,
+    required this.routeRepository,
+    required this.demoProgramSource,
+    required this.routeEvaluators,
     required this.referenceRepository,
-    required this.syntaxReferenceSource,
     required this.syntaxHelpSource,
     required this.programExporter,
     required this.localProgressStore,

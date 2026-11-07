@@ -8,13 +8,11 @@ import '../application/editor/editor_cubit.dart';
 import '../application/execution/execution_cubit.dart';
 import '../application/execution/execution_history_cubit.dart';
 import '../application/export/export_cubit.dart';
-import '../application/knowledge/bank/exercise_bank_cubit.dart';
-import '../application/knowledge/diagram_block_resolver.dart';
-import '../application/knowledge/knowledge_cubit.dart';
-import '../application/knowledge/knowledge_detail_cubit.dart';
-import '../application/knowledge/prediction/prediction_session_cubit.dart';
-import '../application/knowledge/route/learning_route_cubit.dart';
-import '../application/knowledge/session/exercise_session_cubit.dart';
+import '../application/route/route_bank_cubit.dart';
+import '../application/route/route_exercise_cubit.dart';
+import '../application/route/route_index_cubit.dart';
+import '../application/route/route_lesson_cubit.dart';
+import '../application/route/session/exercise_session_cubit.dart';
 import '../application/reference/reference_index_cubit.dart';
 import '../application/reference/reference_section_cubit.dart';
 import '../application/library/library_cubit.dart';
@@ -125,7 +123,8 @@ BlocProvider<DashboardCubit> createDashboardProvider(
     create: (_) => DashboardCubit(
       loader: DashboardLoader(
         documents: dependencies.documentRepository,
-        knowledge: dependencies.knowledgeRepository,
+        route: dependencies.routeRepository,
+        reference: dependencies.referenceRepository,
         progressHistory: dependencies.progressHistory,
         syncQueue: dependencies.syncQueue,
         constructReader: dependencies.programConstructReader,
@@ -137,28 +136,15 @@ BlocProvider<DashboardCubit> createDashboardProvider(
 
 List<BlocProvider> createKnowledgeProviders(AppDependencies dependencies) {
   return [
-    BlocProvider<KnowledgeCubit>(
-      create: (_) => KnowledgeCubit(
-        repository: dependencies.knowledgeRepository,
-        referenceSource: dependencies.syntaxReferenceSource,
-      ),
-    ),
-    BlocProvider<KnowledgeDetailCubit>(
-      create: (_) => KnowledgeDetailCubit(
-        repository: dependencies.knowledgeRepository,
-        referenceSource: dependencies.syntaxReferenceSource,
-        analyzer: dependencies.programAnalyzer,
+    BlocProvider<RouteIndexCubit>(
+      create: (_) => RouteIndexCubit(
+        repository: dependencies.routeRepository,
         progressStore: dependencies.localProgressStore,
-        diagramResolver: DiagramBlockResolver(
-          flowchartBuilder: dependencies.flowchartBuilder,
-          structogramBuilder: dependencies.structogramBuilder,
-          classDiagramBuilder: dependencies.classDiagramBuilder,
-        ),
       ),
     ),
-    BlocProvider<LearningRouteCubit>(
-      create: (_) => LearningRouteCubit(
-        repository: dependencies.knowledgeRepository,
+    BlocProvider<RouteLessonCubit>(
+      create: (_) => RouteLessonCubit(
+        repository: dependencies.routeRepository,
         progressStore: dependencies.localProgressStore,
       ),
     ),
@@ -176,23 +162,24 @@ List<BlocProvider> createKnowledgeProviders(AppDependencies dependencies) {
 
 List<BlocProvider> createExerciseProviders(AppDependencies dependencies) {
   return [
-    BlocProvider<ExerciseBankCubit>(
-      create: (_) => ExerciseBankCubit(
-        repository: dependencies.knowledgeRepository,
+    BlocProvider<RouteBankCubit>(
+      create: (_) => RouteBankCubit(
+        repository: dependencies.routeRepository,
         progressStore: dependencies.localProgressStore,
+      ),
+    ),
+    BlocProvider<RouteExerciseCubit>(
+      create: (_) => RouteExerciseCubit(
+        repository: dependencies.routeRepository,
+        progressStore: dependencies.localProgressStore,
+        evaluators: dependencies.routeEvaluators,
       ),
     ),
     BlocProvider<ExerciseSessionCubit>(
       create: (_) => ExerciseSessionCubit(
-        repository: dependencies.knowledgeRepository,
+        repository: dependencies.routeRepository,
         checker: dependencies.exerciseChecker,
         progressStore: dependencies.localProgressStore,
-      ),
-    ),
-    BlocProvider<PredictionSessionCubit>(
-      create: (_) => PredictionSessionCubit(
-        repository: dependencies.knowledgeRepository,
-        execution: dependencies.createProgramExecution(),
       ),
     ),
   ];
@@ -204,12 +191,13 @@ List<BlocProvider> createOnboardingProviders(AppDependencies dependencies) {
       lazy: false,
       create: (_) => OnboardingCubit(
         preferences: dependencies.preferences,
-        knowledgeRepository: dependencies.knowledgeRepository,
+        routeRepository: dependencies.routeRepository,
+        referenceRepository: dependencies.referenceRepository,
       )..init(),
     ),
     BlocProvider<GuidedDemoCubit>(
       create: (_) => GuidedDemoCubit(
-        loader: GuidedDemoLoader(repository: dependencies.knowledgeRepository),
+        loader: GuidedDemoLoader(source: dependencies.demoProgramSource),
         execution: dependencies.createProgramExecution(),
         diagrams: DiagramProjection(
           flowchartBuilder: dependencies.flowchartBuilder,

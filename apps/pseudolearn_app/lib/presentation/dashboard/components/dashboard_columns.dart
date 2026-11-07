@@ -31,11 +31,11 @@ final class DashboardPrimaryColumn extends StatelessWidget {
       children: [
         LibraryCard(metrics: state.library),
         SizedBox(height: gap),
-        LearningRouteCard(tracks: state.route),
+        LearningRouteCard(parts: state.route),
         SizedBox(height: gap),
-        NextStepCard(nextModule: state.nextModule, onOpenModule: onOpenModule),
+        NextStepCard(nextLesson: state.nextLesson, onOpenModule: onOpenModule),
         SizedBox(height: gap),
-        ExercisesCard(coverage: state.exercises),
+        ExercisesCard(coverage: state.exercises, parts: state.route),
       ],
     );
   }

@@ -3,19 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pseudolearn_app/application/editor/editor_cubit.dart';
-import 'package:pseudolearn_app/application/knowledge/session/exercise_session_cubit.dart';
-import 'package:pseudolearn_app/application/knowledge/session/exercise_session_state.dart';
+import 'package:pseudolearn_app/application/route/session/exercise_session_cubit.dart';
+import 'package:pseudolearn_app/application/route/session/exercise_session_state.dart';
 import 'package:pseudolearn_app/composition/cubit_scope.dart';
 import 'package:pseudolearn_app/domain/model/documents/document.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/exercise.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise_case.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/exercise_kind.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/exercise_level.dart';
+import 'package:pseudolearn_app/domain/model/route/route_kinds.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/expected_value_kind.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/knowledge_entry.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/knowledge_entry_type.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
-import '../../fakes/fake_knowledge_repository.dart';
+import '../../fakes/fake_route_repository.dart';
+import '../../fakes/route_fixtures.dart';
+import 'package:pseudolearn_app/domain/model/route/route_evaluation.dart';
 import '../../fakes/in_memory_document_repository.dart';
 import '../../fakes/in_memory_local_progress_store.dart';
 import '../../fakes/test_dependencies.dart';
@@ -60,30 +58,20 @@ void main() {
     final progressStore = InMemoryLocalProgressStore();
     final now = DateTime(2026, 8, 16, 12, 0);
 
-    const exercise = Exercise(
-      id: 'EX-TEST-1',
-      title: 'Escribir Saludo',
-      statement: 'Escribe Hola',
-      level: ExerciseLevel.reproduce,
-      kind: ExerciseKind.complete,
-      visibleCases: [
-        ExerciseCase(inputs: [], expectedOutputs: ['Hola'], expectedValueKind: ExpectedValueKind.text),
-      ],
-      hiddenCases: [],
-    );
-
-    const exerciseEntry = KnowledgeEntry(
-      id: 'EX-TEST-1',
-      type: KnowledgeEntryType.exercise,
-      title: 'Escribir Saludo',
-      summary: 'Escribe Hola',
-      path: 'exercises/EX-TEST-1_es.json',
-    );
-
-    final knowledgeRepo = FakeKnowledgeRepository(
-      entries: [exerciseEntry],
-      exercisesByPath: {
-        'exercises/EX-TEST-1_es.json': exercise,
+    final knowledgeRepo = FakeRouteRepository(
+      exercises: {
+        'EX-TEST-1': sampleExercise(
+          'EX-TEST-1',
+          const CasesEvaluation(
+            visibleCases: [
+              ExerciseCase(inputs: [], expectedOutputs: ['Hola'], expectedValueKind: ExpectedValueKind.text),
+            ],
+            hiddenCases: [],
+            assertions: [],
+            reference: '',
+          ),
+          kind: RouteExerciseKind.modify,
+        ),
       },
     );
 
@@ -101,7 +89,7 @@ void main() {
     final deps = buildTestDependencies(
       repository: repo,
       localProgressStore: progressStore,
-      knowledgeRepository: knowledgeRepo,
+      routeRepository: knowledgeRepo,
     );
 
     tester.view.physicalSize = const Size(800, 1200);
@@ -127,7 +115,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(sessionCubit.state.status, equals(ExerciseSessionStatus.success));
-    final isCompleted = await progressStore.isExerciseCompleted('EX-TEST-1');
+    final isCompleted = await progressStore.isExerciseCompleted(routeExerciseProgressId('EX-TEST-1'));
     expect(isCompleted, isTrue);
 
     final saved = await repo.loadDocument('doc-ex');

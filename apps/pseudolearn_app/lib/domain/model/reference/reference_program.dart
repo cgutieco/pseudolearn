@@ -40,4 +40,12 @@ final class ReferenceProgram {
   });
 
   bool get completed => termination == 'completed';
+
+  ReferenceProgram withoutRun() => ReferenceProgram(
+    id: id,
+    title: title,
+    source: source,
+    lines: lines,
+    executed: false,
+  );
 }

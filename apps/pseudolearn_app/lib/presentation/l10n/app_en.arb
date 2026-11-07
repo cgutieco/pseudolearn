@@ -921,50 +921,6 @@
   "@knowledgeSectionExercises": {
     "description": "Name of the exercises section"
   },
-  "knowledgeRouteTrackFoundations": "Track A · Foundations",
-  "@knowledgeRouteTrackFoundations": {
-    "description": "Heading of the learning route's first track"
-  },
-  "knowledgeRouteTrackImperative": "Track B · Imperative and structured",
-  "@knowledgeRouteTrackImperative": {
-    "description": "Heading of the learning route's second track"
-  },
-  "knowledgeRouteTrackObjectOriented": "Track C · Object orientation",
-  "@knowledgeRouteTrackObjectOriented": {
-    "description": "Heading of the learning route's third track"
-  },
-  "knowledgeModuleVisited": "Visited",
-  "@knowledgeModuleVisited": {
-    "description": "Mark of an already visited module in the learning route"
-  },
-  "knowledgeTypeModule": "Module",
-  "@knowledgeTypeModule": {
-    "description": "Label for module type"
-  },
-  "knowledgeTypeSpecification": "Specification",
-  "@knowledgeTypeSpecification": {
-    "description": "Label for specification section type"
-  },
-  "knowledgeTypePrediction": "Prediction",
-  "@knowledgeTypePrediction": {
-    "description": "Label for prediction activity type"
-  },
-  "knowledgeTypeIllustration": "Illustration",
-  "@knowledgeTypeIllustration": {
-    "description": "Label for illustration type"
-  },
-  "knowledgeTypeExample": "Example",
-  "@knowledgeTypeExample": {
-    "description": "Label for example type"
-  },
-  "knowledgeTypeExercise": "Exercise",
-  "@knowledgeTypeExercise": {
-    "description": "Label for exercise type"
-  },
-  "knowledgeTypeReference": "Reference",
-  "@knowledgeTypeReference": {
-    "description": "Label for reference type"
-  },
   "knowledgeEmptyTitle": "No content",
   "@knowledgeEmptyTitle": {
     "description": "Title when knowledge base is empty"
@@ -987,10 +943,6 @@
       }
     }
   },
-  "knowledgeErrorTitle": "Content Error",
-  "@knowledgeErrorTitle": {
-    "description": "Title when content loading fails"
-  },
   "knowledgeErrorDescription": "Could not load knowledge base content.",
   "@knowledgeErrorDescription": {
     "description": "Message when content loading fails"
@@ -999,87 +951,13 @@
   "@knowledgeActionRetry": {
     "description": "Button to retry loading"
   },
-  "knowledgeDetailOpenInNewDocument": "Open in a new document",
-  "@knowledgeDetailOpenInNewDocument": {
-    "description": "Button to open example in new document"
-  },
   "knowledgeDetailCopied": "Copied",
   "@knowledgeDetailCopied": {
     "description": "Tooltip when content is copied"
   },
-  "knowledgeDetailNotFoundTitle": "Item not found",
-  "@knowledgeDetailNotFoundTitle": {
-    "description": "Title when detail entry is not found"
-  },
-  "knowledgeDetailNotFoundDescription": "The requested item does not exist in the knowledge base.",
-  "@knowledgeDetailNotFoundDescription": {
-    "description": "Description when entry is not found"
-  },
-  "knowledgeDetailBack": "Back to knowledge base",
-  "@knowledgeDetailBack": {
-    "description": "Button to return to knowledge list"
-  },
   "knowledgeDetailSections": "Sections",
   "@knowledgeDetailSections": {
     "description": "Label for table of contents sections"
-  },
-  "knowledgeModulePartQuestion": "Question",
-  "@knowledgeModulePartQuestion": {
-    "description": "Heading for module part 1"
-  },
-  "knowledgeModulePartMachineModel": "What changes in your mental model of the machine",
-  "@knowledgeModulePartMachineModel": {
-    "description": "Heading for module part 2"
-  },
-  "knowledgeModulePartDevelopment": "Development",
-  "@knowledgeModulePartDevelopment": {
-    "description": "Heading for module part 3"
-  },
-  "knowledgeModulePartPrediction": "Predict and run",
-  "@knowledgeModulePartPrediction": {
-    "description": "Heading for module part 4"
-  },
-  "knowledgeModulePartCommonErrors": "Common errors",
-  "@knowledgeModulePartCommonErrors": {
-    "description": "Heading for module part 5"
-  },
-  "knowledgeModulePartSpecification": "In the specification",
-  "@knowledgeModulePartSpecification": {
-    "description": "Heading for module part 6"
-  },
-  "knowledgeModulePartExercises": "Exercises",
-  "@knowledgeModulePartExercises": {
-    "description": "Heading for module part 7"
-  },
-  "knowledgePredictionCheck": "Run",
-  "@knowledgePredictionCheck": {
-    "description": "Button to execute and verify prediction"
-  },
-  "knowledgePredictionRetry": "Try again",
-  "@knowledgePredictionRetry": {
-    "description": "Button to retry prediction activity"
-  },
-  "knowledgePredictionMatch": "Matches",
-  "@knowledgePredictionMatch": {
-    "description": "Message when prediction matches machine value"
-  },
-  "knowledgePredictionMismatch": "You expected {predicted}, the machine has {actual}",
-  "@knowledgePredictionMismatch": {
-    "description": "Message when prediction does not match machine value",
-    "placeholders": {
-      "predicted": {
-        "type": "String",
-        "example": "7"
-      },
-      "actual": {
-        "type": "String",
-        "example": "4"
-      }
-    }
-  },
-  "knowledgePredictionEmptyHint": "Write your prediction",
-  "@knowledgePredictionEmptyHint": {
-    "description": "Placeholder for prediction text input"
   },
   "knowledgePredictionNotReached": "The program doesn't reach step {step}",
   "@knowledgePredictionNotReached": {
@@ -1101,46 +979,6 @@
       }
     }
   },
-  "exerciseLevel1": "Level 1 · Reproduce",
-  "@exerciseLevel1": {
-    "description": "Name for difficulty level 1"
-  },
-  "exerciseLevel2": "Level 2 · Compose",
-  "@exerciseLevel2": {
-    "description": "Name for difficulty level 2"
-  },
-  "exerciseLevel3": "Level 3 · Design",
-  "@exerciseLevel3": {
-    "description": "Name for difficulty level 3"
-  },
-  "exerciseLevelShort1": "Level 1",
-  "@exerciseLevelShort1": {
-    "description": "Short label for level 1"
-  },
-  "exerciseLevelShort2": "Level 2",
-  "@exerciseLevelShort2": {
-    "description": "Short label for level 2"
-  },
-  "exerciseLevelShort3": "Level 3",
-  "@exerciseLevelShort3": {
-    "description": "Short label for level 3"
-  },
-  "exerciseKindPredict": "Predict",
-  "@exerciseKindPredict": {
-    "description": "Exercise kind: predict"
-  },
-  "exerciseKindComplete": "Complete",
-  "@exerciseKindComplete": {
-    "description": "Exercise kind: complete"
-  },
-  "exerciseKindModify": "Modify",
-  "@exerciseKindModify": {
-    "description": "Exercise kind: modify"
-  },
-  "exerciseKindCreate": "Create",
-  "@exerciseKindCreate": {
-    "description": "Exercise kind: create"
-  },
   "exerciseCompletedBadge": "Completed",
   "@exerciseCompletedBadge": {
     "description": "Badge indicating that the exercise has been passed"
@@ -1156,62 +994,6 @@
   "exerciseFilterConstruct": "Construct",
   "@exerciseFilterConstruct": {
     "description": "Filter label for required construct"
-  },
-  "exerciseFilterAllLevels": "All levels",
-  "@exerciseFilterAllLevels": {
-    "description": "Option to not filter by level"
-  },
-  "exerciseFilterAllConstructs": "All constructs",
-  "@exerciseFilterAllConstructs": {
-    "description": "Option to not filter by construct"
-  },
-  "exerciseConstructConditional": "Conditional",
-  "@exerciseConstructConditional": {
-    "description": "Name for if/else construct"
-  },
-  "exerciseConstructMultipleSelection": "Multiple selection",
-  "@exerciseConstructMultipleSelection": {
-    "description": "Name for switch construct"
-  },
-  "exerciseConstructConditionalLoop": "Conditional loop",
-  "@exerciseConstructConditionalLoop": {
-    "description": "Name for while loop"
-  },
-  "exerciseConstructPostConditionalLoop": "Post-conditional loop",
-  "@exerciseConstructPostConditionalLoop": {
-    "description": "Name for repeat-until loop"
-  },
-  "exerciseConstructCountedLoop": "Counted loop",
-  "@exerciseConstructCountedLoop": {
-    "description": "Name for for loop"
-  },
-  "exerciseConstructArrayDeclaration": "Arrays",
-  "@exerciseConstructArrayDeclaration": {
-    "description": "Name for array / dimension construct"
-  },
-  "exerciseConstructSubprogram": "Subprograms",
-  "@exerciseConstructSubprogram": {
-    "description": "Name for functions / procedures construct"
-  },
-  "exerciseConstructClassDeclaration": "Classes",
-  "@exerciseConstructClassDeclaration": {
-    "description": "Name for classes and objects construct"
-  },
-  "exerciseConstructInterfaceDeclaration": "Interfaces",
-  "@exerciseConstructInterfaceDeclaration": {
-    "description": "Name for interface declarations"
-  },
-  "exerciseClearFilters": "Clear filters",
-  "@exerciseClearFilters": {
-    "description": "Button to clear exercise filters"
-  },
-  "exerciseBankEmptyTitle": "No exercises",
-  "@exerciseBankEmptyTitle": {
-    "description": "Title when no exercises exist in catalog"
-  },
-  "exerciseBankEmptyDescription": "There are no exercises available in the knowledge base.",
-  "@exerciseBankEmptyDescription": {
-    "description": "Description when exercise catalog is empty"
   },
   "exerciseBankEmptyFilterTitle": "No matching exercises",
   "@exerciseBankEmptyFilterTitle": {
@@ -1453,28 +1235,6 @@
   "@onboardingKnowledgeRouteDescription": {
     "description": "Description of the learning route card"
   },
-  "onboardingKnowledgeTrackFoundations": "Foundations",
-  "@onboardingKnowledgeTrackFoundations": {
-    "description": "Name of the first track of the route"
-  },
-  "onboardingKnowledgeTrackImperative": "Imperative programming",
-  "@onboardingKnowledgeTrackImperative": {
-    "description": "Name of the second track of the route"
-  },
-  "onboardingKnowledgeTrackObjectOriented": "Objects with pseudocode",
-  "@onboardingKnowledgeTrackObjectOriented": {
-    "description": "Name of the third track of the route"
-  },
-  "onboardingKnowledgeModuleCount": "{count, plural, =1{1 module} other{{count} modules}}",
-  "@onboardingKnowledgeModuleCount": {
-    "description": "Module count of a track",
-    "placeholders": {
-      "count": {
-        "type": "int",
-        "example": "8"
-      }
-    }
-  },
   "onboardingKnowledgeSpecificationTitle": "Syntax specification",
   "@onboardingKnowledgeSpecificationTitle": {
     "description": "Title of the specification card"
@@ -1508,20 +1268,6 @@
       "count": {
         "type": "int",
         "example": "95"
-      }
-    }
-  },
-  "onboardingKnowledgeLevelCount": "Level {level}: {count}",
-  "@onboardingKnowledgeLevelCount": {
-    "description": "Exercise count for one difficulty level",
-    "placeholders": {
-      "level": {
-        "type": "int",
-        "example": "1"
-      },
-      "count": {
-        "type": "int",
-        "example": "30"
       }
     }
   },
@@ -1655,10 +1401,6 @@
   "@settingsContactTitle": {
     "description": "Contact screen title"
   },
-  "settingsContactEmpty": "No contact information available.",
-  "@settingsContactEmpty": {
-    "description": "Message when no contact info is available"
-  },
   "settingsContactTipsTitle": "Tips for reporting issues",
   "@settingsContactTipsTitle": {
     "description": "Title of the card with issue reporting tips"
@@ -1734,34 +1476,6 @@
   "executionRuntimeError": "Runtime error",
   "@executionRuntimeError": {
     "description": "Default message when execution halts without its own reason"
-  },
-  "illustrationMemoryBoxesSemanticLabel": "Illustration: three memory boxes, each with its name above and its value inside.",
-  "@illustrationMemoryBoxesSemanticLabel": {
-    "description": "Accessible description of the memory boxes illustration"
-  },
-  "illustrationMemoryBoxesVariable1": "counter",
-  "@illustrationMemoryBoxesVariable1": {
-    "description": "Name of the first memory box in the illustration"
-  },
-  "illustrationMemoryBoxesValue1": "3",
-  "@illustrationMemoryBoxesValue1": {
-    "description": "Value of the first memory box in the illustration"
-  },
-  "illustrationMemoryBoxesVariable2": "total",
-  "@illustrationMemoryBoxesVariable2": {
-    "description": "Name of the second memory box in the illustration"
-  },
-  "illustrationMemoryBoxesValue2": "12.5",
-  "@illustrationMemoryBoxesValue2": {
-    "description": "Value of the second memory box in the illustration"
-  },
-  "illustrationMemoryBoxesVariable3": "active",
-  "@illustrationMemoryBoxesVariable3": {
-    "description": "Name of the third memory box in the illustration"
-  },
-  "illustrationMemoryBoxesValue3": "true",
-  "@illustrationMemoryBoxesValue3": {
-    "description": "Value of the third memory box in the illustration"
   },
   "settingsAccount": "Account",
   "@settingsAccount": {
@@ -2464,5 +2178,92 @@
   "referenceTerminationCompleted": "Finished normally",
   "referenceTerminationFailed": "Stopped by a failure",
   "referenceTerminationRejected": "Not run: the analysis found errors",
-  "referenceTerminationOther": "Ended early"
+  "referenceTerminationOther": "Ended early",
+  "routeLessonMinutes": "{minutes} min",
+  "routeLessonCompleted": "Completed",
+  "routeLessonVisited": "In progress",
+  "routeNextLesson": "Next up",
+  "routeIndexErrorTitle": "The route could not be loaded",
+  "routeLessonNotFoundTitle": "The lesson was not found",
+  "routeExerciseNotFoundTitle": "The exercise was not found",
+  "routeLessonNeeds": "You need",
+  "routeLessonNeedsNothing": "nothing, this lesson starts from zero",
+  "routeLessonLearn": "You will learn",
+  "routeProblemLabel": "Problem",
+  "routeAttemptReveal": "I tried it: show the answer",
+  "routeAttemptHide": "Hide the answer",
+  "routePhaseUnderstand": "Understand",
+  "routePhasePlan": "Plan",
+  "routePhaseWrite": "Write",
+  "routePhaseTest": "Test",
+  "routePhaseImprove": "Improve",
+  "routeBriefTitle": "Problem card",
+  "routeBriefInputs": "Goes in",
+  "routeBriefOutputs": "Comes out",
+  "routeBriefRelation": "Relation",
+  "routeBriefExamples": "Worked examples",
+  "routeParadigmTitle": "A new paradigm",
+  "routeParadigmQuestion": "The question",
+  "routeParadigmMetaphor": "The metaphor",
+  "routeParadigmHistory": "The history",
+  "routeParadigmCost": "What it costs",
+  "routeRolesTitle": "Roles",
+  "routeRecallTitle": "Remember",
+  "routeRecallLesson": "Lesson {number}",
+  "routeSpecLinkLabel": "Specification §{number}",
+  "routeSpecFigureOrigin": "From the Specification §{number}",
+  "routeUnderTheHood": "Under the hood",
+  "routeDeepen": "Go deeper",
+  "routeNextTitle": "Next",
+  "routePracticeRequired": "Required",
+  "routePracticeDone": "Solved",
+  "routeKindPredict": "Predict",
+  "routeKindTrace": "Trace",
+  "routeKindOrder": "Order",
+  "routeKindFindError": "Find the bug",
+  "routeKindBreak": "Break it",
+  "routeKindDesignTests": "Design the tests",
+  "routeKindModify": "Modify",
+  "routeKindSolve": "Solve",
+  "routeKindCompare": "Compare",
+  "routeKindClassify": "Classify",
+  "routeKindExplain": "Explain",
+  "routeLevelSeed": "Seed",
+  "routeLevelSprout": "Sprout",
+  "routeLevelTree": "Tree",
+  "routeExerciseCheck": "Check",
+  "routeExerciseSolved": "Solved!",
+  "routeExerciseOpenEditor": "Solve it in the editor",
+  "routeExerciseHint": "Show a hint",
+  "routeExerciseHintNumber": "Hint {number}",
+  "routeExerciseReveal": "Show the answer",
+  "routeExerciseVariant": "Variant",
+  "routeExerciseExplanation": "Explanation",
+  "routeAnswerPlaceholder": "Write the exact output, one line per row",
+  "routeAnswerInput": "Value {number}",
+  "routeDesignAddCase": "Add a case",
+  "routeDesignInputs": "Inputs, separated by ;",
+  "routeDesignExpected": "Expected output",
+  "routeDesignRemove": "Remove the case",
+  "routeOrderUp": "Move up",
+  "routeOrderDown": "Move down",
+  "routeClassifyChoose": "Choose",
+  "routeFeedbackLine": "It does not match from line {line} on.",
+  "routeFeedbackCells": "{count} cells do not match; they are marked in red.",
+  "routeFeedbackCase": "The assembled program fails one of the cases. Check the order.",
+  "routeFeedbackUnbroken": "With that input both programs answer the same: {output}.",
+  "routeFeedbackReferenceRejects": "Case {number} is not met even by the correct program, which answers: {output}.",
+  "routeFeedbackSurvivors": "{count} faulty versions pass all your cases.",
+  "routeFeedbackWrongCount": "Write between {minimum} and {maximum} cases.",
+  "routeFeedbackMisplaced": "{count} answers do not match.",
+  "routeFeedbackNotYet": "Not yet. Check your answer.",
+  "routeLearnInRoute": "Learn it in the route",
+  "settingsContactIntro": "If you have questions about how PseudoLearn works, find unexpected behaviour or want to share educational proposals, we are here to help.",
+  "settingsContactChannelEmail": "Email: support@pseudolearn.com",
+  "settingsContactChannelWebsite": "Official website: https://pseudolearn.app",
+  "settingsContactChannelSupport": "Web help and support: https://pseudolearn.app/contact",
+  "settingsContactPedagogicalTitle": "Teaching suggestions",
+  "settingsContactPedagogicalBody": "We value feedback from teachers, students and self-learners about the learning route, the progression of the exercises and the examples in the app. If you have ideas to improve how algorithms are learned, we would love to hear from you.",
+  "onboardingKnowledgeLessonCount": "{count, plural, =1{1 lesson} other{{count} lessons}}",
+  "onboardingKnowledgeLevelNamedCount": "{level}: {count}"
 }

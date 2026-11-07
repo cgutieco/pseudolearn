@@ -1,5 +1,7 @@
 use crate::manifest::digest;
-use reference_model::{ExerciseLevel, LessonKind, PublishedExercise, PublishedLesson, Run};
+use reference_model::{
+    ExerciseKind, ExerciseLevel, LessonKind, PublishedExercise, PublishedLesson, Run,
+};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::{BTreeMap, BTreeSet};
@@ -43,6 +45,15 @@ pub struct RouteBundleInput<'input> {
 }
 
 #[derive(Serialize)]
+struct TocExercise<'toc> {
+    id: &'toc str,
+    kind: ExerciseKind,
+    level: ExerciseLevel,
+    required: bool,
+    title: &'toc [Run],
+}
+
+#[derive(Serialize)]
 struct TocLesson<'toc> {
     id: &'toc str,
     number: &'toc str,
@@ -52,7 +63,7 @@ struct TocLesson<'toc> {
     minutes: u32,
     levels: &'toc [ExerciseLevel],
     needs: Vec<&'toc str>,
-    exercises: Vec<&'toc str>,
+    exercises: Vec<TocExercise<'toc>>,
 }
 
 #[derive(Serialize)]
@@ -142,7 +153,13 @@ fn toc_lesson<'toc>(
         exercises: exercises
             .iter()
             .filter(|exercise| exercise.lesson == lesson.id)
-            .map(|exercise| exercise.id.as_str())
+            .map(|exercise| TocExercise {
+                id: &exercise.id,
+                kind: exercise.kind,
+                level: exercise.level,
+                required: exercise.required,
+                title: &exercise.title,
+            })
             .collect(),
     }
 }

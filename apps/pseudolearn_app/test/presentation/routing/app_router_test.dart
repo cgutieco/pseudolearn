@@ -16,12 +16,6 @@ import 'package:pseudolearn_app/application/dashboard/dashboard_loader.dart';
 import 'package:pseudolearn_app/application/diagram/diagram_cubit.dart';
 import 'package:pseudolearn_app/application/editor/editor_cubit.dart';
 import 'package:pseudolearn_app/application/execution/execution_cubit.dart';
-import 'package:pseudolearn_app/application/knowledge/bank/exercise_bank_cubit.dart';
-import 'package:pseudolearn_app/application/knowledge/diagram_block_resolver.dart';
-import 'package:pseudolearn_app/application/knowledge/knowledge_cubit.dart';
-import 'package:pseudolearn_app/application/knowledge/knowledge_detail_cubit.dart';
-import 'package:pseudolearn_app/application/knowledge/route/learning_route_cubit.dart';
-import 'package:pseudolearn_app/application/knowledge/session/exercise_session_cubit.dart';
 import 'package:pseudolearn_app/application/library/library_cubit.dart';
 import 'package:pseudolearn_app/application/diagram/diagram_projection.dart';
 import 'package:pseudolearn_app/application/onboarding/demo/guided_demo_cubit.dart';
@@ -32,13 +26,11 @@ import 'package:pseudolearn_app/application/settings/settings_cubit.dart';
 import 'package:pseudolearn_app/application/sync/sync_cubit.dart';
 import 'package:pseudolearn_app/application/trace/trace_cubit.dart';
 import 'package:pseudolearn_app/composition/app_dependencies.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/content_block.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/knowledge_entry.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/knowledge_entry_type.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/learning_module.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/learning_track.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/module_part.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/module_section.dart';
+import 'package:pseudolearn_app/application/route/route_bank_cubit.dart';
+import 'package:pseudolearn_app/application/route/route_exercise_cubit.dart';
+import 'package:pseudolearn_app/application/route/route_index_cubit.dart';
+import 'package:pseudolearn_app/application/route/route_lesson_cubit.dart';
+import 'package:pseudolearn_app/application/route/session/exercise_session_cubit.dart';
 import 'package:pseudolearn_app/presentation/knowledge/knowledge_page.dart';
 import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.dart';
 import 'package:pseudolearn_app/presentation/routing/app_router.dart';
@@ -46,7 +38,8 @@ import 'package:pseudolearn_app/presentation/shell/adaptive_shell.dart';
 import 'package:pseudolearn_app/presentation/shell/design_canvas.dart';
 import 'package:pseudolearn_app/presentation/shell/destinations.dart';
 import 'package:pseudolearn_app/presentation/theme/app_theme.dart';
-import '../../fakes/fake_knowledge_repository.dart';
+import '../../fakes/fake_route_repository.dart';
+import '../../fakes/route_fixtures.dart';
 import '../../fakes/test_dependencies.dart';
 
 Widget _appWith(GoRouter router, [AppDependencies? deps]) {
@@ -90,55 +83,48 @@ Widget _appWith(GoRouter router, [AppDependencies? deps]) {
       BlocProvider<ReferenceSectionCubit>(
         create: (_) => ReferenceSectionCubit(repository: dependencies.referenceRepository),
       ),
-      BlocProvider<KnowledgeCubit>(
-        create: (_) => KnowledgeCubit(
-          repository: dependencies.knowledgeRepository,
-          referenceSource: dependencies.syntaxReferenceSource,
-        ),
-      ),
-      BlocProvider<LearningRouteCubit>(
-        create: (_) => LearningRouteCubit(
-          repository: dependencies.knowledgeRepository,
+      BlocProvider<RouteIndexCubit>(
+        create: (_) => RouteIndexCubit(
+          repository: dependencies.routeRepository,
           progressStore: dependencies.localProgressStore,
         ),
       ),
-      BlocProvider<ExerciseBankCubit>(
-        create: (_) => ExerciseBankCubit(
-          repository: dependencies.knowledgeRepository,
+      BlocProvider<RouteLessonCubit>(
+        create: (_) => RouteLessonCubit(
+          repository: dependencies.routeRepository,
           progressStore: dependencies.localProgressStore,
+        ),
+      ),
+      BlocProvider<RouteBankCubit>(
+        create: (_) => RouteBankCubit(
+          repository: dependencies.routeRepository,
+          progressStore: dependencies.localProgressStore,
+        ),
+      ),
+      BlocProvider<RouteExerciseCubit>(
+        create: (_) => RouteExerciseCubit(
+          repository: dependencies.routeRepository,
+          progressStore: dependencies.localProgressStore,
+          evaluators: dependencies.routeEvaluators,
         ),
       ),
       BlocProvider<ExerciseSessionCubit>(
         create: (_) => ExerciseSessionCubit(
-          repository: dependencies.knowledgeRepository,
+          repository: dependencies.routeRepository,
           checker: dependencies.exerciseChecker,
           progressStore: dependencies.localProgressStore,
-        ),
-      ),
-      BlocProvider<KnowledgeDetailCubit>(
-        create: (_) => KnowledgeDetailCubit(
-          repository: dependencies.knowledgeRepository,
-          referenceSource: dependencies.syntaxReferenceSource,
-          analyzer: dependencies.programAnalyzer,
-          progressStore: dependencies.localProgressStore,
-          diagramResolver: DiagramBlockResolver(
-            flowchartBuilder: dependencies.flowchartBuilder,
-            structogramBuilder: dependencies.structogramBuilder,
-            classDiagramBuilder: dependencies.classDiagramBuilder,
-          ),
         ),
       ),
       BlocProvider<OnboardingCubit>(
         create: (_) => OnboardingCubit(
           preferences: dependencies.preferences,
-          knowledgeRepository: dependencies.knowledgeRepository,
+          routeRepository: dependencies.routeRepository,
+          referenceRepository: dependencies.referenceRepository,
         ),
       ),
       BlocProvider<GuidedDemoCubit>(
         create: (_) => GuidedDemoCubit(
-          loader: GuidedDemoLoader(
-            repository: dependencies.knowledgeRepository,
-          ),
+          loader: GuidedDemoLoader(source: dependencies.demoProgramSource),
           execution: dependencies.createProgramExecution(),
           diagrams: DiagramProjection(
             flowchartBuilder: dependencies.flowchartBuilder,
@@ -159,7 +145,8 @@ Widget _appWith(GoRouter router, [AppDependencies? deps]) {
         create: (_) => DashboardCubit(
           loader: DashboardLoader(
             documents: dependencies.documentRepository,
-            knowledge: dependencies.knowledgeRepository,
+            route: dependencies.routeRepository,
+            reference: dependencies.referenceRepository,
             progressHistory: dependencies.progressHistory,
             syncQueue: dependencies.syncQueue,
             constructReader: dependencies.programConstructReader,
@@ -261,32 +248,11 @@ void main() {
     });
   });
 
-  group('Knowledge detail navigation flow', () {
-    testWidgets('pushing specification from module preserves module state on pop', (tester) async {
-      const moduleEntry = KnowledgeEntry(
-        id: 'CON-A1',
-        type: KnowledgeEntryType.module,
-        title: 'Qué es un algoritmo',
-        summary: 'Secuencia, precisión y ambigüedad.',
-        path: 'modules/CON-A1_es.md',
-        track: LearningTrack.foundations,
-      );
-      const module = LearningModule(
-        id: 'CON-A1',
-        track: LearningTrack.foundations,
-        order: 1,
-        title: 'Qué es un algoritmo',
-        sections: [
-          ModuleSection(
-            part: ModulePart.question,
-            blocks: [ParagraphBlock(text: 'Introducción.')],
-          ),
-        ],
-      );
-
-      final fakeRepo = FakeKnowledgeRepository(
-        entries: const [moduleEntry],
-        modulesByEntryId: {'CON-A1': module},
+  group('Learning route navigation flow', () {
+    testWidgets('a specification link from a lesson returns to the lesson on pop', (tester) async {
+      final routes = FakeRouteRepository(
+        toc: sampleToc,
+        lessons: {'inicio.primero': sampleLesson('inicio.primero')},
       );
       final references = FakeReferenceRepository(
         sections: const {
@@ -301,16 +267,16 @@ void main() {
         },
       );
       final deps = buildTestDependencies(
-        knowledgeRepository: fakeRepo,
+        routeRepository: routes,
         referenceRepository: references,
       );
       final router = buildAppRouter(initialLocation: '/conocimiento');
       await tester.pumpWidget(_appWith(router, deps));
       await tester.pumpAndSettle();
 
-      unawaited(router.push('/conocimiento/CON-A1'));
+      unawaited(router.push('/conocimiento/ruta/inicio.primero'));
       await tester.pumpAndSettle();
-      expect(find.text('Qué es un algoritmo'), findsWidgets);
+      expect(find.text('Una frase'), findsWidgets);
 
       unawaited(router.push('/conocimiento/especificacion/lexico.palabras-reservadas'));
       await tester.pumpAndSettle();
@@ -318,7 +284,7 @@ void main() {
 
       router.pop();
       await tester.pumpAndSettle();
-      expect(find.text('Qué es un algoritmo'), findsWidgets);
+      expect(find.text('Una frase'), findsWidgets);
 
       router.pop();
       await tester.pumpAndSettle();

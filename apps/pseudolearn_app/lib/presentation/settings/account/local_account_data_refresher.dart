@@ -4,8 +4,9 @@ import '../../../application/account/account_cubit.dart';
 import '../../../application/account/account_state.dart';
 import '../../../application/account/local_account_data_purge.dart';
 import '../../../application/dashboard/dashboard_cubit.dart';
-import '../../../application/knowledge/bank/exercise_bank_cubit.dart';
-import '../../../application/knowledge/route/learning_route_cubit.dart';
+import '../../../application/route/route_bank_cubit.dart';
+import '../../../application/route/route_index_cubit.dart';
+import '../../reference/reference_edition_resolver.dart';
 import '../../../application/library/library_cubit.dart';
 import '../../../application/settings/settings_cubit.dart';
 import '../../../application/sync/sync_cubit.dart';
@@ -34,7 +35,8 @@ void _reloadLocalDataViews(BuildContext context) {
   );
   context.read<LibraryCubit>().loadDocuments();
   context.read<DashboardCubit>().load(language);
-  context.read<LearningRouteCubit>().loadRoute(language);
-  context.read<ExerciseBankCubit>().loadExercises(language);
+  final edition = currentReferenceEdition(context);
+  context.read<RouteIndexCubit>().load(edition);
+  context.read<RouteBankCubit>().load(edition);
   context.read<SyncCubit>().notifyLocalChange();
 }

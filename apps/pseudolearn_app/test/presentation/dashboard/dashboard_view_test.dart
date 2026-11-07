@@ -98,7 +98,7 @@ void main() {
       await tester.tap(find.text(l10n.dashboardNextStepOpen));
       await tester.pumpAndSettle();
 
-      expect(opened, 'CON-B3');
+      expect(opened, 'imperativo.segundo');
     });
 
     testWidgets('a device with nothing recorded shows the empty state', (tester) async {

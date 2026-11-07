@@ -1,8 +1,0 @@
-algorithm Average
-    define n1 as integer <- 8;
-    define n2 as integer <- 7;
-    define n3 as integer <- 9;
-    define sum as integer <- n1 + n2 + n3;
-    define average as real <- sum / 3;
-    write average;
-endAlgorithm

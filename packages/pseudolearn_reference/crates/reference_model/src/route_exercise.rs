@@ -48,6 +48,7 @@ pub enum Evaluation {
         head: String,
         tail: String,
         blocks: Vec<String>,
+        solution: Vec<usize>,
         cases: Vec<PublishedCase>,
     },
     OrderSteps {
@@ -57,6 +58,7 @@ pub enum Evaluation {
     Cases {
         cases: Vec<PublishedCase>,
         assertions: Vec<BTreeMap<String, String>>,
+        reference: String,
     },
     Break {
         defective: String,

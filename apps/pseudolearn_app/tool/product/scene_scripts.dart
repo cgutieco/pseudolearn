@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pseudolearn_app/application/route/route_index_cubit.dart';
+import 'package:pseudolearn_app/application/route/route_index_state.dart';
 import 'package:pseudolearn_app/application/execution/execution_cubit.dart';
 import 'package:pseudolearn_app/application/execution/execution_state.dart';
 import 'package:pseudolearn_app/application/export/export_cubit.dart';
-import 'package:pseudolearn_app/application/knowledge/knowledge_cubit.dart';
-import 'package:pseudolearn_app/application/knowledge/knowledge_state.dart';
 import 'package:pseudolearn_app/application/trace/trace_cubit.dart';
 import 'package:pseudolearn_app/presentation/document/components/tab_selector.dart';
 
@@ -113,11 +113,11 @@ void _exportProducedCode(SceneStage stage) {
 }
 
 void _knowledgeCatalogueLoaded(SceneStage stage) {
-  final knowledge = BlocProvider.of<KnowledgeCubit>(stage.appContext).state;
-  expect(knowledge.status, KnowledgeStatus.success);
+  final route = BlocProvider.of<RouteIndexCubit>(stage.appContext).state;
+  expect(route.status, RouteIndexStatus.success);
   expect(
-    knowledge.specificationEntries,
+    route.toc.lessons,
     isNotEmpty,
-    reason: 'The bundled knowledge base did not load',
+    reason: 'The bundled learning route did not load',
   );
 }

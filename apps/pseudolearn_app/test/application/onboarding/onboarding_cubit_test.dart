@@ -1,50 +1,25 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/onboarding/onboarding_cubit.dart';
 import 'package:pseudolearn_app/application/onboarding/onboarding_state.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/exercise_level.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/knowledge_entry.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/knowledge_entry_type.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/learning_track.dart';
 import 'package:pseudolearn_app/domain/model/onboarding/onboarding_exit.dart';
 import 'package:pseudolearn_app/domain/model/onboarding/onboarding_step.dart';
+import 'package:pseudolearn_app/domain/model/route/route_kinds.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/domain/ports/knowledge_repository.dart';
+import 'package:pseudolearn_app/domain/ports/route_repository.dart';
 
-import '../../fakes/fake_knowledge_repository.dart';
+import '../../fakes/fake_reference_repository.dart';
+import '../../fakes/fake_route_repository.dart';
 import '../../fakes/in_memory_preferences_store.dart';
-
-final List<KnowledgeEntry> _catalogue = [
-  const KnowledgeEntry(
-    id: 'CON-A1',
-    type: KnowledgeEntryType.module,
-    title: 'Primer modulo',
-    summary: '',
-    track: LearningTrack.foundations,
-    order: 1,
-  ),
-  const KnowledgeEntry(
-    id: 'ESP-1',
-    type: KnowledgeEntryType.specificationSection,
-    title: 'Lexico',
-    summary: '',
-  ),
-  const KnowledgeEntry(
-    id: 'CON-A1-E1',
-    type: KnowledgeEntryType.exercise,
-    title: 'Ejercicio',
-    summary: '',
-    level: ExerciseLevel.reproduce,
-  ),
-];
+import '../../fakes/route_fixtures.dart';
 
 OnboardingCubit _cubitWith({
-  KnowledgeRepository? repository,
+  RouteRepository? repository,
   InMemoryPreferencesStore? preferences,
 }) {
   return OnboardingCubit(
     preferences: preferences ?? InMemoryPreferencesStore(),
-    knowledgeRepository:
-        repository ?? FakeKnowledgeRepository(entries: _catalogue),
+    routeRepository: repository ?? FakeRouteRepository(toc: sampleToc),
+    referenceRepository: FakeReferenceRepository(index: sampleIndex()),
   );
 }
 
@@ -170,13 +145,18 @@ void main() {
         cubit.state.highlightsStatus,
         KnowledgeHighlightsStatus.ready,
       );
-      expect(cubit.state.highlights.moduleCount, 1);
+      expect(cubit.state.highlights.lessonCount, 2);
       expect(cubit.state.highlights.specificationCount, 1);
-      expect(cubit.state.highlights.exerciseCount, 1);
+      expect(cubit.state.highlights.exerciseCount, 4);
+      expect(cubit.state.highlights.parts.length, 2);
+      expect(
+        cubit.state.highlights.exerciseLevels.map((level) => level.level),
+        [RouteLevel.seed, RouteLevel.sprout, RouteLevel.tree],
+      );
     });
 
-    test('marks the highlights unavailable when the manifest fails', () async {
-      final cubit = _cubitWith(repository: FailingKnowledgeRepository());
+    test('marks the highlights unavailable when the route fails', () async {
+      final cubit = _cubitWith(repository: FakeRouteRepository(failToc: true));
       await cubit.init();
 
       await cubit.nextStep();
@@ -189,24 +169,8 @@ void main() {
       expect(cubit.state.areHighlightsUnavailable, isTrue);
     });
 
-    test('marks the highlights unavailable when the repository throws',
-        () async {
-      final cubit = _cubitWith(
-        repository: FakeKnowledgeRepository(shouldThrow: true),
-      );
-      await cubit.init();
-
-      await cubit.nextStep();
-      await cubit.nextStep();
-
-      expect(
-        cubit.state.highlightsStatus,
-        KnowledgeHighlightsStatus.unavailable,
-      );
-    });
-
     test('an empty catalogue is ready with nothing to show', () async {
-      final cubit = _cubitWith(repository: FakeKnowledgeRepository());
+      final cubit = _cubitWith(repository: FakeRouteRepository());
       await cubit.init();
 
       await cubit.nextStep();

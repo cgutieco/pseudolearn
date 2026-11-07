@@ -297,6 +297,9 @@
           "items": {
             "type": "string"
           }
+        },
+        "reference": {
+          "type": "string"
         }
       }
     },
@@ -435,7 +438,47 @@
                 "exercises": {
                   "type": "array",
                   "items": {
-                    "type": "string"
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "kind",
+                      "level",
+                      "required",
+                      "title"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "kind": {
+                        "enum": [
+                          "predecir",
+                          "rastrear",
+                          "ordenar",
+                          "encontrar-error",
+                          "romperlo",
+                          "disenar-pruebas",
+                          "modificar",
+                          "resolver",
+                          "comparar",
+                          "clasificar",
+                          "explicar"
+                        ]
+                      },
+                      "level": {
+                        "enum": [
+                          "semilla",
+                          "brote",
+                          "arbol"
+                        ]
+                      },
+                      "required": {
+                        "type": "boolean"
+                      },
+                      "title": {
+                        "$ref": "#/$defs/runs"
+                      }
+                    }
                   }
                 }
               }

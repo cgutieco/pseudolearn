@@ -38,12 +38,12 @@ ReferenceBlock _richBlock(String type, Map<String, Object?> source) {
     'program' => ReferenceProgramBlock(parseProgram(source)),
     'figure' => ReferenceFigureBlock(parseFigure(source)),
     'callout' => ReferenceCallout(
-      kind: _calloutKind(textOf(source, 'kind')),
+      kind: parseCalloutKind(textOf(source, 'kind')),
       collapsible: flagOf(source, 'collapsible'),
       blocks: parseBlocks(source['blocks']),
     ),
     'summary' => ReferenceSummary(parseRunGroups(source['points'])),
-    'see_also' => ReferenceSeeAlso(mappedList(source['links'], _link)),
+    'see_also' => ReferenceSeeAlso(mappedList(source['links'], parseSectionLink)),
     _ => _listing(type, source),
   };
 }
@@ -67,7 +67,7 @@ String _traceLine(Object? value) {
   return '${numberOf(source, 'line')} · ${textOf(source, 'detail')}';
 }
 
-ReferenceSectionLink _link(Object? value) {
+ReferenceSectionLink parseSectionLink(Object? value) {
   final source = objectOf(value);
   return ReferenceSectionLink(
     sectionId: textOf(source, 'section'),
@@ -76,7 +76,7 @@ ReferenceSectionLink _link(Object? value) {
   );
 }
 
-ReferenceCalloutKind _calloutKind(String name) => switch (name) {
+ReferenceCalloutKind parseCalloutKind(String name) => switch (name) {
   'phrase' => ReferenceCalloutKind.phrase,
   'limit' => ReferenceCalloutKind.limit,
   'teachers' => ReferenceCalloutKind.teachers,

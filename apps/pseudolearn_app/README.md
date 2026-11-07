@@ -90,8 +90,8 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
    ordinograma, estructograma, diagrama de clases y tabla de prueba de escritorio.
 3. **Inspección de estructuras de datos y memoria:** Visualización gráfica de variables primitivas, matrices y aliasing
    de referencias a objetos (`NombreClase#id`, receptor `Este`).
-4. **Estudio autónomo en la base de conocimiento:** Navegación por tres tramos curriculares estructurados en 15 módulos
-   con especificaciones proyectadas, actividades de predicción y ejercicios verificables.
+4. **Estudio autónomo en la ruta de aprendizaje:** Lectura de la ruta publicada —partes, lecciones y ejercicios de
+   nueve tipos— con enlaces a la especificación ilustrada y comprobación de cada respuesta por el motor.
 5. **Comprobación pedagógica de soluciones:** Validación de programas contra casos de prueba visibles y ocultos mediante
    normalización numérica y aserciones sobre el AST sin juicio punitivo.
 6. **Biblioteca personal:** Gestión de documentos locales con política canónica de nombres, duplicación y exportación de
@@ -118,6 +118,9 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Ficha de ayuda de `Importar` y `Exportar` | Catálogo `TOOL.SERVICE.CATALOG` y resolución contextual del servicio; el pegado aislado conserva su diagnóstico, mientras la consulta sobre la directiva y su alias devuelve la ficha propia | Resuelto en PG-A.08; no enlaza paquetes ni habilita E/S |
 | Ampliar el código equivalente | El núcleo traduce el lenguaje completo salvo los pendientes declarados en el README de `pseudolearn_transpiler` (capacidades del anfitrión) | Abierto en el núcleo |
 | Valor de un parámetro `Canal` en la vista Variables | La página de valores de `debug_state` aplana el canal como registro con la hoja interna `identity` y la muestra como `stream.identity = Nulo`; la API debería publicar el canal como un valor propio (número de canal). La app no oculta la hoja por nombre, porque ocultaría también un campo de usuario llamado igual | Abierto; reportado desde el rediseño de la pestaña `Tareas` |
+| Capturas de producto y material de tiendas con la ruta de aprendizaje | Regenerar §2.8 y §2.9 sobre la ruta publicada; las imágenes versionadas muestran todavía la base de conocimiento anterior | Abierto |
+| Ancla dentro de una sección al seguir un enlace de especificación desde la ruta | `ReferenceSectionPage` abre la sección por identidad y no desplaza a un ancla interior; el enlace conserva el ancla en el paquete | Abierto |
+| Límite de ejecución de los ejercicios | La app corta a 10 000 pasos (`ProgramRunner.defaultStepLimit`) y el compilador de la ruta a 100 000 sentencias; `route_exercise_gate_test` garantiza que cada solución de referencia cabe en el límite de la app | Vigilado por test |
 
 ---
 
@@ -214,16 +217,13 @@ bash tool/test_bridge.sh
 # 3. Verificación de límites métricos (architecture.yaml)
 dart run tool/check_limits.dart
 
-# 4. Verificación de invariantes de la base de conocimiento
-dart run tool/check_content.dart
-
 # 5. Verificación de integridad del sistema de diseño
 dart run tool/check_design_system.dart
 
 # 5b. Cobertura de las formas públicas de la vista por ordinograma, estructograma y estructura
 dart run tool/check_syntax_coverage.dart
 
-# 6. Biblioteca nativa de las pruebas y suite completa (unitarios, arquitectura, widgets, equivalencia de puertos)
+# 6. Biblioteca nativa de las pruebas y suite completa (unitarios, arquitectura, widgets y ruta contra el motor real)
 cargo build --release --locked --lib --manifest-path native/Cargo.toml
 flutter test
 
@@ -447,9 +447,9 @@ Windows. Xcode valida y compila los catálogos durante el build.
 
 La landing (`apps/fe-pseudolearn`) no dibuja una reconstrucción del editor: muestra la app real. Las ocho imágenes las
 rasteriza esta herramienta montando la composición completa —`CubitScope`, enrutador y armazón—, cargando el programa
-correspondiente (`assets/knowledge/examples/guided_demo_es.pseudo` con `SyntaxProfileId.classicSpanish` y
+correspondiente (`assets/demo/guided_demo_es.pseudo` con `SyntaxProfileId.classicSpanish` y
 `UiLanguageId.spanish`
-para español, o `assets/knowledge/examples/guided_demo_en.pseudo` con `SyntaxProfileId.english` y `UiLanguageId.english`
+para español, o `assets/demo/guided_demo_en.pseudo` con `SyntaxProfileId.english` y `UiLanguageId.english`
 para inglés), ejecutándolo hasta el final, abriendo el panel acompañante y encuadrando el ordinograma. Se ejecuta cuando
 cambie algo que la imagen enseñe, no en cada compilación:
 
@@ -519,7 +519,9 @@ Cada captura ejecuta un guion determinista sobre la interfaz viva y comprueba qu
 4. `04-equivalent-code` (*El mismo algoritmo en Python y Rust*): Carga el programa de funciones, abre la pestaña de
    código equivalente y despliega el panel acompañante. Verifica que la exportación haya emitido código no vacío.
 5. `05-knowledge-base` (*Módulos y ejercicios para practicar*): Navega a la ruta de conocimiento (`/conocimiento`) y
-   espera a que el catálogo, la ruta de aprendizaje y el banco de ejercicios completen su carga (`status == success`).
+   espera a que el índice de la ruta, la especificación y el banco de ejercicios completen su carga
+   (`status == success`). Las imágenes versionadas son anteriores a la ruta de aprendizaje y están pendientes de
+   regenerar (§1.5).
 
 #### Validaciones mecánicas obligatorias del flujo
 
@@ -762,7 +764,7 @@ La capa `host` comparte el anillo 2 con engine y data; solo importa model y port
 - **Problema:** Organizar primero por funcionalidad (`features/`) diluye la frontera de verificación de capas
   arquitectónicas y complica el enforcement mecánico de imports.
 - **Elección:** La raíz de `lib/` se organiza primero por capa técnica (`domain/`, `engine/`, `data/`, `application/`,
-  `presentation/`, `composition/`) y en el segundo nivel por área funcional (`editor/`, `diagram/`, `knowledge/`,
+  `presentation/`, `composition/`) y en el segundo nivel por área funcional (`editor/`, `diagram/`, `route/`,
   `library/`, `settings/`). Esto permite validar reglas de dependencia mediante prefijos de ruta simples en los tests de
   arquitectura.
 - **Alternativas descartadas y por qué:**
@@ -997,9 +999,9 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   lectura con motor de
   diagramas y traza real, Métricas vivas de la Base de conocimiento y Cierre con doble salida a biblioteca o ruta de
   aprendizaje). El paso de bienvenida abre con el símbolo de la marca sobre el título que dice el nombre (§4.35).
-- **Base de conocimiento (`KnowledgePage`) y Detalle (`ModuleDetailView`, `ReferenceSectionPage`):** Tres secciones
-  fijas (Ruta de aprendizaje, Especificación publicada, Banco de ejercicios). Vista de módulo estructurada en sus siete
-  partes canónicas y lector de la especificación ilustrada en `/conocimiento/especificacion/:id`, con índice lateral en
+- **Base de conocimiento (`KnowledgePage`) y Detalle (`RouteLessonPage`, `RouteExercisePage`, `ReferenceSectionPage`):**
+  Tres secciones fijas (Ruta de aprendizaje, Especificación publicada, Banco de ejercicios). Lección en
+  `/conocimiento/ruta/:leccion`, ejercicio en `/conocimiento/ruta/:leccion/:ejercicio` y lector de la especificación ilustrada en `/conocimiento/especificacion/:id`, con índice lateral en
   pantallas anchas y hoja inferior en las demás (§4.62).
 - **Ajustes (`SettingsOverviewPage`):** Armazón con medida `wide` y distribución en dos columnas en clase `expanded`.
   Subpantallas de
@@ -1188,44 +1190,45 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   `rust_class_diagram_integration_test.dart` atraviesan FRB nativo, selección por Semantics, ayuda de clase y liberación
   balanceada de recursos. `see_app_class_diagram_test.dart` valida la observación viva de escenas válidas e inválidas.
 
-### 4.18 Base de conocimiento: contenido versionado, manifiesto v2, módulos canónicos y especificaciones proyectadas
+### 4.18 Ruta de aprendizaje: lector de un segundo paquete generado
 
-- **Problema:** Mantener documentación educativa, especificaciones de sintaxis y ejercicios redactados como código Dart
-  dificulta su traducción, versionado y paridad entre idiomas.
-- **Elección:** El material pedagógico reside como activos Markdown y JSON estructurados bajo `assets/knowledge/` con un
-  `manifest_<lang>.json` versionado (v2):
-    - **Tres tramos curriculares y quince módulos canónicos:** Tramo A (Fundamentos: A1–A5), Tramo B (Imperativo: B1–B5)
-      y
-      Tramo C (Orientación a Objetos: C1–C5).
-    - **Estructura obligatoria de siete partes fijas:** Cada módulo declara secuencialmente: 1. `question`, 2.
-      `machineModel`, 3. `development`, 4. `prediction`, 5. `commonErrors`, 6. `specificationAnchors`, 7. `exercises`.
-    - **Especificación publicada como paquete generado:** la especificación ya no vive en `assets/knowledge/`: la
-      compila `packages/pseudolearn_reference` en `assets/reference/` y la lee el módulo de §4.62. Los anclajes
-      `specificationAnchors` de los módulos nombran identidades de sección de ese paquete.
-    - **Marcadores de los módulos:** el texto de los módulos sigue enlazado a marcadores del motor:
-        - Marcadores de motor: `{{lexema:<token>}}`, `{{tabla:<id>}}`, `{{firma:<builtin>}}`, `{{diagnostico:<code>}}`.
-          Se resuelven en `engine/knowledge/` contra el léxico del perfil activo.
-        - Marcadores de contenido: `{{ejemplo:<id>}}`, `{{figura:<id>}}`, `{{diagrama:<id>#<notacion>}}`. Se resuelven
-          en
-          `data/` contra el manifiesto del idioma activo.
-    - **Actividad «Predice y ejecuta»:** Extrae la casuística de la lista de la parte de predicción (
-      `<ejemplo>#<paso>#<variable>`) y compara la predicción del estudiante contra el valor observable en la máquina.
-    - **Ilustraciones catalogadas:** `illustrationCatalog` mapea identificadores estables a constructores de widgets
-      programáticos (`MemoryBoxesIllustration`), garantizando soporte vectorial sin imágenes rasterizadas.
-    - **Programas completos y diagnósticos demostrativos:** Los programas de `examples/` y las cercas que ilustran
-      diagnósticos conservan la gramática única del motor: cada sentencia termina en `;`, cada bucle `Para`/`For`
-      puede omitir `Con Paso`/`Step` (paso 1) y cada parámetro tiene tipo explícito. Los ejemplos declaran sin
-      valor inicial la variable que reciben de `Leer` en la línea siguiente, en vez de inventar un valor de partida. Una cerca que enseña un error semántico deja
-      inválida solo la construcción que explica; el resto de su sintaxis debe ser válida para que aparezca el
-      diagnóstico previsto. `tool/check_content.dart` analiza los ejemplos declarados y contrasta los diagnósticos
-      citados por subsección.
+- **Problema:** la base de conocimiento anterior —quince módulos en Markdown y JSON bajo `assets/knowledge/`, con
+  marcadores que la app resolvía y un verificador propio (`tool/check_content.dart`)— repetía en la app un trabajo de
+  compilación que ya hace `packages/pseudolearn_reference` para la especificación. Sus programas no se ejecutaban al
+  publicar, sus ejercicios solo admitían escribir código y no había forma de comprobar que las respuestas coincidieran
+  con el motor.
+- **Elección:** la ruta es el segundo libro de `packages/pseudolearn_reference`. El compilador la ejecuta y verifica
+  (`RUTA-*`) y escribe en `assets/route/<idioma>/<perfil>/` un paquete ya resuelto: `toc.json` (partes, lecciones y
+  ejercicios con tipo, nivel y obligatoriedad), `lessons/<id>.json`, `exercises/<id>.json`, `terms.json`,
+  `spec-links.json` y `manifest.json`. La app solo lo lee:
+    - `domain/model/route/` modela índice, lección con bloques compartidos y propios de la ruta, ejercicio con su
+      evaluación tipada (predecir, rastrear, ordenar, casos, romperlo, diseñar pruebas, clasificar, elegir),
+      respuesta y veredicto. El puerto `RouteRepository` lo abstrae y `data/route/BundledRouteRepository` lo lee de
+      `rootBundle`, con `ContentLoadFailure.malformedRoute` ante un JSON inválido.
+    - `engine/route_exercise/` tiene un evaluador por forma de respuesta, todos detrás del puerto
+      `RouteAnswerEvaluator`; `composition/route_evaluators.dart` arma el mapa tipo → evaluador. Los que ejecutan
+      programas del estudiante (`romperlo`, `disenar-pruebas`, `ordenar`) usan `ProgramRunner`, el mismo ejecutor de
+      `BehaviourChecker`. Los ejercicios que escriben código (`encontrar-error`, `modificar`, `resolver`) se abren en el
+      editor y los comprueba la sesión de ejercicio de §4.19.
+    - `application/route/` tiene un cubit por pantalla (índice, lección, ejercicio, banco) y `RouteProgress` con las
+      identidades de §4.25. El banco es una proyección del índice filtrada por parte, tipo y nivel, no un catálogo
+      aparte.
+    - `presentation/route/` es el lector: bloques de lección, avisos de la ruta, tira del ciclo, panel de respuesta por
+      tipo y enlaces. Un enlace `ruta:<lección>` abre otra lección; un enlace de especificación abre su sección en el
+      lector de §4.62.
+- **Inventario de la retirada:** se borraron `assets/knowledge/`, `lib/data/knowledge/`, `lib/engine/knowledge/`,
+  `lib/application/knowledge/`, la vista de módulo y sus ilustraciones, el puerto `KnowledgeRepository`, la cadena de
+  `SyntaxReferenceSource` (sin consumidor tras la retirada), `tool/check_content.dart` y sus tests, y las claves de
+  localización que solo usaban. Los seis programas que otras pantallas cargan (demo guiada, alias y función, en los
+  dos idiomas) pasaron a `assets/demo/` detrás del puerto `DemoProgramSource`; la página de contacto dejó de leer el
+  manifiesto y muestra textos localizados.
 - **Alternativas descartadas y por qué:**
-    - *Redacción de especificaciones con valores de sintaxis cableados:* Descartada porque generaría divergencias cuando
-      el
-      perfil de sintaxis cambia o se actualiza el núcleo.
-    - *Imágenes generadas por IA o diagramas estáticos incrustados:* Descartadas por inconsistencia estilística y falta
-      de
-      adaptabilidad a temas claro y oscuro.
+    - *Adaptar el manifiesto v2 a la nueva ruta:* conservaba la resolución de marcadores en la app y un segundo
+      verificador de contenido; el paquete generado llega ya ejecutado y comprobado.
+    - *Mantener los módulos anteriores junto a la ruta:* dos temarios con identidades de progreso distintas y sin
+      correspondencia; la ruta los sustituye por completo.
+- **Consecuencia:** el paquete se versiona porque lo consume un build ajeno a su generador; `RUTA-BUNDLE-STALE` falla
+  si el paquete versionado no coincide con lo que el compilador produce.
 
 ### 4.19 Comprobación pedagógica de ejercicios: conducta observable, normalización y aserciones estructurales
 
@@ -1245,15 +1248,16 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
         3. Declara subprograma con nombre y aridad (`SubprogramSignatureAssertion`).
         4. Declara miembro de clase con visibilidad (`ClassMemberAssertion`).
         5. No supera N repeticiones de una construcción (`MaxOccurrencesAssertion`).
-    - **Rastreo normativo del ejercicio:** `specificationCases` conserva la identidad, versión y caso del contrato que
-      fundamenta el objetivo. `tool/check_content.dart` comprueba cada referencia contra el Markdown canónico del
-      contrato y exige la misma lista en español e inglés; la solución de referencia y los resultados esperados se
-      siguen verificando por el motor.
+    - **Contenido ya verificado:** los casos, las aserciones, la solución de referencia y las respuestas de cada
+      ejercicio llegan en el paquete de la ruta, que el compilador de `packages/pseudolearn_reference` ya ejecutó con
+      el motor. `test/engine/rust/route_exercise_gate_test.dart` repite la comprobación desde la app: cada solución de
+      referencia pasa este comprobador por el puente real y cada clave de respuesta la aceptan los evaluadores.
     - **Filosofía no punitiva:** No se muestran calificaciones ni porcentajes. Si fallan casos ocultos, se aísla y
       revela **exclusivamente el primer caso oculto fallido** con sus entradas y salidas esperadas.
-    - **Código base inicial (`starterCode`) para ejercicios interactivos:** Los ejercicios con tipología `completar` o
-      `modificar` definen código de arranque en sus activos JSON (`starterCode`). Al resolver un ejercicio desde la base
-      de conocimiento, `ExerciseCreationLauncher` crea el documento pre-poblando el editor con este código base.
+    - **Código base inicial (`starterCode`) para ejercicios interactivos:** Los ejercicios que escriben código y traen
+      un programa de partida (completar, modificar, rompe) lo proyectan como `starterCode` en
+      `domain/model/route/route_exercise_projection.dart`. Al abrirlo en el editor, `ExerciseCreationLauncher` crea el
+      documento pre-poblando el editor con ese código base.
       Asimismo, `DocumentPage` asegura retrocompatibilidad: si se abre un documento vinculado a un ejercicio cuyo
       contenido esté vacío pero tenga `starterCode`, este se inyecta y persiste de forma automática en el editor.
 - **Alternativas descartadas y por qué:**
@@ -1416,11 +1420,14 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
 
 ### 4.25 Reconciliación de progreso por unión monotónica y partición de preferencias
 
-- **Problema:** Sincronizar el avance curricular (módulos visitados y ejercicios resueltos) y las preferencias del
+- **Problema:** Sincronizar el avance curricular (lecciones visitadas y ejercicios resueltos) y las preferencias del
   usuario
   entre dispositivos sin generar conflictos textuales y sin acoplar configuraciones ergonómicas del dispositivo a la
   cuenta personal.
 - **Elección:**
+    - Las identidades de progreso de la ruta son `ruta.leccion:<id>` y `ruta.ejercicio:<id>`
+      (`domain/model/route/route_kinds.dart`); el prefijo las separa de las identidades de la ruta anterior, que
+      quedan en el almacén sin consumidor y no se migran porque no existe correspondencia entre módulos y lecciones.
     - Las banderas `visited` y `completed` transitan exclusivamente de 0 a 1 (conjunto de crecimiento monótono). La
       sincronización se modela como una unión de semilattice idempotente (`mergeProgress` en cliente y `push_progress`
       en
@@ -1533,8 +1540,8 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       dispositivos.
     - **Agregación estricta en `application/dashboard/`:** `DashboardLoader` reúne los datos locales y
       `DashboardProjection`
-      los transforma mediante funciones puras desacopladas (`projectLibraryMetrics`, `projectTrackCoverage`,
-      `projectNextModule`, `projectExerciseCoverage`, `projectConceptUsage`, `projectSpecificationCoverage`,
+      los transforma mediante funciones puras desacopladas (`projectLibraryMetrics`, `projectPartCoverage`,
+      `projectNextLesson`, `projectExerciseCoverage` —por parte, nivel y tipo—, `projectConceptUsage`, `projectSpecificationCoverage`,
       `projectActivityWeeks`, `projectSyncHealth`), respetando el límite de 5 métodos públicos por clase.
     - **Cimas y recuentos calculados en el estado:** Estructuras como `ActivityTimeline`, `ConceptCoverage` y
       `SpecificationCoverage` transportan valores agregados definitivos hacia los widgets, dando estricto cumplimiento a
@@ -1557,7 +1564,7 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       progreso, violando el principio local-first.
     - *Cálculo de cobertura leyendo los archivos Markdown en tiempo real:* Descartada por el impacto prohibitivo en el
       tiempo
-      de renderizado de la interfaz al analizar 15 módulos en cada apertura.
+      de renderizado de la interfaz al analizar toda la ruta en cada apertura.
     - *Almacenamiento de número de intentos, tasas de acierto o tiempos por módulo:* Descartado por contravenir las
       directrices
       de privacidad y la filosofía pedagógica formativa no punitiva.
@@ -2980,11 +2987,11 @@ La aplicación ofrece dos acciones visualmente diferenciadas al cerrar sesión:
 
 ### 6.12 El panel de progreso mide cobertura, nunca rendimiento
 
-El panel resume el trabajo hecho sin emitir juicio: cuenta módulos visitados, ejercicios resueltos, algoritmos
+El panel resume el trabajo hecho sin emitir juicio: cuenta lecciones visitadas, ejercicios resueltos, algoritmos
 escritos y construcciones ejercitadas, siempre como «hechos de un total» y nunca como porcentaje de logro, nota ni
 racha. Una semana sin actividad se dibuja como una barra a cero, no como una marca de fallo, y no existe comparación
 con nadie. Quedan fuera por decisión de producto, no por alcance: intentos por ejercicio y tasa de acierto —el
-sistema no almacena intentos—, tiempo dedicado por módulo —sería telemetría de comportamiento— y cualquier
+sistema no almacena intentos—, tiempo dedicado por lección —sería telemetría de comportamiento— y cualquier
 comparación entre estudiantes.
 
 ### 6.13 La cuenta solo se da por eliminada cuando el servidor lo confirma
@@ -3006,7 +3013,7 @@ Apple y no toca nada.
 |:-------------------------------|:-------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------|
 | Linter estricto                | `flutter analyze --fatal-infos --fatal-warnings`                         | Errores de tipo, null safety, dead code, imports no usados                                                                                       | `analysis_options.yaml`         |
 | Límites métricos y comentarios | `dart run tool/check_limits.dart`                                        | Líneas de archivo, funciones, build, anidación, métodos, parámetros, y ausencia total de comentarios en código                                   | `architecture.yaml`             |
-| Invariantes de contenido       | `dart run tool/check_content.dart`                                       | Paridad de manifiestos y casos normativos, resolución de marcadores, 7 partes de módulos, sintaxis de ejemplos y soluciones de ejercicios       | `architecture.yaml`             |
+| Ruta de aprendizaje            | `cargo xtask verify` en `packages/pseudolearn_reference`                 | Anatomía de lecciones, términos, mezcla de ejercicios, soluciones y respuestas ejecutadas, paridad y paquete al día (verificadores `RUTA-*`)     | `packages/pseudolearn_reference/README.md` |
 | Sistema de diseño              | `dart run tool/check_design_system.dart`                                 | Familias tipográficas en disco, ausencia de medidas crudas en padding/espacios y unicidad de `DesignCanvas`                                      | `architecture.yaml`             |
 | Especificación ilustrada       | `cargo xtask verify` en `packages/pseudolearn_reference`                 | Ejemplos ejecutados, anclajes, cobertura, paridad, contrato de figuras y paquete al día (verificadores `REF-*` de ese miembro)                    | `packages/pseudolearn_reference/README.md` |
 | Capas y dependencias           | `flutter test test/architecture/layering_test.dart`                      | Matriz de `may_import`, `forbidden_imports`, ausencia de imports package propios y rechazo del puente generado desde el dominio                   | `architecture.yaml`             |

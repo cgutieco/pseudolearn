@@ -1,33 +1,31 @@
-import '../knowledge/exercise_kind.dart';
-import '../knowledge/exercise_level.dart';
-import '../knowledge/learning_track.dart';
+import '../route/route_kinds.dart';
 import 'coverage_count.dart';
 
 final class ExerciseCoverage {
   final CoverageCount overall;
-  final Map<LearningTrack, CoverageCount> byTrack;
-  final Map<ExerciseLevel, CoverageCount> byLevel;
-  final Map<ExerciseKind, CoverageCount> byKind;
+  final Map<String, CoverageCount> byPart;
+  final Map<RouteLevel, CoverageCount> byLevel;
+  final Map<RouteExerciseKind, CoverageCount> byKind;
 
   const ExerciseCoverage({
     required this.overall,
-    required this.byTrack,
+    required this.byPart,
     required this.byLevel,
     required this.byKind,
   });
 
   const ExerciseCoverage.empty()
-      : overall = const CoverageCount.empty(),
-        byTrack = const {},
-        byLevel = const {},
-        byKind = const {};
+    : overall = const CoverageCount.empty(),
+      byPart = const {},
+      byLevel = const {},
+      byKind = const {};
 
-  CoverageCount ofTrack(LearningTrack track) =>
-      byTrack[track] ?? const CoverageCount.empty();
+  CoverageCount ofPart(String partId) =>
+      byPart[partId] ?? const CoverageCount.empty();
 
-  CoverageCount ofLevel(ExerciseLevel level) =>
+  CoverageCount ofLevel(RouteLevel level) =>
       byLevel[level] ?? const CoverageCount.empty();
 
-  CoverageCount ofKind(ExerciseKind kind) =>
+  CoverageCount ofKind(RouteExerciseKind kind) =>
       byKind[kind] ?? const CoverageCount.empty();
 }

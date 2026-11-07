@@ -6,8 +6,8 @@ import '../../../application/editor/editor_state.dart';
 import '../../../application/execution/execution_cubit.dart';
 import '../../../application/execution/execution_state.dart';
 import '../../../application/execution/step_pace.dart';
-import '../../../application/knowledge/session/exercise_session_cubit.dart';
-import '../../../application/knowledge/session/exercise_session_state.dart';
+import '../../../application/route/session/exercise_session_cubit.dart';
+import '../../../application/route/session/exercise_session_state.dart';
 import '../../../application/library/library_cubit.dart';
 import 'companion_layout.dart';
 import 'document_footer.dart';
@@ -112,10 +112,12 @@ final class _DocumentColumnContent extends StatelessWidget {
       children: [
         _Header(documentId: documentId),
         if (exerciseId != null)
-          _ExerciseStripConnector(
-            exerciseId: exerciseId,
-            expansion: exerciseStripExpansion,
-            onToggleExpand: onToggleExerciseStrip,
+          Flexible(
+            child: _ExerciseStripConnector(
+              exerciseId: exerciseId,
+              expansion: exerciseStripExpansion,
+              onToggleExpand: onToggleExerciseStrip,
+            ),
           ),
         ws,
         _Footer(onPace: onPace),

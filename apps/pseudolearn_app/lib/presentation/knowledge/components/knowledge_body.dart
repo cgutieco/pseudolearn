@@ -1,46 +1,28 @@
 import 'package:flutter/material.dart';
-import '../../../application/knowledge/bank/exercise_bank_state.dart';
-import '../../../application/knowledge/knowledge_state.dart';
-import '../../../application/knowledge/route/learning_route_state.dart';
-import '../../../domain/model/knowledge/ast_construct.dart';
-import '../../../domain/model/knowledge/exercise_level.dart';
-import '../../../domain/model/knowledge/knowledge_entry.dart';
-import '../../components/empty/app_empty_state.dart';
-import '../../components/progress/app_skeleton_list.dart';
-import '../../l10n/generated/app_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../application/route/route_bank_cubit.dart';
+import '../../../application/route/route_bank_state.dart';
+import '../../../application/route/route_index_cubit.dart';
+import '../../../application/route/route_index_state.dart';
+import '../../../domain/model/route/route_toc.dart';
 import '../../reference/reference_index_section.dart';
-import '../../theme/tokens/grid_metrics.dart';
+import '../../route/route_bank_view.dart';
+import '../../route/route_index_view.dart';
 import '../../theme/tokens/spacing.dart';
-import 'exercise_bank/exercise_bank_section.dart';
-import 'knowledge_route_section.dart';
 import 'knowledge_section_selector.dart';
 
 final class KnowledgeBody extends StatelessWidget {
   final KnowledgeSectionKind activeSection;
   final ValueChanged<KnowledgeSectionKind> onSectionSelected;
-  final KnowledgeState knowledgeState;
-  final LearningRouteState routeState;
-  final ExerciseBankState exerciseBankState;
-  final ValueChanged<ExerciseLevel?> onLevelSelected;
-  final ValueChanged<String?> onModuleSelected;
-  final ValueChanged<AstConstruct?> onConstructSelected;
-  final VoidCallback onClearFilters;
-  final ValueChanged<KnowledgeEntry> onOpenEntry;
-  final ValueChanged<String> onOpenExercise;
+  final ValueChanged<String> onOpenLesson;
+  final ValueChanged<RouteExerciseEntry> onOpenExercise;
   final VoidCallback onRetry;
 
   const KnowledgeBody({
     super.key,
     required this.activeSection,
     required this.onSectionSelected,
-    required this.knowledgeState,
-    required this.routeState,
-    required this.exerciseBankState,
-    required this.onLevelSelected,
-    required this.onModuleSelected,
-    required this.onConstructSelected,
-    required this.onClearFilters,
-    required this.onOpenEntry,
+    required this.onOpenLesson,
     required this.onOpenExercise,
     required this.onRetry,
   });
@@ -56,16 +38,9 @@ final class KnowledgeBody extends StatelessWidget {
         ),
         const SizedBox(height: SpacingTokens.space4),
         Expanded(
-          child: _SectionContent(
+          child: KnowledgeSectionContent(
             activeSection: activeSection,
-            knowledgeState: knowledgeState,
-            routeState: routeState,
-            exerciseBankState: exerciseBankState,
-            onLevelSelected: onLevelSelected,
-            onModuleSelected: onModuleSelected,
-            onConstructSelected: onConstructSelected,
-            onClearFilters: onClearFilters,
-            onOpenEntry: onOpenEntry,
+            onOpenLesson: onOpenLesson,
             onOpenExercise: onOpenExercise,
             onRetry: onRetry,
           ),
@@ -75,80 +50,35 @@ final class KnowledgeBody extends StatelessWidget {
   }
 }
 
-final class _SectionContent extends StatelessWidget {
+final class KnowledgeSectionContent extends StatelessWidget {
   final KnowledgeSectionKind activeSection;
-  final KnowledgeState knowledgeState;
-  final LearningRouteState routeState;
-  final ExerciseBankState exerciseBankState;
-  final ValueChanged<ExerciseLevel?> onLevelSelected;
-  final ValueChanged<String?> onModuleSelected;
-  final ValueChanged<AstConstruct?> onConstructSelected;
-  final VoidCallback onClearFilters;
-  final ValueChanged<KnowledgeEntry> onOpenEntry;
-  final ValueChanged<String> onOpenExercise;
+  final ValueChanged<String> onOpenLesson;
+  final ValueChanged<RouteExerciseEntry> onOpenExercise;
   final VoidCallback onRetry;
 
-  const _SectionContent({
+  const KnowledgeSectionContent({
+    super.key,
     required this.activeSection,
-    required this.knowledgeState,
-    required this.routeState,
-    required this.exerciseBankState,
-    required this.onLevelSelected,
-    required this.onModuleSelected,
-    required this.onConstructSelected,
-    required this.onClearFilters,
-    required this.onOpenEntry,
+    required this.onOpenLesson,
     required this.onOpenExercise,
     required this.onRetry,
   });
 
-  bool get _isLoading =>
-      knowledgeState.status == KnowledgeStatus.loading ||
-      routeState.status == LearningRouteStatus.loading;
-
-  bool get _hasError =>
-      knowledgeState.status == KnowledgeStatus.error ||
-      routeState.status == LearningRouteStatus.error;
-
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return const AppSkeletonList(itemExtent: GridMetricsTokens.cardExtentKnowledge);
-    }
-    if (_hasError) {
-      return _ErrorView(onRetry: onRetry);
-    }
     return switch (activeSection) {
-      KnowledgeSectionKind.route =>
-        KnowledgeRouteSection(routeState: routeState, onOpenEntry: onOpenEntry),
+      KnowledgeSectionKind.route => BlocBuilder<RouteIndexCubit, RouteIndexState>(
+        builder: (context, state) =>
+            RouteIndexView(state: state, onOpenLesson: onOpenLesson, onRetry: onRetry),
+      ),
       KnowledgeSectionKind.specification => const ReferenceIndexSection(),
-      KnowledgeSectionKind.exercises => ExerciseBankSection(
-          state: exerciseBankState,
-          onLevelSelected: onLevelSelected,
-          onModuleSelected: onModuleSelected,
-          onConstructSelected: onConstructSelected,
-          onClearFilters: onClearFilters,
+      KnowledgeSectionKind.exercises => BlocBuilder<RouteBankCubit, RouteBankState>(
+        builder: (context, state) => RouteBankView(
+          state: state,
+          onFilter: context.read<RouteBankCubit>().filter,
           onOpenExercise: onOpenExercise,
-          onRetry: onRetry,
         ),
+      ),
     };
-  }
-}
-
-final class _ErrorView extends StatelessWidget {
-  final VoidCallback onRetry;
-
-  const _ErrorView({required this.onRetry});
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return AppEmptyState(
-      icon: Icons.error_outline_rounded,
-      title: l10n.knowledgeErrorTitle,
-      description: l10n.knowledgeErrorDescription,
-      actionLabel: l10n.knowledgeActionRetry,
-      onAction: onRetry,
-    );
   }
 }

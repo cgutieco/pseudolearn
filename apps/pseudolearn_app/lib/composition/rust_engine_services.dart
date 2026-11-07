@@ -1,3 +1,6 @@
+import '../domain/model/route/route_kinds.dart';
+import '../domain/ports/route_answer_evaluator.dart';
+import 'route_evaluators.dart';
 import '../domain/ports/program_analyzer.dart';
 import '../domain/ports/program_execution.dart';
 import '../domain/ports/completion_source.dart';
@@ -28,12 +31,10 @@ import '../engine/rust/rust_structural_assertion_checker.dart';
 import '../engine/rust/rust_structogram_builder.dart';
 import '../engine/rust/rust_template_source.dart';
 import '../engine/rust/rust_syntax_help_source.dart';
-import '../engine/rust/rust_syntax_reference_source.dart';
 import '../engine/rust/rust_transport.dart';
 import '../engine/rust/export/rust_program_exporter.dart';
 import '../domain/ports/program_exporter.dart';
 import '../domain/ports/syntax_help_source.dart';
-import '../domain/ports/syntax_reference_source.dart';
 import 'engine_services.dart';
 import '../domain/ports/execution_environment.dart';
 import 'program_execution_session.dart';
@@ -58,13 +59,14 @@ final class RustEngineServices implements EngineServices {
   @override
   final ExerciseChecker exerciseChecker;
   @override
+  final Map<RouteExerciseKind, RouteAnswerEvaluator> routeEvaluators;
+  @override
   final FlowchartBuilder flowchartBuilder;
   @override
   final StructogramBuilder structogramBuilder;
   @override
   final ClassDiagramBuilder classDiagramBuilder;
   @override
-  final SyntaxReferenceSource syntaxReferenceSource;
   @override
   final SyntaxHelpSource syntaxHelpSource;
   @override
@@ -80,10 +82,10 @@ final class RustEngineServices implements EngineServices {
     required this.editorKeySource,
     required this.programConstructReader,
     required this.exerciseChecker,
+    required this.routeEvaluators,
     required this.flowchartBuilder,
     required this.structogramBuilder,
     required this.classDiagramBuilder,
-    required this.syntaxReferenceSource,
     required this.syntaxHelpSource,
     required this.programExporter,
   });
@@ -110,7 +112,6 @@ RustEngineServices buildRustEngineServices(
     flowchartBuilder: RustFlowchartBuilder(transport),
     structogramBuilder: RustStructogramBuilder(transport),
     classDiagramBuilder: RustClassDiagramBuilder(transport),
-    syntaxReferenceSource: RustSyntaxReferenceSource(transport),
     syntaxHelpSource: RustSyntaxHelpSource(transport),
     programExporter: RustProgramExporter(transport),
     exerciseChecker: RustExerciseChecker(
@@ -119,6 +120,10 @@ RustEngineServices buildRustEngineServices(
         analyzer: analyzer,
       ),
       structure: RustStructuralAssertionChecker(transport),
+    ),
+    routeEvaluators: buildRouteEvaluators(
+      execution: RustProgramExecution(transport),
+      analyzer: analyzer,
     ),
   );
 }

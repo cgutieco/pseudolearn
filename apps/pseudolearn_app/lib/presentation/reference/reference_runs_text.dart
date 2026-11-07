@@ -61,6 +61,14 @@ InlineSpan _span(
         decorationColor: theme.colors.text.tertiary,
       ),
     ),
+    ReferenceDefinitionRun(:final text) => TextSpan(
+      text: text,
+      style: TextStyle(
+        fontWeight: FontWeight.w600,
+        decoration: TextDecoration.underline,
+        decorationColor: theme.syntax.keywordStructured,
+      ),
+    ),
     _ => _embedded(run, onOpenSection),
   };
 }
@@ -89,6 +97,22 @@ InlineSpan _embedded(ReferenceRun run, ValueChanged<String> onOpenSection) {
         onTap: () => onOpenSection(sectionId),
       ),
     ),
+    ReferenceSpecLinkRun(:final sectionId, :final text) => _link(
+      text,
+      () => onOpenSection(sectionId),
+    ),
+    ReferenceLessonLinkRun(:final lessonId, :final text) => _link(
+      text,
+      () => onOpenSection('$lessonLinkPrefix$lessonId'),
+    ),
     _ => TextSpan(text: run.plainText),
   };
 }
+
+const String lessonLinkPrefix = 'ruta:';
+
+InlineSpan _link(String text, VoidCallback onTap) => WidgetSpan(
+  alignment: PlaceholderAlignment.baseline,
+  baseline: TextBaseline.alphabetic,
+  child: ReferenceLinkText(text: text, onTap: onTap),
+);

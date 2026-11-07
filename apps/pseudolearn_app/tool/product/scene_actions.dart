@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pseudolearn_app/application/knowledge/bank/exercise_bank_cubit.dart';
-import 'package:pseudolearn_app/application/knowledge/bank/exercise_bank_state.dart';
-import 'package:pseudolearn_app/application/knowledge/knowledge_cubit.dart';
-import 'package:pseudolearn_app/application/knowledge/knowledge_state.dart';
-import 'package:pseudolearn_app/application/knowledge/route/learning_route_cubit.dart';
-import 'package:pseudolearn_app/application/knowledge/route/learning_route_state.dart';
+import 'package:pseudolearn_app/application/route/route_bank_cubit.dart';
+import 'package:pseudolearn_app/application/route/route_bank_state.dart';
+import 'package:pseudolearn_app/application/route/route_index_cubit.dart';
+import 'package:pseudolearn_app/application/route/route_index_state.dart';
 import 'package:pseudolearn_app/presentation/document/components/tab_selector.dart';
 import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.dart';
 
@@ -68,13 +66,11 @@ SceneAction expandOutputPanel() {
 }
 
 bool Function() _knowledgeSectionsSettled(SceneStage stage) {
-  final entries = BlocProvider.of<KnowledgeCubit>(stage.appContext);
-  final route = BlocProvider.of<LearningRouteCubit>(stage.appContext);
-  final bank = BlocProvider.of<ExerciseBankCubit>(stage.appContext);
+  final route = BlocProvider.of<RouteIndexCubit>(stage.appContext);
+  final bank = BlocProvider.of<RouteBankCubit>(stage.appContext);
   return () =>
-      entries.state.status == KnowledgeStatus.success &&
-      route.state.status == LearningRouteStatus.success &&
-      bank.state.status == ExerciseBankStatus.success;
+      route.state.status == RouteIndexStatus.success &&
+      bank.state.status == RouteBankStatus.success;
 }
 
 String tabLabelOf(DocumentTabKind tab, AppLocalizations l10n) {

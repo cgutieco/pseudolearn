@@ -9,4 +9,5 @@ enum ContentLoadFailure {
   malformedMarker,
   unresolvedMarker,
   malformedReference,
+  malformedRoute,
 }
