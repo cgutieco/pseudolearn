@@ -155,6 +155,17 @@
     "whitespace": "whitespace"
   },
   "figures": {
+    "agenda-cola": {
+      "titulo": "The schedule",
+      "descripcion": "On the left, the running task. On the right, the ready queue with tasks 1 and 2, from which the next one to come in leaves. Below, the suspended tasks, where the current one goes if it waits for something.",
+      "actual": "task 0",
+      "enMarcha": "running",
+      "t1": "task 1",
+      "t2": "task 2",
+      "final": "back",
+      "listas": "ready queue",
+      "suspendidas": "suspended, waiting"
+    },
     "aguardar-pausa": {
       "titulo": "Pausing at Await",
       "descripcion": "Two timelines. Task A works, pauses at Await while task B works, and continues when B hands it the result.",
@@ -162,6 +173,15 @@
       "tareaB": "task B",
       "pausa": "paused",
       "resultado": "result"
+    },
+    "alcanzables": {
+      "titulo": "Reachable values",
+      "descripcion": "The active frames point to an object, which points to another. A third object has no arrow reaching it and is marked as unreachable.",
+      "marcos": "active frames",
+      "obj1": "object 1",
+      "obj2": "object 2",
+      "obj3": "object 3",
+      "inalcanzable": "unreachable"
     },
     "alias-copia": {
       "titulo": "Alias versus copy",
@@ -280,6 +300,27 @@
       "hora": "time",
       "llaves": "one key per resource"
     },
+    "capas-motor": {
+      "titulo": "Engine layers",
+      "descripcion": "A column of layers from top to bottom: text, lexical, syntax, semantics and intermediate representation. Two arrows leave the intermediate representation: virtual machine and native code.",
+      "texto": "program text",
+      "lexico": "lexical",
+      "sintaxis": "syntax",
+      "semantica": "semantics",
+      "ri": "intermediate representation",
+      "vm": "virtual machine",
+      "nativo": "native code"
+    },
+    "cinta-efectos": {
+      "titulo": "The effect tape",
+      "descripcion": "A tape with three numbered entries: output, file and clock, joined by arrows. Below, the note that they are chained and that replaying gives the same run.",
+      "salida": "output",
+      "archivo": "file",
+      "reloj": "clock",
+      "cinta": "effect tape",
+      "encadenadas": "every entry is chained to the previous one",
+      "reproducir": "replaying the tape gives the same run"
+    },
     "clase-objetos": {
       "titulo": "A class and its objects",
       "descripcion": "At the top, the class Punto with the attributes x and yy. Two arrows marked New lead to two objects: one with x = 3 and yy = 4, the other with x = 0 and yy = 7."
@@ -318,6 +359,14 @@
       "descripcion": "Two program lines. In the first, what follows the two slashes is shaded and labelled comment. In the second, the two slashes are inside a quoted text and are labelled ordinary text.",
       "comentario": "comment: up to the end of the line",
       "texto": "inside quotes: it is text"
+    },
+    "compilar-nativo": {
+      "titulo": "Virtual machine and native code",
+      "descripcion": "The intermediate representation feeds two paths: the virtual machine and native code. An equals sign between them shows they give the same run.",
+      "ri": "intermediate representation",
+      "vm": "virtual machine",
+      "nativo": "native executable",
+      "igual": "same output, same failures"
     },
     "concatenar": {
       "titulo": "Concatenating three pieces",
@@ -597,6 +646,16 @@
       "repetir": "Loop: may be repeated",
       "sentencia": "statement",
       "vuelve": "the loop allows another statement"
+    },
+    "limites-recursos": {
+      "titulo": "Capped resources",
+      "descripcion": "Four bars: depth, full and marked as exhausted; cells, statements and time, partly full.",
+      "profundidad": "depth",
+      "celdas": "cells",
+      "sentencias": "statements",
+      "tiempo": "time",
+      "agotada": "exhausted: failure",
+      "nota": "caps are set by the host"
     },
     "literales-numericos": {
       "titulo": "Valid and invalid numeric literals",
@@ -911,6 +970,17 @@
       "c3": "í",
       "c4": "a",
       "posiciones": "positions"
+    },
+    "traza-pasos": {
+      "titulo": "Trace steps",
+      "descripcion": "A line with five events: enter, decision, write, exit and end. An arc between two events marks a step. Below, a state change: n = 3.",
+      "e1": "enter",
+      "e2": "decide",
+      "e3": "write",
+      "e4": "exit",
+      "e5": "end",
+      "paso": "one step",
+      "cambio": "change: n = 3"
     },
     "tres-trabajos": {
       "titulo": "Analysing, running and observing",

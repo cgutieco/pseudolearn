@@ -1,0 +1,9 @@
+<svg viewBox="0 0 340 170">
+  <caja x="10" y="20" ancho="90" alto="120" rol="acento-estructurado" fondo="0.08" tamano="12" texto="{{t:marcos}}"/>
+  <caja x="160" y="16" ancho="80" alto="36" rol="acento-objetos" fondo="0.16" tamano="12" texto="{{t:obj1}}"/>
+  <caja x="160" y="66" ancho="80" alto="36" rol="acento-objetos" fondo="0.16" tamano="12" texto="{{t:obj2}}"/>
+  <caja x="250" y="116" ancho="80" alto="36" rol="atenuado" discontinua="" fondo="0.0" colortexto="atenuado" tamano="12" texto="{{t:obj3}}"/>
+  <flecha puntos="100,40 158,34" rol="acento-objetos"/>
+  <flecha puntos="200,52 200,64" rol="acento-objetos"/>
+  <text x="290" y="106" font-size="12" text-anchor="middle" fill="@atenuado">{{t:inalcanzable}}</text>
+</svg>

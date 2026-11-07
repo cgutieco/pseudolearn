@@ -155,6 +155,17 @@
     "whitespace": "espacio"
   },
   "figures": {
+    "agenda-cola": {
+      "titulo": "La agenda",
+      "descripcion": "A la izquierda, la tarea en marcha. A la derecha, la cola de listas con las tareas 1 y 2, de la que sale la siguiente en entrar. Debajo, las tareas suspendidas, adonde va la actual si espera algo.",
+      "actual": "tarea 0",
+      "enMarcha": "en marcha",
+      "t1": "tarea 1",
+      "t2": "tarea 2",
+      "final": "final",
+      "listas": "cola de listas",
+      "suspendidas": "suspendidas, esperando"
+    },
     "aguardar-pausa": {
       "titulo": "Pausa en Aguardar",
       "descripcion": "Dos líneas de tiempo. La tarea A trabaja, se pausa en Aguardar mientras la tarea B trabaja, y continúa cuando B le entrega el resultado.",
@@ -162,6 +173,15 @@
       "tareaB": "tarea B",
       "pausa": "en pausa",
       "resultado": "resultado"
+    },
+    "alcanzables": {
+      "titulo": "Valores alcanzables",
+      "descripcion": "Los marcos activos apuntan a un objeto, que apunta a otro. Un tercer objeto no tiene ninguna flecha que llegue a él y queda marcado como inalcanzable.",
+      "marcos": "marcos activos",
+      "obj1": "objeto 1",
+      "obj2": "objeto 2",
+      "obj3": "objeto 3",
+      "inalcanzable": "inalcanzable"
     },
     "alias-copia": {
       "titulo": "Alias frente a copia",
@@ -280,6 +300,27 @@
       "hora": "hora",
       "llaves": "una llave por recurso"
     },
+    "capas-motor": {
+      "titulo": "Capas del motor",
+      "descripcion": "Una columna de capas de arriba abajo: texto, léxico, sintaxis, semántica y representación intermedia. De la representación intermedia salen dos flechas: máquina virtual y código nativo.",
+      "texto": "texto del programa",
+      "lexico": "léxico",
+      "sintaxis": "sintaxis",
+      "semantica": "semántica",
+      "ri": "representación intermedia",
+      "vm": "máquina virtual",
+      "nativo": "código nativo"
+    },
+    "cinta-efectos": {
+      "titulo": "La cinta de efectos",
+      "descripcion": "Una cinta con tres entradas numeradas: salida, archivo y reloj, unidas por flechas. Debajo, la nota de que están encadenadas y de que reproducir da la misma ejecución.",
+      "salida": "salida",
+      "archivo": "archivo",
+      "reloj": "reloj",
+      "cinta": "cinta de efectos",
+      "encadenadas": "cada entrada se encadena con la anterior",
+      "reproducir": "reproducir la cinta da la misma ejecución"
+    },
     "clase-objetos": {
       "titulo": "Una clase y sus objetos",
       "descripcion": "Arriba, la clase Punto con los atributos x e yy. Dos flechas marcadas con Nuevo llevan a dos objetos: uno con x = 3 e yy = 4, otro con x = 0 e yy = 7."
@@ -318,6 +359,14 @@
       "descripcion": "Dos líneas de programa. En la primera, lo que sigue a las dos barras está sombreado y rotulado comentario. En la segunda, las dos barras están dentro de un texto entre comillas y se rotulan como texto normal.",
       "comentario": "comentario: hasta el final de la línea",
       "texto": "dentro de comillas: es texto"
+    },
+    "compilar-nativo": {
+      "titulo": "Máquina virtual y código nativo",
+      "descripcion": "La representación intermedia alimenta dos caminos: la máquina virtual y el código nativo. Un signo igual entre los dos indica que dan la misma ejecución.",
+      "ri": "representación intermedia",
+      "vm": "máquina virtual",
+      "nativo": "ejecutable nativo",
+      "igual": "misma salida, mismos fallos"
     },
     "concatenar": {
       "titulo": "Concatenar tres piezas",
@@ -597,6 +646,16 @@
       "repetir": "Vuelta: se puede repetir",
       "sentencia": "sentencia",
       "vuelve": "la vuelta permite otra sentencia"
+    },
+    "limites-recursos": {
+      "titulo": "Recursos con tope",
+      "descripcion": "Cuatro barras: profundidad, llena y marcada como agotada; celdas, sentencias y tiempo, parcialmente llenas.",
+      "profundidad": "profundidad",
+      "celdas": "celdas",
+      "sentencias": "sentencias",
+      "tiempo": "tiempo",
+      "agotada": "agotada: fallo",
+      "nota": "los topes los fija el anfitrión"
     },
     "literales-numericos": {
       "titulo": "Literales numéricos válidos y no válidos",
@@ -911,6 +970,17 @@
       "c3": "í",
       "c4": "a",
       "posiciones": "posiciones"
+    },
+    "traza-pasos": {
+      "titulo": "Pasos de la traza",
+      "descripcion": "Una línea con cinco eventos: entra, decisión, escribe, sale y termina. Un arco entre dos eventos marca un paso. Debajo, un cambio de estado: n = 3.",
+      "e1": "entra",
+      "e2": "decide",
+      "e3": "escribe",
+      "e4": "sale",
+      "e5": "fin",
+      "paso": "un paso",
+      "cambio": "cambio: n = 3"
     },
     "tres-trabajos": {
       "titulo": "Analizar, ejecutar y observar",
