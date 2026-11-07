@@ -1183,6 +1183,71 @@
       "descripcion": "El arreglo de temperaturas 20, 23, 19, 25, 22, 18 y 26. Primer paso: una flecha lo recorre entero y alimenta el promedio, 21,86. Segundo paso: se marcan las casillas que superan el promedio: 23, 25, 22 y 26.",
       "promedio": "promedio: 21,86",
       "superan": "superan el promedio"
+    },
+    "ruta-rol-seguidor": {
+      "titulo": "Rol: seguidor",
+      "descripcion": "Dos huellas: la de atrás sigue a la de adelante, con el rótulo seguidor.",
+      "nombre": "seguidor",
+      "frase": "recuerda lo anterior para compararlo"
+    },
+    "ruta-esquemas": {
+      "titulo": "Seis esquemas",
+      "descripcion": "El mismo arreglo de siete temperaturas dibujado seis veces. Recorrer visita todas; contar marca las que cumplen y da un número; acumular junta todas en un total; buscar marca hasta la primera que cumple y se detiene; filtrar se queda con las que cumplen en otro arreglo; transformar cambia cada una y da otro arreglo del mismo largo.",
+      "recorrer": "Recorrer",
+      "recorrer-da": "visita cada dato",
+      "contar": "Contar",
+      "contar-da": "da cuántos cumplen: 4",
+      "acumular": "Acumular",
+      "acumular-da": "da un total: 153",
+      "buscar": "Buscar",
+      "buscar-da": "se detiene en el primero que cumple",
+      "filtrar": "Filtrar",
+      "filtrar-da": "da otra colección más corta",
+      "transformar": "Transf.",
+      "transformar-da": "da otra colección del mismo largo"
+    },
+    "ruta-racha": {
+      "titulo": "La racha de días calurosos",
+      "descripcion": "Catorce temperaturas en fila y, debajo, el valor de la racha día por día: sube con cada día de más de 30 y vuelve a 0 al cortarse. La racha llega a 3 en los primeros días, que son la primera ola, y a 4 entre los días 8 y 11, la segunda ola y la más larga. La última racha, de 2 días, termina con los datos.",
+      "temperaturas": "temperaturas",
+      "racha": "racha",
+      "ola-1": "ola de 3",
+      "ola-2": "ola de 4",
+      "final": "La última racha se revisa después del bucle"
+    },
+    "ruta-matriz-coordenadas": {
+      "titulo": "Las coordenadas del tablero",
+      "descripcion": "Un tablero de 3 por 3 con la fila y la columna escritas en cada casilla, de [0, 0] a [2, 2]. Están resaltadas las dos diagonales: la que tiene fila igual a columna y la que tiene fila más columna igual a 2.",
+      "diagonal-1": "fila =",
+      "diagonal-1b": "columna",
+      "diagonal-2": "fila +",
+      "diagonal-2b": "col. = 2",
+      "pie": "[fila, columna]"
+    },
+    "ruta-busqueda-binaria": {
+      "titulo": "Búsqueda binaria",
+      "descripcion": "Un arreglo ordenado de quince números, de 2 a 44 de tres en tres, donde se busca el 26. En cada paso se mira el del medio y se tacha la mitad que no puede contenerlo: primero el 23, después el 35, después el 29, y en el cuarto paso aparece el 26.",
+      "buscado": "buscado: 26",
+      "paso-1": "23 es menor: se tacha la izquierda",
+      "paso-2": "35 es mayor: se tacha la derecha",
+      "paso-3": "29 es mayor: se tacha la derecha",
+      "paso-4": "26: encontrado en 4 pasos"
+    },
+    "ruta-pasos-crecen": {
+      "titulo": "Los pasos crecen distinto",
+      "descripcion": "Barras horizontales con los pasos que necesita cada estrategia en el peor caso. Con 10 datos, uno por uno tarda 10 y por mitades 4; con 100, 100 y 7; con 1000, 1000 y 10.",
+      "datos": "datos",
+      "uno-por-uno": "uno por uno",
+      "mitades": "por mitades"
+    },
+    "ruta-seleccion": {
+      "titulo": "Ordenamiento por selección",
+      "descripcion": "Cinco números, 5, 3, 8, 1 y 9. En cada paso el menor de la parte desordenada pasa al frente y queda marcado como ordenado: primero el 1, después el 3, que ya estaba en su lugar, después el 5 y el 8. El 9 queda último.",
+      "paso-1": "desordenados",
+      "paso-2": "el 1 pasa al frente",
+      "paso-3": "el 3 ya está en su lugar",
+      "paso-4": "el 5 pasa al tercer lugar",
+      "paso-5": "el 8 pasa al cuarto lugar"
     }
   }
 }

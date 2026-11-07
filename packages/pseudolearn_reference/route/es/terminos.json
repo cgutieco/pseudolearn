@@ -52,5 +52,15 @@
   "arreglo": {"etiqueta": "arreglo", "formas": ["arreglo", "arreglos"], "estricto": true, "receta": true},
   "indice": {"etiqueta": "índice", "formas": ["índice", "índices"], "estricto": true, "receta": false},
   "recorredor": {"etiqueta": "recorredor", "formas": ["recorredor"], "estricto": true, "receta": true},
-  "fuera-de-rango": {"etiqueta": "fuera de rango", "formas": ["fuera de rango"], "estricto": true, "receta": false}
+  "fuera-de-rango": {"etiqueta": "fuera de rango", "formas": ["fuera de rango"], "estricto": true, "receta": false},
+  "esquema": {"etiqueta": "esquema", "formas": ["esquema", "esquemas"], "estricto": true, "receta": true},
+  "seguidor": {"etiqueta": "seguidor", "formas": ["seguidor", "seguidores"], "estricto": true, "receta": true},
+  "matriz": {"etiqueta": "matriz", "formas": ["matriz", "matrices"], "estricto": true, "receta": true},
+  "bucle-anidado": {"etiqueta": "bucle anidado", "formas": ["bucle anidado", "bucles anidados"], "estricto": true, "receta": true},
+  "concatenar": {"etiqueta": "concatenar", "formas": ["concatenar", "concatenación"], "estricto": true, "receta": false},
+  "estrategia": {"etiqueta": "estrategia", "formas": ["estrategia", "estrategias"], "estricto": false, "receta": false},
+  "fuerza-bruta": {"etiqueta": "fuerza bruta", "formas": ["fuerza bruta"], "estricto": true, "receta": true},
+  "busqueda-binaria": {"etiqueta": "búsqueda binaria", "formas": ["búsqueda binaria"], "estricto": true, "receta": true},
+  "costo": {"etiqueta": "costo de un algoritmo", "formas": ["costo"], "estricto": false, "receta": false},
+  "ordenamiento-por-seleccion": {"etiqueta": "ordenamiento por selección", "formas": ["ordenamiento por selección"], "estricto": true, "receta": true}
 }

@@ -1,0 +1,7 @@
+<svg viewBox="0 0 340 80">
+  <ellipse cx="24" cy="52" rx="8" ry="13" fill="@atenuado" fill-opacity="0.5"/>
+  <ellipse cx="58" cy="30" rx="8" ry="13" fill="@acento-estructurado" fill-opacity="0.7"/>
+  <flecha puntos="32,46 48,38" rol="atenuado" discontinua=""/>
+  <text x="96" y="36" font-size="13" font-weight="bold" fill="@tinta">{{t:nombre}}</text>
+  <text x="96" y="56" font-size="12" fill="@atenuado">{{t:frase}}</text>
+</svg>

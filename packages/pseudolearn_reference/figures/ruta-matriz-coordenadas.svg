@@ -1,0 +1,26 @@
+<svg viewBox="0 0 340 220">
+  <rect x="70" y="20" width="200" height="180" rx="4" fill="@superficie" stroke="@atenuado"/>
+  <rect x="73" y="23" width="60" height="54" rx="3" fill="@acento-estructurado" fill-opacity="0.18"/>
+  <text x="103" y="55" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">[0, 0]</text>
+  <text x="169" y="55" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">[0, 1]</text>
+  <rect x="205" y="23" width="60" height="54" rx="3" fill="@acento-objetos" fill-opacity="0.18"/>
+  <text x="235" y="55" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">[0, 2]</text>
+  <text x="103" y="115" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">[1, 0]</text>
+  <rect x="139" y="83" width="60" height="54" rx="3" fill="@acento-estructurado" fill-opacity="0.18"/>
+  <text x="169" y="115" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">[1, 1]</text>
+  <text x="235" y="115" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">[1, 2]</text>
+  <rect x="73" y="143" width="60" height="54" rx="3" fill="@acento-objetos" fill-opacity="0.18"/>
+  <text x="103" y="175" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">[2, 0]</text>
+  <text x="169" y="175" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">[2, 1]</text>
+  <rect x="205" y="143" width="60" height="54" rx="3" fill="@acento-estructurado" fill-opacity="0.18"/>
+  <text x="235" y="175" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">[2, 2]</text>
+  <line x1="136" y1="20" x2="136" y2="200" fill="none" stroke="@atenuado"/>
+  <line x1="202" y1="20" x2="202" y2="200" fill="none" stroke="@atenuado"/>
+  <line x1="70" y1="80" x2="270" y2="80" fill="none" stroke="@atenuado"/>
+  <line x1="70" y1="140" x2="270" y2="140" fill="none" stroke="@atenuado"/>
+  <text x="8" y="56" font-size="12" fill="@acento-estructurado">{{t:diagonal-1}}</text>
+  <text x="8" y="72" font-size="12" fill="@acento-estructurado">{{t:diagonal-1b}}</text>
+  <text x="276" y="176" font-size="12" fill="@acento-objetos">{{t:diagonal-2}}</text>
+  <text x="276" y="192" font-size="12" fill="@acento-objetos">{{t:diagonal-2b}}</text>
+  <text x="170" y="214" font-size="12" text-anchor="middle" fill="@atenuado">{{t:pie}}</text>
+</svg>

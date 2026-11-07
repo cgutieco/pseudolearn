@@ -1183,6 +1183,71 @@
       "descripcion": "The array of temperatures 20, 23, 19, 25, 22, 18 and 26. First step: an arrow walks through all of it and feeds the average, 21.86. Second step: the cells above the average are marked: 23, 25, 22 and 26.",
       "promedio": "average: 21.86",
       "superan": "above the average"
+    },
+    "ruta-rol-seguidor": {
+      "titulo": "Role: follower",
+      "descripcion": "Two footprints: the one behind follows the one in front, labelled follower.",
+      "nombre": "follower",
+      "frase": "remembers the previous one to compare"
+    },
+    "ruta-esquemas": {
+      "titulo": "Six patterns",
+      "descripcion": "The same array of seven temperatures drawn six times. Walking visits them all; counting marks the ones that meet a condition and gives a number; accumulating gathers them all into a total; searching marks up to the first one that meets it and stops; filtering keeps the ones that meet it in another array; transforming changes each one and gives another array of the same length.",
+      "recorrer": "Walk",
+      "recorrer-da": "visits each value",
+      "contar": "Count",
+      "contar-da": "gives how many meet it: 4",
+      "acumular": "Gather",
+      "acumular-da": "gives a total: 153",
+      "buscar": "Search",
+      "buscar-da": "stops at the first that meets it",
+      "filtrar": "Filter",
+      "filtrar-da": "gives a shorter collection",
+      "transformar": "Transf.",
+      "transformar-da": "gives a collection of the same length"
+    },
+    "ruta-racha": {
+      "titulo": "The streak of hot days",
+      "descripcion": "Fourteen temperatures in a row and, below, the value of the streak day by day: it goes up with each day above 30 and goes back to 0 when it breaks. The streak reaches 3 in the first days, the first wave, and 4 between days 8 and 11, the second and longest wave. The last streak, of 2 days, ends with the data.",
+      "temperaturas": "temperatures",
+      "racha": "streak",
+      "ola-1": "wave of 3",
+      "ola-2": "wave of 4",
+      "final": "The last streak is checked after the loop"
+    },
+    "ruta-matriz-coordenadas": {
+      "titulo": "The board coordinates",
+      "descripcion": "A 3 by 3 board with the row and the column written in each cell, from [0, 0] to [2, 2]. The two diagonals are highlighted: the one where the row equals the column and the one where row plus column equals 2.",
+      "diagonal-1": "row =",
+      "diagonal-1b": "column",
+      "diagonal-2": "row +",
+      "diagonal-2b": "col. = 2",
+      "pie": "[row, column]"
+    },
+    "ruta-busqueda-binaria": {
+      "titulo": "Binary search",
+      "descripcion": "A sorted array of fifteen numbers, from 2 to 44 in steps of three, where 26 is searched for. At each step the middle one is looked at and the half that cannot hold it is crossed out: first 23, then 35, then 29, and on the fourth step 26 appears.",
+      "buscado": "searched: 26",
+      "paso-1": "23 is smaller: cross out the left",
+      "paso-2": "35 is greater: cross out the right",
+      "paso-3": "29 is greater: cross out the right",
+      "paso-4": "26: found in 4 steps"
+    },
+    "ruta-pasos-crecen": {
+      "titulo": "Steps grow differently",
+      "descripcion": "Horizontal bars with the steps each strategy needs in the worst case. With 10 values, one by one takes 10 and by halves 4; with 100, 100 and 7; with 1000, 1000 and 10.",
+      "datos": "values",
+      "uno-por-uno": "one by one",
+      "mitades": "by halves"
+    },
+    "ruta-seleccion": {
+      "titulo": "Selection sort",
+      "descripcion": "Five numbers, 5, 3, 8, 1 and 9. At each step the smallest of the unsorted part moves to the front and is marked as sorted: first 1, then 3, which was already in place, then 5 and 8. 9 stays last.",
+      "paso-1": "unsorted",
+      "paso-2": "1 moves to the front",
+      "paso-3": "3 is already in place",
+      "paso-4": "5 moves to third place",
+      "paso-5": "8 moves to fourth place"
     }
   }
 }

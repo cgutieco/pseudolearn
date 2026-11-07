@@ -1,0 +1,61 @@
+<svg viewBox="0 0 340 170">
+  <rect x="4" y="20" width="22" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="15" y="36" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">28</text>
+  <rect x="28" y="20" width="22" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="39" y="36" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">31</text>
+  <rect x="52" y="20" width="22" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="63" y="36" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">32</text>
+  <rect x="76" y="20" width="22" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="87" y="36" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">33</text>
+  <rect x="100" y="20" width="22" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="111" y="36" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">29</text>
+  <rect x="124" y="20" width="22" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="135" y="36" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">31</text>
+  <rect x="148" y="20" width="22" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="159" y="36" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">30</text>
+  <rect x="172" y="20" width="22" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="183" y="36" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">31</text>
+  <rect x="196" y="20" width="22" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="207" y="36" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">32</text>
+  <rect x="220" y="20" width="22" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="231" y="36" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">31</text>
+  <rect x="244" y="20" width="22" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="255" y="36" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">35</text>
+  <rect x="268" y="20" width="22" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="279" y="36" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">27</text>
+  <rect x="292" y="20" width="22" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="303" y="36" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">31</text>
+  <rect x="316" y="20" width="22" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="327" y="36" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">32</text>
+  <text x="4" y="14" font-size="12" fill="@atenuado">{{t:temperaturas}}</text>
+  <text x="4" y="64" font-size="12" fill="@atenuado">{{t:racha}}</text>
+  <g data-paso="1">
+    <text x="15" y="84" font-size="12" text-anchor="middle" font-family="mono" fill="@error">0</text>
+    <text x="39" y="84" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">1</text>
+    <text x="63" y="84" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">2</text>
+    <text x="87" y="84" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">3</text>
+    <caja x="4" y="100" ancho="94" alto="24" rol="exito" fondo="0.16" texto="{{t:ola-1}}" tamano="12"/>
+  </g>
+  <g data-paso="2">
+    <text x="111" y="84" font-size="12" text-anchor="middle" font-family="mono" fill="@error">0</text>
+    <text x="135" y="84" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">1</text>
+  </g>
+  <g data-paso="3">
+    <text x="159" y="84" font-size="12" text-anchor="middle" font-family="mono" fill="@error">0</text>
+  </g>
+  <g data-paso="4">
+    <text x="183" y="84" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">1</text>
+    <text x="207" y="84" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">2</text>
+    <text x="231" y="84" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">3</text>
+    <text x="255" y="84" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">4</text>
+    <caja x="172" y="100" ancho="94" alto="24" rol="exito" fondo="0.16" texto="{{t:ola-2}}" tamano="12"/>
+  </g>
+  <g data-paso="5">
+    <text x="279" y="84" font-size="12" text-anchor="middle" font-family="mono" fill="@error">0</text>
+  </g>
+  <g data-paso="6">
+    <text x="303" y="84" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">1</text>
+    <text x="327" y="84" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">2</text>
+    <text x="170" y="150" font-size="12" text-anchor="middle" fill="@atenuado">{{t:final}}</text>
+  </g>
+</svg>

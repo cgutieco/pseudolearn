@@ -52,5 +52,15 @@
   "arreglo": {"etiqueta": "array", "formas": ["array", "arrays"], "estricto": true, "receta": true},
   "indice": {"etiqueta": "index", "formas": ["index", "indices"], "estricto": true, "receta": false},
   "recorredor": {"etiqueta": "walker", "formas": ["walker"], "estricto": true, "receta": true},
-  "fuera-de-rango": {"etiqueta": "out of range", "formas": ["out of range"], "estricto": true, "receta": false}
+  "fuera-de-rango": {"etiqueta": "out of range", "formas": ["out of range"], "estricto": true, "receta": false},
+  "esquema": {"etiqueta": "pattern", "formas": ["pattern", "patterns"], "estricto": true, "receta": true},
+  "seguidor": {"etiqueta": "follower", "formas": ["follower", "followers"], "estricto": true, "receta": true},
+  "matriz": {"etiqueta": "matrix", "formas": ["matrix", "matrices"], "estricto": true, "receta": true},
+  "bucle-anidado": {"etiqueta": "nested loop", "formas": ["nested loop", "nested loops"], "estricto": true, "receta": true},
+  "concatenar": {"etiqueta": "concatenate", "formas": ["concatenate", "concatenation"], "estricto": true, "receta": false},
+  "estrategia": {"etiqueta": "strategy", "formas": ["strategy", "strategies"], "estricto": false, "receta": false},
+  "fuerza-bruta": {"etiqueta": "brute force", "formas": ["brute force"], "estricto": true, "receta": true},
+  "busqueda-binaria": {"etiqueta": "binary search", "formas": ["binary search"], "estricto": true, "receta": true},
+  "costo": {"etiqueta": "cost of an algorithm", "formas": ["cost"], "estricto": false, "receta": false},
+  "ordenamiento-por-seleccion": {"etiqueta": "selection sort", "formas": ["selection sort"], "estricto": true, "receta": true}
 }
