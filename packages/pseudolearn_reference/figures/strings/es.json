@@ -174,6 +174,18 @@
       "n1": "Real → Entero · Cadena → Caracter",
       "n2": "Logico → número · número → texto"
     },
+    "anatomia-diagnostico": {
+      "titulo": "Dato y mensaje",
+      "descripcion": "Arriba, el diagnóstico como dato: código incompatibleTypesInAssignment, clase semántica y severidad error, tramo en la línea 2 y argumentos esperado Entero y encontrado Cadena. Una flecha con la plantilla del idioma lleva al mensaje presentado.",
+      "dato": "dato",
+      "codigo": "código: incompatibleTypesInAssignment",
+      "clase": "clase: semántica · severidad: error",
+      "tramo": "tramo: línea 2, columnas 3 a 38",
+      "argumentos": "argumentos: esperado Entero, encontrado Cadena",
+      "plantilla": "plantilla del idioma",
+      "mensaje1": "Tipo incompatible en la asignación:",
+      "mensaje2": "no se puede asignar Cadena a Entero"
+    },
     "arbol-precedencia": {
       "titulo": "El árbol de 2 + 3 * 4",
       "descripcion": "La expresión 2 + 3 * 4 se agrupa en un árbol con + en la raíz, 2 a la izquierda y 3 * 4 a la derecha. El producto se reduce a 12 y la suma a 14."
@@ -710,6 +722,24 @@
       "finde": "fin de semana",
       "noExiste": "no existe"
     },
+    "severidad-clases": {
+      "titulo": "Clases y severidades",
+      "descripcion": "Arriba, las cuatro clases en orden: léxica, sintáctica y semántica antes de ejecutar, y ejecución durante. Abajo, las cuatro letras de severidad: A error, C higiene, D información y E lectura.",
+      "lexica": "léxica",
+      "sintactica": "sintáctica",
+      "semantica": "semántica",
+      "ejecucion": "ejecución",
+      "antes": "antes de ejecutar",
+      "durante": "durante",
+      "error": "error",
+      "higiene": "higiene",
+      "info": "información",
+      "lectura": "lectura",
+      "letraA": "A",
+      "letraC": "C",
+      "letraD": "D",
+      "letraE": "E"
+    },
     "si-ordinograma": {
       "titulo": "Ejecución paso a paso de Montana",
       "descripcion": "Un ordinograma con el inicio, la asignación de estatura, un rombo con la pregunta estatura mayor o igual que 120, dos cajas con los Escribir de cada rama, el punto donde se juntan y el fin. Cada paso resalta la parte que se está ejecutando.",
@@ -719,6 +749,12 @@
       "texto-no": "\"Todavía no…\"",
       "juntan": "FinSi: se juntan",
       "no-se-ejecuta": "no se ejecuta"
+    },
+    "sincronizacion": {
+      "titulo": "Sincronizar tras un error",
+      "descripcion": "Cuatro líneas. La primera y la tercera tienen un error y una marca que salta al siguiente punto seguro; la segunda y la cuarta se reconocen con normalidad.",
+      "sigue": "sigue",
+      "nota": "un error principal por sentencia rota"
     },
     "subprograma-caja": {
       "titulo": "Un subprograma como caja",

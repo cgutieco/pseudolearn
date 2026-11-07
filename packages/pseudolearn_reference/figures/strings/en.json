@@ -174,6 +174,18 @@
       "n1": "Real → Integer · String → Character",
       "n2": "Boolean → number · number → text"
     },
+    "anatomia-diagnostico": {
+      "titulo": "Data and message",
+      "descripcion": "At the top, the diagnostic as data: code incompatibleTypesInAssignment, semantic class and error severity, span on line 2 and arguments expected Integer and found String. An arrow with the language template leads to the presented message.",
+      "dato": "data",
+      "codigo": "code: incompatibleTypesInAssignment",
+      "clase": "class: semantic · severity: error",
+      "tramo": "span: line 2, columns 3 to 38",
+      "argumentos": "arguments: expected Integer, found String",
+      "plantilla": "language template",
+      "mensaje1": "Incompatible type in assignment:",
+      "mensaje2": "cannot assign String to Integer"
+    },
     "arbol-precedencia": {
       "titulo": "The tree of 2 + 3 * 4",
       "descripcion": "The expression 2 + 3 * 4 is grouped as a tree with + at the root, 2 on the left and 3 * 4 on the right. The product reduces to 12 and the sum to 14."
@@ -710,6 +722,24 @@
       "finde": "weekend",
       "noExiste": "does not exist"
     },
+    "severidad-clases": {
+      "titulo": "Classes and severities",
+      "descripcion": "At the top, the four classes in order: lexical, syntactic and semantic before running, and runtime during. Below, the four severity letters: A error, C hygiene, D information and E reading.",
+      "lexica": "lexical",
+      "sintactica": "syntactic",
+      "semantica": "semantic",
+      "ejecucion": "runtime",
+      "antes": "before running",
+      "durante": "during",
+      "error": "error",
+      "higiene": "hygiene",
+      "info": "information",
+      "lectura": "reading",
+      "letraA": "A",
+      "letraC": "C",
+      "letraD": "D",
+      "letraE": "E"
+    },
     "si-ordinograma": {
       "titulo": "Step-by-step run of Montana",
       "descripcion": "A flowchart with the start, the assignment of estatura, a diamond asking whether estatura is greater than or equal to 120, two boxes with the Write of each branch, the point where they join and the end. Each step highlights the part being run.",
@@ -719,6 +749,12 @@
       "texto-no": "\"Todavía no…\"",
       "juntan": "EndIf: they join",
       "no-se-ejecuta": "not run"
+    },
+    "sincronizacion": {
+      "titulo": "Synchronizing after an error",
+      "descripcion": "Four lines. The first and third have an error and a mark that jumps to the next safe point; the second and fourth are recognised as usual.",
+      "sigue": "continues",
+      "nota": "one main error per broken statement"
     },
     "subprograma-caja": {
       "titulo": "A subprogram as a box",
