@@ -116,7 +116,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Resaltado y unidades de foco en la ruta Rust                    | `RustProgramAnalyzer` proyecta los tokens de `analyze`; `RustFocusTracker` deriva `unitId` de la vista pública del programa                | Resuelto                                                                                              |
 | Pruebas de widgets con el puente real                           | Los widgets se prueban con fakes; solo `ExecutionCubit` se ejercita contra la biblioteca nativa en `tool/native_bridge_adapters_test.dart` | Abierto |
 | Ficha de ayuda de `Importar` y `Exportar` | Catálogo `TOOL.SERVICE.CATALOG` y resolución contextual del servicio; el pegado aislado conserva su diagnóstico, mientras la consulta sobre la directiva y su alias devuelve la ficha propia | Resuelto en PG-A.08; no enlaza paquetes ni habilita E/S |
-| Ampliar el código equivalente | El núcleo traduce el lenguaje completo salvo los pendientes declarados en el README de `pseudolearn_transpiler` (capacidades, `Tareas` con captura de fallos, `Elegir`) | Abierto en el núcleo |
+| Ampliar el código equivalente | El núcleo traduce el lenguaje completo salvo los pendientes declarados en el README de `pseudolearn_transpiler` (capacidades del anfitrión) | Abierto en el núcleo |
 | Valor de un parámetro `Canal` en la vista Variables | La página de valores de `debug_state` aplana el canal como registro con la hoja interna `identity` y la muestra como `stream.identity = Nulo`; la API debería publicar el canal como un valor propio (número de canal). La app no oculta la hoja por nombre, porque ocultaría también un campo de usuario llamado igual | Abierto; reportado desde el rediseño de la pestaña `Tareas` |
 
 ---
@@ -922,9 +922,8 @@ La capa `host` comparte el anillo 2 con engine y data; solo importa model y port
   revisión nueva reemplaza el resultado y limpia código y líneas de foco anteriores.
 - **Evidencia:** El barrido diferencial del núcleo (`pseudolearn_api/tests/equivalent_code_sweep.rs`) ejecuta cada
   caso `execute` del corpus en el motor, compila o interpreta la traducción y compara la salida byte a byte. En los
-  casos de `lang.*` que terminan con normalidad, Python reproduce 726 de 812 y Rust 715 de 812; el resto son
-  construcciones pendientes declaradas (capacidades, `Tareas` con captura de fallos, `Elegir`) o diferencias
-  registradas en el README del traductor. `test/engine/rust/export/rust_program_exporter_test.dart` comprueba el
+  casos de `lang.*` que terminan con normalidad, Python reproduce 748 de 812 y Rust 730 de 812; el resto son
+  capacidades, que dependen del anfitrión, o diferencias registradas en el README del traductor. `test/engine/rust/export/rust_program_exporter_test.dart` comprueba el
   contrato por el puente real.
 - **Alternativas descartadas y por qué:** Emisores en Dart sobre la vista del programa. Reconstruían en la app los
   tipos que el motor ya resuelve, y cada construcción nueva exigía duplicar semántica. Por eso casi ningún programa
