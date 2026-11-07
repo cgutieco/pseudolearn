@@ -13,16 +13,12 @@ import 'package:pseudolearn_app/domain/model/knowledge/exercise_level.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/expected_value_kind.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/illustration_reference.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/knowledge_detail_content.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/knowledge_entry.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/knowledge_entry_type.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/learning_module.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/learning_track.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/member_visibility.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/module_part.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/module_section.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/prediction_activity.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/specification_document.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/specification_section.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/structural_assertion.dart';
 
 const _case = ExerciseCase(
@@ -110,26 +106,6 @@ void main() {
       expect(_module().sectionOf(ModulePart.exercises), isNull);
     });
 
-    test('specification sections compare by document, anchor and blocks', () {
-      const one = SpecificationSection(
-        id: 'esp-i-datos',
-        document: SpecificationDocument.imperative,
-        anchor: 'datos',
-        order: 1,
-        title: 'Datos',
-        blocks: [ParagraphBlock(text: 'Cinco tipos.')],
-      );
-      const inTheOtherDocument = SpecificationSection(
-        id: 'esp-i-datos',
-        document: SpecificationDocument.objectOriented,
-        anchor: 'datos',
-        order: 1,
-        title: 'Datos',
-        blocks: [ParagraphBlock(text: 'Cinco tipos.')],
-      );
-
-      expect(one, isNot(inTheOtherDocument));
-    });
 
     test('structural assertions of different kinds are never equal', () {
       const contains = ContainsConstructAssertion(
@@ -273,17 +249,6 @@ void main() {
         module: _module(),
         headings: const <DocumentHeading>[],
       );
-      const specContent = SpecificationDetailContent(
-        entry: KnowledgeEntry(
-          id: 'esp-i-datos',
-          type: KnowledgeEntryType.specificationSection,
-          title: 'Datos',
-          summary: 'Tipos',
-        ),
-        blocks: <ContentBlock>[],
-        headings: <DocumentHeading>[],
-      );
-
       expect(
         moduleContent,
         ModuleDetailContent(module: _module(), headings: const <DocumentHeading>[]),
@@ -291,19 +256,6 @@ void main() {
       expect(
         moduleContent,
         isNot(ModuleDetailContent(module: _module(title: 'Otro'), headings: const <DocumentHeading>[])),
-      );
-      expect(
-        specContent,
-        const SpecificationDetailContent(
-          entry: KnowledgeEntry(
-            id: 'esp-i-datos',
-            type: KnowledgeEntryType.specificationSection,
-            title: 'Datos',
-            summary: 'Tipos',
-          ),
-          blocks: <ContentBlock>[],
-          headings: <DocumentHeading>[],
-        ),
       );
       expect(
         const CodeBlock(code: 'a <- 1'),

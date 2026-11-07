@@ -34,6 +34,7 @@ dependencies:
   url_launcher: ^6.3.3
   package_info_plus: ^10.2.2
   in_app_review: ^2.0.12
+  flutter_svg: ^2.3.2
 
 dev_dependencies:
   integration_test:
@@ -59,8 +60,15 @@ flutter:
     - assets/knowledge/examples/
     - assets/knowledge/exercises/
     - assets/knowledge/modules/
-    - assets/knowledge/specification/
     - assets/knowledge/support/
+    - assets/reference/es/es/
+    - assets/reference/es/es/sections/
+    - assets/reference/es/en/
+    - assets/reference/es/en/sections/
+    - assets/reference/en/es/
+    - assets/reference/en/es/sections/
+    - assets/reference/en/en/
+    - assets/reference/en/en/sections/
 
   fonts:
     - family: IBMPlexSans

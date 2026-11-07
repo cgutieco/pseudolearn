@@ -68,4 +68,4 @@ Escribir n;
 
 :::parte especificacion
 
-- esp-i-lexico Cómo se reconoce dónde empieza y dónde termina un programa
+- programas.estructura Cómo se reconoce dónde empieza y dónde termina un programa

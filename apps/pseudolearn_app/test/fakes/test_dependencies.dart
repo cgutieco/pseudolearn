@@ -7,6 +7,7 @@ import 'package:pseudolearn_app/domain/ports/document_repository.dart';
 import 'package:pseudolearn_app/domain/ports/exercise_checker.dart';
 import 'package:pseudolearn_app/domain/ports/incoming_link_source.dart';
 import 'package:pseudolearn_app/domain/ports/knowledge_repository.dart';
+import 'package:pseudolearn_app/domain/ports/reference_repository.dart';
 import 'package:pseudolearn_app/domain/ports/local_account_data_purger.dart';
 import 'package:pseudolearn_app/domain/ports/local_progress_store.dart';
 import 'package:pseudolearn_app/domain/ports/preferences_store.dart';
@@ -27,6 +28,7 @@ import 'fake_exercise_checker.dart';
 import 'fake_identifier_generator.dart';
 import 'fake_incoming_link_source.dart';
 import 'fake_knowledge_repository.dart';
+import 'fake_reference_repository.dart';
 import 'fake_program_construct_reader.dart';
 import 'fake_program_exporter.dart';
 import 'fake_local_account_data_purger.dart';
@@ -47,6 +49,7 @@ AppDependencies buildTestDependencies({
   FakeIdentifierGenerator? identifiers,
   FakeClock? clock,
   KnowledgeRepository? knowledgeRepository,
+  ReferenceRepository? referenceRepository,
   SyntaxReferenceSource? syntaxReferenceSource,
   SyntaxHelpSource? syntaxHelpSource,
   ProgramExporter? programExporter,
@@ -101,6 +104,7 @@ AppDependencies buildTestDependencies({
     textEntryModality: textEntryModality ?? const FakeTextEntryModality(),
     appVersionSource: appVersionSource ?? const FakeAppVersionSource(),
     knowledgeRepository: knowledgeRepository ?? FakeKnowledgeRepository(),
+    referenceRepository: referenceRepository ?? FakeReferenceRepository(),
     syntaxReferenceSource:
         syntaxReferenceSource ??
         engine?.syntaxReferenceSource ??

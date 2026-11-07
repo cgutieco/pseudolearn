@@ -4,10 +4,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/ast_construct.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/construct_specification_sections.dart';
 
-Set<String> _sectionIdsOf(String manifestPath) {
-  final manifest = jsonDecode(File(manifestPath).readAsStringSync());
-  final sections = (manifest as Map<String, dynamic>)['specification'] as List;
-  return sections.map((raw) => (raw as Map<String, dynamic>)['id'] as String).toSet();
+Set<String> _sectionIdsOf(String tocPath) {
+  final parts = jsonDecode(File(tocPath).readAsStringSync()) as List;
+  return {
+    for (final part in parts)
+      for (final section in (part as Map<String, dynamic>)['sections'] as List)
+        (section as Map<String, dynamic>)['id'] as String,
+  };
 }
 
 void main() {
@@ -22,18 +25,18 @@ void main() {
       }
     });
 
-    test('every named section exists in the published Spanish manifest', () {
-      final declared = _sectionIdsOf('assets/knowledge/manifest_es.json');
+    test('every named section exists in the published Spanish specification', () {
+      final declared = _sectionIdsOf('assets/reference/es/es/toc.json');
       expect(measurableSpecificationSectionIds().difference(declared), isEmpty);
     });
 
-    test('every named section exists in the published English manifest', () {
-      final declared = _sectionIdsOf('assets/knowledge/manifest_en.json');
+    test('every named section exists in the published English specification', () {
+      final declared = _sectionIdsOf('assets/reference/en/en/toc.json');
       expect(measurableSpecificationSectionIds().difference(declared), isEmpty);
     });
 
     test('the measurable set is smaller than the published catalogue', () {
-      final declared = _sectionIdsOf('assets/knowledge/manifest_es.json');
+      final declared = _sectionIdsOf('assets/reference/es/es/toc.json');
       expect(measurableSpecificationSectionIds().length, lessThan(declared.length));
     });
   });

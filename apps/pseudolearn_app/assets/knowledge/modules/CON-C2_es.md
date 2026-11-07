@@ -94,7 +94,7 @@ FinAlgoritmo
 
 :::parte especificacion
 
-- esp-o-clases Notación orientada a objetos: clase, atributos, métodos, constructor e instanciación
+- objetos.clase Notación orientada a objetos: clase, atributos, métodos, constructor e instanciación
 
 :::parte ejercicios
 

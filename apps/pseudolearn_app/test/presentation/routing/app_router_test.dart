@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pseudolearn_app/application/reference/reference_index_cubit.dart';
+import 'package:pseudolearn_app/application/reference/reference_section_cubit.dart';
+import 'package:pseudolearn_app/domain/model/reference/reference_run.dart';
+import 'package:pseudolearn_app/domain/model/reference/reference_section.dart';
+import 'package:pseudolearn_app/domain/model/reference/reference_section_kind.dart';
+import '../../fakes/fake_reference_repository.dart';
 import 'package:pseudolearn_app/application/execution/execution_state.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pseudolearn_app/application/dashboard/dashboard_cubit.dart';
@@ -78,6 +84,12 @@ Widget _appWith(GoRouter router, [AppDependencies? deps]) {
       BlocProvider<TraceCubit>(
           create: (_) => TraceCubit(executionStates: const Stream<ExecutionState>.empty()),
         ),
+      BlocProvider<ReferenceIndexCubit>(
+        create: (_) => ReferenceIndexCubit(repository: dependencies.referenceRepository),
+      ),
+      BlocProvider<ReferenceSectionCubit>(
+        create: (_) => ReferenceSectionCubit(repository: dependencies.referenceRepository),
+      ),
       BlocProvider<KnowledgeCubit>(
         create: (_) => KnowledgeCubit(
           repository: dependencies.knowledgeRepository,
@@ -259,13 +271,6 @@ void main() {
         path: 'modules/CON-A1_es.md',
         track: LearningTrack.foundations,
       );
-      const specEntry = KnowledgeEntry(
-        id: 'esp-i-lexico',
-        type: KnowledgeEntryType.specificationSection,
-        title: 'Estructura léxica',
-        summary: 'Caracteres, comentarios e identificadores.',
-        path: 'specification/esp-i-lexico_es.md',
-      );
       const module = LearningModule(
         id: 'CON-A1',
         track: LearningTrack.foundations,
@@ -280,15 +285,25 @@ void main() {
       );
 
       final fakeRepo = FakeKnowledgeRepository(
-        entries: const [moduleEntry, specEntry],
+        entries: const [moduleEntry],
         modulesByEntryId: {'CON-A1': module},
-        blocksByPath: {
-          'specification/esp-i-lexico_es.md': const [
-            ParagraphBlock(text: 'Estructura léxica.'),
-          ],
+      );
+      final references = FakeReferenceRepository(
+        sections: const {
+          'lexico.palabras-reservadas': ReferenceSection(
+            id: 'lexico.palabras-reservadas',
+            number: '2.5',
+            kind: ReferenceSectionKind.concept,
+            title: [ReferenceTextRun('Estructura léxica')],
+            phrase: [],
+            blocks: [],
+          ),
         },
       );
-      final deps = buildTestDependencies(knowledgeRepository: fakeRepo);
+      final deps = buildTestDependencies(
+        knowledgeRepository: fakeRepo,
+        referenceRepository: references,
+      );
       final router = buildAppRouter(initialLocation: '/conocimiento');
       await tester.pumpWidget(_appWith(router, deps));
       await tester.pumpAndSettle();
@@ -297,7 +312,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Qué es un algoritmo'), findsWidgets);
 
-      unawaited(router.push('/conocimiento/esp-i-lexico?fromModule=CON-A1'));
+      unawaited(router.push('/conocimiento/especificacion/lexico.palabras-reservadas'));
       await tester.pumpAndSettle();
       expect(find.text('Estructura léxica'), findsWidgets);
 

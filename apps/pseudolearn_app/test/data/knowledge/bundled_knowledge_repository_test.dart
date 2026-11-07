@@ -1,3 +1,4 @@
+import '../../fakes/fake_reference_repository.dart';
 import '../../fakes/native_test_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/data/knowledge/bundled_knowledge_repository.dart';
@@ -94,6 +95,7 @@ BundledKnowledgeRepository _repository({
 }) {
   return BundledKnowledgeRepository(
     markers: MarkerResolver(reference: nativeTestEngine.syntaxReferenceSource),
+    reference: FakeReferenceRepository(),
     assetLoader: (path) async {
       final source = assets[path];
       if (source == null) throw Exception('Asset not found: $path');

@@ -5,6 +5,7 @@ import '../dashboard/dashboard_page.dart';
 import '../knowledge/knowledge_page.dart';
 import '../library/library_page.dart';
 import '../onboarding/onboarding_page.dart';
+import '../reference/reference_section_page.dart';
 import '../settings/account/account_page.dart';
 import '../settings/contact/contact_support_page.dart';
 import '../settings/diagram/diagram_settings_page.dart';
@@ -42,6 +43,13 @@ StatefulShellBranch _knowledgeBranch() {
         path: '/conocimiento',
         builder: (context, state) => const KnowledgePage(),
         routes: [
+          GoRoute(
+            path: 'especificacion/:id',
+            builder: (context, state) => ReferenceSectionPage(
+              sectionId: state.pathParameters['id'] ?? '',
+              anchor: state.uri.queryParameters['anchor'],
+            ),
+          ),
           GoRoute(
             path: ':id',
             builder: (context, state) => KnowledgeDetailPage(

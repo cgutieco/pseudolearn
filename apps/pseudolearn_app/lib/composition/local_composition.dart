@@ -11,6 +11,7 @@ import '../data/auth/supabase_session_persistence.dart';
 import '../data/index/metadata_index.dart';
 import '../data/knowledge/bundled_knowledge_repository.dart';
 import '../data/knowledge/marker_resolver.dart';
+import '../data/reference/bundled_reference_repository.dart';
 import '../data/platform/app_links_incoming_link_source.dart';
 import '../data/platform/platform_app_version_source.dart';
 import '../data/platform/platform_store_review_prompt.dart';
@@ -177,6 +178,7 @@ AppDependencies _assembleDependencies(_DependencyAssembly assembly) {
     knowledgeRepository: _buildKnowledgeRepository(
       assembly.engine.syntaxReferenceSource,
     ),
+    referenceRepository: _referenceRepository,
     syntaxReferenceSource: assembly.engine.syntaxReferenceSource,
     syntaxHelpSource: assembly.engine.syntaxHelpSource,
     programExporter: assembly.engine.programExporter,
@@ -187,11 +189,15 @@ AppDependencies _assembleDependencies(_DependencyAssembly assembly) {
   );
 }
 
+final BundledReferenceRepository _referenceRepository =
+    BundledReferenceRepository(assetLoader: rootBundle.loadString);
+
 BundledKnowledgeRepository _buildKnowledgeRepository(
   SyntaxReferenceSource syntaxRef,
 ) {
   return BundledKnowledgeRepository(
     markers: MarkerResolver(reference: syntaxRef),
     assetLoader: rootBundle.loadString,
+    reference: _referenceRepository,
   );
 }

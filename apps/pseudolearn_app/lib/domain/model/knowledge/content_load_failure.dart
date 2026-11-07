@@ -8,4 +8,5 @@ enum ContentLoadFailure {
   exerciseMalformed,
   malformedMarker,
   unresolvedMarker,
+  malformedReference,
 }

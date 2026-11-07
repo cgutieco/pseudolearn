@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:pseudolearn_app/composition/app_dependencies.dart';
 import 'package:pseudolearn_app/data/knowledge/bundled_knowledge_repository.dart';
+import 'package:pseudolearn_app/data/reference/bundled_reference_repository.dart';
 import 'package:pseudolearn_app/data/knowledge/marker_resolver.dart';
 import 'package:pseudolearn_app/domain/model/documents/document.dart';
 import 'package:pseudolearn_app/domain/model/settings/app_preferences.dart';
@@ -34,6 +35,7 @@ AppDependencies buildProductDependencies({
     knowledgeRepository: BundledKnowledgeRepository(
       markers: MarkerResolver(reference: engine.syntaxReferenceSource),
       assetLoader: rootBundle.loadString,
+      reference: BundledReferenceRepository(assetLoader: rootBundle.loadString),
     ),
     engine: engine,
   );

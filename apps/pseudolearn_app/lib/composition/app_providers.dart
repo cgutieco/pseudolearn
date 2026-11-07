@@ -15,7 +15,8 @@ import '../application/knowledge/knowledge_detail_cubit.dart';
 import '../application/knowledge/prediction/prediction_session_cubit.dart';
 import '../application/knowledge/route/learning_route_cubit.dart';
 import '../application/knowledge/session/exercise_session_cubit.dart';
-import '../application/knowledge/spec/specification_cubit.dart';
+import '../application/reference/reference_index_cubit.dart';
+import '../application/reference/reference_section_cubit.dart';
 import '../application/library/library_cubit.dart';
 import '../application/onboarding/demo/guided_demo_cubit.dart';
 import '../application/onboarding/demo/guided_demo_loader.dart';
@@ -161,9 +162,13 @@ List<BlocProvider> createKnowledgeProviders(AppDependencies dependencies) {
         progressStore: dependencies.localProgressStore,
       ),
     ),
-    BlocProvider<SpecificationCubit>(
+    BlocProvider<ReferenceIndexCubit>(
       create: (_) =>
-          SpecificationCubit(repository: dependencies.knowledgeRepository),
+          ReferenceIndexCubit(repository: dependencies.referenceRepository),
+    ),
+    BlocProvider<ReferenceSectionCubit>(
+      create: (_) =>
+          ReferenceSectionCubit(repository: dependencies.referenceRepository),
     ),
     ...createExerciseProviders(dependencies),
   ];

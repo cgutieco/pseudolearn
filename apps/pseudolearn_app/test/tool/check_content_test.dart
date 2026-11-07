@@ -18,17 +18,6 @@ const String _manifest = '''
       "constructs": []
     }
   ],
-  "specification": [
-    {
-      "id": "esp-i-datos",
-      "document": "esp-i",
-      "anchor": "datos",
-      "order": 1,
-      "title": "Datos",
-      "summary": "Tipos y operadores.",
-      "path": "specification/esp-i-datos_es.md"
-    }
-  ],
   "exercises": [
     {
       "id": "CON-B1-E1",
@@ -85,22 +74,17 @@ FinAlgoritmo
 {{diagnostico:variableUsedUninitialized}}
 
 :::parte especificacion
-- esp-i-datos Tipos y operadores
+- tipos.datos Tipos y operadores
 
 :::parte ejercicios
 - CON-B1-E1 Cuadrado
 ''';
 
-const String _specification = '''
-# Datos
-
-Cinco tipos primitivos.
-
-## Tipos
-
-{{ejemplo:example-cuadrado}}
+const String _toc = '''
+[{"id": "parte-3", "number": "III", "title": "Tipos", "summary": "", "sections": [
+  {"id": "tipos.datos", "number": "3.1", "kind": "concepto", "title": [{"type": "text", "text": "Datos"}], "phrase": []}
+]}]
 ''';
-
 const String _exercise = '''
 {
   "id": "CON-B1-E1",
@@ -130,19 +114,20 @@ FinAlgoritmo
 Map<String, String> get _goodContent => {
       'manifest_es.json': _manifest,
       'modules/CON-B1_es.md': _module,
-      'specification/esp-i-datos_es.md': _specification,
+      '../reference/es/es/toc.json': _toc,
       'exercises/CON-B1-E1_es.json': _exercise,
       'examples/cuadrado_es.pseudo': _example,
     };
 
 Directory _fixture(String name, Map<String, String> files) {
-  final dir = Directory(
+  final root = Directory(
     p.join(Directory.current.path, 'test', 'tool', 'fixtures', 'content', name),
   );
-  if (dir.existsSync()) dir.deleteSync(recursive: true);
+  final dir = Directory(p.join(root.path, 'knowledge'));
+  if (root.existsSync()) root.deleteSync(recursive: true);
   dir.createSync(recursive: true);
   addTearDown(() {
-    if (dir.existsSync()) dir.deleteSync(recursive: true);
+    if (root.existsSync()) root.deleteSync(recursive: true);
   });
   files.forEach((relative, contents) {
     final file = File(p.join(dir.path, relative));
@@ -254,7 +239,7 @@ void main() {
       expect(
         await _errorsOf(
           'bad_anchor',
-          _withReplacement('modules/CON-B1_es.md', '- esp-i-datos ', '- esp-i-arreglos '),
+          _withReplacement('modules/CON-B1_es.md', '- tipos.datos ', '- tipos.arreglos '),
         ),
         contains(contains('which no specification section declares')),
       );
@@ -339,7 +324,7 @@ void main() {
         ..['manifest_en.json'] = _manifest.replaceAll('_es.', '_en.')
         ..['modules/CON-B1_en.md'] =
             _module.replaceAll('Como se guarda un valor con un nombre.', '# A heading that Spanish does not have')
-        ..['specification/esp-i-datos_en.md'] = _specification
+        ..['../reference/en/en/toc.json'] = _toc
         ..['exercises/CON-B1-E1_en.json'] = _exercise
         ..['examples/cuadrado_en.pseudo'] = _example;
 
@@ -353,7 +338,7 @@ void main() {
       final files = _goodContent
         ..['manifest_en.json'] = _manifest.replaceAll('_es.', '_en.')
         ..['modules/CON-B1_en.md'] = _module
-        ..['specification/esp-i-datos_en.md'] = _specification
+        ..['../reference/en/en/toc.json'] = _toc
         ..['exercises/CON-B1-E1_en.json'] =
             _exercise.replaceAll('"expectedOutputs": ["49"]', '"expectedOutputs": ["48"]')
         ..['examples/cuadrado_en.pseudo'] = _example;
@@ -364,25 +349,12 @@ void main() {
       );
     });
 
-    test('fails when a specification section differs in structure between languages', () async {
-      final files = _goodContent
-        ..['manifest_en.json'] = _manifest.replaceAll('_es.', '_en.')
-        ..['modules/CON-B1_en.md'] = _module
-        ..['specification/esp-i-datos_en.md'] = '$_specification\n## Una seccion de mas\n\nTexto.\n'
-        ..['exercises/CON-B1-E1_en.json'] = _exercise
-        ..['examples/cuadrado_en.pseudo'] = _example;
-
-      expect(
-        await _errorsOf('specification_parity', files),
-        contains(contains('has a different heading tree')),
-      );
-    });
 
     test('fails when the two language versions of an example differ in tree shape', () async {
       final files = _goodContent
         ..['manifest_en.json'] = _manifest.replaceAll('_es.', '_en.')
         ..['modules/CON-B1_en.md'] = _module
-        ..['specification/esp-i-datos_en.md'] = _specification
+        ..['../reference/en/en/toc.json'] = _toc
         ..['exercises/CON-B1-E1_en.json'] = _exercise
         ..['examples/cuadrado_en.pseudo'] =
             _example.replaceAll('Escribir n * n', 'Escribir n * n\n  Escribir n');
@@ -393,33 +365,7 @@ void main() {
       );
     });
 
-    test('fails when a specification subsection has no code example and is not exempt', () async {
-      expect(
-        await _errorsOf(
-          'spec_no_example',
-          _withReplacement(
-            'specification/esp-i-datos_es.md',
-            '{{ejemplo:example-cuadrado}}',
-            'Texto sin ejemplo.',
-          ),
-        ),
-        contains(contains('has no code example and is not in the exempt list')),
-      );
-    });
 
-    test('fails when a specification diagnostic cited is not produced by its program', () async {
-      expect(
-        await _errorsOf(
-          'spec_unreal_diagnostic',
-          _withReplacement(
-            'specification/esp-i-datos_es.md',
-            '{{ejemplo:example-cuadrado}}',
-            '```pseudo\nAlgoritmo Ok\nFinAlgoritmo\n```\n\n{{diagnostico:divisionByZero}}',
-          ),
-        ),
-        contains(contains('cites diagnostic "divisionByZero", but no program in that section produces it')),
-      );
-    });
 
     test('fails when an example is declared but never referenced', () async {
       final manifestWithExtra = _manifest.replaceAll(
@@ -436,36 +382,6 @@ void main() {
       );
     });
 
-    test('fails when a specification-only example exceeds twelve lines', () async {
-      const longExample = '''
-Algoritmo Largo
-  Definir a Como Entero <- 0;
-  Definir b Como Entero <- 0;
-  Definir c Como Entero <- 0;
-  Definir d Como Entero <- 0;
-  Definir e Como Entero <- 0;
-  Definir f Como Entero <- 0;
-  Definir g Como Entero <- 0;
-  Definir h Como Entero <- 0;
-  Definir i Como Entero <- 0;
-  Definir j Como Entero <- 0;
-  Definir k Como Entero <- 0;
-FinAlgoritmo
-''';
-      final manifestWithLong = _manifest.replaceAll(
-        '"examples": [',
-        '"examples": [\n    {"id": "example-long", "title": "Long", "summary": "Long.", "path": "examples/long_es.pseudo", "profile": "classic_spanish"},',
-      );
-      final files = _goodContent
-        ..['manifest_es.json'] = manifestWithLong
-        ..['examples/long_es.pseudo'] = longExample
-        ..['specification/esp-i-datos_es.md'] = '$_specification\n{{ejemplo:example-long}}';
-
-      expect(
-        await _errorsOf('long_spec_example', files),
-        contains(contains('exceeding the limit of 12')),
-      );
-    });
   });
 
   group('Knowledge Content Checker · declared exceptions and edge cases', () {
@@ -477,7 +393,7 @@ FinAlgoritmo
       final files = {
         'manifest_es.json': asA1,
         'modules/CON-A1_es.md': withoutExercises.replaceAll('CON-B1-E1', 'CON-A1-E1'),
-        'specification/esp-i-datos_es.md': _specification,
+        '../reference/es/es/toc.json': _toc,
         'exercises/CON-A1-E1_es.json': _exercise.replaceAll('CON-B1', 'CON-A1'),
         'examples/cuadrado_es.pseudo': _example,
       };

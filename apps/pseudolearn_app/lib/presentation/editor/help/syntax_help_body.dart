@@ -7,6 +7,7 @@ import '../../l10n/generated/app_localizations.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/tokens/spacing.dart';
 import 'syntax_help_card_sections.dart';
+import '../../reference/reference_link_button.dart';
 
 final class SyntaxHelpBody extends StatelessWidget {
   final HelpQueryResult result;
@@ -55,6 +56,7 @@ final class _HelpContent extends StatelessWidget {
         _HelpHeadline(help: help),
         _HelpNotes(isSymbol: isSymbol, isPartial: help.isPartial),
         if (card != null) SyntaxHelpCardSections(card: card),
+        if (card != null) ReferenceLinkButton.card(card.id),
       ],
     );
   }

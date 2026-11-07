@@ -90,7 +90,7 @@ endAlgorithm
 
 :::parte especificacion
 
-- esp-i-arreglos Dimensioning, zero base and accessing an element
+- tipos.arreglos Dimensioning, zero base and accessing an element
 
 :::parte ejercicios
 

@@ -86,8 +86,8 @@ FinAlgoritmo
 
 :::parte especificacion
 
-- esp-i-declaracion La forma exacta de declarar una casilla y de asignarle un valor
-- esp-i-tipos-primitivos Los cinco tipos que puede admitir una casilla
+- declaraciones.definir La forma exacta de declarar una casilla y de asignarle un valor
+- tipos.primitivos Los cinco tipos que puede admitir una casilla
 
 :::parte ejercicios
 

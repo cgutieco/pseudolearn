@@ -116,9 +116,9 @@ endAlgorithm
 
 :::parte especificacion
 
-- esp-i-tipos-primitivos The five types, their values and their range
-- esp-i-operadores The complete precedence table and short-circuiting
-- esp-i-declaracion The exact shape of a declaration and of an assignment
+- tipos.primitivos The five types, their values and their range
+- expresiones.precedencia The complete precedence table and short-circuiting
+- declaraciones.definir The exact shape of a declaration and of an assignment
 
 :::parte ejercicios
 

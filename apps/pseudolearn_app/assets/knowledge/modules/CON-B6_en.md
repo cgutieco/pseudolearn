@@ -118,7 +118,7 @@ endAlgorithm
 
 :::parte especificacion
 
-- esp-i-subprogramas A single construction, parameters, passing, return, scope and recursion
+- subprogramas.declaracion A single construction, parameters, passing, return, scope and recursion
 
 :::parte ejercicios
 

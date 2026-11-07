@@ -56,14 +56,7 @@ final class KnowledgeDetailLoader {
           language: language,
           profile: profile,
           scrollOffset: scrollOffset),
-      KnowledgeEntryType.specificationSection => _loadSpecification(
-          entry: entry,
-          language: language,
-          profile: profile,
-          anchor: anchor,
-          fromModuleId: fromModuleId,
-          scrollOffset: scrollOffset,
-        ),
+      KnowledgeEntryType.specificationSection => Future.value(null),
       KnowledgeEntryType.contact => _loadDocument(
           entry: entry,
           language: language,
@@ -118,34 +111,6 @@ final class KnowledgeDetailLoader {
           _enricher.filterEntriesByIds(allEntries, module.anchorIds),
       exerciseEntries:
           _enricher.filterEntriesByIds(allEntries, module.exerciseIds),
-      scrollOffset: scrollOffset,
-    );
-  }
-
-  Future<SpecificationDetailContent?> _loadSpecification({
-    required KnowledgeEntry entry,
-    required UiLanguageId language,
-    required SyntaxProfileId profile,
-    String? anchor,
-    String? fromModuleId,
-    required double scrollOffset,
-  }) async {
-    final loaded = await _repository.getDocumentBlocks(
-      path: entry.path ?? '',
-      profileId: profile,
-      languageId: language,
-    );
-    if (loaded is! ContentLoaded<List<ContentBlock>>) return null;
-    final blocks = _enricher.enrichBlocks(loaded.value, profile, language);
-    final fromModuleTitle = await _resolveModuleTitle(fromModuleId, language);
-
-    return SpecificationDetailContent(
-      entry: entry,
-      blocks: blocks,
-      headings: _enricher.extractHeadings(blocks),
-      selectedAnchor: anchor ?? entry.anchor,
-      fromModuleId: fromModuleId,
-      fromModuleTitle: fromModuleTitle,
       scrollOffset: scrollOffset,
     );
   }
@@ -211,16 +176,6 @@ final class KnowledgeDetailLoader {
       resolved.add(ModuleSection(part: section.part, blocks: blocks));
     }
     return resolved;
-  }
-
-  Future<String?> _resolveModuleTitle(
-      String? fromModuleId, UiLanguageId language) async {
-    if (fromModuleId == null) return null;
-    final entries = await _loadAllEntries(language);
-    for (final e in entries) {
-      if (e.id == fromModuleId) return e.title;
-    }
-    return null;
   }
 
   Future<List<KnowledgeEntry>> _loadAllEntries(UiLanguageId language) async {

@@ -88,7 +88,7 @@ FinAlgoritmo
 
 :::parte especificacion
 
-- esp-i-arreglos Dimensionamiento, base cero y acceso a un elemento
+- tipos.arreglos Dimensionamiento, base cero y acceso a un elemento
 
 :::parte ejercicios
 

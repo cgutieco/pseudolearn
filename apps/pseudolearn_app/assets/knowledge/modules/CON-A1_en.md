@@ -70,4 +70,4 @@ write n;
 
 :::parte especificacion
 
-- esp-i-lexico How a program's start and end are recognised
+- programas.estructura How a program's start and end are recognised

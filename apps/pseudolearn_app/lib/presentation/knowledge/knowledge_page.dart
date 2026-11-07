@@ -7,6 +7,7 @@ import '../../application/knowledge/knowledge_cubit.dart';
 import '../../application/knowledge/knowledge_state.dart';
 import '../../application/knowledge/route/learning_route_cubit.dart';
 import '../../application/knowledge/route/learning_route_state.dart';
+import '../../application/reference/reference_index_cubit.dart';
 import '../../application/settings/settings_cubit.dart';
 import '../../application/settings/settings_state.dart';
 import '../../domain/model/knowledge/ast_construct.dart';
@@ -20,6 +21,7 @@ import 'components/knowledge_body.dart';
 import 'components/knowledge_header.dart';
 import 'components/knowledge_section_selector.dart';
 import 'exercise_creation_launcher.dart';
+import '../reference/reference_edition_resolver.dart';
 
 final class KnowledgePage extends StatefulWidget {
   const KnowledgePage({super.key});
@@ -56,12 +58,14 @@ final class _KnowledgePageState extends State<KnowledgePage> {
     context.read<KnowledgeCubit>().load(effectiveLanguage);
     context.read<LearningRouteCubit>().loadRoute(effectiveLanguage);
     context.read<ExerciseBankCubit>().loadExercises(effectiveLanguage);
+    context.read<ReferenceIndexCubit>().load(currentReferenceEdition(context));
   }
 
   void _search(String query) {
     context.read<KnowledgeCubit>().search(query);
     context.read<LearningRouteCubit>().search(query);
     context.read<ExerciseBankCubit>().search(query);
+    context.read<ReferenceIndexCubit>().search(query);
   }
 
   @override

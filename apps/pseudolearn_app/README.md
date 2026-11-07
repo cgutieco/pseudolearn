@@ -1024,11 +1024,10 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   lectura con motor de
   diagramas y traza real, Métricas vivas de la Base de conocimiento y Cierre con doble salida a biblioteca o ruta de
   aprendizaje). El paso de bienvenida abre con el símbolo de la marca sobre el título que dice el nombre (§4.35).
-- **Base de conocimiento (`KnowledgePage`) y Detalle (`ModuleDetailView`, `SpecificationDetailView`):** Tres secciones
-  fijas (Ruta de aprendizaje, Especificación
-  publicada, Banco de ejercicios). Vista de módulo estructurada en sus siete partes canónicas y vista de especificación
-  con
-  banner de retorno contextual.
+- **Base de conocimiento (`KnowledgePage`) y Detalle (`ModuleDetailView`, `ReferenceSectionPage`):** Tres secciones
+  fijas (Ruta de aprendizaje, Especificación publicada, Banco de ejercicios). Vista de módulo estructurada en sus siete
+  partes canónicas y lector de la especificación ilustrada en `/conocimiento/especificacion/:id`, con índice lateral en
+  pantallas anchas y hoja inferior en las demás (§4.62).
 - **Ajustes (`SettingsOverviewPage`):** Armazón con medida `wide` y distribución en dos columnas en clase `expanded`.
   Subpantallas de
   Idioma, Tema, Diagramas y Contacto integradas con botón de retroceso accesible en la cabecera. El pie
@@ -1227,9 +1226,10 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       Tramo C (Orientación a Objetos: C1–C5).
     - **Estructura obligatoria de siete partes fijas:** Cada módulo declara secuencialmente: 1. `question`, 2.
       `machineModel`, 3. `development`, 4. `prediction`, 5. `commonErrors`, 6. `specificationAnchors`, 7. `exercises`.
-    - **Especificaciones proyectadas mediante marcadores:** Los documentos normativos de especificación de sintaxis
-      imperativa (`esp-i-*`) y de orientación a objetos (`esp-o-*`) contienen texto estático enlazado a marcadores del
-      motor:
+    - **Especificación publicada como paquete generado:** la especificación ya no vive en `assets/knowledge/`: la
+      compila `packages/pseudolearn_reference` en `assets/reference/` y la lee el módulo de §4.62. Los anclajes
+      `specificationAnchors` de los módulos nombran identidades de sección de ese paquete.
+    - **Marcadores de los módulos:** el texto de los módulos sigue enlazado a marcadores del motor:
         - Marcadores de motor: `{{lexema:<token>}}`, `{{tabla:<id>}}`, `{{firma:<builtin>}}`, `{{diagnostico:<code>}}`.
           Se resuelven en `engine/knowledge/` contra el léxico del perfil activo.
         - Marcadores de contenido: `{{ejemplo:<id>}}`, `{{figura:<id>}}`, `{{diagrama:<id>#<notacion>}}`. Se resuelven
@@ -1912,11 +1912,10 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
 
 ### 4.37 La marca dentro de la app es geometría redibujada, no un activo cargado
 
-- **Problema:** el paquete no lleva renderizador de SVG y `pubspec.yaml` no puede declarar activos fuera del directorio
-  del paquete, así que los vectores que emite `packages/pseudolearn_brand` son inalcanzables desde aquí. Cargarlos
-  exigía una dependencia de
-  terceros
-  y una copia a mano de un artefacto generado.
+- **Problema:** `pubspec.yaml` no puede declarar activos fuera del directorio del paquete, así que los vectores que
+  emite `packages/pseudolearn_brand` son inalcanzables desde aquí. Cargarlos exigía una copia a mano de un artefacto
+  generado. `flutter_svg` sí está en el paquete desde §4.62, pero solo para las figuras que genera la especificación
+  ilustrada; la marca sigue sin pasar por él.
 - **Elección:** `presentation/brand/` redibuja el símbolo con las mismas primitivas que el generador de vectores —seis
   rectángulos de esquinas redondeadas de radio igual a la mitad del grosor, un círculo y un triángulo de esquinas a
   radio
@@ -2805,6 +2804,36 @@ proyecto no simula participantes ni resultados. Mientras no existan, ese resulta
     - *Eliminar argumentos y repetición:* Descartada. Funcionan y tienen casos de conformidad
       (`APP.EXEC.CONFIGURATION`); el problema era su peso visual, no su existencia.
 
+### 4.62 Especificación ilustrada: lector de un paquete generado
+
+- **Problema:** la especificación publicada se proyectaba desde Markdown con marcadores resueltos en la app. Sus
+  ejemplos no se ejecutaban, las figuras no existían y nada impedía que el texto y el motor divergieran.
+- **Elección:** `packages/pseudolearn_reference` compila el libro y escribe en `assets/reference/<idioma>/<perfil>/`
+  un paquete JSON ya resuelto: índice, búsqueda, enlaces y una sección por archivo con bloques tipados, programas
+  ejecutados con su salida, diagnósticos, raíles y figuras SVG con capas por paso. La app solo lo lee:
+    - `domain/model/reference/` modela edición, sección, bloques, programas, figuras, índice y enlaces; el puerto
+      `ReferenceRepository` lo abstrae y `data/reference/BundledReferenceRepository` lo lee de `rootBundle`, con un
+      fallo `ContentLoadFailure.malformedReference` ante un JSON inválido.
+    - `application/reference/` tiene `ReferenceIndexCubit` (índice, búsqueda y enlaces, cargados una vez por edición) y
+      `ReferenceSectionCubit` (secciones en caché por identidad).
+    - `presentation/reference/` es el lector: cabecera, bloques, programas con «Probar en el editor», figuras con
+      controles de paso y paneles, y botones que llevan desde fichas de sintaxis y diagnósticos a su sección
+      (`ReferenceLinkButton`).
+    - La edición la decide el idioma de la interfaz y el perfil de vocabulario activo (`ReferenceEditionResolver`).
+- **Figuras:** el compilador pinta con colores centinela por papel (`#FF0001`…`#FF000D`) y
+  `presentation/reference/figure_color_mapper.dart` los sustituye por tokens del tema antes de pasar el SVG a
+  `flutter_svg`, así que una figura respeta el tema claro y el oscuro sin conocerlos.
+- **Alternativas descartadas y por qué:**
+    - *Pintar las figuras con `CustomPainter` desde un modelo propio:* exigía un segundo renderizador que reprodujera
+      el kit de figuras del compilador y su contrato; `flutter_svg` dibuja exactamente el subconjunto que el contrato
+      permite (sin marcadores, CSS ni `dominant-baseline`).
+    - *Mantener `test/tool/spec_coverage_test.dart`:* comprobaba la proyección de `language-spec.md`, que ya no existe;
+      la cobertura y la paridad las comprueba ahora el verificador `REF-COVERAGE` del miembro que genera el paquete.
+- **Consecuencia:** el paquete se versiona porque lo consume un build ajeno a su generador; `REF-BUNDLE-STALE` falla
+  si el paquete versionado no coincide con lo que el compilador produce.
+
+---
+
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
 ### 5.1 Filosofía de código auto-explicativo
@@ -2999,7 +3028,7 @@ Apple y no toca nada.
 | Límites métricos y comentarios | `dart run tool/check_limits.dart`                                        | Líneas de archivo, funciones, build, anidación, métodos, parámetros, y ausencia total de comentarios en código                                   | `architecture.yaml`             |
 | Invariantes de contenido       | `dart run tool/check_content.dart`                                       | Paridad de manifiestos y casos normativos, resolución de marcadores, 7 partes de módulos, sintaxis de ejemplos y soluciones de ejercicios       | `architecture.yaml`             |
 | Sistema de diseño              | `dart run tool/check_design_system.dart`                                 | Familias tipográficas en disco, ausencia de medidas crudas en padding/espacios y unicidad de `DesignCanvas`                                      | `architecture.yaml`             |
-| Cobertura de especificación    | `flutter test test/tool/spec_coverage_test.dart`                         | Proyección completa de las secciones de `language-spec.md` en especificaciones publicadas                                                        | `architecture.yaml`             |
+| Especificación ilustrada       | `cargo xtask verify` en `packages/pseudolearn_reference`                 | Ejemplos ejecutados, anclajes, cobertura, paridad, contrato de figuras y paquete al día (verificadores `REF-*` de ese miembro)                    | `packages/pseudolearn_reference/README.md` |
 | Capas y dependencias           | `flutter test test/architecture/layering_test.dart`                      | Matriz de `may_import`, `forbidden_imports`, ausencia de imports package propios y rechazo del puente generado desde el dominio                   | `architecture.yaml`             |
 | Generación Rust–Dart           | `bash tool/bridge.sh check`                                               | Regeneración y comparación limpia de los enlaces Rust y Dart versionados                                                                          | `.flutter_rust_bridge.yaml`     |
 | Transporte Dart–FFI real       | `bash tool/test_bridge.sh`                                                | Construye la biblioteca nativa y verifica por FFI sesión, capacidades, errores y cierre                                                           | `native/README.md`              |

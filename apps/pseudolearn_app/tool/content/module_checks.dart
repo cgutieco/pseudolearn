@@ -3,7 +3,7 @@ import 'package:pseudolearn_app/domain/model/knowledge/module_defects.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/module_part.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'spec_checks.dart';
+import 'diagnostic_citation_checks.dart';
 
 const String moduleWithoutExercises = 'CON-A1';
 

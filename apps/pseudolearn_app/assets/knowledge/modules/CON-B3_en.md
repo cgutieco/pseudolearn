@@ -104,8 +104,8 @@ endAlgorithm
 
 :::parte especificacion
 
-- esp-i-control The conditional, multiple selection and the three loops
-- esp-i-operadores The boolean type and its operators
+- control.si The conditional, multiple selection and the three loops
+- expresiones.logicos The boolean type and its operators
 
 :::parte ejercicios
 

@@ -137,7 +137,7 @@ FinAlgoritmo
 
 :::parte especificacion
 
-- esp-i-control El condicional, la selección múltiple y los tres bucles
+- control.mientras El condicional, la selección múltiple y los tres bucles
 
 :::parte ejercicios
 

@@ -88,7 +88,7 @@ endAlgorithm
 
 :::parte especificacion
 
-- esp-o-clases Instantiation, identity, shallow copy and classes as types
+- objetos.copia Instantiation, identity, shallow copy and classes as types
 
 :::parte ejercicios
 

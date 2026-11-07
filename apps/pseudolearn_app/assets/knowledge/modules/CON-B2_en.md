@@ -66,7 +66,7 @@ endAlgorithm
 
 :::parte especificacion
 
-- esp-i-entrada-salida What the output emits, what reading requires, and how each value is written
+- biblioteca.consola What the output emits, what reading requires, and how each value is written
 
 :::parte ejercicios
 

@@ -117,7 +117,7 @@ FinAlgoritmo
 
 :::parte especificacion
 
-- esp-i-subprogramas Una sola construcción, parámetros, paso, retorno, ámbito y recursión
+- subprogramas.declaracion Una sola construcción, parámetros, paso, retorno, ámbito y recursión
 
 :::parte ejercicios
 

@@ -114,8 +114,6 @@ final class KnowledgeDetailCubit extends Cubit<KnowledgeDetailState> {
       final updated = switch (current) {
         final DocumentDetailContent doc => doc.copyWith(scrollOffset: offset),
         final ModuleDetailContent mod => mod.copyWith(scrollOffset: offset),
-        final SpecificationDetailContent spec =>
-          spec.copyWith(scrollOffset: offset),
         final ExerciseDetailContent exercise =>
           exercise.copyWith(scrollOffset: offset),
       };

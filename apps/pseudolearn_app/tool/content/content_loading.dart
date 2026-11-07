@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:pseudolearn_app/data/knowledge/bundled_knowledge_repository.dart';
+import 'package:pseudolearn_app/data/reference/bundled_reference_repository.dart';
 import 'package:pseudolearn_app/data/knowledge/content_marker_scanner.dart';
 import 'package:pseudolearn_app/data/knowledge/diagram_marker_argument.dart';
 import 'package:pseudolearn_app/data/knowledge/exercise_document_parser.dart';
 import 'package:pseudolearn_app/data/knowledge/marker_resolver.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/content_block.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/content_load_result.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/content_marker_kind.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise.dart';
@@ -29,6 +29,11 @@ BundledKnowledgeRepository repositoryOver(Directory knowledgeDir) {
       final relative = path.replaceFirst(knowledgeAssetRoot, '');
       return File(p.join(knowledgeDir.path, relative)).readAsStringSync();
     },
+    reference: BundledReferenceRepository(
+      assetLoader: (path) async => File(
+        p.join(knowledgeDir.parent.path, path.replaceFirst('assets/', '')),
+      ).readAsStringSync(),
+    ),
   );
 }
 
@@ -64,15 +69,7 @@ Future<LoadedLanguage> loadLanguage({
     exampleSources: _exampleSourcesOf(knowledgeDir, entries),
     specificationAnchors: _anchorsOf(entries),
     constructsByModule: readModuleConstructs(knowledgeDir, code),
-    specificationBlocks: await _specificationBlocksOf(
-      repository,
-      entries,
-      languageId,
-      profileId,
-      errors,
-    ),
     moduleExampleIds: _moduleExampleIdsOf(knowledgeDir, entries),
-    specificationExampleIds: _specificationExampleIdsOf(knowledgeDir, entries),
   );
 }
 
@@ -98,9 +95,7 @@ LoadedLanguage _empty(
     exampleSources: const {},
     specificationAnchors: const {},
     constructsByModule: const {},
-    specificationBlocks: const {},
     moduleExampleIds: const {},
-    specificationExampleIds: const {},
   );
 }
 
@@ -129,34 +124,6 @@ Future<Map<String, LearningModule>> _modulesOf(
     );
   }
   return modules;
-}
-
-Future<Map<String, List<ContentBlock>>> _specificationBlocksOf(
-  BundledKnowledgeRepository repository,
-  List<KnowledgeEntry> entries,
-  UiLanguageId languageId,
-  SyntaxProfileId profileId,
-  List<String> errors,
-) async {
-  final sections = <String, List<ContentBlock>>{};
-  for (final entry in entries) {
-    if (entry.type != KnowledgeEntryType.specificationSection) continue;
-    final loaded = await repository.getDocumentBlocks(
-      path: entry.path ?? '',
-      profileId: profileId,
-      languageId: languageId,
-    );
-    if (loaded is ContentLoaded<List<ContentBlock>>) {
-      sections[entry.id] = loaded.value;
-      continue;
-    }
-    final failed = loaded as ContentLoadFailed<List<ContentBlock>>;
-    errors.add(
-      'Specification section "${entry.id}" failed to load: '
-      '${failed.failure.name} (${failed.detail})',
-    );
-  }
-  return sections;
 }
 
 Map<String, LoadedExercise> _exercisesOf(
@@ -241,26 +208,3 @@ Set<String> _moduleExampleIdsOf(
   return ids;
 }
 
-Set<String> _specificationExampleIdsOf(
-  Directory knowledgeDir,
-  List<KnowledgeEntry> entries,
-) {
-  final ids = <String>{};
-  const scanner = ContentMarkerScanner();
-  for (final entry in entries) {
-    if (entry.type != KnowledgeEntryType.specificationSection) continue;
-    final file = File(p.join(knowledgeDir.path, entry.path ?? ''));
-    if (!file.existsSync()) continue;
-    for (final occurrence in scanner.scan(file.readAsStringSync())) {
-      final marker = occurrence.marker;
-      if (marker == null) continue;
-      if (marker.kind == ContentMarkerKind.example) {
-        ids.add(marker.argument);
-      } else if (marker.kind == ContentMarkerKind.diagram) {
-        final parsed = DiagramMarkerArgument.parse(marker.argument);
-        if (parsed != null) ids.add(parsed.exampleId);
-      }
-    }
-  }
-  return ids;
-}

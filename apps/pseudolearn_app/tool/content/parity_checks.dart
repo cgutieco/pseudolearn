@@ -119,35 +119,6 @@ bool _sameSet(List<String> one, List<String> other) {
       other.toSet().difference(one.toSet()).isEmpty;
 }
 
-List<String> checkSpecificationParity(LoadedLanguage a, LoadedLanguage b) {
-  final errors = <String>[];
-  for (final id in a.specificationBlocks.keys) {
-    final other = b.specificationBlocks[id];
-    if (other == null) {
-      errors.add(
-        'Specification section "$id" exists in "${a.code}" but not in "${b.code}"',
-      );
-      continue;
-    }
-    final where = '"$id" between "${a.code}" and "${b.code}"';
-    final one = a.specificationBlocks[id]!;
-    if (!_sameHeadings(one, other)) {
-      errors.add('Specification section $where has a different heading tree');
-    }
-    if (_countOf<CodeBlock>(one) != _countOf<CodeBlock>(other)) {
-      errors.add(
-        'Specification section $where has a different number of code blocks',
-      );
-    }
-    if (_countOf<TableBlock>(one) != _countOf<TableBlock>(other)) {
-      errors.add(
-        'Specification section $where has a different number of tables',
-      );
-    }
-  }
-  return errors;
-}
-
 List<String> checkExerciseParity(LoadedLanguage a, LoadedLanguage b) {
   final errors = <String>[];
   for (final id in a.exercises.keys) {

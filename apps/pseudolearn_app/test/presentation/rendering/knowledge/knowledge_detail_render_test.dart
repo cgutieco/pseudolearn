@@ -212,46 +212,6 @@ void main() {
       content: moduleContent,
     );
 
-    const specState = EntryDetailState(
-      status: KnowledgeDetailStatus.success,
-      entry: KnowledgeEntry(
-        id: 'esp-i-tipos-primitivos',
-        type: KnowledgeEntryType.specificationSection,
-        title: 'Tipos primitivos',
-        summary: 'Los cinco tipos, sus valores y su rango.',
-        anchor: 'tipos-primitivos',
-      ),
-      content: SpecificationDetailContent(
-        entry: KnowledgeEntry(
-          id: 'esp-i-tipos-primitivos',
-          type: KnowledgeEntryType.specificationSection,
-          title: 'Tipos primitivos',
-          summary: 'Los cinco tipos, sus valores y su rango.',
-          anchor: 'tipos-primitivos',
-        ),
-        blocks: [
-          HeadingBlock(level: 1, text: 'Tipos primitivos'),
-          ParagraphBlock(
-            text:
-                'El lenguaje tiene cinco tipos primitivos. Todo valor pertenece a uno y solo a uno de ellos.',
-          ),
-          TableBlock(
-            headers: ['Tipo', 'Descripción'],
-            rows: [
-              ['Entero', '64 bits con signo'],
-              ['Real', 'Coma flotante 64 bits'],
-              ['Lógico', 'Verdadero o falso'],
-            ],
-          ),
-        ],
-        headings: [
-          DocumentHeading(level: 1, text: 'Tipos primitivos', blockIndex: 0),
-        ],
-        selectedAnchor: 'tipos-primitivos',
-        fromModuleId: 'CON-B1',
-        fromModuleTitle: 'Datos: tipos, variables, expresiones y asignación',
-      ),
-    );
 
     final widths = <String, double>{
       'compact': 360,
@@ -282,27 +242,7 @@ void main() {
         expect(tester.takeException(), isNull);
       });
 
-      testWidgets('specification · ${widthEntry.key} · light', (tester) async {
-        await _pumpKnowledgeDetailView(
-          tester,
-          size: Size(widthEntry.value, 800),
-          theme: AppTheme.light(),
-          state: specState,
-        );
-        expect(find.byType(MaterialApp), findsOneWidget);
-        expect(tester.takeException(), isNull);
-      });
 
-      testWidgets('specification · ${widthEntry.key} · dark', (tester) async {
-        await _pumpKnowledgeDetailView(
-          tester,
-          size: Size(widthEntry.value, 800),
-          theme: AppTheme.dark(),
-          state: specState,
-        );
-        expect(find.byType(MaterialApp), findsOneWidget);
-        expect(tester.takeException(), isNull);
-      });
     }
   });
 }

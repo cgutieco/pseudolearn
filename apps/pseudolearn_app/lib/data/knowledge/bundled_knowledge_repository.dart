@@ -11,6 +11,8 @@ import '../../domain/model/knowledge/module_section.dart';
 import '../../domain/model/profiles/syntax_profile_id.dart';
 import '../../domain/model/settings/ui_language_id.dart';
 import '../../domain/ports/knowledge_repository.dart';
+import '../../domain/ports/reference_repository.dart';
+import '../reference/reference_knowledge_entries.dart';
 import 'content_assets.dart';
 import 'exercise_document_parser.dart';
 import 'referenced_content_ids.dart';
@@ -31,15 +33,18 @@ final class BundledKnowledgeRepository implements KnowledgeRepository {
   final ExerciseDocumentParser _exerciseParser;
   final KnowledgeManifestReader _manifestReader;
   final MarkerResolver _markers;
+  final ReferenceRepository _reference;
 
   BundledKnowledgeRepository({
     required MarkerResolver markers,
     required AssetLoader assetLoader,
+    required ReferenceRepository reference,
     MarkdownBlockParser? markdown,
     ModuleDocumentParser? moduleParser,
     ExerciseDocumentParser? exerciseParser,
     KnowledgeManifestReader? manifestReader,
   })  : _markers = markers,
+        _reference = reference,
         _assetLoader = assetLoader,
         _markdown = markdown ?? const MarkdownBlockParser(),
         _moduleParser = moduleParser ?? const ModuleDocumentParser(),
@@ -57,7 +62,8 @@ final class BundledKnowledgeRepository implements KnowledgeRepository {
         detail: _manifestPathFor(language),
       );
     }
-    return _manifestReader.read(source);
+    final manifest = _manifestReader.read(source);
+    return withSpecificationEntries(manifest, (reference: _reference, language: language));
   }
 
   @override

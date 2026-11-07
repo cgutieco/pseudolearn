@@ -89,8 +89,6 @@ List<String> _validateAcrossLanguages(List<LoadedLanguage> languages) {
       errors.addAll(_identifierSymmetry(a, b));
       errors.addAll(checkModuleParity(a, b));
       errors.addAll(checkModuleParity(b, a));
-      errors.addAll(checkSpecificationParity(a, b));
-      errors.addAll(checkSpecificationParity(b, a));
       errors.addAll(checkExerciseParity(a, b));
       errors.addAll(checkExerciseParity(b, a));
       errors.addAll(

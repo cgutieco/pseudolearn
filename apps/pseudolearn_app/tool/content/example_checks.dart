@@ -75,37 +75,12 @@ const Set<String> exemptExamples = {'example-guided-demo'};
 
 List<String> checkExamplesReferenced(LoadedLanguage language) {
   final declared = exampleIdsOf(language.entries);
-  final referenced = {
-    ...language.moduleExampleIds,
-    ...language.specificationExampleIds,
-  };
+  final referenced = language.moduleExampleIds;
   final errors = <String>[];
   for (final id in declared.difference(referenced).difference(exemptExamples)) {
     errors.add(
       'Example "$id" (${language.code}) is declared but never referenced',
     );
-  }
-  return errors;
-}
-
-List<String> checkSpecificationExamplesMinimal(LoadedLanguage language) {
-  final errors = <String>[];
-  final specOnly = language.specificationExampleIds.difference(
-    language.moduleExampleIds,
-  );
-  for (final id in specOnly) {
-    final source = language.exampleSources[id];
-    if (source == null) continue;
-    final nonBlankLines = source
-        .split('\n')
-        .where((l) => l.trim().isNotEmpty)
-        .length;
-    if (nonBlankLines > 12) {
-      errors.add(
-        'Specification example "$id" (${language.code}) has $nonBlankLines non-empty lines, '
-        'exceeding the limit of 12',
-      );
-    }
   }
   return errors;
 }

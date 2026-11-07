@@ -104,8 +104,8 @@ FinAlgoritmo
 
 :::parte especificacion
 
-- esp-i-control El condicional, la selección múltiple y los tres bucles
-- esp-i-operadores El tipo lógico y sus operadores
+- control.si El condicional, la selección múltiple y los tres bucles
+- expresiones.logicos El tipo lógico y sus operadores
 
 :::parte ejercicios
 

@@ -4,7 +4,6 @@ import 'example_checks.dart';
 import 'exercise_checks.dart';
 import 'loaded_content.dart';
 import 'module_checks.dart';
-import 'spec_checks.dart';
 
 List<String> validateLanguage({required LoadedLanguage language}) {
   final errors = <String>[];
@@ -12,9 +11,7 @@ List<String> validateLanguage({required LoadedLanguage language}) {
   errors.addAll(_validateModules(language));
   errors.addAll(_validateExercises(language));
   errors.addAll(_validateIllustrations(language));
-  errors.addAll(checkSpecificationCoverageAndDiagnostics(language: language));
   errors.addAll(checkExamplesReferenced(language));
-  errors.addAll(checkSpecificationExamplesMinimal(language));
   return errors;
 }
 

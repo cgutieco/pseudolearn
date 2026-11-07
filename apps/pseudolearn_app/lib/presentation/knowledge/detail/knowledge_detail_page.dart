@@ -66,8 +66,8 @@ final class _KnowledgeDetailPageState extends State<KnowledgeDetailPage> {
   }
 
   void _onOpenSpec(String specId, {String? anchor}) {
-    final suffix = anchor != null ? '&anchor=$anchor' : '';
-    context.push('/conocimiento/$specId?fromModule=${widget.entryId}$suffix');
+    final suffix = anchor != null ? '?anchor=$anchor' : '';
+    context.push('/conocimiento/especificacion/$specId$suffix');
   }
 
   void _onReturnToModule(String moduleId) {

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pseudolearn_app/application/reference/reference_index_cubit.dart';
+import 'package:pseudolearn_app/domain/model/reference/reference_edition.dart';
+import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
+import '../../../fakes/fake_reference_repository.dart';
 import 'package:pseudolearn_app/application/knowledge/bank/exercise_bank_state.dart';
 import 'package:pseudolearn_app/application/knowledge/knowledge_state.dart';
 import 'package:pseudolearn_app/application/knowledge/route/learning_route_state.dart';
@@ -130,6 +135,15 @@ Future<void> _pumpKnowledgeView(
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
 
+  final index = ReferenceIndexCubit(repository: FakeReferenceRepository());
+  await tester.runAsync(
+    () => index.load(
+      const ReferenceEdition(
+        language: UiLanguageId.spanish,
+        profile: SyntaxProfileId.classicSpanish,
+      ),
+    ),
+  );
   await tester.pumpWidget(
     MaterialApp(
       theme: theme,
@@ -143,7 +157,9 @@ Future<void> _pumpKnowledgeView(
       supportedLocales: AppLocalizations.supportedLocales,
       builder: (context, child) =>
           DesignCanvas(child: child ?? const SizedBox.shrink()),
-      home: KnowledgeView(
+      home: BlocProvider.value(
+        value: index,
+        child: KnowledgeView(
         knowledgeState: _knowledgeState,
         routeState: _routeState,
         exerciseBankState: _bankState,
@@ -158,6 +174,7 @@ Future<void> _pumpKnowledgeView(
         onOpenEntry: (_) {},
         onOpenExercise: (_) {},
         onRetry: () {},
+      ),
       ),
     ),
   );

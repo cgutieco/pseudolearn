@@ -157,7 +157,7 @@ FinAlgoritmo
 
 :::parte especificacion
 
-- esp-o-clases Herencia, objeto actual y superclase, y despacho dinámico
+- objetos.herencia Herencia, objeto actual y superclase, y despacho dinámico
 
 :::parte ejercicios
 

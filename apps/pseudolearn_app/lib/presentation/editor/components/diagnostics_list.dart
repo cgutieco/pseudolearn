@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../reference/reference_link_button.dart';
 import '../../../domain/model/analysis/app_diagnostic.dart';
 import '../../components/typography/app_text.dart';
 import '../../l10n/generated/app_localizations.dart';
@@ -86,6 +87,7 @@ final class _DiagnosticItemRow extends StatelessWidget {
             _DiagnosticMainRow(diagnostic: diagnostic),
             if (diagnostic.relatedRanges.isNotEmpty)
               _RelatedRangesList(ranges: diagnostic.relatedRanges),
+            ReferenceLinkButton.diagnostic(diagnostic.code),
           ],
         ),
       ),

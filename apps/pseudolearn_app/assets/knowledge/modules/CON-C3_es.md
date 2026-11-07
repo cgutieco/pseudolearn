@@ -87,7 +87,7 @@ FinAlgoritmo
 
 :::parte especificacion
 
-- esp-o-clases Instanciación, identidad, copia superficial y las clases como tipos
+- objetos.copia Instanciación, identidad, copia superficial y las clases como tipos
 
 :::parte ejercicios
 

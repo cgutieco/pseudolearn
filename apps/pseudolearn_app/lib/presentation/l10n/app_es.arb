@@ -2247,5 +2247,63 @@
         "example": "5"
       }
     }
-  }
+  },
+  "referenceContents": "En esta sección",
+  "referenceOpenContents": "Índice de la sección",
+  "referenceTryInEditor": "Probar en el editor",
+  "referenceExecutedSeal": "Ejecutado con el motor",
+  "referenceOutput": "Salida",
+  "referenceNoOutput": "(sin salida)",
+  "referenceDiagnostics": "Diagnósticos",
+  "referenceStepPrevious": "Anterior",
+  "referenceStepNext": "Siguiente",
+  "referenceStepCounter": "Paso {current} de {total}",
+  "@referenceStepCounter": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "referenceFigureLabel": "Figura {number}",
+  "@referenceFigureLabel": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "referenceCalloutPhrase": "En una frase",
+  "referenceCalloutLimit": "Límite exacto",
+  "referenceCalloutTeachers": "Para docentes",
+  "referenceCalloutInside": "Por dentro",
+  "referenceCalloutAnalogy": "Analogía",
+  "referenceCalloutNote": "Nota",
+  "referenceCalloutParts": "Cada parte",
+  "referenceCalloutErrors": "Errores frecuentes",
+  "referenceSummary": "En resumen",
+  "referenceSeeAlso": "Véase también",
+  "referenceIntermediate": "Representación intermedia",
+  "referenceTrace": "Traza del motor",
+  "referenceNotFoundTitle": "Sección no encontrada",
+  "referenceNotFoundDescription": "Esta sección no existe en la especificación.",
+  "referenceIndexErrorTitle": "No se pudo cargar la especificación",
+  "referenceSearchEmpty": "Ninguna sección coincide con «{query}»",
+  "@referenceSearchEmpty": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "referenceOpenInSpecification": "Ver en la especificación",
+  "referenceRailsLabel": "Diagrama de sintaxis",
+  "referenceFormLabel": "Forma",
+  "referenceTerminationCompleted": "Terminó con normalidad",
+  "referenceTerminationFailed": "Se detuvo por un fallo",
+  "referenceTerminationRejected": "No se ejecutó: el análisis encontró errores",
+  "referenceTerminationOther": "Terminó de forma anticipada"
 }

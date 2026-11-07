@@ -13,6 +13,7 @@ import '../domain/ports/flowchart_builder.dart';
 import '../domain/ports/identifier_generator.dart';
 import '../domain/ports/incoming_link_source.dart';
 import '../domain/ports/knowledge_repository.dart';
+import '../domain/ports/reference_repository.dart';
 import '../domain/ports/local_account_data_purger.dart';
 import '../domain/ports/local_progress_store.dart';
 import '../domain/ports/preferences_store.dart';
@@ -57,6 +58,7 @@ final class AppDependencies {
   final TextEntryModality textEntryModality;
   final AppVersionSource appVersionSource;
   final KnowledgeRepository knowledgeRepository;
+  final ReferenceRepository referenceRepository;
   final SyntaxReferenceSource syntaxReferenceSource;
   final SyntaxHelpSource syntaxHelpSource;
   final ProgramExporter programExporter;
@@ -91,6 +93,7 @@ final class AppDependencies {
     required this.textEntryModality,
     required this.appVersionSource,
     required this.knowledgeRepository,
+    required this.referenceRepository,
     required this.syntaxReferenceSource,
     required this.syntaxHelpSource,
     required this.programExporter,

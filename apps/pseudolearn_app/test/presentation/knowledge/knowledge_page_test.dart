@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pseudolearn_app/application/reference/reference_index_cubit.dart';
+import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
+import 'package:pseudolearn_app/domain/model/reference/reference_edition.dart';
+import 'package:pseudolearn_app/domain/model/reference/reference_index.dart';
+import 'package:pseudolearn_app/domain/model/reference/reference_run.dart';
+import 'package:pseudolearn_app/domain/model/reference/reference_search_entry.dart';
+import 'package:pseudolearn_app/domain/model/reference/reference_section_kind.dart';
+import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
+import '../../fakes/fake_reference_repository.dart';
 import 'package:pseudolearn_app/application/knowledge/bank/exercise_bank_state.dart';
 import 'package:pseudolearn_app/application/knowledge/knowledge_state.dart';
 import 'package:pseudolearn_app/application/knowledge/route/learning_route_state.dart';
@@ -16,6 +26,27 @@ import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.da
 import 'package:pseudolearn_app/presentation/shell/design_canvas.dart';
 import 'package:pseudolearn_app/presentation/theme/app_theme.dart';
 import 'package:pseudolearn_app/presentation/theme/tokens/spacing.dart';
+
+Future<ReferenceIndexCubit> _loadedIndex() async {
+  final cubit = ReferenceIndexCubit(
+    repository: FakeReferenceRepository(
+      index: const ReferenceIndex([
+        ReferencePart(id: 'parte-3', number: 'III', title: 'Tipos y valores', summary: 'Datos', sections: [
+          ReferenceIndexEntry(
+            id: 'tipos.primitivos',
+            number: '3.1',
+            kind: ReferenceSectionKind.type,
+            title: [ReferenceTextRun('Tipos primitivos')],
+            phrase: [ReferenceTextRun('Cinco tipos')],
+          ),
+        ]),
+      ]),
+      search: const [ReferenceSearchEntry(text: 'Tipos primitivos', kind: 'title', sectionId: 'tipos.primitivos')],
+    ),
+  );
+  await cubit.load(const ReferenceEdition(language: UiLanguageId.spanish, profile: SyntaxProfileId.classicSpanish));
+  return cubit;
+}
 
 void main() {
   Widget buildTestApp(Widget child) {
@@ -70,24 +101,14 @@ void main() {
     });
 
     testWidgets('specification section shows the search-empty state with the query in the message', (tester) async {
-      const spec = KnowledgeEntry(
-        id: 'spec-1',
-        type: KnowledgeEntryType.specificationSection,
-        title: 'Tipos primitivos',
-        summary: 'Resumen',
-      );
-      await tester.pumpWidget(buildTestApp(buildView(
-        activeSection: KnowledgeSectionKind.specification,
-        knowledgeState: const KnowledgeState(
-          status: KnowledgeStatus.success,
-          specificationEntries: [spec],
-          filteredSpecificationEntries: [],
-          searchQuery: 'inexistente',
-        ),
+      final cubit = await _loadedIndex();
+      cubit.search('xyz');
+      await tester.pumpWidget(buildTestApp(BlocProvider.value(
+        value: cubit,
+        child: buildView(activeSection: KnowledgeSectionKind.specification),
       )));
 
-      expect(find.text('Sin resultados'), findsOneWidget);
-      expect(find.text('No se encontraron elementos para "inexistente".'), findsOneWidget);
+      expect(find.text('Ninguna sección coincide con «xyz»'), findsOneWidget);
     });
 
     testWidgets('error view triggers retry', (tester) async {
@@ -141,25 +162,15 @@ void main() {
       expect(opened, moduleA);
     });
 
-    testWidgets('specification section renders entries in grid with bottom padding', (tester) async {
-      const spec = KnowledgeEntry(
-        id: 'spec-1',
-        type: KnowledgeEntryType.specificationSection,
-        title: 'Tipos primitivos',
-        summary: 'Resumen',
-      );
-      await tester.pumpWidget(buildTestApp(buildView(
-        activeSection: KnowledgeSectionKind.specification,
-        knowledgeState: const KnowledgeState(
-          status: KnowledgeStatus.success,
-          specificationEntries: [spec],
-          filteredSpecificationEntries: [spec],
-        ),
+    testWidgets('specification section renders the index by parts', (tester) async {
+      final cubit = await _loadedIndex();
+      await tester.pumpWidget(buildTestApp(BlocProvider.value(
+        value: cubit,
+        child: buildView(activeSection: KnowledgeSectionKind.specification),
       )));
 
-      expect(find.text('Tipos primitivos'), findsOneWidget);
-      final grid = tester.widget<AppCardGrid>(find.byType(AppCardGrid));
-      expect(grid.padding, const EdgeInsets.only(bottom: SpacingTokens.space6));
+      expect(find.text('Tipos y valores'), findsOneWidget);
+      expect(find.text('3.1'), findsOneWidget);
     });
 
     testWidgets('exercises section renders its entries as cards with bottom padding', (tester) async {

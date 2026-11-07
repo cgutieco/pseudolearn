@@ -2,15 +2,15 @@ import 'ast_construct.dart';
 
 const Map<AstConstruct, String> constructSpecificationSections =
     <AstConstruct, String>{
-      AstConstruct.conditional: 'esp-i-control',
-      AstConstruct.multipleSelection: 'esp-i-control',
-      AstConstruct.conditionalLoop: 'esp-i-control',
-      AstConstruct.postConditionalLoop: 'esp-i-control',
-      AstConstruct.countedLoop: 'esp-i-control',
-      AstConstruct.arrayDeclaration: 'esp-i-arreglos',
-      AstConstruct.subprogram: 'esp-i-subprogramas',
-      AstConstruct.classDeclaration: 'esp-o-clases',
-      AstConstruct.interfaceDeclaration: 'esp-o-clases',
+      AstConstruct.conditional: 'control.si',
+      AstConstruct.multipleSelection: 'control.segun',
+      AstConstruct.conditionalLoop: 'control.mientras',
+      AstConstruct.postConditionalLoop: 'control.repetir',
+      AstConstruct.countedLoop: 'control.para',
+      AstConstruct.arrayDeclaration: 'tipos.arreglos',
+      AstConstruct.subprogram: 'subprogramas.declaracion',
+      AstConstruct.classDeclaration: 'objetos.clase',
+      AstConstruct.interfaceDeclaration: 'objetos.interfaces',
     };
 
 Set<String> measurableSpecificationSectionIds() =>

@@ -7,7 +7,6 @@ import 'package:pseudolearn_app/domain/model/knowledge/expected_value_kind.dart'
 import 'package:pseudolearn_app/domain/model/knowledge/learning_track.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/member_visibility.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/module_part.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/specification_document.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/structural_assertion_kind.dart';
 
 void main() {
@@ -48,9 +47,6 @@ void main() {
       for (final kind in StructuralAssertionKind.values) {
         expect(StructuralAssertionKind.fromSlug(kind.slug), kind);
       }
-      for (final document in SpecificationDocument.values) {
-        expect(SpecificationDocument.fromSlug(document.slug), document);
-      }
       for (final track in LearningTrack.values) {
         expect(LearningTrack.fromCode(track.code), track);
       }
@@ -67,7 +63,6 @@ void main() {
       expect(ModulePart.fromSlug(''), isNull);
       expect(ContentMarkerKind.fromSlug('lexeme'), isNull);
       expect(LearningTrack.fromCode('D'), isNull);
-      expect(SpecificationDocument.fromSlug(''), isNull);
     });
   });
 }

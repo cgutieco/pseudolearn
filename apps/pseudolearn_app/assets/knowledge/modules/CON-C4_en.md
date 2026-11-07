@@ -156,7 +156,7 @@ endAlgorithm
 
 :::parte especificacion
 
-- esp-o-clases Inheritance, current object and superclass, and dynamic dispatch
+- objetos.herencia Inheritance, current object and superclass, and dynamic dispatch
 
 :::parte ejercicios
 

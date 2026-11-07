@@ -78,7 +78,7 @@ endAlgorithm
 
 :::parte especificacion
 
-- esp-o-clases Object-oriented notation: class, attributes, methods, constructor and instantiation
+- objetos.metodos Object-oriented notation: class, attributes, methods, constructor and instantiation
 
 :::parte ejercicios
 

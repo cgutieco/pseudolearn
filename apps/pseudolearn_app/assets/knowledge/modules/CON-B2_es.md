@@ -66,7 +66,7 @@ FinAlgoritmo
 
 :::parte especificacion
 
-- esp-i-entrada-salida Qué emite la salida, qué exige la lectura y cómo se escribe cada valor
+- biblioteca.consola Qué emite la salida, qué exige la lectura y cómo se escribe cada valor
 
 :::parte ejercicios
 

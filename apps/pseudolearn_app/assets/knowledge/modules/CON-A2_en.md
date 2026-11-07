@@ -86,8 +86,8 @@ endAlgorithm
 
 :::parte especificacion
 
-- esp-i-declaracion The exact shape of declaring a box and assigning it a value
-- esp-i-tipos-primitivos The five types a box can admit
+- declaraciones.definir The exact shape of declaring a box and assigning it a value
+- tipos.primitivos The five types a box can admit
 
 :::parte ejercicios
 

@@ -86,7 +86,7 @@ endAlgorithm
 
 :::parte especificacion
 
-- esp-i-control The conditional, multiple selection and the three loops
+- control.si The conditional, multiple selection and the three loops
 
 :::parte ejercicios
 

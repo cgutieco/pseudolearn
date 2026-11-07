@@ -116,9 +116,9 @@ FinAlgoritmo
 
 :::parte especificacion
 
-- esp-i-tipos-primitivos Los cinco tipos, sus valores y su rango
-- esp-i-operadores La tabla de precedencia completa y el cortocircuito
-- esp-i-declaracion La forma exacta de una declaración y de una asignación
+- tipos.primitivos Los cinco tipos, sus valores y su rango
+- expresiones.precedencia La tabla de precedencia completa y el cortocircuito
+- declaraciones.definir La forma exacta de una declaración y de una asignación
 
 :::parte ejercicios
 

@@ -1,4 +1,3 @@
-import 'package:pseudolearn_app/domain/model/knowledge/content_block.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/knowledge_entry.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/learning_module.dart';
@@ -25,9 +24,7 @@ final class LoadedLanguage {
   final Map<String, String> exampleSources;
   final Set<String> specificationAnchors;
   final Map<String, Set<String>> constructsByModule;
-  final Map<String, List<ContentBlock>> specificationBlocks;
   final Set<String> moduleExampleIds;
-  final Set<String> specificationExampleIds;
 
   const LoadedLanguage({
     required this.code,
@@ -39,8 +36,6 @@ final class LoadedLanguage {
     required this.exampleSources,
     required this.specificationAnchors,
     required this.constructsByModule,
-    required this.specificationBlocks,
     required this.moduleExampleIds,
-    required this.specificationExampleIds,
   });
 }

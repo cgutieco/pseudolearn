@@ -210,30 +210,6 @@ void main() {
       },
     );
 
-    test(
-      'Loads a specification section entry with anchor and backlink',
-      () async {
-        await cubit.loadEntry(
-          'esp-i-tipos',
-          UiLanguageId.spanish,
-          anchor: 'tipos',
-          fromModuleId: 'CON-B1',
-        );
-
-        final state = cubit.state.forEntry('esp-i-tipos');
-        expect(state.status, equals(KnowledgeDetailStatus.success));
-        expect(state.entry, equals(specEntry));
-        expect(state.content, isA<SpecificationDetailContent>());
-
-        final content = state.content as SpecificationDetailContent;
-        expect(content.selectedAnchor, equals('tipos'));
-        expect(content.fromModuleId, equals('CON-B1'));
-        expect(content.fromModuleTitle, equals('Datos'));
-        expect(content.blocks.length, equals(2));
-        expect(content.headings.length, equals(1));
-        expect(content.headings.first.text, equals('Tipos primitivos'));
-      },
-    );
 
     test('Loads a document with diagram blocks and resolves scenes', () async {
       await cubit.loadEntry('contact-support', UiLanguageId.spanish);
@@ -317,53 +293,6 @@ void main() {
       expect(state.errorMessage, isNotNull);
     });
 
-    test(
-      'Loads a specification section in English resolving english profile',
-      () async {
-        const englishSpecEntry = KnowledgeEntry(
-          id: 'esp-o-clases',
-          type: KnowledgeEntryType.specificationSection,
-          title: 'Classes',
-          summary: 'Class declarations.',
-          path: 'specification/esp-o-clases_en.md',
-        );
-        knowledgeRepo = FakeKnowledgeRepository(
-          entries: const [englishSpecEntry],
-          blocksByPath: {
-            'specification/esp-o-clases_en.md': const [
-              HeadingBlock(level: 1, text: 'Classes'),
-              ParagraphBlock(text: 'Class notation.'),
-            ],
-          },
-        );
-        final deps = buildTestDependencies(
-          knowledgeRepository: knowledgeRepo,
-          syntaxReferenceSource: referenceSource,
-          repository: documentRepo,
-          clock: clock,
-          identifiers: idGen,
-        );
-        final englishCubit = KnowledgeDetailCubit(
-          repository: deps.knowledgeRepository,
-          referenceSource: deps.syntaxReferenceSource,
-          analyzer: deps.programAnalyzer,
-          progressStore: progressStore,
-          diagramResolver: DiagramBlockResolver(
-            flowchartBuilder: deps.flowchartBuilder,
-            structogramBuilder: deps.structogramBuilder,
-            classDiagramBuilder: deps.classDiagramBuilder,
-          ),
-        );
-
-        await englishCubit.loadEntry('esp-o-clases', UiLanguageId.english);
-
-        final state = englishCubit.state.forEntry('esp-o-clases');
-        expect(state.status, equals(KnowledgeDetailStatus.success));
-        expect(state.entry, equals(englishSpecEntry));
-        expect(state.content, isA<SpecificationDetailContent>());
-        await englishCubit.close();
-      },
-    );
 
     test('saveScrollOffset remembers offset across module reload', () async {
       await cubit.loadEntry('CON-B1', UiLanguageId.spanish);
@@ -392,12 +321,12 @@ void main() {
       );
       expect(cubit.state.forEntry('CON-B1').entry, equals(moduleEntry));
 
-      await cubit.loadEntry('esp-i-tipos', UiLanguageId.spanish);
+      await cubit.loadEntry('contact-support', UiLanguageId.spanish);
       expect(
-        cubit.state.forEntry('esp-i-tipos').status,
+        cubit.state.forEntry('contact-support').status,
         equals(KnowledgeDetailStatus.success),
       );
-      expect(cubit.state.forEntry('esp-i-tipos').entry, equals(specEntry));
+      expect(cubit.state.forEntry('contact-support').entry, equals(contactEntry));
 
       expect(
         cubit.state.forEntry('CON-B1').status,

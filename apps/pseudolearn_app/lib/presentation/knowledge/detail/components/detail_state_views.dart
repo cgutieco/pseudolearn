@@ -6,7 +6,6 @@ import '../../../l10n/generated/app_localizations.dart';
 import 'document_detail_view.dart';
 import 'exercise_detail_view.dart';
 import 'module_detail_view.dart';
-import 'specification_detail_view.dart';
 
 final class NotFoundBody extends StatelessWidget {
   final AppLocalizations l10n;
@@ -79,11 +78,6 @@ final class SuccessContent extends StatelessWidget {
           content: c,
           onOpenSpecification: onOpenSpecification,
           onOpenExercise: onOpenExercise,
-          onScrollChanged: onScrollChanged,
-        ),
-      final SpecificationDetailContent c => SpecificationDetailView(
-          content: c,
-          onReturnToModule: onReturnToModule,
           onScrollChanged: onScrollChanged,
         ),
       final DocumentDetailContent c => DocumentDetailView(

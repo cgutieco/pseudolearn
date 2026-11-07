@@ -22,8 +22,8 @@ DashboardInputs _inputs({
       moduleEntry('CON-A1', track: LearningTrack.foundations, order: 1),
       moduleEntry('CON-B3', track: LearningTrack.imperative, order: 3),
       exerciseEntry('CON-A1-E1', moduleId: 'CON-A1'),
-      specificationEntry('esp-i-control', order: 2),
-      specificationEntry('esp-i-lexico', order: 1),
+      specificationEntry('control.para', order: 2),
+      specificationEntry('lexico.palabras-reservadas', order: 1),
     ],
     progress: withData
         ? [
