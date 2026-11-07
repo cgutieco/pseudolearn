@@ -312,6 +312,13 @@
       "luis": "\"Luis\"",
       "nota": "Las claves se quedan en el orden en que entraron"
     },
+    "diferir-pila": {
+      "titulo": "La pila de limpiezas",
+      "descripcion": "Una pila: primero entra cierro la puerta y encima apago la luz. Al salir se ejecuta primero apago la luz y después cierro la puerta.",
+      "pila": "limpiezas apuntadas",
+      "puerta": "cierro la puerta",
+      "luz": "apago la luz"
+    },
     "ecosistema": {
       "titulo": "Un lenguaje, un motor, tres puertas",
       "descripcion": "Arriba, el lenguaje PseudoLearn en español e inglés. Debajo, el motor que analiza y ejecuta. Del motor salen tres flechas hacia la app, la línea de órdenes y la web.",
@@ -470,6 +477,11 @@
       "resto": "VIII · X · XI · XII · XIII",
       "apendices": "Apéndices A–F: consulta"
     },
+    "mientras-ciclo": {
+      "titulo": "El ciclo de Mientras",
+      "descripcion": "Un rombo con la condición n > 0. Si es verdadera se ejecuta el cuerpo y se vuelve al rombo; si es falsa se sale hacia FinMientras. Al lado, el valor de n baja de 3 a 0.",
+      "valorN": "valor de n"
+    },
     "niveles": {
       "titulo": "Antes y durante la ejecución",
       "descripcion": "Dos columnas. Antes de ejecutar se comprueban la forma, los nombres, los tipos y los subprogramas llamados. Al ejecutar se comprueban la división entre cero, los índices, las variables sin valor y el desbordamiento.",
@@ -503,6 +515,19 @@
       "mayusculas": "mayúsculas",
       "minusculas": "minúsculas",
       "nota": "\"Zeta\" < \"alfa\" porque 90 < 97"
+    },
+    "para-cada-recorrido": {
+      "titulo": "Recorrido de un vector",
+      "descripcion": "Un vector con pan, leche y huevos en las posiciones 0, 1 y 2. Un marco avanza por cada casilla y producto toma el valor de la casilla marcada.",
+      "fin": "fin del recorrido"
+    },
+    "para-contador": {
+      "titulo": "El contador de Para",
+      "descripcion": "Una recta con los valores 1 a 6. El control empieza en 1 y avanza de uno en uno; el 5, que es el final, todavía se incluye; al llegar a 6 el bucle termina.",
+      "inicial": "inicial",
+      "final": "final",
+      "incluido": "incluido",
+      "termina": "termina"
     },
     "perfiles-espejo": {
       "titulo": "El mismo programa en dos perfiles",
@@ -560,6 +585,27 @@
       "persona2": "persona 2",
       "sobra": "sobra",
       "regla": "7 = 3 × 2 + 1"
+    },
+    "repetir-ciclo": {
+      "titulo": "Mientras frente a Repetir",
+      "descripcion": "A la izquierda, Mientras: primero la pregunta y después el cuerpo, que puede ejecutarse cero veces. A la derecha, Repetir: primero el cuerpo y después la pregunta; con Falso se repite y con Verdadero se sale, así que el cuerpo se ejecuta al menos una vez.",
+      "pregunta": "¿condición?",
+      "cuerpo": "cuerpo",
+      "ceroOMas": "cero o más vueltas",
+      "unaOMas": "una o más vueltas"
+    },
+    "salir-corte": {
+      "titulo": "Salir corta el bucle",
+      "descripcion": "Cinco casillas con 7, 14, 21, 28 y 35. Se visitan 7, 14 y 21; en 21 una línea roja marca Salir y las casillas 28 y 35 quedan sin visitar.",
+      "visitadas": "visitadas",
+      "nunca": "nunca visitadas"
+    },
+    "segun-ramas": {
+      "titulo": "Las ramas de Segun",
+      "descripcion": "Un Segun sobre dia con tres ramas: 1 a 5 hay clase, 6 y 7 fin de semana, y De Otro Modo. El selector vale 6 y se recorre solo la segunda rama hasta FinSegun.",
+      "clase": "hay clase",
+      "finde": "fin de semana",
+      "noExiste": "no existe"
     },
     "si-ordinograma": {
       "titulo": "Ejecución paso a paso de Montana",

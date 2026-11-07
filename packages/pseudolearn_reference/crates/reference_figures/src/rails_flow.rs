@@ -9,7 +9,7 @@ const MARGIN: f64 = 8.0;
 pub fn sequence(items: &[RailNode], limit: f64, labels: &RailLabels<'_>) -> Piece {
     let children: Vec<Piece> = items
         .iter()
-        .map(|member| piece(member, limit - 2.0 * MARGIN, labels))
+        .map(|member| piece(member, limit - 2.0 * MARGIN - GAP, labels))
         .collect();
     let single: f64 = children.iter().map(|child| child.width + GAP).sum();
     if single <= limit {

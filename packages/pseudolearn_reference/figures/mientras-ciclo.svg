@@ -1,0 +1,27 @@
+<svg viewBox="0 0 340 230">
+  <flecha puntos="120,6 120,24"/>
+  <polygon points="120,26 180,56 120,86 60,56" fill="@acento-estructurado" fill-opacity="0.12" stroke="@acento-estructurado"/>
+  <text x="120" y="61" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:n &gt; 0}}</text>
+  <flecha puntos="120,86 120,112"/>
+  <text x="128" y="104" font-size="12" fill="@logico">{{codigo:Verdadero}}</text>
+  <caja x="50" y="114" ancho="140" alto="54" rol="atenuado" fondo="0.04" fuente="mono" tamano="12" texto="{{codigo:Escribir n;}}¶{{codigo:n &lt;- n - 1;}}"/>
+  <flecha puntos="50,141 20,141 20,56 58,56"/>
+  <flecha puntos="180,56 240,56 240,200"/>
+  <text x="246" y="48" font-size="12" fill="@logico">{{codigo:Falso}}</text>
+  <text x="240" y="220" font-size="12" text-anchor="middle" fill="@atenuado">{{codigo:FinMientras}}</text>
+  <text x="290" y="110" font-size="12" text-anchor="middle" fill="@atenuado">{{t:valorN}}</text>
+  <caja x="265" y="118" ancho="50" alto="34" rol="numero" fondo="0.16" fuente="mono" tamano="16" texto="3"/>
+  <g data-paso="1" data-hasta="1">
+    <path d="M 120 86 V 112" fill="none" stroke="@acento-procedimental" stroke-width="3"/>
+  </g>
+  <g data-paso="2" data-hasta="2">
+    <rect x="265" y="118" width="50" height="34" rx="6" fill="@superficie"/>
+    <caja x="265" y="118" ancho="50" alto="34" rol="numero" fondo="0.16" fuente="mono" tamano="16" texto="2"/>
+    <path d="M 50 141 H 20 V 56 H 58" fill="none" stroke="@acento-procedimental" stroke-width="3"/>
+  </g>
+  <g data-paso="3">
+    <rect x="265" y="118" width="50" height="34" rx="6" fill="@superficie"/>
+    <caja x="265" y="118" ancho="50" alto="34" rol="numero" fondo="0.16" fuente="mono" tamano="16" texto="0"/>
+    <path d="M 180 56 H 240 V 200" fill="none" stroke="@acento-procedimental" stroke-width="3"/>
+  </g>
+</svg>

@@ -1,0 +1,23 @@
+<svg viewBox="0 0 340 150">
+  <text x="10" y="18" font-size="12" font-family="mono" fill="@atenuado">{{codigo:lista}}</text>
+  <caja x="10" y="26" ancho="100" alto="40" rol="texto" fondo="0.12" fuente="mono" texto="{{codigo:&quot;pan&quot;}}"/>
+  <caja x="120" y="26" ancho="100" alto="40" rol="texto" fondo="0.12" fuente="mono" texto="{{codigo:&quot;leche&quot;}}"/>
+  <caja x="230" y="26" ancho="100" alto="40" rol="texto" fondo="0.12" fuente="mono" texto="{{codigo:&quot;huevos&quot;}}"/>
+  <text x="60" y="82" font-size="12" text-anchor="middle" fill="@numero">0</text>
+  <text x="170" y="82" font-size="12" text-anchor="middle" fill="@numero">1</text>
+  <text x="280" y="82" font-size="12" text-anchor="middle" fill="@numero">2</text>
+  <text x="10" y="124" font-size="13" font-family="mono" fill="@tinta">{{codigo:producto}}</text>
+  <g data-paso="1" data-hasta="1">
+    <rect x="8" y="24" width="104" height="44" rx="7" fill="none" stroke="@acento-procedimental" stroke-width="3"/>
+    <caja x="100" y="106" ancho="110" alto="30" rol="texto" fondo="0.20" fuente="mono" texto="{{codigo:&quot;pan&quot;}}"/>
+  </g>
+  <g data-paso="2" data-hasta="2">
+    <rect x="118" y="24" width="104" height="44" rx="7" fill="none" stroke="@acento-procedimental" stroke-width="3"/>
+    <caja x="100" y="106" ancho="110" alto="30" rol="texto" fondo="0.20" fuente="mono" texto="{{codigo:&quot;leche&quot;}}"/>
+  </g>
+  <g data-paso="3">
+    <rect x="228" y="24" width="104" height="44" rx="7" fill="none" stroke="@acento-procedimental" stroke-width="3"/>
+    <caja x="100" y="106" ancho="110" alto="30" rol="texto" fondo="0.20" fuente="mono" texto="{{codigo:&quot;huevos&quot;}}"/>
+    <text x="280" y="126" font-size="12" text-anchor="middle" fill="@exito">{{t:fin}}</text>
+  </g>
+</svg>

@@ -72,3 +72,15 @@ fn rejects_a_diagram_that_does_not_fit() {
     let wide = "( @aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa | @b )";
     assert!(render_rails(&request("x"), wide, &labels()).is_err());
 }
+
+#[test]
+fn wraps_a_member_that_fills_a_whole_row() {
+    let failures: Vec<usize> = (1..=28)
+        .filter(|length| {
+            let name = "n".repeat(*length);
+            let rule = format!("@opening, [ @middle, @separator, {name} ], @closing");
+            render_rails(&request("x"), &rule, &labels()).is_err()
+        })
+        .collect();
+    assert_eq!(failures, Vec::<usize>::new());
+}

@@ -312,6 +312,13 @@
       "luis": "\"Luis\"",
       "nota": "Keys stay in the order they came in"
     },
+    "diferir-pila": {
+      "titulo": "The cleanup stack",
+      "descripcion": "A stack: first cierro la puerta goes in and apago la luz on top. On leaving, apago la luz runs first and then cierro la puerta.",
+      "pila": "noted cleanups",
+      "puerta": "cierro la puerta",
+      "luz": "apago la luz"
+    },
     "ecosistema": {
       "titulo": "One language, one engine, three doors",
       "descripcion": "At the top, the PseudoLearn language in Spanish and English. Below, the engine that analyses and runs. Three arrows leave the engine towards the app, the command line and the web.",
@@ -470,6 +477,11 @@
       "resto": "VIII · X · XI · XII · XIII",
       "apendices": "Appendices A–F: reference"
     },
+    "mientras-ciclo": {
+      "titulo": "The While cycle",
+      "descripcion": "A diamond with the condition n > 0. If it is true the body runs and control returns to the diamond; if it is false the loop is left towards EndWhile. Beside it, the value of n goes down from 3 to 0.",
+      "valorN": "value of n"
+    },
     "niveles": {
       "titulo": "Before and during the run",
       "descripcion": "Two columns. Before running, shape, names, types and called subroutines are checked. When running, division by zero, indices, variables without a value and overflow are checked.",
@@ -503,6 +515,19 @@
       "mayusculas": "upper case",
       "minusculas": "lower case",
       "nota": "\"Zeta\" < \"alfa\" because 90 < 97"
+    },
+    "para-cada-recorrido": {
+      "titulo": "Walking a vector",
+      "descripcion": "A vector with pan, leche and huevos at positions 0, 1 and 2. A frame moves through each cell and producto takes the value of the framed cell.",
+      "fin": "end of traversal"
+    },
+    "para-contador": {
+      "titulo": "The For counter",
+      "descripcion": "A line with the values 1 to 6. The control starts at 1 and moves one by one; 5, the final value, is still included; on reaching 6 the loop ends.",
+      "inicial": "initial",
+      "final": "final",
+      "incluido": "included",
+      "termina": "ends"
     },
     "perfiles-espejo": {
       "titulo": "The same program in two profiles",
@@ -560,6 +585,27 @@
       "persona2": "person 2",
       "sobra": "left over",
       "regla": "7 = 3 × 2 + 1"
+    },
+    "repetir-ciclo": {
+      "titulo": "While versus Repeat",
+      "descripcion": "On the left, While: first the question and then the body, which can run zero times. On the right, Repeat: first the body and then the question; with False it repeats and with True it leaves, so the body runs at least once.",
+      "pregunta": "condition?",
+      "cuerpo": "body",
+      "ceroOMas": "zero or more rounds",
+      "unaOMas": "one or more rounds"
+    },
+    "salir-corte": {
+      "titulo": "Exit cuts the loop",
+      "descripcion": "Five cells with 7, 14, 21, 28 and 35. 7, 14 and 21 are visited; at 21 a red line marks Exit and cells 28 and 35 are never visited.",
+      "visitadas": "visited",
+      "nunca": "never visited"
+    },
+    "segun-ramas": {
+      "titulo": "The branches of Switch",
+      "descripcion": "A Switch on dia with three branches: 1 to 5 school day, 6 and 7 weekend, and Otherwise. The selector is 6 and only the second branch is followed down to EndSwitch.",
+      "clase": "school day",
+      "finde": "weekend",
+      "noExiste": "does not exist"
     },
     "si-ordinograma": {
       "titulo": "Step-by-step run of Montana",
