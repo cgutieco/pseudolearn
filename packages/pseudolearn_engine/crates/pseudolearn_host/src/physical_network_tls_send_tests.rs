@@ -12,6 +12,8 @@ use tokio_rustls::TlsAcceptor;
 
 const ROOT_CERTIFICATE: &[u8] = include_bytes!("../tests/fixtures/tls/trusted_root.pem");
 const PROXY_CHILD_MARKER: &str = "PSEUDOLEARN_PROXY_TEST_CHILD";
+const CLIENT_TIMEOUT_NANOS: i64 = 60_000_000_000;
+const SERVER_WAIT: Duration = Duration::from_secs(90);
 
 struct LoopbackResolver(SocketAddr);
 
@@ -29,7 +31,7 @@ struct TlsTestServer {
 impl TlsTestServer {
     fn wait(self) -> Result<(), String> {
         self.result
-            .recv_timeout(Duration::from_secs(3))
+            .recv_timeout(SERVER_WAIT)
             .map_err(|error| error.to_string())?
     }
 }
@@ -109,9 +111,9 @@ fn request(url: String) -> NetworkRequest {
         headers: Vec::new(),
         body: None,
         response_limit: Some(1024),
-        timeout_nanos: Some(2_000_000_000),
+        timeout_nanos: Some(CLIENT_TIMEOUT_NANOS),
         effective_response_limit: Some(1024),
-        effective_timeout_nanos: Some(2_000_000_000),
+        effective_timeout_nanos: u64::try_from(CLIENT_TIMEOUT_NANOS).ok(),
         wire_limit: Some(4096),
         headers_limit: Some(16),
         header_bytes_limit: Some(4096),
@@ -144,7 +146,8 @@ fn accepts_a_valid_host_certificate_from_a_declared_test_root() -> Result<(), St
     let (reply, server_result) = send_tls(certificate, key, vec![ROOT_CERTIFICATE.to_vec()])?;
     assert_eq!(
         reply.get("outcome").and_then(serde_json::Value::as_str),
-        Some("committed")
+        Some("committed"),
+        "{reply}"
     );
     assert_eq!(reply.pointer("/value/value/status"), Some(&json!(200)));
     server_result

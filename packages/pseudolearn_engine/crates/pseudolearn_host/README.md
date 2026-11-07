@@ -95,3 +95,12 @@ verificador TLS de plataforma que la red del programa, envía `User-Agent` y `Co
 SHA-256) la comprueba quien llama. `physical_download_tests.rs` cubre, con un servidor en `127.0.0.1`, respuesta
 completa, redirección relativa, 404, límite de tamaño, cadena de redirecciones excesiva, puerto cerrado y esquema no HTTP.
 Descartado: un cliente HTTP en la CLI, que duplicaría el transporte que este crate ya posee.
+
+## Plazos de las pruebas TLS
+
+Las pruebas de `physical_network_tls_send_tests` usan un plazo de petición de 60 s y esperan al servidor 90 s. Con 2 s y
+3 s fallaban de forma intermitente: el verificador de la plataforma (en macOS, `trustd`) serializa las evaluaciones y,
+con varias pruebas en paralelo o la máquina cargada, el apretón TLS superaba los 2 s y la respuesta era `tiempo_agotado`.
+Con 16 procesos concurrentes fallaban todas; con los plazos nuevos pasan todas y tardan 12–14 s. Las pruebas comprueban
+la validación de certificados y que se ignore `HTTPS_PROXY`, no el plazo; el plazo se prueba en
+`physical_network_send_tests` con una resolución de nombres más lenta que el plazo declarado.
