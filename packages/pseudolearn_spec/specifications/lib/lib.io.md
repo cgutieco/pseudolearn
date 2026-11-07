@@ -2983,12 +2983,12 @@
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "aé\n0\n3\n",
+    "salida": "aé\n0\n3\n0\n",
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir con Como Consola <- Propagar SolicitarConsola();\nDefinir vacio Como Entero <- Propagar con.EscribirTexto(\"\");\nDefinir sinSalto Como Entero <- Propagar con.EscribirTexto(\"aé\");\nEscribir \"\";\nEscribir vacio;\nEscribir sinSalto;\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Descartar value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe() as result<integer, IoError>\ndefine con as Console <- propagate requestConsole();\ndefine empty as integer <- propagate con.writeText(\"\");\ndefine noBreak as integer <- propagate con.writeText(\"aé\");\nwrite \"\";\nwrite empty;\nwrite noBreak;\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): discard value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir con Como Consola <- Propagar SolicitarConsola();\nDefinir vacio Como Entero <- Propagar con.EscribirTexto(\"\");\nDefinir sinSalto Como Entero <- Propagar con.EscribirTexto(\"aé\");\nEscribir \"\";\nEscribir vacio;\nEscribir sinSalto;\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine con as Console <- propagate requestConsole();\ndefine empty as integer <- propagate con.writeText(\"\");\ndefine noBreak as integer <- propagate con.writeText(\"aé\");\nwrite \"\";\nwrite empty;\nwrite noBreak;\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
   },
   "anfitrion": {}
 }
