@@ -169,3 +169,11 @@ La mezcla estable se sintetiza y reutiliza por tipo y firma de comparador. Los a
 de la llamada al efecto es el del valor interno del opcional (`str` en este caso): el verificador de RI exige la misma
 forma que para un opcional no falible, y la ausencia viaja como referencia nula en la última de las tres celdas. Sin
 esa reducción `effect_values.rs` bajaba el opcional anidado a `unit` y el verificador rechazaba el módulo.
+
+## Argumentos registro que viven en celdas
+
+`record_arrays::array_values` también recibe las variables registro simples, no solo los arreglos de registros. Cuando
+la variable se pasa además por referencia en otro punto, sus hojas viven en celdas y el paso por valor emite `cell.load`,
+que puede atrapar. Esa carga salía sin tramo de fuente, la verificación de la RI la rechazaba (`IR.WELL-FORMEDNESS#R7`) y
+la API devolvía `analysisFailed` sin diagnóstico. La carga lleva ahora el tramo del argumento (`LANG.TYPES.RECORD#R3`,
+caso C54).

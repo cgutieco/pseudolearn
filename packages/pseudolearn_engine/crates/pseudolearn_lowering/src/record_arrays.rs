@@ -31,12 +31,19 @@ pub(crate) fn array_values(
     state: &mut ExpressionState<'_, '_>,
 ) -> Option<Vec<ValueId>> {
     let leaves = leaf_arrays(argument, state.context.module)?;
+    let span = argument_span(argument, state);
     Some(
         leaves
             .into_iter()
-            .map(|leaf| crate::expression_values::lower_local(leaf, None, state))
+            .map(|leaf| crate::expression_values::lower_local(leaf, span, state))
             .collect(),
     )
+}
+
+fn argument_span(argument: ExpressionId, state: &ExpressionState<'_, '_>) -> Option<IrSpan> {
+    let slot = usize::try_from(argument.0).ok()?;
+    let raw = state.context.module.expressions.spans.get(slot).copied()?;
+    crate::spans::resolve_span(raw, state.context.source)
 }
 
 pub(crate) fn load_range(
