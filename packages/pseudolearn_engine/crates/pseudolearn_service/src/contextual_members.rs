@@ -2,7 +2,12 @@ use pseudolearn_semantic::{ServiceAnalysis, Type};
 use pseudolearn_syntax::{SyntaxTree, TokenKind};
 use std::collections::BTreeMap;
 
-const LIBRARY_FIELDS: [&str; 1] = ["jsonErrorCodeField"];
+const LIBRARY_FIELDS: [&str; 4] = [
+    "jsonErrorCodeField",
+    "taskFirstError",
+    "taskAssociatedErrors",
+    "taskCancelledCount",
+];
 
 pub(crate) fn register(
     tree: &SyntaxTree,

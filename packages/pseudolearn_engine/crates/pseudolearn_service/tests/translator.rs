@@ -194,3 +194,20 @@ fn translates_declared_variants_and_keeps_homonymous_names() -> Result<(), Strin
     );
     Ok(())
 }
+
+#[test]
+fn translates_task_failure_fields_and_keeps_homonymous_user_fields() -> Result<(), String> {
+    let source = "SubProceso Suspendible Work() Como Resultado<Entero, Cadena>\nRetornar Exito(1);\nFinSubProceso\nRegistro Marca\nDefinir Primero Como Entero;\nFinRegistro\nAlgoritmo P\nDefinir marca Como Marca <- Marca(1);\nTareas failureReport\nLanzar Work();\nFinTareas\nSegun failureReport Hacer\nNada: Escribir marca.Primero;\nAlgo(problem): Escribir problem.Primero, problem.Canceladas;\nFinSegun\nFinAlgoritmo\n";
+    let english =
+        translate_source(source, Profile::English).map_err(|error| format!("{error:?}"))?;
+    assert!(
+        english.contains("problem.first, problem.cancelled"),
+        "{english}"
+    );
+    assert!(english.contains("marca.Primero"), "{english}");
+    assert_eq!(
+        translate_source(&english, Profile::Spanish),
+        Ok(source.to_owned())
+    );
+    Ok(())
+}
