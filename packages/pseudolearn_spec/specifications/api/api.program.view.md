@@ -1128,7 +1128,7 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C52", "regla": "R16", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "dependencies", "input": {"program": "Algoritmo Main\nEscribir 1;\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"structure": true, "dependencies": [], "units": ["Main"], "execution_started": true, "export_available": true, "operations_beyond_static": []}}}
+{"id": "C52", "regla": "R16", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "dependencies", "input": {"program": "Algoritmo Main\nEscribir 1;\nFinAlgoritmo\n", "profile": "es"}}, "espera": {"aplicacion": {"structure": true, "dependencies": [], "units": ["Main"], "execution_started": true, "export_available": true, "operations_beyond_static": ["equivalent_code"]}}}
 ```
 
 ```regla
@@ -1136,7 +1136,7 @@ La vista pública incluye interface_unit, interface_signature, realization, type
   "id": "R17",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El consumidor ofrece código equivalente para un destino solo si cada construcción del programa pertenece al subconjunto comprobado de ese destino, es decir, el que una prueba diferencial ejecuta en el motor y en la traducción con la misma salida. Si una construcción queda fuera, sea una unidad que ningún emisor representa, una sentencia sin traducción, una lectura cuyo destino no tiene conversión comprobada (input:<tipo>), una incorporada, un operador, un literal, un tipo o una salida booleana sin equivalente comprobado, el resultado para ese destino es no disponible: no entrega ningún programa parcial y nombra cada construcción por su identidad pública con el rango exacto de su origen. Un error de análisis sigue siendo un error de análisis. La superficie muestra un mensaje localizado con las construcciones y la línea de la primera. La disponibilidad se decide por destino y las traducciones no se compilan ni ejecutan en el producto.",
+  "texto": "El consumidor ofrece código equivalente para un destino cuando el núcleo traduce el programa analizado completo a ese destino usando solo su biblioteca estándar, con la misma salida que el motor para las ejecuciones deterministas sin fallo. Toda construcción del lenguaje tiene traducción salvo las que el núcleo declara pendientes para ese destino, como una operación de capacidad, una construcción cuya semántica exige una biblioteca ajena a la estándar del destino o una forma aún no traducida. Si alguna construcción queda pendiente, el resultado para ese destino es no disponible: no entrega ningún programa parcial y nombra cada construcción por su identidad pública con el rango exacto de su origen. Un error de análisis sigue siendo un error de análisis. La superficie muestra un mensaje localizado con las construcciones y la línea de la primera. La disponibilidad se decide por destino y las traducciones no se compilan ni ejecutan en el producto.",
   "verificacion": [
     "C53",
     "C54",
@@ -1162,19 +1162,19 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C53", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Definir x Como Logico <- Falso;\n  Escribir \"antes\";\n  Leer x;\n  Escribir \"despues\";\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input:boolean"], "first_line": 4, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C53", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Definir x Como Logico <- Falso;\n  Escribir \"antes\";\n  Leer x;\n  Escribir \"despues\";\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "ready", "constructs": [], "first_line": null, "code_visible": true, "focused_lines": 0, "ready": true}}}
 ```
 
 ```caso
-{"id": "C54", "regla": "R17", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "algorithm Main\n  define x as boolean <- false;\n  read x;\nendAlgorithm\n", "target": "python", "profile": "en"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input:boolean"], "first_line": 3, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C54", "regla": "R17", "perfiles": ["en"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "algorithm Main\n  define x as boolean <- false;\n  read x;\nendAlgorithm\n", "target": "python", "profile": "en"}}, "espera": {"aplicacion": {"status": "ready", "constructs": [], "first_line": null, "code_visible": true, "focused_lines": 0, "ready": true}}}
 ```
 
 ```caso
-{"id": "C55", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Escribir 2 ^ 3;\nFinProceso\n", "target": "rust", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["operator:power"], "first_line": 2, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C55", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nRetornar Exito(1);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n", "target": "rust", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["capability"], "first_line": 2, "code_visible": false, "focused_lines": 0, "ready": false}}}
 ```
 
 ```caso
-{"id": "C56", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Segun 1 Hacer\n    1:\n      Escribir \"uno\";\n  FinSegun\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["labels", "switch"], "first_line": 2, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C56", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Segun 1 Hacer\n    1:\n      Escribir \"uno\";\n  FinSegun\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "ready", "constructs": [], "first_line": null, "code_visible": true, "focused_lines": 0, "ready": true}}}
 ```
 
 ```caso
@@ -1182,7 +1182,7 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C58", "regla": "R18", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"previous": "Proceso P\n  Escribir 1;\nFinProceso\n", "program": "Proceso P\n  Definir x Como Logico <- Falso;\n  Leer x;\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["input:boolean"], "first_line": 3, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C58", "regla": "R18", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"previous": "Proceso P\n  Escribir 1;\nFinProceso\n", "program": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nRetornar Exito(1);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n", "target": "rust", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["capability"], "first_line": 2, "code_visible": false, "focused_lines": 0, "ready": false}}}
 ```
 
 ```caso
@@ -1190,5 +1190,5 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 ```
 
 ```caso
-{"id": "C60", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Escribir 3 > 2;\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["boolean_output"], "first_line": 2, "code_visible": false, "focused_lines": 0, "ready": false}}}
+{"id": "C60", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Escribir 3 > 2;\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "ready", "constructs": [], "first_line": null, "code_visible": true, "focused_lines": 0, "ready": true}}}
 ```
