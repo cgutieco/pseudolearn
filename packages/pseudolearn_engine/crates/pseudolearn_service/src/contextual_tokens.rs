@@ -163,6 +163,8 @@ fn owns(kind: NodeKind, identity: &str) -> bool {
                 | (NodeKind::ForEachLoop, "eachKeyword" | "inKeyword")
                 | (NodeKind::DeferStatement, "deferKeyword" | "endDefer")
                 | (NodeKind::BreakStatement, "breakKeyword")
+                | (NodeKind::SuspendibleModifier, "suspendibleModifier")
+                | (NodeKind::ReceiveBranch, "channelReceive" | "receiveSource")
                 | (
                     NodeKind::Postfix,
                     "httpMethodType"
@@ -211,16 +213,18 @@ fn structural_token(tree: &SyntaxTree, node: usize, token: usize, identity: &str
     }
     match identity {
         "endInterface" | "endDefer" | "endVariant" => token == last,
-        "eachKeyword" => {
-            (first..token)
-                .filter_map(|slot| tree.tokens.kind(slot))
-                .filter(|kind| !kind.is_trivia())
-                .count()
-                == 1
-        }
+        "eachKeyword" => code_tokens_before(tree, first, token) == 1,
+        "receiveSource" => code_tokens_before(tree, first, token) == 2,
         "inKeyword" => follows_bindings(tree, node, token),
         _ => token == first,
     }
+}
+
+fn code_tokens_before(tree: &SyntaxTree, first: usize, token: usize) -> usize {
+    (first..token)
+        .filter_map(|slot| tree.tokens.kind(slot))
+        .filter(|kind| !kind.is_trivia())
+        .count()
 }
 
 fn follows_bindings(tree: &SyntaxTree, node: usize, token: usize) -> bool {
