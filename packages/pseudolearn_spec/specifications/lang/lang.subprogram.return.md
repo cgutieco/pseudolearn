@@ -47,7 +47,8 @@
     "C5",
     "C6",
     "C7",
-    "C8"
+    "C8",
+    "C9"
   ]
 }
 ```
@@ -82,8 +83,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nRetornar 1;\nFinAlgoritmo\n",
-    "en": "algorithm P\nreturn 1;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Retornar 1;\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Return 1;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -108,8 +109,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso f()\nRetornar 1;\nFinSubProceso\nAlgoritmo P\nf();\nFinAlgoritmo\n",
-    "en": "subroutine f()\nreturn 1;\nendSubroutine\nalgorithm P\nf();\nendAlgorithm\n"
+    "es": "SubProceso f()\n  Retornar 1;\nFinSubProceso\n\nAlgoritmo P\n  f();\nFinAlgoritmo\n",
+    "en": "Subroutine f()\n  Return 1;\nEndSubroutine\n\nAlgorithm P\n  f();\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -134,8 +135,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso f() Como Entero\nSi Falso Entonces\nRetornar 1;\nFinSi\nFinSubProceso\nAlgoritmo P\nEscribir f();\nFinAlgoritmo\n",
-    "en": "subroutine f() as integer\nif false then\nreturn 1;\nendIf\nendSubroutine\nalgorithm P\nwrite f();\nendAlgorithm\n"
+    "es": "SubProceso f() Como Entero\n  Si Falso Entonces\n    Retornar 1;\n  FinSi\nFinSubProceso\n\nAlgoritmo P\n  Escribir f();\nFinAlgoritmo\n",
+    "en": "Subroutine f() As Integer\n  If False Then\n    Return 1;\n  EndIf\nEndSubroutine\n\nAlgorithm P\n  Write f();\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -240,6 +241,27 @@
   "operacion": "execute",
   "espera": {
     "salida": "120\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso Mayor(primero Como Entero, segundo Como Entero) Como Entero\n  Si primero > segundo Entonces\n    Retornar primero;\n  FinSi\n  Retornar segundo;\nFinSubProceso\n\nAlgoritmo Comparar\n  Escribir Mayor(7, 3);\n  Escribir Mayor(2, 9);\nFinAlgoritmo\n",
+    "en": "Subroutine Larger(first As Integer, second As Integer) As Integer\n  If first > second Then\n    Return first;\n  EndIf\n  Return second;\nEndSubroutine\n\nAlgorithm Compare\n  Write Larger(7, 3);\n  Write Larger(2, 9);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "7\n9\n",
     "terminacion": "completed"
   }
 }

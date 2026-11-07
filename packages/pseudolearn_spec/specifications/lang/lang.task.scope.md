@@ -79,7 +79,8 @@
     "C4",
     "C5",
     "C6",
-    "C7"
+    "C7",
+    "C34"
   ]
 }
 ```
@@ -323,8 +324,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso Suspendible Work()\nFinSubProceso\nAlgoritmo P\nLanzar Work();\nFinAlgoritmo\n",
-    "en": "subroutine suspendable Work()\nendSubroutine\nalgorithm P\nspawn Work();\nendAlgorithm\n"
+    "es": "SubProceso Suspendible Work()\nFinSubProceso\n\nAlgoritmo P\n  Lanzar Work();\nFinAlgoritmo\n",
+    "en": "Subroutine suspendable Work()\nEndSubroutine\n\nAlgorithm P\n  Spawn Work();\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -1096,6 +1097,27 @@
   "operacion": "execute",
   "espera": {
     "salida": "cleanup-second\ncleanup-first\nfailed\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C34",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Contar(desde Como Entero)\n  Escribir desde;\n  Escribir desde + 1;\nFinSubProceso\n\nAlgoritmo Equipo\n  Tareas\n  Lanzar Contar(10);\n  Lanzar Contar(20);\n  FinTareas\n  Escribir 0;\nFinAlgoritmo\n",
+    "en": "Subroutine Suspendable Count(start As Integer)\n  Write start;\n  Write start + 1;\nEndSubroutine\n\nAlgorithm Team\n  Tasks\n  Spawn Count(10);\n  Spawn Count(20);\n  EndTasks\n  Write 0;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "10\n11\n20\n21\n0\n",
     "terminacion": "completed"
   }
 }

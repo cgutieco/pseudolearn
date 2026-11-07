@@ -63,7 +63,8 @@
     "C22",
     "C23",
     "C24",
-    "C25"
+    "C25",
+    "C26"
   ]
 }
 ```
@@ -119,8 +120,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir captured Como Entero <- 1;\nDefinir callback Como SubProceso() Como Entero <- SubProceso() Como Entero\nRetornar captured;\nFinSubProceso;\ncaptured <- 2;\nEscribir callback();\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine captured as integer <- 1;\ndefine callback as subroutine() as integer <- subroutine() as integer\nreturn captured;\nendSubroutine;\ncaptured <- 2;\nwrite callback();\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir captured Como Entero <- 1;\n  Definir callback Como SubProceso () Como Entero <- SubProceso () Como Entero;\n      Retornar captured;\n    FinSubProceso;\n    captured <- 2;\n    Escribir callback();\n  FinAlgoritmo\n",
+    "en": "Algorithm P\n  Define captured As Integer <- 1;\n  Define callback As Subroutine () As Integer <- Subroutine () As Integer;\n      Return captured;\n    EndSubroutine;\n    captured <- 2;\n    Write callback();\n  EndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -689,6 +690,27 @@
   "operacion": "execute",
   "espera": {
     "salida": "20\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C26",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Funciones\n  Definir extra Como Entero <- 3;\n  Definir sumarExtra Como SubProceso (Entero) Como Entero <- SubProceso (numero Como Entero) Como Entero;\n      Retornar numero + extra;\n    FinSubProceso;\n    Escribir sumarExtra(4);\n    Escribir sumarExtra(10);\n  FinAlgoritmo\n",
+    "en": "Algorithm Functions\n  Define extra As Integer <- 3;\n  Define addExtra As Subroutine (Integer) As Integer <- Subroutine (number As Integer) As Integer;\n      Return number + extra;\n    EndSubroutine;\n    Write addExtra(4);\n    Write addExtra(10);\n  EndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "7\n13\n",
     "terminacion": "completed"
   }
 }

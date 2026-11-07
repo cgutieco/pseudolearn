@@ -181,6 +181,7 @@
     "C4",
     "C5",
     "C8",
+    "C10",
     "revision_humana"
   ],
   "justificacion": "Los casos derivados verifican el contrato; las pruebas de transporte comprueban las diferencias físicas de plataforma."
@@ -325,8 +326,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso RedirectCode(request Como PeticionHttp, response Como RespuestaHttp) Como Cadena\nSegun request.Redirigida(response) Hacer\nExito(next): Retornar \"accepted\";\nError(problem): Retornar problem.Codigo;\nFinSegun\nFinSubProceso\nSubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir unsupportedRequest Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/unsupported\");\nDefinir unsupportedResponse Como RespuestaHttp <- Propagar net.Enviar(unsupportedRequest);\nEscribir RedirectCode(unsupportedRequest, unsupportedResponse);\nDefinir missingRequest Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/missing\");\nDefinir missingResponse Como RespuestaHttp <- Propagar net.Enviar(missingRequest);\nEscribir RedirectCode(missingRequest, missingResponse);\nDefinir downgradeRequest Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/downgrade\");\nDefinir downgradeResponse Como RespuestaHttp <- Propagar net.Enviar(downgradeRequest);\nEscribir RedirectCode(downgradeRequest, downgradeResponse);\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine RedirectCode(request as HttpRequest, response as HttpResponse) as string\nswitch request.redirected(response) do\nsuccess(next): return \"accepted\";\nfailure(problem): return problem.code;\nendSwitch\nendSubroutine\nsubroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine unsupportedRequest as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/unsupported\");\ndefine unsupportedResponse as HttpResponse <- propagate net.send(unsupportedRequest);\nwrite RedirectCode(unsupportedRequest, unsupportedResponse);\ndefine missingRequest as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/missing\");\ndefine missingResponse as HttpResponse <- propagate net.send(missingRequest);\nwrite RedirectCode(missingRequest, missingResponse);\ndefine downgradeRequest as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/downgrade\");\ndefine downgradeResponse as HttpResponse <- propagate net.send(downgradeRequest);\nwrite RedirectCode(downgradeRequest, downgradeResponse);\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso RedirectCode(request Como PeticionHttp, response Como RespuestaHttp) Como Cadena\n  Segun request.Redirigida(response) Hacer\n    Exito (next): Retornar \"accepted\";\n    Error (problem): Retornar problem.Codigo;\n  FinSegun\nFinSubProceso\n\nSubProceso Probe() Como Resultado < Entero, ErrorES >\n  Definir net Como RedCap <- Propagar SolicitarRed();\n  Definir unsupportedRequest Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/unsupported\");\n  Definir unsupportedResponse Como RespuestaHttp <- Propagar net.Enviar(unsupportedRequest);\n  Escribir RedirectCode(unsupportedRequest, unsupportedResponse);\n  Definir missingRequest Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/missing\");\n  Definir missingResponse Como RespuestaHttp <- Propagar net.Enviar(missingRequest);\n  Escribir RedirectCode(missingRequest, missingResponse);\n  Definir downgradeRequest Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/downgrade\");\n  Definir downgradeResponse Como RespuestaHttp <- Propagar net.Enviar(downgradeRequest);\n  Escribir RedirectCode(downgradeRequest, downgradeResponse);\n  Retornar Exito (0);\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine RedirectCode(request As HttpRequest, response As HttpResponse) As String\n  Switch request.redirected(response) Do\n    Success (next): Return \"accepted\";\n    Failure (problem): Return problem.code;\n  EndSwitch\nEndSubroutine\n\nSubroutine Probe() As Result < Integer, IoError >\n  Define net As NetworkCap <- Propagate requestNetwork();\n  Define unsupportedRequest As HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/unsupported\");\n  Define unsupportedResponse As HttpResponse <- Propagate net.send(unsupportedRequest);\n  Write RedirectCode(unsupportedRequest, unsupportedResponse);\n  Define missingRequest As HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/missing\");\n  Define missingResponse As HttpResponse <- Propagate net.send(missingRequest);\n  Write RedirectCode(missingRequest, missingResponse);\n  Define downgradeRequest As HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/downgrade\");\n  Define downgradeResponse As HttpResponse <- Propagate net.send(downgradeRequest);\n  Write RedirectCode(downgradeRequest, downgradeResponse);\n  Return Success (0);\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): Write value;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "http": {
@@ -470,6 +471,44 @@
             "/second"
           ]
         ]
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "301\nhttps://fake.test/nuevo\nPágina nueva\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso SeguirMudanza() Como Resultado < Cadena, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Definir primera Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/viejo\");\n  Definir aviso Como RespuestaHttp <- Propagar red.Enviar(primera);\n  Escribir aviso.Estado();\n  Definir segunda Como PeticionHttp <- Propagar primera.Redirigida(aviso);\n  Definir respuesta Como RespuestaHttp <- Propagar red.Enviar(segunda);\n  Escribir respuesta.Url();\n  Retornar respuesta.CuerpoTexto();\nFinSubProceso\n\nAlgoritmo Mudanza\n  Segun SeguirMudanza() Hacer\n    Exito (texto): Escribir texto;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine FollowMove() As Result < String, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Define first As HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/viejo\");\n  Define notice As HttpResponse <- Propagate network.send(first);\n  Write notice.status();\n  Define second As HttpRequest <- Propagate first.redirected(notice);\n  Define response As HttpResponse <- Propagate network.send(second);\n  Write response.url();\n  Return response.textBody();\nEndSubroutine\n\nAlgorithm Move\n  Switch FollowMove() Do\n    Success (text): Write text;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "GET https://fake.test/viejo": {
+        "estado": 301,
+        "cabeceras": [
+          [
+            "location",
+            "/nuevo"
+          ]
+        ]
+      },
+      "GET https://fake.test/nuevo": {
+        "estado": 200,
+        "cuerpo": "Página nueva"
       }
     }
   }

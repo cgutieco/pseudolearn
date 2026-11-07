@@ -44,7 +44,8 @@
     "C2",
     "C3",
     "C4",
-    "C5"
+    "C5",
+    "C6"
   ]
 }
 ```
@@ -82,8 +83,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine x as integer <- 0;\nread x;\nwrite x;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir x Como Entero <- 0;\n  Leer x;\n  Escribir x;\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Define x As Integer <- 0;\n  Read x;\n  Write x;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -172,6 +173,31 @@
   "entradas": [
     "7",
     "ab"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Suma\n  Definir primero, segundo Como Entero;\n  Leer primero, segundo;\n  Escribir primero + segundo;\nFinAlgoritmo\n",
+    "en": "Algorithm Sum\n  Define first, second As Integer;\n  Read first, second;\n  Write first + second;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "10\n",
+    "terminacion": "completed"
+  },
+  "entradas": [
+    "4",
+    "6"
   ]
 }
 ```

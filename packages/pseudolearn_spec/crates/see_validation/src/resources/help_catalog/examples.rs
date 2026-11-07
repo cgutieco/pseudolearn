@@ -26,19 +26,6 @@ pub(super) fn kind_errors(identifier: &str, content: &Value, corpus: &Corpus) ->
         .collect()
 }
 
-pub(super) fn missing_example_errors(card: &Value) -> Vec<String> {
-    let identifier = card.get("id").and_then(Value::as_str).unwrap_or_default();
-    ["es", "en"]
-        .into_iter()
-        .filter(|locale| {
-            card.pointer(&format!("/content/{locale}/examples"))
-                .and_then(Value::as_array)
-                .is_none_or(Vec::is_empty)
-        })
-        .map(|locale| format!("SEE-HELP-CATALOG: {identifier} has no {locale} example"))
-        .collect()
-}
-
 fn examples(content: &Value) -> impl Iterator<Item = &Value> {
     content
         .get("examples")

@@ -42,7 +42,8 @@
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -77,8 +78,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir Verdadero < Falso;\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite true < false;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir Verdadero < Falso;\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write True < False;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -103,8 +104,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir 2.0 = 2.0;\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite 2.0 = 2.0;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir 2.0 = 2.0;\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write 2.0 = 2.0;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -116,6 +117,27 @@
         "severidad": "warning"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Calificacion\n  Definir nota Como Entero <- 7;\n  Si nota >= 6 Entonces\n    Escribir \"Aprobado\";\n  Sino\n    Escribir \"Reprobado\";\n  FinSi\n  Si nota <> 10 Entonces\n    Escribir \"Puedes mejorar\";\n  FinSi\nFinAlgoritmo\n",
+    "en": "Algorithm Grading\n  Define grade As Integer <- 7;\n  If grade >= 6 Then\n    Write \"Aprobado\";\n  Else\n    Write \"Reprobado\";\n  EndIf\n  If grade <> 10 Then\n    Write \"Puedes mejorar\";\n  EndIf\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Aprobado\nPuedes mejorar\n",
+    "terminacion": "completed"
   }
 }
 ```

@@ -42,7 +42,8 @@
     "C1",
     "C2",
     "C3",
-    "C4"
+    "C4",
+    "C5"
   ]
 }
 ```
@@ -77,8 +78,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Main\nSalir;\nFinAlgoritmo\n",
-    "en": "algorithm Main\nbreak;\nendAlgorithm\n"
+    "es": "Algoritmo Main\n  Salir;\nFinAlgoritmo\n",
+    "en": "Algorithm Main\n  break;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -131,6 +132,27 @@
   "operacion": "execute",
   "espera": {
     "salida": "4\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Detener\n  Para numero <- 1 Hasta 10 Hacer\n    Si numero = 4 Entonces\n      Salir;\n    FinSi\n    Escribir numero;\n  FinPara\n  Escribir \"Fin\";\nFinAlgoritmo\n",
+    "en": "Algorithm Stop\n  For number <- 1 To 10 Do\n    If number = 4 Then\n      break;\n    EndIf\n    Write number;\n  EndFor\n  Write \"Fin\";\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1\n2\n3\nFin\n",
     "terminacion": "completed"
   }
 }

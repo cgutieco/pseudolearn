@@ -50,7 +50,8 @@
     "C8",
     "C9",
     "C10",
-    "C11"
+    "C11",
+    "C12"
   ]
 }
 ```
@@ -85,8 +86,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDimension a[-1] Como Entero;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndimension a[-1] as integer;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Dimension a[-1] Como Entero;\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Dimension a[-1] As Integer;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -196,8 +197,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDimension w[3];\nEscribir 1;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndimension w[3];\nwrite 1;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Dimension w[3];\n  Escribir 1;\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Dimension w[3];\n  Write 1;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -319,6 +320,27 @@
   "operacion": "execute",
   "espera": {
     "salida": "7\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Notas\n  Dimension notas[3] Como Entero;\n  notas[0] <- 7;\n  notas[1] <- 9;\n  notas[2] <- 8;\n  Escribir notas[0] + notas[1] + notas[2];\nFinAlgoritmo\n",
+    "en": "Algorithm Grades\n  Dimension grades[3] As Integer;\n  grades[0] <- 7;\n  grades[1] <- 9;\n  grades[2] <- 8;\n  Write grades[0] + grades[1] + grades[2];\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "24\n",
     "terminacion": "completed"
   }
 }

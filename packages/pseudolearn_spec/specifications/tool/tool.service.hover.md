@@ -1005,7 +1005,7 @@
     ],
     "proyeccion": "ayuda",
     "contiene": [
-      "Importación de tipos y constantes"
+      "Importar un tipo"
     ]
   }
 }
@@ -1122,7 +1122,7 @@
     ],
     "proyeccion": "ayuda",
     "contiene": [
-      "Importación de módulo o símbolo"
+      "Importar"
     ]
   }
 }

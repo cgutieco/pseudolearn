@@ -42,7 +42,8 @@
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -116,6 +117,27 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Clase Rectangulo\n  Definir ancho Como Entero;\n  Definir alto Como Entero;\n  Metodo Area() Como Entero\n    Retornar Este.ancho * Este.alto;\n  FinMetodo\nFinClase\n\nAlgoritmo Figuras\n  Definir mesa Como Rectangulo <- Nuevo Rectangulo();\n  mesa.ancho <- 4;\n  mesa.alto <- 3;\n  Escribir mesa.Area();\nFinAlgoritmo\n",
+    "en": "Class Rectangle\n  Define width As Integer;\n  Define height As Integer;\n  Method Area() As Integer\n    Return This.width * This.height;\n  EndMethod\nEndClass\n\nAlgorithm Shapes\n  Define table As Rectangle <- New Rectangle();\n  table.width <- 4;\n  table.height <- 3;\n  Write table.Area();\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "12\n",
+    "terminacion": "completed"
   }
 }
 ```

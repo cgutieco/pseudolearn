@@ -82,17 +82,25 @@ salida satisfactoria y conserva stderr. Un sujeto bloqueado es error operativo, 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
 `TOOL.SERVICE.CATALOG` conserva `helpCatalog` como recurso normativo en el campo `valor` de una
-definición. Sus fichas guardan identidad y papel, alcance, anclajes y prosa editorial bilingüe; las
-formas y firmas permanecen en vocabulario, gramática y biblioteca. `see_validation` valida el
+definición. Sus fichas guardan identidad y papel, alcance, anclajes, una categoría pedagógica, una
+plantilla de escritura y prosa editorial bilingüe dirigida a quien nunca ha programado; las formas y
+firmas permanecen en vocabulario, gramática y biblioteca. La plantilla (`form`) es una lista de líneas
+con nivel de sangría y segmentos que nombran una identidad léxica, un hueco o una marca de repetición:
+el texto de cada palabra se toma del perfil del documento al presentarse, de modo que la ficha nunca
+copia un lexema. Cada idioma explica cada palabra (`parts`, que siguen siendo la única fuente de la
+descripción del hover) y cada hueco (`slots`, con etiqueta corta y explicación), y añade lo que
+devuelve (`result`, opcional), reglas, errores comunes con caso opcional y ejemplos con nota. Se
+descartó guardar la plantilla como texto con marcadores: obligaba a copiar lexemas por perfil y a
+admitir en la prosa los signos que el validador prohíbe. `see_validation` valida el
 esquema del recurso y sus referencias versionadas; `see_export` lo extrae sin convertirlo en una
 dependencia de documentación transitoria.
 
 El inventario 2026 deriva palabras reservadas de `vocabulary`, operadores de las producciones de
 expresión y asignación, e incorporadas de `functions` y `capabilityLibrary`. Las 41 agrupaciones
-pedagógicas se declaran como datos con sus producciones fuente; no se infieren de la EBNF. Las 129
-identidades de palabras reservadas, 17 operadores y 90 identidades incorporadas se explican en el
-contexto de una ficha mediante partes es/en. La matriz contiene 413 filas identidad/rol: 141 de
-keyword, 20 de operador, 90 de incorporada, 15 de token no alfabético y 147 de rol. Los alias
+pedagógicas se declaran como datos con sus producciones fuente; no se infieren de la EBNF. Las 143
+identidades de palabras reservadas, 17 operadores y las identidades incorporadas se explican en el
+contexto de una ficha mediante partes es/en. La matriz contiene 556 filas identidad/rol: 166 de
+keyword, 26 de operador, 136 de incorporada, 19 de token no alfabético y 209 de rol. Los alias
 conservan la identidad de su entrada fuente y no generan filas adicionales. Las fichas se
 redactan en ambos idiomas desde sus reglas ancladas; antes de mantener el inventario se revisan
 texto, identidades, disponibilidad, anclajes y la matriz completa. Cada elemento activo debe llegar
@@ -101,16 +109,28 @@ a una ficha específica o a una exclusión tipada; una ficha genérica no cubre 
 El texto suelto de la edición 2026 tiene una sola entrada algorítmica y no requiere manifiesto. `LANG.PROGRAM.STRUCTURE` admite como declaraciones hermanas los tipos nominales, subprogramas y constantes de módulo; `LANG.MODULE.MODEL` conserva los diagnósticos de importación y exportación fuera de proyecto. El preludio fijo usa exclusivamente el catálogo exportado de `LIB.MODEL` y los tipos intrínsecos del lenguaje. Los contratos dueños determinan disponibilidad y colisiones; el preludio no concede capacidades ni lee el entorno. Los casos vigentes de estructura, edición, módulo, codificación, posiciones y capacidades cubren ambos perfiles, entrada vacía, colisiones, símbolos ausentes, BOM y efectos denegados.
 
 Los ejemplos de una ficha no contienen programas ni resultados: referencian casos vigentes del corpus por
-especificación, versión, identidad y perfil. Cada ficha lleva al menos uno por idioma, con el perfil
-de su idioma, y declara su clase: `executable` (el caso ejecuta el programa y termina sin fallo ni
-diagnósticos), `accepted` (se analiza sin diagnósticos) o `diagnostic` (diagnóstico o fallo deliberado). El
-validador deriva la clase de la operación y del esperado del caso y rechaza la discrepancia, así que una
-ficha no puede presentar como correcto lo que el caso declara fallido. Los esperados siguen siendo los del
-caso, calculados a mano desde su regla; la ficha de contador, por ejemplo, enlaza el valor por omisión del
-paso, el paso negativo y el paso cero. Un programa que se ejecuta lo verifican los sujetos de conformidad
-sobre ese caso; la ayuda nunca lo ejecuta. Una referencia repetida en un idioma se rechaza y las
-traducciones no pueden apuntar a casos distintos por colisión de etiqueta: la etiqueta es prosa y no
-identifica el ejemplo.
+especificación, versión e identidad, con la misma secuencia en ambos idiomas y una nota por idioma que
+explica qué ocurre. Cada ficha lleva al menos uno y declara su clase: `executable` (el caso ejecuta el
+programa y termina sin fallo ni diagnósticos), `accepted` (se analiza sin diagnósticos) o `diagnostic`
+(diagnóstico o fallo deliberado). El validador deriva la clase de la operación y del esperado del caso y
+rechaza la discrepancia, así que una ficha no puede presentar como correcto lo que el caso declara
+fallido. El caso referenciado declara todos los perfiles de la ficha y un programa para cada uno, porque
+la ayuda muestra el programa del perfil del documento, con la salida esperada del caso cuando es
+ejecutable. El primer ejemplo de cada ficha es un caso pedagógico propio: un programa corto, con nombres
+claros y salida visible, escrito como lo escribiría un estudiante y anclado en la regla que explica la
+ficha. Sus esperados se calculan a mano desde esa regla y los ejecutan los sujetos de conformidad; la
+ayuda nunca los ejecuta. Se descartó mostrar los casos de prueba de reglas existentes, porque ilustran
+bordes de la regla (`Escribir 1;`) y no enseñan a usar la construcción.
+
+El generador de `IR.LOWERING` P3 excluye los programas que usan Propagar buscando su lexema sin distinguir
+mayúsculas, igual que el analizador léxico: la forma canónica inglesa es `Propagate` y una comparación exacta
+dejaba pasar esos programas, cuya traducción añade salidas anticipadas que la propiedad no modela.
+
+Todo programa que la ayuda presenta, de ejemplo o de error común, está en la forma canónica del
+formateador: dos espacios por nivel y sin tabuladores. Los casos antiguos enlazados como errores comunes
+se reescribieron en esa forma sin cambiar sus esperados, que no dependen de posiciones. El motor lo
+comprueba con el formateador real en `pseudolearn_service/tests/help_examples.rs`; un programa con error
+sintáctico deliberado, que el formateador no acepta, solo debe respetar la sangría.
 
 Cada caso declara los perfiles para los que se ejecuta y valida una sola semántica por perfil. Las referencias de `helpCatalog/1`
 se validan dentro de la disponibilidad del perfil del caso.

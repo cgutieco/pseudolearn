@@ -44,7 +44,8 @@
     "C2",
     "C3",
     "C4",
-    "C5"
+    "C5",
+    "C6"
   ]
 }
 ```
@@ -160,6 +161,27 @@
   "espera": {
     "arbol": "presente",
     "diagnosticos": []
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Saludo\n  Escribir \"Hola\";\n  Escribir \"Adiós\";\nFinAlgoritmo\n",
+    "en": "Algorithm Greeting\n  Write \"Hola\";\n  Write \"Adiós\";\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Hola\nAdiós\n",
+    "terminacion": "completed"
   }
 }
 ```

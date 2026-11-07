@@ -10,8 +10,8 @@ fn preserves_resource_blocks_and_ignores_markdown_prose() -> Result<(), String> 
         "cards": [{
             "id": "construct.sample",
             "content": {
-                "es": {"purpose": "Propósito editorial"},
-                "en": {"purpose": "Editorial purpose"}
+                "es": {"summary": "Propósito editorial"},
+                "en": {"summary": "Editorial purpose"}
             }
         }],
         "exclusions": []

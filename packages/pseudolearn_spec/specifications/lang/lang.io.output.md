@@ -42,7 +42,8 @@
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -116,6 +117,27 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Mensajes\n  Definir total Como Entero <- 3 + 4;\n  Escribir \"Total: \", total;\n  Escribir \"Hola \" Sin Saltar;\n  Escribir \"mundo\";\nFinAlgoritmo\n",
+    "en": "Algorithm Messages\n  Define total As Integer <- 3 + 4;\n  Write \"Total: \", total;\n  Write \"Hola \" Without Newline;\n  Write \"mundo\";\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Total: 7\nHola mundo\n",
+    "terminacion": "completed"
   }
 }
 ```

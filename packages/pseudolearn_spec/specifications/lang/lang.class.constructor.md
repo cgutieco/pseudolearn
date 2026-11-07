@@ -43,7 +43,8 @@
     "C1",
     "C2",
     "C3",
-    "C4"
+    "C4",
+    "C5"
   ]
 }
 ```
@@ -138,6 +139,27 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Clase Mascota\n  Definir nombre Como Cadena;\n  Metodo Constructor(nombreInicial Como Cadena)\n    Este.nombre <- nombreInicial;\n  FinMetodo\nFinClase\n\nAlgoritmo Veterinaria\n  Definir gato Como Mascota <- Nuevo Mascota(\"Michi\");\n  Escribir gato.nombre;\nFinAlgoritmo\n",
+    "en": "Class Pet\n  Define name As String;\n  Method Constructor(initialName As String)\n    This.name <- initialName;\n  EndMethod\nEndClass\n\nAlgorithm VetClinic\n  Define cat As Pet <- New Pet(\"Michi\");\n  Write cat.name;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Michi\n",
+    "terminacion": "completed"
   }
 }
 ```

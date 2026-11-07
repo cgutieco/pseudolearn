@@ -1,0 +1,17 @@
+{
+  "violation": "slot label with symbols",
+  "expect": "slot label with symbols",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/content/es/slots",
+      "value": [
+        {
+          "id": "ghost",
+          "label": "valor-final",
+          "text": "Texto."
+        }
+      ]
+    }
+  ]
+}

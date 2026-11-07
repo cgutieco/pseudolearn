@@ -18,7 +18,6 @@ pub(super) fn check(value: &Value) -> Result<(), String> {
     unique_roles(value)?;
     unique_cards(value)?;
     unique_exclusions(value)?;
-    check_examples(value)?;
     check_exclusion_conflicts(value)?;
     check_exclusion_justifications(value)
 }
@@ -86,39 +85,6 @@ fn unique_tokens(card: &Value) -> Result<(), String> {
     for token in tokens {
         if !identities.insert(required_text(token, "identity")?) {
             return Err("SEE-HELP-CATALOG: duplicate token identity".to_owned());
-        }
-    }
-    Ok(())
-}
-
-fn check_examples(value: &Value) -> Result<(), String> {
-    for card in array(value, "cards")? {
-        check_locale_examples(card, "es")?;
-        check_locale_examples(card, "en")?;
-    }
-    Ok(())
-}
-
-fn check_locale_examples(card: &Value, locale: &str) -> Result<(), String> {
-    let content = card
-        .pointer(&format!("/content/{locale}"))
-        .ok_or("SEE-HELP-CATALOG: missing localized content")?;
-    let mut references = BTreeSet::new();
-    for example in array(content, "examples")? {
-        let profile = required_text(example, "profile")?;
-        if !available(card, "profiles", profile) {
-            return Err("SEE-HELP-CATALOG: example exceeds card availability".to_owned());
-        }
-        if profile != locale {
-            return Err("SEE-HELP-CATALOG: example profile differs from its locale".to_owned());
-        }
-        let key = (
-            required_text(example, "specification")?,
-            required_text(example, "version")?,
-            required_text(example, "case")?,
-        );
-        if !references.insert(key) {
-            return Err("SEE-HELP-CATALOG: duplicate example reference".to_owned());
         }
     }
     Ok(())
@@ -259,12 +225,6 @@ fn valid_identifier(identifier: &str) -> bool {
                 || character.is_ascii_digit()
                 || ['.', '_', '-'].contains(&character)
         })
-}
-
-fn available(card: &Value, dimension: &str, value: &str) -> bool {
-    card.pointer(&format!("/availability/{dimension}"))
-        .and_then(Value::as_array)
-        .is_some_and(|values| values.iter().any(|entry| entry.as_str() == Some(value)))
 }
 
 fn scopes_overlap(left: &Value, right: &Value) -> bool {

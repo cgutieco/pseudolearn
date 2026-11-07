@@ -51,7 +51,8 @@
     "C9",
     "C10",
     "C11",
-    "C12"
+    "C12",
+    "C13"
   ]
 }
 ```
@@ -327,8 +328,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir n Como Entero <- 1;\nDefinir n Como Entero;\nEscribir n;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine n as integer <- 1;\ndefine n as integer;\nwrite n;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir n Como Entero <- 1;\n  Definir n Como Entero;\n  Escribir n;\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Define n As Integer <- 1;\n  Define n As Integer;\n  Write n;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -343,6 +344,27 @@
         }
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Datos\n  Definir nombre Como Cadena;\n  Definir edad Como Entero;\n  Definir altura Como Real <- 1.62;\n  nombre <- \"Ana\";\n  edad <- 15;\n  Escribir nombre, \" \", edad;\n  Escribir altura;\nFinAlgoritmo\n",
+    "en": "Algorithm Profile\n  Define name As String;\n  Define age As Integer;\n  Define height As Real <- 1.62;\n  name <- \"Ana\";\n  age <- 15;\n  Write name, \" \", age;\n  Write height;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Ana 15\n1.62\n",
+    "terminacion": "completed"
   }
 }
 ```

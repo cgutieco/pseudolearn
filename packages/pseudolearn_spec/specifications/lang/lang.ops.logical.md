@@ -41,7 +41,8 @@
   "texto": "NO exige lógico y devuelve su negación. Y y O exigen lógicos y evalúan izquierda primero; Y no evalúa derecha si izquierda es falsa, O no evalúa derecha si izquierda es verdadera. El cortocircuito suprime efectos y fallos de la derecha, sin omitir su análisis de tipos.",
   "verificacion": [
     "C1",
-    "C2"
+    "C2",
+    "C3"
   ]
 }
 ```
@@ -76,8 +77,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir 1 Y Verdadero;\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite 1 and true;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir 1 Y Verdadero;\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write 1 And True;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -89,6 +90,27 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Entrada\n  Definir edad Como Entero <- 15;\n  Definir tieneBoleto Como Logico <- Falso;\n  Si edad >= 13 Y edad <= 17 Entonces\n    Escribir \"Adolescente\";\n  FinSi\n  Si edad < 12 O tieneBoleto Entonces\n    Escribir \"Puede pasar\";\n  Sino\n    Escribir \"No puede pasar\";\n  FinSi\nFinAlgoritmo\n",
+    "en": "Algorithm Entrance\n  Define age As Integer <- 15;\n  Define hasTicket As Boolean <- False;\n  If age >= 13 And age <= 17 Then\n    Write \"Adolescente\";\n  EndIf\n  If age < 12 Or hasTicket Then\n    Write \"Puede pasar\";\n  Else\n    Write \"No puede pasar\";\n  EndIf\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Adolescente\nNo puede pasar\n",
+    "terminacion": "completed"
   }
 }
 ```

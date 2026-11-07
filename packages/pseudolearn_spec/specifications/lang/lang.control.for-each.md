@@ -43,7 +43,8 @@
     "C2",
     "C3",
     "C4",
-    "C7"
+    "C7",
+    "C10"
   ]
 }
 ```
@@ -120,8 +121,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Main\nDimension values[1, 1] Como Entero;\nPara Cada value En values Hacer\nEscribir value;\nFinPara\nFinAlgoritmo\n",
-    "en": "algorithm Main\ndimension values[1, 1] as integer;\nfor each value in values do\nwrite value;\nendFor\nendAlgorithm\n"
+    "es": "Algoritmo Main\n  Dimension values[1, 1] Como Entero;\n  Para Cada value En values Hacer\n    Escribir value;\n  FinPara\nFinAlgoritmo\n",
+    "en": "Algorithm Main\n  Dimension values[1, 1] As Integer;\n  For each value in values Do\n    Write value;\n  EndFor\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -161,8 +162,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(1);\nPara Cada value En values Hacer\nvalues.Agregar(value);\nFinPara\nFinAlgoritmo\n",
-    "en": "algorithm Main\ndefine values as vector<integer> <- vector();\nvalues.append(1);\nfor each value in values do\nvalues.append(value);\nendFor\nendAlgorithm\n"
+    "es": "Algoritmo Main\n  Definir values Como Vector < Entero > <- Vector();\n  values.Agregar(1);\n  Para Cada value En values Hacer\n    values.Agregar(value);\n  FinPara\nFinAlgoritmo\n",
+    "en": "Algorithm Main\n  Define values As vector < Integer > <- vector();\n  values.append(1);\n  For each value in values Do\n    values.append(value);\n  EndFor\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -256,6 +257,27 @@
   "operacion": "execute",
   "espera": {
     "salida": "1\n8\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Total\n  Definir notas Como Vector < Entero > <- Vector();\n  Definir suma Como Entero <- 0;\n  notas.Agregar(7);\n  notas.Agregar(9);\n  notas.Agregar(8);\n  Para Cada nota En notas Hacer\n    suma <- suma + nota;\n  FinPara\n  Escribir suma;\nFinAlgoritmo\n",
+    "en": "Algorithm Total\n  Define grades As vector < Integer > <- vector();\n  Define sum As Integer <- 0;\n  grades.append(7);\n  grades.append(9);\n  grades.append(8);\n  For each grade in grades Do\n    sum <- sum + grade;\n  EndFor\n  Write sum;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "24\n",
     "terminacion": "completed"
   }
 }

@@ -55,7 +55,8 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
     "C2",
     "C3",
     "C4",
-    "C5"
+    "C5",
+    "C14"
   ]
 }
 ```
@@ -355,8 +356,8 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
     "en"
   ],
   "programas": {
-    "es": "Enumerado Color\nRojo, Rojo\nFinEnumerado\nAlgoritmo P\nFinAlgoritmo\n",
-    "en": "enum Color\nRojo, Rojo\nendEnum\nalgorithm P\nendAlgorithm\n"
+    "es": "Enumerado Color\nRojo, Rojo;\nFinEnumerado\nAlgoritmo P\nFinAlgoritmo\n",
+    "en": "Enum Color\nRojo, Rojo;\nEndEnum\nAlgorithm P\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -394,6 +395,27 @@ Un enumerado es un conjunto cerrado de nombres con un ordinal por miembro.
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Enumerado Talla\nS, M, L;\nFinEnumerado\nAlgoritmo Tienda\n  Definir camiseta Como Talla <- Talla.M;\n  Escribir camiseta;\n  Si camiseta = Talla.M Entonces\n    Escribir \"OK\";\n  FinSi\nFinAlgoritmo\n",
+    "en": "Enum Size\nS, M, L;\nEndEnum\nAlgorithm Shop\n  Define shirt As Size <- Size.M;\n  Write shirt;\n  If shirt = Size.M Then\n    Write \"OK\";\n  EndIf\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "M\nOK\n",
+    "terminacion": "completed"
   }
 }
 ```

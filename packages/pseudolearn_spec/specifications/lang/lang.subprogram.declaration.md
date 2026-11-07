@@ -44,7 +44,9 @@
     "C2",
     "C3",
     "C4",
-    "C5"
+    "C5",
+    "C6",
+    "C7"
   ]
 }
 ```
@@ -169,6 +171,48 @@
   "operacion": "execute",
   "espera": {
     "salida": "5\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso Saludar(nombre Como Cadena)\n  Escribir \"Hola, \", nombre;\nFinSubProceso\n\nAlgoritmo Bienvenida\n  Saludar(\"Ana\");\n  Saludar(\"Luis\");\nFinAlgoritmo\n",
+    "en": "Subroutine Greet(name As String)\n  Write \"Hola, \", name;\nEndSubroutine\n\nAlgorithm Welcome\n  Greet(\"Ana\");\n  Greet(\"Luis\");\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Hola, Ana\nHola, Luis\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso Doble(numero Como Entero) Como Entero\n  Retornar numero * 2;\nFinSubProceso\n\nAlgoritmo Calcular\n  Escribir Doble(21);\nFinAlgoritmo\n",
+    "en": "Subroutine Twice(number As Integer) As Integer\n  Return number * 2;\nEndSubroutine\n\nAlgorithm Compute\n  Write Twice(21);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "42\n",
     "terminacion": "completed"
   }
 }

@@ -42,7 +42,9 @@
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C6",
+    "C7"
   ]
 }
 ```
@@ -124,7 +126,9 @@
   "texto": "piso/floor y techo/ceil aceptan un número ampliado a real y devuelven respectivamente el mayor entero no superior y el menor entero no inferior. El resultado es Entero de 64 bits; fuera de rango produce integerOverflow. Ambos ceros producen el entero cero.",
   "verificacion": [
     "C4",
-    "C5"
+    "C5",
+    "C8",
+    "C9"
   ]
 }
 ```
@@ -168,6 +172,90 @@
     "fallo": {
       "codigo": "integerOverflow"
     }
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo RedondearPrecio\n  Definir precio Como Real;\n  precio <- 7.6;\n  Escribir trunc(precio);\n  Escribir redon(precio);\nFinAlgoritmo\n",
+    "en": "Algorithm RoundPrice\n  Define price As Real;\n  price <- 7.6;\n  Write trunc(price);\n  Write round(price);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "7\n8\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo RedondearNegativos\n  Definir temperatura Como Real;\n  temperatura <- -2.5;\n  Escribir trunc(temperatura);\n  Escribir redon(temperatura);\n  Escribir redon(2.5);\nFinAlgoritmo\n",
+    "en": "Algorithm RoundNegatives\n  Define temperature As Real;\n  temperature <- -2.5;\n  Write trunc(temperature);\n  Write round(temperature);\n  Write round(2.5);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "-2\n-3\n3\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo EdadCumplida\n  Definir edadExacta Como Real;\n  edadExacta <- 15.9;\n  Escribir piso(edadExacta);\n  Escribir piso(-3.2);\nFinAlgoritmo\n",
+    "en": "Algorithm CompletedAge\n  Define exactAge As Real;\n  exactAge <- 15.9;\n  Write floor(exactAge);\n  Write floor(-3.2);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "15\n-4\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo AutosNecesarios\n  Definir alumnos Como Entero;\n  alumnos <- 23;\n  Escribir alumnos / 5;\n  Escribir techo(alumnos / 5);\nFinAlgoritmo\n",
+    "en": "Algorithm CarsNeeded\n  Define students As Integer;\n  students <- 23;\n  Write students / 5;\n  Write ceil(students / 5);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "4.6\n5\n",
+    "terminacion": "completed"
   }
 }
 ```

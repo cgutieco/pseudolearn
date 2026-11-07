@@ -44,7 +44,10 @@
     "C2",
     "C3",
     "C4",
-    "C5"
+    "C5",
+    "C18",
+    "C19",
+    "C20"
   ]
 }
 ```
@@ -79,8 +82,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir rc(-1);\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite sqrt(-1);\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir rc(-1);\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write sqrt(-1);\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -176,7 +179,13 @@
     "C13",
     "C14",
     "C16",
-    "C17"
+    "C17",
+    "C24",
+    "C25",
+    "C26",
+    "C27",
+    "C28",
+    "C29"
   ]
 }
 ```
@@ -190,7 +199,10 @@
   "verificacion": [
     "C11",
     "C12",
-    "C15"
+    "C15",
+    "C21",
+    "C22",
+    "C23"
   ]
 }
 ```
@@ -225,8 +237,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir asen(2);\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite asin(2);\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir asen(2);\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write asin(2);\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -247,8 +259,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir log10(0);\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite log10(0);\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir log10(0);\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write log10(0);\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -269,8 +281,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir log2(-1);\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite log2(-1);\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir log2(-1);\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write log2(-1);\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -474,6 +486,263 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo SenoDeTreinta\n  Definir grados, radianes Como Real;\n  grados <- 30;\n  radianes <- grados * 3.141592653589793 / 180;\n  Escribir Decimales(radianes, 4);\n  Escribir Decimales(sen(radianes), 2);\nFinAlgoritmo\n",
+    "en": "Algorithm SineOfThirty\n  Define degrees, radians As Real;\n  degrees <- 30;\n  radians <- degrees * 3.141592653589793 / 180;\n  Write decimals(radians, 4);\n  Write decimals(sin(radians), 2);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "0.5236\n0.50\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo RaizYDistancia\n  Definir area, diferencia Como Real;\n  area <- 49;\n  diferencia <- 3 - 15;\n  Escribir rc(area);\n  Escribir abs(diferencia);\nFinAlgoritmo\n",
+    "en": "Algorithm RootAndDistance\n  Define area, difference As Real;\n  area <- 49;\n  difference <- 3 - 15;\n  Write sqrt(area);\n  Write abs(difference);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "7.0\n12.0\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo SenoEnGrados\n  Definir grados Como Real;\n  grados <- 30;\n  Escribir sen(grados);\nFinAlgoritmo\n",
+    "en": "Algorithm SineInDegrees\n  Define degrees As Real;\n  degrees <- 30;\n  Write sin(degrees);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "-0.9880316240928618\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C21",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo PrecioMasBajo\n  Definir tiendaA, tiendaB Como Entero;\n  tiendaA <- 250;\n  tiendaB <- 199;\n  Escribir min(tiendaA, tiendaB);\n  Escribir min(10, 7.5);\nFinAlgoritmo\n",
+    "en": "Algorithm LowestPrice\n  Define storeA, storeB As Integer;\n  storeA <- 250;\n  storeB <- 199;\n  Write min(storeA, storeB);\n  Write min(10, 7.5);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "199\n7.5\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo MejorNota\n  Definir nota1, nota2 Como Entero;\n  nota1 <- 6;\n  nota2 <- 8;\n  Escribir max(nota1, nota2);\n  Escribir max(4, 4.5);\nFinAlgoritmo\n",
+    "en": "Algorithm BestGrade\n  Define grade1, grade2 As Integer;\n  grade1 <- 6;\n  grade2 <- 8;\n  Write max(grade1, grade2);\n  Write max(4, 4.5);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "8\n4.5\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo MenorDeTres\n  Escribir min(4, 9, 2);\nFinAlgoritmo\n",
+    "en": "Algorithm SmallestOfThree\n  Write min(4, 9, 2);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "argumentCountMismatch",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C24",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo TangenteDe45\n  Definir grados, radianes Como Real;\n  grados <- 45;\n  radianes <- grados * 3.141592653589793 / 180;\n  Escribir Decimales(tan(radianes), 2);\nFinAlgoritmo\n",
+    "en": "Algorithm TangentOf45\n  Define degrees, radians As Real;\n  degrees <- 45;\n  radians <- degrees * 3.141592653589793 / 180;\n  Write decimals(tan(radians), 2);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1.00\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C25",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo AnguloDesdeSeno\n  Definir radianes Como Real;\n  radianes <- asen(0.5);\n  Escribir radianes;\n  Escribir redon(radianes * 180 / 3.141592653589793);\nFinAlgoritmo\n",
+    "en": "Algorithm AngleFromSine\n  Define radians As Real;\n  radians <- asin(0.5);\n  Write radians;\n  Write round(radians * 180 / 3.141592653589793);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "0.5235987755982989\n30\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C26",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo AnguloDesdeCoseno\n  Definir radianes Como Real;\n  radianes <- acos(0.5);\n  Escribir radianes;\n  Escribir redon(radianes * 180 / 3.141592653589793);\nFinAlgoritmo\n",
+    "en": "Algorithm AngleFromCosine\n  Define radians As Real;\n  radians <- acos(0.5);\n  Write radians;\n  Write round(radians * 180 / 3.141592653589793);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1.0471975511965979\n60\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C27",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo DireccionDeUnPunto\n  Definir puntoX, puntoY Como Real;\n  puntoX <- -1;\n  puntoY <- 1;\n  Escribir atan2(puntoY, puntoX) * 180 / 3.141592653589793;\nFinAlgoritmo\n",
+    "en": "Algorithm DirectionOfAPoint\n  Define pointX, pointY As Real;\n  pointX <- -1;\n  pointY <- 1;\n  Write atan2(pointY, pointX) * 180 / 3.141592653589793;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "135.0\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C28",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo ContarCeros\n  Escribir log10(1000);\n  Escribir log10(100000);\nFinAlgoritmo\n",
+    "en": "Algorithm CountZeros\n  Write log10(1000);\n  Write log10(100000);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "3.0\n5.0\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C29",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo MitadesHastaUno\n  Escribir log2(8);\n  Escribir log2(1024);\nFinAlgoritmo\n",
+    "en": "Algorithm HalvesDownToOne\n  Write log2(8);\n  Write log2(1024);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "3.0\n10.0\n",
+    "terminacion": "completed"
   }
 }
 ```

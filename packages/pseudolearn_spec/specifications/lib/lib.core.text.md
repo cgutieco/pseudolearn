@@ -48,7 +48,9 @@
     "C1",
     "C2",
     "C3",
-    "C4"
+    "C4",
+    "C52",
+    "C53"
   ]
 }
 ```
@@ -83,8 +85,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir CaracterEn(\"ab\", 2);\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite charAt(\"ab\", 2);\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir CaracterEn(\"ab\", 2);\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write charAt(\"ab\", 2);\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -155,7 +157,17 @@
     "C12",
     "C15",
     "C16",
-    "C44"
+    "C44",
+    "C54",
+    "C55",
+    "C56",
+    "C57",
+    "C58",
+    "C59",
+    "C60",
+    "C61",
+    "C62",
+    "C63"
   ]
 }
 ```
@@ -384,8 +396,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDividir(\"abc\", \"\");\nFinAlgoritmo\n",
-    "en": "algorithm P\nsplit(\"abc\", \"\");\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Dividir(\"abc\", \"\");\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  split(\"abc\", \"\");\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -529,7 +541,9 @@
     "C28",
     "C29",
     "C30",
-    "C51"
+    "C51",
+    "C64",
+    "C65"
   ]
 }
 ```
@@ -823,7 +837,9 @@
     "C40",
     "C41",
     "C42",
-    "C43"
+    "C43",
+    "C66",
+    "C67"
   ]
 }
 ```
@@ -921,8 +937,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir RellenarIzquierda(\"a\", 3, \"ab\");\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite padLeft(\"a\", 3, \"ab\");\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir RellenarIzquierda(\"a\", 3, \"ab\");\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write padLeft(\"a\", 3, \"ab\");\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -945,8 +961,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir RellenarDerecha(\"a\", 3, \"\");\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite padRight(\"a\", 3, \"\");\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir RellenarDerecha(\"a\", 3, \"\");\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write padRight(\"a\", 3, \"\");\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -1183,8 +1199,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir Subcadena(\"hola\", 0, 4);\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite substring(\"hola\", 0, 4);\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir Subcadena(\"hola\", 0, 4);\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write substring(\"hola\", 0, 4);\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -1260,6 +1276,342 @@
   "operacion": "execute",
   "espera": {
     "salida": "ÑANDÚ\nñandú\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C52",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo LetrasDeUnNombre\n  Definir nombre Como Cadena;\n  nombre <- \"Ana\";\n  Escribir Longitud(nombre);\n  Escribir CaracterEn(nombre, 0);\n  Escribir CaracterEn(nombre, Longitud(nombre) - 1);\nFinAlgoritmo\n",
+    "en": "Algorithm LettersOfAName\n  Define name As String;\n  name <- \"Ana\";\n  Write length(name);\n  Write charAt(name, 0);\n  Write charAt(name, length(name) - 1);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "3\nA\na\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C53",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo CodigosDeLetras\n  Definir codigo Como Entero;\n  codigo <- CodigoDe(\"A\");\n  Escribir codigo;\n  Escribir CaracterDesde(codigo + 1);\nFinAlgoritmo\n",
+    "en": "Algorithm LetterCodes\n  Define code As Integer;\n  code <- charCode(\"A\");\n  Write code;\n  Write charFromCode(code + 1);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "65\nB\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C54",
+  "regla": "T1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo NombreCompleto\n  Definir nombre, apellido Como Cadena;\n  nombre <- \"Ana\";\n  apellido <- \"Rojas\";\n  Escribir Concatenar(Concatenar(nombre, \" \"), apellido);\nFinAlgoritmo\n",
+    "en": "Algorithm FullName\n  Define firstName, lastName As String;\n  firstName <- \"Ana\";\n  lastName <- \"Rojas\";\n  Write concat(concat(firstName, \" \"), lastName);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Ana Rojas\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C55",
+  "regla": "T1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo PartesDeUnaPalabra\n  Definir palabra Como Cadena;\n  palabra <- \"programa\";\n  Escribir Subcadena(palabra, 0, 3);\n  Escribir Subcadena(palabra, 4, 7);\nFinAlgoritmo\n",
+    "en": "Algorithm PartsOfAWord\n  Define word As String;\n  word <- \"programa\";\n  Write substring(word, 0, 3);\n  Write substring(word, 4, 7);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "prog\nrama\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C56",
+  "regla": "T1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo BuscarPalabra\n  Definir frase Como Cadena;\n  frase <- \"Ana y Luis\";\n  Escribir Contiene(frase, \"Luis\");\n  Escribir Contiene(frase, \"luis\");\nFinAlgoritmo\n",
+    "en": "Algorithm FindWord\n  Define sentence As String;\n  sentence <- \"Ana y Luis\";\n  Write contains(sentence, \"Luis\");\n  Write contains(sentence, \"luis\");\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:booleanTrue}}\n{{lexema:booleanFalse}}\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C57",
+  "regla": "T1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo BuscarArroba\n  Definir correo Como Cadena;\n  correo <- \"ana@mail.com\";\n  Segun PosicionDe(correo, \"@\") Hacer\n    Nada: Escribir -1;\n    Algo (posicion): Escribir posicion;\n  FinSegun\n  Segun PosicionDe(correo, \"#\") Hacer\n    Nada: Escribir -1;\n    Algo (posicion): Escribir posicion;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm FindAtSign\n  Define email As String;\n  email <- \"ana@mail.com\";\n  Switch indexOf(email, \"@\") Do\n    None: Write -1;\n    Some (position): Write position;\n  EndSwitch\n  Switch indexOf(email, \"#\") Do\n    None: Write -1;\n    Some (position): Write position;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "3\n-1\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C58",
+  "regla": "T1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo EmpiezaConFoto\n  Definir archivo Como Cadena;\n  archivo <- \"foto_playa.jpg\";\n  Escribir EmpiezaCon(archivo, \"foto\");\n  Escribir EmpiezaCon(archivo, \"playa\");\nFinAlgoritmo\n",
+    "en": "Algorithm StartsWithPhoto\n  Define fileName As String;\n  fileName <- \"foto_playa.jpg\";\n  Write startsWith(fileName, \"foto\");\n  Write startsWith(fileName, \"playa\");\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:booleanTrue}}\n{{lexema:booleanFalse}}\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C59",
+  "regla": "T1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo TipoDeArchivo\n  Definir archivo Como Cadena;\n  archivo <- \"foto_playa.jpg\";\n  Escribir TerminaCon(archivo, \".jpg\");\n  Escribir TerminaCon(archivo, \".png\");\nFinAlgoritmo\n",
+    "en": "Algorithm FileType\n  Define fileName As String;\n  fileName <- \"foto_playa.jpg\";\n  Write endsWith(fileName, \".jpg\");\n  Write endsWith(fileName, \".png\");\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:booleanTrue}}\n{{lexema:booleanFalse}}\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C60",
+  "regla": "T1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo CambiarSeparador\n  Definir fecha Como Cadena;\n  fecha <- \"2024-05-17\";\n  Escribir Reemplazar(fecha, \"-\", \"/\");\n  Escribir fecha;\nFinAlgoritmo\n",
+    "en": "Algorithm ChangeSeparator\n  Define date As String;\n  date <- \"2024-05-17\";\n  Write replace(date, \"-\", \"/\");\n  Write date;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "2024/05/17\n2024-05-17\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C61",
+  "regla": "T1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo SepararNombres\n  Definir nombres Como Vector < Cadena > <- Dividir(\"Ana,Luis,Marta\", \",\");\n  Escribir nombres.Longitud();\n  Escribir nombres[0];\n  Escribir nombres[2];\nFinAlgoritmo\n",
+    "en": "Algorithm SplitNames\n  Define names As vector < String > <- split(\"Ana,Luis,Marta\", \",\");\n  Write names.length();\n  Write names[0];\n  Write names[2];\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "3\nAna\nMarta\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C62",
+  "regla": "T1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo ListaDeNombres\n  Definir nombres Como Vector < Cadena > <- Dividir(\"Ana Luis Marta\", \" \");\n  Escribir Unir(nombres, \", \");\nFinAlgoritmo\n",
+    "en": "Algorithm NameList\n  Define names As vector < String > <- split(\"Ana Luis Marta\", \" \");\n  Write join(names, \", \");\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Ana, Luis, Marta\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C63",
+  "regla": "T1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo QuitarEspacios\n  Definir escrito, limpio Como Cadena;\n  escrito <- \"  Ana   \";\n  limpio <- Recortar(escrito);\n  Escribir Longitud(escrito);\n  Escribir limpio;\n  Escribir Longitud(limpio);\nFinAlgoritmo\n",
+    "en": "Algorithm RemoveSpaces\n  Define typed, clean As String;\n  typed <- \"  Ana   \";\n  clean <- trim(typed);\n  Write length(typed);\n  Write clean;\n  Write length(clean);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "8\nAna\n3\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C64",
+  "regla": "T4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo NombreEnMayusculas\n  Definir nombre Como Cadena;\n  nombre <- \"José\";\n  Escribir AMayusculas(nombre);\n  Escribir nombre;\nFinAlgoritmo\n",
+    "en": "Algorithm NameInUppercase\n  Define name As String;\n  name <- \"José\";\n  Write toUpper(name);\n  Write name;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "JOSÉ\nJosé\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C65",
+  "regla": "T4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo CorreoEnMinusculas\n  Definir correo Como Cadena;\n  correo <- \"Ana.Rojas@Mail.COM\";\n  Escribir AMinusculas(correo);\n  Escribir correo;\nFinAlgoritmo\n",
+    "en": "Algorithm EmailInLowercase\n  Define email As String;\n  email <- \"Ana.Rojas@Mail.COM\";\n  Write toLower(email);\n  Write email;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "ana.rojas@mail.com\nAna.Rojas@Mail.COM\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C66",
+  "regla": "T5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo NumeroDeTurno\n  Definir turno Como Entero;\n  turno <- 7;\n  Escribir RellenarIzquierda(ATexto(turno), 3, \"0\");\n  Escribir RellenarIzquierda(ATexto(42), 3, \"0\");\nFinAlgoritmo\n",
+    "en": "Algorithm TicketNumber\n  Define ticket As Integer;\n  ticket <- 7;\n  Write padLeft(toText(ticket), 3, \"0\");\n  Write padLeft(toText(42), 3, \"0\");\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "007\n042\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C67",
+  "regla": "T5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo TablaDePuntos\n  Escribir RellenarDerecha(\"Ana\", 9, \".\") + \"10\";\n  Escribir RellenarDerecha(\"Marta\", 9, \".\") + \"9\";\nFinAlgoritmo\n",
+    "en": "Algorithm ScoreTable\n  Write padRight(\"Ana\", 9, \".\") + \"10\";\n  Write padRight(\"Marta\", 9, \".\") + \"9\";\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Ana......10\nMarta....9\n",
     "terminacion": "completed"
   }
 }

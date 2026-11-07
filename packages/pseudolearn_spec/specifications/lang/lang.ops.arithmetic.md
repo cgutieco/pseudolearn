@@ -48,7 +48,8 @@
     "C1",
     "C2",
     "C3",
-    "C4"
+    "C4",
+    "C5"
   ]
 }
 ```
@@ -127,8 +128,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir \"ab\" - \"cd\";\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite \"ab\" - \"cd\";\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir \"ab\" - \"cd\";\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write \"ab\" - \"cd\";\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -140,6 +141,27 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Manzanas\n  Definir manzanas Como Entero <- 17;\n  Escribir manzanas + 3;\n  Escribir manzanas - 7;\n  Escribir manzanas * 2;\n  Escribir manzanas / 2;\n  Escribir manzanas Div 5;\n  Escribir manzanas Mod 5;\nFinAlgoritmo\n",
+    "en": "Algorithm Apples\n  Define apples As Integer <- 17;\n  Write apples + 3;\n  Write apples - 7;\n  Write apples * 2;\n  Write apples / 2;\n  Write apples Div 5;\n  Write apples Mod 5;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "20\n10\n34\n8.5\n3\n2\n",
+    "terminacion": "completed"
   }
 }
 ```

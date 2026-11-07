@@ -49,7 +49,8 @@
     "C2",
     "C3",
     "C4",
-    "C5"
+    "C5",
+    "C6"
   ]
 }
 ```
@@ -84,8 +85,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir 2 ^ -1;\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite 2 ^ -1;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir 2 ^ -1;\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write 2 ^ -1;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -159,5 +160,26 @@
     }
   },
   "id": "C5"
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Cuadrado\n  Definir lado Como Entero <- 4;\n  Escribir lado ^ 2;\n  Escribir 2 ^ 10;\nFinAlgoritmo\n",
+    "en": "Algorithm Square\n  Define side As Integer <- 4;\n  Write side ^ 2;\n  Write 2 ^ 10;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "16\n1024\n",
+    "terminacion": "completed"
+  }
 }
 ```

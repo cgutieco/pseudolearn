@@ -125,7 +125,9 @@
           "uniqueItems": true,
           "items": {
             "type": "string",
-            "enum": ["2026"]
+            "enum": [
+              "2026"
+            ]
           }
         },
         "profiles": {
@@ -134,7 +136,10 @@
           "uniqueItems": true,
           "items": {
             "type": "string",
-            "enum": ["es", "en"]
+            "enum": [
+              "es",
+              "en"
+            ]
           }
         }
       },
@@ -164,44 +169,6 @@
         "specification",
         "version",
         "element"
-      ],
-      "additionalProperties": false
-    },
-    "example": {
-      "type": "object",
-      "properties": {
-        "specification": {
-          "type": "string",
-          "minLength": 1
-        },
-        "version": {
-          "type": "string",
-          "minLength": 1
-        },
-        "case": {
-          "type": "string",
-          "minLength": 1
-        },
-        "profile": {
-          "type": "string",
-          "enum": ["es", "en"]
-        },
-        "kind": {
-          "type": "string",
-          "enum": ["executable", "accepted", "diagnostic"]
-        },
-        "label": {
-          "type": "string",
-          "minLength": 1
-        }
-      },
-      "required": [
-        "specification",
-        "version",
-        "case",
-        "profile",
-        "kind",
-        "label"
       ],
       "additionalProperties": false
     },
@@ -251,17 +218,23 @@
           "type": "string",
           "minLength": 1
         },
-        "purpose": {
-          "type": "string",
-          "minLength": 1
-        },
         "parts": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/part"
           }
         },
-        "constraints": {
+        "slots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/slot"
+          }
+        },
+        "result": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rules": {
           "type": "array",
           "items": {
             "type": "string",
@@ -271,12 +244,12 @@
         "common_errors": {
           "type": "array",
           "items": {
-            "type": "string",
-            "minLength": 1
+            "$ref": "#/$defs/commonError"
           }
         },
         "examples": {
           "type": "array",
+          "minItems": 1,
           "items": {
             "$ref": "#/$defs/example"
           }
@@ -285,9 +258,9 @@
       "required": [
         "title",
         "summary",
-        "purpose",
         "parts",
-        "constraints",
+        "slots",
+        "rules",
         "common_errors",
         "examples"
       ],
@@ -321,6 +294,24 @@
             "$ref": "#/$defs/anchor"
           }
         },
+        "category": {
+          "type": "string",
+          "enum": [
+            "block",
+            "instruction",
+            "symbol",
+            "function",
+            "type",
+            "value"
+          ]
+        },
+        "form": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/formLine"
+          }
+        },
         "content": {
           "type": "object",
           "properties": {
@@ -331,7 +322,10 @@
               "$ref": "#/$defs/content"
             }
           },
-          "required": ["es", "en"],
+          "required": [
+            "es",
+            "en"
+          ],
           "additionalProperties": false
         }
       },
@@ -341,6 +335,8 @@
         "tokens",
         "availability",
         "anchors",
+        "category",
+        "form",
         "content"
       ],
       "additionalProperties": false
@@ -380,6 +376,176 @@
         "availability",
         "reason",
         "anchor"
+      ],
+      "additionalProperties": false
+    },
+    "caseReference": {
+      "type": "object",
+      "properties": {
+        "specification": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "case": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "specification",
+        "version",
+        "case"
+      ],
+      "additionalProperties": false
+    },
+    "example": {
+      "type": "object",
+      "properties": {
+        "specification": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "case": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "executable",
+            "accepted",
+            "diagnostic"
+          ]
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "specification",
+        "version",
+        "case",
+        "kind",
+        "note"
+      ],
+      "additionalProperties": false
+    },
+    "slot": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "commonError": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "case": {
+          "$ref": "#/$defs/caseReference"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "segment": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "string",
+              "minLength": 1
+            },
+            "join": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "token"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "slot": {
+              "type": "string",
+              "minLength": 1
+            },
+            "join": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "slot"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ellipsis": {
+              "type": "boolean",
+              "const": true
+            }
+          },
+          "required": [
+            "ellipsis"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "formLine": {
+      "type": "object",
+      "properties": {
+        "indent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "segments": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/segment"
+          }
+        }
+      },
+      "required": [
+        "indent",
+        "segments"
       ],
       "additionalProperties": false
     }

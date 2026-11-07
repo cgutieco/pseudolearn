@@ -89,7 +89,10 @@
     "C2",
     "C3",
     "C9",
-    "C28"
+    "C28",
+    "C29",
+    "C30",
+    "C31"
   ]
 }
 ```
@@ -173,8 +176,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<RedCap, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir limited Como RedCap <- Propagar net.Limitar(\"https://fake.test\");\nRetornar limited.Limitar(\"https://other.test\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(net): Escribir \"concedida\";\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe() as result<NetworkCap, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine limited as NetworkCap <- propagate net.restrict(\"https://fake.test\");\nreturn limited.restrict(\"https://other.test\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(net): write \"granted\";\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado < RedCap, ErrorES >\n  Definir net Como RedCap <- Propagar SolicitarRed();\n  Definir limited Como RedCap <- Propagar net.Limitar(\"https://fake.test\");\n  Retornar limited.Limitar(\"https://other.test\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (net): Escribir \"concedida\";\n    Error (problem): Escribir problem.Incierto;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result < NetworkCap, IoError >\n  Define net As NetworkCap <- Propagate requestNetwork();\n  Define limited As NetworkCap <- Propagate net.restrict(\"https://fake.test\");\n  Return limited.restrict(\"https://other.test\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (net): Write \"granted\";\n    Failure (problem): Write problem.uncertain;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "http": {
@@ -192,7 +195,7 @@
   "fuerza": "DEBE",
   "clase": "semantica",
   "texto": "MetodoHttp es un enumerado cerrado con GET, HEAD, POST, PUT, PATCH y DELETE, con la misma grafía en ambos perfiles. PeticionHttp es inmutable. ConCabecera, ConCuerpo, ConCuerpoTexto, ConLimiteRespuesta y ConTiempoMaximo devuelven una petición nueva. Enviar acepta solo las seis variantes declaradas; no añade Content-Type ni otra cabecera por omisión.",
-  "verificacion": ["C4"]
+  "verificacion": ["C4", "C33", "C34", "C35", "C36", "C37", "C38"]
 }
 ```
 
@@ -214,8 +217,8 @@
     }
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir get Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/missing\");\nDefinir missing Como RespuestaHttp <- Propagar net.Enviar(get);\nEscribir missing.Estado();\nEscribir missing.EsExito();\nDefinir post Como PeticionHttp <- PeticionHttp(MetodoHttp.POST, \"https://fake.test/echo\").ConCuerpoTexto(\"eco\");\nDefinir echoed Como RespuestaHttp <- Propagar net.Enviar(post);\nEscribir Propagar echoed.CuerpoTexto();\nDefinir head Como PeticionHttp <- PeticionHttp(MetodoHttp.HEAD, \"https://fake.test/head\");\nDefinir headed Como RespuestaHttp <- Propagar net.Enviar(head);\nEscribir headed.Cuerpo().Longitud();\nDefinir put Como PeticionHttp <- PeticionHttp(MetodoHttp.PUT, \"https://fake.test/update\");\nDefinir updated Como RespuestaHttp <- Propagar net.Enviar(put);\nEscribir updated.Estado();\nDefinir patch Como PeticionHttp <- PeticionHttp(MetodoHttp.PATCH, \"https://fake.test/patch\");\nDefinir patched Como RespuestaHttp <- Propagar net.Enviar(patch);\nEscribir patched.Estado();\nDefinir delete Como PeticionHttp <- PeticionHttp(MetodoHttp.DELETE, \"https://fake.test/delete\");\nDefinir deleted Como RespuestaHttp <- Propagar net.Enviar(delete);\nEscribir deleted.Estado();\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value < 0 Entonces\nEscribir value;\nFinSi\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine get as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/missing\");\ndefine missing as HttpResponse <- propagate net.send(get);\nwrite missing.status();\nwrite missing.isSuccess();\ndefine post as HttpRequest <- HttpRequest(HttpMethod.POST, \"https://fake.test/echo\").withTextBody(\"eco\");\ndefine echoed as HttpResponse <- propagate net.send(post);\nwrite propagate echoed.textBody();\ndefine head as HttpRequest <- HttpRequest(HttpMethod.HEAD, \"https://fake.test/head\");\ndefine headed as HttpResponse <- propagate net.send(head);\nwrite headed.body().length();\ndefine put as HttpRequest <- HttpRequest(HttpMethod.PUT, \"https://fake.test/update\");\ndefine updated as HttpResponse <- propagate net.send(put);\nwrite updated.status();\ndefine patch as HttpRequest <- HttpRequest(HttpMethod.PATCH, \"https://fake.test/patch\");\ndefine patched as HttpResponse <- propagate net.send(patch);\nwrite patched.status();\ndefine delete as HttpRequest <- HttpRequest(HttpMethod.DELETE, \"https://fake.test/delete\");\ndefine deleted as HttpResponse <- propagate net.send(delete);\nwrite deleted.status();\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value < 0 then\nwrite value;\nendIf\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado < Entero, ErrorES >\n  Definir net Como RedCap <- Propagar SolicitarRed();\n  Definir get Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/missing\");\n  Definir missing Como RespuestaHttp <- Propagar net.Enviar(get);\n  Escribir missing.Estado();\n  Escribir missing.EsExito();\n  Definir post Como PeticionHttp <- PeticionHttp(MetodoHttp.POST, \"https://fake.test/echo\").ConCuerpoTexto(\"eco\");\n  Definir echoed Como RespuestaHttp <- Propagar net.Enviar(post);\n  Escribir Propagar echoed.CuerpoTexto();\n  Definir head Como PeticionHttp <- PeticionHttp(MetodoHttp.HEAD, \"https://fake.test/head\");\n  Definir headed Como RespuestaHttp <- Propagar net.Enviar(head);\n  Escribir headed.Cuerpo().Longitud();\n  Definir put Como PeticionHttp <- PeticionHttp(MetodoHttp.PUT, \"https://fake.test/update\");\n  Definir updated Como RespuestaHttp <- Propagar net.Enviar(put);\n  Escribir updated.Estado();\n  Definir patch Como PeticionHttp <- PeticionHttp(MetodoHttp.PATCH, \"https://fake.test/patch\");\n  Definir patched Como RespuestaHttp <- Propagar net.Enviar(patch);\n  Escribir patched.Estado();\n  Definir delete Como PeticionHttp <- PeticionHttp(MetodoHttp.DELETE, \"https://fake.test/delete\");\n  Definir deleted Como RespuestaHttp <- Propagar net.Enviar(delete);\n  Escribir deleted.Estado();\n  Retornar Exito (0);\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Si value < 0 Entonces\n        Escribir value;\n      FinSi\n    Error (problem): Escribir problem.Incierto;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result < Integer, IoError >\n  Define net As NetworkCap <- Propagate requestNetwork();\n  Define get As HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/missing\");\n  Define missing As HttpResponse <- Propagate net.send(get);\n  Write missing.status();\n  Write missing.isSuccess();\n  Define post As HttpRequest <- HttpRequest(HttpMethod.POST, \"https://fake.test/echo\").withTextBody(\"eco\");\n  Define echoed As HttpResponse <- Propagate net.send(post);\n  Write Propagate echoed.textBody();\n  Define head As HttpRequest <- HttpRequest(HttpMethod.HEAD, \"https://fake.test/head\");\n  Define headed As HttpResponse <- Propagate net.send(head);\n  Write headed.body().length();\n  Define put As HttpRequest <- HttpRequest(HttpMethod.PUT, \"https://fake.test/update\");\n  Define updated As HttpResponse <- Propagate net.send(put);\n  Write updated.status();\n  Define patch As HttpRequest <- HttpRequest(HttpMethod.PATCH, \"https://fake.test/patch\");\n  Define patched As HttpResponse <- Propagate net.send(patch);\n  Write patched.status();\n  Define delete As HttpRequest <- HttpRequest(HttpMethod.DELETE, \"https://fake.test/delete\");\n  Define deleted As HttpResponse <- Propagate net.send(delete);\n  Write deleted.status();\n  Return Success (0);\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): If value < 0 Then\n        Write value;\n      EndIf\n    Failure (problem): Write problem.uncertain;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "http": {
@@ -251,7 +254,8 @@
   "clase": "semantica",
   "texto": "Enviar valida antes de consultar al anfitrión: capacidad abierta, URL http o https con host ASCII sin credenciales, atenuación voluntaria de origen, nombres de cabecera como tokens HTTP y valores sin CR, LF ni NUL. Rechaza únicamente cabeceras controladas por el transporte: host, content-length, transfer-encoding, connection, upgrade, te, trailer, keep-alive y accept-encoding. Cookie y set-cookie se admiten en nativo; el navegador informa sus restricciones como PeticionInvalida de plataforma. GET y HEAD no admiten cuerpo. Los fallos de validación son ErrorES y no consultan al anfitrión.",
   "verificacion": [
-    "C5"
+    "C5",
+    "C32"
   ]
 }
 ```
@@ -274,8 +278,8 @@
     }
   },
   "programas": {
-    "es": "SubProceso Send(request Como PeticionHttp) Como Resultado<Cadena, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir response Como RespuestaHttp <- Propagar net.Enviar(request);\nRetornar Exito(response.Url());\nFinSubProceso\nAlgoritmo Main\nSegun Send(PeticionHttp(MetodoHttp.GET, \"ftp://fake.test/a\")) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Incierto;\nFinSegun\nSegun Send(PeticionHttp(MetodoHttp.GET, \"https://user@fake.test/a\")) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Incierto;\nFinSegun\nSegun Send(PeticionHttp(MetodoHttp.GET, \"fake.test/a\")) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Incierto;\nFinSegun\nSegun Send(PeticionHttp(MetodoHttp.GET, \"https://tést.test/a\")) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Incierto;\nFinSegun\nSegun Send(PeticionHttp(MetodoHttp.GET, \"https://fake.test/a\").ConCuerpoTexto(\"x\")) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Incierto;\nFinSegun\nSegun Send(PeticionHttp(MetodoHttp.GET, \"https://fake.test/a\").ConCabecera(\"host\", \"fake.test\")) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Incierto;\nFinSegun\nSegun Send(PeticionHttp(MetodoHttp.GET, \"https://fake.test/a\").ConCabecera(\"x-test\", \"a\\r\\nb\")) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Send(request as HttpRequest) as result<string, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine response as HttpResponse <- propagate net.send(request);\nreturn success(response.url());\nendSubroutine\nalgorithm Main\nswitch Send(HttpRequest(HttpMethod.GET, \"ftp://fake.test/a\")) do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nswitch Send(HttpRequest(HttpMethod.GET, \"https://user@fake.test/a\")) do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nswitch Send(HttpRequest(HttpMethod.GET, \"fake.test/a\")) do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nswitch Send(HttpRequest(HttpMethod.GET, \"https://tést.test/a\")) do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nswitch Send(HttpRequest(HttpMethod.GET, \"https://fake.test/a\").withTextBody(\"x\")) do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nswitch Send(HttpRequest(HttpMethod.GET, \"https://fake.test/a\").withHeader(\"host\", \"fake.test\")) do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nswitch Send(HttpRequest(HttpMethod.GET, \"https://fake.test/a\").withHeader(\"x-test\", \"a\\r\\nb\")) do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Send(request Como PeticionHttp) Como Resultado < Cadena, ErrorES >\n  Definir net Como RedCap <- Propagar SolicitarRed();\n  Definir response Como RespuestaHttp <- Propagar net.Enviar(request);\n  Retornar Exito (response.Url());\nFinSubProceso\n\nAlgoritmo Main\n  Segun Send(PeticionHttp(MetodoHttp.GET, \"ftp://fake.test/a\")) Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Incierto;\n  FinSegun\n  Segun Send(PeticionHttp(MetodoHttp.GET, \"https://user@fake.test/a\")) Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Incierto;\n  FinSegun\n  Segun Send(PeticionHttp(MetodoHttp.GET, \"fake.test/a\")) Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Incierto;\n  FinSegun\n  Segun Send(PeticionHttp(MetodoHttp.GET, \"https://tést.test/a\")) Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Incierto;\n  FinSegun\n  Segun Send(PeticionHttp(MetodoHttp.GET, \"https://fake.test/a\").ConCuerpoTexto(\"x\")) Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Incierto;\n  FinSegun\n  Segun Send(PeticionHttp(MetodoHttp.GET, \"https://fake.test/a\").ConCabecera(\"host\", \"fake.test\")) Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Incierto;\n  FinSegun\n  Segun Send(PeticionHttp(MetodoHttp.GET, \"https://fake.test/a\").ConCabecera(\"x-test\", \"a\\r\\nb\")) Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Incierto;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Send(request As HttpRequest) As Result < String, IoError >\n  Define net As NetworkCap <- Propagate requestNetwork();\n  Define response As HttpResponse <- Propagate net.send(request);\n  Return Success (response.url());\nEndSubroutine\n\nAlgorithm Main\n  Switch Send(HttpRequest(HttpMethod.GET, \"ftp://fake.test/a\")) Do\n    Success (value): Write value;\n    Failure (problem): Write problem.uncertain;\n  EndSwitch\n  Switch Send(HttpRequest(HttpMethod.GET, \"https://user@fake.test/a\")) Do\n    Success (value): Write value;\n    Failure (problem): Write problem.uncertain;\n  EndSwitch\n  Switch Send(HttpRequest(HttpMethod.GET, \"fake.test/a\")) Do\n    Success (value): Write value;\n    Failure (problem): Write problem.uncertain;\n  EndSwitch\n  Switch Send(HttpRequest(HttpMethod.GET, \"https://tést.test/a\")) Do\n    Success (value): Write value;\n    Failure (problem): Write problem.uncertain;\n  EndSwitch\n  Switch Send(HttpRequest(HttpMethod.GET, \"https://fake.test/a\").withTextBody(\"x\")) Do\n    Success (value): Write value;\n    Failure (problem): Write problem.uncertain;\n  EndSwitch\n  Switch Send(HttpRequest(HttpMethod.GET, \"https://fake.test/a\").withHeader(\"host\", \"fake.test\")) Do\n    Success (value): Write value;\n    Failure (problem): Write problem.uncertain;\n  EndSwitch\n  Switch Send(HttpRequest(HttpMethod.GET, \"https://fake.test/a\").withHeader(\"x-test\", \"a\\r\\nb\")) Do\n    Success (value): Write value;\n    Failure (problem): Write problem.uncertain;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "http": {
@@ -293,7 +297,7 @@
   "fuerza": "DEBE",
   "clase": "semantica",
   "texto": "Una respuesta completa con estado 100 a 599, excepto 101, es Exito(RespuestaHttp); las respuestas 3xx, 4xx y 5xx no se convierten en ErrorES. EsExito es verdadero solo entre 200 y 299. Cuerpo conserva los octetos y CuerpoTexto devuelve Resultado<Cadena, ErrorES> con Utf8Invalido si no son UTF-8. Cabecera ignora mayúsculas ASCII y une los valores repetidos con coma y espacio; NombresCabeceras devuelve nombres en minúsculas una sola vez en orden de primera aparición.",
-  "verificacion": ["C6", "C12"]
+  "verificacion": ["C6", "C12", "C39", "C40", "C41", "C42", "C43", "C44", "C45"]
 }
 ```
 
@@ -312,8 +316,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/binary\");\nDefinir response Como RespuestaHttp <- Propagar net.Enviar(request);\nSegun response.Cabecera(\"X-Test\") Hacer\nAlgo(value): Escribir value;\nNada: Escribir \"missing\";\nFinSegun\nEscribir response.Cuerpo().En(0);\nSegun response.CuerpoTexto() Hacer\nExito(text): Escribir text;\nError(problem): Escribir problem.Incierto;\nFinSegun\nRetornar Exito(0);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Si value < 0 Entonces\nEscribir value;\nFinSi\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/binary\");\ndefine response as HttpResponse <- propagate net.send(request);\nswitch response.header(\"x-test\") do\nsome(value): write value;\nnone: write \"missing\";\nendSwitch\nwrite response.body().at(0);\nswitch response.textBody() do\nsuccess(text): write text;\nfailure(problem): write problem.uncertain;\nendSwitch\nreturn success(0);\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): if value < 0 then\nwrite value;\nendIf\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado < Entero, ErrorES >\n  Definir net Como RedCap <- Propagar SolicitarRed();\n  Definir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/binary\");\n  Definir response Como RespuestaHttp <- Propagar net.Enviar(request);\n  Segun response.Cabecera(\"X-Test\") Hacer\n    Algo (value): Escribir value;\n    Nada: Escribir \"missing\";\n  FinSegun\n  Escribir response.Cuerpo().En(0);\n  Segun response.CuerpoTexto() Hacer\n    Exito (text): Escribir text;\n    Error (problem): Escribir problem.Incierto;\n  FinSegun\n  Retornar Exito (0);\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Si value < 0 Entonces\n        Escribir value;\n      FinSi\n    Error (problem): Escribir problem.Incierto;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result < Integer, IoError >\n  Define net As NetworkCap <- Propagate requestNetwork();\n  Define request As HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/binary\");\n  Define response As HttpResponse <- Propagate net.send(request);\n  Switch response.header(\"x-test\") Do\n    Some (value): Write value;\n    None: Write \"missing\";\n  EndSwitch\n  Write response.body().at(0);\n  Switch response.textBody() Do\n    Success (text): Write text;\n    Failure (problem): Write problem.uncertain;\n  EndSwitch\n  Return Success (0);\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): If value < 0 Then\n        Write value;\n      EndIf\n    Failure (problem): Write problem.uncertain;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "http": {
@@ -640,8 +644,8 @@
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir closed Como Logico <- Propagar net.Cerrar();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/a\");\nSegun net.Enviar(request) Hacer\nExito(response): Retornar Exito(Falso);\nError(problem): Retornar Exito(problem.Incierto);\nFinSegun\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe() as result<boolean, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine closed as boolean <- propagate net.close();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/a\");\nswitch net.send(request) do\nsuccess(response): return success(false);\nfailure(problem): return success(problem.uncertain);\nendSwitch\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado < Logico, ErrorES >\n  Definir net Como RedCap <- Propagar SolicitarRed();\n  Definir closed Como Logico <- Propagar net.Cerrar();\n  Definir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/a\");\n  Segun net.Enviar(request) Hacer\n    Exito (response): Retornar Exito (Falso);\n    Error (problem): Retornar Exito (problem.Incierto);\n  FinSegun\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Incierto;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result < Boolean, IoError >\n  Define net As NetworkCap <- Propagate requestNetwork();\n  Define closed As Boolean <- Propagate net.close();\n  Define request As HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/a\");\n  Switch net.send(request) Do\n    Success (response): Return Success (False);\n    Failure (problem): Return Success (problem.uncertain);\n  EndSwitch\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): Write value;\n    Failure (problem): Write problem.uncertain;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {
     "http": {
@@ -939,8 +943,8 @@ Una respuesta 1xx informativa pertenece al transporte y debe consumirse antes de
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/zero-response\").ConLimiteRespuesta(0)) Hacer\nExito(response): Retornar Exito(1);\nError(problem): Retornar Error(problem);\nFinSegun\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/zero-response\").withResponseLimit(0)) do\nsuccess(response): return success(1);\nfailure(problem): return failure(problem);\nendSwitch\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado < Entero, ErrorES >\n  Definir net Como RedCap <- Propagar SolicitarRed();\n  Segun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/zero-response\").ConLimiteRespuesta(0)) Hacer\n    Exito (response): Retornar Exito (1);\n    Error (problem): Retornar Error (problem);\n  FinSegun\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result < Integer, IoError >\n  Define net As NetworkCap <- Propagate requestNetwork();\n  Switch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/zero-response\").withResponseLimit(0)) Do\n    Success (response): Return Success (1);\n    Failure (problem): Return Failure (problem);\n  EndSwitch\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): Write value;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {}
 }
@@ -961,8 +965,8 @@ Una respuesta 1xx informativa pertenece al transporte y debe consumirse antes de
     "terminacion": "completed"
   },
   "programas": {
-    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nSegun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/zero-time\").ConTiempoMaximo(0)) Hacer\nExito(response): Retornar Exito(1);\nError(problem): Retornar Error(problem);\nFinSegun\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\nswitch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/zero-time\").withTimeout(0)) do\nsuccess(response): return success(1);\nfailure(problem): return failure(problem);\nendSwitch\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "SubProceso Probe() Como Resultado < Entero, ErrorES >\n  Definir net Como RedCap <- Propagar SolicitarRed();\n  Segun net.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/zero-time\").ConTiempoMaximo(0)) Hacer\n    Exito (response): Retornar Exito (1);\n    Error (problem): Retornar Error (problem);\n  FinSegun\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito (value): Escribir value;\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result < Integer, IoError >\n  Define net As NetworkCap <- Propagate requestNetwork();\n  Switch net.send(HttpRequest(HttpMethod.GET, \"https://fake.test/zero-time\").withTimeout(0)) Do\n    Success (response): Return Success (1);\n    Failure (problem): Return Failure (problem);\n  EndSwitch\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success (value): Write value;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "anfitrion": {}
 }
@@ -1185,6 +1189,520 @@ Una respuesta 1xx informativa pertenece al transporte y debe consumirse antes de
       },
       "GET https://fake.test/second": {
         "estado": 201
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C29",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Soleado, 25\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso ConsultarClima() Como Resultado < Cadena, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Definir peticion Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://clima.test/hoy\");\n  Definir respuesta Como RespuestaHttp <- Propagar red.Enviar(peticion);\n  Retornar respuesta.CuerpoTexto();\nFinSubProceso\n\nAlgoritmo Clima\n  Segun ConsultarClima() Hacer\n    Exito (texto): Escribir texto;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine CheckWeather() As Result < String, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Define request As HttpRequest <- HttpRequest(HttpMethod.GET, \"https://clima.test/hoy\");\n  Define response As HttpResponse <- Propagate network.send(request);\n  Return response.textBody();\nEndSubroutine\n\nAlgorithm Weather\n  Switch CheckWeather() Do\n    Success (text): Write text;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "GET https://clima.test/hoy": {
+        "estado": 200,
+        "cuerpo": "Soleado, 25"
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C30",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "200\ndestino_denegado\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Pedir(red Como RedCap, direccion Como Cadena)\n  Segun red.Enviar(PeticionHttp(MetodoHttp.GET, direccion)) Hacer\n    Exito (respuesta): Escribir respuesta.Estado();\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinSubProceso\n\nSubProceso SoloTienda() Como Resultado < Entero, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Definir tienda Como RedCap <- Propagar red.Limitar(\"https://tienda.test\");\n  Pedir(tienda, \"https://tienda.test/precios\");\n  Pedir(tienda, \"https://otro.test/precios\");\n  Retornar Exito (0);\nFinSubProceso\n\nAlgoritmo Tienda\n  Descartar SoloTienda();\nFinAlgoritmo\n",
+    "en": "Subroutine Fetch(network As NetworkCap, address As String)\n  Switch network.send(HttpRequest(HttpMethod.GET, address)) Do\n    Success (response): Write response.status();\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndSubroutine\n\nSubroutine OnlyShop() As Result < Integer, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Define shop As NetworkCap <- Propagate network.restrict(\"https://tienda.test\");\n  Fetch(shop, \"https://tienda.test/precios\");\n  Fetch(shop, \"https://otro.test/precios\");\n  Return Success (0);\nEndSubroutine\n\nAlgorithm Shop\n  Discard OnlyShop();\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "GET https://tienda.test/precios": {
+        "estado": 200
+      },
+      "GET https://otro.test/precios": {
+        "estado": 200
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C31",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "200\nOK\ncapacidad_cerrada\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso UsarYCerrar() Como Resultado < Entero, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Definir peticion Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/hora\");\n  Definir primera Como RespuestaHttp <- Propagar red.Enviar(peticion);\n  Escribir primera.Estado();\n  Definir cerrada Como Logico <- Propagar red.Cerrar();\n  Si cerrada Entonces\n    Escribir \"OK\";\n  FinSi\n  Definir segunda Como RespuestaHttp <- Propagar red.Enviar(peticion);\n  Retornar Exito (segunda.Estado());\nFinSubProceso\n\nAlgoritmo CerrarRed\n  Segun UsarYCerrar() Hacer\n    Exito (estado): Escribir estado;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine UseAndClose() As Result < Integer, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Define request As HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/hora\");\n  Define first As HttpResponse <- Propagate network.send(request);\n  Write first.status();\n  Define closed As Boolean <- Propagate network.close();\n  If closed Then\n    Write \"OK\";\n  EndIf\n  Define second As HttpResponse <- Propagate network.send(request);\n  Return Success (second.status());\nEndSubroutine\n\nAlgorithm CloseNetwork\n  Switch UseAndClose() Do\n    Success (status): Write status;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "GET https://fake.test/hora": {
+        "estado": 200
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C32",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Estado: 201\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso GuardarNota() Como Resultado < Entero, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Definir peticion Como PeticionHttp <- PeticionHttp(MetodoHttp.POST, \"https://notas.test/nuevas\").ConCuerpoTexto(\"Comprar pan\");\n  Definir respuesta Como RespuestaHttp <- Propagar red.Enviar(peticion);\n  Retornar Exito (respuesta.Estado());\nFinSubProceso\n\nAlgoritmo EnviarNota\n  Segun GuardarNota() Hacer\n    Exito (estado): Escribir \"Estado: \", estado;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine SaveNote() As Result < Integer, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Define request As HttpRequest <- HttpRequest(HttpMethod.POST, \"https://notas.test/nuevas\").withTextBody(\"Comprar pan\");\n  Define response As HttpResponse <- Propagate network.send(request);\n  Return Success (response.status());\nEndSubroutine\n\nAlgorithm SendNote\n  Switch SaveNote() Do\n    Success (status): Write \"Estado: \", status;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "POST https://notas.test/nuevas": {
+        "estado": 201
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C33",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "El Principito\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso BuscarLibro() Como Resultado < Cadena, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Definir peticion Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://libros.test/titulo\");\n  Definir respuesta Como RespuestaHttp <- Propagar red.Enviar(peticion);\n  Retornar respuesta.CuerpoTexto();\nFinSubProceso\n\nAlgoritmo Biblioteca\n  Segun BuscarLibro() Hacer\n    Exito (titulo): Escribir titulo;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine FindBook() As Result < String, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Define request As HttpRequest <- HttpRequest(HttpMethod.GET, \"https://libros.test/titulo\");\n  Define response As HttpResponse <- Propagate network.send(request);\n  Return response.textBody();\nEndSubroutine\n\nAlgorithm Library\n  Switch FindBook() Do\n    Success (title): Write title;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "GET https://libros.test/titulo": {
+        "estado": 200,
+        "cuerpo": "El Principito"
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C34",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Hola\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso PedirEnEspanol() Como Resultado < Cadena, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Definir base Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://saludos.test/hola\");\n  Definir peticion Como PeticionHttp <- base.ConCabecera(\"accept-language\", \"es\");\n  Definir respuesta Como RespuestaHttp <- Propagar red.Enviar(peticion);\n  Retornar respuesta.CuerpoTexto();\nFinSubProceso\n\nAlgoritmo Idioma\n  Segun PedirEnEspanol() Hacer\n    Exito (texto): Escribir texto;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine AskInSpanish() As Result < String, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Define plain As HttpRequest <- HttpRequest(HttpMethod.GET, \"https://saludos.test/hola\");\n  Define request As HttpRequest <- plain.withHeader(\"accept-language\", \"es\");\n  Define response As HttpResponse <- Propagate network.send(request);\n  Return response.textBody();\nEndSubroutine\n\nAlgorithm Language\n  Switch AskInSpanish() Do\n    Success (text): Write text;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "GET https://saludos.test/hola": {
+        "estado": 200,
+        "cuerpo": "Hola"
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C35",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Estado: 204\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso SubirDatos() Como Resultado < Entero, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Definir datos Como Bytes <- BytesDesdeTexto(\"123\");\n  Definir peticion Como PeticionHttp <- PeticionHttp(MetodoHttp.PUT, \"https://datos.test/archivo\").ConCuerpo(datos);\n  Definir respuesta Como RespuestaHttp <- Propagar red.Enviar(peticion);\n  Retornar Exito (respuesta.Estado());\nFinSubProceso\n\nAlgoritmo Subir\n  Segun SubirDatos() Hacer\n    Exito (estado): Escribir \"Estado: \", estado;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine UploadData() As Result < Integer, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Define data As Bytes <- bytesFromText(\"123\");\n  Define request As HttpRequest <- HttpRequest(HttpMethod.PUT, \"https://datos.test/archivo\").withBody(data);\n  Define response As HttpResponse <- Propagate network.send(request);\n  Return Success (response.status());\nEndSubroutine\n\nAlgorithm Upload\n  Switch UploadData() Do\n    Success (status): Write \"Estado: \", status;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "PUT https://datos.test/archivo": {
+        "estado": 204
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C36",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Mensaje 7\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso PublicarMensaje() Como Resultado < Cadena, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Definir peticion Como PeticionHttp <- PeticionHttp(MetodoHttp.POST, \"https://foro.test/mensajes\").ConCuerpoTexto(\"Hola a todos\");\n  Definir respuesta Como RespuestaHttp <- Propagar red.Enviar(peticion);\n  Retornar respuesta.CuerpoTexto();\nFinSubProceso\n\nAlgoritmo Foro\n  Segun PublicarMensaje() Hacer\n    Exito (texto): Escribir texto;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine PostMessage() As Result < String, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Define request As HttpRequest <- HttpRequest(HttpMethod.POST, \"https://foro.test/mensajes\").withTextBody(\"Hola a todos\");\n  Define response As HttpResponse <- Propagate network.send(request);\n  Return response.textBody();\nEndSubroutine\n\nAlgorithm Forum\n  Switch PostMessage() Do\n    Success (text): Write text;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "POST https://foro.test/mensajes": {
+        "estado": 201,
+        "cuerpo": "Mensaje 7"
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C37",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "13\nlimite_excedido\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Descargar(red Como RedCap, limite Como Entero)\n  Definir peticion Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://cuentos.test/corto\").ConLimiteRespuesta(limite);\n  Segun red.Enviar(peticion) Hacer\n    Exito (respuesta): Escribir respuesta.Cuerpo().Longitud();\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinSubProceso\n\nSubProceso Probar() Como Resultado < Entero, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Descargar(red, 100);\n  Descargar(red, 5);\n  Retornar Exito (0);\nFinSubProceso\n\nAlgoritmo Limites\n  Descartar Probar();\nFinAlgoritmo\n",
+    "en": "Subroutine Download(network As NetworkCap, limit As Integer)\n  Define request As HttpRequest <- HttpRequest(HttpMethod.GET, \"https://cuentos.test/corto\").withResponseLimit(limit);\n  Switch network.send(request) Do\n    Success (response): Write response.body().length();\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndSubroutine\n\nSubroutine Try() As Result < Integer, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Download(network, 100);\n  Download(network, 5);\n  Return Success (0);\nEndSubroutine\n\nAlgorithm Limits\n  Discard Try();\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "GET https://cuentos.test/corto": {
+        "estado": 200,
+        "cuerpo": "Habia una vez"
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C38",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "200\ntiempo_agotado\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Consultar(red Como RedCap, direccion Como Cadena)\n  Definir peticion Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, direccion).ConTiempoMaximo(2000000000);\n  Segun red.Enviar(peticion) Hacer\n    Exito (respuesta): Escribir respuesta.Estado();\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinSubProceso\n\nSubProceso Probar() Como Resultado < Entero, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Consultar(red, \"https://rapido.test/hora\");\n  Consultar(red, \"https://lento.test/hora\");\n  Retornar Exito (0);\nFinSubProceso\n\nAlgoritmo Esperas\n  Descartar Probar();\nFinAlgoritmo\n",
+    "en": "Subroutine Ask(network As NetworkCap, address As String)\n  Define request As HttpRequest <- HttpRequest(HttpMethod.GET, address).withTimeout(2000000000);\n  Switch network.send(request) Do\n    Success (response): Write response.status();\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndSubroutine\n\nSubroutine Try() As Result < Integer, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Ask(network, \"https://rapido.test/hora\");\n  Ask(network, \"https://lento.test/hora\");\n  Return Success (0);\nEndSubroutine\n\nAlgorithm Waits\n  Discard Try();\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "GET https://rapido.test/hora": {
+        "estado": 200
+      },
+      "GET https://lento.test/hora": {
+        "fallo": "tiempo_agotado"
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C39",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Estado: 404\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso VerEstado() Como Resultado < Entero, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Definir respuesta Como RespuestaHttp <- Propagar red.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/perdida\"));\n  Retornar Exito (respuesta.Estado());\nFinSubProceso\n\nAlgoritmo Estado\n  Segun VerEstado() Hacer\n    Exito (estado): Escribir \"Estado: \", estado;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine SeeStatus() As Result < Integer, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Define response As HttpResponse <- Propagate network.send(HttpRequest(HttpMethod.GET, \"https://fake.test/perdida\"));\n  Return Success (response.status());\nEndSubroutine\n\nAlgorithm Status\n  Switch SeeStatus() Do\n    Success (status): Write \"Estado: \", status;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "GET https://fake.test/perdida": {
+        "estado": 404
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C40",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "OK 200\nError 404\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Revisar(red Como RedCap, direccion Como Cadena)\n  Segun red.Enviar(PeticionHttp(MetodoHttp.GET, direccion)) Hacer\n    Exito (respuesta):\n      Si respuesta.EsExito() Entonces\n        Escribir \"OK \", respuesta.Estado();\n      Sino\n        Escribir \"Error \", respuesta.Estado();\n      FinSi\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinSubProceso\n\nSubProceso Probar() Como Resultado < Entero, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Revisar(red, \"https://fake.test/inicio\");\n  Revisar(red, \"https://fake.test/perdida\");\n  Retornar Exito (0);\nFinSubProceso\n\nAlgoritmo Respuestas\n  Descartar Probar();\nFinAlgoritmo\n",
+    "en": "Subroutine Check(network As NetworkCap, address As String)\n  Switch network.send(HttpRequest(HttpMethod.GET, address)) Do\n    Success (response):\n      If response.isSuccess() Then\n        Write \"OK \", response.status();\n      Else\n        Write \"Error \", response.status();\n      EndIf\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndSubroutine\n\nSubroutine Try() As Result < Integer, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Check(network, \"https://fake.test/inicio\");\n  Check(network, \"https://fake.test/perdida\");\n  Return Success (0);\nEndSubroutine\n\nAlgorithm Responses\n  Discard Try();\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "GET https://fake.test/inicio": {
+        "estado": 200
+      },
+      "GET https://fake.test/perdida": {
+        "estado": 404
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C41",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "text/plain\n-\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso VerCabeceras() Como Resultado < Entero, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Definir respuesta Como RespuestaHttp <- Propagar red.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/nota\"));\n  Segun respuesta.Cabecera(\"Content-Type\") Hacer\n    Algo (tipo): Escribir tipo;\n    Nada: Escribir \"-\";\n  FinSegun\n  Segun respuesta.Cabecera(\"x-autor\") Hacer\n    Algo (autor): Escribir autor;\n    Nada: Escribir \"-\";\n  FinSegun\n  Retornar Exito (0);\nFinSubProceso\n\nAlgoritmo Cabeceras\n  Descartar VerCabeceras();\nFinAlgoritmo\n",
+    "en": "Subroutine SeeHeaders() As Result < Integer, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Define response As HttpResponse <- Propagate network.send(HttpRequest(HttpMethod.GET, \"https://fake.test/nota\"));\n  Switch response.header(\"Content-Type\") Do\n    Some (kind): Write kind;\n    None: Write \"-\";\n  EndSwitch\n  Switch response.header(\"x-autor\") Do\n    Some (author): Write author;\n    None: Write \"-\";\n  EndSwitch\n  Return Success (0);\nEndSubroutine\n\nAlgorithm Headers\n  Discard SeeHeaders();\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "GET https://fake.test/nota": {
+        "estado": 200,
+        "cabeceras": [
+          [
+            "content-type",
+            "text/plain"
+          ]
+        ],
+        "cuerpo": "hola"
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C42",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "content-type\nx-autor\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso ListarCabeceras() Como Resultado < Vector < Cadena >, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Definir respuesta Como RespuestaHttp <- Propagar red.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/nota\"));\n  Retornar Exito (respuesta.NombresCabeceras());\nFinSubProceso\n\nAlgoritmo NombresDeCabeceras\n  Segun ListarCabeceras() Hacer\n    Exito (nombres):\n      Para Cada nombre En nombres Hacer\n        Escribir nombre;\n      FinPara\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine ListHeaders() As Result < vector < String >, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Define response As HttpResponse <- Propagate network.send(HttpRequest(HttpMethod.GET, \"https://fake.test/nota\"));\n  Return Success (response.headerNames());\nEndSubroutine\n\nAlgorithm HeaderNames\n  Switch ListHeaders() Do\n    Success (names):\n      For each name in names Do\n        Write name;\n      EndFor\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "GET https://fake.test/nota": {
+        "estado": 200,
+        "cabeceras": [
+          [
+            "Content-Type",
+            "text/plain"
+          ],
+          [
+            "X-Autor",
+            "Ana"
+          ]
+        ]
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C43",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Total: 4\n137\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso DescargarImagen() Como Resultado < Bytes, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Definir respuesta Como RespuestaHttp <- Propagar red.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/icono\"));\n  Retornar Exito (respuesta.Cuerpo());\nFinSubProceso\n\nAlgoritmo Imagen\n  Segun DescargarImagen() Hacer\n    Exito (datos):\n      Escribir \"Total: \", datos.Longitud();\n      Escribir datos.En(0);\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine DownloadImage() As Result < Bytes, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Define response As HttpResponse <- Propagate network.send(HttpRequest(HttpMethod.GET, \"https://fake.test/icono\"));\n  Return Success (response.body());\nEndSubroutine\n\nAlgorithm Picture\n  Switch DownloadImage() Do\n    Success (data):\n      Write \"Total: \", data.length();\n      Write data.at(0);\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "GET https://fake.test/icono": {
+        "estado": 200,
+        "cuerpo_bytes": [
+          137,
+          80,
+          78,
+          71
+        ]
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C44",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "¡Buenos días!\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso LeerFrase() Como Resultado < Cadena, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Definir respuesta Como RespuestaHttp <- Propagar red.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/frase\"));\n  Retornar respuesta.CuerpoTexto();\nFinSubProceso\n\nAlgoritmo Frase\n  Segun LeerFrase() Hacer\n    Exito (texto): Escribir texto;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine ReadPhrase() As Result < String, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Define response As HttpResponse <- Propagate network.send(HttpRequest(HttpMethod.GET, \"https://fake.test/frase\"));\n  Return response.textBody();\nEndSubroutine\n\nAlgorithm Phrase\n  Switch ReadPhrase() Do\n    Success (text): Write text;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "GET https://fake.test/frase": {
+        "estado": 200,
+        "cuerpo": "¡Buenos días!"
+      }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C45",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "https://fake.test/inicio\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso VerDireccion() Como Resultado < Cadena, ErrorES >\n  Definir red Como RedCap <- Propagar SolicitarRed();\n  Definir respuesta Como RespuestaHttp <- Propagar red.Enviar(PeticionHttp(MetodoHttp.GET, \"https://fake.test/inicio#arriba\"));\n  Retornar Exito (respuesta.Url());\nFinSubProceso\n\nAlgoritmo Direccion\n  Segun VerDireccion() Hacer\n    Exito (direccion): Escribir direccion;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine SeeAddress() As Result < String, IoError >\n  Define network As NetworkCap <- Propagate requestNetwork();\n  Define response As HttpResponse <- Propagate network.send(HttpRequest(HttpMethod.GET, \"https://fake.test/inicio#arriba\"));\n  Return Success (response.url());\nEndSubroutine\n\nAlgorithm Address\n  Switch SeeAddress() Do\n    Success (address): Write address;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "GET https://fake.test/inicio": {
+        "estado": 200
       }
     }
   }

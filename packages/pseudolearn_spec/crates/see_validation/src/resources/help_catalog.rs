@@ -8,6 +8,8 @@ mod catalog_references;
 mod catalog_safety;
 #[path = "help_catalog/shape.rs"]
 mod catalog_shape;
+#[path = "help_catalog/structure.rs"]
+mod catalog_structure;
 
 use see_model::Corpus;
 use serde_json::Value;
@@ -22,7 +24,8 @@ pub struct CoverageRow {
 
 pub fn check(value: &Value) -> Result<(), String> {
     catalog_shape::check(value)?;
-    catalog_safety::check(value)
+    catalog_safety::check(value)?;
+    catalog_structure::check(value)
 }
 
 pub fn references(value: &Value, corpus: &Corpus) -> Vec<String> {

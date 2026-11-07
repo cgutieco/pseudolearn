@@ -45,7 +45,9 @@
   "clase": "semantica",
   "texto": "Las capacidades son valores opacos en el banco de referencias correspondientes a los tipos bilingües Consola/Console, Argumentos/Arguments, DirectorioCap/DirCap, ArchivoCap/FileCap, Reloj/Clock, Temporizador/Timer, RedCap/NetworkCap y Entorno/Environment. Cada capacidad posee ranura, generación y máscara de derechos, impidiendo la falsificación o manipulación directa de descriptores de bajo nivel.",
   "verificacion": [
-    "C1"
+    "C1",
+    "C12",
+    "C13"
   ]
 }
 ```
@@ -394,6 +396,65 @@
       "GET https://fake.test/a": {
         "estado": 200
       }
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso LeerHora() Como Resultado < Entero, ErrorES >\n  Definir reloj Como Reloj <- Propagar SolicitarReloj();\n  Retornar reloj.Ahora();\nFinSubProceso\n\nAlgoritmo Hora\n  Segun LeerHora() Hacer\n    Exito (momento): Escribir momento;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine ReadTime() As Result < Integer, IoError >\n  Define clock As Clock <- Propagate requestClock();\n  Return clock.now();\nEndSubroutine\n\nAlgorithm Time\n  Switch ReadTime() Do\n    Success (moment): Write moment;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "anfitrion": {
+    "clock": [
+      100,
+      200
+    ]
+  },
+  "espera": {
+    "salida": "100\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 2
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso LeerUsuario() Como Resultado < Opcional < Cadena >, ErrorES >\n  Definir entorno Como Entorno <- Propagar SolicitarEntorno();\n  Retornar entorno.Obtener(\"USUARIO\");\nFinSubProceso\n\nAlgoritmo Bienvenida\n  Segun LeerUsuario() Hacer\n    Exito (usuario):\n      Segun usuario Hacer\n        Algo (nombre): Escribir nombre;\n        Nada: Escribir \"?\";\n      FinSegun\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine ReadUser() As Result < Optional < String >, IoError >\n  Define environment As Environment <- Propagate requestEnvironment();\n  Return environment.get(\"USUARIO\");\nEndSubroutine\n\nAlgorithm Welcome\n  Switch ReadUser() Do\n    Success (user):\n      Switch user Do\n        Some (name): Write name;\n        None: Write \"?\";\n      EndSwitch\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "anfitrion": {
+    "environment": {
+      "USUARIO": "Ana"
+    }
+  },
+  "espera": {
+    "salida": "Ana\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 2
     }
   }
 }

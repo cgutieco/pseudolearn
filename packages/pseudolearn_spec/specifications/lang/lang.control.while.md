@@ -42,7 +42,8 @@
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -98,8 +99,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nMientras 1 Hacer\nFinMientras\nFinAlgoritmo\n",
-    "en": "algorithm P\nwhile 1 do\nendWhile\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Mientras 1 Hacer\n  FinMientras\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  While 1 Do\n  EndWhile\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -111,6 +112,27 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Contar\n  Definir contador Como Entero <- 1;\n  Mientras contador <= 3 Hacer\n    Escribir contador;\n    contador <- contador + 1;\n  FinMientras\nFinAlgoritmo\n",
+    "en": "Algorithm Count\n  Define counter As Integer <- 1;\n  While counter <= 3 Do\n    Write counter;\n    counter <- counter + 1;\n  EndWhile\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1\n2\n3\n",
+    "terminacion": "completed"
   }
 }
 ```

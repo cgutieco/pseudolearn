@@ -150,8 +150,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir x Como Entero;\nEscribir x;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine x as integer;\nwrite x;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir x Como Entero;\n  Escribir x;\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Define x As Integer;\n  Write x;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -174,11 +174,11 @@
           "tramo": {
             "start": {
               "line": 3,
-              "column": 10
+              "column": 12
             },
             "end": {
               "line": 3,
-              "column": 11
+              "column": 13
             }
           },
           "argumentos": {
@@ -189,11 +189,11 @@
             {
               "start": {
                 "line": 2,
-                "column": 9
+                "column": 11
               },
               "end": {
                 "line": 2,
-                "column": 10
+                "column": 12
               }
             }
           ]
@@ -209,11 +209,11 @@
           "tramo": {
             "start": {
               "line": 3,
-              "column": 7
+              "column": 9
             },
             "end": {
               "line": 3,
-              "column": 8
+              "column": 10
             }
           },
           "argumentos": {
@@ -224,11 +224,11 @@
             {
               "start": {
                 "line": 2,
-                "column": 8
+                "column": 10
               },
               "end": {
                 "line": 2,
-                "column": 9
+                "column": 11
               }
             }
           ]

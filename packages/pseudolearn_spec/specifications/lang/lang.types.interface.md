@@ -42,7 +42,8 @@
     "C1",
     "C2",
     "C3",
-    "C4"
+    "C4",
+    "C16"
   ]
 }
 ```
@@ -192,8 +193,8 @@
     "en"
   ],
   "programas": {
-    "es": "Interfaz Readable\nMetodo readValue() Como Entero;\nFinInterfaz\nClase Reader Realiza Readable\nFinClase\nAlgoritmo Main\n\nFinAlgoritmo\n",
-    "en": "interface Readable\nmethod readValue() as integer;\nendInterface\nclass Reader implements Readable\nendClass\nalgorithm Main\n\nendAlgorithm\n"
+    "es": "Interfaz Readable\n  Metodo readValue() Como Entero;\nFinInterfaz\n\nClase Reader Realiza Readable\nFinClase\n\nAlgoritmo Main\n\nFinAlgoritmo\n",
+    "en": "interface Readable\n  Method readValue() As Integer;\nendInterface\n\nClass Reader implements Readable\nEndClass\n\nAlgorithm Main\n\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -436,6 +437,27 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Interfaz Figura\n  Metodo Area() Como Entero;\nFinInterfaz\n\nClase Cuadrado Realiza Figura\n  Definir lado Como Entero;\n  Metodo Area() Como Entero\n    Retornar Este.lado * Este.lado;\n  FinMetodo\nFinClase\n\nAlgoritmo Geometria\n  Definir baldosa Como Cuadrado <- Nuevo Cuadrado();\n  baldosa.lado <- 3;\n  Escribir baldosa.Area();\nFinAlgoritmo\n",
+    "en": "interface Shape\n  Method Area() As Integer;\nendInterface\n\nClass Square implements Shape\n  Define side As Integer;\n  Method Area() As Integer\n    Return This.side * This.side;\n  EndMethod\nEndClass\n\nAlgorithm Geometry\n  Define tile As Square <- New Square();\n  tile.side <- 3;\n  Write tile.Area();\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "9\n",
+    "terminacion": "completed"
   }
 }
 ```

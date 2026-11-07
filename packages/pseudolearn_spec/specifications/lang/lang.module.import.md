@@ -76,7 +76,9 @@
     "C54",
     "C55",
     "C56",
-    "C81"
+    "C81",
+    "C82",
+    "C86"
   ]
 }
 ```
@@ -94,7 +96,9 @@
     "C40",
     "C41",
     "C57",
-    "C58"
+    "C58",
+    "C84",
+    "C85"
   ]
 }
 ```
@@ -134,7 +138,8 @@
     "C65",
     "C66",
     "C67",
-    "C68"
+    "C68",
+    "C83"
   ]
 }
 ```
@@ -207,7 +212,8 @@
     "C77",
     "C78",
     "C79",
-    "C80"
+    "C80",
+    "C87"
   ]
 }
 ```
@@ -7102,5 +7108,161 @@
     "engine",
     "aot"
   ]
+}
+```
+
+```caso
+{
+  "id": "C82",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Importar escuela.notas Como N;\nAlgoritmo Boletin\n  Escribir N.Promedio(8, 10);\nFinAlgoritmo\n",
+    "en": "Import school.grades As G;\nAlgorithm ReportCard\n  Write G.Average(8, 10);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "moduleSyntaxOutsideProject",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C83",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Exportar escuela.notas.Promedio;\nAlgoritmo Boletin\n  Escribir \"Listo\";\nFinAlgoritmo\n",
+    "en": "Export school.grades.Average;\nAlgorithm ReportCard\n  Write \"Listo\";\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "moduleSyntaxOutsideProject",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C84",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Publico SubProceso Doble(numero Como Entero) Como Entero\n  Retornar numero * 2;\nFinSubProceso\n\nAlgoritmo Calculo\n  Escribir Doble(4);\nFinAlgoritmo\n",
+    "en": "Public Subroutine Double(number As Integer) As Integer\n  Return number * 2;\nEndSubroutine\n\nAlgorithm Calculation\n  Write Double(4);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "moduleSyntaxOutsideProject",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C85",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Publico Enumerado Talla\nS, M, L;\nFinEnumerado\nAlgoritmo Tienda\n  Escribir Talla.M;\nFinAlgoritmo\n",
+    "en": "Public Enum Size\nS, M, L;\nEndEnum\nAlgorithm Shop\n  Write Size.M;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "moduleSyntaxOutsideProject",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C86",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Importar tienda.tipos.Talla;\nAlgoritmo Tienda\n  Definir camiseta Como Talla <- Talla.M;\n  Escribir camiseta;\nFinAlgoritmo\n",
+    "en": "Import shop.types.Size;\nAlgorithm Shop\n  Define shirt As Size <- Size.M;\n  Write shirt;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "moduleSyntaxOutsideProject",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C87",
+  "regla": "R8",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Registro Punto\nDefinir fila Como Entero;\nDefinir columna Como Entero;\nFinRegistro\nPublico SubProceso Origen() Como Punto\n  Retornar Punto(0, 0);\nFinSubProceso\n\nAlgoritmo Mapa\n  Escribir Origen().fila;\nFinAlgoritmo\n",
+    "en": "Record Point\nDefine row As Integer;\nDefine column As Integer;\nEndRecord\nPublic Subroutine Origin() As Point\n  Return Point(0, 0);\nEndSubroutine\n\nAlgorithm Map\n  Write Origin().row;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "moduleSyntaxOutsideProject",
+        "severidad": "error"
+      }
+    ]
+  }
 }
 ```

@@ -14,8 +14,8 @@ fn preserves_catalog_editorial_values_in_definition_blocks() -> Result<(), Strin
                 "cards": [{
                     "id": "construct.sample",
                     "content": {
-                        "es": {"purpose": "Explicación editorial"},
-                        "en": {"purpose": "Editorial explanation"}
+                        "es": {"summary": "Explicación editorial"},
+                        "en": {"summary": "Editorial explanation"}
                     }
                 }],
                 "exclusions": []

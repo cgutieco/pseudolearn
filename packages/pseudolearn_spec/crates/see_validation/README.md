@@ -14,7 +14,7 @@ Imports internos permitidos: model, graph, change. Prohibidas las capas superior
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Las definiciones admiten valor como objeto normativo. `helpCatalog` usa el esquema `help-catalog/1`: verifica identidades y papeles únicos, identidades léxicas enlazadas a su fuente, disponibilidad 2026 por perfil, contenido es/en, anclajes y ejemplos con versión exacta, y exclusiones tipadas sin solapamiento con fichas disponibles. Los ejemplos no contienen resultados duplicados; su referencia debe quedar dentro de la disponibilidad de la ficha y del perfil del caso. Los casos admiten semilla opcional de entero; las fichas bilingües y las firmas se verifican estructuralmente, sin presentar esta revisión como ejecución de reference.
+Las definiciones admiten valor como objeto normativo. `helpCatalog` usa el esquema `help-catalog/1`: verifica identidades y papeles únicos, identidades léxicas enlazadas a su fuente, disponibilidad 2026 por perfil, categoría, plantilla con segmentos que resuelven una identidad léxica, huecos explicados exactamente una vez por idioma, partes que nombran tokens de la ficha, contenido es/en con la misma estructura en ambos idiomas, anclajes y ejemplos con versión exacta, y exclusiones tipadas sin solapamiento con fichas disponibles. Los ejemplos no contienen programas ni resultados duplicados; el caso referenciado debe declarar cada perfil de la ficha con su programa. Los casos admiten semilla opcional de entero; las fichas bilingües y las firmas se verifican estructuralmente, sin presentar esta revisión como ejecución de reference.
 
 La validación del catálogo compara los operadores declarados con las producciones de asignación y
 expresión, deriva las palabras reservadas del vocabulario y las incorporadas de la biblioteca, y
@@ -38,14 +38,20 @@ importa el motor; la ejecución de los ejemplos, que corresponde a los sujetos d
 casos; y la revisión editorial independiente de la prosa, que ninguna herramienta sustituye. Los
 diagnósticos tienen el prefijo `SEE-HELP-CATALOG` y una causa cada uno: ficha sin papel declarado
 (`no declared inventory role`), anclaje retirado o roto (`stale anchor`), identidad léxica retirada
-(`stale token identity`), ejemplo inválido (`stale example`), clase discrepante (`mismatched kind`),
-traducción ausente (`uncovered … identity`), identidad repetida (`duplicate`), exclusión abusiva
-(`overlaps an available card`, `must name an alias`) y recurso demasiado profundo (`nesting exceeds`).
+(`stale token identity`), ejemplo inválido o sin programa por perfil (`stale example`), clase
+discrepante (`mismatched kind`), ejemplo repetido (`duplicate example reference`), segmento de plantilla
+sin identidad léxica (`unknown form token`), hueco sin explicación (`slots differ from its form`) o con
+identidad inválida (`invalid slot identity`), parte ajena a los tokens (`part outside its tokens`),
+estructura distinta entre idiomas (`differs in structure between languages`), traducción ausente
+(`uncovered … identity`), identidad repetida (`duplicate`), exclusión abusiva (`overlaps an available
+card`, `must name an alias`) y recurso demasiado profundo (`nesting exceeds`). La estructura se comprueba
+después de la seguridad del texto y antes de las referencias, que solo se evalúan sobre un catálogo
+estructuralmente válido.
 Cada uno se ejercita con un fixture aislado de `fixtures/help-catalog/` aplicado sobre el catálogo real:
 el catálogo vigente debe quedar sin diagnósticos y cada fixture debe ser rechazado por su diagnóstico.
 La prueba exige un mínimo de fixtures para que borrarlos no la debilite.
 
-El texto editorial es texto plano: el validador rechaza `<`, `>`, comillas inversas, `&`, `\`, corchetes y `|`, esquemas de URI activos (`javascript:`, `data:`, `file:`, `command:`, `http(s):`, `mailto:` y cualquier `://`), caracteres de control o de dirección, campos fuera de longitud (título 80, propósito 560, resto 280), demasiados elementos por lista (16 partes, 8 restricciones, 8 errores comunes, 6 ejemplos) y más de 4 096 bytes de texto por idioma. Cada rechazo tiene fixture propio. Este control es la primera defensa; los clientes escapan de todos modos. La neutralidad del español en mensajes de diagnóstico, mensajes de CLI y tarjetas de ayuda rechaza voseo y modismos regionales bajo el diagnóstico `SEE-SPANISH-NEUTRALITY`, respaldado por su fixture negativo en `fixtures/spanish-neutrality/`.
+El texto editorial es texto plano: el validador rechaza `<`, `>`, comillas inversas, `&`, `\`, corchetes y `|`, esquemas de URI activos (`javascript:`, `data:`, `file:`, `command:`, `http(s):`, `mailto:` y cualquier `://`), caracteres de control o de dirección, campos fuera de longitud (título 80, etiqueta de hueco 40, resto 280), etiquetas de hueco con signos, demasiados elementos por lista (16 partes, 12 huecos, 8 reglas, 6 errores comunes, 4 ejemplos), plantillas de más de 12 líneas o 16 segmentos por línea y más de 4 096 bytes de texto por idioma. Cada rechazo tiene fixture propio. Este control es la primera defensa; los clientes escapan de todos modos. La neutralidad del español en mensajes de diagnóstico, mensajes de CLI y tarjetas de ayuda rechaza voseo y modismos regionales bajo el diagnóstico `SEE-SPANISH-NEUTRALITY`, respaldado por su fixture negativo en `fixtures/spanish-neutrality/`.
 
 Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
 Se descarta importar sujetos o capas superiores para preservar la dirección.

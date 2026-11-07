@@ -64,7 +64,8 @@
     "C25",
     "C26",
     "C27",
-    "C28"
+    "C28",
+    "C30"
   ]
 }
 ```
@@ -83,7 +84,8 @@
     "C17",
     "C18",
     "C19",
-    "C29"
+    "C29",
+    "C31"
   ]
 }
 ```
@@ -134,8 +136,8 @@
     "en"
   ],
   "programas": {
-    "es": "Variante Vacia\nFinVariante\nAlgoritmo P\nFinAlgoritmo\n",
-    "en": "variant Empty\nendVariant\nalgorithm P\nendAlgorithm\n"
+    "es": "Variante Vacia;\nFinVariante;\nAlgoritmo P\nFinAlgoritmo\n",
+    "en": "variant Empty;\nendVariant;\nAlgorithm P\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -405,8 +407,8 @@
     "en"
   ],
   "programas": {
-    "es": "Variante Forma\nAlternativa Circulo(radio Como Entero)\nAlternativa Rectangulo(ancho Como Entero, alto Como Entero)\nAlternativa Punto\nFinVariante\nAlgoritmo P\nDefinir f Como Forma <- Forma.Punto;\nSegun f Hacer\nForma.Circulo(r): Escribir r;\nFinSegun\nFinAlgoritmo\n",
-    "en": "variant Shape\ncase Circle(radius as integer)\ncase Rectangle(width as integer, height as integer)\ncase Dot\nendVariant\nalgorithm P\ndefine f as Shape <- Shape.Dot;\nswitch f do\nShape.Circle(r): write r;\nendSwitch\nendAlgorithm\n"
+    "es": "Variante Forma;\nAlternativa Circulo(radio Como Entero);\nAlternativa Rectangulo(ancho Como Entero, alto Como Entero);\nAlternativa Punto;\nFinVariante;\nAlgoritmo P\n  Definir f Como Forma <- Forma.Punto;\n  Segun f Hacer\n    Forma.Circulo(r): Escribir r;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "variant Shape;\ncase Circle(radius As Integer);\ncase Rectangle(width As Integer, height As Integer);\ncase Dot;\nendVariant;\nAlgorithm P\n  Define f As Shape <- Shape.Dot;\n  Switch f Do\n    Shape.Circle(r): Write r;\n  EndSwitch\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -478,8 +480,8 @@
     "en"
   ],
   "programas": {
-    "es": "Variante Forma\nAlternativa Circulo(radio Como Entero)\nAlternativa Rectangulo(ancho Como Entero, alto Como Entero)\nAlternativa Punto\nFinVariante\nAlgoritmo P\nDefinir f Como Forma <- Forma.Punto;\nSegun f Hacer\nForma.Rectangulo(a): Escribir a;\nDe Otro Modo: Escribir 0;\nFinSegun\nFinAlgoritmo\n",
-    "en": "variant Shape\ncase Circle(radius as integer)\ncase Rectangle(width as integer, height as integer)\ncase Dot\nendVariant\nalgorithm P\ndefine f as Shape <- Shape.Dot;\nswitch f do\nShape.Rectangle(a): write a;\notherwise: write 0;\nendSwitch\nendAlgorithm\n"
+    "es": "Variante Forma;\nAlternativa Circulo(radio Como Entero);\nAlternativa Rectangulo(ancho Como Entero, alto Como Entero);\nAlternativa Punto;\nFinVariante;\nAlgoritmo P\n  Definir f Como Forma <- Forma.Punto;\n  Segun f Hacer\n    Forma.Rectangulo(a): Escribir a;\n    De Otro Modo: Escribir 0;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "variant Shape;\ncase Circle(radius As Integer);\ncase Rectangle(width As Integer, height As Integer);\ncase Dot;\nendVariant;\nAlgorithm P\n  Define f As Shape <- Shape.Dot;\n  Switch f Do\n    Shape.Rectangle(a): Write a;\n    Otherwise: Write 0;\n  EndSwitch\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -925,6 +927,48 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C30",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Variante Mascota;\nAlternativa Perro(nombre Como Cadena);\nAlternativa Pez(aletas Como Entero);\nFinVariante;\nSubProceso Describir(mascota Como Mascota)\n  Segun mascota Hacer\n    Mascota.Perro(nombre): Escribir nombre;\n    Mascota.Pez(aletas): Escribir aletas;\n  FinSegun\nFinSubProceso\n\nAlgoritmo Casa\n  Describir(Mascota.Perro(\"Toby\"));\n  Describir(Mascota.Pez(7));\nFinAlgoritmo\n",
+    "en": "variant Pet;\ncase Dog(name As String);\ncase Fish(fins As Integer);\nendVariant;\nSubroutine Describe(pet As Pet)\n  Switch pet Do\n    Pet.Dog(name): Write name;\n    Pet.Fish(fins): Write fins;\n  EndSwitch\nEndSubroutine\n\nAlgorithm Home\n  Describe(Pet.Dog(\"Toby\"));\n  Describe(Pet.Fish(7));\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Toby\n7\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C31",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Variante Semaforo;\nAlternativa Rojo;\nAlternativa Amarillo;\nAlternativa Verde(segundos Como Entero);\nFinVariante;\nAlgoritmo Cruce\n  Definir luz Como Semaforo <- Semaforo.Verde(30);\n  Segun luz Hacer\n    Semaforo.Verde(segundos): Escribir segundos;\n    De Otro Modo: Escribir 0;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "variant TrafficLight;\ncase Red;\ncase Yellow;\ncase Green(seconds As Integer);\nendVariant;\nAlgorithm Crossing\n  Define light As TrafficLight <- TrafficLight.Green(30);\n  Switch light Do\n    TrafficLight.Green(seconds): Write seconds;\n    Otherwise: Write 0;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "30\n",
+    "terminacion": "completed"
   }
 }
 ```

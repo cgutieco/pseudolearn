@@ -20,15 +20,15 @@ fn card_references(card: &Value, corpus: &Corpus) -> Vec<String> {
     let identifier = card.get("id").and_then(Value::as_str).unwrap_or_default();
     let mut errors = token_references(identifier, card, corpus);
     errors.extend(anchor_references(identifier, card, corpus));
+    errors.extend(form_references(identifier, card, corpus));
     if let Some(content) = card.get("content").and_then(Value::as_object) {
         for localized in content.values() {
-            errors.extend(example_references(identifier, localized, corpus));
+            errors.extend(example_references(identifier, card, localized, corpus));
             errors.extend(super::catalog_examples::kind_errors(
                 identifier, localized, corpus,
             ));
         }
     }
-    errors.extend(super::catalog_examples::missing_example_errors(card));
     errors
 }
 
@@ -52,15 +52,44 @@ fn anchor_references(identifier: &str, card: &Value, corpus: &Corpus) -> Vec<Str
         .collect()
 }
 
-fn example_references(identifier: &str, content: &Value, corpus: &Corpus) -> Vec<String> {
-    content
-        .get("examples")
+fn example_references(
+    identifier: &str,
+    card: &Value,
+    content: &Value,
+    corpus: &Corpus,
+) -> Vec<String> {
+    let examples = entries(content, "examples");
+    let error_cases = entries(content, "common_errors").filter_map(|error| error.get("case"));
+    examples
+        .chain(error_cases)
+        .filter(|reference| !example_is_available(corpus, card, reference))
+        .map(|_| format!("SEE-HELP-CATALOG: {identifier} has a stale example"))
+        .collect()
+}
+
+fn form_references(identifier: &str, card: &Value, corpus: &Corpus) -> Vec<String> {
+    entries(card, "form")
+        .flat_map(|line| entries(line, "segments"))
+        .filter_map(|segment| segment.get("token").and_then(Value::as_str))
+        .filter(|token| !lexical_identity_exists(corpus, token))
+        .map(|token| format!("SEE-HELP-CATALOG: {identifier} has an unknown form token {token}"))
+        .collect()
+}
+
+fn lexical_identity_exists(corpus: &Corpus, identifier: &str) -> bool {
+    corpus
+        .iter()
+        .filter(|specification| specification.metadata.estado != "retirado")
+        .flat_map(|specification| specification.blocks.iter())
+        .any(|block| definition_has_identity(block, identifier))
+}
+
+fn entries<'value>(value: &'value Value, key: &str) -> impl Iterator<Item = &'value Value> {
+    value
+        .get(key)
         .and_then(Value::as_array)
         .into_iter()
         .flatten()
-        .filter(|example| !example_is_available(corpus, example))
-        .map(|_| format!("SEE-HELP-CATALOG: {identifier} has a stale example"))
-        .collect()
 }
 
 fn token_source_exists(token: &Value, corpus: &Corpus) -> bool {
@@ -110,12 +139,21 @@ fn definition_has_identity(block: &see_model::Block, identifier: &str) -> bool {
     }
 }
 
-fn example_is_available(corpus: &Corpus, example: &Value) -> bool {
+fn example_is_available(corpus: &Corpus, card: &Value, example: &Value) -> bool {
     let Some(case) = example_case(corpus, example) else {
         return false;
     };
-    let profile = example.get("profile").and_then(Value::as_str);
-    profile.is_some_and(|value| strings(case.fields.get("perfiles")).contains(&value))
+    let declared = strings(case.fields.get("perfiles"));
+    let programs = case.fields.get("programas");
+    entries(card.get("availability").unwrap_or(&Value::Null), "profiles")
+        .filter_map(Value::as_str)
+        .all(|profile| {
+            declared.contains(&profile)
+                && programs
+                    .and_then(|value| value.get(profile))
+                    .and_then(Value::as_str)
+                    .is_some_and(|program| !program.is_empty())
+        })
 }
 
 pub(crate) fn example_case<'corpus>(

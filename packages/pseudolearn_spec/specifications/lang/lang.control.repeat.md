@@ -42,7 +42,8 @@
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -98,8 +99,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nRepetir\nHasta Que 1\nFinAlgoritmo\n",
-    "en": "algorithm P\nrepeat\nuntil 1\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Repetir\n  Hasta Que 1\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Repeat\n  Until 1\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -111,6 +112,27 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Duplicar\n  Definir numero Como Entero <- 1;\n  Repetir\n    Escribir numero;\n    numero <- numero * 2;\n  Hasta Que numero > 10\nFinAlgoritmo\n",
+    "en": "Algorithm Doubling\n  Define number As Integer <- 1;\n  Repeat\n    Write number;\n    number <- number * 2;\n  Until number > 10\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1\n2\n4\n8\n",
+    "terminacion": "completed"
   }
 }
 ```

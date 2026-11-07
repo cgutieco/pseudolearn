@@ -42,7 +42,8 @@
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -116,6 +117,27 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Clase Punto\n  Definir x Como Entero;\nFinClase\n\nAlgoritmo Objetos\n  Definir primero Como Punto <- Nuevo Punto();\n  Definir segundo Como Punto <- Nuevo Punto();\n  primero.x <- 1;\n  segundo.x <- 2;\n  Escribir primero.x;\n  Escribir segundo.x;\nFinAlgoritmo\n",
+    "en": "Class Point\n  Define x As Integer;\nEndClass\n\nAlgorithm Objects\n  Define first As Point <- New Point();\n  Define second As Point <- New Point();\n  first.x <- 1;\n  second.x <- 2;\n  Write first.x;\n  Write second.x;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1\n2\n",
+    "terminacion": "completed"
   }
 }
 ```

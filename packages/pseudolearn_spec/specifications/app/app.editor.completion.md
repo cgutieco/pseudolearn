@@ -562,8 +562,8 @@
   "espera": {
     "aplicacion": {
       "outcome": "help",
-      "title": "While loop",
-      "summary": "Repeats the body while the condition is true.",
+      "title": "While",
+      "summary": "Repeats some instructions as long as a condition is met. Before each round it checks the condition and, if it is false, it stops.",
       "range_utf16": [
         14,
         22
@@ -595,7 +595,7 @@
   "espera": {
     "aplicacion": {
       "outcome": "help",
-      "title": "Consulta de texto",
+      "title": "Consultar un texto",
       "range_utf16": [
         27,
         35
@@ -792,8 +792,8 @@
   "espera": {
     "aplicacion": {
       "titles": [
-        "Bucle Mientras",
-        "While loop"
+        "Mientras",
+        "While"
       ],
       "same_identity": true,
       "same_range": true

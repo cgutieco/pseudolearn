@@ -2111,8 +2111,8 @@ alterar las reglas generales de asignación entre ambos tipos.
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir Concatenar(\"a\");\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite concat(\"a\");\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir Concatenar(\"a\");\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write concat(\"a\");\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",

@@ -46,7 +46,28 @@ revisado_por:
     "C6",
     "C7",
     "C8",
-    "C9"
+    "C9",
+    "C17",
+    "C18",
+    "C19",
+    "C20",
+    "C21",
+    "C22",
+    "C23",
+    "C24",
+    "C25",
+    "C26",
+    "C27",
+    "C28",
+    "C29",
+    "C30",
+    "C31",
+    "C32",
+    "C33",
+    "C34",
+    "C35",
+    "C36",
+    "C37"
   ]
 }
 ```
@@ -278,8 +299,8 @@ revisado_por:
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson('[1,]');\nSegun parsed Hacer\nExito(document): Escribir \"unexpected\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine parsed as result<JsonValue, JsonError> <- parseJson('[1,]');\nswitch parsed do\nsuccess(document): write \"unexpected\";\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir parsed Como Resultado < ValorJson, ErrorJson > <- AnalizarJson('[1,]');\n  Segun parsed Hacer\n    Exito (document): Escribir \"unexpected\";\n    Error (problem): Escribir problem.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Define parsed As Result < JsonValue, JsonError > <- parseJson('[1,]');\n  Switch parsed Do\n    Success (document): Write \"unexpected\";\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -431,8 +452,8 @@ revisado_por:
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir mapping Como ValorJson <- ObjetoJson();\nmapping.ConElemento(JsonNulo());\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine mapping as JsonValue <- jsonObject();\nmapping.withElement(jsonNull());\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir mapping Como ValorJson <- ObjetoJson();\n  mapping.ConElemento(JsonNulo());\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Define mapping As JsonValue <- jsonObject();\n  mapping.withElement(jsonNull());\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -481,6 +502,450 @@ revisado_por:
   "operacion": "execute",
   "espera": {
     "salida": "\"ok\"\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo LeerAlumno\n  Segun AnalizarJson('{\"nombre\": \"Ana\", \"edad\": 15}') Hacer\n    Exito (alumno): Escribir TextoJson(alumno);\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm ReadStudent\n  Switch parseJson('{\"nombre\": \"Ana\", \"edad\": 15}') Do\n    Success (student): Write jsonText(student);\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{\"nombre\":\"Ana\",\"edad\":15}\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo FichaAlumno\n  Definir alumno Como ValorJson <- ObjetoJson();\n  alumno <- alumno.ConCampo(\"nombre\", JsonCadena(\"Ana\"));\n  alumno <- alumno.ConCampo(\"edad\", JsonEntero(15));\n  Escribir TextoJson(alumno);\nFinAlgoritmo\n",
+    "en": "Algorithm StudentRecord\n  Define student As JsonValue <- jsonObject();\n  student <- student.withField(\"nombre\", jsonString(\"Ana\"));\n  student <- student.withField(\"edad\", jsonInteger(15));\n  Write jsonText(student);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{\"nombre\":\"Ana\",\"edad\":15}\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Cumpleanios\n  Definir alumno Como ValorJson <- ObjetoJson();\n  alumno <- alumno.ConCampo(\"nombre\", JsonCadena(\"Ana\"));\n  alumno <- alumno.ConCampo(\"edad\", JsonEntero(15));\n  alumno <- alumno.ConCampo(\"edad\", JsonEntero(16));\n  Escribir TextoJson(alumno);\nFinAlgoritmo\n",
+    "en": "Algorithm Birthday\n  Define student As JsonValue <- jsonObject();\n  student <- student.withField(\"nombre\", jsonString(\"Ana\"));\n  student <- student.withField(\"edad\", jsonInteger(15));\n  student <- student.withField(\"edad\", jsonInteger(16));\n  Write jsonText(student);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{\"nombre\":\"Ana\",\"edad\":16}\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo ListaDeNotas\n  Definir vacia Como ValorJson <- ArregloJson();\n  Definir notas Como ValorJson <- vacia.ConElemento(JsonEntero(8));\n  notas <- notas.ConElemento(JsonEntero(10));\n  Escribir TextoJson(notas);\n  Escribir vacia.Longitud(), \" \", notas.Longitud();\nFinAlgoritmo\n",
+    "en": "Algorithm GradeList\n  Define empty As JsonValue <- jsonArray();\n  Define grades As JsonValue <- empty.withElement(jsonInteger(8));\n  grades <- grades.withElement(jsonInteger(10));\n  Write jsonText(grades);\n  Write empty.length(), \" \", grades.length();\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "[8,10]\n0 2\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C21",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Medidas\n  Definir persona Como ValorJson <- ObjetoJson();\n  persona <- persona.ConCampo(\"altura\", JsonReal(1.65));\n  persona <- persona.ConCampo(\"apodo\", JsonNulo());\n  Escribir TextoJson(persona);\nFinAlgoritmo\n",
+    "en": "Algorithm Measurements\n  Define person As JsonValue <- jsonObject();\n  person <- person.withField(\"altura\", jsonReal(1.65));\n  person <- person.withField(\"apodo\", jsonNull());\n  Write jsonText(person);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{\"altura\":1.65,\"apodo\":null}\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo TiposDeDatos\n  Escribir JsonNulo().Tipo();\n  Escribir JsonEntero(15).Tipo();\n  Escribir JsonReal(1.65).Tipo();\n  Escribir JsonCadena(\"Ana\").Tipo();\n  Escribir ArregloJson().Tipo();\n  Escribir ObjetoJson().Tipo();\nFinAlgoritmo\n",
+    "en": "Algorithm DataKinds\n  Write jsonNull().kind();\n  Write jsonInteger(15).kind();\n  Write jsonReal(1.65).kind();\n  Write jsonString(\"Ana\").kind();\n  Write jsonArray().kind();\n  Write jsonObject().kind();\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:jsonKindNull}}\n{{lexema:jsonKindNumber}}\n{{lexema:jsonKindNumber}}\n{{lexema:jsonKindString}}\n{{lexema:jsonKindArray}}\n{{lexema:jsonKindObject}}\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Aprobado\n  Segun AnalizarJson('true') Hacer\n    Exito (dato):\n      Escribir dato.Tipo();\n      Segun dato.ComoLogico() Hacer\n        Algo (aprobado): Escribir aprobado;\n        Nada: Escribir \"?\";\n      FinSegun\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm Passed\n  Switch parseJson('true') Do\n    Success (item):\n      Write item.kind();\n      Switch item.asBoolean() Do\n        Some (passed): Write passed;\n        None: Write \"?\";\n      EndSwitch\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:jsonKindBoolean}}\n{{lexema:booleanTrue}}\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C24",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo EdadSiguiente\n  Definir edad Como ValorJson <- JsonEntero(15);\n  Definir texto Como ValorJson <- JsonCadena(\"15\");\n  Segun edad.ComoEntero() Hacer\n    Algo (numero): Escribir numero + 1;\n    Nada: Escribir \"?\";\n  FinSegun\n  Segun texto.ComoEntero() Hacer\n    Algo (numero): Escribir numero + 1;\n    Nada: Escribir \"?\";\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm NextAge\n  Define age As JsonValue <- jsonInteger(15);\n  Define text As JsonValue <- jsonString(\"15\");\n  Switch age.asInteger() Do\n    Some (number): Write number + 1;\n    None: Write \"?\";\n  EndSwitch\n  Switch text.asInteger() Do\n    Some (number): Write number + 1;\n    None: Write \"?\";\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "16\n?\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C25",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo DoblePrecio\n  Definir precio Como ValorJson <- JsonReal(12.5);\n  Definir texto Como ValorJson <- JsonCadena(\"12.5\");\n  Segun precio.ComoReal() Hacer\n    Algo (valor): Escribir valor * 2;\n    Nada: Escribir \"?\";\n  FinSegun\n  Segun texto.ComoReal() Hacer\n    Algo (valor): Escribir valor * 2;\n    Nada: Escribir \"?\";\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm DoublePrice\n  Define price As JsonValue <- jsonReal(12.5);\n  Define text As JsonValue <- jsonString(\"12.5\");\n  Switch price.asReal() Do\n    Some (amount): Write amount * 2;\n    None: Write \"?\";\n  EndSwitch\n  Switch text.asReal() Do\n    Some (amount): Write amount * 2;\n    None: Write \"?\";\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "25.0\n?\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C26",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo NombreSinComillas\n  Definir nombre Como ValorJson <- JsonCadena(\"Ana\");\n  Segun nombre.ComoCadena() Hacer\n    Algo (texto): Escribir texto;\n    Nada: Escribir \"?\";\n  FinSegun\n  Escribir TextoJson(nombre);\nFinAlgoritmo\n",
+    "en": "Algorithm NameWithoutQuotes\n  Define name As JsonValue <- jsonString(\"Ana\");\n  Switch name.asText() Do\n    Some (text): Write text;\n    None: Write \"?\";\n  EndSwitch\n  Write jsonText(name);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Ana\n\"Ana\"\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C27",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo NotasDelCurso\n  Segun AnalizarJson('[7, 9, 10]') Hacer\n    Exito (notas):\n      Segun notas.Elemento(1) Hacer\n        Algo (nota): Escribir TextoJson(nota);\n        Nada: Escribir \"?\";\n      FinSegun\n      Segun notas.Elemento(3) Hacer\n        Algo (nota): Escribir TextoJson(nota);\n        Nada: Escribir \"?\";\n      FinSegun\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm CourseGrades\n  Switch parseJson('[7, 9, 10]') Do\n    Success (grades):\n      Switch grades.element(1) Do\n        Some (grade): Write jsonText(grade);\n        None: Write \"?\";\n      EndSwitch\n      Switch grades.element(3) Do\n        Some (grade): Write jsonText(grade);\n        None: Write \"?\";\n      EndSwitch\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "9\n?\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C28",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo EdadDelAlumno\n  Segun AnalizarJson('{\"nombre\": \"Ana\", \"edad\": 15}') Hacer\n    Exito (alumno):\n      Segun alumno.Campo(\"edad\") Hacer\n        Algo (edad): Escribir TextoJson(edad);\n        Nada: Escribir \"?\";\n      FinSegun\n      Segun alumno.Campo(\"Edad\") Hacer\n        Algo (edad): Escribir TextoJson(edad);\n        Nada: Escribir \"?\";\n      FinSegun\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm StudentAge\n  Switch parseJson('{\"nombre\": \"Ana\", \"edad\": 15}') Do\n    Success (student):\n      Switch student.field(\"edad\") Do\n        Some (age): Write jsonText(age);\n        None: Write \"?\";\n      EndSwitch\n      Switch student.field(\"Edad\") Do\n        Some (age): Write jsonText(age);\n        None: Write \"?\";\n      EndSwitch\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "15\n?\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C29",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo ListarClaves\n  Segun AnalizarJson('{\"nombre\": \"Ana\", \"edad\": 15, \"curso\": \"3B\"}') Hacer\n    Exito (alumno):\n      Para Cada clave En alumno.Claves() Hacer\n        Escribir clave;\n      FinPara\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm ListKeys\n  Switch parseJson('{\"nombre\": \"Ana\", \"edad\": 15, \"curso\": \"3B\"}') Do\n    Success (student):\n      For each key in student.keys() Do\n        Write key;\n      EndFor\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "nombre\nedad\ncurso\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C30",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo QueTipoEs\n  Definir notas Como ValorJson <- ArregloJson();\n  Definir tipo Como TipoJson <- notas.Tipo();\n  Escribir tipo;\nFinAlgoritmo\n",
+    "en": "Algorithm WhichKind\n  Define grades As JsonValue <- jsonArray();\n  Define valueKind As JsonKind <- grades.kind();\n  Write valueKind;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:jsonKindArray}}\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C31",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo RevisarFicha\n  Segun AnalizarJson('{\\n  \"edad\": 15,\\n  nombre: \"Ana\"\\n}') Hacer\n    Exito (alumno): Escribir TextoJson(alumno);\n    Error (problema):\n      Definir codigo Como CodigoErrorJson <- problema.Codigo;\n      Escribir codigo;\n      Escribir problema.JsonLinea, \":\", problema.JsonColumna;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm CheckRecord\n  Switch parseJson('{\\n  \"edad\": 15,\\n  nombre: \"Ana\"\\n}') Do\n    Success (student): Write jsonText(student);\n    Failure (problem):\n      Define errorCode As JsonErrorCode <- problem.code;\n      Write errorCode;\n      Write problem.jsonLine, \":\", problem.jsonColumn;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:jsonErrorCodeInvalidSyntax}}\n3:3\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C32",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo ComillasSimples\n  Segun AnalizarJson(\"{'nombre': 'Ana'}\") Hacer\n    Exito (alumno): Escribir TextoJson(alumno);\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm SingleQuotes\n  Switch parseJson(\"{'nombre': 'Ana'}\") Do\n    Success (student): Write jsonText(student);\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:jsonErrorCodeInvalidSyntax}}\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C33",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo FaltaCerrar\n  Segun AnalizarJson('{\"nombre\": \"Ana\"') Hacer\n    Exito (alumno): Escribir TextoJson(alumno);\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm MissingClose\n  Switch parseJson('{\"nombre\": \"Ana\"') Do\n    Success (student): Write jsonText(student);\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:jsonErrorCodeUnexpectedEnd}}\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C34",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo ClaveRepetida\n  Segun AnalizarJson('{\"nombre\": \"Ana\", \"nombre\": \"Luis\"}') Hacer\n    Exito (alumno): Escribir TextoJson(alumno);\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm RepeatedKey\n  Switch parseJson('{\"nombre\": \"Ana\", \"nombre\": \"Luis\"}') Do\n    Success (student): Write jsonText(student);\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:jsonErrorCodeDuplicateKey}}\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C35",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo RutaDeArchivo\n  Segun AnalizarJson('\"C:\\\\datos\"') Hacer\n    Exito (ruta): Escribir TextoJson(ruta);\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm FilePath\n  Switch parseJson('\"C:\\\\datos\"') Do\n    Success (path): Write jsonText(path);\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:jsonErrorCodeInvalidEscape}}\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C36",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo DosObjetos\n  Segun AnalizarJson('{\"nombre\": \"Ana\"} {\"nombre\": \"Luis\"}') Hacer\n    Exito (alumnos): Escribir TextoJson(alumnos);\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm TwoObjects\n  Switch parseJson('{\"nombre\": \"Ana\"} {\"nombre\": \"Luis\"}') Do\n    Success (students): Write jsonText(students);\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:jsonErrorCodeTrailingContent}}\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C37",
+  "regla": "J1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo CajasDentroDeCajas\n  Definir texto Como Cadena <- \"\";\n  Para nivel <- 1 Hasta 65 Hacer\n    texto <- texto + \"[\";\n  FinPara\n  Para nivel <- 1 Hasta 65 Hacer\n    texto <- texto + \"]\";\n  FinPara\n  Segun AnalizarJson(texto) Hacer\n    Exito (dato): Escribir dato.Tipo();\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm BoxesInsideBoxes\n  Define text As String <- \"\";\n  For level <- 1 To 65 Do\n    text <- text + \"[\";\n  EndFor\n  For level <- 1 To 65 Do\n    text <- text + \"]\";\n  EndFor\n  Switch parseJson(text) Do\n    Success (item): Write item.kind();\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "limites": {
+    "max_json_depth": 64
+  },
+  "espera": {
+    "salida": "{{lexema:jsonErrorCodeDepthExceeded}}\n",
     "terminacion": "completed"
   }
 }

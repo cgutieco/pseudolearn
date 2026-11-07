@@ -6,7 +6,7 @@ fn extracts_normative_resources_and_rejects_duplicate_names() -> Result<(), Stri
     let mut specification = support::specification()?;
     let catalog = json!({
         "format": "help-catalog/1",
-        "cards": [{"id": "construct.sample", "content": {"es": {"purpose": "Propósito"}, "en": {"purpose": "Purpose"}}}],
+        "cards": [{"id": "construct.sample", "content": {"es": {"summary": "Propósito"}, "en": {"summary": "Purpose"}}}],
         "exclusions": []
     });
     specification.blocks.push(see_model::Block {

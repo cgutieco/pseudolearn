@@ -42,7 +42,8 @@
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -116,6 +117,27 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Clase Animal\n  Definir nombre Como Cadena;\n  Metodo Presentar()\n    Escribir Este.nombre;\n  FinMetodo\nFinClase\n\nClase Gato Hereda De Animal\n  Metodo Presentar()\n    Super.Presentar();\n    Escribir \"Miau\";\n  FinMetodo\nFinClase\n\nAlgoritmo Casa\n  Definir michi Como Gato <- Nuevo Gato();\n  michi.nombre <- \"Michi\";\n  michi.Presentar();\nFinAlgoritmo\n",
+    "en": "Class Animal\n  Define name As String;\n  Method Introduce()\n    Write This.name;\n  EndMethod\nEndClass\n\nClass Cat Inherits From Animal\n  Method Introduce()\n    Super.Introduce();\n    Write \"Miau\";\n  EndMethod\nEndClass\n\nAlgorithm Home\n  Define michi As Cat <- New Cat();\n  michi.name <- \"Michi\";\n  michi.Introduce();\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Michi\nMiau\n",
+    "terminacion": "completed"
   }
 }
 ```

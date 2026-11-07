@@ -40,7 +40,8 @@
   "clase": "semantica",
   "texto": "Inicial, final y paso se evalúan una sola vez antes de la primera prueba, en ese orden.",
   "verificacion": [
-    "C1"
+    "C1",
+    "C28"
   ]
 }
 ```
@@ -70,7 +71,8 @@
     "C6",
     "C7",
     "C16",
-    "C17"
+    "C17",
+    "C29"
   ]
 }
 ```
@@ -189,7 +191,7 @@
   ],
   "programas": {
     "es": "Algoritmo P\n  Para counter <- 1 Hasta 3 Con Paso 0 Hacer\n    Escribir counter;\n  FinPara\nFinAlgoritmo\n",
-    "en": "algorithm P\n  for counter <- 1 to 3 step 0 do\n    write counter;\n  endFor\nendAlgorithm\n"
+    "en": "Algorithm P\n  For counter <- 1 To 3 Step 0 Do\n    Write counter;\n  EndFor\nEndAlgorithm\n"
   },
   "operacion": "execute",
   "espera": {
@@ -252,7 +254,7 @@
   ],
   "programas": {
     "es": "Algoritmo P\n  Para counter <- 10 Hasta 0 Con Paso 1 Hacer\n    Escribir counter;\n  FinPara\n  Escribir counter;\nFinAlgoritmo\n",
-    "en": "algorithm P\n  for counter <- 10 to 0 step 1 do\n    write counter;\n  endFor\n  write counter;\nendAlgorithm\n"
+    "en": "Algorithm P\n  For counter <- 10 To 0 Step 1 Do\n    Write counter;\n  EndFor\n  Write counter;\nEndAlgorithm\n"
   },
   "operacion": "analyze",
   "espera": {
@@ -339,7 +341,7 @@
   ],
   "programas": {
     "es": "Algoritmo P\n  Para counter <- 1 Hasta 3 Con Paso 1 Hacer\n    counter <- counter + 1;\n  FinPara\nFinAlgoritmo\n",
-    "en": "algorithm P\n  for counter <- 1 to 3 step 1 do\n    counter <- counter + 1;\n  endFor\nendAlgorithm\n"
+    "en": "Algorithm P\n  For counter <- 1 To 3 Step 1 Do\n    counter <- counter + 1;\n  EndFor\nEndAlgorithm\n"
   },
   "operacion": "analyze",
   "espera": {
@@ -828,6 +830,48 @@
         "severidad": "advertencia"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C28",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Tabla\n  Para numero <- 1 Hasta 3 Hacer\n    Escribir numero, \" x 5 = \", numero * 5;\n  FinPara\nFinAlgoritmo\n",
+    "en": "Algorithm Table\n  For number <- 1 To 3 Do\n    Write number, \" x 5 = \", number * 5;\n  EndFor\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1 x 5 = 5\n2 x 5 = 10\n3 x 5 = 15\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C29",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Despegue\n  Para numero <- 3 Hasta 1 Con Paso -1 Hacer\n    Escribir numero;\n  FinPara\n  Escribir \"¡Despegue!\";\nFinAlgoritmo\n",
+    "en": "Algorithm Liftoff\n  For number <- 3 To 1 Step -1 Do\n    Write number;\n  EndFor\n  Write \"¡Despegue!\";\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "3\n2\n1\n¡Despegue!\n",
+    "terminacion": "completed"
   }
 }
 ```

@@ -46,7 +46,8 @@
   "texto": "Metodo declara un método dentro de clase con reglas de parámetros y retorno de subprogramas. Todos son de instancia. La visibilidad opcional es pública por defecto. No hay sobrecarga: nombres de atributos y métodos comparten espacio de miembros. Cuerpo y lista de parámetros pueden ser vacíos. Un método fuera de clase es sintáctico.",
   "verificacion": [
     "C1",
-    "C2"
+    "C2",
+    "C3"
   ]
 }
 ```
@@ -94,6 +95,27 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Clase Calculadora\n  Metodo Sumar(a Como Entero, b Como Entero) Como Entero\n    Retornar a + b;\n  FinMetodo\nFinClase\n\nAlgoritmo Cuentas\n  Definir calc Como Calculadora <- Nuevo Calculadora();\n  Escribir calc.Sumar(2, 3);\nFinAlgoritmo\n",
+    "en": "Class Calculator\n  Method Add(a As Integer, b As Integer) As Integer\n    Return a + b;\n  EndMethod\nEndClass\n\nAlgorithm Sums\n  Define calc As Calculator <- New Calculator();\n  Write calc.Add(2, 3);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "5\n",
+    "terminacion": "completed"
   }
 }
 ```

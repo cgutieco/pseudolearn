@@ -14,7 +14,7 @@ fn accepts_complete_and_minimal_catalog_cards() {
     let mut minimal = sample_catalog();
     for locale in ["es", "en"] {
         let path = format!("/cards/0/content/{locale}");
-        for field in ["parts", "constraints", "common_errors", "examples"] {
+        for field in ["parts", "rules", "common_errors"] {
             let field_path = format!("{path}/{field}");
             assert!(set(&mut minimal, &field_path, json!([])).is_ok());
         }
@@ -69,7 +69,7 @@ fn rejects_duplicate_source_roles_and_incompatible_availability() {
 }
 
 #[test]
-fn rejects_incomplete_translation_and_example_outside_availability() {
+fn rejects_incomplete_translation_and_example_without_note() {
     let mut missing_translation = sample_catalog();
     if let Some(content) = missing_translation
         .pointer_mut("/cards/0/content")
@@ -79,16 +79,14 @@ fn rejects_incomplete_translation_and_example_outside_availability() {
     }
     assert!(check(&missing_translation).is_err());
 
-    let mut outside_scope = sample_catalog();
-    assert!(
-        set(
-            &mut outside_scope,
-            "/cards/0/availability/profiles",
-            json!(["es"])
-        )
-        .is_ok()
-    );
-    assert!(check(&outside_scope).is_err());
+    let mut without_note = sample_catalog();
+    if let Some(example) = without_note
+        .pointer_mut("/cards/0/content/es/examples/0")
+        .and_then(Value::as_object_mut)
+    {
+        example.remove("note");
+    }
+    assert!(check(&without_note).is_err());
 }
 
 #[test]
@@ -157,11 +155,14 @@ fn resolves_exact_versions_and_rejects_stale_anchors() -> Result<(), String> {
 #[test]
 fn rejects_missing_token_identities_and_nonlexical_sources() -> Result<(), String> {
     let mut missing_identity = reference_corpus()?;
-    set(
-        catalog_resource_mut(&mut missing_identity)?,
+    let resource = catalog_resource_mut(&mut missing_identity)?;
+    for path in [
         "/cards/0/tokens/0/identity",
-        json!("missingToken"),
-    )?;
+        "/cards/0/content/es/parts/0/identity",
+        "/cards/0/content/en/parts/0/identity",
+    ] {
+        set(resource, path, json!("missingToken"))?;
+    }
     assert!(has_stale_token_error(&missing_identity));
 
     let mut invalid_source = reference_corpus()?;
@@ -275,9 +276,14 @@ fn sample_catalog() -> Value {
             "tokens":[{"identity":"algorithm","source":{"specification":"LANG.PROFILE.VOCABULARY","version":"1.0.0","element":"D1"}}],
             "availability":{"editions":["2026"],"profiles":["es","en"]},
             "anchors":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","element":"R1"}],
+            "category":"block",
+            "form":[
+                {"indent":0,"segments":[{"token":"algorithm"},{"slot":"name"}]},
+                {"indent":1,"segments":[{"ellipsis":true}]}
+            ],
             "content":{
-                "es":{"title":"Tema","summary":"Resumen","purpose":"Uso","parts":[{"identity":"algorithm","text":"Identifica el punto de entrada."}],"constraints":[],"common_errors":[],"examples":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","case":"C1","profile":"es","kind":"executable","label":"Ejemplo"}]},
-                "en":{"title":"Topic","summary":"Summary","purpose":"Use","parts":[{"identity":"algorithm","text":"Names the entry point."}],"constraints":[],"common_errors":[],"examples":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","case":"C1","profile":"en","kind":"executable","label":"Example"}]}
+                "es":{"title":"Tema","summary":"Resumen","parts":[{"identity":"algorithm","text":"Marca el inicio del programa."}],"slots":[{"id":"name","label":"nombre del programa","text":"Un nombre que eliges."}],"result":"Nada.","rules":["Una regla."],"common_errors":[{"text":"Un error."}],"examples":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","case":"C1","kind":"executable","note":"Muestra un saludo."}]},
+                "en":{"title":"Topic","summary":"Summary","parts":[{"identity":"algorithm","text":"Marks where the program starts."}],"slots":[{"id":"name","label":"program name","text":"A name you choose."}],"result":"Nothing.","rules":["A rule."],"common_errors":[{"text":"A mistake."}],"examples":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","case":"C1","kind":"executable","note":"Prints a greeting."}]}
             }
         }],
         "exclusions":[]
@@ -285,14 +291,38 @@ fn sample_catalog() -> Value {
 }
 
 #[test]
-fn rejects_example_with_profile_different_from_its_locale() -> Result<(), String> {
+fn rejects_slots_that_differ_from_the_form() -> Result<(), String> {
+    let mut undeclared = sample_catalog();
+    set(&mut undeclared, "/cards/0/content/en/slots", json!([]))?;
+    assert!(check(&undeclared).is_err_and(|error| error.contains("slots differ from its form")));
+
+    let mut symbols = sample_catalog();
+    set(
+        &mut symbols,
+        "/cards/0/content/es/slots/0/label",
+        json!("nombre-del-programa"),
+    )?;
+    assert!(check(&symbols).is_err_and(|error| error.contains("slot label with symbols")));
+    Ok(())
+}
+
+#[test]
+fn rejects_structure_that_differs_between_languages() -> Result<(), String> {
+    let mut catalog = sample_catalog();
+    set(&mut catalog, "/cards/0/content/en/parts", json!([]))?;
+    assert!(check(&catalog).is_err_and(|error| error.contains("differs in structure")));
+    Ok(())
+}
+
+#[test]
+fn rejects_form_segments_that_mix_kinds() -> Result<(), String> {
     let mut catalog = sample_catalog();
     set(
         &mut catalog,
-        "/cards/0/content/es/examples/0/profile",
-        json!("en"),
+        "/cards/0/form/0/segments/0",
+        json!({"token":"algorithm","slot":"name"}),
     )?;
-    assert!(check(&catalog).is_err_and(|error| error.contains("differs from its locale")));
+    assert!(check(&catalog).is_err());
     Ok(())
 }
 
@@ -317,11 +347,13 @@ fn rejects_example_kind_that_the_case_does_not_have() -> Result<(), String> {
     let mut corpus = reference_corpus()?;
     assert!(check_references(&corpus).is_empty());
     let resource = catalog_resource_mut(&mut corpus)?;
-    set(
-        resource,
-        "/cards/0/content/es/examples/0/kind",
-        json!("diagnostic"),
-    )?;
+    for locale in ["es", "en"] {
+        set(
+            resource,
+            &format!("/cards/0/content/{locale}/examples/0/kind"),
+            json!("diagnostic"),
+        )?;
+    }
     assert!(
         check_references(&corpus)
             .iter()
@@ -340,14 +372,15 @@ fn rejects_unknown_example_kind_and_cards_without_examples() -> Result<(), Strin
     )?;
     assert!(check(&unknown).is_err());
 
-    let mut corpus = reference_corpus()?;
-    let resource = catalog_resource_mut(&mut corpus)?;
-    set(resource, "/cards/0/content/en/examples", json!([]))?;
-    assert!(
-        check_references(&corpus)
-            .iter()
-            .any(|error| error.contains("has no en example"))
-    );
+    let mut without_examples = sample_catalog();
+    for locale in ["es", "en"] {
+        set(
+            &mut without_examples,
+            &format!("/cards/0/content/{locale}/examples"),
+            json!([]),
+        )?;
+    }
+    assert!(check(&without_examples).is_err());
     Ok(())
 }
 

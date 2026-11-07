@@ -44,7 +44,8 @@
     "C3",
     "C4",
     "C8",
-    "C9"
+    "C9",
+    "C14"
   ]
 }
 ```
@@ -203,8 +204,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso value() Como Entero\nDiferir\nRetornar 1;\nFinDiferir\nRetornar 2;\nFinSubProceso\nAlgoritmo Main\n\nFinAlgoritmo\n",
-    "en": "subroutine value() as integer\ndefer\nreturn 1;\nendDefer\nreturn 2;\nendSubroutine\nalgorithm Main\n\nendAlgorithm\n"
+    "es": "SubProceso value() Como Entero\n  Diferir\n    Retornar 1;\n  FinDiferir\n  Retornar 2;\nFinSubProceso\n\nAlgoritmo Main\n\nFinAlgoritmo\n",
+    "en": "Subroutine value() As Integer\n  defer\n    Return 1;\n  endDefer\n  Return 2;\nEndSubroutine\n\nAlgorithm Main\n\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -382,6 +383,27 @@
         "estado_cinta": "reproducible"
       }
     }
+  }
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Ordenado\n  Escribir \"Abrir\";\n  Diferir\n    Escribir \"Cerrar\";\n  FinDiferir\n  Escribir \"Trabajar\";\nFinAlgoritmo\n",
+    "en": "Algorithm Tidy\n  Write \"Abrir\";\n  defer\n    Write \"Cerrar\";\n  endDefer\n  Write \"Trabajar\";\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Abrir\nTrabajar\nCerrar\n",
+    "terminacion": "completed"
   }
 }
 ```

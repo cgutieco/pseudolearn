@@ -51,7 +51,9 @@
     "C9",
     "C10",
     "C11",
-    "C12"
+    "C12",
+    "C13",
+    "C14"
   ]
 }
 ```
@@ -157,8 +159,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir Azar(0);\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite random(0);\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir azar(0);\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write random(0);\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -342,5 +344,49 @@
       }
     ]
   }
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo LanzarDado\n  Definir dado Como Entero;\n  dado <- Aleatorio(1, 6);\n  Escribir dado >= 1 Y dado <= 6;\nFinAlgoritmo\n",
+    "en": "Algorithm RollDie\n  Define die As Integer;\n  die <- randomBetween(1, 6);\n  Write die >= 1 And die <= 6;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:booleanTrue}}\n",
+    "terminacion": "completed"
+  },
+  "semilla": 7
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo NumerosAlAzar\n  Definir numero Como Entero;\n  Definir fraccion Como Real;\n  numero <- azar(10);\n  fraccion <- AzarReal();\n  Escribir numero >= 0 Y numero <= 9;\n  Escribir fraccion >= 0.0 Y fraccion < 1.0;\nFinAlgoritmo\n",
+    "en": "Algorithm RandomNumbers\n  Define number As Integer;\n  Define fraction As Real;\n  number <- random(10);\n  fraction <- randomReal();\n  Write number >= 0 And number <= 9;\n  Write fraction >= 0.0 And fraction < 1.0;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:booleanTrue}}\n{{lexema:booleanTrue}}\n",
+    "terminacion": "completed"
+  },
+  "semilla": 7
 }
 ```

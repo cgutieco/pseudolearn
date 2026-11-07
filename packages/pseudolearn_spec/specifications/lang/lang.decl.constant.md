@@ -56,7 +56,8 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
     "C3",
     "C4",
     "C5",
-    "C6"
+    "C6",
+    "C17"
   ]
 }
 ```
@@ -176,8 +177,8 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
     "en"
   ],
   "programas": {
-    "es": "Constante A Como Entero <- 1;\nAlgoritmo P\nA <- 2;\nFinAlgoritmo\n",
-    "en": "constant A as integer <- 1;\nalgorithm P\nA <- 2;\nendAlgorithm\n"
+    "es": "Constante A Como Entero <- 1;\nAlgoritmo P\n  A <- 2;\nFinAlgoritmo\n",
+    "en": "Constant A As Integer <- 1;\nAlgorithm P\n  A <- 2;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -496,6 +497,27 @@ Una constante fija un valor que no cambia y que el motor conoce antes de ejecuta
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Circulo\n  Constante PI Como Real <- 3.14;\n  Definir radio Como Real <- 2.0;\n  Escribir PI * radio * radio;\nFinAlgoritmo\n",
+    "en": "Algorithm Circle\n  Constant PI As Real <- 3.14;\n  Define radius As Real <- 2.0;\n  Write PI * radius * radius;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "12.56\n",
+    "terminacion": "completed"
   }
 }
 ```

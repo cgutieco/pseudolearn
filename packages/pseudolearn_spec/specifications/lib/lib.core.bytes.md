@@ -37,7 +37,14 @@ revisado_por:
     "C2",
     "C3",
     "C4",
-    "C5"
+    "C5",
+    "C6",
+    "C7",
+    "C8",
+    "C9",
+    "C10",
+    "C11",
+    "C12"
   ]
 }
 ```
@@ -106,8 +113,8 @@ revisado_por:
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir source Como Bytes <- BytesDesdeTexto(\"a\");\nsource.Segmento(1, 1);\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine source as Bytes <- bytesFromText(\"a\");\nsource.segment(1, 1);\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir source Como Bytes <- BytesDesdeTexto(\"a\");\n  source.Segmento(1, 1);\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Define source As Bytes <- bytesFromText(\"a\");\n  source.segment(1, 1);\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -156,6 +163,153 @@ revisado_por:
   "operacion": "execute",
   "espera": {
     "salida": "4:240:159:152:128\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "B1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo TextoABytes\n  Definir datos Como Bytes <- BytesDesdeTexto(\"Hola\");\n  Escribir datos.Longitud();\n  Escribir datos.En(0);\nFinAlgoritmo\n",
+    "en": "Algorithm TextToBytes\n  Define data As Bytes <- bytesFromText(\"Hola\");\n  Write data.length();\n  Write data.at(0);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "4\n72\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "B1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo PedazoDeBytes\n  Definir datos Como Bytes <- BytesDesdeTexto(\"Hola\");\n  Definir parte Como Bytes <- datos.Segmento(1, 2);\n  Escribir parte.Longitud();\n  Escribir parte.En(0);\n  Escribir parte.En(1);\nFinAlgoritmo\n",
+    "en": "Algorithm PieceOfBytes\n  Define data As Bytes <- bytesFromText(\"Hola\");\n  Define piece As Bytes <- data.segment(1, 2);\n  Write piece.length();\n  Write piece.at(0);\n  Write piece.at(1);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "2\n111\n108\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "B1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo JuntarBytes\n  Definir primero Como Bytes <- BytesDesdeTexto(\"Ho\");\n  Definir juntos Como Bytes <- primero.Unir(BytesDesdeTexto(\"la\"));\n  Escribir primero.Longitud();\n  Escribir juntos.Longitud();\nFinAlgoritmo\n",
+    "en": "Algorithm JoinBytes\n  Define first As Bytes <- bytesFromText(\"Ho\");\n  Define together As Bytes <- first.join(bytesFromText(\"la\"));\n  Write first.length();\n  Write together.length();\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "2\n4\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "B1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo BytesVacios\n  Definir vacio Como Bytes <- Bytes();\n  Escribir vacio.Longitud();\nFinAlgoritmo\n",
+    "en": "Algorithm EmptyBytes\n  Define empty As Bytes <- Bytes();\n  Write empty.length();\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "0\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "B1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo ContarBytes\n  Definir palabra Como Cadena;\n  palabra <- \"año\";\n  Escribir Longitud(palabra);\n  Escribir BytesDesdeTexto(\"ñ\").Longitud();\nFinAlgoritmo\n",
+    "en": "Algorithm CountBytes\n  Define word As String;\n  word <- \"año\";\n  Write length(word);\n  Write bytesFromText(\"ñ\").length();\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "3\n2\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "B1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo LeerCadaByte\n  Definir datos Como Bytes <- BytesDesdeTexto(\"abc\");\n  Escribir datos.En(0);\n  Escribir datos.En(1);\n  Escribir datos.En(2);\nFinAlgoritmo\n",
+    "en": "Algorithm ReadEachByte\n  Define data As Bytes <- bytesFromText(\"abc\");\n  Write data.at(0);\n  Write data.at(1);\n  Write data.at(2);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "97\n98\n99\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "B1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo BytesATexto\n  Definir datos Como Bytes <- BytesDesdeTexto(\"Hola\");\n  Segun datos.Segmento(1, 2).TextoUtf8() Hacer\n    Exito (texto): Escribir texto;\n    Error (problema): Escribir problema.Codigo;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm BytesToText\n  Define data As Bytes <- bytesFromText(\"Hola\");\n  Switch data.segment(1, 2).utf8Text() Do\n    Success (text): Write text;\n    Failure (problem): Write problem.code;\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "ol\n",
     "terminacion": "completed"
   }
 }

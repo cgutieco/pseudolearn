@@ -83,8 +83,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir 1 div 0;\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite 1 div 0;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir 1 Div 0;\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write 1 Div 0;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",

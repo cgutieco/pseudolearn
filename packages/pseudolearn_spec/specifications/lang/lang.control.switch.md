@@ -42,7 +42,8 @@
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C18"
   ]
 }
 ```
@@ -98,8 +99,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nSegun 1 Hacer\n1: Escribir 1;\n1: Escribir 2;\nFinSegun\nFinAlgoritmo\n",
-    "en": "algorithm P\nswitch 1 do\n1: write 1;\n1: write 2;\nendSwitch\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Segun 1 Hacer\n    1: Escribir 1;\n    1: Escribir 2;\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Switch 1 Do\n    1: Write 1;\n    1: Write 2;\n  EndSwitch\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -486,6 +487,27 @@
   },
   "exclusiones": {
     "es": "El argumento diagnóstico contiene la grafía del constructor; la comprobación del otro perfil vive en C12."
+  }
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Menu\n  Definir opcion Como Entero <- 2;\n  Segun opcion Hacer\n    1: Escribir \"Sumar\";\n    2: Escribir \"Restar\";\n    De Otro Modo: Escribir \"No válida\";\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Algorithm Menu\n  Define option As Integer <- 2;\n  Switch option Do\n    1: Write \"Sumar\";\n    2: Write \"Restar\";\n    Otherwise: Write \"No válida\";\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Restar\n",
+    "terminacion": "completed"
   }
 }
 ```

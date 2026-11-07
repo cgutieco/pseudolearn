@@ -42,7 +42,9 @@
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4",
+    "C5"
   ]
 }
 ```
@@ -103,8 +105,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nDefinir x Como Entero <- \"ab\";\nEscribir x;\nFinAlgoritmo\n",
-    "en": "algorithm P\ndefine x as integer <- \"ab\";\nwrite x;\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Definir x Como Entero <- \"ab\";\n  Escribir x;\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Define x As Integer <- \"ab\";\n  Write x;\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -113,6 +115,53 @@
     "diagnosticos": [
       {
         "codigo": "incompatibleTypesInAssignment",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Cumpleanos\n  Definir edad Como Entero;\n  edad <- 15;\n  edad <- edad + 1;\n  Escribir edad;\nFinAlgoritmo\n",
+    "en": "Algorithm Birthday\n  Define age As Integer;\n  age <- 15;\n  age <- age + 1;\n  Write age;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "16\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Cumpleanos\n  Definir edad Como Entero <- 10;\n  15 <- edad;\n  Escribir edad;\nFinAlgoritmo\n",
+    "en": "Algorithm Birthday\n  Define age As Integer <- 10;\n  15 <- age;\n  Write age;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "invalidAssignmentTarget",
         "severidad": "error"
       }
     ]

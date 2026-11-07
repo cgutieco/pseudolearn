@@ -54,7 +54,7 @@ fn hashes_editorial_catalog_content_stored_in_the_normative_resource() -> Result
             "id":"D2",
             "termino":"helpCatalog",
             "texto":"Catálogo",
-            "valor":{"cards":[{"content":{"es":{"purpose":"Explica el algoritmo"},"en":{"purpose":"Explains the algorithm"}}}]}
+            "valor":{"cards":[{"content":{"es":{"summary":"Explica el algoritmo"},"en":{"summary":"Explains the algorithm"}}}]}
         }))
         .map_err(|error| error.to_string())?,
     });
@@ -63,7 +63,7 @@ fn hashes_editorial_catalog_content_stored_in_the_normative_resource() -> Result
         .blocks
         .last_mut()
         .and_then(|block| block.fields.get_mut("valor"))
-        .and_then(|value| value.pointer_mut("/cards/0/content/es/purpose"))
+        .and_then(|value| value.pointer_mut("/cards/0/content/es/summary"))
         .ok_or("Missing editorial content")?;
     *content = serde_json::json!("Delimita el punto de entrada");
     assert_ne!(original, see_change::hash(&specification)?);

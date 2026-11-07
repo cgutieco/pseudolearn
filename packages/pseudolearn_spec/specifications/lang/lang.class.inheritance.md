@@ -42,7 +42,8 @@
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -77,8 +78,8 @@
     "en"
   ],
   "programas": {
-    "es": "Clase A Hereda De B\nFinClase\nClase B Hereda De A\nFinClase\nAlgoritmo P\n\nFinAlgoritmo\n",
-    "en": "class A inherits from B\nendClass\nclass B inherits from A\nendClass\nalgorithm P\n\nendAlgorithm\n"
+    "es": "Clase A Hereda De B\nFinClase\n\nClase B Hereda De A\nFinClase\n\nAlgoritmo P\n\nFinAlgoritmo\n",
+    "en": "Class A Inherits From B\nEndClass\n\nClass B Inherits From A\nEndClass\n\nAlgorithm P\n\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -116,6 +117,27 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Clase Animal\n  Metodo Comer()\n    Escribir \"Ñam\";\n  FinMetodo\nFinClase\n\nClase Perro Hereda De Animal\n  Metodo Ladrar()\n    Escribir \"Guau\";\n  FinMetodo\nFinClase\n\nAlgoritmo Granja\n  Definir toby Como Perro <- Nuevo Perro();\n  toby.Comer();\n  toby.Ladrar();\nFinAlgoritmo\n",
+    "en": "Class Animal\n  Method Eat()\n    Write \"Ñam\";\n  EndMethod\nEndClass\n\nClass Dog Inherits From Animal\n  Method Bark()\n    Write \"Guau\";\n  EndMethod\nEndClass\n\nAlgorithm Farm\n  Define toby As Dog <- New Dog();\n  toby.Eat();\n  toby.Bark();\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Ñam\nGuau\n",
+    "terminacion": "completed"
   }
 }
 ```

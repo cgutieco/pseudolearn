@@ -42,7 +42,8 @@
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -116,6 +117,27 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Pasos\n  Definir total Como Entero;\n  total <- 2 + 3;\n  Escribir \"Total:\"; Escribir total;\nFinAlgoritmo\n",
+    "en": "Algorithm Steps\n  Define total As Integer;\n  total <- 2 + 3;\n  Write \"Total:\"; Write total;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Total:\n5\n",
+    "terminacion": "completed"
   }
 }
 ```

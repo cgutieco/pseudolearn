@@ -46,7 +46,9 @@
   "texto": "Copiar acepta una referencia de objeto y devuelve referencia a una nueva instancia de la misma clase. Conserva campos sin inicializar, copia valores primitivos y comparte referencias anidadas, sin ejecutar constructor. El resultado conserva tipo del argumento. Argumentos no objeto producen incompatibleArgumentType.",
   "verificacion": [
     "C1",
-    "C2"
+    "C2",
+    "C3",
+    "C4"
   ]
 }
 ```
@@ -81,8 +83,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir Copiar(1);\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite copy(1);\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir Copiar(1);\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write copy(1);\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -94,6 +96,48 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Clase Punto\n  Publico Definir x Como Entero;\nFinClase\n\nAlgoritmo CopiarPunto\n  Definir original Como Punto <- Nuevo Punto();\n  original.x <- 5;\n  Definir copia Como Punto <- Copiar(original);\n  copia.x <- 9;\n  Escribir original.x;\n  Escribir copia.x;\nFinAlgoritmo\n",
+    "en": "Class Point\n  Public Define x As Integer;\nEndClass\n\nAlgorithm CopyPoint\n  Define original As Point <- New Point();\n  original.x <- 5;\n  Define duplicate As Point <- copy(original);\n  duplicate.x <- 9;\n  Write original.x;\n  Write duplicate.x;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "5\n9\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Clase Punto\n  Publico Definir x Como Entero;\nFinClase\n\nAlgoritmo CopiarOCompartir\n  Definir original Como Punto <- Nuevo Punto();\n  original.x <- 5;\n  Definir mismo Como Punto <- original;\n  Definir copia Como Punto <- Copiar(original);\n  mismo.x <- 7;\n  copia.x <- 9;\n  Escribir original.x;\n  Escribir copia.x;\nFinAlgoritmo\n",
+    "en": "Class Point\n  Public Define x As Integer;\nEndClass\n\nAlgorithm CopyOrShare\n  Define original As Point <- New Point();\n  original.x <- 5;\n  Define same As Point <- original;\n  Define duplicate As Point <- copy(original);\n  same.x <- 7;\n  duplicate.x <- 9;\n  Write original.x;\n  Write duplicate.x;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "7\n9\n",
+    "terminacion": "completed"
   }
 }
 ```

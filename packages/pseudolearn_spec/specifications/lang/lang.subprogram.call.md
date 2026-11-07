@@ -42,7 +42,9 @@
   "verificacion": [
     "C1",
     "C2",
-    "C3"
+    "C3",
+    "C4",
+    "C5"
   ]
 }
 ```
@@ -77,8 +79,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso f(value Como Entero) Como Entero\nRetornar value + 1;\nFinSubProceso\nAlgoritmo P\nEscribir f();\nFinAlgoritmo\n",
-    "en": "subroutine f(value as integer) as integer\nreturn value + 1;\nendSubroutine\nalgorithm P\nwrite f();\nendAlgorithm\n"
+    "es": "SubProceso f(value Como Entero) Como Entero\n  Retornar value + 1;\nFinSubProceso\n\nAlgoritmo P\n  Escribir f();\nFinAlgoritmo\n",
+    "en": "Subroutine f(value As Integer) As Integer\n  Return value + 1;\nEndSubroutine\n\nAlgorithm P\n  Write f();\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -103,8 +105,8 @@
     "en"
   ],
   "programas": {
-    "es": "SubProceso f()\nEscribir 1;\nFinSubProceso\nAlgoritmo P\nEscribir f();\nFinAlgoritmo\n",
-    "en": "subroutine f()\nwrite 1;\nendSubroutine\nalgorithm P\nwrite f();\nendAlgorithm\n"
+    "es": "SubProceso f()\n  Escribir 1;\nFinSubProceso\n\nAlgoritmo P\n  Escribir f();\nFinAlgoritmo\n",
+    "en": "Subroutine f()\n  Write 1;\nEndSubroutine\n\nAlgorithm P\n  Write f();\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -116,6 +118,48 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso Area(base Como Entero, altura Como Entero) Como Entero\n  Retornar base * altura;\nFinSubProceso\n\nAlgoritmo Rectangulo\n  Definir superficie Como Entero;\n  superficie <- Area(4, 5);\n  Escribir superficie;\nFinAlgoritmo\n",
+    "en": "Subroutine Area(base As Integer, height As Integer) As Integer\n  Return base * height;\nEndSubroutine\n\nAlgorithm Rectangle\n  Define surface As Integer;\n  surface <- Area(4, 5);\n  Write surface;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "20\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso DibujarLinea()\n  Escribir \"----------\";\nFinSubProceso\n\nAlgoritmo Tarjeta\n  DibujarLinea();\n  Escribir \"Ana\";\n  DibujarLinea();\nFinAlgoritmo\n",
+    "en": "Subroutine DrawLine()\n  Write \"----------\";\nEndSubroutine\n\nAlgorithm Card\n  DrawLine();\n  Write \"Ana\";\n  DrawLine();\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "----------\nAna\n----------\n",
+    "terminacion": "completed"
   }
 }
 ```

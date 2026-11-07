@@ -588,9 +588,10 @@
     ],
     "proyeccion": "ayuda",
     "contiene": [
-      "Bucle Mientras",
-      "Repite el cuerpo mientras la condición sea verdadera\\.",
-      "La condición se comprueba antes de entrar en cada iteración\\."
+      "**Mientras**",
+      "Repite unas instrucciones mientras una condición se cumpla\\.",
+      "**Cómo se escribe**",
+      "**Cada parte**"
     ]
   }
 }
@@ -666,9 +667,10 @@
     ],
     "proyeccion": "ayuda",
     "contiene": [
-      "While loop",
-      "Repeats the body while the condition is true.",
-      "The condition is checked before entering each iteration."
+      "While",
+      "Repeats some instructions as long as a condition is met.",
+      "How to write it",
+      "Each part"
     ]
   }
 }

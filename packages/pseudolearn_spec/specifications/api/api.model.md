@@ -1090,7 +1090,7 @@
   "id": "R6",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Cuando la identidad resuelta tiene ficha en el catálogo, help_query devuelve card en el idioma solicitado, independiente del perfil de sintaxis: con detalle summary, id, title y summary; con detalle full, además purpose, parts, constraints, common_errors y examples, y help añade description. Cada ejemplo conserva su referencia a especificación, versión, caso, perfil y clase; la respuesta no contiene programas ni resultados esperados y la consulta no los ejecuta. Sin ficha o sin identidad card es null.",
+  "texto": "Cuando la identidad resuelta tiene ficha en el catálogo, help_query devuelve card con la prosa en el idioma solicitado y el código en el perfil de sintaxis de la sesión: con detalle summary, id, title y summary; con detalle full, además category, form, parts, result cuando existe, rules, common_errors y examples, y help añade description. form es la plantilla en líneas con sangría y segmentos de palabra, signo, hueco con su etiqueta o repetición, cada uno marcado si va unido al anterior; parts sigue el orden de la plantilla y nombra cada palabra por su lexema del perfil y cada hueco por su etiqueta; un error común lleva su texto y, si tiene caso, su programa. Cada ejemplo conserva su referencia a especificación, versión, caso y clase, su nota, el programa del perfil de la sesión y la salida esperada cuando el caso es ejecutable; la consulta no ejecuta los programas. Sin ficha o sin identidad card es null.",
   "justificacion": "La ficha es la fuente editorial única; entregarla por la API evita que cada cliente reconozca el lenguaje o conserve su propia descripción.",
   "verificacion": [
     "C14",
@@ -1161,13 +1161,13 @@
             "language": "en",
             "help": {
               "category": "keyword",
-              "description": "Starts a loop that checks its condition before each iteration."
+              "description": "Starts the loop. It checks the condition before each round, including the first one."
             },
             "card": {
               "id": "help.while",
-              "title": "While loop",
-              "summary": "Repeats the body while the condition is true.",
-              "purpose": "The condition is checked before entering each iteration."
+              "title": "While",
+              "summary": "Repeats some instructions as long as a condition is met. Before each round it checks the condition and, if it is false, it stops.",
+              "category": "block"
             }
           }
         },
@@ -1176,8 +1176,8 @@
             "language": "es",
             "card": {
               "id": "help.while",
-              "title": "Bucle Mientras",
-              "summary": "Repite el cuerpo mientras la condición sea verdadera."
+              "title": "Mientras",
+              "summary": "Repite unas instrucciones mientras una condición se cumpla. Antes de cada vuelta revisa la condición y, si es falsa, deja de repetir."
             }
           }
         }
@@ -1239,16 +1239,8 @@
                 {
                   "specification": "LANG.CONTROL.WHILE",
                   "version": "1.0.0",
-                  "case": "C1",
-                  "profile": "en",
+                  "case": "C4",
                   "kind": "executable"
-                },
-                {
-                  "specification": "LANG.CONTROL.WHILE",
-                  "version": "1.0.0",
-                  "case": "C3",
-                  "profile": "en",
-                  "kind": "diagnostic"
                 }
               ]
             }

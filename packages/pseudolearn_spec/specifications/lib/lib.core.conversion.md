@@ -50,7 +50,9 @@
     "C3",
     "C4",
     "C16",
-    "C17"
+    "C17",
+    "C18",
+    "C19"
   ]
 }
 ```
@@ -85,8 +87,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir AEntero(\"no\");\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite toInteger(\"no\");\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Escribir AEntero(\"no\");\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write toInteger(\"no\");\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
@@ -163,7 +165,8 @@
     "C12",
     "C13",
     "C14",
-    "C15"
+    "C15",
+    "C20"
   ]
 }
 ```
@@ -466,6 +469,69 @@
     "fallo": {
       "codigo": "stringToNumberConversionFailed"
     }
+  }
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo CumplirAnios\n  Definir textoEdad Como Cadena;\n  textoEdad <- \"15\";\n  Escribir textoEdad + \"1\";\n  Escribir AEntero(textoEdad) + 1;\nFinAlgoritmo\n",
+    "en": "Algorithm HaveABirthday\n  Define ageText As String;\n  ageText <- \"15\";\n  Write ageText + \"1\";\n  Write toInteger(ageText) + 1;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "151\n16\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo JuntarNumeros\n  Definir precio Como Real;\n  precio <- AReal(\"2.5\");\n  Escribir precio * 2;\n  Escribir ATexto(7) + ATexto(3);\nFinAlgoritmo\n",
+    "en": "Algorithm JoinNumbers\n  Define price As Real;\n  price <- toReal(\"2.5\");\n  Write price * 2;\n  Write toText(7) + toText(3);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "5.0\n73\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo PrecioConDecimales\n  Definir total Como Real;\n  total <- 10 / 3;\n  Escribir total;\n  Escribir Decimales(total, 2);\n  Escribir Decimales(7, 2);\nFinAlgoritmo\n",
+    "en": "Algorithm PriceWithDecimals\n  Define total As Real;\n  total <- 10 / 3;\n  Write total;\n  Write decimals(total, 2);\n  Write decimals(7, 2);\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "3.3333333333333335\n3.33\n7.00\n",
+    "terminacion": "completed"
   }
 }
 ```

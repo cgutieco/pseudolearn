@@ -43,7 +43,8 @@
     "C1",
     "C2",
     "C3",
-    "C4"
+    "C4",
+    "C5"
   ]
 }
 ```
@@ -99,8 +100,8 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nSi 1 Entonces\nFinSi\nFinAlgoritmo\n",
-    "en": "algorithm P\nif 1 then\nendIf\nendAlgorithm\n"
+    "es": "Algoritmo P\n  Si 1 Entonces\n  FinSi\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  If 1 Then\n  EndIf\nEndAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "analyze",
@@ -138,6 +139,27 @@
         "severidad": "error"
       }
     ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Mayoria\n  Definir edad Como Entero <- 15;\n  Si edad >= 18 Entonces\n    Escribir \"Adulto\";\n  Sino\n    Escribir \"Menor\";\n  FinSi\nFinAlgoritmo\n",
+    "en": "Algorithm Adulthood\n  Define age As Integer <- 15;\n  If age >= 18 Then\n    Write \"Adulto\";\n  Else\n    Write \"Menor\";\n  EndIf\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Menor\n",
+    "terminacion": "completed"
   }
 }
 ```
