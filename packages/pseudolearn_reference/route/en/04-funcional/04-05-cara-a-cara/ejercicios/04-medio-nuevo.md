@@ -8,7 +8,7 @@ titulo: And a payment method?
 ---
 
 ::: enunciado
-Now a new payment method has to be added, with its own surcharge. In which version is less touched?
+Now a new way of paying has to be added, with its own surcharge. In which version is less touched?
 :::
 
 ```opciones

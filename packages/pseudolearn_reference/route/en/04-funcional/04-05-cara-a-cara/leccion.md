@@ -17,7 +17,7 @@ No paradigm always wins: each one makes one kind of change easy.
 ## The problem {#problema}
 
 ::: problema
-The kiosk is going to receive three change requests: adding a **new tax**, adding a **payment method** and adding a **daily sales report**. The till is written in three ways: with orders that change boxes, with pieces that keep their state and with calculations that change nothing.
+The kiosk is going to receive three change requests: adding a **new tax**, adding a **way of paying** and adding a **daily sales report**. The till is written in three ways: with orders that change boxes, with pieces that keep their state and with calculations that change nothing.
 
 **Which one suits each change?**
 :::
