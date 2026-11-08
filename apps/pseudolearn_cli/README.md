@@ -12,6 +12,7 @@ Declarado fuera de esta entrega: la ayuda (`--ayuda`) todavía no lista `bloquea
 Binario de línea de comandos implementado en Rust.
 Comandos de compilación y verificación:
 - Verificación completa del miembro: `cargo xtask verify`.
+- `cargo xtask verify` empieza por `cargo xtask check-lock`, que ejecuta `cargo metadata --locked` y falla si `Cargo.lock` no recoge las dependencias de los manifiestos. Sin esa puerta Cargo reescribía el lock en silencio durante `clippy` y `test` y la verificación pasaba con el lock desfasado (así ocurrió con `pseudolearn_transpiler`). Su caso negativo es `xtask/tests/lockfile.rs`, que prepara un proyecto temporal con un lock incompleto y exige el fallo sin que el archivo cambie.
 - Antes de una compilación directa, genera la exportación ignorada: `(cd ../../packages/pseudolearn_spec && cargo run --locked -p see_cli --bin see -- export --root .)`.
 - Compilación de producción: `cargo build --release` (salida en `target/release/pseudo`).
 - Pruebas unitarias y funcionales: `cargo test`.

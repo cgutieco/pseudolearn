@@ -4,16 +4,24 @@ mod http_test_server;
 mod http_test_server_certificates;
 mod http_test_server_listener;
 mod http_test_server_routes;
+mod lockfile;
 
 fn main() -> std::process::ExitCode {
     let mut arguments = std::env::args().skip(1);
     let result = match arguments.next().as_deref() {
         Some("verify") if arguments.next().is_none() => verify(),
+        Some("check-lock") => {
+            let directory = arguments.next().unwrap_or_else(|| ".".to_owned());
+            lockfile::check(std::path::Path::new(&directory))
+        }
         Some("http-test-server") => {
             let task_arguments = arguments.collect::<Vec<_>>();
             http_test_server::run(&task_arguments)
         }
-        _ => Err("Usage: cargo xtask verify | http-test-server [options]".to_owned()),
+        _ => Err(
+            "Usage: cargo xtask verify | check-lock [directory] | http-test-server [options]"
+                .to_owned(),
+        ),
     };
     match result {
         Ok(()) => std::process::ExitCode::SUCCESS,
@@ -28,6 +36,7 @@ fn verify() -> Result<(), String> {
     if std::env::args().nth(1).as_deref() != Some("verify") {
         return Err("Usage: cargo xtask verify".to_owned());
     }
+    lockfile::check(std::path::Path::new("."))?;
     export()?;
     for arguments in commands() {
         let status = std::process::Command::new("cargo")
