@@ -1519,6 +1519,18 @@
       "vacia": "empty",
       "paso-1": "The program saves the stock into the file.",
       "paso-2": "The program closed: the file stays."
+    },
+    "ruta-json-viaje": {
+      "titulo": "The journey of a datum in JSON",
+      "descripcion": "On the left, the kiosk inventory as a datum of the program, with juice 10. An arrow turns it into JSON text, which travels; another arrow parses it on the other side and rebuilds the same datum in the school's program.",
+      "programa-a": "Kiosk",
+      "programa-b": "School",
+      "registro": "jugo: 10",
+      "texto": "text",
+      "json": "{\"jugo\": 10}",
+      "serializa": "serialized",
+      "analiza": "parsed",
+      "pie": "The datum travels as text and is rebuilt the same."
     }
   }
 }

@@ -139,5 +139,7 @@
   "cancelacion": {"etiqueta": "cancelación", "formas": ["cancelación", "cancelar"], "estricto": true, "receta": false},
   "archivo": {"etiqueta": "archivo", "formas": ["archivo", "archivos"], "estricto": false, "receta": false},
   "capacidad": {"etiqueta": "capacidad", "formas": ["capacidad", "capacidades"], "estricto": true, "receta": false},
-  "limpieza-diferida": {"etiqueta": "limpieza diferida", "formas": ["limpieza diferida"], "estricto": true, "receta": true}
+  "limpieza-diferida": {"etiqueta": "limpieza diferida", "formas": ["limpieza diferida"], "estricto": true, "receta": true},
+  "json": {"etiqueta": "JSON", "formas": ["JSON"], "estricto": true, "receta": false},
+  "serializar": {"etiqueta": "serializar", "formas": ["serializar", "serialización"], "estricto": true, "receta": true}
 }

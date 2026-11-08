@@ -139,5 +139,7 @@
   "cancelacion": {"etiqueta": "cancellation", "formas": ["cancellation"], "estricto": true, "receta": false},
   "archivo": {"etiqueta": "file", "formas": ["file", "files"], "estricto": false, "receta": false},
   "capacidad": {"etiqueta": "capability", "formas": ["capability", "capabilities"], "estricto": true, "receta": false},
-  "limpieza-diferida": {"etiqueta": "deferred cleanup", "formas": ["deferred cleanup"], "estricto": true, "receta": true}
+  "limpieza-diferida": {"etiqueta": "deferred cleanup", "formas": ["deferred cleanup"], "estricto": true, "receta": true},
+  "json": {"etiqueta": "JSON", "formas": ["JSON"], "estricto": true, "receta": false},
+  "serializar": {"etiqueta": "serialise", "formas": ["serialise", "serialises", "serialisation"], "estricto": true, "receta": true}
 }
