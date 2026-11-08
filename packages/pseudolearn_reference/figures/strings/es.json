@@ -1506,6 +1506,19 @@
       "paso-1": "Las dos ofertas salen a la vez.",
       "paso-2": "La del Norte llega primero y se atiende.",
       "paso-3": "La del Sur ya no hace falta: se corta."
+    },
+    "ruta-memoria-y-disco": {
+      "titulo": "La memoria y el disco",
+      "descripcion": "A la izquierda, la memoria del programa con las cajas del stock: jugo 10, agua 12 y fruta 6; a la derecha, el disco con el archivo stock.txt. En el primer paso el programa guarda las cajas en el archivo. En el segundo el programa se cerró: la memoria queda vacía y el archivo sigue en el disco.",
+      "archivo": "stock.txt",
+      "memoria": "Memoria",
+      "disco": "Disco",
+      "jugo": "jugo: 10",
+      "agua": "agua: 12",
+      "fruta": "fruta: 6",
+      "vacia": "vacía",
+      "paso-1": "El programa guarda el stock en el archivo.",
+      "paso-2": "El programa se cerró: el archivo queda."
     }
   }
 }

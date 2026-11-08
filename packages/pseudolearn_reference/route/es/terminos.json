@@ -136,5 +136,8 @@
   "canal": {"etiqueta": "canal", "formas": ["canal", "canales"], "estricto": true, "receta": true},
   "aislamiento": {"etiqueta": "aislamiento", "formas": ["aislamiento"], "estricto": true, "receta": false},
   "productor-consumidor": {"etiqueta": "productor y consumidor", "formas": ["productor", "consumidor"], "estricto": true, "receta": true},
-  "cancelacion": {"etiqueta": "cancelación", "formas": ["cancelación", "cancelar"], "estricto": true, "receta": false}
+  "cancelacion": {"etiqueta": "cancelación", "formas": ["cancelación", "cancelar"], "estricto": true, "receta": false},
+  "archivo": {"etiqueta": "archivo", "formas": ["archivo", "archivos"], "estricto": false, "receta": false},
+  "capacidad": {"etiqueta": "capacidad", "formas": ["capacidad", "capacidades"], "estricto": true, "receta": false},
+  "limpieza-diferida": {"etiqueta": "limpieza diferida", "formas": ["limpieza diferida"], "estricto": true, "receta": true}
 }

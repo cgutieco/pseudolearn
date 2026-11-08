@@ -30,7 +30,7 @@ A class `Cronometro` with a method `Avanzar(segundos)` and another `Lectura()` t
 1. What does the stopwatch have to remember between one call and another?
 2. The format is that of the stopwatch of [lesson 0.2](ruta:inicio.nombres); the state is kept like the counter of [the lesson](ruta:objetos.cosas).
 3. An attribute with the total of seconds; `Avanzar` adds; `Lectura` shares out into hours, minutes and seconds.
-4. `Lectura` builds the text with `ToText` and concatenation. Close with the variant.
+4. `Lectura` builds the text with `toText` and concatenation. Close with the variant.
 :::
 
 ::: variante

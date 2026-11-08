@@ -136,5 +136,8 @@
   "canal": {"etiqueta": "channel", "formas": ["channel", "channels"], "estricto": true, "receta": true},
   "aislamiento": {"etiqueta": "isolation", "formas": ["isolation"], "estricto": true, "receta": false},
   "productor-consumidor": {"etiqueta": "producer and consumer", "formas": ["producer and consumer"], "estricto": true, "receta": true},
-  "cancelacion": {"etiqueta": "cancellation", "formas": ["cancellation"], "estricto": true, "receta": false}
+  "cancelacion": {"etiqueta": "cancellation", "formas": ["cancellation"], "estricto": true, "receta": false},
+  "archivo": {"etiqueta": "file", "formas": ["file", "files"], "estricto": false, "receta": false},
+  "capacidad": {"etiqueta": "capability", "formas": ["capability", "capabilities"], "estricto": true, "receta": false},
+  "limpieza-diferida": {"etiqueta": "deferred cleanup", "formas": ["deferred cleanup"], "estricto": true, "receta": true}
 }

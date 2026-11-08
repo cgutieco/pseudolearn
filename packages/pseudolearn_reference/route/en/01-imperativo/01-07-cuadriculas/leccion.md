@@ -64,7 +64,7 @@ A [[def:matriz|matrix]] is a two-dimensional array: each cell is found with two 
 
 To walk through a whole matrix you use a [[def:bucle-anidado|nested loop]]: one loop over the rows and, inside, another over the columns of each row.
 
-To show a row on a single line it pays to [[def:concatenar|concatenate]]: join texts with `+` to make a new one. A number is turned into text with `ToText`.
+To show a row on a single line it pays to [[def:concatenar|concatenate]]: join texts with `+` to make a new one. A number is turned into text with `toText`.
 
 ```programa id=dibujar-tablero titulo="Drawing the board" ejecutar
 ```

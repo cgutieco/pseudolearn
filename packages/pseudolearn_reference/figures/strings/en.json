@@ -1506,6 +1506,19 @@
       "paso-1": "The two offers set off at once.",
       "paso-2": "The North one arrives first and is served.",
       "paso-3": "The South one is no longer needed: it is cut."
+    },
+    "ruta-memoria-y-disco": {
+      "titulo": "Memory and disk",
+      "descripcion": "On the left, the memory of the program with the stock boxes: juice 10, water 12 and fruit 6; on the right, the disk with the file stock.txt. In the first step the program saves the boxes into the file. In the second the program has closed: the memory is empty and the file stays on the disk.",
+      "archivo": "stock.txt",
+      "memoria": "Memory",
+      "disco": "Disk",
+      "jugo": "jugo: 10",
+      "agua": "agua: 12",
+      "fruta": "fruta: 6",
+      "vacia": "empty",
+      "paso-1": "The program saves the stock into the file.",
+      "paso-2": "The program closed: the file stays."
     }
   }
 }
