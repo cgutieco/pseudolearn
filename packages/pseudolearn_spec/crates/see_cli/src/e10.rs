@@ -8,20 +8,9 @@ pub fn execute(root: &Path, corpus: &Corpus) -> Result<String, String> {
     let vocabulary = resources
         .get("vocabulary")
         .ok_or("Missing normative vocabulary")?;
-    let directory = root.join("../../apps/pseudolearn_app/assets/knowledge/examples");
-    let sources = source_files(&directory)?;
+    let sources = route_programs(root)?;
     let mut files = Vec::new();
-    for path in sources {
-        let filename = path
-            .file_name()
-            .and_then(|name| name.to_str())
-            .ok_or("Invalid example name")?;
-        let profile = if filename.ends_with("_es.pseudo") {
-            "es"
-        } else {
-            "en"
-        };
-        let source = std::fs::read_to_string(&path).map_err(|error| error.to_string())?;
+    for (filename, profile, source) in sources {
         files.push(json!({"file":filename,"profile":profile,"measurement":measure(&source, profile, vocabulary)?}));
     }
     if files.is_empty() {
@@ -35,19 +24,36 @@ pub fn execute(root: &Path, corpus: &Corpus) -> Result<String, String> {
     )
 }
 
-fn source_files(directory: &Path) -> Result<Vec<std::path::PathBuf>, String> {
-    let mut sources = Vec::new();
-    for entry in std::fs::read_dir(directory).map_err(|error| error.to_string())? {
-        let path = entry.map_err(|error| error.to_string())?.path();
-        if path
-            .extension()
-            .is_some_and(|extension| extension == "pseudo")
-        {
-            sources.push(path);
+fn route_programs(root: &Path) -> Result<Vec<(String, &'static str, String)>, String> {
+    let mut programs = Vec::new();
+    for (edition, profile) in [("es/es", "es"), ("en/en", "en")] {
+        let directory = root.join(format!(
+            "../../apps/pseudolearn_app/assets/route/{edition}/exercises"
+        ));
+        for entry in std::fs::read_dir(&directory).map_err(|error| error.to_string())? {
+            let path = entry.map_err(|error| error.to_string())?.path();
+            let document: serde_json::Value = serde_json::from_str(
+                &std::fs::read_to_string(&path).map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+            let teaches_errors = document
+                .get("id")
+                .and_then(serde_json::Value::as_str)
+                .is_some_and(|identifier| identifier.contains(".errores."));
+            let source = document
+                .pointer("/program/source")
+                .and_then(serde_json::Value::as_str);
+            if let (Some(source), false) = (source, teaches_errors) {
+                let name = path
+                    .file_name()
+                    .and_then(|name| name.to_str())
+                    .unwrap_or("");
+                programs.push((format!("{edition}/{name}"), profile, source.to_owned()));
+            }
         }
     }
-    sources.sort();
-    Ok(sources)
+    programs.sort();
+    Ok(programs)
 }
 
 pub fn revision(root: &Path) -> Result<String, String> {

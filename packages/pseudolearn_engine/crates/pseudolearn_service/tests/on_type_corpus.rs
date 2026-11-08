@@ -3,26 +3,41 @@ use pseudolearn_service::{DocumentSession, apply_changes, on_type};
 use std::path::PathBuf;
 
 fn programs() -> Result<Vec<(String, Profile, String)>, String> {
-    let directory = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("../../../../apps/pseudolearn_app/assets/knowledge/examples");
     let mut found = Vec::new();
-    for entry in std::fs::read_dir(&directory).map_err(|error| error.to_string())? {
-        let path = entry.map_err(|error| error.to_string())?.path();
-        let name = path
-            .file_name()
-            .and_then(|value| value.to_str())
-            .unwrap_or("")
-            .to_owned();
-        if !name.ends_with(".pseudo") {
-            continue;
+    for (edition, profile) in [("es/es", Profile::Spanish), ("en/en", Profile::English)] {
+        let directory = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(format!(
+            "../../../../apps/pseudolearn_app/assets/route/{edition}/exercises"
+        ));
+        for entry in std::fs::read_dir(&directory).map_err(|error| error.to_string())? {
+            let path = entry.map_err(|error| error.to_string())?.path();
+            let document: serde_json::Value = serde_json::from_str(
+                &std::fs::read_to_string(&path).map_err(|error| error.to_string())?,
+            )
+            .map_err(|error| error.to_string())?;
+            let teaches_errors = document
+                .get("id")
+                .and_then(serde_json::Value::as_str)
+                .is_some_and(|identifier| identifier.contains(".errores."));
+            let Some(text) = document
+                .pointer("/program/source")
+                .and_then(serde_json::Value::as_str)
+            else {
+                continue;
+            };
+            if teaches_errors {
+                continue;
+            }
+            found.push((
+                format!(
+                    "{edition}/{}",
+                    path.file_name()
+                        .and_then(|value| value.to_str())
+                        .unwrap_or("")
+                ),
+                profile,
+                text.to_owned(),
+            ));
         }
-        let profile = if name.ends_with("_en.pseudo") {
-            Profile::English
-        } else {
-            Profile::Spanish
-        };
-        let text = std::fs::read_to_string(&path).map_err(|error| error.to_string())?;
-        found.push((name, profile, text));
     }
     found.sort();
     Ok(found)
