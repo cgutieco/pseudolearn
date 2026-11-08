@@ -153,3 +153,20 @@ fn refreshed_git_checkout_anchor_passes_lock_check() -> Result<(), String> {
     assert!(fixture.execute(&["lock", "--check"])?.status.success());
     Ok(())
 }
+
+#[test]
+fn agent_sheet_fails_without_settings_or_resources() -> Result<(), String> {
+    let fixture = support::Fixture::create()?;
+    let missing = fixture.execute(&["agent-sheet", "--check"])?;
+    assert!(!missing.status.success());
+    std::fs::create_dir_all(fixture.root.join("agents")).map_err(|error| error.to_string())?;
+    std::fs::write(
+        fixture.root.join("agents/agent-sheet.json"),
+        r#"{"outputs":{"es":["out/es.md"]},"labels":{"es":{}},"principles":{},"differences":[],"examples":[]}"#,
+    )
+    .map_err(|error| error.to_string())?;
+    let unrendered = fixture.execute(&["agent-sheet"])?;
+    assert!(!unrendered.status.success());
+    assert!(!fixture.root.join("out/es.md").exists());
+    Ok(())
+}

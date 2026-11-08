@@ -3,6 +3,9 @@
 use see_model::Corpus;
 use serde_json::{Value, json};
 
+pub mod agent_sheet;
+pub mod agent_sheet_examples;
+pub mod agent_sheet_vocabulary;
 pub mod resources;
 
 pub fn generate(corpus: &Corpus) -> Result<Value, String> {

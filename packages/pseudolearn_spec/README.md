@@ -21,7 +21,7 @@ Compilación: `cargo build --release`; binario `target/release/see`.
 Todas las órdenes admiten `--root <directorio>` para seleccionar otro miembro de corpus.
 Órdenes: `budget` (E-10 reproducible), `new <ID> --domain <dominio>`, `validate`, `graph [--focus ID] [--dot]`,
 `lock [--check | --refresh ID,ID]`, `diff <rev>`, `impact <ID>`, `conform --subject <engine|aot|service|cli|app> [--only ID]`,
-`matrix [--subject reference]`, `feature <nombre>`, `export [--check]`. Solicitar conformidad de reference produce `SEE-SUBJECT-RETIRED`; su matriz lo presenta como no aplicable sin cargar resultados retirados.
+`matrix [--subject reference]`, `feature <nombre>`, `export [--check]`, `agent-sheet [--check]`. Solicitar conformidad de reference produce `SEE-SUBJECT-RETIRED`; su matriz lo presenta como no aplicable sin cargar resultados retirados.
 `matrix` imprime un objeto con `conformance` (regla × sujeto), `ir_coverage` (tabla regla → instrucciones
 de los bloques `cobertura`) y `states` (especificaciones por dominio y estado).
 `new` crea una plantilla estable `1.0.0` sin `cambio`; deja `revisado_por` vacío para que no se atribuya una
@@ -373,6 +373,29 @@ Los casos pueden restringir `sujetos` a un subconjunto explícito de los declara
   pureza declaran por eso ambos programas. La operación de escritura de `Consola` se llamaba `Escribir`/`write`, igual que una
   palabra reservada, y no podía invocarse; ahora se llama `EscribirTexto`/`writeText` (identidad `console_write` sin
   cambios) y `LIB.MODEL#M2` prohíbe que una forma de biblioteca coincida con una palabra reservada.
+
+### Ficha del lenguaje para agentes (`see agent-sheet`)
+
+Los modelos de lenguaje conocen PSeInt y no PseudoLearn; sin contexto escriben base uno, omiten el punto y
+coma o declaran parámetros sin tipo. `see agent-sheet [--check]` genera una ficha en Markdown por idioma
+(`es`, `en`) a partir del mismo corpus que `export`: reglas de oro, vocabulario canónico por perfil,
+funciones de biblioteca y operaciones con capacidad, la gramática EBNF de `grammar`, las diferencias con
+PSeInt y ejemplos canónicos.
+
+- La selección editorial vive en `agents/agent-sheet.json`, fuera del corpus: textos de las secciones,
+  reglas de oro, diferencias y ejemplos. El corpus sigue sin citar herramientas externas
+  (`SPEC-SELF-CONTAINED`); el archivo de la ficha sí nombra PSeInt porque es material para agentes.
+- Cada diferencia nombra una regla con identidad `ESPECIFICACION#R`; el generador cita su texto
+  normativo y falla si la regla no existe. Cada ejemplo es un caso `ESPECIFICACION#C` de operación
+  `execute`, con programa en el perfil de la ficha y salida esperada con terminación `completed`; el
+  generador falla en cualquier otro caso. «Se ejecuta al generar» se cumple por construcción: solo se
+  admiten casos que `see conform --subject engine` ejecuta en cada `cargo xtask verify`. Se descartó
+  ejecutar los ejemplos desde SEE porque obligaría a importar un sujeto en la exportación.
+- Los textos normativos se citan en español, el idioma del corpus, también en la ficha inglesa.
+- Destinos: `apps/pseudolearn_app/assets/agent/<idioma>/language-sheet.md` (lo empaqueta la app) y
+  `apps/fe-pseudolearn/src/shared/agent-sheet/generated/` (lo publica la web como `llms-full.txt`). Son
+  los únicos consumidores, por eso se versionan (`GEN-NO-HAND-COPY`). `cargo xtask verify` ejecuta
+  `agent-sheet --check`, que falla con `SEE-STALE` si una copia difiere de la generada.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

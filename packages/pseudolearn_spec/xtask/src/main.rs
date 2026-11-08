@@ -83,6 +83,7 @@ fn see_commands() -> Vec<Vec<&'static str>> {
     [
         vec!["validate"],
         vec!["export", "--check"],
+        vec!["agent-sheet", "--check"],
         vec![
             "conform",
             "--subject",

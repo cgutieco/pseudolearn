@@ -19,11 +19,7 @@ pub fn run(arguments: Arguments) -> Result<String, String> {
         "validate" => Ok(format!("Validated {} specifications", corpus.len())),
         "runtime-fixtures" => crate::runtime_fixtures::generate(&arguments, &corpus),
         "budget" => crate::e10::execute(&arguments.root, &corpus),
-        "graph" => see_graph::render(
-            &corpus,
-            arguments.options.get("focus").map(String::as_str),
-            arguments.options.contains_key("dot"),
-        ),
+        "graph" => graph(&arguments, &corpus),
         "impact" => {
             see_graph::impact(&corpus, first(&arguments)?).map(|affected| affected.join("\n"))
         }
@@ -35,12 +31,29 @@ pub fn run(arguments: Arguments) -> Result<String, String> {
             arguments.options.contains_key("check"),
         ),
         "differential" => crate::differential::execute(&arguments, &corpus),
+        "agent-sheet" => agent_sheet(&arguments, &corpus),
         "diff" => crate::history::diff(&arguments, &corpus),
         "conform" => crate::conformance::execute(&arguments, &corpus),
         "matrix" => crate::conformance::matrix(&arguments, &corpus),
         "feature" => feature(&arguments, &corpus),
         _ => Err(format!("Unknown command: {}", arguments.command)),
     }
+}
+
+fn graph(arguments: &Arguments, corpus: &see_model::Corpus) -> Result<String, String> {
+    see_graph::render(
+        corpus,
+        arguments.options.get("focus").map(String::as_str),
+        arguments.options.contains_key("dot"),
+    )
+}
+
+fn agent_sheet(arguments: &Arguments, corpus: &see_model::Corpus) -> Result<String, String> {
+    crate::agent_sheet::generate(
+        &arguments.root,
+        corpus,
+        arguments.options.contains_key("check"),
+    )
 }
 
 fn command_corpus(arguments: &Arguments) -> Result<see_model::Corpus, String> {

@@ -204,6 +204,21 @@ pub fn artifact(path: &Path, value: &Value, check: bool) -> Result<String, Strin
     Ok(format!("Verified {}", path.display()))
 }
 
+pub fn text_artifact(path: &Path, text: &str, check: bool) -> Result<String, String> {
+    if check {
+        let existing = std::fs::read_to_string(path).map_err(|error| error.to_string())?;
+        if existing != text {
+            return Err(format!("SEE-STALE: {}", path.display()));
+        }
+    } else {
+        if let Some(parent) = path.parent() {
+            std::fs::create_dir_all(parent).map_err(|error| error.to_string())?;
+        }
+        std::fs::write(path, text).map_err(|error| error.to_string())?;
+    }
+    Ok(format!("Verified {}", path.display()))
+}
+
 pub fn valid_for_refresh(root: &Path, authorized: &[String]) -> Result<Corpus, String> {
     let corpus = corpus(root)?;
     let mut errors = see_validation::validate(&corpus, &lock(root)?)?;

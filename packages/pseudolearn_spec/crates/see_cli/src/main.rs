@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+mod agent_sheet;
 mod arguments;
 mod bindings;
 mod commands;
