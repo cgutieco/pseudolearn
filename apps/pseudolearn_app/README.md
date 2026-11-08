@@ -123,7 +123,9 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Límite de ejecución de los ejercicios | La app corta a 10 000 pasos (`ProgramRunner.defaultStepLimit`) y el compilador de la ruta a 100 000 sentencias; `route_exercise_gate_test` garantiza que cada solución de referencia cabe en el límite de la app | Vigilado por test |
 | Compras reales del agente | Adaptadores `PurchaseStore` de StoreKit (iOS y macOS de la App Store, obligatorio dentro de iOS), Microsoft Store y Stripe para la descarga directa, y sus verificadores en el backend | Abierto; solo existe la compra simulada (§4.63) |
 | Clave del proveedor del agente | El propietario pone `OPENAI_API_KEY` en el servidor y compila con `AGENT_BACKEND=proxy` y `AGENT_PROXY_URL` | Abierto; sin clave el agente responde «no disponible» sin cobrar |
-| Markdown enriquecido en el chat del agente | Una dependencia de renderizado de Markdown revisada; hoy se separan los bloques de código y el resto se muestra como texto | Abierto |
+| Markdown enriquecido en el chat del agente | Lector propio sobre el paquete `markdown` y vistas propias (§4.66) | Resuelto |
+| Enlaces externos en las respuestas del agente | Un caso de uso de aplicación sobre `ExternalUrlLauncher` que la presentación pueda invocar; hoy el enlace se muestra subrayado y se puede seleccionar y copiar, pero no se abre | Abierto |
+| Diagramas Mermaid distintos de `flowchart` en el chat | Un modelo y una vista por tipo (secuencia, estados, clases); hoy se muestran como código con un aviso (§4.66) | Abierto |
 | Medición del agente | Ejecutar el benchmark de `packages/pseudolearn_benchmarks` contra el gateway real con la clave del propietario | Abierto; requiere autorización de la persona |
 | Cancelación de tareas hermanas en ejecución paso a paso | El motor reanuda la hermana cancelada solo para completar su cancelación, y en ese evento ya no es consultable; `RustExecutionEventConsumer` lo acepta sin detener el paso (ver §4.10) | Resuelto en la app; el motor cumple el corpus. `rust_task_termination_test` lo ejercita paso a paso con el puente real |
 
@@ -602,10 +604,10 @@ La capa `host` comparte el anillo 2 con engine y data; solo importa model y port
 | `data/platform/`         | Adaptadores de servicios del sistema operativo: reloj, generación de identificadores, sondeo de conectividad, recepción de enlaces entrantes, modalidad de entrada de texto, apertura de enlaces, versión instalada, petición de reseña en la tienda y soporte de autenticación nativa (`SystemClock`, `RandomIdentifierGenerator`, `ConnectivityMonitorAdapter`, `AppLinksIncomingLinkSource`, `PlatformTextEntryModality`, `PlatformExternalUrlLauncher`, `PlatformNativeAuthSupport`, `PlatformAppVersionSource`, `PlatformStoreReviewPrompt`) | `domain/model`, `domain/ports`, `dart:io`, `package:app_links`, `package:url_launcher`, `package:package_info_plus`, `package:in_app_review` | `engine`, `application`, `presentation`, el transporte del motor, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `data/sync/`             | Persistencia de outbox en SQLite, almacenes remotos en Supabase y orquestación de drenado con orden pull-antes-que-push, y purga local de los datos de una cuenta eliminada (`SqliteSyncQueue`, `SupabaseDocumentStore`, `SyncDrainer`, `LocalAccountDataPurgerAdapter`)                                                       | `domain/model`, `domain/ports`, `sqflite`, `package:supabase`             | `engine`, `application`, `presentation`, el transporte del motor, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `application/`           | Casos de uso, orquestación y cubits de estado inmutable                                                                                                                                                                                                                                                            | `model`, `ports`, `package:bloc`, `package:equatable`                     | `engine`, `data`, `presentation`, `flutter/`, el transporte del motor, `go_router`, `sqflite`, `dart:io`, `dart:ui`, `BuildContext`, `RegExp`       |
-| `application/agent/`     | Bucle del agente, registro y política de confirmación, ensamblado del prompt, instantáneas de pantalla, verificación de bloques y una herramienta por caso de uso (`tools/`) | `model`, `ports`, `package:bloc` | Lo mismo que `application/`; ninguna herramienta habla con un repositorio sin pasar por su caso de uso cuando existe |
+| `application/agent/`     | Bucle del agente, registro y política de confirmación, ensamblado del prompt, instantáneas de pantalla, verificación de bloques, resaltado léxico (`highlight/`), disposición de diagramas de flujo (`flowchart/`) y una herramienta por caso de uso (`tools/`) | `model`, `ports`, `package:bloc` | Lo mismo que `application/`; ninguna herramienta habla con un repositorio sin pasar por su caso de uso cuando existe |
 | `application/credits/`   | Estado de créditos, compras y consentimiento del agente (`CreditsCubit`, `PurchaseCubit`, `AgentConsentCubit`) | `model`, `ports`, `package:bloc` | Lo mismo que `application/` |
-| `data/agent/`, `data/credits/` | Proxy HTTP del modelo y de créditos, códec de la Responses API, lector de bloques de código, índice de conocimiento, consentimiento en disco y compra simulada | `model`, `ports`, `dart:io` | Lo mismo que `data/` |
-| `presentation/agent/`    | Glifo, botón flotante, panel de chat, confirmaciones, oferta, consentimiento, ajustes de Nodo y publicadores de contexto de pantalla | `model`, `application`, `flutter/` | Lo mismo que `presentation/` |
+| `data/agent/`, `data/credits/` | Proxy HTTP del modelo y de créditos, códec de la Responses API, lector de Markdown de las respuestas (`markdown/`) y de diagramas Mermaid (`mermaid/`), índice de conocimiento, consentimiento en disco y compra simulada | `model`, `ports`, `dart:io` | Lo mismo que `data/` |
+| `presentation/agent/`    | Glifo, botón flotante, panel de chat, vistas de la respuesta enriquecida (`reply/`), confirmaciones, oferta, consentimiento, ajustes de Nodo y publicadores de contexto de pantalla | `model`, `application`, `flutter/` | Lo mismo que `presentation/` |
 | `application/<área>/use_cases/` | Casos de uso: clases puras con un único método público `call` (y, como mucho, una variante con nombre) que ejecutan un comando o una consulta de negocio contra los puertos y devuelven un valor tipado en lugar de lanzar (`CreateDocument`, `RenameDocument`, `DeleteDocument`, `SaveDocumentSource`, `SetExecutionArguments`, `ListDocuments`, `LoadDocument`, `CheckProgram`, `RunProgram`, `TranslateProgram`, `FormatProgram`) | `model`, `ports` | Lo mismo que `application/`; además, un caso de uso no conoce ningún Cubit ni estado de vista |
 | `presentation/`          | Widgets, CustomPainters, renderizado de lienzo y temas                                                                                                                                                                                                                                                             | `model`, `application`, `flutter/`, `go_router`, `flutter_bloc`           | `ports`, `engine`, `data`, el transporte del motor, `sqflite`, `dart:io`, constructores adaptativos OS, métodos de colección derivados              |
 | `composition/`           | Ensamblado estático e inyección de dependencias en arranque                                                                                                                                                                                                                                                        | `model`, `ports`, `engine`, `data`, `application`, `presentation`         | Contener lógica o ramificaciones condicionales (`if`, `switch`, ternarios)                                                                     |
@@ -1026,14 +1028,18 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
     - Sombras tenues en modo claro y bordes sutiles en modo oscuro para jerarquía de profundidad.
     - Duraciones estándar: Rápida (100 ms), Normal (200 ms), Lenta (350 ms). Respeto automático a la directiva de
       reducción de movimiento del sistema operativo.
+    - Duración de gráficos (`MotionSpeed.chart`, 900 ms): solo para la entrada de los gráficos del panel de progreso,
+      donde el crecimiento del dato es el contenido y no una transición; con movimiento reducido vale cero.
 5. **Capas de Apilamiento (Z-Index):**
     - `canvas` (0), `content` (1), `sticky/header` (10), `overlay/dropdown` (20), `modal/dialog` (30), `tooltip/toast`
       (40).
 
 ### 4.13 Especificación de pantallas y navegación
 
-- **Biblioteca (`LibraryPage`):** Gestión de documentos personales, filtrado por búsqueda de texto, creación con nombres
-  sugeridos mediante diálogo modal y eliminación/renombrado seguro.
+- **Biblioteca (`LibraryPage`):** Dos pestañas, «Algoritmos» y «Ejercicios», bajo un título sin acciones. Algoritmos:
+  gestión de documentos personales, filtrado por búsqueda de texto, creación con nombres sugeridos mediante diálogo
+  modal y eliminación/renombrado seguro. Ejercicios: los ejercicios propios (§4.64). La pestaña activa es estado de
+  la página, no de un cubit, porque no sobrevive a la navegación ni la necesita nadie más.
 - **Documento (`DocumentPage`) · Armazón de cuatro pestañas:**
     - Cabecera con título, perfil de sintaxis y estado de sincronización.
     - Franja plegable de ejercicio (`ExerciseStrip`) si el documento procede de la base de conocimiento. Su cabecera
@@ -1063,11 +1069,18 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
   lockup. La hoja de Contacto lo lleva como membrete del documento.
 - **Panel de progreso (`DashboardPage` / `DashboardView`):** Cuarto destino de navegación (`/progreso`). Armazón
   `AppPage` con medida `wide` y distribución adaptable (dos columnas en clase `expanded`, columna única en `compact`/
-  `medium`). Operativo al 100 % con datos locales sin requerir sesión iniciada. Presenta nueve tarjetas alimentadas
-  exclusivamente por proyecciones desacopladas de `application/dashboard/` —biblioteca, ruta de aprendizaje, siguiente
-  paso, ejercicios, conceptos ejercitados (derivados sobre el AST mediante `ProgramConstructReader`), cobertura de la
-  especificación, línea de actividad semanal (ventana fija de 8 semanas), algoritmos creados en el tiempo y salud de
-  sincronización—.
+  `medium`). Operativo al 100 % con datos locales sin requerir sesión iniciada. La cabecera es la del armazón común; el
+  cuerpo presenta nueve tarjetas gráficas alimentadas exclusivamente por proyecciones desacopladas de
+  `application/dashboard/`. Columna principal: resumen (`OverviewCard`: tres anillos concéntricos de lecciones
+  completadas, ejercicios resueltos y conceptos usados, porcentaje de ruta completada en el centro y tres indicadores
+  —algoritmos, semanas activas de la ventana y ejercicios resueltos con ayuda—), siguiente paso (`NextStepCard`, con la
+  tira segmentada de ejercicios obligatorios resueltos de la lección sugerida y la regla que la completa), recorrido de
+  la ruta (`RouteMapCard`: un punto por lección unido por un trazo, coloreado por estado —completada, en curso, sin
+  empezar—, la lección sugerida rodeada y cada punto abre su lección) y ejercicios (`ExercisesCard`: tres medidores
+  circulares por nivel y un radar por tipo de ejercicio). Columna secundaria: actividad semanal (barras apiladas de
+  lecciones abiertas, ejercicios resueltos y algoritmos creados en una ventana fija de 8 semanas), biblioteca (anillo
+  repartido por perfil de sintaxis), conceptos ejercitados y cobertura de la especificación (nubes de fichas marcadas) y
+  salud de sincronización. Los gráficos se pintan con `CustomPainter` propios en `presentation/dashboard/charts/`.
 - **Cuenta (`AccountPage` / `AccountView`):** Subpantalla de Ajustes (`/ajustes/cuenta`) con armazón estándar y botón de
   retroceso en cabecera. Sin sesión iniciada, presenta explicación contextual de sincronización y botones de acceso
   (`SignInOptions`) priorizando Apple con la variante de marca `brandApple` (directriz 4.8 de App Store), Google y
@@ -1143,7 +1156,10 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
     - `KeyboardExitActions`: Las dos salidas del modo escritura, ejecutar hasta el final y ocultar teclado.
     - `EditorKeyShortcuts`: `Tab`, `Mayús`+`Tab` y `Esc` sobre el editor en escritorio, contra el mismo puerto que usan
       las teclas dibujadas.
-    - `StatusBanner`: Avisos descartables de sincronización (`SyncBanner`). El editor ya no lo usa: el resultado de
+    - `AppSectionTabs`: Pestañas de sección a todo el ancho con indicador inferior y recuento opcional. Las usan la
+      Base de conocimiento y la Biblioteca, para que cambiar de sección se vea igual en ambas.
+    - `StatusBanner`: Avisos descartables de sincronización (`SyncBanner`). Sin margen lateral propio: ocupa el ancho
+      de la columna de contenido que lo aloja, como cualquier otro bloque del cuerpo. El editor ya no lo usa: el resultado de
       una ejecución lo dice `RunResultPill` (§4.61).
     - `RunResultPill` y `RunOutcomeNote`: Píldora de resultado en la cabecera de la salida y línea final explicativa
       en el cuerpo de la salida; ambos leen el único mapeo `runOutcomeOf` de estado de ejecución a presentación.
@@ -1264,7 +1280,12 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       editor y los comprueba la sesión de ejercicio de §4.19.
     - `application/route/` tiene un cubit por pantalla (índice, lección, ejercicio, banco) y `RouteProgress` con las
       identidades de §4.25. El banco es una proyección del índice filtrada por parte, tipo y nivel, no un catálogo
-      aparte.
+      aparte. Una lección abierta queda «En curso» y solo se completa al resolver todos sus ejercicios obligatorios
+      (o al abrirla si no tiene ninguno); los opcionales no cuentan. Como esa regla no se ve desde fuera,
+      `RouteProgress.requiredExercisesOf` da el recuento de obligatorios resueltos y `RouteIndexState` lo lleva por
+      lección: la tarjeta del índice añade «N de M obligatorios» mientras la lección no está completada. El borde
+      resaltado de una tarjeta marca la lección sugerida —la primera sin completar cuyas lecciones previas lo están—,
+      no la lección abierta más reciente.
     - `presentation/route/` es el lector: bloques de lección, avisos de la ruta, tira del ciclo, panel de respuesta por
       tipo y enlaces. Un enlace `ruta:<lección>` abre otra lección; un enlace de especificación abre su sección en el
       lector de §4.62.
@@ -1614,8 +1635,23 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       normativas correspondientes publicadas en los manifiestos, omitiendo del denominador aquellas secciones
       conceptuales
       no asociadas a nodos sintácticos verificables.
-    - **Línea de actividad semanal fija de 8 semanas:** Muestra barras descriptivas continuas sin penalizar períodos de
-      inactividad ni introducir rachas gamificadas punitivas.
+    - **Línea de actividad semanal fija de 8 semanas:** Muestra barras apiladas descriptivas sin penalizar períodos de
+      inactividad ni introducir rachas gamificadas punitivas. El indicador «semanas activas» cuenta semanas con algún
+      evento dentro de la ventana; no es una racha consecutiva y no se reinicia por una semana vacía.
+    - **Estado por lección proyectado, no recalculado en la vista:** `projectPartCoverage` entrega por tramo una
+      `LessonMark` por lección (`LessonStage.pending`, `inProgress` o `completed`, más la marca de lección sugerida),
+      derivada de la misma `RouteProgress` que usa el índice de la ruta. Así el panel y el índice no pueden discrepar:
+      una lección abierta es «En curso» y solo pasa a completada cuando todos sus ejercicios obligatorios están resueltos,
+      o al abrirla si no tiene ninguno. `NextLesson` transporta el recuento de obligatorios resueltos de la lección
+      sugerida para que el estudiante vea qué le falta, y `DashboardState.hasNothingRecorded` considera tocada una
+      lección solo abierta.
+    - **Gráficos propios sin dependencia de terceros:** Anillos concéntricos, anillo repartido, radar y barras apiladas son
+      `CustomPainter` pequeños (`ConcentricRingsPainter`, `DonutPainter`, `RadarPainter`, `StackedBarsPainter`) sobre la
+      paleta semántica del tema (`ChartPalette`): primario para lecciones, éxito para ejercicios y lecciones completadas,
+      información para conceptos y aviso para creaciones, de modo que el modo oscuro hereda el contraste del tema. La
+      animación de entrada (`ChartReveal`) usa `MotionSpeed.chart` (900 ms con `easeEnter`) y se anula con movimiento
+      reducido, que pinta directamente el estado final. Las etiquetas del radar son widgets alineados en el borde del
+      lienzo, no texto pintado, para conservar tipografía, escala de sistema y accesibilidad.
 - **Alternativas descartadas y por qué:**
     - *Panel alojado dentro de la pantalla de Cuenta:* Descartada porque exigiría iniciar sesión para consultar el
       propio
@@ -1626,6 +1662,12 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
     - *Almacenamiento de número de intentos, tasas de acierto o tiempos por módulo:* Descartado por contravenir las
       directrices
       de privacidad y la filosofía pedagógica formativa no punitiva.
+    - *Barras de progreso apiladas por tramo, nivel y tipo:* Descartada en la revisión del panel porque producía una
+      lista larga de medidores idénticos sin jerarquía, mezclaba visitadas con completadas en el rótulo y no explicaba
+      qué faltaba para completar una lección.
+    - *Biblioteca de gráficos de terceros:* Descartada porque cuatro formas simples no justifican una dependencia, y una
+      biblioteca impone su propia paleta, tipografía y animaciones por encima del sistema de diseño.
+    - *Rachas de días consecutivos:* Descartadas por punitivas; se sustituyen por semanas activas dentro de la ventana.
 
 ### 4.30 Captura inmediata de historia: marcas de tiempo de progreso desde el origen
 
@@ -2935,9 +2977,10 @@ proyecto no simula participantes ni resultados. Mientras no existan, ese resulta
     diagnósticos, argumentos, última ejecución con salida truncada y error, y si hay ejercicio: referencia, intentos
     fallidos, último veredicto y pistas disponibles, nunca casos ocultos), lección, especificación y pantallas
     estáticas. El texto completo solo sale con `get_screen_context` y se recorta a 20 000 caracteres.
-  - **Código verificado.** `MarkdownCodeBlockReader` (datos, porque `application` no usa `RegExp`) extrae los bloques
-    de la respuesta; `CodeBlockChecker` analiza los de PseudoLearn con `ProgramAnalyzer` en el perfil del documento.
-    La interfaz marca «Verificado» o «Con errores» y solo el verificado ofrece «Insertar en el editor».
+  - **Código verificado.** `MarkdownReplyReader` (datos, §4.66) lee la respuesta completa y devuelve sus bloques y,
+    aparte, sus bloques de código en orden; `CodeBlockChecker` analiza los de PseudoLearn con `ProgramAnalyzer` en el
+    perfil del documento. La interfaz marca «Verificado» o «Con errores» y solo el verificado ofrece «Insertar en el
+    editor».
   - **Modo tutor.** `ExerciseSessionCubit` implementa `ActiveExerciseSource` y cuenta intentos fallidos.
     `give_hint` devuelve la pista del nivel pedido; `reveal_solution` exige `explicit_request` y tres intentos
     fallidos, y pide confirmación. Ambas marcan el progreso como asistido (`SqliteAssistedProgressStore`, columna
@@ -2958,8 +3001,11 @@ proyecto no simula participantes ni resultados. Mientras no existan, ese resulta
     `docs/fundamentos-visuales.md` §6.2) tiene estados reposo, pensando, respuesta nueva y sin créditos. El chat se
     abre en hoja inferior en `compact` y en panel lateral en el resto, con burbujas, bloques verificados, pasos
     desplegables, barra de confirmación, compositor y enlaces a secciones de la especificación citadas como
-    `specification:<id>`. El texto se muestra sin interpretar Markdown: el paquete de renderizado no es una dependencia
-    y los bloques de código, que son lo importante, ya se separan.
+    `specification:<id>`. La respuesta se dibuja como Markdown enriquecido (§4.66). `AgentChatPanel` envuelve su
+    contenido en un `SafeArea` sin borde superior: `showModalBottomSheet` con `useSafeArea` solo protege el borde
+    superior, y sin él el compositor quedaba sobre el indicador de inicio del iPhone. El fondo del panel sigue
+    llegando al borde; solo el contenido se aparta. Con el teclado abierto el relleno inferior del sistema es cero,
+    así que no se suma al desplazamiento del teclado.
   - **Textos.** Todo texto visible pasa por l10n; los nombres de paso son claves l10n declaradas por cada herramienta.
 - **Decisiones que cambian el plan original y por qué:** los avisos de cambio son el getter `changes` y no un método
   (límite de métodos públicos); los ejercicios se sincronizan con bandera `dirty` en lugar de un decorador del outbox
@@ -2998,9 +3044,20 @@ proyecto no simula participantes ni resultados. Mientras no existan, ese resulta
     falta subir y `UserExerciseSyncDrainer`, invocado por `SyncDrainer` tras documentos y progreso, sube por la RPC
     `push_user_exercises` y baja por `server_revision` con su propio cursor en `sync_state`. En conflicto gana la
     edición con `updated_at` más reciente; un ejercicio lo edita una sola persona, así que no hace falta conservar
-    ambas versiones.
-  - **Interfaz.** La Biblioteca muestra la sección «Mis ejercicios» con «Nuevo ejercicio» y una tarjeta por ejercicio
-    (`UserExerciseTile`) con la misma forma que la de un algoritmo: título, dos líneas del enunciado, el número de
+    ambas versiones. La subida envía `payload` como texto JSON y la RPC lo convierte a `jsonb`; la bajada, en cambio,
+    lo recibe ya como objeto, porque PostgREST serializa las columnas `jsonb` como JSON y no como cadena.
+    `userExercisePayloadText` acepta ambas formas y devuelve el texto que espera el decodificador. Antes la bajada
+    leía la columna como cadena: el primer ejercicio subido hacía fallar cada `pullSince` y la Biblioteca mostraba
+    «Error de sincronización» de forma permanente.
+  - **Interfaz.** La Biblioteca separa algoritmos y ejercicios en dos pestañas (`LibrarySectionSelector`, sobre
+    `AppSectionTabs`), cada una con su recuento, y la cabecera solo lleva el título, como las demás pantallas. Cada
+    pestaña tiene su propia barra (`LibraryToolbar`): en «Algoritmos», el buscador y «Nuevo algoritmo»; en
+    «Ejercicios», una línea que explica qué es un ejercicio y «Nuevo ejercicio». En `compact` el botón de crear es
+    un «+» primario junto al buscador y en el resto lleva texto (`LibraryCreateAction`). Se descartó el botón único
+    de la cabecera porque, con dos cosas que crear, un «+» sin contexto no dice qué crea, y se descartó apilar ambas
+    listas en una sola columna porque la sección de ejercicios quedaba fija y la rejilla de algoritmos se desplazaba
+    por debajo de ella. Ambas listas reservan al final el hueco del lanzador de Nodo para que la última tarjeta no
+    quede tapada. Cada ejercicio tiene una tarjeta (`UserExerciseTile`) con la misma forma que la de un algoritmo: título, dos líneas del enunciado, el número de
     casos de prueba y de pistas, una única acción visible «Resolver» y el botón de opciones (⋮) que abre la hoja
     «Editar» / «Eliminar» (`user_exercise_menu.dart`). Tocar la tarjeta también resuelve. Antes las cuatro acciones
     eran botones de texto en un `Wrap` que se partía en varias filas en móvil y competía con el título; la acción
@@ -3040,6 +3097,59 @@ proyecto no simula participantes ni resultados. Mientras no existan, ese resulta
     descartaron los embeddings: añaden un servicio y un coste para un corpus de unos cientos de documentos.
   - Los casos del corpus llegan a la búsqueda a través de los ejemplos de la ficha; el índice no carga la exportación
     completa (`export.json`, varios MB), que no se empaqueta.
+
+### 4.66 Respuestas del agente en Markdown enriquecido: lector propio, modelo de bloques y vistas propias
+
+- **Problema:** el modelo responde en Markdown de GitHub —tablas, listas, citas, código en otros lenguajes y diagramas
+  Mermaid— y el chat lo mostraba como texto plano, con los marcadores a la vista. Una tabla comparativa o un
+  diagrama del motor eran ilegibles en un teléfono.
+- **Elección:**
+  - **Lector en datos.** `MarkdownReplyReader` (`data/agent/markdown/`) implementa el puerto `ReplyMarkdownReader`
+    sobre el paquete `markdown`, que ya era dependencia y es un analizador puro sin widgets. Usa el conjunto de GitHub
+    (tablas, tareas, tachado, autoenlaces), los avisos `> [!NOTE]`… y los emojis por nombre. Convierte el árbol a un
+    modelo propio del dominio (`ReplyBlock`: título, párrafo, lista con estado de tarea, cita o aviso, tabla con
+    alineación, línea, código y diagrama; `ReplyRun`: texto con marcas y destino de enlace). La presentación nunca
+    ve el árbol del paquete. El HTML en línea se reduce: `<br>` es un salto de línea y un conjunto cerrado de
+    etiquetas de presentación (`kbd`, `sub`, `span`…) se quita conservando su texto. Solo se quitan etiquetas con
+    atributos `nombre="valor"`, para que una comparación como `a<b y c>d` no desaparezca.
+  - **El código no se separa con una expresión regular.** El lector anterior cortaba la respuesta por vallas de tres
+    acentos, de modo que un bloque dentro de un elemento de lista rompía la lista. Ahora el mismo árbol produce los
+    bloques y la lista ordenada de código; cada `ReplyCode` guarda su índice en esa lista y `CodeBlockChecker`
+    verifica la lista. `AgentMessage` conserva el texto, los bloques y el código verificado.
+  - **Resaltado.** El pseudocódigo se colorea con los `HighlightSpan` que el motor ya devuelve en el análisis que
+    verifica el bloque, sin una segunda llamada. Los demás lenguajes se colorean con `highlightLexically`
+    (`application/agent/highlight/`), un escáner a mano —la capa de aplicación no usa `RegExp`— que distingue
+    comentarios de línea y de bloque, cadenas (con escapes, triples y plantillas), números, palabras clave, tipos,
+    constantes, llamadas y nombres de etiqueta. Cada lenguaje es un dato (`CodeLanguage`) y los alias se resuelven en
+    `code_language_catalog.dart`: añadir un lenguaje no toca el escáner. Un lenguaje desconocido solo colorea
+    palabras y números. Ambos producen `HighlightSpan`, así que la vista reutiliza `highlightedCodeSpans` y la
+    paleta del editor.
+  - **Diagramas Mermaid propios.** No se incrusta un navegador con `mermaid.js`: no hay vista web en Windows sin otra
+    dependencia, exigiría red o un activo de varios MB y no seguiría el tema. `parseMermaidFlowchart`
+    (`data/agent/mermaid/`) lee `flowchart` y `graph` con sus cinco direcciones, las formas de nodo, etiquetas entre
+    comillas o con `<br>`, cadenas `A --> B --> C`, grupos `A & B`, flechas sólidas, punteadas, gruesas, invisibles y
+    bidireccionales con etiqueta en las dos sintaxis, y omite `subgraph`, `style`, `classDef`, `click` y comentarios
+    `%%`. Una sentencia que no entiende se salta sin perder las demás. Otro tipo de diagrama devuelve `null` y la
+    vista muestra su código con un aviso.
+  - **Disposición por capas.** `layoutFlowchart` (`application/agent/flowchart/`) es puro y se prueba sin widgets:
+    rompe ciclos invirtiendo las aristas de retroceso de un recorrido en profundidad, asigna rangos por camino más
+    largo y acerca cada fuente a su primer sucesor, inserta nodos ficticios en las aristas largas, ordena cada rango
+    por baricentro en cuatro barridos y coloca cada nodo bajo la media de sus predecesores sin solaparse. Trabaja en
+    ejes abstractos (principal y transversal) y una sola transformación da `TD`, `BT`, `LR` y `RL`. La presentación
+    mide las etiquetas con `TextPainter`, suma al hueco entre rangos la etiqueta de arista más gruesa y pinta con
+    `ReplyFlowchartPainter`; las formas compartidas con el ordinograma salen de `FlowchartShapes`.
+  - **Vistas.** `presentation/agent/reply/` tiene una vista por tipo de bloque. Tablas, código y diagramas se
+    desplazan en horizontal en lugar de desbordar el teléfono. Toda la respuesta vive en un `SelectionArea` para
+    poder seleccionar a través de bloques. Los títulos bajan dos niveles para no competir con la cabecera del panel.
+    El diagrama ofrece «Ver código» y copiar su fuente.
+  - **Prompt.** El prompt del sistema enumera lo que la app dibuja (y que no hay LaTeX ni imágenes) para que el
+    modelo no gaste la respuesta en formatos que se verían crudos.
+- **Alternativas descartadas:** `flutter_markdown` (descontinuado y sin tablas con desplazamiento ni bloques
+  verificados), una vista web para Mermaid (arriba) y resaltado por expresiones regulares en la presentación (la capa
+  no puede usar `RegExp`).
+- **Pruebas:** `test/data/agent/markdown/`, `test/data/agent/mermaid/`, `test/application/agent/flowchart/`,
+  `test/application/agent/highlight/` y `test/presentation/agent/reply/reply_rendering_test.dart`, que recorre el
+  chat real con una respuesta que mezcla todos los bloques en escritorio y en teléfono.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

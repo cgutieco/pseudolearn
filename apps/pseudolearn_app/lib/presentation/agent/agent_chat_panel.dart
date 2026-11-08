@@ -52,11 +52,14 @@ final class AgentChatPanel extends StatelessWidget {
       color: theme.colors.surfaces.defaultSurface,
       borderRadius: const BorderRadius.all(Radius.circular(RadiusTokens.radiusLg)),
       clipBehavior: Clip.antiAlias,
-      child: const Column(
-        children: [
-          AgentPanelHeader(),
-          Expanded(child: _AccessSwitch()),
-        ],
+      child: const SafeArea(
+        top: false,
+        child: Column(
+          children: [
+            AgentPanelHeader(),
+            Expanded(child: _AccessSwitch()),
+          ],
+        ),
       ),
     );
   }

@@ -10,6 +10,7 @@ import '../l10n/generated/app_localizations.dart';
 import '../theme/app_theme.dart';
 import '../theme/tokens/radii.dart';
 import '../theme/tokens/spacing.dart';
+import 'reply/reply_code_text.dart';
 
 final class VerifiedCodeBlock extends StatelessWidget {
   final CheckedCodeBlock code;
@@ -20,18 +21,40 @@ final class VerifiedCodeBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppThemeExtension.of(context);
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: SpacingTokens.space2),
       padding: const EdgeInsets.all(SpacingTokens.space2),
       decoration: BoxDecoration(
         color: theme.colors.surfaces.editor,
+        border: Border.all(color: theme.colors.borders.subtle),
         borderRadius: const BorderRadius.all(Radius.circular(RadiusTokens.radiusMd)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _Badge(verdict: code.verdict),
-          SelectableText(code.block.source, style: resolveAppTextStyle(context, AppTextVariant.codeEditor)),
+          _Header(code: code),
+          ReplyCodeText(source: code.block.source, highlightSpans: code.highlightSpans),
           _Actions(code: code),
+        ],
+      ),
+    );
+  }
+}
+
+final class _Header extends StatelessWidget {
+  final CheckedCodeBlock code;
+
+  const _Header({required this.code});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = AppThemeExtension.of(context);
+    final language = code.block.isPseudoLearn ? l10n.agentCodePseudoLearn : code.block.language;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: SpacingTokens.space2),
+      child: Row(
+        children: [
+          Expanded(child: AppText(language, variant: AppTextVariant.caption, color: theme.colors.text.secondary)),
+          _Badge(verdict: code.verdict),
         ],
       ),
     );

@@ -7,6 +7,7 @@ import '../../theme/app_theme.dart';
 import '../../theme/tokens/component_metrics.dart';
 import '../../theme/tokens/radii.dart';
 import '../../theme/tokens/spacing.dart';
+import '../charts/chart_reveal.dart';
 
 final class CoverageMeter extends StatelessWidget {
   final String label;
@@ -26,7 +27,12 @@ final class CoverageMeter extends StatelessWidget {
         children: [
           _MeterHeader(label: label, count: count),
           SizedBox(height: canvas.scaled(SpacingTokens.space1)),
-          _MeterTrack(ratio: count.ratio, isComplete: count.isComplete),
+          ChartReveal(
+            builder: (context, progress) => _MeterTrack(
+              ratio: count.ratio * progress,
+              isComplete: count.isComplete,
+            ),
+          ),
         ],
       ),
     );

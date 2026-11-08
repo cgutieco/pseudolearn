@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pseudolearn_app/composition/cubit_scope.dart';
 import 'package:pseudolearn_app/domain/model/exercises/exercise_reference.dart';
+import 'package:pseudolearn_app/presentation/components/button/app_button.dart';
 import '../../fakes/fake_identifier_generator.dart';
 import '../../fakes/in_memory_document_repository.dart';
 import '../../fakes/in_memory_user_exercise_repository.dart';
@@ -20,6 +21,11 @@ Future<void> _type(WidgetTester tester, String name, String text) async {
   await tester.enterText(find.descendant(of: field, matching: find.byType(TextField)), text);
 }
 
+Future<void> _openExercisesTab(WidgetTester tester) async {
+  await tester.tap(find.byKey(const ValueKey('feature:user-exercises')));
+  await tester.pumpAndSettle();
+}
+
 Future<InMemoryUserExerciseRepository> _pumpLibrary(WidgetTester tester) async {
   tester.view.physicalSize = const Size(1200, 1600);
   tester.view.devicePixelRatio = 1;
@@ -29,6 +35,7 @@ Future<InMemoryUserExerciseRepository> _pumpLibrary(WidgetTester tester) async {
     dependencies: buildTestDependencies(userExerciseRepository: exercises),
   ));
   await tester.pumpAndSettle();
+  await _openExercisesTab(tester);
   return exercises;
 }
 
@@ -108,7 +115,8 @@ void main() {
       ),
     ));
     await tester.pumpAndSettle();
-    expect(find.byKey(const ValueKey('feature:user-exercises')), findsOneWidget);
+    expect(find.text(sumDraft().title), findsNothing);
+    await _openExercisesTab(tester);
     expect(find.text(sumDraft().title), findsOneWidget);
     await tester.tap(find.byKey(const ValueKey('user-exercise-solve:ux-1')));
     await tester.pumpAndSettle();
@@ -163,6 +171,7 @@ void main() {
       ),
     ));
     await tester.pumpAndSettle();
+    await _openExercisesTab(tester);
     await tester.tap(find.byKey(const ValueKey('user-exercise-create')));
     await tester.pumpAndSettle();
     await _type(tester, 'title', 'Suma');
@@ -174,5 +183,18 @@ void main() {
     await tester.pumpAndSettle();
     expect(exercises.exercises.keys, ['ux-new']);
     expect(find.text('Suma'), findsWidgets);
+  });
+
+  testWidgets('with no exercises the tab offers to create the first one', (tester) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(CubitScope(dependencies: buildTestDependencies()));
+    await tester.pumpAndSettle();
+    await _openExercisesTab(tester);
+    expect(find.text('No exercises yet'), findsOneWidget);
+    await tester.tap(find.widgetWithText(AppButton, 'New exercise'));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('feature:user-exercise-editor')), findsOneWidget);
   });
 }

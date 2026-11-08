@@ -6,6 +6,7 @@ import '../../components/layout/app_card_grid.dart';
 import '../../components/progress/app_skeleton_list.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../theme/tokens/grid_metrics.dart';
+import '../../theme/tokens/spacing.dart';
 import 'document_card.dart';
 import 'document_context_menu.dart';
 
@@ -84,6 +85,7 @@ final class _DocumentListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppCardGrid(
+      padding: const EdgeInsets.only(bottom: SpacingTokens.space20),
       itemCount: documents.length,
       cardExtent: GridMetricsTokens.cardExtentDocument,
       itemBuilder: (itemContext, index) {

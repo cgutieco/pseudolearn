@@ -19,7 +19,7 @@
       "anchor": "feature:library",
       "route": "/biblioteca",
       "title": "Library",
-      "body": "The Library gathers your algorithms and exercises. Search by title, open an algorithm to edit it, or use each card menu to rename or delete it. Algorithms are stored on the device and synced when you sign in.",
+      "body": "The Library gathers your algorithms and exercises in two tabs, each with its item count and its own “+” button to create. In “Algorithms”, search by title, open an algorithm to edit it, or use each card menu to rename or delete it. Algorithms are stored on the device and synced when you sign in.",
       "keywords": [
         "library",
         "algorithms",
@@ -47,8 +47,8 @@
       "id": "user-exercises",
       "anchor": "feature:user-exercises",
       "route": "/biblioteca",
-      "title": "My exercises",
-      "body": "“My exercises” lists the exercises you created. “Solve” opens your attempt as an algorithm with the exercise strip; “Edit” opens the exercise editor and “Delete” removes it without deleting your attempts.",
+      "title": "Exercises",
+      "body": "The “Exercises” tab lists the exercises you created and offers “New exercise”. “Solve” opens your attempt as an algorithm with the exercise strip; “Edit” opens the exercise editor and “Delete” removes it without deleting your attempts.",
       "keywords": [
         "exercises",
         "my exercises",
@@ -123,7 +123,7 @@
       "anchor": "feature:route-lesson",
       "route": "/conocimiento/ruta/:leccion",
       "title": "Route lesson",
-      "body": "A lesson explains a concept with runnable examples, links to the specification and practice exercises. Visiting it records it in your progress.",
+      "body": "A lesson explains a concept with runnable examples, links to the specification and practice exercises. Opening it marks it «In progress»; it becomes «Completed» once you solve all its required exercises, or on opening if it has none. Optional exercises do not count towards completing it.",
       "keywords": [
         "lesson",
         "route",
@@ -164,7 +164,7 @@
       "anchor": "feature:progress",
       "route": "/progreso",
       "title": "Progress",
-      "body": "The progress dashboard measures coverage: visited lessons, solved exercises and constructs you already used in your algorithms. It does not measure performance or compare you with others. Exercises solved with the agent's help are shown apart.",
+      "body": "The progress dashboard measures coverage with charts: rings for completed lessons, solved exercises and concepts used; the route trail lesson by lesson; the required exercises left in the suggested lesson; progress per level and a radar per exercise kind; weekly activity and your library. It does not measure performance or compare you with others. Exercises solved with the agent's help are shown apart.",
       "keywords": [
         "progress",
         "dashboard",

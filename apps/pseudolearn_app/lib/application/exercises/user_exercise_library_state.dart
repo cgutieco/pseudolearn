@@ -12,6 +12,10 @@ final class UserExerciseLibraryState extends Equatable {
     this.exercises = const [],
   });
 
+  bool get isLoading =>
+      exercises.isEmpty &&
+      (status == UserExerciseLibraryStatus.initial || status == UserExerciseLibraryStatus.loading);
+
   bool get isEmpty =>
       status == UserExerciseLibraryStatus.ready && exercises.isEmpty;
 

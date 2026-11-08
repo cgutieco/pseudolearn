@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pseudolearn_app/data/agent/markdown_code_block_reader.dart';
 import 'package:pseudolearn_app/data/agent/proxy_agent_model_gateway.dart';
 import 'package:pseudolearn_app/data/agent/json_http_client.dart';
 import 'package:pseudolearn_app/data/agent/responses_codec.dart';
@@ -117,14 +116,5 @@ void main() {
     final failed = await offline.respond(_request, requestId: 'r', turnId: 't') as ModelFailed;
     expect(failed.failure, CreditFailure.offline);
     expect(failed.retryable, isTrue);
-  });
-
-  test('fenced blocks are read with their language and position', () {
-    const text = 'a\n```pseudolearn\nx\n```\nb\n```\ny\n```';
-    final blocks = const MarkdownCodeBlockReader().read(text);
-    expect(blocks.map((block) => block.language), ['pseudolearn', '']);
-    expect(blocks.first.source, 'x\n');
-    expect(blocks.every((block) => block.isPseudoLearn), isTrue);
-    expect(const MarkdownCodeBlockReader().read('sin bloques'), isEmpty);
   });
 }

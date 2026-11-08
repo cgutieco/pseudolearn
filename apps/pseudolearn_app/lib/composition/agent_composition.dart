@@ -6,7 +6,7 @@ import '../data/agent/asset_agent_prompt_source.dart';
 import '../data/agent/asset_knowledge_index.dart';
 import '../data/agent/fake_agent_model_gateway.dart';
 import '../data/agent/file_agent_consent_store.dart';
-import '../data/agent/markdown_code_block_reader.dart';
+import '../data/agent/markdown/markdown_reply_reader.dart';
 import '../data/agent/proxy_agent_model_gateway.dart';
 import '../data/auth/supabase_access_token_source.dart';
 import '../data/credits/proxy_credits_gateway.dart';
@@ -64,7 +64,7 @@ AgentServices buildAgentServices({
     knowledgeIndex: AssetKnowledgeIndex(assetLoader: rootBundle.loadString),
     consentStore: FileAgentConsentStore(documentsDirectory),
     promptSource: AssetAgentPromptSource(rootBundle.loadString),
-    codeBlockReader: const MarkdownCodeBlockReader(),
+    replyReader: const MarkdownReplyReader(),
     assistedProgress: SqliteAssistedProgressStore(database),
     platformName: currentPlatformName(),
   );

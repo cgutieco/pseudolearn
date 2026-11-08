@@ -59,4 +59,19 @@ final class ComponentMetricsTokens {
   static const double dashboardBarBaselineHeight = 2.0;
   static const double dashboardStateDotSize = 8.0;
   static const double dashboardCardExtent = 200.0;
+  static const double dashboardHeroRingSize = 184.0;
+  static const double dashboardHeroRingStroke = 10.0;
+  static const double dashboardHeroRingGap = 4.0;
+  static const double dashboardGaugeSize = 72.0;
+  static const double dashboardGaugeStroke = 8.0;
+  static const double dashboardDonutSize = 112.0;
+  static const double dashboardDonutStroke = 16.0;
+  static const double dashboardRadarMaxSize = 320.0;
+  static const double dashboardRadarLabelInset = 56.0;
+  static const double dashboardRadarLabelWidth = 76.0;
+  static const int dashboardRadarRings = 4;
+  static const double dashboardLessonNodeSize = 20.0;
+  static const double dashboardLessonLinkHeight = 2.0;
+  static const double dashboardLegendSwatch = 10.0;
+  static const double dashboardStackedChartHeight = 120.0;
 }

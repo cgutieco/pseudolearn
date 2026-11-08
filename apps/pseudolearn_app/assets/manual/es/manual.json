@@ -19,7 +19,7 @@
       "anchor": "feature:library",
       "route": "/biblioteca",
       "title": "Biblioteca",
-      "body": "La Biblioteca reúne tus algoritmos y tus ejercicios. Busca por título, abre un algoritmo para editarlo, o usa el menú de cada tarjeta para renombrarlo o eliminarlo. Los algoritmos se guardan en el dispositivo y se sincronizan si inicias sesión.",
+      "body": "La Biblioteca reúne tus algoritmos y tus ejercicios en dos pestañas, cada una con su número de elementos y su botón «+» para crear. En «Algoritmos» busca por título, abre un algoritmo para editarlo, o usa el menú de cada tarjeta para renombrarlo o eliminarlo. Los algoritmos se guardan en el dispositivo y se sincronizan si inicias sesión.",
       "keywords": [
         "biblioteca",
         "algoritmos",
@@ -47,8 +47,8 @@
       "id": "user-exercises",
       "anchor": "feature:user-exercises",
       "route": "/biblioteca",
-      "title": "Mis ejercicios",
-      "body": "«Mis ejercicios» lista los ejercicios que creaste. «Resolver» abre tu intento como un algoritmo con la franja del ejercicio; «Editar» abre el editor del ejercicio y «Eliminar» lo borra sin borrar tus intentos.",
+      "title": "Ejercicios",
+      "body": "La pestaña «Ejercicios» lista los ejercicios que creaste y ofrece «Nuevo ejercicio». «Resolver» abre tu intento como un algoritmo con la franja del ejercicio; «Editar» abre el editor del ejercicio y «Eliminar» lo borra sin borrar tus intentos.",
       "keywords": [
         "ejercicios",
         "mis ejercicios",
@@ -123,7 +123,7 @@
       "anchor": "feature:route-lesson",
       "route": "/conocimiento/ruta/:leccion",
       "title": "Lección de la ruta",
-      "body": "Una lección explica un concepto con ejemplos ejecutables, enlaces a la especificación y ejercicios de práctica. Al visitarla queda registrada en tu progreso.",
+      "body": "Una lección explica un concepto con ejemplos ejecutables, enlaces a la especificación y ejercicios de práctica. Al abrirla queda «En curso»; pasa a «Completada» cuando resuelves todos sus ejercicios obligatorios, o al abrirla si no tiene ninguno. Los ejercicios opcionales no cuentan para completarla.",
       "keywords": [
         "lección",
         "ruta",
@@ -164,7 +164,7 @@
       "anchor": "feature:progress",
       "route": "/progreso",
       "title": "Progreso",
-      "body": "El panel de progreso mide cobertura: lecciones visitadas, ejercicios resueltos y construcciones que ya usaste en tus algoritmos. No mide rendimiento ni compara con otras personas. Los ejercicios resueltos con ayuda del agente se distinguen.",
+      "body": "El panel de progreso mide cobertura con gráficos: anillos de lecciones completadas, ejercicios resueltos y conceptos usados; el recorrido de la ruta lección a lección; los ejercicios obligatorios que faltan en la lección sugerida; el avance por nivel y un radar por tipo de ejercicio; la actividad semanal y tu biblioteca. No mide rendimiento ni compara con otras personas. Los ejercicios resueltos con ayuda del agente se distinguen.",
       "keywords": [
         "progreso",
         "panel",

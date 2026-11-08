@@ -31,10 +31,7 @@ final class StatusBanner extends StatelessWidget {
     final (surface, fg, icon) = _resolveColors(severity, theme.colors);
 
     return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: SpacingTokens.space3,
-        vertical: SpacingTokens.space2,
-      ),
+      margin: const EdgeInsets.only(bottom: SpacingTokens.space3),
       padding: const EdgeInsets.symmetric(
         horizontal: SpacingTokens.space3,
         vertical: SpacingTokens.space2,

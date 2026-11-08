@@ -1683,10 +1683,6 @@
   "@dashboardLibraryTitle": {
     "description": "Título de la tarjeta de biblioteca del panel"
   },
-  "dashboardLibraryTotal": "Algoritmos creados",
-  "@dashboardLibraryTotal": {
-    "description": "Rótulo del total de algoritmos creados"
-  },
   "dashboardLibraryProfileClassic": "Perfil castellano",
   "@dashboardLibraryProfileClassic": {
     "description": "Rótulo del recuento de algoritmos con perfil de sintaxis castellano"
@@ -1699,17 +1695,13 @@
   "@dashboardRouteTitle": {
     "description": "Título de la tarjeta de ruta de aprendizaje del panel"
   },
-  "dashboardRouteSubtitle": "Módulos visitados por tramo",
+  "dashboardRouteSubtitle": "Cada punto es una lección; tócalo para abrirla",
   "@dashboardRouteSubtitle": {
     "description": "Subtítulo de la tarjeta de ruta de aprendizaje"
   },
   "dashboardExercisesTitle": "Ejercicios",
   "@dashboardExercisesTitle": {
     "description": "Título de la tarjeta de ejercicios del panel"
-  },
-  "dashboardExercisesByTrack": "Por tramo",
-  "@dashboardExercisesByTrack": {
-    "description": "Rótulo del grupo de ejercicios por tramo"
   },
   "dashboardExercisesByLevel": "Por nivel",
   "@dashboardExercisesByLevel": {
@@ -1723,11 +1715,11 @@
   "@dashboardNextStepTitle": {
     "description": "Título de la tarjeta de siguiente paso del panel"
   },
-  "dashboardNextStepDone": "Has visitado los quince módulos de la ruta.",
+  "dashboardNextStepDone": "Completaste todas las lecciones de la ruta.",
   "@dashboardNextStepDone": {
     "description": "Mensaje cuando no queda ningún módulo por visitar"
   },
-  "dashboardNextStepOpen": "Abrir módulo",
+  "dashboardNextStepOpen": "Abrir lección",
   "@dashboardNextStepOpen": {
     "description": "Acción para abrir el siguiente módulo sugerido"
   },
@@ -1839,17 +1831,9 @@
   "@dashboardActivityTitle": {
     "description": "Título de la tarjeta de línea de actividad"
   },
-  "dashboardActivitySubtitle": "Módulos y ejercicios por semana",
+  "dashboardActivitySubtitle": "Lecciones, ejercicios y algoritmos por semana",
   "@dashboardActivitySubtitle": {
     "description": "Subtítulo de la tarjeta de línea de actividad"
-  },
-  "dashboardCreationsTitle": "Algoritmos creados en el tiempo",
-  "@dashboardCreationsTitle": {
-    "description": "Título de la tarjeta de algoritmos creados por semana"
-  },
-  "dashboardCreationsSubtitle": "Algoritmos nuevos por semana",
-  "@dashboardCreationsSubtitle": {
-    "description": "Subtítulo de la tarjeta de algoritmos creados por semana"
   },
   "dashboardWeekOf": "Semana del {day}/{month}",
   "@dashboardWeekOf": {
@@ -1864,6 +1848,126 @@
         "example": "4"
       }
     }
+  },
+  "dashboardOverviewTitle": "Tu avance",
+  "@dashboardOverviewTitle": {
+    "description": "Título de la tarjeta de resumen del panel"
+  },
+  "dashboardOverviewSubtitle": "Ruta, ejercicios y lenguaje de un vistazo",
+  "@dashboardOverviewSubtitle": {
+    "description": "Subtítulo de la tarjeta de resumen del panel"
+  },
+  "dashboardPercent": "{percent} %",
+  "@dashboardPercent": {
+    "description": "Porcentaje redondeado mostrado en un gráfico",
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "dashboardOverviewRouteCaption": "de la ruta",
+  "@dashboardOverviewRouteCaption": {
+    "description": "Rótulo bajo el porcentaje de la ruta completada"
+  },
+  "dashboardOverviewLessons": "Lecciones completadas",
+  "@dashboardOverviewLessons": {
+    "description": "Leyenda del anillo de lecciones completadas"
+  },
+  "dashboardOverviewExercises": "Ejercicios resueltos",
+  "@dashboardOverviewExercises": {
+    "description": "Leyenda del anillo de ejercicios resueltos"
+  },
+  "dashboardOverviewConcepts": "Conceptos usados",
+  "@dashboardOverviewConcepts": {
+    "description": "Leyenda del anillo de conceptos usados en algoritmos propios"
+  },
+  "dashboardStatAlgorithms": "Algoritmos",
+  "@dashboardStatAlgorithms": {
+    "description": "Rótulo del indicador de algoritmos creados"
+  },
+  "dashboardStatActiveWeeks": "Semanas activas",
+  "@dashboardStatActiveWeeks": {
+    "description": "Rótulo del indicador de semanas con actividad"
+  },
+  "dashboardStatAssisted": "Con ayuda de Nodo",
+  "@dashboardStatAssisted": {
+    "description": "Rótulo del indicador de ejercicios resueltos con ayuda del agente"
+  },
+  "dashboardLessonPending": "Sin empezar",
+  "@dashboardLessonPending": {
+    "description": "Estado de una lección todavía no abierta en el recorrido"
+  },
+  "dashboardLessonNode": "Lección {number}: {stage}",
+  "@dashboardLessonNode": {
+    "description": "Etiqueta accesible de un punto del recorrido de la ruta",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "1.2"
+      },
+      "stage": {
+        "type": "String",
+        "example": "En curso"
+      }
+    }
+  },
+  "dashboardNextStepRequired": "Ejercicios obligatorios: {done} de {total}",
+  "@dashboardNextStepRequired": {
+    "description": "Avance de los ejercicios obligatorios de la lección sugerida",
+    "placeholders": {
+      "done": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "dashboardNextStepRequiredHint": "Resuélvelos para dar la lección por completada.",
+  "@dashboardNextStepRequiredHint": {
+    "description": "Explicación de qué completa una lección con ejercicios obligatorios"
+  },
+  "dashboardNextStepVisitHint": "Esta lección se completa al abrirla.",
+  "@dashboardNextStepVisitHint": {
+    "description": "Explicación de qué completa una lección sin ejercicios obligatorios"
+  },
+  "dashboardExercisesSubtitle": "Por nivel de dificultad y por tipo de habilidad",
+  "@dashboardExercisesSubtitle": {
+    "description": "Subtítulo de la tarjeta de ejercicios del panel"
+  },
+  "dashboardActivityLessons": "Lecciones abiertas",
+  "@dashboardActivityLessons": {
+    "description": "Leyenda de la serie de lecciones abiertas por semana"
+  },
+  "dashboardActivityExercises": "Ejercicios resueltos",
+  "@dashboardActivityExercises": {
+    "description": "Leyenda de la serie de ejercicios resueltos por semana"
+  },
+  "dashboardActivityCreations": "Algoritmos creados",
+  "@dashboardActivityCreations": {
+    "description": "Leyenda de la serie de algoritmos creados por semana"
+  },
+  "dashboardActivityActiveWeeks": "{count} de {total} semanas con actividad",
+  "@dashboardActivityActiveWeeks": {
+    "description": "Resumen de semanas con actividad en la ventana del panel",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      },
+      "total": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "dashboardSpecificationSections": "Secciones ejercitadas",
+  "@dashboardSpecificationSections": {
+    "description": "Rótulo del medidor de secciones de la especificación ejercitadas"
   },
   "dashboardCoverageRatio": "{done} de {total}",
   "@dashboardCoverageRatio": {
@@ -2297,6 +2401,20 @@
   "@routeLessonMinutes": {"placeholders": {"minutes": {"type": "int"}}},
   "routeLessonCompleted": "Completada",
   "routeLessonVisited": "En curso",
+  "routeLessonRequired": "{done} de {total} obligatorios",
+  "@routeLessonRequired": {
+    "description": "Ejercicios obligatorios resueltos de una lección en el índice de la ruta",
+    "placeholders": {
+      "done": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "routeNextLesson": "Sigue esta",
   "routeIndexErrorTitle": "No se pudo cargar la ruta",
   "routeLessonNotFoundTitle": "No se encontró la lección",
@@ -2395,7 +2513,10 @@
   "@onboardingKnowledgeLessonCount": {"placeholders": {"count": {"type": "int"}}},
   "onboardingKnowledgeLevelNamedCount": "{level}: {count}",
   "@onboardingKnowledgeLevelNamedCount": {"placeholders": {"level": {"type": "String"}, "count": {"type": "int"}}},
-  "userExercisesTitle": "Mis ejercicios",
+  "librarySectionAlgorithms": "Algoritmos",
+  "librarySectionExercises": "Ejercicios",
+  "userExercisesIntro": "Retos con casos de prueba que se resuelven como un algoritmo.",
+  "userExercisesEmptyTitle": "Sin ejercicios aún",
   "userExercisesNew": "Nuevo ejercicio",
   "userExercisesEmpty": "Aún no has creado ejercicios. Crea uno con su solución de referencia y casos de prueba.",
   "userExercisesSolve": "Resolver",
@@ -2520,6 +2641,20 @@
   "agentVerified": "Verificado",
   "agentWithErrors": "Con errores",
   "agentInsertInEditor": "Insertar en el editor",
+  "agentCodePseudoLearn": "PseudoLearn",
+  "agentDiagramTitle": "Diagrama",
+  "agentDiagramShowSource": "Ver código",
+  "agentDiagramShowDiagram": "Ver diagrama",
+  "agentDiagramUnsupported": "Este tipo de diagrama todavía no se puede dibujar aquí. Este es su código:",
+  "agentDiagramDescription": "Diagrama de flujo: {nodes}",
+  "@agentDiagramDescription": {"placeholders": {"nodes": {"type": "String"}}},
+  "agentAlertNote": "Nota",
+  "agentAlertTip": "Consejo",
+  "agentAlertImportant": "Importante",
+  "agentAlertWarning": "Advertencia",
+  "agentAlertCaution": "Precaución",
+  "agentTaskDone": "Hecho",
+  "agentTaskOpen": "Pendiente",
   "agentFailureUnauthenticated": "Inicia sesión para usar Nodo.",
   "agentFailureSubscriptionRequired": "Necesitas un plan o la prueba gratuita para hablar con Nodo.",
   "agentFailureCreditsExhausted": "Te quedaste sin créditos. Recarga o espera a la renovación.",

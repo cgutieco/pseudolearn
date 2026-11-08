@@ -3,11 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/dashboard/dashboard_state.dart';
 import 'package:pseudolearn_app/presentation/dashboard/components/activity_card.dart';
 import 'package:pseudolearn_app/presentation/dashboard/components/concepts_card.dart';
-import 'package:pseudolearn_app/presentation/dashboard/components/creations_card.dart';
 import 'package:pseudolearn_app/presentation/dashboard/components/exercises_card.dart';
-import 'package:pseudolearn_app/presentation/dashboard/components/learning_route_card.dart';
 import 'package:pseudolearn_app/presentation/dashboard/components/library_card.dart';
 import 'package:pseudolearn_app/presentation/dashboard/components/next_step_card.dart';
+import 'package:pseudolearn_app/presentation/dashboard/components/overview_card.dart';
+import 'package:pseudolearn_app/presentation/dashboard/components/overview_rings.dart';
+import 'package:pseudolearn_app/presentation/dashboard/components/route_map_card.dart';
 import 'package:pseudolearn_app/presentation/dashboard/components/specification_card.dart';
 import 'package:pseudolearn_app/presentation/dashboard/components/sync_card.dart';
 import 'package:pseudolearn_app/presentation/dashboard/dashboard_view.dart';
@@ -43,19 +44,22 @@ Future<void> _pump(WidgetTester tester, Widget app, {Size size = const Size(1280
   await tester.pumpAndSettle();
 }
 
+Finder _inOverviewRings(String text) =>
+    find.descendant(of: find.byType(OverviewRings), matching: find.text(text));
+
 void main() {
   group('DashboardView (PANT-06-F5)', () {
     testWidgets('shows the nine cards with local data and no session', (tester) async {
       await _pump(tester, _appWith(state: populatedDashboardState()));
 
+      expect(find.byType(OverviewCard), findsOneWidget);
       expect(find.byType(LibraryCard), findsOneWidget);
-      expect(find.byType(LearningRouteCard), findsOneWidget);
+      expect(find.byType(RouteMapCard), findsOneWidget);
       expect(find.byType(NextStepCard), findsOneWidget);
       expect(find.byType(ExercisesCard), findsOneWidget);
       expect(find.byType(ConceptsCard), findsOneWidget);
       expect(find.byType(SpecificationCard), findsOneWidget);
       expect(find.byType(ActivityCard), findsOneWidget);
-      expect(find.byType(CreationsCard), findsOneWidget);
       expect(find.byType(SyncCard), findsOneWidget);
     });
 
@@ -99,6 +103,53 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(opened, 'imperativo.segundo');
+    });
+
+    testWidgets('the suggested lesson states how many required exercises remain', (tester) async {
+      final l10n = await AppLocalizations.delegate.load(const Locale('es'));
+      await _pump(tester, _appWith(state: populatedDashboardState()));
+
+      expect(find.text(l10n.dashboardNextStepRequired(0, 1)), findsOneWidget);
+      expect(find.text(l10n.dashboardNextStepRequiredHint), findsOneWidget);
+    });
+
+    testWidgets('tapping a dot of the route trail opens that lesson', (tester) async {
+      final l10n = await AppLocalizations.delegate.load(const Locale('es'));
+      String? opened;
+      await _pump(
+        tester,
+        _appWith(
+          state: populatedDashboardState(),
+          onOpenModule: (moduleId) => opened = moduleId,
+        ),
+      );
+
+      await tester.tap(find.bySemanticsLabel(l10n.dashboardLessonNode('inicio.primero', l10n.routeLessonCompleted)));
+      await tester.pumpAndSettle();
+
+      expect(opened, 'inicio.primero');
+    });
+
+    testWidgets('the overview ring reports the share of the route completed', (tester) async {
+      final l10n = await AppLocalizations.delegate.load(const Locale('es'));
+      await _pump(tester, _appWith(state: populatedDashboardState()));
+
+      expect(_inOverviewRings(l10n.dashboardPercent(50)), findsOneWidget);
+      expect(find.text(l10n.dashboardActivityActiveWeeks(3, 8)), findsOneWidget);
+    });
+
+    testWidgets('reduced motion paints the final chart state without animating', (tester) async {
+      final l10n = await AppLocalizations.delegate.load(const Locale('es'));
+      tester.view.physicalSize = const Size(1280, 1400);
+      tester.view.devicePixelRatio = 1.0;
+      tester.platformDispatcher.accessibilityFeaturesTestValue = const FakeAccessibilityFeatures(disableAnimations: true);
+      addTearDown(tester.view.reset);
+      addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
+
+      await tester.pumpWidget(_appWith(state: populatedDashboardState()));
+      await tester.pump();
+
+      expect(_inOverviewRings(l10n.dashboardPercent(50)), findsOneWidget);
     });
 
     testWidgets('a device with nothing recorded shows the empty state', (tester) async {

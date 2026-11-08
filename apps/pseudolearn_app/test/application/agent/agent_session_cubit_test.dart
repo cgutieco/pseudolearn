@@ -3,8 +3,10 @@ import 'package:pseudolearn_app/application/agent/agent_session_cubit.dart';
 import 'package:pseudolearn_app/application/agent/agent_session_state.dart';
 import 'package:pseudolearn_app/application/agent/code_block_checker.dart';
 import 'package:pseudolearn_app/data/agent/fake_agent_model_gateway.dart';
-import 'package:pseudolearn_app/data/agent/markdown_code_block_reader.dart';
+import 'package:pseudolearn_app/data/agent/markdown/markdown_reply_reader.dart';
 import 'package:pseudolearn_app/domain/model/agent/code_block.dart';
+import 'package:pseudolearn_app/domain/model/agent/reply_block.dart';
+import 'package:pseudolearn_app/domain/model/analysis/highlight_span.dart';
 import 'package:pseudolearn_app/domain/model/agent/model_outcome.dart';
 import 'package:pseudolearn_app/domain/model/agent/tool_definition.dart';
 import 'package:pseudolearn_app/domain/model/credits/credit_failure.dart';
@@ -18,7 +20,7 @@ AgentSessionCubit _cubit(FakeAgentModelGateway gateway, InMemoryAgentConsentStor
     AgentSessionCubit(
       loop: testLoop(gateway, tools),
       consent: consent,
-      checker: CodeBlockChecker(reader: const MarkdownCodeBlockReader(), analyzer: nativeTestEngine.analyzer),
+      checker: CodeBlockChecker(reader: const MarkdownReplyReader(), analyzer: nativeTestEngine.analyzer),
       editorial: AgentEditorial(
         profile: () => SyntaxProfileId.classicSpanish,
         language: () => UiLanguageId.spanish,
@@ -60,6 +62,9 @@ void main() {
     ]);
     expect(blocks.first.canInsert, isTrue);
     expect(blocks[1].canInsert, isFalse);
+    expect(blocks.first.highlightSpans, isNotEmpty);
+    expect(blocks.last.highlightSpans.first.category, HighlightCategory.keywordStructured);
+    expect(cubit.state.messages.last.blocks.whereType<ReplyCode>().map((block) => block.index), [0, 1, 2]);
     await cubit.close();
   });
 

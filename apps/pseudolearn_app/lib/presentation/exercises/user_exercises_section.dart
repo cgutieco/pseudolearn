@@ -6,27 +6,24 @@ import '../../application/exercises/user_exercise_library_state.dart';
 import '../../domain/model/exercises/user_exercise.dart';
 import '../components/button/app_button.dart';
 import '../components/dialog/app_dialog.dart';
-import '../components/typography/app_text.dart';
+import '../components/empty/app_empty_state.dart';
+import '../components/progress/app_skeleton_list.dart';
 import '../l10n/generated/app_localizations.dart';
+import '../theme/tokens/grid_metrics.dart';
 import '../theme/tokens/spacing.dart';
-import 'user_exercise_editor_page.dart';
 import 'user_exercise_menu.dart';
 import 'user_exercise_tile.dart';
 
 final class UserExercisesSection extends StatefulWidget {
-  const UserExercisesSection({super.key});
+  final VoidCallback onCreate;
+
+  const UserExercisesSection({super.key, required this.onCreate});
 
   @override
   State<UserExercisesSection> createState() => _UserExercisesSectionState();
 }
 
 final class _UserExercisesSectionState extends State<UserExercisesSection> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<UserExerciseLibraryCubit>().load();
-  }
-
   void _solve(UserExercise exercise) {
     context.read<UserExerciseLibraryCubit>().openAttempt(exercise).then((documentId) {
       if (documentId != null && mounted) context.push('/biblioteca/documento/$documentId');
@@ -57,7 +54,7 @@ final class _UserExercisesSectionState extends State<UserExercisesSection> {
     return BlocBuilder<UserExerciseLibraryCubit, UserExerciseLibraryState>(
       builder: (context, state) => _SectionView(
         state: state,
-        onCreate: () => context.push('/biblioteca/ejercicio/$newUserExerciseSegment'),
+        onCreate: widget.onCreate,
         onSolve: _solve,
         onMenu: _openMenu,
       ),
@@ -81,48 +78,26 @@ final class _SectionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Padding(
-      key: const ValueKey('feature:user-exercises'),
-      padding: const EdgeInsets.only(bottom: SpacingTokens.space4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _SectionHeading(onCreate: onCreate),
-          if (state.isEmpty) AppText(l10n.userExercisesEmpty, variant: AppTextVariant.bodySmall),
-          for (final exercise in state.exercises)
-            UserExerciseTile(
-              key: ValueKey('user-exercise:${exercise.id}'),
-              exercise: exercise,
-              onSolve: () => onSolve(exercise),
-              onMenu: () => onMenu(exercise),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-final class _SectionHeading extends StatelessWidget {
-  final VoidCallback onCreate;
-
-  const _SectionHeading({required this.onCreate});
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: SpacingTokens.space2),
-      child: Row(
-        children: [
-          Expanded(child: AppText(l10n.userExercisesTitle, variant: AppTextVariant.heading4)),
-          AppButton(
-            key: const ValueKey('user-exercise-create'),
-            label: l10n.userExercisesNew,
-            icon: Icons.add,
-            variant: AppButtonVariant.secondary,
-            onPressed: onCreate,
-          ),
-        ],
+    if (state.isLoading) {
+      return const AppSkeletonList(itemExtent: GridMetricsTokens.cardExtentDocument);
+    }
+    if (state.exercises.isEmpty) {
+      return AppEmptyState(
+        icon: Icons.assignment_outlined,
+        title: l10n.userExercisesEmptyTitle,
+        description: l10n.userExercisesEmpty,
+        actionLabel: l10n.userExercisesNew,
+        onAction: onCreate,
+      );
+    }
+    return ListView.builder(
+      padding: const EdgeInsets.only(bottom: SpacingTokens.space20),
+      itemCount: state.exercises.length,
+      itemBuilder: (context, index) => UserExerciseTile(
+        key: ValueKey('user-exercise:${state.exercises[index].id}'),
+        exercise: state.exercises[index],
+        onSolve: () => onSolve(state.exercises[index]),
+        onMenu: () => onMenu(state.exercises[index]),
       ),
     );
   }

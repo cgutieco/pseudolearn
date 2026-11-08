@@ -1,3 +1,4 @@
+import '../../domain/model/dashboard/coverage_count.dart';
 import '../../domain/model/knowledge/content_progress.dart';
 import '../../domain/model/route/route_kinds.dart';
 import '../../domain/model/route/route_toc.dart';
@@ -12,18 +13,26 @@ final class RouteProgress {
   bool isExerciseDone(String exerciseId) =>
       _progress.isExerciseCompleted(routeExerciseProgressId(exerciseId));
 
-  bool isLessonVisited(String lessonId) =>
+  bool _isLessonVisited(String lessonId) =>
       _progress.isModuleVisited(routeLessonProgressId(lessonId));
 
   LessonProgress lessonProgress(RouteLessonEntry lesson) {
     if (isLessonCompleted(lesson)) return LessonProgress.completed;
-    if (isLessonVisited(lesson.id)) return LessonProgress.visited;
+    if (_isLessonVisited(lesson.id)) return LessonProgress.visited;
     return LessonProgress.notStarted;
+  }
+
+  CoverageCount requiredExercisesOf(RouteLessonEntry lesson) {
+    final required = lesson.requiredExercises.toList();
+    return CoverageCount(
+      done: required.where((exercise) => isExerciseDone(exercise.id)).length,
+      total: required.length,
+    );
   }
 
   bool isLessonCompleted(RouteLessonEntry lesson) {
     final required = lesson.requiredExercises.toList();
-    if (required.isEmpty) return isLessonVisited(lesson.id);
+    if (required.isEmpty) return _isLessonVisited(lesson.id);
     return required.every((exercise) => isExerciseDone(exercise.id));
   }
 

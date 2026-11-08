@@ -91,6 +91,20 @@ void main() {
 
       expect(timeline.peakLearningEvents, 2);
       expect(timeline.peakDocumentsCreated, 2);
+      expect(timeline.peakTotalEvents, 4);
+      expect(timeline.activeWeeks, 1);
+    });
+
+    test('counts every week with any kind of activity as active', () {
+      final timeline = projectActivityWeeks(
+        progress: [completedEntry('CON-A1-E1', at: DateTime(2026, 8, 25))],
+        moduleIds: const {},
+        documents: [summaryOf('doc', createdAt: DateTime(2026, 9, 2))],
+        now: now,
+      );
+
+      expect(timeline.activeWeeks, 2);
+      expect(timeline.peakTotalEvents, 1);
     });
   });
 }

@@ -46,6 +46,12 @@ UserExerciseDraft? decodeUserExerciseDraft(String payload) {
   }
 }
 
+String? userExercisePayloadText(Object? raw) => switch (raw) {
+  final String text => text,
+  final Map<String, dynamic> object => jsonEncode(object),
+  _ => null,
+};
+
 UserExercise? userExerciseOfRow({
   required String id,
   required String payload,

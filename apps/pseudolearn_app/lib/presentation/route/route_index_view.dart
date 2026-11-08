@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../application/route/route_index_state.dart';
 import '../../application/route/route_progress.dart';
+import '../../domain/model/dashboard/coverage_count.dart';
 import '../../domain/model/reference/reference_run.dart';
 import '../../domain/model/route/route_toc.dart';
 import '../components/card/app_card_surface.dart';
@@ -76,6 +77,7 @@ final class RoutePartSection extends StatelessWidget {
             RouteLessonTile(
               lesson: lesson,
               progress: state.progressOf(lesson.id),
+              required: state.requiredOf(lesson.id),
               isNext: state.nextLessonId == lesson.id,
               onTap: () => onOpenLesson(lesson.id),
             ),
@@ -88,6 +90,7 @@ final class RoutePartSection extends StatelessWidget {
 final class RouteLessonTile extends StatelessWidget {
   final RouteLessonEntry lesson;
   final LessonProgress progress;
+  final CoverageCount required;
   final bool isNext;
   final VoidCallback onTap;
 
@@ -95,6 +98,7 @@ final class RouteLessonTile extends StatelessWidget {
     super.key,
     required this.lesson,
     required this.progress,
+    this.required = const CoverageCount.empty(),
     required this.isNext,
     required this.onTap,
   });
@@ -108,6 +112,11 @@ final class RouteLessonTile extends StatelessWidget {
       LessonProgress.visited => l10n.routeLessonVisited,
       LessonProgress.notStarted => isNext ? l10n.routeNextLesson : '',
     };
+    final pending = progress != LessonProgress.completed && required.total > 0;
+    final caption = [
+      if (status.isNotEmpty) status,
+      if (pending) l10n.routeLessonRequired(required.done, required.total),
+    ].join(' · ');
     return Padding(
       padding: const EdgeInsets.only(bottom: SpacingTokens.space2),
       child: InkWell(
@@ -115,7 +124,7 @@ final class RouteLessonTile extends StatelessWidget {
         child: AppCardSurface(
           padding: const EdgeInsets.all(SpacingTokens.space3),
           focused: isNext,
-          child: RouteLessonTileBody(lesson: lesson, status: status, color: progress == LessonProgress.completed ? theme.colors.severities.success.fg : theme.colors.text.link),
+          child: RouteLessonTileBody(lesson: lesson, status: caption, color: progress == LessonProgress.completed ? theme.colors.severities.success.fg : theme.colors.text.link),
         ),
       ),
     );

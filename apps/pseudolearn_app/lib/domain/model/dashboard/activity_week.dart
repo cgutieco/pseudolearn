@@ -13,5 +13,7 @@ final class ActivityWeek {
 
   int get learningEvents => modulesVisited + exercisesCompleted;
 
-  bool get isEmpty => learningEvents == 0 && documentsCreated == 0;
+  int get totalEvents => learningEvents + documentsCreated;
+
+  bool get isEmpty => totalEvents == 0;
 }

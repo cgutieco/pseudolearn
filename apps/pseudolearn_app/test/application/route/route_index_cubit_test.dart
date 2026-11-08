@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/route/route_index_cubit.dart';
 import 'package:pseudolearn_app/application/route/route_index_state.dart';
 import 'package:pseudolearn_app/application/route/route_progress.dart';
+import 'package:pseudolearn_app/domain/model/dashboard/coverage_count.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/reference/reference_edition.dart';
 import 'package:pseudolearn_app/domain/model/route/route_kinds.dart';
@@ -28,6 +29,18 @@ void main() {
     expect(cubit.state.progressOf('inicio.primero'), LessonProgress.visited);
     expect(cubit.state.progressOf('imperativo.segundo'), LessonProgress.notStarted);
     expect(cubit.state.nextLessonId, 'inicio.primero');
+  });
+
+  test('carries the solved required exercises of every lesson', () async {
+    final store = InMemoryLocalProgressStore();
+    await store.markExerciseCompleted(routeExerciseProgressId('inicio.primero.a'));
+    final cubit = RouteIndexCubit(repository: FakeRouteRepository(toc: sampleToc), progressStore: store);
+
+    await cubit.load(_edition);
+
+    expect(cubit.state.requiredOf('inicio.primero'), const CoverageCount(done: 1, total: 2));
+    expect(cubit.state.requiredOf('imperativo.segundo'), const CoverageCount(done: 0, total: 1));
+    expect(cubit.state.requiredOf('unknown'), const CoverageCount.empty());
   });
 
   test('a missing bundle is an error state', () async {

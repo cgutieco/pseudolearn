@@ -3,21 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../application/library/library_cubit.dart';
 import '../../application/library/library_state.dart';
+import '../../application/exercises/user_exercise_library_cubit.dart';
+import '../../application/exercises/user_exercise_library_state.dart';
 import '../../domain/model/documents/document.dart';
-import '../components/button/app_button.dart';
-import '../components/button/app_icon_button.dart';
-import '../components/field/app_search_field.dart';
-import '../components/layout/app_page.dart';
-import '../components/sync_banner.dart';
-import '../l10n/generated/app_localizations.dart';
-import '../shell/design_canvas.dart';
-import '../shell/device_class.dart';
-import '../theme/app_theme.dart';
-import '../theme/tokens/spacing.dart';
+import '../exercises/user_exercise_editor_page.dart';
 import '../exercises/user_exercises_section.dart';
-import 'components/library_body.dart';
+import 'components/library_section_selector.dart';
 import 'dialogs/delete_rename_document_dialog.dart';
 import 'dialogs/new_document_dialog.dart';
+import 'library_view.dart';
 
 final class LibraryPage extends StatefulWidget {
   const LibraryPage({super.key});
@@ -28,12 +22,14 @@ final class LibraryPage extends StatefulWidget {
 
 final class _LibraryPageState extends State<LibraryPage> {
   late final TextEditingController _searchController;
+  LibrarySection _section = LibrarySection.algorithms;
 
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController();
     context.read<LibraryCubit>().loadDocuments();
+    context.read<UserExerciseLibraryCubit>().load();
   }
 
   @override
@@ -58,6 +54,8 @@ final class _LibraryPageState extends State<LibraryPage> {
       },
     );
   }
+
+  void _onNewExercise() => context.push('/biblioteca/ejercicio/$newUserExerciseSegment');
 
   void _onOpenDoc(DocumentSummary doc) {
     final cubit = context.read<LibraryCubit>();
@@ -88,132 +86,24 @@ final class _LibraryPageState extends State<LibraryPage> {
   Widget build(BuildContext context) {
     final cubit = context.read<LibraryCubit>();
     return BlocBuilder<LibraryCubit, LibraryState>(
-      builder: (context, state) => LibraryView(
-        state: state,
-        searchController: _searchController,
-        onSearchChanged: cubit.searchDocuments,
-        onNewDocument: _onNewDoc,
-        onOpenDocument: _onOpenDoc,
-        onRenameDocument: _onRenameDoc,
-        onDeleteDocument: _onDeleteDoc,
-        exercises: const UserExercisesSection(),
-      ),
-    );
-  }
-}
-
-final class LibraryView extends StatelessWidget {
-  final LibraryState state;
-  final TextEditingController searchController;
-  final ValueChanged<String> onSearchChanged;
-  final VoidCallback onNewDocument;
-  final ValueChanged<DocumentSummary> onOpenDocument;
-  final ValueChanged<DocumentSummary> onRenameDocument;
-  final ValueChanged<DocumentSummary> onDeleteDocument;
-  final Widget? exercises;
-
-  const LibraryView({
-    super.key,
-    required this.state,
-    required this.searchController,
-    required this.onSearchChanged,
-    required this.onNewDocument,
-    required this.onOpenDocument,
-    required this.onRenameDocument,
-    required this.onDeleteDocument,
-    this.exercises,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = AppThemeExtension.of(context);
-    final l10n = AppLocalizations.of(context)!;
-
-    return Scaffold(
-      backgroundColor: theme.colors.surfaces.canvas,
-      body: AppPage(
-        title: l10n.libraryTitle,
-        measure: ContentMeasure.wide,
-        action: _NewDocumentAction(onNewDocument: onNewDocument),
-        filter: AppSearchField(
-          controller: searchController,
-          hintText: l10n.librarySearchPlaceholder,
-          onChanged: onSearchChanged,
-        ),
-        body: _LibraryPageBody(
+      builder: (context, state) => BlocBuilder<UserExerciseLibraryCubit, UserExerciseLibraryState>(
+        builder: (context, exerciseState) => LibraryView(
           state: state,
-          exercises: exercises,
-          onNewDocument: onNewDocument,
-          onOpenDocument: onOpenDocument,
-          onRenameDocument: onRenameDocument,
-          onDeleteDocument: onDeleteDocument,
-        ),
-      ),
-    );
-  }
-}
-
-final class _LibraryPageBody extends StatelessWidget {
-  final LibraryState state;
-  final VoidCallback onNewDocument;
-  final ValueChanged<DocumentSummary> onOpenDocument;
-  final ValueChanged<DocumentSummary> onRenameDocument;
-  final ValueChanged<DocumentSummary> onDeleteDocument;
-  final Widget? exercises;
-
-  const _LibraryPageBody({
-    required this.state,
-    this.exercises,
-    required this.onNewDocument,
-    required this.onOpenDocument,
-    required this.onRenameDocument,
-    required this.onDeleteDocument,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SyncBanner(),
-        ?exercises,
-        Expanded(
-          child: LibraryBody(
-            state: state,
-            onNewDocument: onNewDocument,
-            onOpenDocument: onOpenDocument,
-            onRenameDocument: onRenameDocument,
-            onDeleteDocument: onDeleteDocument,
+          searchController: _searchController,
+          onSearchChanged: cubit.searchDocuments,
+          onNewDocument: _onNewDoc,
+          onOpenDocument: _onOpenDoc,
+          onRenameDocument: _onRenameDoc,
+          onDeleteDocument: _onDeleteDoc,
+          section: _section,
+          onSectionSelected: (section) => setState(() => _section = section),
+          exercises: LibraryExercisesSlot(
+            content: UserExercisesSection(onCreate: _onNewExercise),
+            count: exerciseState.exercises.length,
+            onCreate: _onNewExercise,
           ),
         ),
-      ],
+      ),
     );
-  }
-}
-
-final class _NewDocumentAction extends StatelessWidget {
-  final VoidCallback onNewDocument;
-
-  const _NewDocumentAction({required this.onNewDocument});
-
-  @override
-  Widget build(BuildContext context) {
-    final canvas = DesignCanvasScope.of(context);
-    final l10n = AppLocalizations.of(context)!;
-    return switch (canvas.deviceClass) {
-      DeviceClass.compact => AppIconButton(
-          key: const ValueKey('feature:new-document'),
-          icon: Icons.add,
-          semanticLabel: l10n.libraryNewDocument,
-          variant: AppButtonVariant.primary,
-          onPressed: onNewDocument,
-        ),
-      DeviceClass.medium || DeviceClass.expanded => AppButton(
-          key: const ValueKey('feature:new-document'),
-          label: l10n.libraryNewDocument,
-          icon: Icons.add,
-          variant: AppButtonVariant.primary,
-          onPressed: onNewDocument,
-        ),
-    };
   }
 }

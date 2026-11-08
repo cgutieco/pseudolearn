@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/route/route_index_state.dart';
 import 'package:pseudolearn_app/application/route/route_progress.dart';
+import 'package:pseudolearn_app/domain/model/dashboard/coverage_count.dart';
 import 'package:pseudolearn_app/presentation/route/route_index_view.dart';
 import '../../fakes/route_fixtures.dart';
 import 'route_widget_support.dart';
@@ -25,6 +26,41 @@ void main() {
     expect(find.textContaining('Sigue esta'), findsOneWidget);
     await tester.tap(find.text('imperativo.segundo · Lección imperativo.segundo'));
     expect(opened, ['imperativo.segundo']);
+  });
+
+  testWidgets('an unfinished lesson shows its required exercises and a completed one does not', (tester) async {
+    await tester.pumpWidget(routeTestApp(RouteIndexView(
+        state: RouteIndexState(
+          status: RouteIndexStatus.success,
+          toc: sampleToc,
+          lessonProgress: const {
+            'inicio.primero': LessonProgress.completed,
+            'imperativo.segundo': LessonProgress.visited,
+          },
+          requiredExercises: const {
+            'inicio.primero': CoverageCount(done: 2, total: 2),
+            'imperativo.segundo': CoverageCount(done: 0, total: 1),
+          },
+          nextLessonId: 'imperativo.segundo',
+        ),
+        onOpenLesson: (_) {},
+        onRetry: () {},
+      )));
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('En curso · 0 de 1 obligatorios'), findsOneWidget);
+    expect(find.textContaining('2 de 2 obligatorios'), findsNothing);
+  });
+
+  testWidgets('a lesson without required exercises shows no requirement', (tester) async {
+    await tester.pumpWidget(routeTestApp(RouteIndexView(
+        state: RouteIndexState(status: RouteIndexStatus.success, toc: sampleToc),
+        onOpenLesson: (_) {},
+        onRetry: () {},
+      )));
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('obligatorios'), findsNothing);
   });
 
   testWidgets('an error offers a retry', (tester) async {

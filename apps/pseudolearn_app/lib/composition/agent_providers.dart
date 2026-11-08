@@ -78,7 +78,7 @@ AgentSessionCubit _session(AppDependencies dependencies, AgentLoop loop, AgentLa
     AgentSessionCubit(
       loop: loop,
       consent: dependencies.agent.consentStore,
-      checker: CodeBlockChecker(reader: dependencies.agent.codeBlockReader, analyzer: dependencies.programAnalyzer),
+      checker: CodeBlockChecker(reader: dependencies.agent.replyReader, analyzer: dependencies.programAnalyzer),
       editorial: AgentEditorial(profile: language.profile, language: language.language),
     );
 

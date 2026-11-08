@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../application/agent/reply_segments.dart';
+import '../../application/agent/reply_citations.dart';
 import '../../domain/model/agent/agent_message.dart';
 import '../components/typography/app_text.dart';
 import '../theme/app_theme.dart';
 import '../theme/tokens/radii.dart';
 import '../theme/tokens/spacing.dart';
 import 'agent_step_list.dart';
-import 'verified_code_block.dart';
+import 'reply/reply_blocks_view.dart';
 
 final class AgentMessageBubble extends StatelessWidget {
   final AgentMessage message;
@@ -44,11 +44,7 @@ final class _AssistantContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (message.steps.isNotEmpty) AgentStepList(steps: message.steps),
-        for (final segment in replySegments(message))
-          switch (segment) {
-            ReplyText(:final text) => SelectableText(text),
-            ReplyCode(:final code) => VerifiedCodeBlock(code: code),
-          },
+        SelectionArea(child: ReplyBlocksView(blocks: message.blocks, codeBlocks: message.codeBlocks)),
         _SpecificationLinks(sections: citedSpecificationSections(message.text)),
       ],
     );

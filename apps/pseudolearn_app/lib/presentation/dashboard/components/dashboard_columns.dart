@@ -4,11 +4,11 @@ import '../../shell/design_canvas.dart';
 import '../../theme/tokens/grid_metrics.dart';
 import 'activity_card.dart';
 import 'concepts_card.dart';
-import 'creations_card.dart';
 import 'exercises_card.dart';
-import 'learning_route_card.dart';
 import 'library_card.dart';
 import 'next_step_card.dart';
+import 'overview_card.dart';
+import 'route_map_card.dart';
 import 'specification_card.dart';
 import 'sync_card.dart';
 
@@ -29,13 +29,13 @@ final class DashboardPrimaryColumn extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        LibraryCard(metrics: state.library),
-        SizedBox(height: gap),
-        LearningRouteCard(parts: state.route),
+        OverviewCard(state: state),
         SizedBox(height: gap),
         NextStepCard(nextLesson: state.nextLesson, onOpenModule: onOpenModule),
         SizedBox(height: gap),
-        ExercisesCard(coverage: state.exercises, parts: state.route),
+        RouteMapCard(parts: state.route, onOpenModule: onOpenModule),
+        SizedBox(height: gap),
+        ExercisesCard(coverage: state.exercises),
       ],
     );
   }
@@ -58,13 +58,13 @@ final class DashboardSecondaryColumn extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        ActivityCard(timeline: state.activity),
+        SizedBox(height: gap),
+        LibraryCard(metrics: state.library),
+        SizedBox(height: gap),
         ConceptsCard(coverage: state.concepts),
         SizedBox(height: gap),
         SpecificationCard(coverage: state.specification),
-        SizedBox(height: gap),
-        ActivityCard(timeline: state.activity),
-        SizedBox(height: gap),
-        CreationsCard(timeline: state.activity),
         SizedBox(height: gap),
         SyncCard(health: state.sync, lastSyncAt: lastSyncAt),
       ],

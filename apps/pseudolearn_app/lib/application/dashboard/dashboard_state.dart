@@ -1,5 +1,6 @@
 import '../../domain/model/dashboard/activity_timeline.dart';
 import '../../domain/model/dashboard/concept_coverage.dart';
+import '../../domain/model/dashboard/coverage_count.dart';
 import '../../domain/model/dashboard/exercise_coverage.dart';
 import '../../domain/model/dashboard/library_metrics.dart';
 import '../../domain/model/dashboard/next_lesson.dart';
@@ -39,13 +40,23 @@ final class DashboardState {
   bool get hasNothingRecorded =>
       library.total == 0 &&
       exercises.overall.done == 0 &&
-      _visitedModules == 0;
+      _touchedLessons == 0;
 
-  int get _visitedModules {
-    var visited = 0;
+  CoverageCount get lessons {
+    var done = 0;
+    var total = 0;
     for (final part in route) {
-      visited += part.lessons.done;
+      done += part.lessons.done;
+      total += part.lessons.total;
     }
-    return visited;
+    return CoverageCount(done: done, total: total);
+  }
+
+  int get _touchedLessons {
+    var touched = 0;
+    for (final part in route) {
+      touched += part.touchedLessons;
+    }
+    return touched;
   }
 }

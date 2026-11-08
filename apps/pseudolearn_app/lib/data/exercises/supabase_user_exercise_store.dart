@@ -59,7 +59,7 @@ final class SupabaseUserExerciseStore implements RemoteUserExerciseStore {
         ? null
         : userExerciseOfRow(
             id: row['id'] as String,
-            payload: row['payload'] as String? ?? '',
+            payload: userExercisePayloadText(row['payload']) ?? '',
             revision: (row['revision'] as num?)?.toInt() ?? 1,
             createdAt: row['created_at'] as String? ?? '',
             updatedAt: row['updated_at'] as String,

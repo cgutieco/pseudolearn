@@ -36,6 +36,10 @@ final class RouteIndexCubit extends Cubit<RouteIndexState> {
           for (final lesson in toc.value.lessons)
             lesson.id: progress.lessonProgress(lesson),
         },
+        requiredExercises: {
+          for (final lesson in toc.value.lessons)
+            lesson.id: progress.requiredExercisesOf(lesson),
+        },
         nextLessonId: progress.nextLesson(toc.value)?.id,
       ),
     );

@@ -1683,10 +1683,6 @@
   "@dashboardLibraryTitle": {
     "description": "Title of the library card"
   },
-  "dashboardLibraryTotal": "Algorithms created",
-  "@dashboardLibraryTotal": {
-    "description": "Label for the total number of algorithms"
-  },
   "dashboardLibraryProfileClassic": "Spanish profile",
   "@dashboardLibraryProfileClassic": {
     "description": "Label for algorithms written with the Spanish syntax profile"
@@ -1699,17 +1695,13 @@
   "@dashboardRouteTitle": {
     "description": "Title of the learning route card"
   },
-  "dashboardRouteSubtitle": "Modules visited per track",
+  "dashboardRouteSubtitle": "Each dot is a lesson; tap it to open it",
   "@dashboardRouteSubtitle": {
     "description": "Subtitle of the learning route card"
   },
   "dashboardExercisesTitle": "Exercises",
   "@dashboardExercisesTitle": {
     "description": "Title of the exercises card"
-  },
-  "dashboardExercisesByTrack": "By track",
-  "@dashboardExercisesByTrack": {
-    "description": "Label of the exercises-by-track group"
   },
   "dashboardExercisesByLevel": "By level",
   "@dashboardExercisesByLevel": {
@@ -1723,11 +1715,11 @@
   "@dashboardNextStepTitle": {
     "description": "Title of the next step card"
   },
-  "dashboardNextStepDone": "You have visited all fifteen modules of the route.",
+  "dashboardNextStepDone": "You have completed every lesson of the route.",
   "@dashboardNextStepDone": {
     "description": "Message shown when no module is left to visit"
   },
-  "dashboardNextStepOpen": "Open module",
+  "dashboardNextStepOpen": "Open lesson",
   "@dashboardNextStepOpen": {
     "description": "Action to open the suggested next module"
   },
@@ -1839,17 +1831,9 @@
   "@dashboardActivityTitle": {
     "description": "Title of the activity timeline card"
   },
-  "dashboardActivitySubtitle": "Modules and exercises per week",
+  "dashboardActivitySubtitle": "Lessons, exercises and algorithms per week",
   "@dashboardActivitySubtitle": {
     "description": "Subtitle of the activity timeline card"
-  },
-  "dashboardCreationsTitle": "Algorithms created over time",
-  "@dashboardCreationsTitle": {
-    "description": "Title of the algorithms-created card"
-  },
-  "dashboardCreationsSubtitle": "New algorithms per week",
-  "@dashboardCreationsSubtitle": {
-    "description": "Subtitle of the algorithms-created card"
   },
   "dashboardWeekOf": "Week of {day}/{month}",
   "@dashboardWeekOf": {
@@ -1864,6 +1848,126 @@
         "example": "4"
       }
     }
+  },
+  "dashboardOverviewTitle": "Your progress",
+  "@dashboardOverviewTitle": {
+    "description": "Title of the dashboard overview card"
+  },
+  "dashboardOverviewSubtitle": "Route, exercises and language at a glance",
+  "@dashboardOverviewSubtitle": {
+    "description": "Subtitle of the dashboard overview card"
+  },
+  "dashboardPercent": "{percent}%",
+  "@dashboardPercent": {
+    "description": "Rounded percentage shown in a chart",
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "dashboardOverviewRouteCaption": "of the route",
+  "@dashboardOverviewRouteCaption": {
+    "description": "Caption under the completed route percentage"
+  },
+  "dashboardOverviewLessons": "Lessons completed",
+  "@dashboardOverviewLessons": {
+    "description": "Legend of the completed lessons ring"
+  },
+  "dashboardOverviewExercises": "Exercises solved",
+  "@dashboardOverviewExercises": {
+    "description": "Legend of the solved exercises ring"
+  },
+  "dashboardOverviewConcepts": "Concepts used",
+  "@dashboardOverviewConcepts": {
+    "description": "Legend of the ring of concepts used in own algorithms"
+  },
+  "dashboardStatAlgorithms": "Algorithms",
+  "@dashboardStatAlgorithms": {
+    "description": "Label of the created algorithms indicator"
+  },
+  "dashboardStatActiveWeeks": "Active weeks",
+  "@dashboardStatActiveWeeks": {
+    "description": "Label of the active weeks indicator"
+  },
+  "dashboardStatAssisted": "Helped by Nodo",
+  "@dashboardStatAssisted": {
+    "description": "Label of the agent-assisted exercises indicator"
+  },
+  "dashboardLessonPending": "Not started",
+  "@dashboardLessonPending": {
+    "description": "State of a lesson not opened yet in the route trail"
+  },
+  "dashboardLessonNode": "Lesson {number}: {stage}",
+  "@dashboardLessonNode": {
+    "description": "Accessible label of a route trail dot",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "1.2"
+      },
+      "stage": {
+        "type": "String",
+        "example": "In progress"
+      }
+    }
+  },
+  "dashboardNextStepRequired": "Required exercises: {done} of {total}",
+  "@dashboardNextStepRequired": {
+    "description": "Progress of the required exercises of the suggested lesson",
+    "placeholders": {
+      "done": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "dashboardNextStepRequiredHint": "Solve them to complete the lesson.",
+  "@dashboardNextStepRequiredHint": {
+    "description": "Explains what completes a lesson with required exercises"
+  },
+  "dashboardNextStepVisitHint": "This lesson is completed by opening it.",
+  "@dashboardNextStepVisitHint": {
+    "description": "Explains what completes a lesson without required exercises"
+  },
+  "dashboardExercisesSubtitle": "By difficulty level and by kind of skill",
+  "@dashboardExercisesSubtitle": {
+    "description": "Subtitle of the dashboard exercises card"
+  },
+  "dashboardActivityLessons": "Lessons opened",
+  "@dashboardActivityLessons": {
+    "description": "Legend of the lessons opened per week series"
+  },
+  "dashboardActivityExercises": "Exercises solved",
+  "@dashboardActivityExercises": {
+    "description": "Legend of the exercises solved per week series"
+  },
+  "dashboardActivityCreations": "Algorithms created",
+  "@dashboardActivityCreations": {
+    "description": "Legend of the algorithms created per week series"
+  },
+  "dashboardActivityActiveWeeks": "{count} of {total} weeks with activity",
+  "@dashboardActivityActiveWeeks": {
+    "description": "Summary of weeks with activity in the dashboard window",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      },
+      "total": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "dashboardSpecificationSections": "Sections exercised",
+  "@dashboardSpecificationSections": {
+    "description": "Label of the exercised specification sections meter"
   },
   "dashboardCoverageRatio": "{done} of {total}",
   "@dashboardCoverageRatio": {
@@ -2182,6 +2286,20 @@
   "routeLessonMinutes": "{minutes} min",
   "routeLessonCompleted": "Completed",
   "routeLessonVisited": "In progress",
+  "routeLessonRequired": "{done} of {total} required",
+  "@routeLessonRequired": {
+    "description": "Required exercises solved in a lesson of the route index",
+    "placeholders": {
+      "done": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "routeNextLesson": "Next up",
   "routeIndexErrorTitle": "The route could not be loaded",
   "routeLessonNotFoundTitle": "The lesson was not found",
@@ -2266,7 +2384,10 @@
   "settingsContactPedagogicalBody": "We value feedback from teachers, students and self-learners about the learning route, the progression of the exercises and the examples in the app. If you have ideas to improve how algorithms are learned, we would love to hear from you.",
   "onboardingKnowledgeLessonCount": "{count, plural, =1{1 lesson} other{{count} lessons}}",
   "onboardingKnowledgeLevelNamedCount": "{level}: {count}",
-  "userExercisesTitle": "My exercises",
+  "librarySectionAlgorithms": "Algorithms",
+  "librarySectionExercises": "Exercises",
+  "userExercisesIntro": "Challenges with test cases that you solve like an algorithm.",
+  "userExercisesEmptyTitle": "No exercises yet",
   "userExercisesNew": "New exercise",
   "userExercisesEmpty": "You have not created exercises yet. Create one with its reference solution and test cases.",
   "userExercisesSolve": "Solve",
@@ -2380,6 +2501,19 @@
   "agentVerified": "Verified",
   "agentWithErrors": "Has errors",
   "agentInsertInEditor": "Insert in the editor",
+  "agentCodePseudoLearn": "PseudoLearn",
+  "agentDiagramTitle": "Diagram",
+  "agentDiagramShowSource": "Show code",
+  "agentDiagramShowDiagram": "Show diagram",
+  "agentDiagramUnsupported": "This kind of diagram can't be drawn here yet. Here is its code:",
+  "agentDiagramDescription": "Flowchart: {nodes}",
+  "agentAlertNote": "Note",
+  "agentAlertTip": "Tip",
+  "agentAlertImportant": "Important",
+  "agentAlertWarning": "Warning",
+  "agentAlertCaution": "Caution",
+  "agentTaskDone": "Done",
+  "agentTaskOpen": "Pending",
   "agentFailureUnauthenticated": "Sign in to use Nodo.",
   "agentFailureSubscriptionRequired": "You need a plan or the free trial to talk with Nodo.",
   "agentFailureCreditsExhausted": "You ran out of credits. Top up or wait for the renewal.",

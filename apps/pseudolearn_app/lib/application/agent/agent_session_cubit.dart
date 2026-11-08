@@ -112,15 +112,17 @@ final class AgentSessionCubit extends Cubit<AgentSessionState> {
   void _finishTurn(AgentTurn turn, AgentSessionStatus status) {
     _conversation = turn.history;
     final text = turn.answerText;
+    final checked = _checker.check(
+      text,
+      profileId: _editorial.profile(),
+      languageId: _editorial.language(),
+    );
     final reply = AgentMessage(
       role: AgentRole.assistant,
       text: text,
       steps: turn.steps,
-      codeBlocks: _checker.check(
-        text,
-        profileId: _editorial.profile(),
-        languageId: _editorial.language(),
-      ),
+      blocks: checked.blocks,
+      codeBlocks: checked.codeBlocks,
     );
     emit(state.copyWith(
       status: status,
