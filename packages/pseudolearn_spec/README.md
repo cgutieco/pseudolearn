@@ -392,10 +392,50 @@ PSeInt y ejemplos canónicos.
   admiten casos que `see conform --subject engine` ejecuta en cada `cargo xtask verify`. Se descartó
   ejecutar los ejemplos desde SEE porque obligaría a importar un sujeto en la exportación.
 - Los textos normativos se citan en español, el idioma del corpus, también en la ficha inglesa.
-- Destinos: `apps/pseudolearn_app/assets/agent/<idioma>/language-sheet.md` (lo empaqueta la app) y
-  `apps/fe-pseudolearn/src/shared/agent-sheet/generated/` (lo publica la web como `llms-full.txt`). Son
+- Destinos: `apps/pseudolearn_app/assets/agent/<idioma>/language-sheet.md` (lo empaqueta la app),
+  `apps/fe-pseudolearn/src/shared/agent-sheet/generated/` (lo publica la web como `llms-full.txt`) y
+  `apps/pseudolearn_cli/generated/language-sheet.<idioma>.md` (la incrusta `pseudo mcp`). Son
   los únicos consumidores, por eso se versionan (`GEN-NO-HAND-COPY`). `cargo xtask verify` ejecuta
   `agent-sheet --check`, que falla con `SEE-STALE` si una copia difiere de la generada.
+
+### Orden de regeneración tras editar el corpus
+
+Editar una especificación cambia el hash de la exportación y, con él, artefactos que viven en otros miembros. Cada uno
+tiene un verificador que falla mientras no se regenere, y se regeneran siempre con su generador, nunca a mano
+(`GEN-NO-HAND-COPY`). El orden importa porque cada paso lee la salida del anterior:
+
+| Paso | Dónde | Orden | Qué detecta el desfase |
+|---|---|---|---|
+| 1 | `packages/pseudolearn_spec` | `see validate` | Contrato inválido o identidades retiradas sin lápida |
+| 2 | `packages/pseudolearn_spec` | `see lock --refresh ID,ID` solo para identidades autorizadas; `see lock` registra las nuevas | `see lock --check` (`SEE-HASH`) |
+| 3 | `packages/pseudolearn_spec` | `see export --root .` | `see export --check` |
+| 4 | `packages/pseudolearn_spec` | `see agent-sheet` (copias de la app, la web y la CLI) | `see agent-sheet --check` (`SEE-STALE`) |
+| 5 | `apps/pseudolearn_vscode` | `pnpm generate:grammar` | `pnpm check:grammar`, que también ejecutan `pnpm build` y `pnpm build:web` |
+| 6 | `packages/pseudolearn_reference` | `reference lock` si cambió un ancla, y `reference build` (libro y ruta que empaqueta la app) | `reference check` (`REF-BUNDLE-STALE`, `RUTA-BUNDLE-STALE`) |
+
+Tras un cambio de comportamiento hay que repetir en los miembros afectados su verificación completa: la evidencia de
+conformidad y de propiedades guarda el hash de cada especificación y se rechaza como obsoleta (`SEE-STALE`) hasta
+volver a ejecutarla, primero `conform --operation properties` y después `conform`.
+
+La puerta de identidades compara con la revisión Git base: la del último commit si hay cambios sin confirmar en
+`specifications/`, y la del commit anterior si ya se confirmaron. Retirar de una especificación estable reglas o casos
+ya confirmados sin dejar lápida falla con `SEE-IDENTITY` hasta que un commit posterior no toque `specifications/`; el
+movimiento de `TOOL.CLI.CONVENTIONS#R11` a `R16` hacia `TOOL.MCP` se confirmó en ese orden.
+
+### Servidor MCP (`TOOL.MCP`)
+
+El contrato de `pseudo mcp` nació como las reglas R11 a R16 de `TOOL.CLI.CONVENTIONS` porque se creyó que el
+congelamiento impedía una especificación nueva sin revisión independiente. Tiene identidad propia porque su ciclo de
+vida, su esquema de herramientas y sus casos no dependen de las convenciones de órdenes, idioma y códigos de salida. Nace
+estable `1.0.0` y sin `cambio` (`check_initial`), con `revisado_por` igual a `cesar-antonio-gutierrez-contreras-2026-11-08`:
+la persona responsable autorizó crearla y registró su aprobación como revisión independiente en esa fecha, con
+precedencia sobre el congelamiento solo para esta especificación. El resto del corpus sigue congelado.
+
+La revisión corrigió lo que el contrato dejaba al código: faltaban casos para `tools/list`, `search_reference`, `example`,
+los recursos y casi todas las rutas de error; el orden de claves, los esquemas de herramienta, el troceado de la ficha en
+secciones y la puntuación de la búsqueda eran los de la implementación; el tipo de los argumentos no se validaba; y la
+regla de `run` fijaba una guarda de cinco segundos de reloj que `ENG.LIMITS#R14` hace innecesaria. `resources/read` de una
+ficha completa no tiene caso porque la salida exacta sería la ficha entera; la comprueba una prueba del miembro.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

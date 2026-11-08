@@ -48,6 +48,7 @@ Desde este directorio:
 - `pnpm check:comments`
 - `pnpm check:size`
 - `pnpm check:package`
+- `pnpm check:grammar` (falla si la gramática no corresponde a la exportación vigente del corpus; también la ejecutan `build` y `build:web`)
 - `pnpm test`
 - `pnpm build`
 - `pnpm build:cli`
