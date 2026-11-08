@@ -90,7 +90,7 @@ void main() {
       ),
     ));
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('feature:user-exercise-create')));
+    await tester.tap(find.byKey(const ValueKey('user-exercise-create')));
     await tester.pumpAndSettle();
     await _type(tester, 'title', 'Suma');
     await _type(tester, 'statement', 'Suma dos enteros');

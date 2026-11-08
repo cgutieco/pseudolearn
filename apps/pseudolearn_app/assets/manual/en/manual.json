@@ -1,0 +1,267 @@
+{
+  "format": "manual/1",
+  "entries": [
+    {
+      "id": "onboarding",
+      "anchor": "feature:onboarding",
+      "route": "/onboarding",
+      "title": "Welcome",
+      "body": "The welcome screen introduces PseudoLearn, lets you choose the language and syntax profile and offers a guided step-by-step demo. It appears the first time you open the app.",
+      "keywords": [
+        "welcome",
+        "start",
+        "demo",
+        "profile"
+      ]
+    },
+    {
+      "id": "library",
+      "anchor": "feature:library",
+      "route": "/biblioteca",
+      "title": "Library",
+      "body": "The Library gathers your algorithms and exercises. Search by title, open an algorithm to edit it, or use each card menu to rename or delete it. Algorithms are stored on the device and synced when you sign in.",
+      "keywords": [
+        "library",
+        "algorithms",
+        "documents",
+        "search",
+        "rename",
+        "delete"
+      ]
+    },
+    {
+      "id": "new-document",
+      "anchor": "feature:new-document",
+      "route": "/biblioteca",
+      "title": "New algorithm",
+      "body": "“New algorithm” creates an empty document. You choose a unique title and the syntax profile: classic Spanish or English. The profile decides the program keywords and can be translated later.",
+      "keywords": [
+        "new",
+        "create",
+        "algorithm",
+        "profile",
+        "title"
+      ]
+    },
+    {
+      "id": "user-exercises",
+      "anchor": "feature:user-exercises",
+      "route": "/biblioteca",
+      "title": "My exercises",
+      "body": "“My exercises” lists the exercises you created. “Solve” opens your attempt as an algorithm with the exercise strip; “Edit” opens the exercise editor and “Delete” removes it without deleting your attempts.",
+      "keywords": [
+        "exercises",
+        "my exercises",
+        "solve",
+        "practice"
+      ]
+    },
+    {
+      "id": "user-exercise-editor",
+      "anchor": "feature:user-exercise-editor",
+      "route": "/biblioteca/ejercicio/nuevo",
+      "title": "Exercise editor",
+      "body": "The exercise editor defines the title, an optional story, the statement, restrictions, graded hints, visible and hidden cases (one line per case: inputs separated by semicolons, then => and the outputs), structural assertions and the reference solution. It is published only if the reference solution passes every case and assertion.",
+      "keywords": [
+        "create exercise",
+        "cases",
+        "hints",
+        "reference solution",
+        "assertions",
+        "publish"
+      ]
+    },
+    {
+      "id": "editor",
+      "anchor": "feature:editor",
+      "route": "/biblioteca/documento/:id",
+      "title": "Algorithm editor",
+      "body": "The editor analyses the program as you type and shows diagnostics with their explanation. From the bottom bar you run all at once or step by step, see the output, the variable trace, the flowchart, the structogram and the class diagram, and export equivalent Python or Rust code. The document saves itself.",
+      "keywords": [
+        "editor",
+        "run",
+        "step",
+        "diagnostics",
+        "trace",
+        "flowchart",
+        "structogram",
+        "export",
+        "save"
+      ]
+    },
+    {
+      "id": "execution-options",
+      "anchor": "feature:execution-options",
+      "route": "/biblioteca/documento/:id",
+      "title": "Run options",
+      "body": "Run options store with the document the arguments your program receives (separated by spaces; use quotes to include spaces), let you replay the last execution tape to reproduce exactly the same effects and show the files folder where the program reads and writes.",
+      "keywords": [
+        "arguments",
+        "run options",
+        "replay",
+        "tape",
+        "folder",
+        "files"
+      ]
+    },
+    {
+      "id": "knowledge",
+      "anchor": "feature:knowledge",
+      "route": "/conocimiento",
+      "title": "Knowledge",
+      "body": "Knowledge gathers the learning route, with graded lessons and exercises, and the illustrated language specification. Your progress is marked on each lesson.",
+      "keywords": [
+        "knowledge",
+        "route",
+        "lessons",
+        "specification",
+        "learn"
+      ]
+    },
+    {
+      "id": "route-lesson",
+      "anchor": "feature:route-lesson",
+      "route": "/conocimiento/ruta/:leccion",
+      "title": "Route lesson",
+      "body": "A lesson explains a concept with runnable examples, links to the specification and practice exercises. Visiting it records it in your progress.",
+      "keywords": [
+        "lesson",
+        "route",
+        "concept",
+        "examples"
+      ]
+    },
+    {
+      "id": "route-exercise",
+      "anchor": "feature:route-exercise",
+      "route": "/conocimiento/ruta/:leccion/:ejercicio",
+      "title": "Route exercise",
+      "body": "Route exercises come in several kinds: solve, predict the output, complete a trace, order, break a program, design cases or classify. Solve exercises open an algorithm with the exercise strip and are checked against visible and hidden cases.",
+      "keywords": [
+        "exercise",
+        "solve",
+        "predict",
+        "trace",
+        "check",
+        "hints"
+      ]
+    },
+    {
+      "id": "specification",
+      "anchor": "feature:specification",
+      "route": "/conocimiento/especificacion/:id",
+      "title": "Specification",
+      "body": "The illustrated specification describes each language construct with its rule, examples in your profile and links back to the route.",
+      "keywords": [
+        "specification",
+        "reference",
+        "rules",
+        "syntax"
+      ]
+    },
+    {
+      "id": "progress",
+      "anchor": "feature:progress",
+      "route": "/progreso",
+      "title": "Progress",
+      "body": "The progress dashboard measures coverage: visited lessons, solved exercises and constructs you already used in your algorithms. It does not measure performance or compare you with others. Exercises solved with the agent's help are shown apart.",
+      "keywords": [
+        "progress",
+        "dashboard",
+        "coverage",
+        "solved",
+        "assisted"
+      ]
+    },
+    {
+      "id": "settings",
+      "anchor": "feature:settings",
+      "route": "/ajustes",
+      "title": "Settings",
+      "body": "Settings groups account, language, theme, editor, diagrams, the Nodo agent and contact, and shows the installed version.",
+      "keywords": [
+        "settings",
+        "configuration",
+        "preferences"
+      ]
+    },
+    {
+      "id": "settings-account",
+      "anchor": "feature:settings-account",
+      "route": "/ajustes/cuenta",
+      "title": "Account",
+      "body": "Sign in with Apple, Google or an email link to sync algorithms, exercises and progress. When signing out you can keep or erase local data; you can also delete the account.",
+      "keywords": [
+        "account",
+        "sign in",
+        "sync",
+        "sign out",
+        "delete account"
+      ]
+    },
+    {
+      "id": "settings-language",
+      "anchor": "feature:settings-language",
+      "route": "/ajustes/idioma",
+      "title": "Language",
+      "body": "Choose the interface language (system, Spanish or English). Each algorithm's syntax profile is independent of the interface language.",
+      "keywords": [
+        "language",
+        "spanish",
+        "english"
+      ]
+    },
+    {
+      "id": "settings-theme",
+      "anchor": "feature:settings-theme",
+      "route": "/ajustes/tema",
+      "title": "Theme",
+      "body": "Choose a light, dark or system theme.",
+      "keywords": [
+        "theme",
+        "dark",
+        "light",
+        "appearance"
+      ]
+    },
+    {
+      "id": "settings-editor",
+      "anchor": "feature:settings-editor",
+      "route": "/ajustes/editor",
+      "title": "Editor settings",
+      "body": "Configure the editor's typing assistance, such as completion and construct templates.",
+      "keywords": [
+        "editor",
+        "completion",
+        "templates",
+        "typing"
+      ]
+    },
+    {
+      "id": "settings-diagrams",
+      "anchor": "feature:settings-diagrams",
+      "route": "/ajustes/diagramas",
+      "title": "Diagram settings",
+      "body": "Choose how the flowchart, the structogram and the class diagram are presented.",
+      "keywords": [
+        "diagrams",
+        "flowchart",
+        "structogram",
+        "classes"
+      ]
+    },
+    {
+      "id": "settings-contact",
+      "anchor": "feature:settings-contact",
+      "route": "/ajustes/contacto",
+      "title": "Contact",
+      "body": "Write to the PseudoLearn team to report a problem or suggest an improvement.",
+      "keywords": [
+        "contact",
+        "support",
+        "help",
+        "problem"
+      ]
+    }
+  ]
+}

@@ -34,7 +34,7 @@ void showExecutionOptionsSheet(BuildContext context) {
         BlocProvider<EditorCubit>.value(value: editor),
         BlocProvider<ExecutionCubit>.value(value: execution),
       ],
-      child: const ExecutionOptionsSheet(),
+      child: const ExecutionOptionsSheet(key: ValueKey('feature:execution-options')),
     ),
   );
 }

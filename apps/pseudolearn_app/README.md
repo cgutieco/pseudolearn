@@ -224,6 +224,9 @@ dart run tool/check_design_system.dart
 # 5b. Cobertura de las formas públicas de la vista por ordinograma, estructograma y estructura
 dart run tool/check_syntax_coverage.dart
 
+# 5c. Manual de usuario: cada funcionalidad anclada tiene entrada en es y en, y viceversa
+dart run tool/check_manual.dart
+
 # 6. Biblioteca nativa de las pruebas y suite completa (unitarios, arquitectura, widgets y ruta contra el motor real)
 cargo build --release --locked --lib --manifest-path native/Cargo.toml
 flutter test
@@ -2915,6 +2918,28 @@ proyecto no simula participantes ni resultados. Mientras no existan, ese resulta
     uno por línea (`2; 3 => 5`) y las aserciones con la forma `contiene: bucle-contado`; el formato vive en
     `exercise_text_format.dart` del modelo y un error de forma se informa antes de validar.
 - **Fuera de alcance:** compartir ejercicios, imágenes en la narrativa y argumentos de programa por caso.
+
+### 4.65 Conocimiento del agente: ficha generada, manual verificado y búsqueda local
+
+- **Problema:** un modelo conoce PSeInt y no PseudoLearn, y tampoco sabe para qué sirve cada parte de la app. Sin
+  contexto inventa sintaxis (base uno, sin `;`, parámetros sin tipo) y funciones de la interfaz.
+- **Elección:**
+  - **Ficha del lenguaje.** `assets/agent/<idioma>/language-sheet.md` la genera `see agent-sheet` desde el corpus
+    (vocabulario, biblioteca, gramática, diferencias con PSeInt citando reglas y ejemplos canónicos del corpus). No se
+    edita a mano (`GEN-NO-HAND-COPY`); la verificación del miembro de especificaciones falla si está desfasada.
+  - **Manual de usuario.** `assets/manual/<idioma>/manual.json` tiene una entrada por funcionalidad visible con `id`
+    estable, ruta, título, explicación y palabras clave. Cada entrada se ancla a un widget con
+    `ValueKey('feature:<id>')` (la mayoría en `app_router.dart`, sobre la página). `tool/check_manual.dart` exige
+    correspondencia en ambos sentidos y en ambos idiomas (`MANUAL-ORPHAN`, `MANUAL-UNDOCUMENTED`), ids únicos, ancla
+    coherente y campos no vacíos; sus casos negativos viven en `test/tool/check_manual_test.dart`. El README técnico no
+    es conocimiento del agente: habla de capas, no de qué hace un botón.
+  - **Búsqueda local.** `AssetKnowledgeIndex` (`data/agent/`) implementa `KnowledgeIndex` sobre el manual, el índice
+    de búsqueda del libro de referencia empaquetado y las secciones de la ficha. Tokeniza sin acentos ni palabras
+    vacías, pondera por IDF, satura la frecuencia y da triple peso al título. Si el idioma pedido no da resultados
+    repite la búsqueda en el otro. Cada resultado cita `fuente:id` para que la respuesta pueda enlazarlo. Se
+    descartaron los embeddings: añaden un servicio y un coste para un corpus de unos cientos de documentos.
+  - Los casos del corpus llegan a la búsqueda a través de los ejemplos de la ficha; el índice no carga la exportación
+    completa (`export.json`, varios MB), que no se empaqueta.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

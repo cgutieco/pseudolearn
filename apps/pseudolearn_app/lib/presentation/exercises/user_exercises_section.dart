@@ -110,7 +110,7 @@ final class _SectionHeading extends StatelessWidget {
         children: [
           Expanded(child: AppText(l10n.userExercisesTitle, variant: AppTextVariant.heading4)),
           AppButton(
-            key: const ValueKey('feature:user-exercise-create'),
+            key: const ValueKey('user-exercise-create'),
             label: l10n.userExercisesNew,
             icon: Icons.add,
             variant: AppButtonVariant.secondary,

@@ -201,12 +201,14 @@ final class _NewDocumentAction extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return switch (canvas.deviceClass) {
       DeviceClass.compact => AppIconButton(
+          key: const ValueKey('feature:new-document'),
           icon: Icons.add,
           semanticLabel: l10n.libraryNewDocument,
           variant: AppButtonVariant.primary,
           onPressed: onNewDocument,
         ),
       DeviceClass.medium || DeviceClass.expanded => AppButton(
+          key: const ValueKey('feature:new-document'),
           label: l10n.libraryNewDocument,
           icon: Icons.add,
           variant: AppButtonVariant.primary,

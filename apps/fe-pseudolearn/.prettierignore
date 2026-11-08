@@ -12,3 +12,4 @@ design/
 docs/
 .wrangler/
 coverage/
+src/shared/agent-sheet/generated/

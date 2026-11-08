@@ -57,6 +57,10 @@ flutter:
   assets:
     - assets/fonts/
     - assets/demo/
+    - assets/agent/es/
+    - assets/agent/en/
+    - assets/manual/es/
+    - assets/manual/en/
     - assets/reference/es/es/
     - assets/reference/es/es/sections/
     - assets/reference/es/en/
