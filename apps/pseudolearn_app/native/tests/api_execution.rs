@@ -148,3 +148,30 @@ fn execution_limits_are_independent_of_batch_size() {
     );
     assert!(close_session(session).is_ok());
 }
+
+#[test]
+fn an_infinite_empty_loop_reaches_the_statement_limit() {
+    let session = session_identifier();
+    for body in [
+        "Mientras Verdadero Hacer\nFinMientras\n",
+        "Repetir\nHasta Que Falso\n",
+        "Para i <- 1 Hasta 1000000000 Hacer\nFinPara\n",
+    ] {
+        let program = format!("Algoritmo P\n{body}FinAlgoritmo\n");
+        let analysis = create_analysis(session, &program);
+        let execution = start_execution(session, analysis, json!({"statements":50}));
+        let mut response = advance(session, execution, 128);
+        for _ in 0..8 {
+            if response.pointer("/value/termination/kind") != Some(&json!("running")) {
+                break;
+            }
+            response = advance(session, execution, 128);
+        }
+        assert_termination(&response, "limit_reached");
+        assert_eq!(
+            response.pointer("/value/termination/limit"),
+            Some(&json!("statements"))
+        );
+    }
+    assert!(close_session(session).is_ok());
+}

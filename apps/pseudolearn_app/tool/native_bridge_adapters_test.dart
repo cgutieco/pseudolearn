@@ -4,11 +4,13 @@ import 'package:pseudolearn_app/application/execution/execution_state.dart';
 import 'package:pseudolearn_app/application/execution/step_pace.dart';
 import 'package:pseudolearn_app/domain/model/analysis/analysis_report.dart';
 import 'package:pseudolearn_app/domain/model/analysis/app_diagnostic.dart';
+import 'package:pseudolearn_app/domain/model/knowledge/exercise_check_outcome.dart';
 import 'package:pseudolearn_app/domain/model/help/help_query_result.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/domain/model/execution/input_wait.dart';
 import 'package:pseudolearn_app/engine/bridge/frb_generated.dart';
+import 'package:pseudolearn_app/engine/exercise/program_runner.dart';
 import 'package:pseudolearn_app/engine/rust/native_rust_transport.dart';
 import 'package:pseudolearn_app/engine/rust/rust_analysis_api.dart';
 import 'package:pseudolearn_app/engine/rust/rust_completion_source.dart';
@@ -374,5 +376,25 @@ void main() {
       revision: 1,
     );
     expect(result.outcome, HelpOutcome.noHelp);
+  });
+
+  test('an infinite loop with an empty body ends at the step limit', () {
+    final runner = ProgramRunner(
+      execution: RustProgramExecution(transport),
+      analyzer: RustProgramAnalyzer(RustAnalysisApi(transport)),
+      stepLimit: 50,
+    );
+    for (final body in [
+      'Mientras Verdadero Hacer\nFinMientras\n',
+      'Repetir\nHasta Que Falso\n',
+    ]) {
+      final run = runner.run(
+        sourceCode: 'Algoritmo P\n${body}FinAlgoritmo\n',
+        profileId: SyntaxProfileId.classicSpanish,
+        languageId: UiLanguageId.spanish,
+        inputs: const [],
+      );
+      expect(run.anomaly, ExerciseCheckOutcome.stepLimitReached);
+    }
   });
 }
