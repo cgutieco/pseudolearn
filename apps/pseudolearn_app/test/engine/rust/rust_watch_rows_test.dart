@@ -32,8 +32,18 @@ void main() {
       RustStateApi(_CollectionTransport(frameFailure: 'usage')),
     ).at(execution: 1, event: 2, taskId: 99, depth: 1);
 
-    expect(result, isA<RustEnvironmentFailure>());
+    expect(result, isA<RustEnvironmentUnavailable>());
     expect((result as RustEnvironmentFailure).reason, 'task_state_unavailable');
+  });
+
+  test('a failed first frame query is a state failure, not unavailability', () {
+    final result = RustWatchRows(
+      RustStateApi(_CollectionTransport(frameFailure: 'internal')),
+    ).at(execution: 1, event: 2, taskId: 0, depth: 1);
+
+    expect(result, isA<RustEnvironmentFailure>());
+    expect(result, isNot(isA<RustEnvironmentUnavailable>()));
+    expect((result as RustEnvironmentFailure).reason, 'internal');
   });
 }
 

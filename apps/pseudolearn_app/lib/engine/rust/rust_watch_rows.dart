@@ -29,6 +29,10 @@ final class RustEnvironmentFailure extends RustEnvironmentResult {
   const RustEnvironmentFailure(this.reason);
 }
 
+final class RustEnvironmentUnavailable extends RustEnvironmentFailure {
+  const RustEnvironmentUnavailable() : super('task_state_unavailable');
+}
+
 final class RustWatchRows {
   static const String _absent = '-';
 
@@ -72,7 +76,10 @@ final class RustWatchRows {
         frames.add(result.value);
         continue;
       }
-      if (result is RustStateUsage<Map<String, Object?>> && index > 0) break;
+      if (result is RustStateUsage<Map<String, Object?>>) {
+        if (index > 0) break;
+        return const RustEnvironmentUnavailable();
+      }
       throw _WatchReadFailure(_reasonOf(result));
     }
     return RustEnvironmentValue(

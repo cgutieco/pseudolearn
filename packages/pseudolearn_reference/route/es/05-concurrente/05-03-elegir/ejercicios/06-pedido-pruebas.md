@@ -12,11 +12,11 @@ No escribas código. Escribe entre dos y cuatro casos para el pedido de fruta, c
 :::
 
 ```programa rol=referencia
-SubProceso Suspendible Revisar(nombre Como Cadena, stock Como Entero) Como Cadena
+SubProceso Suspendible Consultar(nombre Como Cadena, stock Como Entero) Como Resultado<Entero, Cadena>
   Si stock = 0 Entonces
-    Retornar nombre + " no tiene stock";
+    Retornar Error(nombre + " no tiene stock");
   FinSi
-  Retornar "";
+  Retornar Exito(stock);
 FinSubProceso
 
 Algoritmo Pedido
@@ -26,26 +26,24 @@ Algoritmo Pedido
   Leer norte;
   Leer sur;
   Leer oeste;
-  Tareas
-    Definir deNorte Como Tarea<Cadena> <- Lanzar Revisar("Norte", norte);
-    Definir deSur Como Tarea<Cadena> <- Lanzar Revisar("Sur", sur);
-    Definir deOeste Como Tarea<Cadena> <- Lanzar Revisar("Oeste", oeste);
-    Definir motivo Como Cadena <- Aguardar deNorte + Aguardar deSur + Aguardar deOeste;
-    Si motivo = "" Entonces
-      Escribir "Pedido confirmado: ", norte + sur + oeste;
-    Sino
-      Escribir "Pedido suspendido: ", motivo;
-    FinSi
+  Tareas fallo
+    Lanzar Consultar("Norte", norte);
+    Lanzar Consultar("Sur", sur);
+    Lanzar Consultar("Oeste", oeste);
   FinTareas
+  Segun fallo Hacer
+    Algo(problema): Escribir "Pedido suspendido: ", problema.Primero;
+    Nada: Escribir "Pedido confirmado: ", norte + sur + oeste;
+  FinSegun
 FinAlgoritmo
 ```
 
 ```programa rol=mutante id=solo-el-primero
-SubProceso Suspendible Revisar(nombre Como Cadena, stock Como Entero) Como Cadena
+SubProceso Suspendible Consultar(nombre Como Cadena, stock Como Entero) Como Resultado<Entero, Cadena>
   Si nombre = "Norte" Y stock = 0 Entonces
-    Retornar nombre + " no tiene stock";
+    Retornar Error(nombre + " no tiene stock");
   FinSi
-  Retornar "";
+  Retornar Exito(stock);
 FinSubProceso
 
 Algoritmo Pedido
@@ -55,26 +53,24 @@ Algoritmo Pedido
   Leer norte;
   Leer sur;
   Leer oeste;
-  Tareas
-    Definir deNorte Como Tarea<Cadena> <- Lanzar Revisar("Norte", norte);
-    Definir deSur Como Tarea<Cadena> <- Lanzar Revisar("Sur", sur);
-    Definir deOeste Como Tarea<Cadena> <- Lanzar Revisar("Oeste", oeste);
-    Definir motivo Como Cadena <- Aguardar deNorte + Aguardar deSur + Aguardar deOeste;
-    Si motivo = "" Entonces
-      Escribir "Pedido confirmado: ", norte + sur + oeste;
-    Sino
-      Escribir "Pedido suspendido: ", motivo;
-    FinSi
+  Tareas fallo
+    Lanzar Consultar("Norte", norte);
+    Lanzar Consultar("Sur", sur);
+    Lanzar Consultar("Oeste", oeste);
   FinTareas
+  Segun fallo Hacer
+    Algo(problema): Escribir "Pedido suspendido: ", problema.Primero;
+    Nada: Escribir "Pedido confirmado: ", norte + sur + oeste;
+  FinSegun
 FinAlgoritmo
 ```
 
 ```programa rol=mutante id=menor-que-cero
-SubProceso Suspendible Revisar(nombre Como Cadena, stock Como Entero) Como Cadena
+SubProceso Suspendible Consultar(nombre Como Cadena, stock Como Entero) Como Resultado<Entero, Cadena>
   Si stock < 0 Entonces
-    Retornar nombre + " no tiene stock";
+    Retornar Error(nombre + " no tiene stock");
   FinSi
-  Retornar "";
+  Retornar Exito(stock);
 FinSubProceso
 
 Algoritmo Pedido
@@ -84,26 +80,24 @@ Algoritmo Pedido
   Leer norte;
   Leer sur;
   Leer oeste;
-  Tareas
-    Definir deNorte Como Tarea<Cadena> <- Lanzar Revisar("Norte", norte);
-    Definir deSur Como Tarea<Cadena> <- Lanzar Revisar("Sur", sur);
-    Definir deOeste Como Tarea<Cadena> <- Lanzar Revisar("Oeste", oeste);
-    Definir motivo Como Cadena <- Aguardar deNorte + Aguardar deSur + Aguardar deOeste;
-    Si motivo = "" Entonces
-      Escribir "Pedido confirmado: ", norte + sur + oeste;
-    Sino
-      Escribir "Pedido suspendido: ", motivo;
-    FinSi
+  Tareas fallo
+    Lanzar Consultar("Norte", norte);
+    Lanzar Consultar("Sur", sur);
+    Lanzar Consultar("Oeste", oeste);
   FinTareas
+  Segun fallo Hacer
+    Algo(problema): Escribir "Pedido suspendido: ", problema.Primero;
+    Nada: Escribir "Pedido confirmado: ", norte + sur + oeste;
+  FinSegun
 FinAlgoritmo
 ```
 
 ```programa rol=mutante id=suma-de-dos
-SubProceso Suspendible Revisar(nombre Como Cadena, stock Como Entero) Como Cadena
+SubProceso Suspendible Consultar(nombre Como Cadena, stock Como Entero) Como Resultado<Entero, Cadena>
   Si stock = 0 Entonces
-    Retornar nombre + " no tiene stock";
+    Retornar Error(nombre + " no tiene stock");
   FinSi
-  Retornar "";
+  Retornar Exito(stock);
 FinSubProceso
 
 Algoritmo Pedido
@@ -113,17 +107,15 @@ Algoritmo Pedido
   Leer norte;
   Leer sur;
   Leer oeste;
-  Tareas
-    Definir deNorte Como Tarea<Cadena> <- Lanzar Revisar("Norte", norte);
-    Definir deSur Como Tarea<Cadena> <- Lanzar Revisar("Sur", sur);
-    Definir deOeste Como Tarea<Cadena> <- Lanzar Revisar("Oeste", oeste);
-    Definir motivo Como Cadena <- Aguardar deNorte + Aguardar deSur + Aguardar deOeste;
-    Si motivo = "" Entonces
-      Escribir "Pedido confirmado: ", norte + sur;
-    Sino
-      Escribir "Pedido suspendido: ", motivo;
-    FinSi
+  Tareas fallo
+    Lanzar Consultar("Norte", norte);
+    Lanzar Consultar("Sur", sur);
+    Lanzar Consultar("Oeste", oeste);
   FinTareas
+  Segun fallo Hacer
+    Algo(problema): Escribir "Pedido suspendido: ", problema.Primero;
+    Nada: Escribir "Pedido confirmado: ", norte + sur;
+  FinSegun
 FinAlgoritmo
 ```
 
@@ -149,5 +141,5 @@ visible | 5 ; 3 ; 2 | Pedido confirmado: 10
 :::
 
 ::: docentes
-Versiones equivocadas: solo revisa el stock de Norte, usa `< 0` en vez de `= 0` y confirma con la suma de los dos primeros. Un conjunto sin un caso confirmado no detecta la tercera; uno donde solo falla Norte no detecta la primera.
+Versiones equivocadas: solo consulta de verdad el stock de Norte, usa `< 0` en vez de `= 0` y confirma con la suma de los dos primeros. Un conjunto sin un caso confirmado no detecta la tercera; uno donde solo falla Norte no detecta la primera. Los casos tienen como mucho un proveedor sin stock, así que el motivo no depende de los turnos de la agenda.
 :::

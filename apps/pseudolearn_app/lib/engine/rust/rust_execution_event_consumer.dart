@@ -53,6 +53,10 @@ final class RustExecutionEventConsumer {
       taskId: tracker.currentTaskId,
       depth: event.depth,
     );
+    if (result is RustEnvironmentUnavailable &&
+        tracker.isResumingCancelledTask) {
+      return null;
+    }
     if (result is RustEnvironmentFailure) return result.reason;
     final environment = (result as RustEnvironmentValue).environment;
     tracker.recordEnvironment(

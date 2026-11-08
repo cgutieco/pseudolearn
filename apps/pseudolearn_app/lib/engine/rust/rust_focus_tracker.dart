@@ -18,6 +18,7 @@ final class RustFocusTracker {
 
   int _currentTaskId = 0;
   int? _failedTaskId;
+  bool _resumingCancelledTask = false;
   int _focusRevision = 0;
 
   RustFocusTracker(this._view)
@@ -47,9 +48,12 @@ final class RustFocusTracker {
 
   int get focusRevision => _focusRevision;
 
+  bool get isResumingCancelledTask => _resumingCancelledTask;
+
   BlockPosition get blockPosition => _contexts[_currentTaskId]!.stack.position;
 
   bool apply(RustEvent event, int eventIndex) {
+    _resumingCancelledTask = false;
     if (event.sourceRevisionId != null &&
         event.sourceRevisionId != _view.revision) {
       return false;
@@ -150,6 +154,8 @@ final class RustFocusTracker {
       return false;
     }
     if (_currentTaskId != taskId) _focusRevision++;
+    _resumingCancelledTask =
+        context.status == ExecutionTaskStatus.cancellationRequested;
     _currentTaskId = taskId!;
     context.status = ExecutionTaskStatus.running;
     context.lastEventIndex = eventIndex;

@@ -76,8 +76,46 @@ FinTareas
 FinAlgoritmo
 ''';
 
+const String _unstartedSiblingsProgram = '''
+SubProceso Suspendible Consultar(nombre Como Cadena, stock Como Entero) Como Resultado<Entero, Cadena>
+Si stock = 0 Entonces
+Retornar Error(nombre + " no tiene stock");
+FinSi
+Retornar Exito(stock);
+FinSubProceso
+Algoritmo Pedido
+Tareas fallo
+Lanzar Consultar("Norte", 0);
+Lanzar Consultar("Sur", 3);
+Lanzar Consultar("Oeste", 2);
+FinTareas
+Segun fallo Hacer
+Algo(problema): Escribir "Pedido suspendido: ", problema.Primero;
+Nada: Escribir "Pedido confirmado";
+FinSegun
+FinAlgoritmo
+''';
+
 void main() {
   tearDownAll(closeTestEngine);
+
+  test('steps past siblings cancelled before they ever ran', () {
+    final execution = nativeTestEngine.createProgramExecution();
+    var step = _start(execution, _unstartedSiblingsProgram);
+    for (var count = 0; !step.isTerminal; count++) {
+      if (count == 4096) break;
+      step = execution.step();
+    }
+    final tasks = _tasks(step);
+
+    expect(step.isFinished, isTrue, reason: step.haltReason);
+    expect(execution.outputLines.map((line) => line.text), [
+      'Pedido suspendido: Norte no tiene stock',
+    ]);
+    expect(tasks[1]!.completionOutcome, 'error');
+    expect(tasks[2]!.status, ExecutionTaskStatus.cancelled);
+    expect(tasks[3]!.status, ExecutionTaskStatus.cancelled);
+  });
 
   test('retains recoverable error and cancelled sibling outcomes', () {
     final step = _execute(_recoverableFailureProgram);

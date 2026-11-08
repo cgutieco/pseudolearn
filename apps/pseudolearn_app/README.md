@@ -121,7 +121,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Capturas de producto y material de tiendas con la ruta de aprendizaje | Regenerar §2.8 y §2.9 sobre la ruta publicada; las imágenes versionadas muestran todavía la base de conocimiento anterior | Abierto |
 | Ancla dentro de una sección al seguir un enlace de especificación desde la ruta | `ReferenceSectionPage` abre la sección por identidad y no desplaza a un ancla interior; el enlace conserva el ancla en el paquete | Abierto |
 | Límite de ejecución de los ejercicios | La app corta a 10 000 pasos (`ProgramRunner.defaultStepLimit`) y el compilador de la ruta a 100 000 sentencias; `route_exercise_gate_test` garantiza que cada solución de referencia cabe en el límite de la app | Vigilado por test |
-| Cancelación de tareas hermanas en ejecución paso a paso | El motor, en el modo paso a paso que usa la app, detiene el programa (`programHalted`) cuando una tarea de un ámbito `Tareas` termina con `Error` y quedan hermanas vivas que cancelar; la ejecución completa del compilador de la ruta lo resuelve bien. Los ejercicios comprobados de la lección 5.3 no lanzan tareas que fallen, y el programa `proveedores` de esa lección se detiene si se ejecuta en la app | Abierto en el motor |
+| Cancelación de tareas hermanas en ejecución paso a paso | El motor reanuda la hermana cancelada solo para completar su cancelación, y en ese evento ya no es consultable; `RustExecutionEventConsumer` lo acepta sin detener el paso (ver §4.10) | Resuelto en la app; el motor cumple el corpus. `rust_task_termination_test` lo ejercita paso a paso con el puente real |
 
 ---
 
@@ -870,7 +870,7 @@ La capa `host` comparte el anillo 2 con engine y data; solo importa model y port
   | `statement_entered`, `statement_exited`, `decision`, `call`, `return`, salida y entrada | La última tarea reanudada; la raíz antes de la primera | Solo cambia el contexto dueño; los eventos de control refrescan variables en el índice global consumido |
   | `task_spawned` | `data.task` nace en `created` sin marco; el padre conserva el índice del evento | No cambia la tarea activa ni hereda foco o pila |
   | `task_ready` | `data.task` pasa a `ready` | No cambia la tarea activa |
-  | `task_resumed` | `data.task` pasa a `running` | Selecciona ese contexto y refresca sus variables; un cambio de tarea aumenta la revisión global de foco |
+  | `task_resumed` | `data.task` pasa a `running` | Selecciona ese contexto y refresca sus variables; un cambio de tarea aumenta la revisión global de foco. Si la tarea tenía la cancelación pedida y ya no es consultable, conserva su último entorno |
   | `task_suspended` | `data.task` pasa a `suspended` | Conserva foco, pila y variables para consultar ese evento global |
   | `task_completed` | `data.task` conserva estado `completed` y resultado | Conserva su última pila, foco y variables |
   | `task_cancel_requested` | `data.task` conserva `cancellationRequested`; `data.origin` señala quién pidió cancelarla | No selecciona la tarea cancelada |
@@ -884,8 +884,21 @@ La capa `host` comparte el anillo 2 con engine y data; solo importa model y port
   de cero debe reconstruir la atribución y los contextos desde la historia retenida anterior; no puede asumir la raíz.
   La ejecución actual comienza en el evento cero.
 
-  Los errores de consulta de estado se representan como fallos del paso, no como una tabla vacía. La identidad de nodo
-  solo enlaza con la vista de su revisión; nombres, líneas y profundidad no identifican una tarea ni un marco.
+  Los errores de consulta de estado se representan como fallos del paso, no como una tabla vacía, con una única
+  excepción. Cuando falla una tarea de un ámbito `Tareas`, el motor reanuda cada hermana con cancelación pedida para que
+  termine su cancelación: emite `task_resumed` y, si la hermana no tiene limpieza pendiente, `task_completed` con
+  `cancelled` en la misma instrucción. El estado de un evento es el del instante posterior a su instrucción, y
+  `query_frame` con `task_id` solo responde para tareas activas o suspendidas, así que en ese `task_resumed` la hermana
+  ya no es consultable y el motor responde con un error de uso. Es conducta normativa del motor, no un defecto. Por eso
+  `RustWatchRows` distingue `RustEnvironmentUnavailable` (uso en el primer marco) de un fallo de consulta, y
+  `RustExecutionEventConsumer` lo acepta sin detener el paso solo cuando `RustFocusTracker.isResumingCancelledTask`
+  indica que el evento recién aplicado reanudó una tarea con cancelación pedida. Esa tarea conserva su último entorno.
+  Cualquier otra tarea no consultable sigue deteniendo el paso con `task_state_unavailable`. La ejecución completa no
+  consulta estado y no pasaba por este camino; antes de esta excepción el modo paso a paso se detenía
+  (`programHalted`) cuando la tarea que fallaba no era la última en terminar.
+
+  La identidad de nodo solo enlaza con la vista de su revisión; nombres, líneas y profundidad no identifican una tarea
+  ni un marco.
 
   Las superficies de trabajo (editor, diagramas, tabla de traza y código equivalente) sincronizan el nodo de foco sin
   recalcular análisis independientes. Conservan el mismo modelo `ExecutionFocus`:
