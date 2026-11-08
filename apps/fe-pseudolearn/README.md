@@ -390,6 +390,19 @@ sin segunda implementación es coste sin beneficio.
 
 ---
 
+### Decisión 14: `llms.txt` y `llms-full.txt` publican la ficha del lenguaje generada
+
+- **Problema:** los asistentes de código de terceros conocen PSeInt y no PseudoLearn, y escriben índices desde uno,
+  omiten el punto y coma o declaran parámetros sin tipo cuando alguien les pide ayuda con un programa.
+- **Elección:** `/llms.txt` sigue la convención de llmstxt.org (título, resumen y enlaces) y `/llms-full.txt` sirve la
+  ficha del lenguaje para agentes completa, primero en inglés y luego en español. Ambas son rutas estáticas en
+  `src/pages/` que delegan en `src/shared/agent-sheet/llms.ts`, que importa como texto los Markdown de
+  `src/shared/agent-sheet/generated/`. Esa carpeta la escribe `see agent-sheet` desde el corpus en
+  `packages/pseudolearn_spec`; no se edita a mano (`GEN-NO-HAND-COPY`), Prettier la ignora y `cargo xtask verify` de
+  ese miembro falla si está desfasada. Al no tener página `.astro`, no entran en la paridad de rutas por idioma.
+- **Alternativas descartadas:** copiar la ficha en `public/` (se desfasa sin que nada lo detecte) o generarla en el
+  build de Astro (obligaría a la web a leer el corpus y su exportación).
+
 ## 5. Reglas de código
 
 Están en el [`AGENTS.md`](../../AGENTS.md) de la raíz con identificador estable y verificador asociado. Las tres que más
