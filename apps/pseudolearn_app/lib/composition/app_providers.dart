@@ -11,6 +11,7 @@ import '../application/export/export_cubit.dart';
 import '../application/route/route_bank_cubit.dart';
 import '../application/route/route_exercise_cubit.dart';
 import '../application/route/route_index_cubit.dart';
+import '../application/route/route_spec_links_cubit.dart';
 import '../application/route/route_lesson_cubit.dart';
 import '../application/route/session/exercise_session_cubit.dart';
 import '../application/reference/reference_index_cubit.dart';
@@ -147,6 +148,10 @@ List<BlocProvider> createKnowledgeProviders(AppDependencies dependencies) {
         repository: dependencies.routeRepository,
         progressStore: dependencies.localProgressStore,
       ),
+    ),
+    BlocProvider<RouteSpecLinksCubit>(
+      create: (_) =>
+          RouteSpecLinksCubit(repository: dependencies.routeRepository),
     ),
     BlocProvider<ReferenceIndexCubit>(
       create: (_) =>

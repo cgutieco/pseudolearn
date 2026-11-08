@@ -16,6 +16,7 @@ final class ReferenceReader extends StatefulWidget {
   final ReferenceEdition edition;
   final String? anchor;
   final ValueChanged<String> onOpenSection;
+  final Widget? footer;
 
   const ReferenceReader({
     super.key,
@@ -23,6 +24,7 @@ final class ReferenceReader extends StatefulWidget {
     required this.edition,
     required this.anchor,
     required this.onOpenSection,
+    this.footer,
   });
 
   @override
@@ -126,6 +128,7 @@ final class _ReaderColumn extends StatelessWidget {
               onOpenSection: widget.onOpenSection,
             ),
           ),
+        ?widget.footer,
       ],
     );
   }

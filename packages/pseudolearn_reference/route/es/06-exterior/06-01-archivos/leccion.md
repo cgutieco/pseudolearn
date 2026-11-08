@@ -86,6 +86,7 @@ cierro la puerta
 
 ::: especificacion
 - biblioteca.archivos
+- biblioteca.texto
 - control.diferir
 - tareas.efectos
 :::

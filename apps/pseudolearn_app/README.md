@@ -1217,6 +1217,12 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
     - `presentation/route/` es el lector: bloques de lección, avisos de la ruta, tira del ciclo, panel de respuesta por
       tipo y enlaces. Un enlace `ruta:<lección>` abre otra lección; un enlace de especificación abre su sección en el
       lector de §4.62.
+    - El camino de vuelta, de la Especificación a la ruta, sale de `spec-links.json`: `RouteSpecLinksCubit` cruza ese
+      mapa con el índice una vez por edición y deja, por sección, las lecciones que la enlazan en el orden del archivo,
+      descartando identidades que el índice no publica. `presentation/reference/reference_route_links.dart` las pinta
+      como «Aprender en la ruta» al pie de la sección (el lector recibe el pie como un `Widget` opcional, sin conocer la
+      ruta). Sin proveedor del cubit, o si el paquete de la ruta falta, el pie no se dibuja: la Especificación se lee
+      igual.
 - **Inventario de la retirada:** se borraron `assets/knowledge/`, `lib/data/knowledge/`, `lib/engine/knowledge/`,
   `lib/application/knowledge/`, la vista de módulo y sus ilustraciones, el puerto `KnowledgeRepository`, la cadena de
   `SyntaxReferenceSource` (sin consumidor tras la retirada), `tool/check_content.dart` y sus tests, y las claves de

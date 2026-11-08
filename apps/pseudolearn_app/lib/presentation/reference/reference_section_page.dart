@@ -9,6 +9,7 @@ import '../l10n/generated/app_localizations.dart';
 import '../theme/app_theme.dart';
 import 'reference_edition_resolver.dart';
 import 'reference_reader.dart';
+import 'reference_route_links.dart';
 
 final class ReferenceSectionPage extends StatefulWidget {
   final String sectionId;
@@ -53,6 +54,7 @@ final class _ReferenceSectionPageState extends State<ReferenceSectionPage> {
           sectionId: widget.sectionId,
           anchor: widget.anchor,
           onOpenSection: _openSection,
+          footer: ReferenceRouteLinksFooter(sectionId: widget.sectionId),
         ),
       ),
     );
@@ -64,6 +66,7 @@ final class ReferenceSectionBody extends StatelessWidget {
   final String sectionId;
   final String? anchor;
   final ValueChanged<String> onOpenSection;
+  final Widget? footer;
 
   const ReferenceSectionBody({
     super.key,
@@ -71,6 +74,7 @@ final class ReferenceSectionBody extends StatelessWidget {
     required this.sectionId,
     required this.anchor,
     required this.onOpenSection,
+    this.footer,
   });
 
   @override
@@ -83,6 +87,7 @@ final class ReferenceSectionBody extends StatelessWidget {
         edition: edition,
         anchor: anchor,
         onOpenSection: onOpenSection,
+        footer: footer,
       );
     }
     if (state.statusOf(sectionId) == ReferenceSectionStatus.notFound) {

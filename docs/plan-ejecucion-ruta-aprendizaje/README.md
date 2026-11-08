@@ -1,6 +1,6 @@
 # Plan de ejecución — Ruta de aprendizaje de PseudoLearn
 
-Estado: aprobado para ejecutar por fases. Ninguna fase de implementación ha empezado.
+Estado: ejecutado. Las fases RA-1 a RA-7 están cerradas en `feature/agregar-ruta-de-especificacion`; la revisión integral está en [`30-revision-integral.md`](30-revision-integral.md).
 
 Este plan convierte la propuesta de [`../plan-ruta-aprendizaje.md`](../plan-ruta-aprendizaje.md) en trabajo ejecutable.
 Lo ejecuta un agente que no participó en el diseño. Por eso cada decisión, cada lección, cada figura y cada

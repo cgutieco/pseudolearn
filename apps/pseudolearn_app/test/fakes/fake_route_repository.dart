@@ -12,6 +12,7 @@ class FakeRouteRepository implements RouteRepository {
   final Map<String, RouteExercise> exercises;
   final Map<String, List<String>> specLinks;
   final bool failToc;
+  final bool failSpecLinks;
   final List<ReferenceEdition> requestedEditions = [];
 
   FakeRouteRepository({
@@ -20,6 +21,7 @@ class FakeRouteRepository implements RouteRepository {
     this.exercises = const {},
     this.specLinks = const {},
     this.failToc = false,
+    this.failSpecLinks = false,
   });
 
   @override
@@ -49,7 +51,15 @@ class FakeRouteRepository implements RouteRepository {
   @override
   Future<ContentLoadResult<Map<String, List<String>>>> loadSpecLinks(
     ReferenceEdition edition,
-  ) async => ContentLoaded(specLinks);
+  ) async {
+    if (failSpecLinks) {
+      return const ContentLoadFailed(
+        failure: ContentLoadFailure.assetMissing,
+        detail: 'spec-links',
+      );
+    }
+    return ContentLoaded(specLinks);
+  }
 
   ContentLoadResult<T> _found<T>(T? value, String id) {
     if (value == null) {
