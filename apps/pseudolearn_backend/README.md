@@ -36,6 +36,9 @@ Lo consume `apps/pseudolearn_app` por HTTP: `supabase.functions.invoke('delete-a
    aplican a producción.
 3. **Secretos del servidor:** declaración de qué secretos existen, quién los lee y dónde se guardan
    (§2.1). Ningún secreto vive en el repositorio.
+4. **Proxy del modelo del agente Nodo (`agent-responses`) y libro de créditos (`agent-credits`):**
+   la app nunca tiene la clave del proveedor; el servidor fija el modelo, autoriza el saldo, reenvía
+   la petición a la Responses API, debita según el uso real y devuelve el saldo (§4.10).
 
 ### 1.3 Fuera de alcance a propósito
 
@@ -79,11 +82,14 @@ Lo consume `apps/pseudolearn_app` por HTTP: `supabase.functions.invoke('delete-a
 
 ### 1.5 Pendientes técnicos declarados
 
-| Pendiente                                        | De quién depende                                                                                                                                                                                                                           | Estado actual |
-| :----------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| Eliminar `public.delete_account()` en producción | Publicación del build de `apps/pseudolearn_app` 1.0.0 que invoca `delete-account`: el build rechazado de la misma versión todavía llama a la RPC. Mover `supabase/deferred/…_drop_delete_account.sql` a `supabase/migrations/` y aplicarla | Abierto       |
-| Límite de líneas por función en el verificador   | Un analizador de TypeScript sin dependencias remotas; hoy el tamaño de función se revisa en revisión de código                                                                                                                             | Abierto       |
-| Prueba de extremo a extremo contra Apple real    | Una cuenta de Apple de prueba y un build de la app firmado; los tests cubren el contrato REST con respuestas simuladas                                                                                                                     | Abierto       |
+| Pendiente                                           | De quién depende                                                                                                                                                                                                                                 | Estado actual |
+| :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
+| Eliminar `public.delete_account()` en producción    | Publicación del build de `apps/pseudolearn_app` 1.0.0 que invoca `delete-account`: el build rechazado de la misma versión todavía llama a la RPC. Mover `supabase/deferred/…_drop_delete_account.sql` a `supabase/migrations/` y aplicarla       | Abierto       |
+| Límite de líneas por función en el verificador      | Un analizador de TypeScript sin dependencias remotas; hoy el tamaño de función se revisa en revisión de código                                                                                                                                   | Abierto       |
+| Verificadores de compra reales (`PurchaseVerifier`) | Cuentas de App Store Server API, Microsoft Store y Stripe para la descarga directa de macOS y Windows. Dentro de iOS la venta tiene que ser compra integrada. Hoy solo existe el adaptador simulado, activo solo con `AGENT_PURCHASES=simulated` | Abierto       |
+| Notificaciones de reembolso de las tiendas          | Los adaptadores reales de compra; revocar periodo o recarga al recibir el reembolso                                                                                                                                                              | Abierto       |
+| Segundo proveedor de modelo opcional                | Un `ModelGateway` adicional; el dominio ya no depende de OpenAI salvo por la forma de `usage`                                                                                                                                                    | Abierto       |
+| Prueba de extremo a extremo contra Apple real       | Una cuenta de Apple de prueba y un build de la app firmado; los tests cubren el contrato REST con respuestas simuladas                                                                                                                           | Abierto       |
 
 ---
 
@@ -162,6 +168,28 @@ supabase db push --linked
 5. Tras la publicación del build que invoca `delete-account`: mover
    `supabase/deferred/20260914000002_drop_delete_account.sql` a `supabase/migrations/` y ejecutar
    `supabase db push --linked`.
+
+#### Agente Nodo: proxy y créditos
+
+```bash
+supabase secrets set --project-ref <ref> OPENAI_API_KEY=<clave> AGENT_MODEL=gpt-6-luna AGENT_PURCHASES=disabled
+supabase db push --linked
+supabase functions deploy agent-responses agent-credits --project-ref <ref>
+```
+
+1. Sin `OPENAI_API_KEY`, `agent-responses` responde `503 model_unconfigured` y no cobra; el resto de
+   la app sigue funcionando. `AGENT_MODEL` es opcional (por defecto `gpt-6-luna`).
+2. `AGENT_PURCHASES` vale `disabled` salvo que se escriba exactamente `simulated`. **Nunca**
+   `simulated` en producción: el adaptador simulado concede el producto pedido sin cobrar.
+3. Para pruebas internas con compras simuladas se usa un proyecto de Supabase distinto con
+   `AGENT_PURCHASES=simulated`.
+4. La app se compila con `--dart-define=AGENT_BACKEND=proxy` y
+   `--dart-define=AGENT_PROXY_URL=https://<ref>.supabase.co/functions/v1`.
+5. Prueba local sin Docker:
+   `SUPABASE_URL=http://127.0.0.1:54321
+   SUPABASE_SECRET_KEYS='{"default":"x"}' deno run --allow-net --allow-env
+   supabase/functions/agent-responses/index.ts`
+   responde `503 model_unconfigured` a un `POST`.
 
 - **Checklist de release:**
   - [ ] `deno task verify` en verde.
@@ -364,6 +392,60 @@ estado parcial; la app impide la doble pulsación.
     obligaría a todos los clientes publicados a filtrar.
   - _Clave primaria global `id`:_ un identificador elegido por el cliente no debe poder colisionar
     con el de otra cuenta.
+
+### 4.10 Proxy del modelo y libro de créditos del agente
+
+- **Problema:** el agente de la app necesita un modelo de lenguaje de pago. La clave no puede viajar
+  en la app, el coste tiene que repercutirse por uso y una caída del proveedor no puede cobrarse.
+- **Elección:**
+  - **Endpoints.** `POST /functions/v1/agent-responses` recibe el cuerpo de la Responses API con
+    `Authorization: Bearer <JWT de Supabase>`, `X-Request-Id` (una llamada al modelo) y
+    `X-PseudoLearn-Turn-Id` (la petición de la persona, que agrupa hasta 14 llamadas).
+    `GET
+    /functions/v1/agent-credits` devuelve el saldo y
+    `POST /functions/v1/agent-credits/purchases` canjea una compra (`store`, `product_id`,
+    `transaction_id`, `evidence`).
+  - **Política del cuerpo** (`domain/request_policy.ts`): el servidor fija `model` (`AGENT_MODEL`),
+    `store: false`, `tool_choice: auto`, esfuerzo de razonamiento como mucho `medium` (por defecto
+    `low`) y salida ≤ 4 000 tokens; solo admite herramientas de tipo `function`, que se ejecutan en
+    el dispositivo. Herramientas con coste propio (búsqueda web, archivos) se rechazan.
+  - **Créditos** (`domain/credits.ts`): milicréditos enteros,
+    `ceil((1,25 × entrada sin caché + 0,1 × entrada en caché + 5 × salida) / 10 000 × 1000)` según
+    el `usage` real. Plan mensual de 300 créditos sin acumulación (30 días), prueba de 7 días y 40
+    créditos una vez por cuenta, recargas de 150 créditos que no caducan y se gastan después del
+    plan. Tope de 15 créditos por petición de la persona y 60 llamadas por minuto.
+  - **Libro** (`20261108000002_agent_credits.sql`): `agent_ledger_periods`, `agent_ledger_top_ups` y
+    `agent_ledger_events`, legibles por su dueño con RLS. Las RPC `agent_balance`,
+    `agent_authorize`, `agent_debit` y `agent_grant_purchase` son `security definer` y solo las
+    ejecuta `service_role`, es decir, la función. `agent_debit` es idempotente por `request_id` y
+    gasta primero el periodo y luego las recargas más antiguas, bajo bloqueo de fila;
+    `agent_grant_purchase` es idempotente por `transaction_id` y recibe las cifras del catálogo
+    desde TypeScript, para que vivan en un solo sitio.
+  - **Orden**: método → configuración → sesión (GoTrue, como `delete-account`) → cuerpo →
+    autorización → modelo → débito. Si el modelo falla, devuelve 429 o no trae `usage`, no hay
+    débito.
+  - **Errores**: `{"error": {"code", "retryable", "requestId", "detail"?}}`; `detail` solo para
+    `invalid_request` y `upstream_error`. Códigos: `unauthenticated` 401, `subscription_required` y
+    `credits_exhausted` 402, `purchases_disabled` 403, `trial_used` 409, `invalid_request` 422,
+    `payload_too_large` 413, `request_cap` y `rate_limited` 429, `upstream_error` 502,
+    `upstream_rate_limited` y `model_unconfigured` 503.
+  - **Saldo en cabeceras**: `X-PseudoLearn-Credits-Remaining`, `-Allowance`, `-Top-Up`, `-Renews-At`
+    y `-Trial`, en créditos enteros redondeados hacia abajo.
+  - **Registro**: una línea por petición con evento, estado, código y duración. Nunca contenido.
+  - **Compras**: puerto `PurchaseVerifier` con un adaptador por tienda. Solo existe
+    `SimulatedPurchaseVerifier`, que acepta `store: simulated` y los productos
+    `pseudolearn.plus.trial`, `pseudolearn.plus.monthly` y `pseudolearn.plus.topup150`; la prueba
+    usa `trial:<usuario>` como transacción, de modo que una cuenta no la canjea dos veces.
+  - `agent-credits` reutiliza el dominio, el entorno, el verificador de sesión y el libro de
+    `agent-responses` por imports relativos de la misma capa; el verificador de arquitectura lo
+    permite porque la capa de destino es la misma.
+- **Referencia consultada:** el agente Maestro de TraceIron, del que se toman la fórmula de
+  créditos, la política del cuerpo y el sobre de errores. Se rechaza su identidad por StoreKit:
+  PseudoLearn usa la sesión de Supabase en iOS, macOS y Windows.
+- **Alternativas descartadas y por qué:**
+  - _Clave del proveedor en la app o introducida por la persona:_ se filtra y no permite cobrar.
+  - _Bucle de herramientas en el servidor:_ el motor y los documentos viven en el dispositivo.
+  - _Débito estimado antes de llamar:_ cobra caídas del proveedor; se debita con el `usage` real.
 
 ---
 

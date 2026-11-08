@@ -2,7 +2,7 @@
   "tasks": {
     "fmt": "deno fmt --check",
     "lint": "deno lint",
-    "check": "deno check supabase/functions/delete-account/index.ts tool/check_architecture.ts test/",
+    "check": "deno check supabase/functions/delete-account/index.ts supabase/functions/agent-responses/index.ts supabase/functions/agent-credits/index.ts tool/check_architecture.ts test/",
     "architecture": "deno run --allow-read=. tool/check_architecture.ts",
     "test": "deno test --allow-read=. test/",
     "verify": "deno task fmt && deno task lint && deno task check && deno task architecture && deno task test"
