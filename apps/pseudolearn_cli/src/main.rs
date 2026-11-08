@@ -40,6 +40,7 @@ mod lsp_command;
 mod lsp_framing;
 mod lsp_transport_state;
 mod lsp_workspace_loader;
+mod mcp_arguments;
 mod mcp_command;
 mod mcp_knowledge;
 mod mcp_program_tools;
@@ -96,6 +97,8 @@ mod lsp_command_tests;
 mod lsp_framing_tests;
 #[cfg(test)]
 mod lsp_workspace_loader_tests;
+#[cfg(test)]
+mod mcp_arguments_tests;
 #[cfg(test)]
 mod mcp_command_tests;
 #[cfg(test)]

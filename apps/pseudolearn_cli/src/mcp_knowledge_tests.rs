@@ -7,6 +7,9 @@ fn sections_split_on_second_and_third_level_headings() {
     let titles: Vec<&str> = found.iter().map(|section| section.title).collect();
     assert_eq!(titles, ["A", "B"]);
     assert!(sections("sin encabezados").is_empty());
+    let mixed = sections("# T\n\n## A\n\n### B\n\ndos\n\n## C\n\ntres\n");
+    let mixed_titles: Vec<&str> = mixed.iter().map(|section| section.title).collect();
+    assert_eq!(mixed_titles, ["A", "B", "C"]);
 }
 
 #[test]

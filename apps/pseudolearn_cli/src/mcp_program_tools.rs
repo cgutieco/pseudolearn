@@ -7,7 +7,6 @@ use serde_json::{Value, json};
 
 pub(crate) const DEFAULT_STEP_LIMIT: u64 = 10_000;
 pub(crate) const MAXIMUM_STEP_LIMIT: u64 = 100_000;
-pub(crate) const RUN_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(5);
 
 pub(crate) fn check(arguments: &Value) -> (Value, bool) {
     let Some(source) = text(arguments, "source") else {
@@ -55,19 +54,8 @@ pub(crate) fn run(arguments: &Value) -> (Value, bool) {
         },
         ..ExecuteRequest::default()
     };
-    (run_bounded(request), false)
-}
-
-fn run_bounded(request: ExecuteRequest) -> Value {
-    let (sender, receiver) = std::sync::mpsc::channel();
-    std::thread::spawn(move || {
-        let response = execute_program(&request);
-        let _sent = sender.send((response.output, response.termination));
-    });
-    match receiver.recv_timeout(RUN_TIMEOUT) {
-        Ok((output, termination)) => run_payload(&output, &termination),
-        Err(_) => json!({"output": "", "termination": "limit_reached", "limit": "time"}),
-    }
+    let response = execute_program(&request);
+    (run_payload(&response.output, &response.termination), false)
 }
 
 pub(crate) fn format(arguments: &Value) -> (Value, bool) {
@@ -116,8 +104,10 @@ pub(crate) fn explain(arguments: &Value) -> (Value, bool) {
 pub(crate) fn step_limit(arguments: &Value) -> u64 {
     arguments
         .get("step_limit")
-        .and_then(Value::as_u64)
-        .unwrap_or(DEFAULT_STEP_LIMIT)
+        .and_then(Value::as_i64)
+        .map_or(DEFAULT_STEP_LIMIT, |requested| {
+            u64::try_from(requested).unwrap_or(0)
+        })
         .clamp(1, MAXIMUM_STEP_LIMIT)
 }
 

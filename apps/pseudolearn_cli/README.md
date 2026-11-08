@@ -380,19 +380,23 @@ tienen forma de comprobar lo que proponen. Elección: `pseudo mcp` expone el nú
 mensaje JSON-RPC 2.0 por línea (`mcp_command.rs`, `mcp_protocol.rs`), con las herramientas `check`, `run`, `format`,
 `translate`, `explain`, `search_reference` y `example` (`mcp_tools.rs`, `mcp_program_tools.rs`, `mcp_knowledge.rs`) y
 la ficha del lenguaje como recurso `pseudolearn://language-sheet/<idioma>`. El contrato observable son las reglas
-R11 a R16 de `TOOL.CLI.CONVENTIONS` y sus casos C36 a C45, que el sujeto `cli` ejecuta en conformidad.
+R1 a R8 de `TOOL.MCP` y sus casos C1 a C15, que el sujeto `cli` ejecuta en conformidad.
 
-- `run` no concede ninguna capacidad (archivos, red, consola interactiva), acota `step_limit` a [1, 100 000] y corta a
-  los cinco segundos de reloj. El corte de reloj existe porque un bucle infinito de cuerpo vacío no ejecuta sentencias y
-  el límite de sentencias del motor no lo detiene; se ejecuta en un hilo aparte y, si se agota el tiempo, el hilo queda
-  consumiendo CPU hasta que termina el proceso. Es un pendiente del motor, no de la CLI.
+- `run` no concede ninguna capacidad (archivos, red, consola interactiva) y acota `step_limit` a [1, 100 000]. No hay
+  hilo ni guarda de reloj: el motor cuenta como sentencia cada iteración de un bucle de cuerpo vacío
+  (`ENG.LIMITS#R14`), así que toda ejecución termina por completarse, fallar o agotar el presupuesto, y la llamada
+  vuelve en el hilo que la hizo. Antes se cortaba a los cinco segundos desde un hilo aparte que seguía consumiendo CPU.
+- `tools/call` valida `arguments` contra el esquema que anuncia `tools/list` (`mcp_arguments.rs`): tipo, enumerado y
+  propiedades requeridas. Un `profile` desconocido o un `step_limit` en texto es `invalid_arguments`, no un valor por
+  omisión silencioso, porque un cliente que se equivoca de tipo debe enterarse.
 - La ficha vive en `generated/language-sheet.<idioma>.md`, que escribe `see agent-sheet` desde el corpus
   (`GEN-NO-HAND-COPY`), y se incrusta con `include_str!`.
 - Las claves de cada respuesta salen en el orden de construcción porque el árbol de dependencias activa
   `preserve_order` de `serde_json`; los casos fijan ese orden.
-- Se descartó una identidad `TOOL.MCP` propia: con las versiones congeladas una especificación nueva debe nacer estable
-  y con revisión independiente, que no existe todavía. Las reglas se añadieron a `TOOL.CLI.CONVENTIONS`, edición que el
-  congelamiento permite, y quedan pendientes de revisión por la persona responsable.
+- El contrato vive en su propia especificación, `TOOL.MCP`, y no dentro de `TOOL.CLI.CONVENTIONS`: el servidor tiene
+  ciclo de vida, esquema de herramientas y casos propios, y las convenciones de la CLI describen órdenes, idioma y códigos
+  de salida. La ficha del idioma se parte en secciones en cada línea `## ` o `### ` (`next_heading`), también cuando un
+  encabezado de tercer nivel precede a otro de segundo.
 
 ### Enlazador incluido y destinos nativos
 

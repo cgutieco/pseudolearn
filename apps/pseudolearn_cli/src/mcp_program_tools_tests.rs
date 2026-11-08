@@ -39,3 +39,17 @@ fn format_and_translate_refuse_broken_programs() {
         Some(&Value::from("invalid_arguments"))
     );
 }
+
+#[test]
+fn an_infinite_empty_loop_ends_at_the_statement_budget() {
+    let (payload, failed) = run(&json!({
+        "source": "Algoritmo P\n  Mientras Verdadero Hacer\n  FinMientras\nFinAlgoritmo\n",
+        "step_limit": 5
+    }));
+    assert!(!failed);
+    assert_eq!(
+        payload.get("termination"),
+        Some(&Value::from("limit_reached"))
+    );
+    assert_eq!(payload.get("limit"), Some(&Value::from("statements")));
+}

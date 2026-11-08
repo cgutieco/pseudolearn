@@ -42,10 +42,18 @@ pub(crate) fn read_resource(parameters: &Value) -> Option<Value> {
     Some(json!({"contents": [{"uri": uri, "mimeType": "text/markdown", "text": sheet(locale)}]}))
 }
 
+fn next_heading(markdown: &str) -> Option<usize> {
+    markdown
+        .find("\n## ")
+        .into_iter()
+        .chain(markdown.find("\n### "))
+        .min()
+}
+
 pub(crate) fn sections(markdown: &str) -> Vec<SheetSection<'_>> {
     let mut found = Vec::new();
     let mut remaining = markdown;
-    while let Some(start) = remaining.find("\n## ").or_else(|| remaining.find("\n### ")) {
+    while let Some(start) = next_heading(remaining) {
         let heading = remaining
             .get(start..)
             .unwrap_or_default()
@@ -57,12 +65,7 @@ pub(crate) fn sections(markdown: &str) -> Vec<SheetSection<'_>> {
             .trim_start_matches('#')
             .trim();
         let rest = heading.get(title_end..).unwrap_or_default();
-        let body_end = rest
-            .find("\n## ")
-            .into_iter()
-            .chain(rest.find("\n### "))
-            .min()
-            .unwrap_or(rest.len());
+        let body_end = next_heading(rest).unwrap_or(rest.len());
         found.push(SheetSection {
             title,
             body: rest.get(..body_end).unwrap_or_default().trim(),
