@@ -2797,6 +2797,16 @@ proyecto no simula participantes ni resultados. Mientras no existan, ese resulta
        dentro del cuerpo cuando la comprobación falló, porque entonces aporta el caso oculto. La franja arranca plegada
        si el ejercicio está superado y se pliega sola al superarlo, salvo que la persona la haya abierto o cerrado a
        mano (`DocumentPage._exerciseStripExpansion` es `null` hasta que la toca).
+    7. **La tira nunca deja alto sin asignar.** Entre la cabecera y el pie, `StripWorkspaceSplit` coloca la tira con
+       un alto máximo de la mitad del espacio que comparte con el área de trabajo, y el área de trabajo (pestañas y
+       superficie activa) se lleva todo lo demás con `Expanded`. El cuerpo desplegado se desplaza dentro de ese
+       máximo. Antes la tira era un `Flexible` hermano del `Expanded` del área de trabajo: el `Flex` daba a cada uno la
+       mitad del espacio libre y la tira, de ajuste suelto, solo usaba su alto propio. Su sobrante quedaba sin asignar
+       al final de la columna, en un hueco muerto debajo de la cinta de depuración, sobre todo con la tira plegada o
+       en tableta. Acotar con la mitad de toda la columna tampoco servía: con el teclado abierto en 360×640 dejaba sin
+       sitio a la cabecera y a las pestañas. `document_column_test` comprueba en 375×812, 360×640, 768×1024 y
+       1024×1366, con la tira desplegada, plegada y tras ejecutar, que el pie llega al borde inferior de la columna y
+       que el área de trabajo termina donde empieza el pie.
 - **Qué se retiró del modelo:** `ExecutionViewAction.dismissStatusBanner`, `ExecutionState.isStatusBannerDismissed`,
   `ExecutionState.isNearStepLimit` y `StepBatchRunner.warningUiAdvanceThreshold`, que solo existían para el banner y
   para colorear el contador. `ExecutionState.statementNumber` se conserva porque lo consumen los guiones de escena

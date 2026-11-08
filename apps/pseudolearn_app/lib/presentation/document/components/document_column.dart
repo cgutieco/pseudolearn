@@ -14,6 +14,7 @@ import 'document_footer.dart';
 import 'document_header.dart';
 import 'document_workspace.dart';
 import 'exercise_strip.dart';
+import 'strip_workspace_split.dart';
 import 'tab_selector.dart';
 
 final class DocumentColumn extends StatelessWidget {
@@ -96,7 +97,6 @@ final class _DocumentColumnContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final exerciseId = editorState.document?.exerciseId;
     final ws = _WorkspaceSection(
       activeTab: activeTab,
       companionLayout: companionLayout,
@@ -111,15 +111,16 @@ final class _DocumentColumnContent extends StatelessWidget {
     return Column(
       children: [
         _Header(documentId: documentId),
-        if (exerciseId != null)
-          Flexible(
-            child: _ExerciseStripConnector(
-              exerciseId: exerciseId,
+        Expanded(
+          child: StripWorkspaceSplit(
+            strip: _ExerciseStripConnector(
+              exerciseId: editorState.document?.exerciseId,
               expansion: exerciseStripExpansion,
               onToggleExpand: onToggleExerciseStrip,
             ),
+            workspace: ws,
           ),
-        ws,
+        ),
         _Footer(onPace: onPace),
       ],
     );
@@ -167,33 +168,31 @@ final class _WorkspaceSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        children: [
-          TabSelector(
+    return Column(
+      children: [
+        TabSelector(
+          activeTab: activeTab,
+          onTabSelected: onTabSelected,
+          canAccompany: CompanionLayout.isOfferedFor(activeTab),
+          isAccompanying: isAccompanying,
+          showsCompanionLabel: showsCompanionLabel,
+          companionDirection: companionDirection,
+          onToggleCompanion: onToggleCompanion,
+        ),
+        Expanded(
+          child: DocumentWorkspace(
             activeTab: activeTab,
-            onTabSelected: onTabSelected,
-            canAccompany: CompanionLayout.isOfferedFor(activeTab),
-            isAccompanying: isAccompanying,
-            showsCompanionLabel: showsCompanionLabel,
-            companionDirection: companionDirection,
-            onToggleCompanion: onToggleCompanion,
+            companionLayout: companionLayout,
+            onRun: onRun,
           ),
-          Expanded(
-            child: DocumentWorkspace(
-              activeTab: activeTab,
-              companionLayout: companionLayout,
-              onRun: onRun,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
 
 final class _ExerciseStripConnector extends StatelessWidget {
-  final String exerciseId;
+  final String? exerciseId;
   final bool? expansion;
   final ValueChanged<bool> onToggleExpand;
 
@@ -205,6 +204,8 @@ final class _ExerciseStripConnector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final exerciseId = this.exerciseId;
+    if (exerciseId == null) return const SizedBox.shrink();
     return BlocBuilder<ExerciseSessionCubit, ExerciseSessionState>(
       builder: (context, sessionState) {
         final isExpanded =
