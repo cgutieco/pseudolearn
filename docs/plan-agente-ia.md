@@ -285,19 +285,29 @@ tokens de sesión.
 
 ## 9. Línea base (se completa en AG-0)
 
+Ejecutada el 2026-11-08 sobre `d28fabd8`, antes de cualquier cambio.
+
 | Miembro | Verificadores | Resultado |
 |---|---|---|
-| `apps/pseudolearn_app` | | |
-| `apps/pseudolearn_backend` | | |
-| `packages/pseudolearn_spec` | | |
-| `apps/pseudolearn_cli` | | |
-| `apps/fe-pseudolearn` | | |
-| `apps/pseudolearn_vscode` | | |
+| `apps/pseudolearn_app` | `flutter analyze --fatal-infos --fatal-warnings`, `tool/check_limits.dart`, `tool/check_design_system.dart`, `flutter test` | Verde: 2284 tests, 2 omitidos |
+| `apps/pseudolearn_backend` | `deno task verify` | Verde: 71 tests |
+| `packages/pseudolearn_spec` | `cargo xtask verify` | Verde: 3370 observaciones, 0 divergencias |
+| `apps/pseudolearn_cli` | `cargo xtask verify` | Verde |
+| `apps/fe-pseudolearn` | `pnpm check:all` | Verde |
+| `apps/pseudolearn_vscode` | `pnpm check:types`, `pnpm test` | Verde |
+
+### 9.1 Decisiones abiertas resueltas en AG-0
+
+La persona pidió ejecutar todas las fases sin preguntas y con la opción recomendada en cada caso:
+
+- D-01: nombre **Nodo** con la etiqueta «IA».
+- D-21: excepción acotada del glifo documentada en `fundamentos-visuales.md`.
+- Edad mínima: 13 años. El consentimiento se redacta para adolescentes; menores de 13 quedan fuera del agente.
+- §7: cifras confirmadas tal como están.
 
 ## 10. Riesgos y preguntas abiertas
 
-- Edad mínima de los usuarios: si incluye menores de 13 años, cambia el consentimiento y la clasificación por edad.
-  Bloquea AG-8.
+- Edad mínima de los usuarios: resuelta en AG-0 (13 años, §9.1).
 - Coste: el prompt del sistema puede pesar entre 15k y 25k tokens; depende del caché y de recuperar por partes. AG-10
   lo mide.
 - Falsos amigos de PSeInt que el analizador no detecta (base cero): la mitigación es ejecutar casos de prueba en
@@ -306,4 +316,4 @@ tokens de sesión.
   confirma.
 - Inyección de instrucciones desde el contenido de un documento: los resultados de herramientas se marcan como datos
   y las destructivas siempre piden confirmación en la interfaz.
-- Choque del glifo con §6.2 de fundamentos visuales (D-21), pendiente de la persona.
+- Choque del glifo con §6.2 de fundamentos visuales (D-21): resuelto en AG-0 con la excepción acotada (§9.1).
