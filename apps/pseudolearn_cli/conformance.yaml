@@ -14,7 +14,8 @@
     "TOOL.CLI.TRANSLATE",
     "TOOL.CLI.IR",
     "TOOL.CLI.RUN",
-    "TOOL.DAP"
+    "TOOL.DAP",
+    "TOOL.MCP"
   ],
   "fases_cerradas": [],
   "vinculos": [
@@ -289,32 +290,42 @@
       "justificacion": "La CLI no ofrece negociación de versiones PLEV; C6–C9 verifican esa operación de la API."
     },
     {
-      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R11",
+      "regla": "TOOL.MCP@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R12",
+      "regla": "TOOL.MCP@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R13",
+      "regla": "TOOL.MCP@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R14",
+      "regla": "TOOL.MCP@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R15",
+      "regla": "TOOL.MCP@1.0.0#R5",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R16",
+      "regla": "TOOL.MCP@1.0.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.MCP@1.0.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.MCP@1.0.0#R8",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
