@@ -317,3 +317,21 @@ La persona pidió ejecutar todas las fases sin preguntas y con la opción recome
 - Inyección de instrucciones desde el contenido de un documento: los resultados de herramientas se marcan como datos
   y las destructivas siempre piden confirmación en la interfaz.
 - Choque del glifo con §6.2 de fundamentos visuales (D-21): resuelto en AG-0 con la excepción acotada (§9.1).
+
+## 11. Estado de ejecución (2026-11-08)
+
+Todas las fases ejecutadas en una sola iteración por petición expresa de la persona, sin paradas entre fases. Las
+decisiones viven en los README de cada miembro; aquí solo se listan las desviaciones respecto del plan:
+
+- `changes` es un getter y no un método, por el límite de métodos públicos de la app.
+- Los ejercicios del usuario se sincronizan con bandera `dirty` y su propio drenador, no con un decorador del outbox
+  compartido, porque el drenador de documentos consume todas las entradas del outbox.
+- La migración de ids de ejercicio a `route:` es en lectura: un id sin prefijo se lee como `route:`.
+- `/biblioteca/ejercicio/:id` es el editor del ejercicio propio; el intento se resuelve en la pantalla de documento de
+  siempre con `user:<id>`.
+- No se creó la identidad `TOOL.MCP`: una especificación nueva debe nacer estable con revisión independiente y no se
+  podía fabricar esa revisión. El contrato son las reglas R11 a R16 de `TOOL.CLI.CONVENTIONS`, pendientes de revisión.
+- El glifo se verifica con el comparador `paints` y no con capturas de referencia, que el proyecto no usa.
+- El benchmark del agente está implementado y probado con dobles; nunca se ejecutó contra el proveedor real.
+- Hallazgo heredado del motor: un bucle infinito de cuerpo vacío no consume sentencias y ningún límite del API lo
+  detiene; `pseudo mcp` lo acota con un tiempo de reloj.
