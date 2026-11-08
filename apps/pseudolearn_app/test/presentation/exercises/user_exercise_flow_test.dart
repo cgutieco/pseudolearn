@@ -20,7 +20,80 @@ Future<void> _type(WidgetTester tester, String name, String text) async {
   await tester.enterText(find.descendant(of: field, matching: find.byType(TextField)), text);
 }
 
+Future<InMemoryUserExerciseRepository> _pumpLibrary(WidgetTester tester) async {
+  tester.view.physicalSize = const Size(1200, 1600);
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.reset);
+  final exercises = InMemoryUserExerciseRepository()..exercises['ux-1'] = sumExercise();
+  await tester.pumpWidget(CubitScope(
+    dependencies: buildTestDependencies(userExerciseRepository: exercises),
+  ));
+  await tester.pumpAndSettle();
+  return exercises;
+}
+
+Future<void> _openMenu(WidgetTester tester) async {
+  await tester.tap(find.byKey(const ValueKey('user-exercise-menu:ux-1')));
+  await tester.pumpAndSettle();
+}
+
 void main() {
+  testWidgets('the exercise card summarises the statement, cases and hints', (tester) async {
+    await _pumpLibrary(tester);
+    final card = find.byKey(const ValueKey('user-exercise:ux-1'));
+    expect(find.descendant(of: card, matching: find.text(sumDraft().statement)), findsOneWidget);
+    expect(find.descendant(of: card, matching: find.text('2 test cases')), findsOneWidget);
+    expect(find.descendant(of: card, matching: find.text('2 hints')), findsOneWidget);
+    expect(find.descendant(of: card, matching: find.text('Edit')), findsNothing);
+    expect(find.descendant(of: card, matching: find.text('Delete')), findsNothing);
+  });
+
+  testWidgets('the options menu opens the editor for the exercise', (tester) async {
+    await _pumpLibrary(tester);
+    await _openMenu(tester);
+    await tester.tap(find.byKey(const ValueKey('user-exercise-edit')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('feature:user-exercise-editor')), findsOneWidget);
+    expect(find.text('Edit exercise'), findsOneWidget);
+  });
+
+  testWidgets('deleting from the options menu asks first and removes on confirmation', (tester) async {
+    final exercises = await _pumpLibrary(tester);
+    await _openMenu(tester);
+    await tester.tap(find.byKey(const ValueKey('user-exercise-delete')));
+    await tester.pumpAndSettle();
+    expect(find.text('Delete the exercise?'), findsOneWidget);
+    await tester.tap(find.text('Delete').last);
+    await tester.pumpAndSettle();
+    expect(exercises.exercises, isEmpty);
+    expect(find.byKey(const ValueKey('user-exercise:ux-1')), findsNothing);
+  });
+
+  testWidgets('cancelling the delete keeps the exercise', (tester) async {
+    final exercises = await _pumpLibrary(tester);
+    await _openMenu(tester);
+    await tester.tap(find.byKey(const ValueKey('user-exercise-delete')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+    expect(exercises.exercises.keys, ['ux-1']);
+  });
+
+  testWidgets('the editor marks which fields are required and explains each one', (tester) async {
+    tester.view.physicalSize = const Size(1200, 2400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(CubitScope(dependencies: buildTestDependencies()));
+    await tester.pumpAndSettle();
+    await _go(tester, '/biblioteca/ejercicio/nuevo');
+    expect(find.byKey(const ValueKey('user-exercise-required'), skipOffstage: false), findsNWidgets(4));
+    expect(find.byKey(const ValueKey('user-exercise-optional'), skipOffstage: false), findsNWidgets(6));
+    expect(find.bySemanticsLabel('Title, required'), findsOneWidget);
+    expect(find.bySemanticsLabel('Story, optional'), findsOneWidget);
+    expect(find.text('E.g.: Even or odd?'), findsOneWidget);
+    expect(find.text('A short name to recognise it in your list.'), findsOneWidget);
+  });
+
   testWidgets('the library lists user exercises and solving opens an attempt', (tester) async {
     tester.view.physicalSize = const Size(1200, 1600);
     tester.view.devicePixelRatio = 1;

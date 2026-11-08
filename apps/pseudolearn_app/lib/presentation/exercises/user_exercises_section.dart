@@ -5,12 +5,13 @@ import '../../application/exercises/user_exercise_library_cubit.dart';
 import '../../application/exercises/user_exercise_library_state.dart';
 import '../../domain/model/exercises/user_exercise.dart';
 import '../components/button/app_button.dart';
-import '../components/card/app_card.dart';
 import '../components/dialog/app_dialog.dart';
 import '../components/typography/app_text.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../theme/tokens/spacing.dart';
 import 'user_exercise_editor_page.dart';
+import 'user_exercise_menu.dart';
+import 'user_exercise_tile.dart';
 
 final class UserExercisesSection extends StatefulWidget {
   const UserExercisesSection({super.key});
@@ -43,6 +44,14 @@ final class _UserExercisesSectionState extends State<UserExercisesSection> {
     );
   }
 
+  void _openMenu(UserExercise exercise) {
+    showUserExerciseMenu(
+      context: context,
+      onEdit: () => context.push('/biblioteca/ejercicio/${exercise.id}'),
+      onDelete: () => _delete(exercise),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserExerciseLibraryCubit, UserExerciseLibraryState>(
@@ -50,8 +59,7 @@ final class _UserExercisesSectionState extends State<UserExercisesSection> {
         state: state,
         onCreate: () => context.push('/biblioteca/ejercicio/$newUserExerciseSegment'),
         onSolve: _solve,
-        onEdit: (exercise) => context.push('/biblioteca/ejercicio/${exercise.id}'),
-        onDelete: _delete,
+        onMenu: _openMenu,
       ),
     );
   }
@@ -61,15 +69,13 @@ final class _SectionView extends StatelessWidget {
   final UserExerciseLibraryState state;
   final VoidCallback onCreate;
   final ValueChanged<UserExercise> onSolve;
-  final ValueChanged<UserExercise> onEdit;
-  final ValueChanged<UserExercise> onDelete;
+  final ValueChanged<UserExercise> onMenu;
 
   const _SectionView({
     required this.state,
     required this.onCreate,
     required this.onSolve,
-    required this.onEdit,
-    required this.onDelete,
+    required this.onMenu,
   });
 
   @override
@@ -84,11 +90,11 @@ final class _SectionView extends StatelessWidget {
           _SectionHeading(onCreate: onCreate),
           if (state.isEmpty) AppText(l10n.userExercisesEmpty, variant: AppTextVariant.bodySmall),
           for (final exercise in state.exercises)
-            _ExerciseTile(
+            UserExerciseTile(
+              key: ValueKey('user-exercise:${exercise.id}'),
               exercise: exercise,
               onSolve: () => onSolve(exercise),
-              onEdit: () => onEdit(exercise),
-              onDelete: () => onDelete(exercise),
+              onMenu: () => onMenu(exercise),
             ),
         ],
       ),
@@ -117,41 +123,6 @@ final class _SectionHeading extends StatelessWidget {
             onPressed: onCreate,
           ),
         ],
-      ),
-    );
-  }
-}
-
-final class _ExerciseTile extends StatelessWidget {
-  final UserExercise exercise;
-  final VoidCallback onSolve;
-  final VoidCallback onEdit;
-  final VoidCallback onDelete;
-
-  const _ExerciseTile({
-    required this.exercise,
-    required this.onSolve,
-    required this.onEdit,
-    required this.onDelete,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: SpacingTokens.space2),
-      child: AppCard(
-        onTap: onSolve,
-        child: Wrap(
-          spacing: SpacingTokens.space2,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            AppText(exercise.title, variant: AppTextVariant.label),
-            AppButton(key: ValueKey('user-exercise-solve:${exercise.id}'), label: l10n.userExercisesSolve, variant: AppButtonVariant.primary, onPressed: onSolve),
-            AppButton(label: l10n.userExercisesEdit, variant: AppButtonVariant.tertiary, onPressed: onEdit),
-            AppButton(label: l10n.userExercisesDelete, variant: AppButtonVariant.tertiary, onPressed: onDelete),
-          ],
-        ),
       ),
     );
   }

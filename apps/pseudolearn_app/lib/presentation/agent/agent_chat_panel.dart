@@ -23,7 +23,10 @@ void openAgentChat(BuildContext context) {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      builder: (_) => const FractionallySizedBox(heightFactor: 0.92, child: AgentChatPanel()),
+      builder: (sheetContext) => Padding(
+        padding: EdgeInsets.only(bottom: DesignCanvasScope.of(sheetContext).keyboardInset),
+        child: const FractionallySizedBox(heightFactor: 0.92, child: AgentChatPanel()),
+      ),
     );
     return;
   }

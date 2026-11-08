@@ -110,4 +110,23 @@ void main() {
     expect(find.text('No lo borré.'), findsOneWidget);
     expect(find.byKey(const ValueKey('agent-confirmation')), findsNothing);
   });
+
+  testWidgets('on a phone the composer stays above the keyboard', (tester) async {
+    await _pumpApp(
+      tester,
+      auth: FakeAuthGateway(currentSession: _account),
+      credits: FakeCreditsGateway(_balance(30)),
+      model: FakeAgentModelGateway(),
+      consent: InMemoryAgentConsentStore(consented: true),
+    );
+    tester.view.physicalSize = const Size(390, 844);
+    await tester.pumpAndSettle();
+    await _openAgent(tester);
+    const keyboardHeight = 300.0;
+    tester.view.viewInsets = const FakeViewPadding(bottom: keyboardHeight);
+    addTearDown(tester.view.resetViewInsets);
+    await tester.pumpAndSettle();
+    final composerBottom = tester.getBottomLeft(find.byKey(const ValueKey('agent-composer'))).dy;
+    expect(composerBottom, lessThanOrEqualTo(844 - keyboardHeight));
+  });
 }

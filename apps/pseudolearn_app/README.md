@@ -2999,11 +2999,24 @@ proyecto no simula participantes ni resultados. Mientras no existan, ese resulta
     `push_user_exercises` y baja por `server_revision` con su propio cursor en `sync_state`. En conflicto gana la
     edición con `updated_at` más reciente; un ejercicio lo edita una sola persona, así que no hace falta conservar
     ambas versiones.
-  - **Interfaz.** La Biblioteca muestra la sección «Mis ejercicios» con «Nuevo ejercicio», «Resolver», «Editar» y
-    «Eliminar». «Resolver» reutiliza el intento existente o crea un documento con `user:<id>` y abre la pantalla de
-    documento de siempre. `/biblioteca/ejercicio/:id` (con `nuevo` para crear) es el editor; los casos se escriben
-    uno por línea (`2; 3 => 5`) y las aserciones con la forma `contiene: bucle-contado`; el formato vive en
-    `exercise_text_format.dart` del modelo y un error de forma se informa antes de validar.
+  - **Interfaz.** La Biblioteca muestra la sección «Mis ejercicios» con «Nuevo ejercicio» y una tarjeta por ejercicio
+    (`UserExerciseTile`) con la misma forma que la de un algoritmo: título, dos líneas del enunciado, el número de
+    casos de prueba y de pistas, una única acción visible «Resolver» y el botón de opciones (⋮) que abre la hoja
+    «Editar» / «Eliminar» (`user_exercise_menu.dart`). Tocar la tarjeta también resuelve. Antes las cuatro acciones
+    eran botones de texto en un `Wrap` que se partía en varias filas en móvil y competía con el título; la acción
+    frecuente queda a la vista y las de mantenimiento, una de ellas destructiva, se apartan como en las tarjetas de
+    algoritmo. «Resolver» reutiliza el intento existente o crea un documento con `user:<id>` y abre la pantalla de
+    documento de siempre.
+  - **Editor.** `/biblioteca/ejercicio/:id` (con `nuevo` para crear) agrupa los diez campos en tres tarjetas
+    numeradas —«El problema», «Cómo se comprueba», «Solución»— precedidas de una explicación de qué ocurre al
+    publicar. Cada campo lleva junto a la etiqueta una insignia «Obligatorio» u «Opcional» (las mismas cuatro que
+    exige `ValidateUserExercise`), un ejemplo como *placeholder* y una ayuda permanente debajo. Se eligió texto de
+    ayuda visible en lugar de *tooltips* porque en táctil un *tooltip* exige pulsación larga y nadie lo descubre; la
+    insignia es texto y no un asterisco para que no dependa de una leyenda, y el lector de pantalla recibe
+    «Título, obligatorio» como etiqueta del campo. Los campos se describen como datos (`UserExerciseFieldSpec`), así
+    que añadir uno no toca el widget que los dibuja. Los casos se escriben uno por línea (`2; 3 => 5`) y las
+    aserciones con la forma `contiene: bucle-contado`; el formato vive en `exercise_text_format.dart` del modelo y un
+    error de forma se informa antes de validar.
 - **Fuera de alcance:** compartir ejercicios, imágenes en la narrativa y argumentos de programa por caso.
 
 ### 4.65 Conocimiento del agente: ficha generada, manual verificado y búsqueda local

@@ -48,6 +48,7 @@ final class _Messages extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final failure = session.failure;
     return ListView(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       padding: const EdgeInsets.all(SpacingTokens.space3),
       children: [
         if (session.messages.isEmpty) const _EmptyConversation(),
