@@ -373,6 +373,27 @@ Se toman framing, nombres de mensajes, negociación de coordenadas y lifecycle; 
 ajenas de pasos, tareas, efectos ni lenguaje. No se anuncian attach, modificación de variables,
 condiciones, reverseContinue, reinicio, memoria ni depuración AOT.
 
+### Servidor MCP (`pseudo mcp`)
+
+Problema: los asistentes de código (Copilot, Claude, otros clientes MCP) escriben PseudoLearn como si fuera PSeInt y no
+tienen forma de comprobar lo que proponen. Elección: `pseudo mcp` expone el núcleo como servidor MCP por stdio, un
+mensaje JSON-RPC 2.0 por línea (`mcp_command.rs`, `mcp_protocol.rs`), con las herramientas `check`, `run`, `format`,
+`translate`, `explain`, `search_reference` y `example` (`mcp_tools.rs`, `mcp_program_tools.rs`, `mcp_knowledge.rs`) y
+la ficha del lenguaje como recurso `pseudolearn://language-sheet/<idioma>`. El contrato observable son las reglas
+R11 a R16 de `TOOL.CLI.CONVENTIONS` y sus casos C36 a C45, que el sujeto `cli` ejecuta en conformidad.
+
+- `run` no concede ninguna capacidad (archivos, red, consola interactiva), acota `step_limit` a [1, 100 000] y corta a
+  los cinco segundos de reloj. El corte de reloj existe porque un bucle infinito de cuerpo vacío no ejecuta sentencias y
+  el límite de sentencias del motor no lo detiene; se ejecuta en un hilo aparte y, si se agota el tiempo, el hilo queda
+  consumiendo CPU hasta que termina el proceso. Es un pendiente del motor, no de la CLI.
+- La ficha vive en `generated/language-sheet.<idioma>.md`, que escribe `see agent-sheet` desde el corpus
+  (`GEN-NO-HAND-COPY`), y se incrusta con `include_str!`.
+- Las claves de cada respuesta salen en el orden de construcción porque el árbol de dependencias activa
+  `preserve_order` de `serde_json`; los casos fijan ese orden.
+- Se descartó una identidad `TOOL.MCP` propia: con las versiones congeladas una especificación nueva debe nacer estable
+  y con revisión independiente, que no existe todavía. Las reglas se añadieron a `TOOL.CLI.CONVENTIONS`, edición que el
+  congelamiento permite, y quedan pendientes de revisión por la persona responsable.
+
 ### Enlazador incluido y destinos nativos
 
 `pseudo compilar` enlaza con LLD 23.1.5, un único binario multisabor (`-flavor darwin`, `gnu` o `link`) que enlaza

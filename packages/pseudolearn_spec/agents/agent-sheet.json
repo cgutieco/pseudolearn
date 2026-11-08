@@ -2,11 +2,13 @@
   "outputs": {
     "es": [
       "../../apps/pseudolearn_app/assets/agent/es/language-sheet.md",
-      "../../apps/fe-pseudolearn/src/shared/agent-sheet/generated/language-sheet.es.md"
+      "../../apps/fe-pseudolearn/src/shared/agent-sheet/generated/language-sheet.es.md",
+      "../../apps/pseudolearn_cli/generated/language-sheet.es.md"
     ],
     "en": [
       "../../apps/pseudolearn_app/assets/agent/en/language-sheet.md",
-      "../../apps/fe-pseudolearn/src/shared/agent-sheet/generated/language-sheet.en.md"
+      "../../apps/fe-pseudolearn/src/shared/agent-sheet/generated/language-sheet.en.md",
+      "../../apps/pseudolearn_cli/generated/language-sheet.en.md"
     ]
   },
   "labels": {

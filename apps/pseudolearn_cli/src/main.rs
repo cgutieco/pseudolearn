@@ -40,6 +40,11 @@ mod lsp_command;
 mod lsp_framing;
 mod lsp_transport_state;
 mod lsp_workspace_loader;
+mod mcp_command;
+mod mcp_knowledge;
+mod mcp_program_tools;
+mod mcp_protocol;
+mod mcp_tools;
 mod messages;
 mod native_build_target;
 mod native_cache;
@@ -91,6 +96,12 @@ mod lsp_command_tests;
 mod lsp_framing_tests;
 #[cfg(test)]
 mod lsp_workspace_loader_tests;
+#[cfg(test)]
+mod mcp_command_tests;
+#[cfg(test)]
+mod mcp_knowledge_tests;
+#[cfg(test)]
+mod mcp_program_tools_tests;
 
 use check_command::execute_check;
 use error::CliError;
@@ -156,6 +167,7 @@ fn dispatch(raw_arguments: &[String]) -> Result<i32, CliError> {
         "traducir" | "translate" => translate_command::execute_translate(&options),
         "lsp" => Ok(lsp_command::execute_lsp(&options)),
         "dap" => Ok(dap_transport::execute(&options)),
+        "mcp" => Ok(mcp_command::execute_mcp()),
         other => Err(CliError::Usage(unknown_command(
             &options.interface_language,
             other,

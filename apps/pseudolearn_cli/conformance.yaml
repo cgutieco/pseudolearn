@@ -289,6 +289,36 @@
       "justificacion": "La CLI no ofrece negociación de versiones PLEV; C6–C9 verifican esa operación de la API."
     },
     {
+      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R11",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R12",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R13",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R14",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R15",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.CLI.CONVENTIONS@1.0.0#R16",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "TOOL.DAP@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "pendiente",
