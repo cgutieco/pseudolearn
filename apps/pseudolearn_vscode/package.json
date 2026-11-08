@@ -94,6 +94,17 @@
         "command": "pseudolearn.debugProject",
         "title": "Debug Project",
         "category": "PseudoLearn"
+      },
+      {
+        "command": "pseudolearn.createAgentInstructions",
+        "title": "Create Agent Instructions",
+        "category": "PseudoLearn"
+      }
+    ],
+    "mcpServerDefinitionProviders": [
+      {
+        "id": "pseudolearn.mcp",
+        "label": "PseudoLearn"
       }
     ],
     "keybindings": [

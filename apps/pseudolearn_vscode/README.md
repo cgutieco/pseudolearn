@@ -112,6 +112,22 @@ completo solo si su versión no cambió; una colisión de traducción no escribe
 La verificación en host real (completar, diagnosticar, navegar, renombrar, ejecutar con entrada, detener y limpieza tras
 cierre) y la ayuda desde un segundo cliente quedan para las verificaciones pesadas `PG-6A.07.07` y `PG-6A.08.07`.
 
+### Asistentes de código: servidor MCP y plantillas
+
+La extensión de escritorio registra el servidor MCP del binario incluido con el proveedor de definiciones de servidores
+MCP de la API de VS Code (`vscode.lm.registerMcpServerDefinitionProvider`, contribución `mcpServerDefinitionProviders`
+con id `pseudolearn.mcp`). La definición lanza `pseudo mcp` con la misma ruta resuelta que el servidor de lenguaje y
+`PSEUDO_IDIOMA` igual al idioma de interfaz; el chat de VS Code y Copilot ven entonces las herramientas `check`, `run`,
+`format`, `translate`, `explain`, `search_reference` y `example` y la ficha del lenguaje como recurso. La construcción
+de la definición es una función pura (`application/mcp_server_definition.ts`) y el registro vive en
+`activation/agent_commands.ts`. La variante browser no lo registra: no puede lanzar procesos.
+
+`PseudoLearn: Create Agent Instructions` (`pseudolearn.createAgentInstructions`) escribe en la primera carpeta del
+espacio de trabajo `AGENTS.md` y `.github/copilot-instructions.md` con las reglas que más confunden a un modelo que
+conoce PSeInt (base cero, punto y coma, tipos) y con la indicación de comprobar con el servidor MCP. Nunca sobrescribe un
+archivo existente: informa cuántos creó y cuántos ya estaban. El texto vive en `application/agent_instructions.ts` por
+idioma de interfaz.
+
 ## 8. Contrato del artefacto local
 
 `artifact.contract.json` es el único dato que fija el artefacto: identidad `pseudolearn.pseudolearn-vscode` versión `0.1.0`

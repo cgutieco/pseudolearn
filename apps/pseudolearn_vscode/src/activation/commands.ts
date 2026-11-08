@@ -9,6 +9,7 @@ import { RunController } from "../application/run_controller";
 import type { ResolvedExtensionConfiguration } from "../contracts/extension_configuration";
 import type { RunPresenterPort, RunSettings } from "../contracts/editor_run";
 import type { CommandContext } from "./command_context";
+import { registerAgentIntegration } from "./agent_commands";
 import { registerExplainCommand } from "./explain_commands";
 import { registerProjectCommands } from "./project_commands";
 import { registerRunCommands } from "./run_commands";
@@ -59,6 +60,7 @@ export function registerCommands(
     ...registerRunCommands(command),
     ...registerProjectCommands(command),
     ...registerExplainCommand(client, settings.language),
+    ...registerAgentIntegration(settings),
     vscode.commands.registerCommand("pseudolearn.restartServer", () => client.restart()),
   );
   void client.start();
