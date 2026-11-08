@@ -14,6 +14,7 @@ import '../domain/ports/source_editor.dart';
 import '../domain/ports/structogram_builder.dart';
 import '../domain/ports/syntax_help_source.dart';
 import 'program_execution_session.dart';
+import 'program_tools.dart';
 
 abstract interface class EngineServices {
   ProgramAnalyzer get analyzer;
@@ -45,4 +46,6 @@ abstract interface class EngineServices {
   ExerciseChecker get exerciseChecker;
 
   Map<RouteExerciseKind, RouteAnswerEvaluator> get routeEvaluators;
+
+  ProgramTools get programTools;
 }

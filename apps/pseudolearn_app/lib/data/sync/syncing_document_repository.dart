@@ -1,4 +1,5 @@
 import '../../domain/model/documents/document.dart';
+import '../../domain/model/documents/document_change.dart';
 import '../../domain/model/sync/outbox_entry.dart';
 import '../../domain/ports/clock.dart';
 import '../../domain/ports/document_repository.dart';
@@ -54,4 +55,7 @@ final class SyncingDocumentRepository implements DocumentRepository {
 
   @override
   Future<void> rebuildIndex() => _inner.rebuildIndex();
+
+  @override
+  Stream<DocumentChange> get changes => _inner.changes;
 }

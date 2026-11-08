@@ -106,3 +106,17 @@ extension _EditorExecutionConfiguration on EditorCubit {
   Document? _configuredDocument(ExecutionConfiguration? configuration) =>
       state.document?.copyWith(executionArguments: configuration?.arguments);
 }
+
+extension _EditorDocumentChanges on EditorCubit {
+  bool _shouldReload(DocumentChange change) {
+    final document = state.document;
+    if (document == null || change.documentId != document.id) return false;
+    if (change.kind != DocumentChangeKind.saved) return false;
+    if (state.isDirty || state.isSaving) return false;
+    return (change.revision ?? 0) > document.revision;
+  }
+
+  bool _isDeletion(DocumentChange change) =>
+      change.kind == DocumentChangeKind.deleted &&
+      change.documentId == state.document?.id;
+}

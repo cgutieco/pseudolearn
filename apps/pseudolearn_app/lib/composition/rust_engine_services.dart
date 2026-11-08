@@ -2,6 +2,9 @@ import '../domain/model/route/route_kinds.dart';
 import '../domain/ports/route_answer_evaluator.dart';
 import 'route_evaluators.dart';
 import '../domain/ports/program_analyzer.dart';
+import '../engine/exercise/engine_program_batch_runner.dart';
+import '../engine/rust/rust_program_formatter.dart';
+import '../engine/rust/rust_program_translator.dart';
 import '../domain/ports/program_execution.dart';
 import '../domain/ports/completion_source.dart';
 import '../domain/ports/contextual_completion_source.dart';
@@ -38,6 +41,7 @@ import '../domain/ports/syntax_help_source.dart';
 import 'engine_services.dart';
 import '../domain/ports/execution_environment.dart';
 import 'program_execution_session.dart';
+import 'program_tools.dart';
 
 final class RustEngineServices implements EngineServices {
   @override
@@ -71,6 +75,8 @@ final class RustEngineServices implements EngineServices {
   final SyntaxHelpSource syntaxHelpSource;
   @override
   final ProgramExporter programExporter;
+  @override
+  final ProgramTools programTools;
 
   const RustEngineServices({
     required this.analyzer,
@@ -88,6 +94,7 @@ final class RustEngineServices implements EngineServices {
     required this.classDiagramBuilder,
     required this.syntaxHelpSource,
     required this.programExporter,
+    required this.programTools,
   });
 }
 
@@ -125,6 +132,7 @@ RustEngineServices buildRustEngineServices(
       execution: RustProgramExecution(transport),
       analyzer: analyzer,
     ),
+    programTools: _programTools(transport, analyzer),
   );
 }
 
@@ -142,3 +150,13 @@ ProgramExecutionSession _observableSession(
     observer: RustProgramExecutionObserver(transport, resource),
   );
 }
+
+ProgramTools _programTools(RustTransport transport, ProgramAnalyzer analyzer) =>
+    ProgramTools(
+      runner: EngineProgramBatchRunner(
+        createExecution: () => RustProgramExecution(transport),
+        analyzer: analyzer,
+      ),
+      translator: RustProgramTranslator(transport),
+      formatter: RustProgramFormatter(transport),
+    );

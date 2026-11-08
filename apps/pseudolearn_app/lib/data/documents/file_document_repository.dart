@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:path/path.dart' as p;
 import '../../domain/model/documents/document.dart';
+import '../../domain/model/documents/document_change.dart';
 import '../../domain/model/profiles/syntax_profile_id.dart';
 import '../../domain/ports/document_repository.dart';
 import '../index/index_rebuild.dart';
@@ -90,8 +92,13 @@ String serializeDocumentFile(Document doc) {
 final class FileDocumentRepository implements DocumentRepository {
   final Directory directory;
   final MetadataIndex index;
+  final StreamController<DocumentChange> _changes =
+      StreamController<DocumentChange>.broadcast();
 
-  const FileDocumentRepository({required this.directory, required this.index});
+  FileDocumentRepository({required this.directory, required this.index});
+
+  @override
+  Stream<DocumentChange> get changes => _changes.stream;
 
   @override
   Future<List<DocumentSummary>> listDocuments() async {
@@ -126,6 +133,9 @@ final class FileDocumentRepository implements DocumentRepository {
     tempFile.renameSync(file.path);
 
     await index.upsert(document.toSummary());
+    _changes.add(
+      DocumentChange.saved(documentId: document.id, revision: document.revision),
+    );
     return document;
   }
 
@@ -136,11 +146,13 @@ final class FileDocumentRepository implements DocumentRepository {
       file.deleteSync();
     }
     await index.markDeleted(id);
+    _changes.add(DocumentChange.deleted(documentId: id));
   }
 
   @override
   Future<void> rebuildIndex() async {
     await rebuildMetadataIndex(directory: directory, index: index);
+    _changes.add(const DocumentChange.reindexed());
   }
 }
 

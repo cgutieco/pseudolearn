@@ -1,3 +1,4 @@
+import '../../domain/model/execution/execution_configuration.dart';
 import '../../domain/model/execution/execution_step.dart';
 import '../../domain/model/execution/output_line.dart';
 import '../../domain/model/knowledge/exercise_check_outcome.dart';
@@ -44,11 +45,13 @@ final class ProgramRunner {
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
     required List<String> inputs,
+    List<String> arguments = const [],
   }) {
     var step = _execution.startExecution(
       sourceCode: sourceCode,
       profileId: profileId,
       languageId: languageId,
+      configuration: ExecutionConfiguration(arguments: arguments),
     );
     var consumedInputs = 0;
     var takenSteps = 0;
@@ -90,15 +93,18 @@ final class ProgramRunner {
   }
 
   ProgramRun _stopWith(ExerciseCheckOutcome? anomaly) {
-    final outputs = _normalizer.normalize(_programOutputs());
+    final outputs = _normalizer.normalize(
+      _linesOf(OutputLineKind.programOutput),
+    );
+    final errors = _linesOf(OutputLineKind.programError);
     _execution.stop();
-    return ProgramRun(anomaly: anomaly, outputs: outputs);
+    return ProgramRun(anomaly: anomaly, outputs: outputs, errors: errors);
   }
 
-  List<String> _programOutputs() {
+  List<String> _linesOf(OutputLineKind kind) {
     final lines = <String>[];
     for (final line in _execution.outputLines) {
-      if (line.kind == OutputLineKind.programOutput) lines.add(line.text);
+      if (line.kind == kind) lines.add(line.text);
     }
     return lines;
   }

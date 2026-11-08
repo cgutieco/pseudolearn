@@ -6,6 +6,8 @@ import '../../domain/model/analysis/app_diagnostic.dart';
 import '../../domain/model/analysis/source_range.dart';
 import '../../domain/model/completion/completion_item.dart';
 import '../../domain/model/documents/document.dart';
+import '../../domain/model/documents/document_change.dart';
+import '../../domain/model/documents/document_command_result.dart';
 import '../../domain/model/editor/autosave_policy.dart';
 import '../../domain/model/editor/caret_range.dart';
 import '../../domain/model/editor/editor_key.dart';
@@ -20,19 +22,25 @@ import '../../domain/ports/editor_key_source.dart';
 import '../../domain/ports/program_analyzer.dart';
 import '../../domain/ports/source_editor.dart';
 import '../../domain/ports/text_entry_modality.dart';
+import '../library/document_change_follower.dart';
+import '../library/use_cases/save_document_source.dart';
 import 'editor_state.dart';
 part 'editor_cubit_helpers.dart';
 part 'editor_source_reveal.dart';
 
 final class EditorCubit extends Cubit<EditorState>
-    with _EditorDiagnosticSelection, _EditorSourceReveal {
+    with
+        _EditorDiagnosticSelection,
+        _EditorSourceReveal,
+        DocumentChangeFollower<EditorState> {
   final DocumentRepository _repository;
+  final SaveDocumentSource _saveSource;
+  UiLanguageId _languageId = UiLanguageId.spanish;
   final ProgramAnalyzer _analyzer;
   final CompletionSource _completionSource;
   final ContextualCompletionSource? _contextualCompletionSource;
   final EditorKeySource _keySource;
   final SourceEditor _sourceEditor;
-  final Clock _clock;
   Timer? _autosaveTimer;
   int _completionRevision = 0;
   EditorCubit({
@@ -45,18 +53,21 @@ final class EditorCubit extends Cubit<EditorState>
     required TextEntryModality textEntry,
     required Clock clock,
   }) : _repository = repository,
+       _saveSource = SaveDocumentSource(repository: repository, clock: clock),
        _analyzer = analyzer,
        _completionSource = completionSource,
        _contextualCompletionSource = contextualCompletionSource,
        _keySource = keySource,
        _sourceEditor = sourceEditor,
-       _clock = clock,
-       super(EditorState.initial(showsKeyBar: textEntry.hasOnscreenTextEntry));
+       super(EditorState.initial(showsKeyBar: textEntry.hasOnscreenTextEntry)) {
+    followDocumentChanges(repository.changes, _onDocumentChanged);
+  }
   Future<void> loadDocument(
     String id, {
     UiLanguageId languageId = UiLanguageId.spanish,
   }) async {
     _cancelAutosave();
+    _languageId = languageId;
     try {
       final doc = await _repository.loadDocument(id);
       if (doc == null) {
@@ -108,27 +119,20 @@ final class EditorCubit extends Cubit<EditorState>
     final doc = state.document;
     if (doc == null || !state.isDirty) return;
     emit(state.copyWith(isSaving: true));
-    try {
-      final updated = doc.copyWith(
-        content: state.sourceCode,
-        updatedAt: _clock.now(),
-        revision: doc.revision + 1,
-      );
-      await _repository.saveDocument(updated);
-      if (!isClosed) {
+    final result = await _saveSource(document: doc, sourceCode: state.sourceCode);
+    if (isClosed) return;
+    switch (result) {
+      case DocumentCommandSucceeded(:final document):
         emit(
-          state.copyWith(document: updated, isSaving: false, isDirty: false),
+          state.copyWith(document: document, isSaving: false, isDirty: false),
         );
-      }
-    } catch (_) {
-      if (!isClosed) {
+      case DocumentCommandRejected():
         emit(
           state.copyWith(
             isSaving: false,
             errorMessage: 'Failed to save document',
           ),
         );
-      }
     }
   }
 
@@ -200,6 +204,14 @@ final class EditorCubit extends Cubit<EditorState>
             : const [],
       ),
     );
+  }
+
+  void _onDocumentChanged(DocumentChange change) {
+    if (_isDeletion(change)) {
+      emit(state.copyWith(errorMessage: 'Document not found'));
+    } else if (_shouldReload(change)) {
+      loadDocument(state.document!.id, languageId: _languageId);
+    }
   }
 
   int _nextCompletionRevision() => _completionRevision += 1;

@@ -1,3 +1,4 @@
+import 'package:pseudolearn_app/domain/model/documents/document_change.dart';
 import 'package:pseudolearn_app/application/editor/editor_cubit.dart';
 import 'package:pseudolearn_app/application/editor/help/help_program_highlighter.dart';
 import 'package:pseudolearn_app/application/editor/help/syntax_help_cubit.dart';
@@ -211,6 +212,9 @@ final class _FixedClock implements Clock {
 }
 
 final class _UnusedRepository implements DocumentRepository {
+  @override
+  Stream<DocumentChange> get changes => const Stream.empty();
+
   @override
   dynamic noSuchMethod(Invocation invocation) => null;
 }
