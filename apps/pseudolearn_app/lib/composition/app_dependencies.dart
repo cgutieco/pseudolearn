@@ -34,6 +34,7 @@ import '../domain/ports/syntax_help_source.dart';
 import '../domain/ports/text_entry_modality.dart';
 import '../domain/ports/user_exercise_repository.dart';
 import 'program_execution_session.dart';
+import 'agent_services.dart';
 import 'program_tools.dart';
 
 final class AppDependencies {
@@ -73,6 +74,7 @@ final class AppDependencies {
   final ExerciseChecker exerciseChecker;
   final ProgramTools programTools;
   final UserExerciseRepository userExerciseRepository;
+  final AgentServices agent;
 
   const AppDependencies({
     required this.clock,
@@ -111,5 +113,6 @@ final class AppDependencies {
     required this.exerciseChecker,
     required this.programTools,
     required this.userExerciseRepository,
+    required this.agent,
   });
 }

@@ -24,7 +24,11 @@ final class DashboardProjection {
       status: DashboardStatus.success,
       library: projectLibraryMetrics(inputs.documents),
       route: projectPartCoverage(toc: inputs.toc, progress: progress),
-      exercises: projectExerciseCoverage(toc: inputs.toc, progress: progress),
+      exercises: projectExerciseCoverage(
+        toc: inputs.toc,
+        progress: progress,
+        assistedIds: {for (final entry in inputs.progress) if (entry.assisted) entry.contentId},
+      ),
       nextLesson: projectNextLesson(toc: inputs.toc, progress: progress),
       sync: projectSyncHealth(
         pending: inputs.pending,

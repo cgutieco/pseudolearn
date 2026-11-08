@@ -4,6 +4,7 @@ final class ProgressEntry {
   final bool completed;
   final DateTime? firstVisitedAt;
   final DateTime? firstCompletedAt;
+  final bool assisted;
 
   const ProgressEntry({
     required this.contentId,
@@ -11,6 +12,7 @@ final class ProgressEntry {
     required this.completed,
     this.firstVisitedAt,
     this.firstCompletedAt,
+    this.assisted = false,
   });
 
   ProgressEntry copyWith({
@@ -19,6 +21,7 @@ final class ProgressEntry {
     bool? completed,
     DateTime? firstVisitedAt,
     DateTime? firstCompletedAt,
+    bool? assisted,
   }) {
     return ProgressEntry(
       contentId: contentId ?? this.contentId,
@@ -26,6 +29,7 @@ final class ProgressEntry {
       completed: completed ?? this.completed,
       firstVisitedAt: firstVisitedAt ?? this.firstVisitedAt,
       firstCompletedAt: firstCompletedAt ?? this.firstCompletedAt,
+      assisted: assisted ?? this.assisted,
     );
   }
 
@@ -35,6 +39,7 @@ final class ProgressEntry {
         'completed': completed,
         'first_visited_at': firstVisitedAt?.toIso8601String(),
         'first_completed_at': firstCompletedAt?.toIso8601String(),
+        'assisted': assisted,
       };
 
   factory ProgressEntry.fromJson(Map<String, dynamic> json) {
@@ -48,6 +53,7 @@ final class ProgressEntry {
       firstCompletedAt: json['first_completed_at'] != null
           ? DateTime.parse(json['first_completed_at'] as String)
           : null,
+      assisted: json['assisted'] as bool? ?? false,
     );
   }
 
@@ -60,7 +66,8 @@ final class ProgressEntry {
           visited == other.visited &&
           completed == other.completed &&
           firstVisitedAt == other.firstVisitedAt &&
-          firstCompletedAt == other.firstCompletedAt;
+          firstCompletedAt == other.firstCompletedAt &&
+          assisted == other.assisted;
 
   @override
   int get hashCode => Object.hash(
@@ -69,5 +76,6 @@ final class ProgressEntry {
         completed,
         firstVisitedAt,
         firstCompletedAt,
+        assisted,
       );
 }

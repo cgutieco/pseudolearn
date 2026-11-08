@@ -13,6 +13,8 @@ import '../presentation/shell/design_canvas.dart';
 import '../presentation/theme/app_theme.dart';
 import 'app_dependencies.dart';
 import 'app_providers.dart';
+import 'app_scope.dart';
+import '../application/agent/screen_context_board.dart';
 
 const Map<AppThemeMode, ThemeMode> _themeModes = {
   AppThemeMode.system: ThemeMode.system,
@@ -37,9 +39,13 @@ final class CubitScope extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: buildAppProviders(dependencies),
-      child: LocalAccountDataRefresher(child: _CubitScopeApp(router: router)),
+    final scope = AppScope.withRouter(() => router);
+    return RepositoryProvider<ScreenContextBoard>.value(
+      value: scope.board,
+      child: MultiBlocProvider(
+        providers: buildAppProviders(dependencies, scope: scope),
+        child: LocalAccountDataRefresher(child: _CubitScopeApp(router: router)),
+      ),
     );
   }
 }

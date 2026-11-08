@@ -25,6 +25,7 @@ final class Exercise implements ExerciseContent {
   @override
   final List<String> hints;
   final ExerciseOrigin origin;
+  final String? solution;
 
   const Exercise({
     required this.id,
@@ -39,6 +40,7 @@ final class Exercise implements ExerciseContent {
     this.starterCode,
     this.hints = const [],
     this.origin = ExerciseOrigin.route,
+    this.solution,
   });
 
   @override

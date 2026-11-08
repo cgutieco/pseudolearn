@@ -121,6 +121,10 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Capturas de producto y material de tiendas con la ruta de aprendizaje | Regenerar §2.8 y §2.9 sobre la ruta publicada; las imágenes versionadas muestran todavía la base de conocimiento anterior | Abierto |
 | Ancla dentro de una sección al seguir un enlace de especificación desde la ruta | `ReferenceSectionPage` abre la sección por identidad y no desplaza a un ancla interior; el enlace conserva el ancla en el paquete | Abierto |
 | Límite de ejecución de los ejercicios | La app corta a 10 000 pasos (`ProgramRunner.defaultStepLimit`) y el compilador de la ruta a 100 000 sentencias; `route_exercise_gate_test` garantiza que cada solución de referencia cabe en el límite de la app | Vigilado por test |
+| Compras reales del agente | Adaptadores `PurchaseStore` de StoreKit (iOS y macOS de la App Store, obligatorio dentro de iOS), Microsoft Store y Stripe para la descarga directa, y sus verificadores en el backend | Abierto; solo existe la compra simulada (§4.63) |
+| Clave del proveedor del agente | El propietario pone `OPENAI_API_KEY` en el servidor y compila con `AGENT_BACKEND=proxy` y `AGENT_PROXY_URL` | Abierto; sin clave el agente responde «no disponible» sin cobrar |
+| Markdown enriquecido en el chat del agente | Una dependencia de renderizado de Markdown revisada; hoy se separan los bloques de código y el resto se muestra como texto | Abierto |
+| Medición del agente | Ejecutar el benchmark de `packages/pseudolearn_benchmarks` contra el gateway real con la clave del propietario | Abierto; requiere autorización de la persona |
 | Cancelación de tareas hermanas en ejecución paso a paso | El motor reanuda la hermana cancelada solo para completar su cancelación, y en ese evento ya no es consultable; `RustExecutionEventConsumer` lo acepta sin detener el paso (ver §4.10) | Resuelto en la app; el motor cumple el corpus. `rust_task_termination_test` lo ejercita paso a paso con el puente real |
 
 ---
@@ -598,6 +602,10 @@ La capa `host` comparte el anillo 2 con engine y data; solo importa model y port
 | `data/platform/`         | Adaptadores de servicios del sistema operativo: reloj, generación de identificadores, sondeo de conectividad, recepción de enlaces entrantes, modalidad de entrada de texto, apertura de enlaces, versión instalada, petición de reseña en la tienda y soporte de autenticación nativa (`SystemClock`, `RandomIdentifierGenerator`, `ConnectivityMonitorAdapter`, `AppLinksIncomingLinkSource`, `PlatformTextEntryModality`, `PlatformExternalUrlLauncher`, `PlatformNativeAuthSupport`, `PlatformAppVersionSource`, `PlatformStoreReviewPrompt`) | `domain/model`, `domain/ports`, `dart:io`, `package:app_links`, `package:url_launcher`, `package:package_info_plus`, `package:in_app_review` | `engine`, `application`, `presentation`, el transporte del motor, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `data/sync/`             | Persistencia de outbox en SQLite, almacenes remotos en Supabase y orquestación de drenado con orden pull-antes-que-push, y purga local de los datos de una cuenta eliminada (`SqliteSyncQueue`, `SupabaseDocumentStore`, `SyncDrainer`, `LocalAccountDataPurgerAdapter`)                                                       | `domain/model`, `domain/ports`, `sqflite`, `package:supabase`             | `engine`, `application`, `presentation`, el transporte del motor, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `application/`           | Casos de uso, orquestación y cubits de estado inmutable                                                                                                                                                                                                                                                            | `model`, `ports`, `package:bloc`, `package:equatable`                     | `engine`, `data`, `presentation`, `flutter/`, el transporte del motor, `go_router`, `sqflite`, `dart:io`, `dart:ui`, `BuildContext`, `RegExp`       |
+| `application/agent/`     | Bucle del agente, registro y política de confirmación, ensamblado del prompt, instantáneas de pantalla, verificación de bloques y una herramienta por caso de uso (`tools/`) | `model`, `ports`, `package:bloc` | Lo mismo que `application/`; ninguna herramienta habla con un repositorio sin pasar por su caso de uso cuando existe |
+| `application/credits/`   | Estado de créditos, compras y consentimiento del agente (`CreditsCubit`, `PurchaseCubit`, `AgentConsentCubit`) | `model`, `ports`, `package:bloc` | Lo mismo que `application/` |
+| `data/agent/`, `data/credits/` | Proxy HTTP del modelo y de créditos, códec de la Responses API, lector de bloques de código, índice de conocimiento, consentimiento en disco y compra simulada | `model`, `ports`, `dart:io` | Lo mismo que `data/` |
+| `presentation/agent/`    | Glifo, botón flotante, panel de chat, confirmaciones, oferta, consentimiento, ajustes de Nodo y publicadores de contexto de pantalla | `model`, `application`, `flutter/` | Lo mismo que `presentation/` |
 | `application/<área>/use_cases/` | Casos de uso: clases puras con un único método público `call` (y, como mucho, una variante con nombre) que ejecutan un comando o una consulta de negocio contra los puertos y devuelven un valor tipado en lugar de lanzar (`CreateDocument`, `RenameDocument`, `DeleteDocument`, `SaveDocumentSource`, `SetExecutionArguments`, `ListDocuments`, `LoadDocument`, `CheckProgram`, `RunProgram`, `TranslateProgram`, `FormatProgram`) | `model`, `ports` | Lo mismo que `application/`; además, un caso de uso no conoce ningún Cubit ni estado de vista |
 | `presentation/`          | Widgets, CustomPainters, renderizado de lienzo y temas                                                                                                                                                                                                                                                             | `model`, `application`, `flutter/`, `go_router`, `flutter_bloc`           | `ports`, `engine`, `data`, el transporte del motor, `sqflite`, `dart:io`, constructores adaptativos OS, métodos de colección derivados              |
 | `composition/`           | Ensamblado estático e inyección de dependencias en arranque                                                                                                                                                                                                                                                        | `model`, `ports`, `engine`, `data`, `application`, `presentation`         | Contener lógica o ramificaciones condicionales (`if`, `switch`, ternarios)                                                                     |
@@ -2880,6 +2888,85 @@ proyecto no simula participantes ni resultados. Mientras no existan, ese resulta
   si el paquete versionado no coincide con lo que el compilador produce.
 
 ---
+
+### 4.63 Agente de IA integrado (Nodo)
+
+- **Problema:** la persona necesita ayuda contextual —explicar un diagnóstico, escribir un programa correcto, resolver
+  dudas de la app— sin salir de la pantalla, sin poner nunca una clave de un proveedor y sin que la ayuda enseñe código
+  inválido ni regale la solución de un ejercicio.
+- **Elección:**
+  - **Paridad.** Nodo no tiene ninguna capacidad que la interfaz no ofrezca. Cada herramienta de escritura llama al
+    mismo caso de uso que la acción manual (§4.1): crear, renombrar, editar, reemplazar o borrar documentos, fijar
+    argumentos, crear o borrar ejercicios propios (§4.64), cambiar tema o idioma (`SetThemeMode`,
+    `SetInterfaceLanguage`, que publican en `PreferenceUpdates` para que `SettingsCubit` refleje el cambio) y
+    traducir un documento a otro perfil. Lo que escribe el agente aparece en la interfaz por `changes`.
+  - **Herramientas como datos.** Un archivo por grupo en `application/agent/tools/`; cada herramienta declara nombre,
+    esquema JSON, riesgo (`read`, `write`, `destructive`), si pide confirmación y la clave l10n de su paso visible.
+    `composition/agent_tool_catalog.dart` compone el `ToolRegistry`; añadir una herramienta no toca el bucle.
+    Catálogo: `get_screen_context`, `search_knowledge`, `list_documents`, `get_document`, `check_program`,
+    `run_program`, `translate_program`, `format_program`, `get_route_progress`, `get_lesson`, `get_exercise`,
+    `explain_diagnostic`, `create_document`, `rename_document`, `edit_document`, `replace_document_content`,
+    `delete_document`, `set_execution_arguments`, `create_user_exercise`, `update_user_exercise`,
+    `delete_user_exercise`, `give_hint`, `reveal_solution`, `navigate`, `set_theme`, `set_interface_language` y
+    `set_profile`. El plan pedía también herramientas de ajustes de perfil por defecto; como el perfil por defecto se
+    deriva del idioma, `set_profile` cambia el perfil de un documento.
+  - **Confirmación.** `ConfirmationPolicy` exige confirmación para todo lo `destructive` y para lo que la herramienta
+    marque (reemplazar todo el contenido, cambiar el perfil, crear o actualizar un ejercicio, revelar la solución). El
+    bucle se suspende (`AgentAwaitsConfirmation`), la barra de confirmación muestra la acción y sus argumentos, y un
+    rechazo devuelve al modelo `declined_by_person`; si el modelo vuelve a pedir la misma herramienta en ese turno se
+    rechaza sin preguntar.
+  - **Bucle en el cliente** (`AgentLoop`): el motor y los documentos están en el dispositivo, el servidor solo media
+    el modelo y cobra (backend §4.10). Máximo de 14 llamadas al modelo por turno (`AgentExhausted`). Herramienta
+    desconocida, argumentos que no son JSON y herramientas que lanzan se devuelven al modelo como salidas de error;
+    un fallo de créditos o de red termina el turno (`AgentFailed`) con su `CreditFailure`.
+  - **Proveedor.** `AgentModelGateway` con `ProxyAgentModelGateway` (Responses API por la función `agent-responses`,
+    con el JWT de Supabase de `SupabaseAccessTokenSource`, `X-Request-Id` por llamada y `X-PseudoLearn-Turn-Id` por
+    petición) y `FakeAgentModelGateway` (respuestas guionizadas para tests; sin guion responde `model_unconfigured`).
+    Se elige con `--dart-define=AGENT_BACKEND=fake|proxy` y `AGENT_PROXY_URL` por búsqueda en un mapa, sin
+    condicionales en composición; por defecto `fake`, así una build sin configurar dice «Nodo todavía no está
+    disponible» y no llama a nadie. El cliente no elige modelo: lo fija el servidor.
+  - **Prompt** (`PromptAssembler`): el prompt del sistema vive en `assets/agent/<idioma>/system-prompt.md`; le siguen
+    la ficha del lenguaje y el índice del manual (bloque estable, primero, para aprovechar el caché de prefijos del
+    proveedor) y al final el contexto dinámico: idioma, perfil por defecto, fecha, plataforma y la instantánea de
+    pantalla. Nunca se envían el correo ni los tokens.
+  - **Contexto de pantalla.** `ScreenContextBoard` (aplicación) implementa `ScreenContextSource`; los publicadores de
+    `presentation/agent/context/` envuelven las páginas en el enrutador y publican una instantánea mínima construida
+    en `application/agent/context/screen_snapshots.dart`: editor (id, título, perfil, cambios sin guardar,
+    diagnósticos, argumentos, última ejecución con salida truncada y error, y si hay ejercicio: referencia, intentos
+    fallidos, último veredicto y pistas disponibles, nunca casos ocultos), lección, especificación y pantallas
+    estáticas. El texto completo solo sale con `get_screen_context` y se recorta a 20 000 caracteres.
+  - **Código verificado.** `MarkdownCodeBlockReader` (datos, porque `application` no usa `RegExp`) extrae los bloques
+    de la respuesta; `CodeBlockChecker` analiza los de PseudoLearn con `ProgramAnalyzer` en el perfil del documento.
+    La interfaz marca «Verificado» o «Con errores» y solo el verificado ofrece «Insertar en el editor».
+  - **Modo tutor.** `ExerciseSessionCubit` implementa `ActiveExerciseSource` y cuenta intentos fallidos.
+    `give_hint` devuelve la pista del nivel pedido; `reveal_solution` exige `explicit_request` y tres intentos
+    fallidos, y pide confirmación. Ambas marcan el progreso como asistido (`SqliteAssistedProgressStore`, columna
+    `assisted` del esquema 4) y la marca viaja en `ProgressEntry` y en la sincronización con fusión por O lógico. El
+    panel de progreso muestra cuántos ejercicios resueltos fueron asistidos.
+  - **Créditos y compras.** `CreditsCubit` lee el saldo por `CreditsGateway` y lo actualiza con las cabeceras de cada
+    respuesta y con un agotamiento detectado a mitad de turno. `PurchaseCubit` compra con `PurchaseStore` y canjea con
+    `CreditsGateway.redeem`; el único adaptador es `SimulatedPurchaseStore` (`purchase_store_simulation.dart`), y el
+    servidor solo lo acepta con `AGENT_PURCHASES=simulated`. `agentAccessOf` decide la vista del panel: sin cuenta →
+    oferta con «Inicia sesión»; sin plan ni recarga → oferta con prueba de 7 días y plan mensual; sin consentimiento →
+    consentimiento; si no, conversación. Con el saldo agotado, el compositor se sustituye por el panel de recarga.
+  - **Consentimiento.** Antes del primer mensaje: nombra a OpenAI, qué se envía, la retención y la edad mínima (13
+    años). Se guarda en `agent_consent.json` del directorio de documentos (`FileAgentConsentStore`) y se retira en
+    Ajustes → Nodo (`/ajustes/nodo`, que también muestra saldo, renovación, gasto de la última petición y recarga).
+  - **Interfaz.** `AgentLauncher` vive en el armazón (`presentation/shell/adaptive_shell.dart`), no aparece en el
+    onboarding (fuera del armazón), se oculta con el teclado y sube por encima del pie de ejecución en el editor
+    escuchando al `routerDelegate`. El glifo propio (`AgentGlyphPainter`, excepción acotada en
+    `docs/fundamentos-visuales.md` §6.2) tiene estados reposo, pensando, respuesta nueva y sin créditos. El chat se
+    abre en hoja inferior en `compact` y en panel lateral en el resto, con burbujas, bloques verificados, pasos
+    desplegables, barra de confirmación, compositor y enlaces a secciones de la especificación citadas como
+    `specification:<id>`. El texto se muestra sin interpretar Markdown: el paquete de renderizado no es una dependencia
+    y los bloques de código, que son lo importante, ya se separan.
+  - **Textos.** Todo texto visible pasa por l10n; los nombres de paso son claves l10n declaradas por cada herramienta.
+- **Decisiones que cambian el plan original y por qué:** los avisos de cambio son el getter `changes` y no un método
+  (límite de métodos públicos); los ejercicios se sincronizan con bandera `dirty` en lugar de un decorador del outbox
+  (§4.64); el glifo se verifica con el comparador `paints` de `flutter_test` en lugar de capturas de referencia, que
+  el proyecto no usa (§4.48).
+- **Alternativas descartadas:** bucle en el servidor (el motor no está ahí); embeddings (§4.65); la persona
+  introduce su clave (se filtra y no permite cobrar).
 
 ### 4.64 Ejercicios del usuario: misma forma que un ejercicio `resolver`, publicados solo si su solución pasa
 

@@ -11,5 +11,6 @@ ProgressEntry progressEntryOfRow(Map<String, Object?> row) {
     firstVisitedAt: firstVisited == null ? null : DateTime.tryParse(firstVisited),
     firstCompletedAt:
         firstCompleted == null ? null : DateTime.tryParse(firstCompleted),
+    assisted: (row[IndexSchema.columnAssisted] as int? ?? 0) == 1,
   );
 }

@@ -133,6 +133,7 @@ platform_query_allowed_paths:
   - data/platform/platform_text_entry_modality.dart
   - data/platform/platform_database_factory.dart
   - data/platform/platform_native_auth_support.dart
+  - data/platform/platform_name_source.dart
 
 # Construcciones de widget adaptativo al sistema operativo. Prohibidas en toda la app: son la
 # vía por la que un mismo código produce dos aspectos distintos según el sistema.
@@ -228,6 +229,7 @@ duration_literal_owner_paths:
   - presentation/theme/tokens/
   - domain/model/editor/autosave_policy.dart
   - domain/model/execution/execution_polling_policy.dart
+  - domain/model/agent/agent_network_policy.dart
 
 # Rutas exentas del test de literales de texto destinado a una persona. No es una lista de
 # perdones: es la lista de los archivos cuya responsabilidad *es* el vocabulario mostrado a una

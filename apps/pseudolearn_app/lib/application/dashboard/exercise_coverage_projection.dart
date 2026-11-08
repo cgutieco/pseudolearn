@@ -8,16 +8,19 @@ import '../route/route_progress.dart';
 ExerciseCoverage projectExerciseCoverage({
   required RouteToc toc,
   required ContentProgress progress,
+  Set<String> assistedIds = const {},
 }) {
   final route = RouteProgress(progress);
   final byPart = <String, CoverageCount>{};
   final byLevel = <RouteLevel, CoverageCount>{};
   final byKind = <RouteExerciseKind, CoverageCount>{};
   var done = 0;
+  var assisted = 0;
   final exercises = toc.exercises;
   for (final exercise in exercises) {
     final isDone = route.isExerciseDone(exercise.id);
     if (isDone) done++;
+    if (isDone && assistedIds.contains(routeExerciseProgressId(exercise.id))) assisted++;
     final part = toc.partOf(exercise.lessonId);
     if (part != null) _accumulate(byPart, part.id, isDone);
     _accumulate(byLevel, exercise.level, isDone);
@@ -28,6 +31,7 @@ ExerciseCoverage projectExerciseCoverage({
     byPart: byPart,
     byLevel: byLevel,
     byKind: byKind,
+    assisted: assisted,
   );
 }
 

@@ -21,6 +21,7 @@ final class SupabaseProgressStore implements RemoteProgressStore {
                 'completed': entry.completed,
                 'first_visited_at': entry.firstVisitedAt?.toIso8601String(),
                 'first_completed_at': entry.firstCompletedAt?.toIso8601String(),
+                'assisted': entry.assisted,
               })
           .toList();
 
@@ -64,6 +65,7 @@ final class SupabaseProgressStore implements RemoteProgressStore {
           firstCompletedAt: map['first_completed_at'] != null
               ? DateTime.parse(map['first_completed_at'] as String)
               : null,
+          assisted: map['assisted'] as bool? ?? false,
         );
       }).toList();
 

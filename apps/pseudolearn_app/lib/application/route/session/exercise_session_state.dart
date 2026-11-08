@@ -19,6 +19,7 @@ final class ExerciseSessionState {
   final ExerciseCheckResult? lastResult;
   final ExerciseCaseFailure? revealedHiddenFailure;
   final String? errorMessage;
+  final int failedAttempts;
 
   const ExerciseSessionState({
     this.status = ExerciseSessionStatus.initial,
@@ -27,6 +28,7 @@ final class ExerciseSessionState {
     this.lastResult,
     this.revealedHiddenFailure,
     this.errorMessage,
+    this.failedAttempts = 0,
   });
 
   bool get isSolved => lastResult?.isSolved ?? false;
@@ -38,6 +40,7 @@ final class ExerciseSessionState {
     ExerciseCheckResult? Function()? lastResult,
     ExerciseCaseFailure? Function()? revealedHiddenFailure,
     String? Function()? errorMessage,
+    int? failedAttempts,
   }) {
     return ExerciseSessionState(
       status: status ?? this.status,
@@ -48,6 +51,7 @@ final class ExerciseSessionState {
           ? revealedHiddenFailure()
           : this.revealedHiddenFailure,
       errorMessage: errorMessage != null ? errorMessage() : this.errorMessage,
+      failedAttempts: failedAttempts ?? this.failedAttempts,
     );
   }
 }

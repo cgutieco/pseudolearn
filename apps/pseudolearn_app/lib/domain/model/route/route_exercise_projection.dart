@@ -20,6 +20,7 @@ Exercise editorExerciseOf(RouteExercise exercise) {
     assertions: cases?.assertions ?? const [],
     starterCode: exercise.starterCode,
     hints: [for (final hint in exercise.hints) plainTextOf(hint)],
+    solution: cases?.reference,
   );
 }
 

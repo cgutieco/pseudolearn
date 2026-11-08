@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import '../../../domain/model/exercises/active_exercise.dart';
 import '../../../domain/model/exercises/exercise_reference.dart';
 import '../../../domain/model/exercises/user_exercise_projection.dart';
 import '../../../domain/model/knowledge/content_load_result.dart';
@@ -11,13 +12,15 @@ import '../../../domain/model/route/route_exercise.dart';
 import '../../../domain/model/route/route_exercise_projection.dart';
 import '../../../domain/model/route/route_kinds.dart';
 import '../../../domain/model/settings/ui_language_id.dart';
+import '../../../domain/ports/active_exercise_source.dart';
 import '../../../domain/ports/exercise_checker.dart';
 import '../../../domain/ports/local_progress_store.dart';
 import '../../../domain/ports/route_repository.dart';
 import '../../../domain/ports/user_exercise_repository.dart';
 import 'exercise_session_state.dart';
 
-final class ExerciseSessionCubit extends Cubit<ExerciseSessionState> {
+final class ExerciseSessionCubit extends Cubit<ExerciseSessionState>
+    implements ActiveExerciseSource {
   final RouteRepository _repository;
   final ExerciseChecker _checker;
   final LocalProgressStore _progressStore;
@@ -36,6 +39,20 @@ final class ExerciseSessionCubit extends Cubit<ExerciseSessionState> {
         _progressStore = progressStore,
         _userExercises = userExercises,
         super(const ExerciseSessionState());
+
+  @override
+  ActiveExercise? get activeExercise {
+    final exercise = state.exercise;
+    if (exercise == null) return null;
+    return ActiveExercise(
+      reference: exercise.reference,
+      title: exercise.title,
+      hints: exercise.hints,
+      solution: exercise.solution,
+      failedAttempts: state.failedAttempts,
+      solved: state.isCompleted,
+    );
+  }
 
   Future<void> loadExercise({
     required String exerciseId,
@@ -125,6 +142,7 @@ final class ExerciseSessionCubit extends Cubit<ExerciseSessionState> {
       lastResult: () => null,
       revealedHiddenFailure: () => null,
       errorMessage: () => null,
+      failedAttempts: 0,
     ));
   }
 
@@ -146,6 +164,7 @@ final class ExerciseSessionCubit extends Cubit<ExerciseSessionState> {
       isCompleted: isCompleted,
       revealedHiddenFailure: () => revealedHiddenFailure,
       errorMessage: () => null,
+      failedAttempts: result.isSolved ? state.failedAttempts : state.failedAttempts + 1,
     ));
   }
 }

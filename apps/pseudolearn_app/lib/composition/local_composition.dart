@@ -28,6 +28,8 @@ import '../domain/ports/incoming_link_source.dart';
 import '../domain/ports/local_progress_store.dart';
 import '../domain/ports/preferences_store.dart';
 import '../domain/ports/progress_history.dart';
+import 'agent_composition.dart';
+import 'agent_services.dart';
 import 'app_dependencies.dart';
 import '../engine/rust/rust_transport.dart';
 import 'engine_services.dart';
@@ -65,6 +67,7 @@ final class _DependencyAssembly {
   final SyncServices sync;
   final _AccountServices account;
   final EngineServices engine;
+  final AgentServices agent;
 
   const _DependencyAssembly({
     required this.clock,
@@ -73,6 +76,7 @@ final class _DependencyAssembly {
     required this.sync,
     required this.account,
     required this.engine,
+    required this.agent,
   });
 }
 
@@ -125,14 +129,7 @@ AppDependencies _buildLocalDependencies({
     _DependencyAssembly(
       clock: clock,
       identifiers: identifierGenerator,
-      stores: _LocalStores(
-        preferences: FilePreferencesStore(directory: documentsDirectory),
-        progress: ReviewPromptingProgressStore(
-          inner: progressStore,
-          prompt: const PlatformStoreReviewPrompt(),
-        ),
-        history: SqliteProgressHistory(index.database),
-      ),
+      stores: _localStores(documentsDirectory, progressStore, index),
       sync: buildSyncServices(
         index: index,
         documentsDirectory: documentsDirectory,
@@ -143,9 +140,28 @@ AppDependencies _buildLocalDependencies({
       ),
       account: account,
       engine: engine,
+      agent: buildAgentServices(
+        client: supabaseClient,
+        documentsDirectory: documentsDirectory,
+        database: index.database,
+        identifiers: identifierGenerator,
+      ),
     ),
   );
 }
+
+_LocalStores _localStores(
+  Directory documentsDirectory,
+  LocalProgressStore progressStore,
+  MetadataIndex index,
+) => _LocalStores(
+  preferences: FilePreferencesStore(directory: documentsDirectory),
+  progress: ReviewPromptingProgressStore(
+    inner: progressStore,
+    prompt: const PlatformStoreReviewPrompt(),
+  ),
+  history: SqliteProgressHistory(index.database),
+);
 
 AppDependencies _assembleDependencies(_DependencyAssembly assembly) {
   return AppDependencies(
@@ -171,10 +187,8 @@ AppDependencies _assembleDependencies(_DependencyAssembly assembly) {
     contextualCompletionSource: assembly.engine.contextualCompletionSource,
     sourceEditor: assembly.engine.sourceEditor,
     editorKeySource: assembly.engine.editorKeySource,
-    textEntryModality: const PlatformTextEntryModality(),
-    appVersionSource: const PlatformAppVersionSource(),
-    routeRepository: _routeRepository,
-    demoProgramSource: _demoProgramSource,
+    textEntryModality: const PlatformTextEntryModality(), appVersionSource: const PlatformAppVersionSource(),
+    routeRepository: _routeRepository, demoProgramSource: _demoProgramSource,
     routeEvaluators: assembly.engine.routeEvaluators,
     referenceRepository: _referenceRepository,
     syntaxHelpSource: assembly.engine.syntaxHelpSource,
@@ -185,6 +199,7 @@ AppDependencies _assembleDependencies(_DependencyAssembly assembly) {
     exerciseChecker: assembly.engine.exerciseChecker,
     programTools: assembly.engine.programTools,
     userExerciseRepository: assembly.sync.userExercises,
+    agent: assembly.agent,
   );
 }
 

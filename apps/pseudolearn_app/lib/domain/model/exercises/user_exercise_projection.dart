@@ -20,5 +20,6 @@ Exercise exerciseOfUser(UserExercise exercise) {
     starterCode: exercise.starterCode,
     hints: draft.hints,
     origin: ExerciseOrigin.user,
+    solution: draft.referenceSolution,
   );
 }

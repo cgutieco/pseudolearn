@@ -1,3 +1,4 @@
+import '../../fakes/test_agent_providers.dart';
 import 'package:pseudolearn_app/composition/user_exercise_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,6 +28,7 @@ Future<void> _pumpShell(WidgetTester tester, Size size, ThemeData theme) async {
     MultiBlocProvider(
       providers: [
         ...createUserExerciseProviders(dependencies),
+        ...buildTestAgentProviders(dependencies),
         BlocProvider<LibraryCubit>(
           create: (_) => LibraryCubit(
             repository: dependencies.documentRepository,

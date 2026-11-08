@@ -1,3 +1,4 @@
+import '../../fakes/test_agent_providers.dart';
 import 'package:pseudolearn_app/composition/user_exercise_providers.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -48,6 +49,7 @@ Widget _appWith(GoRouter router, [AppDependencies? deps]) {
   return MultiBlocProvider(
     providers: [
         ...createUserExerciseProviders(dependencies),
+        ...buildTestAgentProviders(dependencies),
       BlocProvider<LibraryCubit>(
         create: (_) => LibraryCubit(
           repository: dependencies.documentRepository,

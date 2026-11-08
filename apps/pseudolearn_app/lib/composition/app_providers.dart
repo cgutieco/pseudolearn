@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../application/account/account_cubit.dart';
 import '../application/dashboard/dashboard_cubit.dart';
 import '../application/dashboard/dashboard_loader.dart';
 import '../application/diagram/diagram_cubit.dart';
@@ -21,22 +20,38 @@ import 'user_exercise_providers.dart';
 import '../application/onboarding/demo/guided_demo_cubit.dart';
 import '../application/onboarding/demo/guided_demo_loader.dart';
 import '../application/onboarding/onboarding_cubit.dart';
-import '../application/settings/app_version_cubit.dart';
 import '../application/settings/settings_cubit.dart';
 import '../application/sync/sync_cubit.dart';
 import '../application/trace/trace_cubit.dart';
+import 'agent_providers.dart';
 import 'app_dependencies.dart';
+import 'app_scope.dart';
+import 'settings_providers.dart';
 import 'syntax_help_provider.dart';
 import '../engine/execution/task_flow_projection.dart';
 import '../engine/execution/task_structure_projection.dart';
 
-List<BlocProvider> buildAppProviders(AppDependencies dependencies) {
+List<BlocProvider> buildAppProviders(AppDependencies dependencies, {AppScope? scope}) {
+  final appScope = scope ?? AppScope.detached();
+  final settings = SettingsCubit(preferences: dependencies.preferences, updates: appScope.updates)..init();
+  final exerciseSession = ExerciseSessionCubit(
+    repository: dependencies.routeRepository,
+    checker: dependencies.exerciseChecker,
+    progressStore: dependencies.localProgressStore,
+    userExercises: dependencies.userExerciseRepository,
+  );
   return [
     ...createDocumentProviders(dependencies),
-    ...createKnowledgeProviders(dependencies),
+    ...createKnowledgeProviders(dependencies, exerciseSession),
     createDashboardProvider(dependencies),
     ...createOnboardingProviders(dependencies),
-    ...createSettingsProviders(dependencies),
+    ...createSettingsProviders(dependencies, settings),
+    ...buildAgentProviders(
+      dependencies: dependencies,
+      scope: appScope,
+      settings: settings,
+      exerciseSession: exerciseSession,
+    ),
   ];
 }
 
@@ -137,7 +152,10 @@ BlocProvider<DashboardCubit> createDashboardProvider(
   );
 }
 
-List<BlocProvider> createKnowledgeProviders(AppDependencies dependencies) {
+List<BlocProvider> createKnowledgeProviders(
+  AppDependencies dependencies,
+  ExerciseSessionCubit exerciseSession,
+) {
   return [
     BlocProvider<RouteIndexCubit>(
       create: (_) => RouteIndexCubit(
@@ -163,11 +181,14 @@ List<BlocProvider> createKnowledgeProviders(AppDependencies dependencies) {
       create: (_) =>
           ReferenceSectionCubit(repository: dependencies.referenceRepository),
     ),
-    ...createExerciseProviders(dependencies),
+    ...createExerciseProviders(dependencies, exerciseSession),
   ];
 }
 
-List<BlocProvider> createExerciseProviders(AppDependencies dependencies) {
+List<BlocProvider> createExerciseProviders(
+  AppDependencies dependencies,
+  ExerciseSessionCubit exerciseSession,
+) {
   return [
     BlocProvider<RouteBankCubit>(
       create: (_) => RouteBankCubit(
@@ -182,14 +203,7 @@ List<BlocProvider> createExerciseProviders(AppDependencies dependencies) {
         evaluators: dependencies.routeEvaluators,
       ),
     ),
-    BlocProvider<ExerciseSessionCubit>(
-      create: (_) => ExerciseSessionCubit(
-        repository: dependencies.routeRepository,
-        checker: dependencies.exerciseChecker,
-        progressStore: dependencies.localProgressStore,
-        userExercises: dependencies.userExerciseRepository,
-      ),
-    ),
+    BlocProvider<ExerciseSessionCubit>(create: (_) => exerciseSession),
   ];
 }
 
@@ -213,29 +227,6 @@ List<BlocProvider> createOnboardingProviders(AppDependencies dependencies) {
           classDiagramBuilder: dependencies.classDiagramBuilder,
         ),
       ),
-    ),
-  ];
-}
-
-List<BlocProvider> createSettingsProviders(AppDependencies dependencies) {
-  return [
-    BlocProvider<SettingsCubit>(
-      create: (_) =>
-          SettingsCubit(preferences: dependencies.preferences)..init(),
-    ),
-    BlocProvider<AppVersionCubit>(
-      create: (_) =>
-          AppVersionCubit(source: dependencies.appVersionSource)..init(),
-    ),
-    BlocProvider<AccountCubit>(
-      lazy: false,
-      create: (_) => AccountCubit(
-        authGateway: dependencies.authGateway,
-        incomingLinks: dependencies.incomingLinkSource,
-        documentRepository: dependencies.documentRepository,
-        accountDeletionGateway: dependencies.accountDeletionGateway,
-        localAccountDataPurger: dependencies.localAccountDataPurger,
-      )..init(),
     ),
   ];
 }
