@@ -22,6 +22,7 @@ final class SettingsOverviewView extends StatelessWidget {
   final VoidCallback onNavigateEditor;
   final VoidCallback onRestartOnboarding;
   final VoidCallback onNavigateContact;
+  final VoidCallback? onNavigateAgent;
 
   const SettingsOverviewView({
     super.key,
@@ -37,6 +38,7 @@ final class SettingsOverviewView extends StatelessWidget {
     required this.onNavigateEditor,
     required this.onRestartOnboarding,
     required this.onNavigateContact,
+    this.onNavigateAgent,
   });
 
   @override
@@ -80,7 +82,7 @@ final class _SettingsOverviewBody extends StatelessWidget {
               onNavigateEditor: view.onNavigateEditor,
               onRestartOnboarding: view.onRestartOnboarding,
             ),
-            secondary: InformationSection(onNavigateContact: view.onNavigateContact),
+            secondary: InformationSection(onNavigateContact: view.onNavigateContact, onNavigateAgent: view.onNavigateAgent),
           ),
           SizedBox(height: canvas.scaled(SpacingTokens.space8)),
           VersionFooter(version: view.appVersion),

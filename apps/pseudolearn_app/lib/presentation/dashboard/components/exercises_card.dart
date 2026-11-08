@@ -30,6 +30,11 @@ final class ExercisesCard extends StatelessWidget {
             label: l10n.dashboardExercisesTitle,
             count: coverage.overall,
           ),
+          if (coverage.assisted > 0)
+            AppText(
+              l10n.dashboardExercisesAssisted(coverage.assisted),
+              variant: AppTextVariant.caption,
+            ),
           _PartGroup(coverage: coverage, parts: parts),
           _LevelGroup(coverage: coverage),
           _KindGroup(coverage: coverage),

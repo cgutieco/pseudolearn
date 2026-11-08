@@ -262,6 +262,37 @@
         "help",
         "problem"
       ]
+    },
+    {
+      "id": "agent",
+      "anchor": "feature:agent",
+      "route": "/biblioteca",
+      "title": "Nodo, the AI assistant",
+      "body": "The floating button with the node and spark opens Nodo, an AI assistant that sees the screen you are on, explains, checks and runs programs with the engine, and can create or edit algorithms and exercises with your confirmation. In exercises it acts as a tutor: it gives graded hints and only shows the solution after three failed attempts and if you ask. All code it shows is marked Verified or Has errors.",
+      "keywords": [
+        "nodo",
+        "ai",
+        "assistant",
+        "chat",
+        "help",
+        "tutor",
+        "hints"
+      ]
+    },
+    {
+      "id": "agent-settings",
+      "anchor": "feature:agent-settings",
+      "route": "/ajustes/nodo",
+      "title": "Nodo settings",
+      "body": "Shows the credits you have left, the renewal date, what the last request spent and lets you top up or withdraw consent. The monthly plan brings 300 credits, the 7-day trial brings 40 and 150-credit top-ups do not expire.",
+      "keywords": [
+        "credits",
+        "balance",
+        "top up",
+        "consent",
+        "plan",
+        "trial"
+      ]
     }
   ]
 }

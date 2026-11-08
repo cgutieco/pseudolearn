@@ -263,6 +263,37 @@
         "ayuda",
         "problema"
       ]
+    },
+    {
+      "id": "agent",
+      "anchor": "feature:agent",
+      "route": "/biblioteca",
+      "title": "Nodo, el asistente de IA",
+      "body": "El botón flotante con el nodo y el destello abre Nodo, un asistente de IA que ve la pantalla en la que estás, explica, comprueba y ejecuta programas con el motor, y puede crear o editar algoritmos y ejercicios con tu confirmación. En los ejercicios hace de tutor: da pistas graduadas y solo muestra la solución tras tres intentos fallidos y si la pides. Todo código que muestra va marcado como Verificado o Con errores.",
+      "keywords": [
+        "nodo",
+        "ia",
+        "asistente",
+        "chat",
+        "ayuda",
+        "tutor",
+        "pistas"
+      ]
+    },
+    {
+      "id": "agent-settings",
+      "anchor": "feature:agent-settings",
+      "route": "/ajustes/nodo",
+      "title": "Ajustes de Nodo",
+      "body": "Muestra los créditos que te quedan, la fecha de renovación, lo que gastó la última petición y permite recargar o retirar el consentimiento. El plan mensual trae 300 créditos, la prueba de 7 días trae 40 y las recargas de 150 no caducan.",
+      "keywords": [
+        "créditos",
+        "saldo",
+        "recarga",
+        "consentimiento",
+        "plan",
+        "prueba"
+      ]
     }
   ]
 }

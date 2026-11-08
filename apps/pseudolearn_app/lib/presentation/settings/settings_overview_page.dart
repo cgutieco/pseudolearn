@@ -26,6 +26,7 @@ final class SettingsOverviewPage extends StatelessWidget {
           onNavigateDiagram: () => context.push('/ajustes/diagramas'),
           onNavigateEditor: () => context.push('/ajustes/editor'),
           onNavigateContact: () => context.push('/ajustes/contacto'),
+          onNavigateAgent: () => context.push('/ajustes/nodo'),
           onRestartOnboarding: () {
             context.read<OnboardingCubit>().restart();
             context.go('/onboarding');

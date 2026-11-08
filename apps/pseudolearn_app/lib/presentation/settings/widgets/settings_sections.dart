@@ -73,8 +73,9 @@ final class GeneralSection extends StatelessWidget {
 
 final class InformationSection extends StatelessWidget {
   final VoidCallback onNavigateContact;
+  final VoidCallback? onNavigateAgent;
 
-  const InformationSection({super.key, required this.onNavigateContact});
+  const InformationSection({super.key, required this.onNavigateContact, this.onNavigateAgent});
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +84,8 @@ final class InformationSection extends StatelessWidget {
     return SettingsGroup(
       title: l10n.settingsSectionInformation,
       items: [
+        if (onNavigateAgent != null)
+          AppListItem(icon: Icons.auto_awesome_outlined, label: l10n.settingsAgent, trailing: AppListItemTrailingKind.chevron, onTap: onNavigateAgent),
         AppListItem(icon: Icons.help_outline, label: l10n.settingsContact, trailing: AppListItemTrailingKind.chevron, onTap: onNavigateContact),
       ],
     );
