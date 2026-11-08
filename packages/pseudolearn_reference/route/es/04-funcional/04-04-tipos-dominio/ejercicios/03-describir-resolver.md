@@ -8,7 +8,7 @@ titulo: Armar y describir un pedido
 ---
 
 ::: enunciado
-Lee un código de estado y sus datos: 1 pendiente, sin datos; 2 en camino, con el repartidor; 3 entregado, con el repartidor y la hora; 4 cancelado, con el motivo. Arma el pedido y muestra su descripción, como en la lección: «En camino con Sol».
+Lee el número del estado y sus datos: 1 pendiente, sin datos; 2 en camino, con el repartidor; 3 entregado, con el repartidor y la hora; 4 cancelado, con el motivo. Arma el pedido y muestra su descripción, como en la lección: «En camino con Sol».
 :::
 
 ::: restriccion

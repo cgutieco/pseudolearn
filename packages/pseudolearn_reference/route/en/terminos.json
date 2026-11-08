@@ -141,5 +141,7 @@
   "capacidad": {"etiqueta": "capability", "formas": ["capability", "capabilities"], "estricto": true, "receta": false},
   "limpieza-diferida": {"etiqueta": "deferred cleanup", "formas": ["deferred cleanup"], "estricto": true, "receta": true},
   "json": {"etiqueta": "JSON", "formas": ["JSON"], "estricto": true, "receta": false},
-  "serializar": {"etiqueta": "serialise", "formas": ["serialise", "serialises", "serialisation"], "estricto": true, "receta": true}
+  "serializar": {"etiqueta": "serialise", "formas": ["serialise", "serialises", "serialisation"], "estricto": true, "receta": true},
+  "peticion": {"etiqueta": "HTTP request", "formas": ["HTTP request", "HTTP requests"], "estricto": true, "receta": false},
+  "codigo-de-estado": {"etiqueta": "status code", "formas": ["status code", "status codes"], "estricto": true, "receta": false}
 }
