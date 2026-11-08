@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import '../document/document_page.dart';
+import '../exercises/user_exercise_editor_page.dart';
 import '../dashboard/dashboard_page.dart';
 import '../knowledge/knowledge_page.dart';
 import '../library/library_page.dart';
@@ -83,6 +84,12 @@ StatefulShellBranch _libraryBranch() {
             path: 'documento/:id',
             builder: (context, state) => DocumentPage(
               documentId: state.pathParameters['id'] ?? '',
+            ),
+          ),
+          GoRoute(
+            path: 'ejercicio/:id',
+            builder: (context, state) => UserExerciseEditorPage(
+              exerciseId: state.pathParameters['id'] ?? '',
             ),
           ),
         ],

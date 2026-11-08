@@ -16,6 +16,7 @@ import '../../../fakes/fake_exercise_checker.dart';
 import '../../../fakes/fake_route_repository.dart';
 import '../../../fakes/in_memory_local_progress_store.dart';
 import '../../../fakes/route_fixtures.dart';
+import '../../../fakes/in_memory_user_exercise_repository.dart';
 
 void main() {
   group('ExerciseSessionCubit (CON-F9)', () {
@@ -68,6 +69,7 @@ void main() {
         repository: repository,
         checker: checker,
         progressStore: progressStore,
+        userExercises: InMemoryUserExerciseRepository(),
       );
     });
 

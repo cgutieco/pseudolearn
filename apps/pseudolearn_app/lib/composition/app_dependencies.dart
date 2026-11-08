@@ -32,7 +32,9 @@ import '../domain/ports/sync_coordinator.dart';
 import '../domain/ports/sync_queue.dart';
 import '../domain/ports/syntax_help_source.dart';
 import '../domain/ports/text_entry_modality.dart';
+import '../domain/ports/user_exercise_repository.dart';
 import 'program_execution_session.dart';
+import 'program_tools.dart';
 
 final class AppDependencies {
   final Clock clock;
@@ -69,6 +71,8 @@ final class AppDependencies {
   final ProgressHistory progressHistory;
   final ProgramConstructReader programConstructReader;
   final ExerciseChecker exerciseChecker;
+  final ProgramTools programTools;
+  final UserExerciseRepository userExerciseRepository;
 
   const AppDependencies({
     required this.clock,
@@ -105,5 +109,7 @@ final class AppDependencies {
     required this.progressHistory,
     required this.programConstructReader,
     required this.exerciseChecker,
+    required this.programTools,
+    required this.userExerciseRepository,
   });
 }

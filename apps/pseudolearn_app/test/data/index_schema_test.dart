@@ -1,10 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pseudolearn_app/data/exercises/user_exercise_schema.dart';
 import 'package:pseudolearn_app/data/index/index_schema.dart';
 
 void main() {
   group('IndexSchema', () {
     test('contains expected columns including sync columns and tables', () {
-      expect(IndexSchema.currentVersion, 3);
+      expect(IndexSchema.currentVersion, 4);
       expect(IndexSchema.tableName, 'documents_index');
       expect(IndexSchema.progressTableName, 'content_progress');
       expect(IndexSchema.syncOutboxTableName, 'sync_outbox');
@@ -25,6 +26,7 @@ void main() {
       expect(IndexSchema.createProgressTableSql, contains(IndexSchema.columnFirstVisitedAt));
       expect(IndexSchema.createProgressTableSql, contains(IndexSchema.columnFirstCompletedAt));
       expect(IndexSchema.createProgressTableSql, contains(IndexSchema.columnDirty));
+      expect(IndexSchema.createProgressTableSql, contains(IndexSchema.columnAssisted));
 
       expect(IndexSchema.createSyncOutboxTableSql, contains(IndexSchema.columnEntryId));
       expect(IndexSchema.createSyncOutboxTableSql, contains(IndexSchema.columnEntityType));
@@ -36,6 +38,7 @@ void main() {
 
       expect(IndexSchema.createSyncStateTableSql, contains(IndexSchema.columnKey));
       expect(IndexSchema.createSyncStateTableSql, contains(IndexSchema.columnValue));
+      expect(UserExerciseSchema.createTableSql, contains(UserExerciseSchema.dirty));
     });
   });
 }

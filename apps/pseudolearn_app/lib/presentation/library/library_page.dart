@@ -14,6 +14,7 @@ import '../shell/design_canvas.dart';
 import '../shell/device_class.dart';
 import '../theme/app_theme.dart';
 import '../theme/tokens/spacing.dart';
+import '../exercises/user_exercises_section.dart';
 import 'components/library_body.dart';
 import 'dialogs/delete_rename_document_dialog.dart';
 import 'dialogs/new_document_dialog.dart';
@@ -95,6 +96,7 @@ final class _LibraryPageState extends State<LibraryPage> {
         onOpenDocument: _onOpenDoc,
         onRenameDocument: _onRenameDoc,
         onDeleteDocument: _onDeleteDoc,
+        exercises: const UserExercisesSection(),
       ),
     );
   }
@@ -108,6 +110,7 @@ final class LibraryView extends StatelessWidget {
   final ValueChanged<DocumentSummary> onOpenDocument;
   final ValueChanged<DocumentSummary> onRenameDocument;
   final ValueChanged<DocumentSummary> onDeleteDocument;
+  final Widget? exercises;
 
   const LibraryView({
     super.key,
@@ -118,6 +121,7 @@ final class LibraryView extends StatelessWidget {
     required this.onOpenDocument,
     required this.onRenameDocument,
     required this.onDeleteDocument,
+    this.exercises,
   });
 
   @override
@@ -138,6 +142,7 @@ final class LibraryView extends StatelessWidget {
         ),
         body: _LibraryPageBody(
           state: state,
+          exercises: exercises,
           onNewDocument: onNewDocument,
           onOpenDocument: onOpenDocument,
           onRenameDocument: onRenameDocument,
@@ -154,9 +159,11 @@ final class _LibraryPageBody extends StatelessWidget {
   final ValueChanged<DocumentSummary> onOpenDocument;
   final ValueChanged<DocumentSummary> onRenameDocument;
   final ValueChanged<DocumentSummary> onDeleteDocument;
+  final Widget? exercises;
 
   const _LibraryPageBody({
     required this.state,
+    this.exercises,
     required this.onNewDocument,
     required this.onOpenDocument,
     required this.onRenameDocument,
@@ -168,6 +175,7 @@ final class _LibraryPageBody extends StatelessWidget {
     return Column(
       children: [
         const SyncBanner(),
+        ?exercises,
         Expanded(
           child: LibraryBody(
             state: state,

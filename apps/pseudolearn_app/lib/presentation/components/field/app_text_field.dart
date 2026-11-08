@@ -97,6 +97,7 @@ final class AppTextField extends StatelessWidget {
   final ValueChanged<String>? onSubmitted;
   final TapRegionCallback? onTapOutside;
   final TextStyle? textStyle;
+  final int minLines;
 
   const AppTextField({
     super.key,
@@ -115,7 +116,10 @@ final class AppTextField extends StatelessWidget {
     this.onSubmitted,
     this.onTapOutside,
     this.textStyle,
+    this.minLines = 1,
   });
+
+  bool get isMultiline => minLines > 1;
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +162,7 @@ final class _FieldInput extends StatelessWidget {
     final rawHeight = isCompact ? FieldMetricsTokens.heightCompact : FieldMetricsTokens.height;
 
     return SizedBox(
-      height: canvas.scaled(rawHeight),
+      height: field.isMultiline ? null : canvas.scaled(rawHeight),
       child: Semantics(
         label: field.semanticLabel ?? field.label,
         textField: true,
@@ -188,6 +192,9 @@ final class _RawField extends StatelessWidget {
       onChanged: field.onChanged,
       onSubmitted: field.onSubmitted,
       onTapOutside: field.onTapOutside,
+      minLines: field.minLines,
+      maxLines: field.isMultiline ? null : 1,
+      keyboardType: field.isMultiline ? TextInputType.multiline : null,
       style: field.textStyle ?? resolveAppTextStyle(context, AppTextVariant.bodyDefault, color: theme.colors.text.primary),
       cursorColor: theme.colors.borders.focus,
       cursorWidth: 2.0,

@@ -1,3 +1,4 @@
+import '../../domain/model/exercises/exercise_reference.dart';
 import '../../domain/model/execution/execution_configuration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -114,7 +115,7 @@ final class _DocumentPageState extends State<DocumentPage> {
     final doc = editorCubit.state.document;
     final starter = session.exercise?.starterCode;
     if (doc != null &&
-        doc.exerciseId == session.exercise?.id &&
+        _linksTo(doc.exerciseId, session) &&
         editorCubit.state.sourceCode.trim().isEmpty &&
         starter != null &&
         starter.isNotEmpty) {
@@ -204,4 +205,11 @@ final class _EditorListeners extends StatelessWidget {
       child: child,
     );
   }
+}
+
+bool _linksTo(String? exerciseId, ExerciseSessionState session) {
+  final exercise = session.exercise;
+  return exerciseId != null &&
+      exercise != null &&
+      ExerciseReference.parse(exerciseId) == exercise.reference;
 }

@@ -1,3 +1,4 @@
+import 'package:pseudolearn_app/composition/user_exercise_providers.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,6 +47,7 @@ Widget _appWith(GoRouter router, [AppDependencies? deps]) {
   final dependencies = deps ?? buildTestDependencies();
   return MultiBlocProvider(
     providers: [
+        ...createUserExerciseProviders(dependencies),
       BlocProvider<LibraryCubit>(
         create: (_) => LibraryCubit(
           repository: dependencies.documentRepository,
@@ -113,6 +115,7 @@ Widget _appWith(GoRouter router, [AppDependencies? deps]) {
           repository: dependencies.routeRepository,
           checker: dependencies.exerciseChecker,
           progressStore: dependencies.localProgressStore,
+          userExercises: dependencies.userExerciseRepository,
         ),
       ),
       BlocProvider<OnboardingCubit>(

@@ -595,6 +595,7 @@ La capa `host` comparte el anillo 2 con engine y data; solo importa model y port
 | `data/platform/`         | Adaptadores de servicios del sistema operativo: reloj, generación de identificadores, sondeo de conectividad, recepción de enlaces entrantes, modalidad de entrada de texto, apertura de enlaces, versión instalada, petición de reseña en la tienda y soporte de autenticación nativa (`SystemClock`, `RandomIdentifierGenerator`, `ConnectivityMonitorAdapter`, `AppLinksIncomingLinkSource`, `PlatformTextEntryModality`, `PlatformExternalUrlLauncher`, `PlatformNativeAuthSupport`, `PlatformAppVersionSource`, `PlatformStoreReviewPrompt`) | `domain/model`, `domain/ports`, `dart:io`, `package:app_links`, `package:url_launcher`, `package:package_info_plus`, `package:in_app_review` | `engine`, `application`, `presentation`, el transporte del motor, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `data/sync/`             | Persistencia de outbox en SQLite, almacenes remotos en Supabase y orquestación de drenado con orden pull-antes-que-push, y purga local de los datos de una cuenta eliminada (`SqliteSyncQueue`, `SupabaseDocumentStore`, `SyncDrainer`, `LocalAccountDataPurgerAdapter`)                                                       | `domain/model`, `domain/ports`, `sqflite`, `package:supabase`             | `engine`, `application`, `presentation`, el transporte del motor, `flutter/material.dart`, `flutter/widgets.dart`, `flutter/cupertino.dart`, `bloc` |
 | `application/`           | Casos de uso, orquestación y cubits de estado inmutable                                                                                                                                                                                                                                                            | `model`, `ports`, `package:bloc`, `package:equatable`                     | `engine`, `data`, `presentation`, `flutter/`, el transporte del motor, `go_router`, `sqflite`, `dart:io`, `dart:ui`, `BuildContext`, `RegExp`       |
+| `application/<área>/use_cases/` | Casos de uso: clases puras con un único método público `call` (y, como mucho, una variante con nombre) que ejecutan un comando o una consulta de negocio contra los puertos y devuelven un valor tipado en lugar de lanzar (`CreateDocument`, `RenameDocument`, `DeleteDocument`, `SaveDocumentSource`, `SetExecutionArguments`, `ListDocuments`, `LoadDocument`, `CheckProgram`, `RunProgram`, `TranslateProgram`, `FormatProgram`) | `model`, `ports` | Lo mismo que `application/`; además, un caso de uso no conoce ningún Cubit ni estado de vista |
 | `presentation/`          | Widgets, CustomPainters, renderizado de lienzo y temas                                                                                                                                                                                                                                                             | `model`, `application`, `flutter/`, `go_router`, `flutter_bloc`           | `ports`, `engine`, `data`, el transporte del motor, `sqflite`, `dart:io`, constructores adaptativos OS, métodos de colección derivados              |
 | `composition/`           | Ensamblado estático e inyección de dependencias en arranque                                                                                                                                                                                                                                                        | `model`, `ports`, `engine`, `data`, `application`, `presentation`         | Contener lógica o ramificaciones condicionales (`if`, `switch`, ternarios)                                                                     |
 
@@ -655,6 +656,32 @@ La capa `host` comparte el anillo 2 con engine y data; solo importa model y port
 ## 4. Decisiones de diseño y fundamentos técnicos
 
 ### 4.1 Manejo de estado: `bloc` en su forma de cubit
+
+- **El caso de uso es la unidad de negocio; el Cubit orquesta la vista.** Un comando o una consulta de negocio
+  (crear, renombrar, borrar o guardar un documento, fijar sus argumentos, comprobar, ejecutar, traducir o formatear un
+  programa) vive en `application/<área>/use_cases/` como una clase pura con un método público `call`. Valida, toma el
+  reloj y el generador de identificadores de sus puertos y devuelve un resultado tipado
+  (`DocumentCommandResult`, `ProgramRunReport`, `ProgramTextResult`); nunca deja escapar una excepción. El Cubit
+  traduce ese resultado a estado de vista y no repite reglas. Un caso de uso existe porque tiene **dos clientes**: la
+  pantalla y el agente de IA (§4.63), que opera la app con los mismos comandos que la persona. Solo se extraen los que
+  pide una pantalla o una herramienta; el resto de la lógica sigue en su Cubit.
+  - *Alternativa descartada — que el agente llame a los Cubits:* un Cubit solo existe con su pantalla montada y su
+    estado mezcla vista con negocio; el agente quedaría atado a qué pantalla está abierta.
+  - *Alternativa descartada — que el agente llame a los repositorios:* duplicaría la validación del título, el
+    incremento de revisión y el reloj, y dos clientes acabarían aplicando reglas distintas.
+  - Los Cubits construyen sus casos de uso a partir de los puertos que ya recibían, para no cambiar su contrato de
+    construcción ni el de sus tests.
+- **Aviso de cambios (`DocumentRepository.changes`).** El repositorio emite `DocumentChange` (guardado con su
+  revisión, borrado o reindexado) por un flujo de difusión. El adaptador de archivos emite tras escribir; el decorador
+  de sincronización reenvía el flujo interno, de modo que también se oyen los cambios que aplica el drenaje remoto.
+  `LibraryCubit` recarga la lista en silencio cuando ya estaba cargada, y `EditorCubit` recarga el documento abierto
+  solo si la revisión anunciada es mayor que la suya y no tiene cambios sin guardar: lo que escribe el agente o la
+  sincronización se ve sin recargar y nunca pisa una edición local. La suscripción vive en el mixin
+  `DocumentChangeFollower`, que la cancela al cerrar el Cubit.
+- **Formato y traducción sin operación nueva en el motor.** `RustProgramTranslator` usa la operación `translate` de la
+  API y `RustProgramFormatter` abre un recurso LSP efímero y pide `textDocument/formatting`; ninguno añade
+  operaciones al puente. `EngineProgramBatchRunner` reutiliza `ProgramRunner` con argumentos y un límite de pasos
+  acotado a `[1, 100 000]`; la profundidad de recursión y las celdas las limita el propio motor.
 
 - **Problema:** En aplicaciones reactivas complejas, la lógica de negocio suele filtrarse al árbol de widgets a través
   de
@@ -2850,6 +2877,44 @@ proyecto no simula participantes ni resultados. Mientras no existan, ese resulta
   si el paquete versionado no coincide con lo que el compilador produce.
 
 ---
+
+### 4.64 Ejercicios del usuario: misma forma que un ejercicio `resolver`, publicados solo si su solución pasa
+
+- **Problema:** la persona quiere practicar con enunciados propios (o que redacte el agente, §4.63) sin perder lo que
+  hace pedagógica a la ruta: casos visibles y ocultos, aserciones estructurales, pistas graduadas y una solución que
+  demuestre que el ejercicio tiene respuesta.
+- **Elección:**
+  - `UserExercise` guarda un `UserExerciseDraft` con título, narrativa en texto (opcional), enunciado, restricciones,
+    pistas, casos visibles y ocultos, aserciones, solución de referencia obligatoria, código inicial y perfil.
+  - `ExerciseContent` es la interfaz común que consumen la sesión de ejercicio y el evaluador. La implementan
+    `Exercise` —la proyección de un ejercicio de la ruta que ya consumía el editor, ahora con `hints` y `origin`— y
+    `UserExercise`. `RouteExercise` no la implementa directamente porque su texto son tramos enriquecidos; su
+    proyección sí, y es la que usa la pantalla. `exerciseOfUser` proyecta un ejercicio del usuario a `Exercise`
+    (narrativa antes del enunciado) para que la franja de ejercicio y `ExerciseSessionCubit` no distingan orígenes.
+  - **Publicar es validar.** `ValidateUserExercise` exige título, enunciado, al menos un caso visible y solución;
+    analiza la solución y la ejecuta con `ExerciseChecker` contra todos los casos y aserciones. Devuelve
+    `ExercisePublication` con el problema, el caso que falla (y si es oculto) o las aserciones no cumplidas.
+    `CreateUserExercise` y `UpdateUserExercise` no guardan nada que no valide. La narrativa vacía se admite: el
+    enunciado basta para resolver.
+  - **Referencias prefijadas.** El `exerciseId` de un intento es `route:<id>` o `user:<id>` (`ExerciseReference`). Un
+    id sin prefijo se lee como `route:`: así los documentos existentes migran al leerse, sin reescribir archivos ni
+    filas remotas. Los intentos nuevos de la ruta se escriben ya con prefijo. El progreso de un ejercicio del usuario
+    usa `usuario.ejercicio:<id>` para no mezclarse con el de la ruta.
+  - **Persistencia.** `SqfliteUserExerciseRepository` guarda una fila por ejercicio en `user_exercises` (esquema 4)
+    con la carga en JSON (`user_exercise_codec.dart`, que reutiliza el lector de aserciones de la ruta), borrado
+    lógico y bandera `dirty`. Emite `UserExerciseChange` por `changes`.
+  - **Sincronización.** Se descartó un decorador sobre el outbox compartido porque `DocumentSyncDrainer` drena todas
+    las entradas pendientes como documentos. Se sigue el patrón del progreso (§4.25): la bandera `dirty` marca lo que
+    falta subir y `UserExerciseSyncDrainer`, invocado por `SyncDrainer` tras documentos y progreso, sube por la RPC
+    `push_user_exercises` y baja por `server_revision` con su propio cursor en `sync_state`. En conflicto gana la
+    edición con `updated_at` más reciente; un ejercicio lo edita una sola persona, así que no hace falta conservar
+    ambas versiones.
+  - **Interfaz.** La Biblioteca muestra la sección «Mis ejercicios» con «Nuevo ejercicio», «Resolver», «Editar» y
+    «Eliminar». «Resolver» reutiliza el intento existente o crea un documento con `user:<id>` y abre la pantalla de
+    documento de siempre. `/biblioteca/ejercicio/:id` (con `nuevo` para crear) es el editor; los casos se escriben
+    uno por línea (`2; 3 => 5`) y las aserciones con la forma `contiene: bucle-contado`; el formato vive en
+    `exercise_text_format.dart` del modelo y un error de forma se informa antes de validar.
+- **Fuera de alcance:** compartir ejercicios, imágenes en la narrativa y argumentos de programa por caso.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

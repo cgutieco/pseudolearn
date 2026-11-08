@@ -19,6 +19,7 @@ Exercise editorExerciseOf(RouteExercise exercise) {
     hiddenCases: cases?.hiddenCases ?? const [],
     assertions: cases?.assertions ?? const [],
     starterCode: exercise.starterCode,
+    hints: [for (final hint in exercise.hints) plainTextOf(hint)],
   );
 }
 

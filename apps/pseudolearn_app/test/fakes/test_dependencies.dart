@@ -42,6 +42,8 @@ import 'fake_syntax_help_source.dart';
 import 'fake_app_version_source.dart';
 import 'fake_text_entry_modality.dart';
 import 'in_memory_document_repository.dart';
+import 'in_memory_user_exercise_repository.dart';
+import 'package:pseudolearn_app/domain/ports/user_exercise_repository.dart';
 import 'in_memory_local_progress_store.dart';
 import 'in_memory_preferences_store.dart';
 import 'in_memory_progress_history.dart';
@@ -72,6 +74,7 @@ AppDependencies buildTestDependencies({
   FakeTextEntryModality? textEntryModality,
   FakeAppVersionSource? appVersionSource,
   EngineServices? engine,
+  UserExerciseRepository? userExerciseRepository,
 }) {
   return AppDependencies(
     clock: clock ?? FakeClock(DateTime(2026, 8, 15, 12, 0)),
@@ -127,5 +130,8 @@ AppDependencies buildTestDependencies({
         FakeProgramConstructReader(),
     exerciseChecker:
         exerciseChecker ?? engine?.exerciseChecker ?? FakeExerciseChecker(),
+    programTools: engine?.programTools ?? nativeTestEngine.programTools,
+    userExerciseRepository:
+        userExerciseRepository ?? InMemoryUserExerciseRepository(),
   );
 }

@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import '../../../domain/model/exercises/exercise_reference.dart';
+import '../../../domain/model/exercises/user_exercise_projection.dart';
 import '../../../domain/model/knowledge/content_load_result.dart';
 import '../../../domain/model/knowledge/exercise.dart';
 import '../../../domain/model/knowledge/exercise_case_failure.dart';
@@ -12,12 +14,14 @@ import '../../../domain/model/settings/ui_language_id.dart';
 import '../../../domain/ports/exercise_checker.dart';
 import '../../../domain/ports/local_progress_store.dart';
 import '../../../domain/ports/route_repository.dart';
+import '../../../domain/ports/user_exercise_repository.dart';
 import 'exercise_session_state.dart';
 
 final class ExerciseSessionCubit extends Cubit<ExerciseSessionState> {
   final RouteRepository _repository;
   final ExerciseChecker _checker;
   final LocalProgressStore _progressStore;
+  final UserExerciseRepository _userExercises;
 
   String? _loadedRequest;
   ReferenceEdition? _loadedEdition;
@@ -26,9 +30,11 @@ final class ExerciseSessionCubit extends Cubit<ExerciseSessionState> {
     required RouteRepository repository,
     required ExerciseChecker checker,
     required LocalProgressStore progressStore,
+    required UserExerciseRepository userExercises,
   })  : _repository = repository,
         _checker = checker,
         _progressStore = progressStore,
+        _userExercises = userExercises,
         super(const ExerciseSessionState());
 
   Future<void> loadExercise({
@@ -37,17 +43,16 @@ final class ExerciseSessionCubit extends Cubit<ExerciseSessionState> {
   }) async {
     if (_alreadyHolds(exerciseId, edition)) return;
     emit(state.copyWith(status: ExerciseSessionStatus.loading));
-    final result = await _repository.loadExercise(edition, exerciseId);
-    if (result is! ContentLoaded<RouteExercise>) {
+    final exercise = await _resolve(ExerciseReference.parse(exerciseId), edition);
+    if (exercise == null) {
       emit(state.copyWith(
         status: ExerciseSessionStatus.exerciseNotFound,
         exercise: () => null,
       ));
       return;
     }
-    final exercise = editorExerciseOf(result.value);
     final isCompleted = await _progressStore.isExerciseCompleted(
-      routeExerciseProgressId(exercise.id),
+      _progressIdOf(exercise),
     );
     _loadedRequest = exerciseId;
     _loadedEdition = edition;
@@ -81,6 +86,25 @@ final class ExerciseSessionCubit extends Cubit<ExerciseSessionState> {
     }
   }
 
+  Future<Exercise?> _resolve(
+    ExerciseReference reference,
+    ReferenceEdition edition,
+  ) async {
+    if (reference.origin == ExerciseOrigin.user) {
+      final exercise = await _userExercises.loadExercise(reference.id);
+      return exercise == null ? null : exerciseOfUser(exercise);
+    }
+    final result = await _repository.loadExercise(edition, reference.id);
+    return result is ContentLoaded<RouteExercise>
+        ? editorExerciseOf(result.value)
+        : null;
+  }
+
+  String _progressIdOf(Exercise exercise) =>
+      exercise.origin == ExerciseOrigin.user
+      ? userExerciseProgressId(exercise.id)
+      : routeExerciseProgressId(exercise.id);
+
   bool _alreadyHolds(String exerciseId, ReferenceEdition edition) =>
       _loadedRequest == exerciseId &&
       _loadedEdition == edition &&
@@ -111,9 +135,7 @@ final class ExerciseSessionCubit extends Cubit<ExerciseSessionState> {
     var isCompleted = state.isCompleted;
     ExerciseCaseFailure? revealedHiddenFailure;
     if (result.isSolved) {
-      await _progressStore.markExerciseCompleted(
-        routeExerciseProgressId(exercise.id),
-      );
+      await _progressStore.markExerciseCompleted(_progressIdOf(exercise));
       isCompleted = true;
     } else if (result.firstFailure != null && result.firstFailure!.isHidden) {
       revealedHiddenFailure = result.firstFailure;

@@ -1,7 +1,8 @@
+import '../exercises/user_exercise_schema.dart';
 import 'package:sqflite/sqflite.dart';
 
 final class IndexSchema {
-  static const int currentVersion = 3;
+  static const int currentVersion = 4;
 
   static const String tableName = 'documents_index';
   static const String progressTableName = 'content_progress';
@@ -27,6 +28,7 @@ final class IndexSchema {
   static const String columnFirstVisitedAt = 'first_visited_at';
   static const String columnFirstCompletedAt = 'first_completed_at';
   static const String columnDirty = 'dirty';
+  static const String columnAssisted = 'assisted';
 
   static const String columnEntryId = 'entry_id';
   static const String columnEntityType = 'entity_type';
@@ -62,7 +64,8 @@ final class IndexSchema {
       $columnCompleted INTEGER NOT NULL DEFAULT 0,
       $columnFirstVisitedAt TEXT,
       $columnFirstCompletedAt TEXT,
-      $columnDirty INTEGER NOT NULL DEFAULT 0
+      $columnDirty INTEGER NOT NULL DEFAULT 0,
+      $columnAssisted INTEGER NOT NULL DEFAULT 0
     )
   ''';
 
@@ -90,6 +93,7 @@ final class IndexSchema {
     await db.execute(createProgressTableSql);
     await db.execute(createSyncOutboxTableSql);
     await db.execute(createSyncStateTableSql);
+    await UserExerciseSchema.create(db);
   }
 
   static Future<void> clear(DatabaseExecutor db) async {
@@ -126,6 +130,11 @@ final class IndexSchema {
 
       await db.execute(createSyncOutboxTableSql);
       await db.execute(createSyncStateTableSql);
+    }
+    if (oldVersion < 4) {
+      await UserExerciseSchema.create(db);
+      await db.execute(
+          'ALTER TABLE $progressTableName ADD COLUMN $columnAssisted INTEGER NOT NULL DEFAULT 0;');
     }
   }
 }

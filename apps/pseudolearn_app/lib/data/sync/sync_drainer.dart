@@ -8,6 +8,7 @@ import '../../domain/ports/remote_progress_store.dart';
 import '../../domain/model/sync/sync_drain_outcome.dart';
 import '../../domain/ports/sync_coordinator.dart';
 import '../../domain/ports/sync_queue.dart';
+import '../exercises/user_exercise_sync_drainer.dart';
 import 'document_sync_drainer.dart';
 import 'progress_sync_drainer.dart';
 import 'sync_metadata_store.dart';
@@ -16,6 +17,7 @@ final class SyncDrainer implements SyncCoordinator {
   final AuthGateway _authGateway;
   final DocumentSyncDrainer _documentDrainer;
   final ProgressSyncDrainer? _progressDrainer;
+  final UserExerciseSyncDrainer? _exerciseDrainer;
   final SyncMetadataStore _metadataStore;
   final Clock _clock;
 
@@ -29,7 +31,9 @@ final class SyncDrainer implements SyncCoordinator {
     required Clock clock,
     RemoteProgressStore? remoteProgressStore,
     ProgressSyncStore? progressSyncStore,
+    UserExerciseSyncDrainer? exerciseDrainer,
   })  : _authGateway = authGateway,
+        _exerciseDrainer = exerciseDrainer,
         _metadataStore = metadataStore,
         _clock = clock,
         _documentDrainer = DocumentSyncDrainer(
@@ -70,7 +74,16 @@ final class SyncDrainer implements SyncCoordinator {
       if (!progressPushOk) return SyncDrainOutcome.failure;
     }
 
+    final exercisesOk = await _drainExercises();
+    if (!exercisesOk) return SyncDrainOutcome.failure;
+
     await _metadataStore.setGlobalState(lastSyncAt: _clock.now());
     return SyncDrainOutcome.success;
+  }
+
+  Future<bool> _drainExercises() async {
+    final drainer = _exerciseDrainer;
+    if (drainer == null) return true;
+    return await drainer.drainPull() && await drainer.drainPush();
   }
 }

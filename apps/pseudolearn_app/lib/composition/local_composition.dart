@@ -163,8 +163,7 @@ AppDependencies _assembleDependencies(_DependencyAssembly assembly) {
     syncCoordinator: assembly.sync.coordinator,
     programAnalyzer: assembly.engine.analyzer,
     createProgramExecution: assembly.engine.createProgramExecution,
-    createObservableExecutionSession:
-        assembly.engine.createObservableExecutionSession,
+    createObservableExecutionSession: assembly.engine.createObservableExecutionSession,
     flowchartBuilder: assembly.engine.flowchartBuilder,
     structogramBuilder: assembly.engine.structogramBuilder,
     classDiagramBuilder: assembly.engine.classDiagramBuilder,
@@ -184,6 +183,8 @@ AppDependencies _assembleDependencies(_DependencyAssembly assembly) {
     progressHistory: assembly.stores.history,
     programConstructReader: assembly.engine.programConstructReader,
     exerciseChecker: assembly.engine.exerciseChecker,
+    programTools: assembly.engine.programTools,
+    userExerciseRepository: assembly.sync.userExercises,
   );
 }
 

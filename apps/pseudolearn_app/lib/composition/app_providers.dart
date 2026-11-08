@@ -17,6 +17,7 @@ import '../application/route/session/exercise_session_cubit.dart';
 import '../application/reference/reference_index_cubit.dart';
 import '../application/reference/reference_section_cubit.dart';
 import '../application/library/library_cubit.dart';
+import 'user_exercise_providers.dart';
 import '../application/onboarding/demo/guided_demo_cubit.dart';
 import '../application/onboarding/demo/guided_demo_loader.dart';
 import '../application/onboarding/onboarding_cubit.dart';
@@ -72,6 +73,7 @@ List<BlocProvider> createDocumentProviders(AppDependencies dependencies) {
       ),
     ),
     createSyncProvider(dependencies),
+    ...createUserExerciseProviders(dependencies),
   ];
 }
 
@@ -185,6 +187,7 @@ List<BlocProvider> createExerciseProviders(AppDependencies dependencies) {
         repository: dependencies.routeRepository,
         checker: dependencies.exerciseChecker,
         progressStore: dependencies.localProgressStore,
+        userExercises: dependencies.userExerciseRepository,
       ),
     ),
   ];

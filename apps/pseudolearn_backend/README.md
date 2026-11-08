@@ -348,6 +348,23 @@ estado parcial; la app impide la doble pulsación.
   - _Compilador de TypeScript por `npm:typescript`:_ dependencia de varios megabytes y red para una
     tarea que el lexer resuelve.
 
+### 4.9 Sincronización de ejercicios del usuario
+
+- **Problema:** los ejercicios que la persona crea en la app deben seguirla entre dispositivos con
+  las mismas garantías que los documentos: aislamiento por cuenta y orden total por cuenta.
+- **Elección:** la migración `20261108000001_user_exercises_sync.sql` crea `user_exercises` con
+  clave `(user_id, id)`, carga `jsonb` opaca (la app es la única que la interpreta), borrado lógico
+  por `deleted_at`, RLS por `auth.uid()` y la RPC `push_user_exercises`, `security definer`, que
+  toma el siguiente valor de `account_revision` bajo bloqueo de fila —el mismo contador que
+  documentos y progreso— y solo sobrescribe una fila si la entrante tiene `updated_at` igual o
+  posterior. `EXECUTE` queda revocado a `public` y `anon` y concedido a `authenticated` en la misma
+  migración. La lectura es un `select` directo filtrado por RLS y `server_revision`.
+- **Alternativas descartadas y por qué:**
+  - _Reutilizar `documents` con un tipo:_ mezclaría dos entidades con ciclos de vida distintos y
+    obligaría a todos los clientes publicados a filtrar.
+  - _Clave primaria global `id`:_ un identificador elegido por el cliente no debe poder colisionar
+    con el de otra cuenta.
+
 ---
 
 ## 5. Reglas de legibilidad, estilo y estructura de código

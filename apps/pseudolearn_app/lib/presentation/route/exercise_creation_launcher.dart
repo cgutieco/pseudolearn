@@ -5,14 +5,16 @@ import '../../application/library/library_cubit.dart';
 import '../../application/settings/settings_cubit.dart';
 import '../../domain/model/documents/document.dart';
 import '../../domain/model/documents/document_title_policy.dart';
+import '../../domain/model/exercises/exercise_reference.dart';
 import '../../domain/model/knowledge/exercise.dart';
 import '../../domain/model/profiles/syntax_profile_for_language.dart';
 import '../../domain/model/settings/effective_ui_language.dart';
 import '../library/dialogs/new_document_dialog.dart';
 
-DocumentSummary? _findExistingDocument(List<DocumentSummary> docs, String exerciseId) {
+DocumentSummary? _findExistingDocument(List<DocumentSummary> docs, ExerciseReference reference) {
   for (final doc in docs) {
-    if (doc.exerciseId == exerciseId) return doc;
+    final linked = doc.exerciseId;
+    if (linked != null && ExerciseReference.parse(linked) == reference) return doc;
   }
   return null;
 }
@@ -52,7 +54,7 @@ void _showCreateDialog({
             title: title,
             profileId: profileId,
             content: exercise.starterCode ?? '',
-            exerciseId: exercise.id,
+            exerciseId: exercise.reference.encoded,
           )
           .then((doc) {
         if (doc != null && context.mounted) {
@@ -69,7 +71,7 @@ void launchExerciseCreationDialog({
   VoidCallback? onClosed,
 }) {
   final libraryCubit = context.read<LibraryCubit>();
-  final existingDoc = _findExistingDocument(libraryCubit.state.allDocuments, exercise.id);
+  final existingDoc = _findExistingDocument(libraryCubit.state.allDocuments, exercise.reference);
   if (existingDoc != null) {
     _navigateToDocument(context, existingDoc.id, onClosed);
     return;
