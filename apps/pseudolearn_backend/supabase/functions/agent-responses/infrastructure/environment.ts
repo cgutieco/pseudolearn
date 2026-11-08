@@ -8,6 +8,7 @@ export interface AgentEnvironment {
   readonly openAiKey: string | null;
   readonly model: string;
   readonly purchases: PurchaseMode;
+  readonly simulatedPurchaseUsers: ReadonlySet<string>;
 }
 
 export type EnvironmentReader = (name: string) => string | undefined;
@@ -24,7 +25,13 @@ export function readAgentEnvironment(read: EnvironmentReader): AgentEnvironment 
     openAiKey: nonEmpty(read("OPENAI_API_KEY")),
     model: nonEmpty(read("AGENT_MODEL")) ?? defaultModel,
     purchases: read("AGENT_PURCHASES")?.trim() === "simulated" ? "simulated" : "disabled",
+    simulatedPurchaseUsers: userListFrom(read("AGENT_SIMULATED_PURCHASE_USERS")),
   };
+}
+
+function userListFrom(serialized: string | undefined): ReadonlySet<string> {
+  const entries = (serialized ?? "").split(",").map((entry) => entry.trim());
+  return new Set(entries.filter((entry) => entry.length > 0));
 }
 
 function secretKeyFrom(serialized: string | undefined): string | null {

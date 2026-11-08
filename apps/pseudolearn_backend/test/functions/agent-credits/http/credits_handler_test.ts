@@ -1,9 +1,11 @@
 import { assertEquals } from "@std/assert";
 import { createCreditsHandler } from "../../../../supabase/functions/agent-credits/http/credits_handler.ts";
 import { SimulatedPurchaseVerifier } from "../../../../supabase/functions/agent-credits/infrastructure/simulated_purchase_verifier.ts";
+import { AllowlistedPurchaseVerifier } from "../../../../supabase/functions/agent-credits/infrastructure/allowlisted_purchase_verifier.ts";
+import type { PurchaseVerifier } from "../../../../supabase/functions/agent-credits/domain/purchase.ts";
 import { FakeLedger, FakeUsers } from "../../../support/agent_fakes.ts";
 
-function setup(purchases: SimulatedPurchaseVerifier | null, ledger = new FakeLedger()) {
+function setup(purchases: PurchaseVerifier | null, ledger = new FakeLedger()) {
   return {
     ledger,
     handle: createCreditsHandler({
@@ -91,4 +93,21 @@ Deno.test("wrong methods and a missing environment are reported", async () => {
   assertEquals((await handle(wrong)).status, 405);
   const unavailable = createCreditsHandler({ kind: "unavailable", code: "misconfigured" });
   assertEquals((await unavailable(new Request("http://localhost/agent-credits"))).status, 500);
+});
+
+Deno.test("an allowlisted account redeems while others get purchases disabled", async () => {
+  const allowlisted = new AllowlistedPurchaseVerifier(
+    new SimulatedPurchaseVerifier(),
+    new Set(["user-1"]),
+  );
+  const { handle, ledger } = setup(allowlisted);
+  assertEquals((await handle(purchase("pseudolearn.plus.topup150"))).status, 200);
+  assertEquals(ledger.grants.length, 1);
+  const { handle: refuse, ledger: untouched } = setup(
+    new AllowlistedPurchaseVerifier(new SimulatedPurchaseVerifier(), new Set(["someone-else"])),
+  );
+  const refused = await refuse(purchase("pseudolearn.plus.topup150"));
+  assertEquals(refused.status, 403);
+  assertEquals((await refused.json()).error.code, "purchases_disabled");
+  assertEquals(untouched.grants.length, 0);
 });

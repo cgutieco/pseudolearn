@@ -12,6 +12,16 @@ Deno.test("defaults: no key, the default model and purchases disabled", () => {
   assertEquals(environment?.model, "gpt-6-luna");
   assertEquals(environment?.purchases, "disabled");
   assertEquals(environment?.supabaseUrl, "https://project.supabase.co");
+  assertEquals(environment?.simulatedPurchaseUsers.size, 0);
+});
+
+Deno.test("the simulated purchase allowlist is a trimmed comma separated list", () => {
+  const read = (users: string) =>
+    readAgentEnvironment((name) => ({ ...base, AGENT_SIMULATED_PURCHASE_USERS: users })[name])
+      ?.simulatedPurchaseUsers;
+  assertEquals([...read(" a , b,,c ") ?? []], ["a", "b", "c"]);
+  assertEquals(read(" , ")?.size, 0);
+  assertEquals(read("")?.size, 0);
 });
 
 Deno.test("only the exact value simulated enables simulated purchases", () => {

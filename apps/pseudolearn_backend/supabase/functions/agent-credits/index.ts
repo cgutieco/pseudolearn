@@ -1,6 +1,8 @@
 import type { CreditsDependencies } from "./application/credits_service.ts";
 import { createCreditsHandler, type CreditsSetup } from "./http/credits_handler.ts";
+import { AllowlistedPurchaseVerifier } from "./infrastructure/allowlisted_purchase_verifier.ts";
 import { SimulatedPurchaseVerifier } from "./infrastructure/simulated_purchase_verifier.ts";
+import type { PurchaseVerifier } from "./domain/purchase.ts";
 import {
   type AgentEnvironment,
   readAgentEnvironment,
@@ -11,14 +13,19 @@ import { SupabaseUserVerifier } from "../agent-responses/infrastructure/supabase
 
 const fetcher: Fetcher = (url, init) => fetch(url, init);
 
-const verifiers = { simulated: new SimulatedPurchaseVerifier(), disabled: null };
+function purchasesFor(environment: AgentEnvironment): PurchaseVerifier | null {
+  const simulated = new SimulatedPurchaseVerifier();
+  if (environment.purchases === "simulated") return simulated;
+  if (environment.simulatedPurchaseUsers.size === 0) return null;
+  return new AllowlistedPurchaseVerifier(simulated, environment.simulatedPurchaseUsers);
+}
 
 function buildDependencies(environment: AgentEnvironment): CreditsDependencies {
   const endpoint = { ...environment, fetcher };
   return {
     users: new SupabaseUserVerifier(endpoint),
     ledger: new PostgresLedger(endpoint),
-    purchases: verifiers[environment.purchases],
+    purchases: purchasesFor(environment),
     clock: { now: () => new Date() },
   };
 }

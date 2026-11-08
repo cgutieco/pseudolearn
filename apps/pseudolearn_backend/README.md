@@ -82,14 +82,14 @@ Lo consume `apps/pseudolearn_app` por HTTP: `supabase.functions.invoke('delete-a
 
 ### 1.5 Pendientes técnicos declarados
 
-| Pendiente                                           | De quién depende                                                                                                                                                                                                                                 | Estado actual |
-| :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| Eliminar `public.delete_account()` en producción    | Publicación del build de `apps/pseudolearn_app` 1.0.0 que invoca `delete-account`: el build rechazado de la misma versión todavía llama a la RPC. Mover `supabase/deferred/…_drop_delete_account.sql` a `supabase/migrations/` y aplicarla       | Abierto       |
-| Límite de líneas por función en el verificador      | Un analizador de TypeScript sin dependencias remotas; hoy el tamaño de función se revisa en revisión de código                                                                                                                                   | Abierto       |
-| Verificadores de compra reales (`PurchaseVerifier`) | Cuentas de App Store Server API, Microsoft Store y Stripe para la descarga directa de macOS y Windows. Dentro de iOS la venta tiene que ser compra integrada. Hoy solo existe el adaptador simulado, activo solo con `AGENT_PURCHASES=simulated` | Abierto       |
-| Notificaciones de reembolso de las tiendas          | Los adaptadores reales de compra; revocar periodo o recarga al recibir el reembolso                                                                                                                                                              | Abierto       |
-| Segundo proveedor de modelo opcional                | Un `ModelGateway` adicional; el dominio ya no depende de OpenAI salvo por la forma de `usage`                                                                                                                                                    | Abierto       |
-| Prueba de extremo a extremo contra Apple real       | Una cuenta de Apple de prueba y un build de la app firmado; los tests cubren el contrato REST con respuestas simuladas                                                                                                                           | Abierto       |
+| Pendiente                                           | De quién depende                                                                                                                                                                                                                                                                                   | Estado actual |
+| :-------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
+| Eliminar `public.delete_account()` en producción    | Publicación del build de `apps/pseudolearn_app` 1.0.0 que invoca `delete-account`: el build rechazado de la misma versión todavía llama a la RPC. Mover `supabase/deferred/…_drop_delete_account.sql` a `supabase/migrations/` y aplicarla                                                         | Abierto       |
+| Límite de líneas por función en el verificador      | Un analizador de TypeScript sin dependencias remotas; hoy el tamaño de función se revisa en revisión de código                                                                                                                                                                                     | Abierto       |
+| Verificadores de compra reales (`PurchaseVerifier`) | Cuentas de App Store Server API, Microsoft Store y Stripe para la descarga directa de macOS y Windows. Dentro de iOS la venta tiene que ser compra integrada. Hoy solo existe el adaptador simulado, activo con `AGENT_PURCHASES=simulated` o para las cuentas de `AGENT_SIMULATED_PURCHASE_USERS` | Abierto       |
+| Notificaciones de reembolso de las tiendas          | Los adaptadores reales de compra; revocar periodo o recarga al recibir el reembolso                                                                                                                                                                                                                | Abierto       |
+| Segundo proveedor de modelo opcional                | Un `ModelGateway` adicional; el dominio ya no depende de OpenAI salvo por la forma de `usage`                                                                                                                                                                                                      | Abierto       |
+| Prueba de extremo a extremo contra Apple real       | Una cuenta de Apple de prueba y un build de la app firmado; los tests cubren el contrato REST con respuestas simuladas                                                                                                                                                                             | Abierto       |
 
 ---
 
@@ -181,8 +181,11 @@ supabase functions deploy agent-responses agent-credits --project-ref <ref>
    la app sigue funcionando. `AGENT_MODEL` es opcional (por defecto `gpt-6-luna`).
 2. `AGENT_PURCHASES` vale `disabled` salvo que se escriba exactamente `simulated`. **Nunca**
    `simulated` en producción: el adaptador simulado concede el producto pedido sin cobrar.
-3. Para pruebas internas con compras simuladas se usa un proyecto de Supabase distinto con
-   `AGENT_PURCHASES=simulated`.
+3. Para depurar con compras simuladas en el proyecto real, se añaden las cuentas de prueba:
+   `supabase secrets set --project-ref <ref> AGENT_SIMULATED_PURCHASE_USERS=<uuid>[,<uuid>]` y se
+   vuelve a desplegar `agent-credits`. Esas cuentas compran desde la app con la tienda simulada y
+   consumen el modelo real con la clave del proyecto. Para retirar el acceso:
+   `supabase secrets unset --project-ref <ref> AGENT_SIMULATED_PURCHASE_USERS`.
 4. La app se compila con `--dart-define=AGENT_BACKEND=proxy` y
    `--dart-define=AGENT_PROXY_URL=https://<ref>.supabase.co/functions/v1`.
 5. Prueba local sin Docker:
@@ -436,6 +439,12 @@ estado parcial; la app impide la doble pulsación.
     `SimulatedPurchaseVerifier`, que acepta `store: simulated` y los productos
     `pseudolearn.plus.trial`, `pseudolearn.plus.monthly` y `pseudolearn.plus.topup150`; la prueba
     usa `trial:<usuario>` como transacción, de modo que una cuenta no la canjea dos veces.
+  - **Cuentas de prueba con compras simuladas:** `AGENT_SIMULATED_PURCHASE_USERS` (uuids separados
+    por comas) envuelve el adaptador simulado en `AllowlistedPurchaseVerifier` cuando
+    `AGENT_PURCHASES=disabled`. Solo esas cuentas canjean compras simuladas; las demás reciben
+    `purchases_disabled`. Así se prueba el flujo completo en el proyecto real (créditos concedidos
+    por compra y consumo real del modelo) sin tocar la base de datos ni abrir compras gratis a nadie
+    más. Las concesiones quedan con transacción `simulated:<id>`, distinguibles de las reales.
   - `agent-credits` reutiliza el dominio, el entorno, el verificador de sesión y el libro de
     `agent-responses` por imports relativos de la misma capa; el verificador de arquitectura lo
     permite porque la capa de destino es la misma.
