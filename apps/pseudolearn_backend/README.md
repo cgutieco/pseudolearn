@@ -447,6 +447,16 @@ estado parcial; la app impide la doble pulsación.
   - _Bucle de herramientas en el servidor:_ el motor y los documentos viven en el dispositivo.
   - _Débito estimado antes de llamar:_ cobra caídas del proveedor; se debita con el `usage` real.
 
+### 4.11 Progreso asistido
+
+- **Problema:** un ejercicio resuelto con pistas o con la solución revelada por el agente no puede
+  contar igual que uno resuelto sin ayuda; la marca tiene que seguir a la persona entre
+  dispositivos.
+- **Elección:** `20261108000003_progress_assisted.sql` añade `progress.assisted` (por defecto
+  `false`) y reescribe `push_progress` para fusionarlo por O lógico, como `visited` y `completed`:
+  una vez asistido, siempre asistido. La migración vuelve a aplicar la restricción de `EXECUTE`
+  porque `create or replace` conserva los permisos pero se declara para que no dependa del orden.
+
 ---
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
