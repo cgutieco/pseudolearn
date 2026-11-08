@@ -47,6 +47,20 @@ de medias por proceso con semilla fija, sin descartar muestras ni afirmar estaci
 de fotogramas se incorpora desde la prueba de plataforma: su ausencia impide certificar el experimento.
 No se confunde el resultado del modelo preparado con tiempo de renderizado ni con latencia por evento.
 
+### Benchmark del agente Nodo
+
+`dart run tool/agent_benchmark.dart plan [ejercicios] [salida.json]` extrae de los ejercicios empaquetados de la ruta
+(`resolver`, `modificar`, `encontrar-error` y `romperlo`, los que tienen casos) unas cien tareas con enunciado, programa
+inicial y casos (`lib/src/suite/agent_tasks.dart`); no usa red. `run --authorized` mide contra el proxy real del agente
+(`AGENT_PROXY_URL`, `AGENT_ACCESS_TOKEN` de una sesión de Supabase y `PSEUDO_BIN`) cuatro variantes: con y sin ficha
+del lenguaje y con y sin recuperación (`search_reference` de `pseudo mcp`). Por tarea registra si el primer programa
+compila, si compila tras hasta tres reparaciones con los diagnósticos de `pseudo comprobar`, si pasa todos los casos
+con `pseudo ejecutar`, y los créditos que informan las cabeceras de saldo. `summarize <trials.json>` publica por
+variante las tasas y los créditos medios (`lib/src/model/agent_trial.dart`). El prompt solo muestra los casos
+visibles. La ejecución gasta créditos con la clave del propietario y por eso exige `--authorized` explícito; sin él, o
+sin alguna variable, termina con código 2 sin llamar a nadie. Nunca se ha ejecutado contra el proveedor real: queda
+pendiente de la autorización de la persona. Los resultados van a `results/`, ignorado.
+
 ## 3. Arquitectura y modelo del sistema
 
 | Capa | Responsabilidad | Puede importar |
