@@ -17,6 +17,7 @@ mod collections;
 mod constructor_flow;
 mod dispatch_targets;
 pub mod effect_calls;
+mod empty_loop_body;
 mod enum_output;
 pub mod environment;
 mod expression_values;

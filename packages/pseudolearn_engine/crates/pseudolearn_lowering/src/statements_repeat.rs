@@ -30,7 +30,7 @@ pub fn lower_repeat(
 
     let exit_block = context.builder.create_block();
     crate::loop_exits::enter(body, exit_block, context);
-    execute_repeat_body(body, &mut body_environment, context);
+    execute_repeat_body(body, span, &mut body_environment, context);
 
     let reachable = !crate::builder::is_current_block_terminated(context.builder);
     finish_iteration(
@@ -69,6 +69,7 @@ fn evaluate_repeat_condition(
 
 fn execute_repeat_body(
     body: &[StatementId],
+    span: Option<IrSpan>,
     body_environment: &mut VariableEnvironment,
     context: &mut StatementContext<'_, '_>,
 ) {
@@ -78,6 +79,7 @@ fn execute_repeat_body(
         builder: context.builder,
         origins: context.origins,
     };
+    crate::empty_loop_body::charge_iteration(body, span, body_context.builder);
     crate::statements::open_statement_list(body, &mut body_context);
 }
 

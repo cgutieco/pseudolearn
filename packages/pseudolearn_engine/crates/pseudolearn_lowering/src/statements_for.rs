@@ -208,6 +208,7 @@ fn execute_for_body(
         builder: context.builder,
         origins: context.origins,
     };
+    crate::empty_loop_body::charge_iteration(descriptor.body, span, body_context.builder);
     lower_statement_list(descriptor.body, &mut body_context);
 
     if !is_current_block_terminated(context.builder) {

@@ -38,7 +38,7 @@ pub fn lower_while(
     emit_loop_branch(condition_value, body_block, exit_block, context);
 
     execute_while_body(
-        body,
+        (body, span),
         (header_block, body_block),
         (&loop_locals, &header_environment),
         context,
@@ -144,14 +144,16 @@ fn emit_loop_branch(
 }
 
 fn execute_while_body(
-    body: &[StatementId],
+    body_and_span: (&[StatementId], Option<IrSpan>),
     blocks: (BlockId, BlockId),
     loop_state: (&[LocalId], &VariableEnvironment),
     context: &mut StatementContext<'_, '_>,
 ) {
+    let (body, span) = body_and_span;
     let (header_block, body_block) = blocks;
     let (loop_locals, header_environment) = loop_state;
     context.builder.set_current_block(body_block);
+    crate::empty_loop_body::charge_iteration(body, span, context.builder);
     let mut body_environment = header_environment.clone();
     let mut body_context = StatementContext {
         expression_context: context.expression_context,

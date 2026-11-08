@@ -1855,6 +1855,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "ENG.LIMITS@1.0.0#R14",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "LIB.MODEL@1.0.0#M1",
       "verificacion": "estructural",
       "estado": "cumple",

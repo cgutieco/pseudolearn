@@ -201,6 +201,7 @@ fn execute(
         origins: context.origins,
     };
     bind(iteration, body.0, header.1, &mut body_context);
+    crate::empty_loop_body::charge_iteration(body.1, iteration.span, body_context.builder);
     crate::statements::lower_statement_list(body.1, &mut body_context);
     if is_current_block_terminated(body_context.builder) {
         return;

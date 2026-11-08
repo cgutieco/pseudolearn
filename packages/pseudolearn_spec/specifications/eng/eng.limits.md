@@ -57,7 +57,7 @@
 {
   "id": "D1",
   "termino": "unidades de recurso",
-  "texto": "Profundidad: marcos activos, incluido el del algoritmo principal; cada llamada a un subprograma, método o constructor declarado añade un marco y las funciones incorporadas no lo hacen. Sentencias: entradas a sentencia ejecutadas, una por cada evento statement_entered. Celdas: suma sobre los valores alcanzables desde los marcos activos; un objeto ocupa una celda más una por campo, un arreglo una más una por elemento y una cadena creada en ejecución una más una por cada ocho puntos de código, redondeando hacia arriba. Los literales del programa, los escalares y el texto que Escribir produce como salida no ocupan celdas. Las raíces del conteo son las variables en ámbito de cada marco activo, incluidos parámetros y receptor, y los valores intermedios ya evaluados de la sentencia en curso. Una misma cadena creada en ejecución cuenta una sola vez mientras sea alcanzable aunque tenga varios alias; dos cadenas creadas por separado cuentan por separado aunque compartan bytes. Los temporales muertos no son raíces. Cinta: bytes serializados acumulados en EffectTape bajo el límite max_tape_bytes."
+  "texto": "Profundidad: marcos activos, incluido el del algoritmo principal; cada llamada a un subprograma, método o constructor declarado añade un marco y las funciones incorporadas no lo hacen. Sentencias: entradas a sentencia ejecutadas, una por cada evento statement_entered; además, cada iteración de un bucle mientras, repetir, para o para cada cuyo cuerpo no contiene sentencias cuenta como una entrada a sentencia, con el tramo del bucle, de modo que un bucle de cuerpo vacío agota el presupuesto. Celdas: suma sobre los valores alcanzables desde los marcos activos; un objeto ocupa una celda más una por campo, un arreglo una más una por elemento y una cadena creada en ejecución una más una por cada ocho puntos de código, redondeando hacia arriba. Los literales del programa, los escalares y el texto que Escribir produce como salida no ocupan celdas. Las raíces del conteo son las variables en ámbito de cada marco activo, incluidos parámetros y receptor, y los valores intermedios ya evaluados de la sentencia en curso. Una misma cadena creada en ejecución cuenta una sola vez mientras sea alcanzable aunque tenga varios alias; dos cadenas creadas por separado cuentan por separado aunque compartan bytes. Los temporales muertos no son raíces. Cinta: bytes serializados acumulados en EffectTape bajo el límite max_tape_bytes."
 }
 ```
 
@@ -1021,6 +1021,160 @@ Vector y Diccionario derivan sus límites del presupuesto cells existente: como 
         "cuerpo": "xy"
       }
     }
+  }
+}
+```
+
+```regla
+{
+  "id": "R14",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Un bucle mientras, repetir, para o para cada cuyo cuerpo no contiene sentencias no es una excepción al presupuesto de sentencias: cada iteración, es decir, cada vez que el cuerpo vacío se ejecuta, cuenta como una entrada a sentencia con el tramo del bucle, de modo que el presupuesto se agota y la terminación es limit_reached con el tipo de límite sentencias. Un bucle de cuerpo vacío cuya condición es falsa desde el inicio no ejecuta ninguna iteración y no consume presupuesto más allá de su propia entrada.",
+  "verificacion": [
+    "C38",
+    "C39",
+    "C40",
+    "C41",
+    "C42"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C38",
+  "regla": "R14",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "limit_reached",
+    "limite": "sentencias",
+    "diagnosticos": [
+      {
+        "codigo": "statementBudgetExhausted",
+        "severidad": "info"
+      }
+    ]
+  },
+  "programa": "Algoritmo P\nMientras Verdadero Hacer\nFinMientras\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "limites": {
+    "sentencias": 100
+  }
+}
+```
+
+```caso
+{
+  "id": "C39",
+  "regla": "R14",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "limit_reached",
+    "limite": "sentencias",
+    "diagnosticos": [
+      {
+        "codigo": "statementBudgetExhausted",
+        "severidad": "info"
+      }
+    ]
+  },
+  "programa": "Algoritmo P\nRepetir\nHasta Que Falso\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "limites": {
+    "sentencias": 100
+  }
+}
+```
+
+```caso
+{
+  "id": "C40",
+  "regla": "R14",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "limit_reached",
+    "limite": "sentencias",
+    "diagnosticos": [
+      {
+        "codigo": "statementBudgetExhausted",
+        "severidad": "info"
+      }
+    ]
+  },
+  "programa": "Algoritmo P\nPara i <- 1 Hasta 1000000000 Hacer\nFinPara\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "limites": {
+    "sentencias": 100
+  }
+}
+```
+
+```caso
+{
+  "id": "C41",
+  "regla": "R14",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "completed"
+  },
+  "programa": "Algoritmo P\nMientras Falso Hacer\nFinMientras\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "limites": {
+    "sentencias": 10
+  }
+}
+```
+
+```caso
+{
+  "id": "C42",
+  "regla": "R14",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "limit_reached",
+    "limite": "sentencias",
+    "diagnosticos": [
+      {
+        "codigo": "statementBudgetExhausted",
+        "severidad": "info"
+      }
+    ]
+  },
+  "programa": "Algoritmo P\nMientras Verdadero Hacer\nFinMientras\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "limites": {
+    "sentencias": 1
   }
 }
 ```

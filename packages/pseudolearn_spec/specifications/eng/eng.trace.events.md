@@ -391,7 +391,7 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Una sentencia compuesta produce statement_entered antes de evaluar su condición o selector y statement_exited después de terminar. Cada evaluación de la condición de Si, Mientras, Repetir o de la prueba de Para produce decision con rama afirmativa si la condición es verdadera o la iteración continúa y negativa en caso contrario. Segun produce una decision con rama caso e indice, otro si ejecuta De Otro Modo o ninguna si no ejecuta ninguna rama. Elegir emite una sola decisión caso con el índice textual de la recepción ganadora; los vínculos implícitos de las ramas no añaden sentencias observables.",
+  "texto": "Una sentencia compuesta produce statement_entered antes de evaluar su condición o selector y statement_exited después de terminar. Cada evaluación de la condición de Si, Mientras, Repetir o de la prueba de Para produce decision con rama afirmativa si la condición es verdadera o la iteración continúa y negativa en caso contrario. Segun produce una decision con rama caso e indice, otro si ejecuta De Otro Modo o ninguna si no ejecuta ninguna rama. Cada iteración de un bucle Mientras, Repetir, Para o Para Cada cuyo cuerpo no contiene sentencias produce además statement_entered y statement_exited con el tramo del bucle, entre la decisión afirmativa y la evaluación siguiente, porque ENG.LIMITS cuenta esa iteración como una entrada a sentencia. Elegir emite una sola decisión caso con el índice textual de la recepción ganadora; los vínculos implícitos de las ramas no añaden sentencias observables.",
   "verificacion": [
     "C5",
     "C6",
@@ -554,6 +554,14 @@
         "datos": {
           "rama": "afirmativa"
         }
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 3
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 3
       },
       {
         "clase": "decision",
