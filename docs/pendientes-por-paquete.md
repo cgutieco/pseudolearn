@@ -68,3 +68,14 @@ Heredados de un README anterior, sin confirmar:
 - Los textos entre comillas de los programas no se traducen en la edición inglesa.
 - Las aserciones estructurales de los ejercicios se validan en su forma, no contra la referencia, porque el puerto del motor no publica la vista del programa.
 - La ruta no verifica mecánicamente que «La herramienta nueva» aparezca cuando una lección introduce una construcción.
+
+## pseudolearn_brand
+
+Confirmados contra el código:
+
+- La app no tiene `android/app/src/main/res` (sin `mipmap` de Android) ni `web/icons`; el README anterior los daba por pendientes.
+
+Heredados de un README anterior, sin confirmar:
+
+- Los íconos de iOS y macOS se generan localmente desde la geometría Dart y se validan con `xcrun actool`; no se ejecutó esa validación al reescribir el README.
+- Las medidas de la marca existen en Python y en Dart (la app las redibuja); `BRAND-DART-DRIFT` solo vigila las constantes declaradas como `static const` en `brand_metrics.dart`.
