@@ -30,7 +30,7 @@ for (const path of Object.keys(graph.inputs).filter((path) => path.includes("nod
   javascript.set(`${manifest.name}@${manifest.version}`, { ...manifest, directory });
 }
 packages.push(...javascript.values());
-const sections = ["# Avisos de terceros", "", "Dependencias incorporadas en los bundles browser y el módulo Wasm. La licencia propia permanece reservada.", ""];
+const sections = ["# Avisos de terceros", "", "Dependencias incorporadas en los bundles browser y el módulo Wasm. La licencia propia es Apache-2.0.", ""];
 for (const entry of packages.sort((left, right) => left.name.localeCompare(right.name))) {
   sections.push(`## ${entry.name} ${entry.version}`, "", `Licencia declarada: ${entry.license ?? "no declarada"}.`, "");
   for (const file of readdirSync(entry.directory, { withFileTypes: true }).filter((entry) => entry.isFile() && /^(LICENSE|LICENCE|NOTICE|COPYING)/i.test(entry.name))) {

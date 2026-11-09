@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Monorepo privado del ecosistema PseudoLearn. Aloja el núcleo del lenguaje en Rust, sus especificaciones
+Monorepo público del ecosistema PseudoLearn. Aloja el núcleo del lenguaje en Rust, sus especificaciones
 ejecutables, la aplicación Flutter, la CLI, el sitio web, el backend y las herramientas de marca y medición.
 El corpus es la fuente de verdad del comportamiento observable. Cada README de miembro define su
 arquitectura, operación y decisiones; `AGENTS.md` establece las reglas transversales.
@@ -87,6 +87,8 @@ manualmente destruiría la correspondencia entre fuente y producto.
 
 **Dependencias y locks.** Las aplicaciones conservan sus locks. Las bibliotecas Dart no los versionan.
 Cada workspace Rust conserva su grafo y verifica licencias, fuentes y dependencias con cargo-deny.
+
+**Licencia única Apache-2.0.** Todo el monorepo, incluido el corpus de especificaciones, se distribuye bajo Apache-2.0 con titularidad de César Antonio Gutiérrez Contreras desde 2026. Cada miembro lleva una copia de `LICENSE` y un `NOTICE` con el aviso de autoría, porque quien redistribuya un miembro por separado debe conservarlos; la extensión de VS Code usa `LICENSE.md` por la convención del empaquetador de VS Code y manifiesta `license` en su `package.json` y en el de la web. Apache-2.0 se eligió sobre MIT por el archivo `NOTICE`, que propaga la atribución a los derivados, y por su concesión expresa de patentes; sobre una licencia de contenido para el corpus (CC-BY) porque esta no está aprobada por la OSI y podría objetarse al firmar binarios que empaquetan el corpus mediante programas de firma gratuita para código abierto. Se descarta el copyleft porque no se pretende restringir derivados cerrados, solo conservar la atribución. Los crates Rust no declaran `license` en su `Cargo.toml` porque ninguno se publica (`publish = false`); la licencia aplicable es la del `LICENSE` de su miembro. Las dependencias y fuentes tipográficas conservan sus licencias propias y avisos.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

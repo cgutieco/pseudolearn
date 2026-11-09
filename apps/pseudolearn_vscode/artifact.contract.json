@@ -24,6 +24,7 @@
     "package.json",
     "readme.md",
     "LICENSE.md",
+    "NOTICE",
     "third-party-notices.md",
     "dist/extension.js",
     "bin/darwin-arm64/pseudo",
@@ -39,6 +40,7 @@
     "package.json",
     "readme.md",
     "LICENSE.md",
+    "NOTICE",
     "third-party-notices.md"
   ],
   "forbiddenSegments": [
@@ -83,6 +85,7 @@
       "package.json",
       "README.md",
       "LICENSE.md",
+      "NOTICE",
       "third-party-notices.md",
       "media/pseudolearn.tmLanguage.json",
       "media/language-configuration.json",

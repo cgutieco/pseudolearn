@@ -17,8 +17,8 @@ export function collectPackageViolations(root) {
   if (manifest.engines?.node !== "22.23.3" || manifest.packageManager !== "pnpm@12.8.1") {
     violations.push("runtime toolchain versions do not match the declared release");
   }
-  if (manifest.engines?.vscode !== "^1.144.0" || !manifest.license?.includes("LICENSE.md")) {
-    violations.push("editor floor or reserved-rights license metadata is invalid");
+  if (manifest.engines?.vscode !== "^1.144.0" || manifest.license !== "Apache-2.0") {
+    violations.push("editor floor or license metadata is invalid");
   }
   for (const path of includedFiles(root, architecture.package.included)) {
     const name = relative(root, path).split("/").join("/");

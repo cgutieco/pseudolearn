@@ -4,7 +4,7 @@
 
 Extensión privada de escritorio y navegador que integra PseudoLearn con VS Code. Se distribuye para uso local mediante F5 durante el desarrollo y archivos VSIX instalados manualmente. El primer artefacto calificado es para macOS Apple silicon (`darwin-arm64`). El paquete incluye el ejecutable `pseudo` para ese destino; no busca ejecutables en el workspace ni descarga binarios al activar.
 
-El código propio está reservado para uso local y no se concede una licencia abierta. El empaquetado genera `third-party-notices.md` desde el grafo Cargo específico del binario incluido y conserva los textos de licencia disponibles junto a la lista SPDX de dependencias. La extensión no se publica en Marketplace ni Open VSX.
+El código propio se distribuye bajo Apache-2.0 (`LICENSE.md` y `NOTICE`). El empaquetado genera `third-party-notices.md` desde el grafo Cargo específico del binario incluido y conserva los textos de licencia disponibles junto a la lista SPDX de dependencias. La extensión no se publica en Marketplace ni Open VSX.
 
 El servidor LSP de proyecto expone navegación, diagnósticos relacionados, símbolos, `prepareRename`/`rename` y tokens semánticos `full` solo bajo las garantías negociadas. Para renombrar en varias fuentes, el cliente materializa y sincroniza los documentos cerrados, recalcula la selección y las referencias y aplica una edición versionada en una sola transacción. El transporte limita cabeceras a 8 KiB y cuerpos a 8 MiB. La configuración declarativa permite el perfil de workspace, idioma de interfaz personal y una ruta absoluta de desarrollo para el servidor; el workspace no selecciona ejecutables ni concede permisos. Los recursos TextMate y de lenguaje se generan desde la exportación SEE.
 
@@ -134,7 +134,7 @@ idioma de interfaz.
 `artifact.contract.json` es el único dato que fija el artefacto: identidad `pseudolearn.pseudolearn-vscode` versión `0.1.0`
 (identifica el paquete, no una versión del lenguaje), VS Code mínimo `^1.144.0` (Stable), target `darwin-arm64`
 (`aarch64-apple-darwin` en Cargo), ejecutable `bin/darwin-arm64/pseudo`, gramática y configuración de lenguaje generadas,
-bundle `dist/extension.js`, licencia reservada (`LICENSE.md`) y SHA-256 como algoritmo de hash. Solo se afirma la plataforma
+bundle `dist/extension.js`, licencia Apache-2.0 (`LICENSE.md` y `NOTICE`) y SHA-256 como algoritmo de hash. Solo se afirma la plataforma
 de la que se dispone para ensayo real; ninguna otra tiene soporte declarado.
 
 - **Construcción por scripts, cada paso con un dueño.** `pnpm build:cli` (`scripts/build-cli.mjs`) ejecuta

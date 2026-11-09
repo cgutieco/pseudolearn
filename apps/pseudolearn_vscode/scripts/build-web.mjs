@@ -30,7 +30,7 @@ function browserManifest() {
   for (const [command, title] of [["showCapabilities", "Show Browser Capabilities"]]) {
     manifest.contributes.commands.push({ command: `pseudolearn.${command}`, title, category: "PseudoLearn" });
   }
-  manifest.files = ["README.md", "LICENSE.md", "third-party-notices.md", "package.json", "dist/**", "media/**"];
+  manifest.files = ["README.md", "LICENSE.md", "NOTICE", "third-party-notices.md", "package.json", "dist/**", "media/**"];
   manifest.scripts = {};
   delete manifest.dependencies;
   delete manifest.devDependencies;
@@ -39,7 +39,7 @@ function browserManifest() {
 
 async function buildBrowser() {
   mkdirSync(stage, { recursive: true });
-  for (const file of ["README.md", "LICENSE.md", "media/pseudolearn.tmLanguage.json", "media/language-configuration.json"]) {
+  for (const file of ["README.md", "LICENSE.md", "NOTICE", "media/pseudolearn.tmLanguage.json", "media/language-configuration.json"]) {
     copy(resolve(root, file), resolve(stage, file));
   }
   for (const file of ["pseudolearn_wasm.js", "pseudolearn_wasm_bg.wasm"]) copy(resolve(wasmRoot, file), resolve(stage, "dist/web/wasm", file));

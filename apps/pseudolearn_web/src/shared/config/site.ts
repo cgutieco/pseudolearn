@@ -7,7 +7,7 @@ export const SITE = {
   microsoftStoreUrl: 'https://apps.microsoft.com/store/detail/9MXZB1XDWP9J?cid=DevShareMCLPCS',
   supportEmail: 'support@pseudolearn.com',
   authorHandle: '@cgutieco',
-  authorUrl: 'https://www.linkedin.com/in/cesar-gutierrez-contreras',
+  authorUrl: 'https://www.linkedin.com/in/cgutieco',
   messageMaxLength: 2000,
   snippetMaxLength: 4000,
 } as const;
