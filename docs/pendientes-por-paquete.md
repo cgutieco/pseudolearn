@@ -39,3 +39,19 @@ Heredados de un README anterior, sin confirmar:
 - `LIB.HTTP#R6` y su caso `C8` discrepan sobre la reproducción de cintas con credenciales redactadas; falta resolverlo en el contrato.
 - Los esperados de `TOOL.FORMAT.STYLE` C5–C7 y `TOOL.TRANSLATE.ROUND-TRIP` C5 no llevan `revisado_por` y requieren revisión humana independiente.
 - El caso `LIB.IO` de incertidumbre en `Renombrar` solo se cubre en una prueba de `pseudolearn_api` porque la búsqueda por evento no soporta aún un efecto fallido incierto.
+
+## pseudolearn_cli
+
+Confirmados contra el código:
+
+- Varios vínculos `pendiente` de `conformance.yaml` resuelven en `adaptador-dap-y-depuracion`: el sujeto `cli` aún no verifica las reglas de depuración que lo usan.
+- `architecture.yaml` lista `hyper`, `tokio`, `rustls`, `http`, `bytes` y otras en `external_dependencies`, pero `Cargo.toml` del miembro no las declara; el transporte vive en `pseudolearn_host`. La lista parece desfasada.
+
+Heredados de un README anterior, sin confirmar:
+
+- La ayuda (`--ayuda`) no lista `bloquear`, `--proyecto` ni `--entrada`, porque el caso de ayuda vigente fija su texto exacto; requiere decisión de la persona sobre ese esperado.
+- Las dependencias `locked` (con digest) no se leen desde disco: el lock que escribe `bloquear` registra solo paquetes locales.
+- `ejecutar --nativo` y el sujeto `aot` no implementan `error_ranges` (salida de error por tramos).
+- `ejecutar --nativo` no ofrece anfitrión físico completo.
+- La paridad nativa de registros, genéricos, variantes y liberación por ámbito queda pendiente de la paridad del sujeto nativo; sus programas de aceptación no se ejecutan en nativo.
+- Verificación de ejecución de los programas de aceptación de la biblioteca solo en macOS arm64; Linux y Windows no se ejecutaron localmente.
