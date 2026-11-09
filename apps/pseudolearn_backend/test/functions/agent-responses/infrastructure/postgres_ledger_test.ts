@@ -55,3 +55,19 @@ Deno.test("grant reports repetition and ledger failures reject", async () => {
   await assertRejects(() => ledger({}, 500).ledger.balance("u", call.now));
   await assertRejects(() => ledger({ nope: 1 }).ledger.debit(call, 3));
 });
+
+Deno.test("a top-up refused for lack of a period keeps its code and balance", async () => {
+  const lapsed = { ...balance, period_active: false, period_remaining_milli: 0, top_up_milli: 0 };
+  const { fetcher, ledger: subject } = ledger({ error: "subscription_required", balance: lapsed });
+  const outcome = await subject.grant({
+    userId: "u",
+    transactionId: "late",
+    product: "top_up",
+    milli: 150_000,
+    days: 0,
+    now: call.now,
+  });
+  assertEquals(outcome.kind === "refused" ? outcome.code : null, "subscription_required");
+  assertEquals(outcome.balance.periodActive, false);
+  assertEquals(fetcher.requests[0].url, "https://p/rest/v1/rpc/agent_grant_purchase");
+});

@@ -73,6 +73,16 @@ Deno.test("the trial is keyed by account and a second trial is refused", async (
   assertEquals((await handle(purchase("pseudolearn.plus.trial", "b"))).status, 409);
 });
 
+Deno.test("a top-up without an active plan answers subscription required", async () => {
+  const ledger = new FakeLedger();
+  const { handle } = setup(new SimulatedPurchaseVerifier(), ledger);
+  ledger.grantRefusal = "subscription_required";
+  const response = await handle(purchase("pseudolearn.plus.topup150"));
+  assertEquals(response.status, 402);
+  assertEquals((await response.json()).error.code, "subscription_required");
+  assertEquals(ledger.grants[0].product, "top_up");
+});
+
 Deno.test("unknown products and malformed bodies are invalid", async () => {
   const { handle } = setup(new SimulatedPurchaseVerifier());
   assertEquals((await handle(purchase("com.other.app"))).status, 422);

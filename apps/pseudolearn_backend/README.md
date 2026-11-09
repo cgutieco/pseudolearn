@@ -418,14 +418,19 @@ estado parcial; la app impide la doble pulsación.
     `ceil((1,25 × entrada sin caché + 0,1 × entrada en caché + 5 × salida) / 10 000 × 1000)` según
     el `usage` real. Plan mensual de 300 créditos sin acumulación (30 días), prueba de 7 días y 40
     créditos una vez por cuenta, recargas de 150 créditos que no caducan y se gastan después del
-    plan. Tope de 15 créditos por petición de la persona y 60 llamadas por minuto.
+    plan. Una recarga solo se canjea con un periodo vigente, sea plan o prueba; ya canjeada, se
+    sigue gastando aunque el periodo venza. Tope de 15 créditos por petición de la persona y 60
+    llamadas por minuto. Precios y pasarelas en §4.12.
   - **Libro** (`20261108000002_agent_credits.sql`): `agent_ledger_periods`, `agent_ledger_top_ups` y
     `agent_ledger_events`, legibles por su dueño con RLS. Las RPC `agent_balance`,
     `agent_authorize`, `agent_debit` y `agent_grant_purchase` son `security definer` y solo las
     ejecuta `service_role`, es decir, la función. `agent_debit` es idempotente por `request_id` y
     gasta primero el periodo y luego las recargas más antiguas, bajo bloqueo de fila;
     `agent_grant_purchase` es idempotente por `transaction_id` y recibe las cifras del catálogo
-    desde TypeScript, para que vivan en un solo sitio.
+    desde TypeScript, para que vivan en un solo sitio. Desde
+    `20261109000001_agent_top_up_requires_plan.sql` rechaza una recarga sin periodo vigente con
+    `subscription_required` y no la registra; la transacción repetida de una recarga ya canjeada
+    sigue respondiendo `repeated` aunque el periodo haya vencido.
   - **Orden**: método → configuración → sesión (GoTrue, como `delete-account`) → cuerpo →
     autorización → modelo → débito. Si el modelo falla, devuelve 429 o no trae `usage`, no hay
     débito.
