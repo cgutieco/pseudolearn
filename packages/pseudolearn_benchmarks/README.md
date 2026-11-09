@@ -1,134 +1,94 @@
 # pseudolearn_benchmarks
 
-## 1. Qué es y qué no es
+Recolectores y resumidores de rendimiento del núcleo Rust: miden con trabajadores del motor y del puente, conservan las
+muestras crudas y calculan las estadísticas. Incluye `ceiling/`, un workspace Rust experimental e independiente que fija
+el techo semántico de diez algoritmos AWFY-core.
 
-Recolectores de rendimiento del núcleo Rust, herramientas estadísticas y archivo de líneas base.
-El corpus define programas, resultados esperados y presupuestos. Los recolectores verifican resultados;
-no convierten salidas del motor en oráculos. Los ejecutores del sujeto histórico están retirados.
-Las capturas y resúmenes se generan bajo `results/`, ignorado por Git. Las campañas y los resumidores
-aceptan directorios y archivos de entrada externos para conservar datos localmente sin añadirlos al
-monorepo.
+**No hace:** no ejecuta el lenguaje en Dart, no define presupuestos (son de `PERF.*` en el corpus) y no versiona
+resultados: `results/` está ignorado por Git.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-Requisitos: Dart aportado por Flutter fijado en la app; Node fijado en `node-version`; Rust exacto de
-cada miembro. Genera primero la exportación consumida por los recolectores y el motor:
-`(cd ../pseudolearn_spec && cargo run --locked -p see_cli --bin see -- export --root .)`. Desde este directorio:
-`dart pub get`, `dart test`,
-`dart analyze --fatal-infos --fatal-warnings` y `dart run tool/check.dart`.
-Formato: `dart format --output=none --set-exit-if-changed lib tool test`.
+```mermaid
+flowchart BT
+    spec["packages/pseudolearn_spec"]
+    engine["packages/pseudolearn_engine"]
+    app["apps/pseudolearn_app"]
+    cli["apps/pseudolearn_cli"]
+    me["packages/pseudolearn_benchmarks"]
+    spec --> me
+    engine --> me
+    app --> me
+    cli --> me
+```
 
-- `dart run tool/collect_frontend.dart <directorio>` mide análisis mediante el trabajador público Rust.
-- `dart run tool/collect_execution.dart <resumen-línea-base.json> [directorio]` mide ejecución preparada
-  y compara contra un resumen suministrado localmente.
-- `dart run tool/summarize.dart <directorio>` recalcula estadísticas históricas sin ejecutar sujetos retirados.
-- `dart run tool/capture_bridge_artifacts.dart [--output ruta]` inspecciona artefactos previamente construidos;
-  por defecto escribe en `results/`.
-- Desde `ceiling/`: `cargo xtask verify` y `cargo run -p ceiling_runner -- collect`.
-- Desde el motor: `cargo run --release -p pseudolearn_bench_worker -- paired <directorio-nuevo>` compara
-  AOT y el techo Rust; `paired-summary <directorio>` recalcula sus estadísticas.
+Lee la exportación del corpus de `spec`, ejecuta el trabajador `pseudolearn_bench_worker` de `engine`, mide la
+biblioteca nativa y los ejercicios de `app` y usa la ficha del lenguaje de `cli`. Ningún miembro depende de él.
 
-Las campañas de plataforma y del puente se ejecutan separadamente cuando exista autorización para
-medir macOS e iOS. Las comprobaciones de artefactos y la generación de informes no son un despliegue.
+## Arquitectura
 
-El ejecutor del puente se prepara con `dart run tool/create_bridge_campaign.dart <campaña-nueva.json>`
-y se ejecuta con `dart run tool/collect_bridge.dart <campaña.json> <directorio-nuevo>`. La configuración
-incluye preparación de binarios, trabajador de API directa y trabajador Dart con FFI generado y modelo
-visible. Captura procedencia antes de compilar, alterna orden por proceso, exige diez procesos y treinta
-iteraciones, conserva errores y rechaza muestras incompletas o duplicadas. Las expectativas se evalúan
-fuera del reloj. La suite consume AWFY del corpus, Fibonacci de veinte, alias, ciclos, arreglos, entrada,
-cancelación, salida abundante, consulta retenida y completado de diez mil líneas. El modelo visible mide
-un paso preparado y comprueba fuera del reloj que Fibonacci termina con el resultado normativo.
+```mermaid
+flowchart BT
+    model["model"]
+    suite["suite"]
+    tooling["tool"]
+    model --> suite
+    model --> tooling
+    suite --> tooling
+```
 
-Cada escenario declara `setup`, `timed`, `verify` y expectativas independientes por ruta. Los resultados
-se pueden enlazar mediante `$nombre.campo`; las repeticiones son acotadas y solo terminan al satisfacer
-su condición. Cada iteración crea sesión nueva. El informe publica p50/p95, MAD/IQR e intervalo del 95 %
-de medias por proceso con semilla fija, sin descartar muestras ni afirmar estacionariedad. La captura
-de fotogramas se incorpora desde la prueba de plataforma: su ausencia impide certificar el experimento.
-No se confunde el resultado del modelo preparado con tiempo de renderizado ni con latencia por evento.
+| Capa    | Ruta            | Responsabilidad                                                    |
+|---------|-----------------|--------------------------------------------------------------------|
+| model   | `lib/src/model` | Cargas, muestras y tareas del benchmark del agente                 |
+| suite   | `lib/src/suite` | Cargas AWFY, del corpus y de anexos; tareas del agente             |
+| tooling | `tool/`         | Recolectar, verificar y resumir; también `check.dart`              |
+| ceiling | `ceiling/`      | Workspace Rust aparte: `kernels`, `statistics`, `runner` y `xtask` |
 
-### Benchmark del agente Nodo
+## Flujo principal
 
-`dart run tool/agent_benchmark.dart plan [ejercicios] [salida.json]` extrae de los ejercicios empaquetados de la ruta
-(`resolver`, `modificar`, `encontrar-error` y `romperlo`, los que tienen casos) unas cien tareas con enunciado, programa
-inicial y casos (`lib/src/suite/agent_tasks.dart`); no usa red. `run --authorized` mide contra el proxy real del agente
-(`AGENT_PROXY_URL`, `AGENT_ACCESS_TOKEN` de una sesión de Supabase y `PSEUDO_BIN`) cuatro variantes: con y sin ficha
-del lenguaje y con y sin recuperación (`search_reference` de `pseudo mcp`). Por tarea registra si el primer programa
-compila, si compila tras hasta tres reparaciones con los diagnósticos de `pseudo comprobar`, si pasa todos los casos
-con `pseudo ejecutar`, y los créditos que informan las cabeceras de saldo. `summarize <trials.json>` publica por
-variante las tasas y los créditos medios (`lib/src/model/agent_trial.dart`). El prompt solo muestra los casos
-visibles. La ejecución gasta créditos con la clave del propietario y por eso exige `--authorized` explícito; sin él, o
-sin alguna variable, termina con código 2 sin llamar a nadie. Nunca se ha ejecutado contra el proveedor real: queda
-pendiente de la autorización de la persona. Los resultados van a `results/`, ignorado.
+Flujo de ejecución, no de dependencias.
 
-## 3. Arquitectura y modelo del sistema
+```mermaid
+flowchart LR
+    export["Exportación del corpus"]
+    collect["tool/collect_*"]
+    worker["Trabajador Rust"]
+    raw["Crudos en results/"]
+    summary["tool/summarize*"]
+    export --> collect --> worker --> raw --> summary
+```
 
-| Capa | Responsabilidad | Puede importar |
-|---|---|---|
-| model | Cargas y muestras | SDK Dart |
-| suite | Cargas y controles independientes | model |
-| tooling | Recolectar, verificar y resumir | model, suite, SDK, analyzer y yaml |
+El trabajador prepara el estado antes del reloj, mide las operaciones y verifica después. El recolector captura la
+procedencia antes de compilar y nunca descarta muestras.
 
-`architecture.yaml` declara capas y límites. No existe una capa de ejecución del lenguaje en Dart.
-`measurement_environment.dart` captura procedencia y muestrea procesos; los trabajadores Rust o del
-puente realizan las operaciones medidas. `ceiling/` es un workspace experimental independiente.
+## Reglas que conviene saber
 
-## 4. Decisiones de diseño y fundamentos técnicos
+- Capas: `model` no importa nada; `suite` solo `model`; `tool` importa `model` y `suite`. Sin dependencias externas en
+  `lib`.
+- Límites: 300 líneas por archivo, 40 por función, 4 parámetros, anidación 3 y 7 métodos públicos por clase.
+- Las herramientas reciben rutas de entrada y salida explícitas y no sobrescriben capturas anteriores.
+- Un resultado incumplido se conserva tal cual; el umbral no se ajusta desde el arnés.
+- `agent_benchmark run` gasta créditos reales: exige `--authorized`, `AGENT_PROXY_URL`, `AGENT_ACCESS_TOKEN` y
+  `PSEUDO_BIN`, y sin ellos termina con código 2.
 
-**Medir dentro del trabajador.** El arranque del proceso y la preparación no representan el coste del
-motor. El trabajador prepara estado antes del reloj, mide operaciones declaradas y verifica después.
-El recolector captura procedencia antes del build y conserva muestras crudas. Se descarta cronometrar
-una CLI completa para atribuir su latencia al análisis o a la VM.
+## Comandos útiles
 
-**Separar datos de herramientas.** Los resultados crudos y resúmenes viven fuera del árbol versionado y
-las herramientas reciben rutas de entrada o salida explícitas. Los contratos conservan los presupuestos
-vigentes; una captura local no se convierte en oráculo ni en una comparación actual por estar guardada.
-Se descarta sobrescribir resultados desfavorables o presentar una medición histórica como campaña actual.
+| Para qué                                  | Comando                                                                                                                                  |
+|-------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| Generar la exportación previa             | `(cd ../pseudolearn_spec && cargo run --locked -p see_cli --bin see -- export --root .)`                                                 |
+| Instalar dependencias                     | `dart pub get`                                                                                                                           |
+| Tests                                     | `dart test`                                                                                                                              |
+| Análisis estático                         | `dart analyze --fatal-infos --fatal-warnings`                                                                                            |
+| Verificar capas y límites                 | `dart run tool/check.dart`                                                                                                               |
+| Medir el análisis                         | `dart run tool/collect_frontend.dart <directorio>`                                                                                       |
+| Medir la ejecución                        | `dart run tool/collect_execution.dart <resumen-línea-base.json> [directorio]`                                                            |
+| Recalcular estadísticas históricas        | `dart run tool/summarize.dart <directorio>`                                                                                              |
+| Preparar y ejecutar la campaña del puente | `dart run tool/create_bridge_campaign.dart <campaña-nueva.json>` y `dart run tool/collect_bridge.dart <campaña.json> <directorio-nuevo>` |
+| Resumir el puente                         | `dart run tool/summarize_bridge.dart <raw.json>`                                                                                         |
+| Inspeccionar artefactos del puente        | `dart run tool/capture_bridge_artifacts.dart [--output ruta]`                                                                            |
+| Planificar el benchmark del agente        | `dart run tool/agent_benchmark.dart plan [ejercicios] [salida.json]`                                                                     |
+| Comparar AOT y techo Rust                 | `(cd ../pseudolearn_engine && cargo run --release -p pseudolearn_bench_worker -- paired <directorio-nuevo>)`                             |
+| Verificar `ceiling/`                      | `(cd ceiling && cargo xtask verify)`                                                                                                     |
+| Recolectar `ceiling/`                     | `(cd ceiling && cargo run --release -p ceiling_runner -- collect <directorio-nuevo>)`                                                    |
 
-**Estadística explícita.** Los procesos son las unidades independientes. Se informa el estimador del
-intervalo, p95, resolución y candidatos de cambio; todas las muestras se conservan. Un intervalo de
-medias no certifica una razón de medianas. El experimento AOT alterna el orden de las parejas, crea
-estado nuevo y comprueba salidas antes y durante la captura.
-
-**Fronteras diferentes.** La API directa, la transferencia FFI, el modelo visible y el fotograma son
-intervalos distintos. Dividir tiempo de lote entre eventos no mide la latencia de una pulsación.
-Las pruebas locales de protocolo no sustituyen mediciones físicas ni de distribución.
-
-## 5. Reglas de legibilidad, estilo y estructura de código
-
-Código en inglés sin comentarios; documentación en español. Máximos: 300 líneas por archivo,
-40 por función, cuatro parámetros posicionales, tres niveles de anidación y siete métodos públicos.
-Los imports respetan las capas y las herramientas no modifican el motor medido.
-
-## 6. Decisiones de producto que condicionan el código
-
-Los presupuestos pertenecen a `PERF.*`. Un resultado incumplido se conserva como tal; no se ajusta el
-umbral desde el arnés. Las muestras proceden de estado nuevo, semillas fijadas y resultados derivados
-del contrato. Las mediciones futuras no mezclan máquinas ni capturas independientes para atribuir coste FFI.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-Las pruebas espejo cubren lectura del corpus, entradas inválidas, estadísticas, campañas incompletas,
-artefactos y verificadores negativos. Las cargas de lenguaje se prueban por conformidad en Rust;
-no se mantiene una segunda suite de interpretación en Dart.
-Los informes distinguen pruebas automatizadas, métricas históricas y mediciones todavía no realizadas.
-
-`dart run tool/summarize_bridge.dart <raw.json>` recalcula percentiles, dispersión, candidatos de cambio y cocientes desde los crudos, sin ejecutar procesos de medición.
-
-El resumen empareja puente y directo por escenario, operación y ordinal de proceso, y reutiliza el estimador geométrico por familia con bootstrap reproducible. El modelo de app se informa aparte porque no tiene una operación directa equivalente. Una media no positiva impide calcular un cociente para esa familia y se conserva señalada, sin eliminar sus crudos ni inventar un coste nulo.
-
-La procedencia identifica fuentes antes del build y artefactos release después del build mediante tamaño y SHA-256, junto con `rustc -vV` y los comandos exactos. Los trabajadores publican el menor incremento positivo observado del reloj, medido fuera del intervalo; no se presenta como garantía física de precisión. Los datos de fotogramas se mantienen ausentes hasta su captura en plataforma.
-
-El escenario de modelo Fibonacci configura explícitamente un presupuesto de un millón de pasos en `StepBatchRunner`; el límite interactivo predeterminado de la app sigue siendo diez mil. Esto permite comprobar la finalización en el arnés, sin certificar la experiencia física ni ocultar esa configuración.
-
-Los trabajadores admiten `mode: "smoke"` con una única iteración funcional. El smoke automatizado de la app reduce solo la recursión del modelo a Fib(4), con resultado matemático 3, para verificar sus claves y flujo sin ejecutar la campaña Fib(20). Estas pruebas comprueban claves y expectativas de los escenarios; sus duraciones no integran mediciones ni certificaciones de plataforma. El recolector exige todas las operaciones previstas y rechaza una salida que omita consultas completas.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-La suite AWFY-core selecciona diez algoritmos compatibles con el lenguaje vigente. Sus programas y
-controles se consumen desde la exportación del corpus. Los estimadores y presupuestos proceden de
-`PERF.PROTOCOL`; la variabilidad de hardware y la estacionariedad no demostrada se declaran en cada captura.
-
-El presupuesto vigente de biblioteca ios-arm64 es 8 MiB, ampliado con autorización para compartir
-el anfitrión físico Rust entre consumidores. El Wasm conserva 900 KiB; la captura sigue comprobando
-símbolos separados, arquitectura y SHA-256 antes de aprobar el tamaño.
+Requisitos: Dart de Flutter (el fijado en la app), Node según `node-version` y el Rust fijado en cada miembro.

@@ -57,6 +57,15 @@ final class AgentRunSettings {
   }
 }
 
+int creditsSpent({
+  required int? previousRemaining,
+  required int? currentRemaining,
+}) {
+  if (previousRemaining == null || currentRemaining == null) return 0;
+  final spent = previousRemaining - currentRemaining;
+  return spent > 0 ? spent : 0;
+}
+
 String? firstProgram(String reply) => _fence.firstMatch(reply)?.group(1);
 
 String agentPrompt(AgentTask task, {required String context}) => [
@@ -73,6 +82,7 @@ String agentPrompt(AgentTask task, {required String context}) => [
 final class AgentBenchmarkRunner {
   final AgentRunSettings settings;
   final HttpClient _http = HttpClient();
+  int? _remainingCredits;
 
   AgentBenchmarkRunner(this.settings);
 
@@ -138,11 +148,14 @@ final class AgentBenchmarkRunner {
     );
     final response = await request.close();
     final body = jsonDecode(await response.transform(utf8.decoder).join());
-    final spent =
-        int.tryParse(
-          response.headers.value('x-pseudolearn-credits-remaining') ?? '',
-        ) ??
-        0;
+    final remaining = int.tryParse(
+      response.headers.value('x-pseudolearn-credits-remaining') ?? '',
+    );
+    final spent = creditsSpent(
+      previousRemaining: _remainingCredits,
+      currentRemaining: remaining,
+    );
+    _remainingCredits = remaining ?? _remainingCredits;
     return (_text(body), spent);
   }
 

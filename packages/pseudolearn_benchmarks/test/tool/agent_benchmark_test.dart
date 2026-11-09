@@ -70,4 +70,18 @@ void main() {
     expect(readAgentTrials('nope'), isNull);
     expect(loadAgentTasks('/no/such/folder'), isNull);
   });
+
+  test('credits spent is the drop between consecutive remaining balances', () {
+    expect(creditsSpent(previousRemaining: 270, currentRemaining: 250), 20);
+    expect(creditsSpent(previousRemaining: 270, currentRemaining: 270), 0);
+  });
+
+  test(
+    'credits spent is zero without a baseline, a header or after a rise',
+    () {
+      expect(creditsSpent(previousRemaining: null, currentRemaining: 250), 0);
+      expect(creditsSpent(previousRemaining: 250, currentRemaining: null), 0);
+      expect(creditsSpent(previousRemaining: 250, currentRemaining: 900), 0);
+    },
+  );
 }
