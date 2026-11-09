@@ -1,539 +1,95 @@
-<div align="center">
+# pseudolearn_web
 
-# PseudoLearn — sitio web
+Sitio público de PseudoLearn (<https://pseudolearn.app>): landing, especificación ilustrada del lenguaje en `/spec`,
+historial de versiones, contacto, checkout de Paddle y páginas legales, en español e inglés. Es un sitio Astro que se
+despliega en Cloudflare Workers.
 
-**Programar se entiende cuando se ve.**
-Sitio oficial de [PseudoLearn](https://pseudolearn.app): landing, especificación del lenguaje, contacto y soporte, e historial de versiones.
+**No hace:** ejecutar pseudocódigo, leer el corpus ni el código de otras apps, ni redirigir por idioma de forma
+automática. Todo lo que muestra del resto del monorepo llega como artefacto generado o como `CHANGELOG.json`.
 
-[![Node](https://img.shields.io/badge/node-%3E%3D22.23.3-339933?logo=node.js&logoColor=white)](.nvmrc)
-![Astro](https://img.shields.io/badge/Astro-7-BC52EE?logo=astro&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?logo=typescript&logoColor=white)
-![Cloudflare Workers](https://img.shields.io/badge/Cloudflare_Workers-F38020?logo=cloudflare&logoColor=white)
-![Vitest](https://img.shields.io/badge/Vitest-5-6E9F18?logo=vitest&logoColor=white)
-![Playwright](https://img.shields.io/badge/Playwright-1.64-2EAD33?logo=playwright&logoColor=white)
+## Dónde encaja
 
-</div>
-
----
-
-## 1. Qué es y qué no es
-
-### Propósito
-
-Frontend público de **PseudoLearn**, un entorno para aprender a programar en pseudocódigo con
-ejecución paso a paso y diagramas trazados por el propio motor del lenguaje. Este repositorio
-contiene la landing comercial, la pantalla de contacto y soporte, y el historial de versiones publicadas.
-
-La aplicación nativa y el núcleo del lenguaje son de código cerrado. **Este sitio no lo es**, y por
-eso se sostiene con un estándar de verificación más alto que el del resto del monorepo.
-
-### Responsabilidades primarias
-
-- Servir la landing (`/`), el contacto (`/contact`), las versiones (`/versions`), la privacidad (`/privacy`) y los
-  términos (`/terms`), en español e inglés, con redirecciones de compatibilidad
-  desde `/contacto`, `/versiones`, `/privacidad`, `/terminos` y `/legal`.
-- Publicar qué versión de la app hay disponible, sus novedades y el registro de cambios detallado
-  (changelog), leídos del `CHANGELOG.json` compartido de la raíz del monorepo (decisión 9).
-- Promocionar la ficha de Windows en Microsoft Store como vía principal, y mantener la descarga
-  directa del instalador explicando cómo superar el aviso de SmartScreen mientras no esté firmado
-  (decisión 13).
-- Recibir y entregar los mensajes del formulario de contacto, con verificación anti-bot.
-- Completar el pago de Paddle que abre la app de Windows en `/checkout` (decisión 15).
-- Publicar la especificación ilustrada del lenguaje en `/spec` y `/en/spec`, con una versión en Markdown de cada
-  página para asistentes y agentes de IA (decisión 16).
-- Cumplir WCAG 2.1 AA, verificado automáticamente en las rutas de la suite de accesibilidad y en los dos temas.
-- Sostener el presupuesto de rendimiento: cero JavaScript de cliente salvo cinco excepciones
-  declaradas y medidas.
-
-### Fuera de alcance a propósito (`SCOPE-YAGNI`)
-
-- **Sin ejecución del lenguaje en el navegador.** El motor y el editor viven en la app nativa.
-- **Sin adjuntos en el formulario.** Se sustituyen por un campo donde se pega el programa: cubre el
-  caso real sin multipart, sin límites de tamaño, sin superficie de malware y sin almacenamiento.
-- **Sin frameworks SPA** ni librerías de componentes. Todo el estilo sale de tokens propios.
-- **Sin `astro:i18n`.** El porqué está en la decisión 2.
-- **Sin venta en el sitio.** La app se distribuye en las tiendas de Apple, y una web enlazada desde
-  su ficha que ofrezca comprar por fuera es motivo de observación en revisión. El sitio no anuncia
-  precios ni enlaza a ningún pago. La única página de pago, `/checkout`, solo completa una
-  transacción que ya creó la app de Windows (decisión 15): no se indexa, no está en el sitemap ni en
-  la navegación, y la app de iOS y macOS nunca la abre.
-
----
-
-## 2. Guía operativa
-
-### Requisitos
-
-- Node.js `>= 22.23.3` (ver [.nvmrc](.nvmrc))
-- pnpm
-- Cuenta de Cloudflare con Wrangler configurado, solo para desplegar
-
-### Puesta en marcha
-
-```bash
-pnpm install
-cp .env.example .env
-pnpm dev
+```mermaid
+flowchart BT
+  changelog["CHANGELOG.json"] --> web["apps/pseudolearn_web"]
+  spec["packages/pseudolearn_spec"] --> web
+  reference["packages/pseudolearn_reference"] --> web
+  brand["packages/pseudolearn_brand"] --> web
+  turnstile["Cloudflare Turnstile"] --> web
+  smtp["OCI Email Delivery (SMTP)"] --> web
+  paddle["Paddle.js"] --> web
+  web --> visitante["Visitantes y asistentes de IA"]
 ```
 
-Antes de ejecutar `pnpm check:all` o compilar desde un checkout limpio, genera los assets ignorados que consumen los imports del sitio:
+## Arquitectura
 
-```bash
-(cd ../../packages/pseudolearn_brand && python3 -m pip install fonttools && python3 -m pseudolearn_brand build)
-(cd ../pseudolearn_app && flutter pub get && flutter test tool/generate_product_shot.dart)
+Arquitectura por capas al estilo Feature-Sliced Design. Las flechas van de la dependencia a quien la usa; cada capa
+importa de sí misma y de las inferiores.
+
+```mermaid
+flowchart BT
+  shared --> entities
+  entities --> features
+  features --> widgets
+  widgets --> views
+  views --> pages
+  widgets --> app
+  app --> views
 ```
 
-La especificación ilustrada (`src/entities/specification/generated/`) sí está versionada. Tras editar el libro en
-`packages/pseudolearn_reference`, se regenera desde ese miembro:
+| Capa            | Contenido                                                                                                                     |
+|:----------------|:------------------------------------------------------------------------------------------------------------------------------|
+| `src/pages/`    | Rutas finas (14 líneas como máximo) que montan una vista; incluye `api/contact`, `llms*.txt`, `robots.txt`, sitemap y `/spec` |
+| `src/views/`    | Una pantalla por ruta: home, contacto, versiones, privacidad, términos, checkout, especificación, 404                         |
+| `src/widgets/`  | Bloques de página: encabezado, pie, héroe, descargas, historial, lector de especificación                                     |
+| `src/features/` | Interacciones: formulario de contacto, checkout de Paddle, cambio de idioma y de tema                                         |
+| `src/entities/` | Modelos y accesos: solicitud de contacto, release, especificación, plataforma, módulo, legal                                  |
+| `src/shared/`   | Configuración, i18n propia, estilos globales (`pl-`), UI, ficha de agente y entorno de ejecución                              |
+| `src/app/`      | Layout base y SEO                                                                                                             |
 
-```bash
-(cd ../../packages/pseudolearn_reference && cargo run --locked -p reference_cli -- build)
+El diagrama omite las aristas desde `shared`, `entities` y `features` hacia las capas superiores; `app` importa de todas
+salvo `views`, y `views` importa de `app`.
+
+## Flujo principal
+
+Flujo de datos del formulario de contacto, no de dependencias:
+
+```mermaid
+flowchart LR
+  form["ContactForm"] --> api["POST /api/contact"]
+  api --> turnstile["Turnstile"]
+  turnstile --> smtp["OCI SMTP"]
+  smtp --> soporte["support@pseudolearn.app"]
 ```
 
-El build de CI ejecuta estos pasos antes de `pnpm build`. Las capturas y salidas de marca se regeneran bajo sus rutas
-de consumo y no forman parte del índice de Git.
-
-Coloca además las dos fuentes `woff2` en `public/fonts/` (ver [public/fonts/README.md](public/fonts/README.md)).
-Sin ellas el sitio funciona, pero cae a la familia de respaldo.
-
-### Comandos
-
-| Comando                                   | Qué hace                                       |
-| ----------------------------------------- | ---------------------------------------------- |
-| `pnpm dev`                                | Servidor de desarrollo                         |
-| `pnpm build`                              | Build de producción                            |
-| `pnpm preview`                            | Sirve el build sobre el runtime de Workers     |
-| `pnpm deploy`                             | Compila y despliega en Cloudflare Workers      |
-| `pnpm test`                               | Unidad y componentes (Vitest)                  |
-| `pnpm test:e2e`                           | Extremo a extremo (Playwright sobre el build)  |
-| `pnpm test:a11y`                          | Accesibilidad (axe-core)                       |
-| `pnpm test:visual`                        | Renderizado en viewport móvil y escritorio     |
-| `pnpm lint` / `lint:css` / `format:check` | ESLint, Stylelint, Prettier                    |
-| `pnpm check:types`                        | `astro check`                                  |
-| `pnpm check:static`                       | Los siete verificadores propios                |
-| `pnpm check:budget`                       | Presupuesto de JavaScript y CSS sobre el build |
-| `pnpm check:all`                          | Todo lo anterior, en orden                     |
-
-### Secretos
-
-`PUBLIC_TURNSTILE_SITE_KEY`, `PUBLIC_PADDLE_CLIENT_TOKEN` y `PUBLIC_PADDLE_ENVIRONMENT`
-(`production` o `sandbox`) son públicos y se leen al compilar: el workflow de producción los toma de
-las variables del repositorio. Los demás son secretos de servidor y en producción se cargan como
-_secrets_ de Wrangler, nunca como variables en texto plano:
-
-```bash
-wrangler secret put TURNSTILE_SECRET_KEY
-wrangler secret put OCI_SMTP_USERNAME
-wrangler secret put OCI_SMTP_PASSWORD
-```
-
-`OCI_SMTP_HOST`, `OCI_SMTP_PORT`, `CONTACT_FROM_ADDRESS`, `CONTACT_TO_ADDRESS` y
-`PUBLIC_TURNSTILE_SITE_KEY` no son secretos: están declarados como `vars` en
-[wrangler.jsonc](wrangler.jsonc) y se suben con el propio deploy.
-
-### Despliegue
-
-```bash
-pnpm deploy
-```
-
-Publica en <https://pseudolearn.app>. Verifica ahí después de cada deploy, en particular
-`/contact` (usa el SMTP de OCI Email Delivery y el widget de Turnstile — ambos atados a ese
-hostname, no funcionan desde `*.workers.dev`).
-
-Las pruebas de viewport comprueban que las páginas se rendericen y no desborden el ancho disponible.
-No usan capturas de referencia versionadas; las verificaciones de contenido, rutas y accesibilidad
-permanecen en sus suites dedicadas.
-
----
-
-## 3. Arquitectura
-
-Astro 7 híbrido sobre Cloudflare Workers: todas las páginas prerenderizadas, y una sola ruta bajo
-demanda (`src/pages/api/contact.ts`, con `prerender = false`) para el formulario.
-
-`src/` sigue Feature-Sliced Design, de más a menos específica:
-
-```
-app > views > widgets > features > entities > shared
-```
-
-```text
-src/
-├── app/        Layout base y SEO de sitio (canonical, Open Graph, hreflang, JSON-LD)
-├── views/      Composición completa de cada ruta, y el manejador del formulario
-├── widgets/    Bloques compuestos: cabecera, pie, hero, superficies, ruta, descargas…
-├── features/   Interacción: conmutador de tema, conmutador de idioma, formulario
-├── entities/   contact-request, learning-module, platform, release, specification
-├── shared/     i18n, estilos, ui, lib, config, dobles de prueba
-├── pages/      Rutas de Astro: envoltorios de 14 líneas o menos
-└── assets/     Capturas del producto
-```
-
-Las reglas de capas, los imports permitidos, los imports exclusivos y los límites de tamaño están
-declarados en [architecture.yaml](architecture.yaml) y los **leen** los verificadores. No hay una
-segunda copia de las reglas dentro de los scripts.
-
-Una sola dependencia de datos sale del paquete: el registro de cambios `CHANGELOG.json` de la raíz del
-monorepo, importado con el alias `@changelog` únicamente desde `entities/release/model/release-catalog.ts`
-(decisión 9). Las dos carpetas `generated/` (`shared/agent-sheet/` y `entities/specification/`) no son
-dependencias: las escriben los generadores de `packages/` dentro de este paquete (decisiones 14 y 16). Por eso el workflow `push-production-web.yml` se lanza solo a mano (`workflow_dispatch`); al registrar una versión en ese
-archivo hay que lanzarlo para publicar la web.
-
----
-
-## 4. Decisiones de diseño
-
-### Decisión 1: `architecture.yaml` como fuente única de las reglas
-
-- **Problema.** Cuando las reglas de arquitectura viven dentro del script que las comprueba, la
-  documentación las repite y las dos copias divergen en cuanto alguien cambia una.
-- **Elección.** Declararlas en `architecture.yaml` y hacer que los siete verificadores lo lean. Es
-  además la convención que ya usan los paquetes del monorepo.
-- **Descartado.** _Reglas incrustadas en el script_, como en el proyecto que sirvió de referencia:
-  más simple de escribir una vez, imposible de mantener sincronizado con el README.
-
-### Decisión 2: i18n propia con claves tipadas, no `astro:i18n`
-
-- **Problema.** El requisito es que ninguna palabra viva en el código. Un diccionario en tiempo de
-  ejecución detecta el error tarde, y solo si alguien ejecuta el script.
-- **Elección.** Derivar el tipo `TranslationKey` del diccionario español. Una clave inventada es un **error de
-  compilación**. `check:i18n` cubre aparte lo que los tipos no ven: paridad, claves
-  vacías, claves invocadas inexistentes y claves que ya nadie referencia.
-- **Descartado.** _`astro:i18n`_: no aporta tipado de claves, y su enrutado no cubre la persistencia
-  de la elección ni el aviso condicional de idioma.
-
-### Decisión 3: el prefijo `pl-` distingue vocabulario público de estilo local
-
-- **Problema.** En un sitio con estilos con scope, no se ve de un vistazo si una clase se reutiliza
-  o si muere en su archivo.
-- **Elección.** Las clases del vocabulario público, declaradas en `shared/styles/`, llevan `pl-`.
-  Las de un componente van sin prefijo. `check:css-scope` impide cruzar la frontera en cualquiera de
-  los dos sentidos.
-- **Descartado.** _Prefijar todo_: el prefijo dejaría de informar y sería ruido.
-
-### Decisión 4: sin adjuntos en el formulario, con el programa pegado
-
-- **Problema.** Los adjuntos exigen multipart, límites de tamaño, superficie de malware y
-  almacenamiento, para un caso que casi siempre es «pego mi programa».
-- **Elección.** Un `textarea` monoespaciado de hasta 4000 caracteres.
-- **Descartado.** _Subida a R2_: coste e infraestructura desproporcionados para la primera versión.
-
-### Decisión 5: dos idiomas explícitos y ninguna redirección automática
-
-- **Problema.** El pliego original pedía una opción «Sistema» en el selector de idioma. Con rutas
-  prefijadas y estáticas, eso solo se implementa redirigiendo en cliente tras el primer pintado.
-- **Elección.** Dos opciones explícitas con la elección persistida en un conmutador segmentado (análogo al selector de
-  tema y sin flecha de desplegable), más un aviso de una línea,
-  discreto y descartable, cuando el navegador habla el otro idioma y no hay preferencia guardada.
-- **Descartado.** _Redirección automática_: salto visible, y rastreadores confundidos sobre cuál es
-  la versión canónica. Es una desviación consciente de la letra del pliego.
-
-### Decisión 6: la imagen del hero se trata como el elemento LCP que es
-
-- **Problema.** La vista previa del producto se solapa con el hero mediante un margen negativo, y
-  resulta visible en el primer pliegue en escritorio **y** en móvil. Llevaba `loading="lazy"`, que la
-  excluye del escáner de precarga. Además, el producto debe reflejar el idioma de la página activa (español o inglés) y
-  no solo el esquema de color.
-- **Elección.** `fetchpriority="high"`, `decoding="sync"`, y un `<link rel="preload">` por
-  combinación de punto de ruptura y esquema de color para el idioma de la ruta activa (`es` o `en`),
-  emitido en el `<head>` por el slot `head` del layout vía `ProductPreviewPreload`. Las capturas
-  residen organizadas por idioma en `src/assets/product/{es,en}/` y se resuelven tipadas mediante
-  `previewSources(locale)`. El `prefers-color-scheme` se mantiene dentro de `<source media>` porque es
-  lo único que el escáner de precarga entiende sin esperar a JavaScript, sincronizándose además en cliente
-  ante conmutaciones dinámicas de tema.
-- **Coste asumido.** Quien fuerce manualmente un tema contrario al de su sistema paga una segunda
-  descarga de imagen. Es minoría, no afecta a la medición, y la alternativa era duplicar el
-  `<picture>` o renderizar la página entera en servidor.
-
-### Decisión 7: la tipografía conserva sus saltos por media query
-
-- **Problema.** Migrar la escala tipográfica a `clamp()` es la práctica moderna, pero cambia todos
-  los tamaños intermedios entre 375 px y 900 px.
-- **Elección.** Conservar la escala actual con sus media queries. La instrucción era preservar la
-  maquetación, y la regresión visual lo demuestra.
-- **Descartado.** _Tipografía fluida_: mejor en abstracto, pero habría hecho imposible probar que la
-  reestructuración no cambió nada.
-
-### Decisión 8: inversión de dependencias solo donde hay I/O externa
-
-Dos puertos, `BotChallengeGateway` y `MailGateway`, cada uno con su adaptador y su doble. **No** se
-invierten i18n, configuración ni catálogos: no hay dependencia externa que invertir, y una interfaz
-sin segunda implementación es coste sin beneficio.
-
----
-
-### Decisión 9: el historial de versiones se lee del registro de cambios compartido del monorepo
-
-- **Problema.** El mismo número de versión lo necesitan tres widgets —la tarjeta de lo publicado, la
-  entrada del historial y la especificación «Versión» de cada tarjeta de descarga— y la página entera
-  existe para prometer que ese número no se contradice consigo mismo. Además, quien publica la app
-  necesita un registro propio de qué salió y cuándo; si ese registro vive aparte del de la web, son
-  dos listas que divergen en la primera publicación que se olvide en una de ellas.
-- **Elección.** La fuente es `CHANGELOG.json`, en la raíz del monorepo: la entrada de publicación que
-  el `README.md` de la raíz (§4.4) exige por cada versión de producto, con versión, fecha ISO, núcleo
-  anclado, titular, resumen y la lista de cambios, cada uno con `id`, tipo (`feature`, `platform`,
-  `fix`) y su texto en los dos idiomas. Se importa con el alias `@changelog` (declarado en
-  `tsconfig.json`) y **un solo archivo** puede hacerlo, `entities/release/model/release-catalog.ts`,
-  regla declarada en `exclusiveImports` de `architecture.yaml`. Ese archivo pasa el JSON por
-  `readChangelog`, que valida forma, versiones semánticas, fechas de calendario reales, textos en los
-  dos idiomas, tipos conocidos, identificadores únicos y orden de más reciente a más antigua, y
-  devuelve los problemas como valores; si hay alguno, el catálogo detiene el build con la lista, de
-  modo que un registro roto nunca se despliega. La fecha se formatea con `Intl` mediante
-  `formatDate` del traductor, nunca a mano. El historial agrupa los cambios por tipo
-  (`groupChangesByKind`) en vez de etiquetar cada fila. Se gana la condición de entidad por la
-  segunda razón que admite `fsd-architecture`: varios consumidores independientes del mismo modelo.
-- **Consecuencia.** El texto de cada versión **no** vive en `es.json`/`en.json`: es contenido del
-  registro, no de la interfaz, y lo escribe quien publica la app. Los diccionarios conservan lo que
-  rodea al registro (etiquetas de tipo, contadores, encabezados). La paridad de idiomas de ese texto
-  no la comprueba `check:i18n` sino `readChangelog`, con el mismo rigor: una traducción vacía o
-  ausente es un problema que para el build. El campo `core` se valida pero la web no lo muestra: el
-  versionado del motor no es superficie pública (sección 6).
-- **Descartado.** _Leer la versión de `package.json`_: la del sitio no es la del producto, y una
-  errata corregida en la web no publica una versión de la app.
-- **Descartado.** _Mantener el texto en los diccionarios con claves `versions.release.<id>.*`_: era
-  el diseño anterior. Obligaba a editar la web para registrar una publicación de la app, y dejaba el
-  registro de quien publica repartido en dos archivos de otro paquete.
-- **Descartado.** _Ubicar el registro dentro de `apps/pseudolearn_app/`_: la web no importa nada de
-  otras aplicaciones (`README.md` de la raíz, §3.3). La raíz es el lugar del par `(app, núcleo)`.
-- **Descartado.** _Un campo `channel`_: hoy tendría un solo valor, y una enumeración de un caso es
-  ceremonia (`SCOPE-YAGNI`). La etiqueta sale de una clave fija; el campo se añade el día que exista
-  un segundo canal.
-
----
-
-### Decisión 10: el umbral responsivo de navegación es local al encabezado (1100px) con densidad adaptativa
-
-- **Problema.** La cabecera reúne marca, cinco enlaces, dos selectores segmentados y un botón de
-  acción (~1200 px en escritorio completo). Al compartir el umbral global de 900 px, la cabecera
-  intentaba embutirse en los 812 px útiles del contenedor, provocando saltos de línea antiestéticos
-  en los enlaces, falta de espacio respecto al logo y el desborde del botón CTA. Además, a 1100 px el
-  padding normativo de `.pl-container` salta a 96 px por lado (dejando 908 px útiles), impidiendo
-  desplegar la versión expandida sin adaptaciones.
-- **Elección.** Mantener el menú móvil colapsado (`MobileMenu`) hasta `< 1100px` desacoplándolo de
-  las clases globales `.pl-only-wide`. Desplegar la navegación a partir de 1100 px incorporando
-  separación generosa a la izquierda del menú (`margin-left`), prohibición de quiebre de texto (`white-space: nowrap`),
-  y controles de densidad adaptativa: selectores compactos de idioma (`ES`/`EN`) y tema (iconos) entre 1100 px y 1279
-  px, pasando al estado expandido completo a partir
-  de 1280 px.
-- **Descartado.** _Mover el breakpoint global `.pl-only-wide` a 1100 px_: habría alterado secciones
-  de contenido (`BrandTrack`, `ProductPreview`, `PlatformAvailability`) cuya composición a 900 px
-  es adecuada y no adolece de congestión horizontal.
-- **Descartado.** _Modificar el padding normativo de `.pl-container`_: habría roto la alineación
-  reticular de la marca y la acción con el hero y los títulos de la página.
-
----
-
-### Decisión 11: desplegables de selección progresivamente mejorados con menú flotante de marca
-
-- **Problema.** Los controles `<select>` nativos del navegador abren un menú emergente dependiente
-  del sistema operativo que rompe la identidad visual y no aplica los tokens de diseño (colores,
-  bordes, tipografía y tema claro/oscuro) de PseudoLearn.
-- **Elección.** Renderizado progresivo en `SelectField.astro`: el `<select>` nativo se emite siempre
-  en el HTML para accesibilidad y envío de formularios estándar; en SSR se genera además la estructura
-  accesible del activador (`button[aria-haspopup="listbox"]`) y la lista flotante de opciones (`div[role="listbox"]`).
-  Al montar el cliente en `contact-form-client.ts`, `attachCustomSelects`
-  activa la clase `.pl-select--enhanced`, oculta el select nativo de forma accesible e intercepta la
-  interacción sincronizando el valor seleccionado con el control nativo, con soporte íntegro de teclado (`ArrowDown`,
-  `ArrowUp`, `Enter`, `Space`, `Escape`), cierre en clic exterior y compatibilidad con
-  agrupaciones (`optgroup` / `role="group"`).
-- **Descartado.** _Librerías externas de select o menús headless_: habrían desbordado el presupuesto
-  estricto de JavaScript de cliente (`FE-JS-BUDGET`).
-- **Descartado.** _Eliminar el `<select>` nativo_: habría roto la resiliencia sin JavaScript y la
-  validación de formularios del navegador.
-
----
-
-### Decisión 12: Las páginas legales se estructuran en dos columnas y sus enlaces residen únicamente en el pie de página
-
-- **Problema.** Añadir enlaces de «Privacidad» y «Términos» a la cabecera rompería el umbral responsivo
-  adaptativo de 1100 px (Decisión 10) saturando el espacio disponible en escritorio. Por otro lado, volcar
-  el contenido de los borradores Markdown en bruto generaría muros de texto difíciles de escanear,
-  acoplamiento a plugins de parseo y rotura de la política de tipado estricto de i18n (`FE-I18N-PARITY`).
-- **Elección.** Mantener la cabecera intacta y enlazar las páginas legales exclusivamente desde la columna
-  «Proyecto» del pie de página (`SiteFooter`). El contenido se modela como entidades tipadas en
-  `src/entities/legal/` consumiendo diccionarios estructurados en `src/shared/i18n/`, renderizados en una
-  retícula responsiva (`LegalLayout`) de dos columnas en escritorio: barra lateral interactiva (`LegalSidebar`) con
-  índice de anclajes, compromisos clave y enlace de soporte, junto a una columna de
-  lectura con tarjetas de casos y cajas de compromiso destacadas (`LegalCallout`), con cero JavaScript
-  adicional.
-- **Descartado.** _Enlaces en el header_: habría saturado la barra de navegación obligando a subir el
-  breakpoint a anchos excesivos.
-- **Descartado.** _Renderizado directo de Markdown en SSR/cliente_: habría introducido dependencias pesadas
-  violando el presupuesto de scripts y eludiendo las comprobaciones de paridad de traducción.
-
----
-
-### Decisión 13: Windows se promociona en Microsoft Store y la descarga directa conserva su guía de SmartScreen
-
-- **Problema.** Desde 1.1.0 la app se distribuye para Windows con un instalador servido desde
-  Cloudflare R2 (`https://downloads.pseudolearn.app/windows/PseudoLearn-Setup.exe`), fuera de
-  cualquier tienda. El instalador no lleva firma Authenticode (pendiente declarado en el `README.md`
-  de `apps/pseudolearn_app`), así que Microsoft Defender SmartScreen lo detiene la primera vez con
-  la pantalla azul «Windows protegió su PC», y la mayoría de quien la ve abandona si nadie le dijo
-  antes que iba a aparecer.
-- **Elección.** Una tercera tarjeta en el panel de descargas, con el enlace directo en
-  `SITE.windowsInstallerUrl` y sin abrir pestaña nueva, porque es un archivo y no una ficha de tienda.
-  La tarjeta lleva un modelo opcional `guide` (`InstallGuideModel`) que `DownloadCard` pinta con
-  `InstallGuide` al lado de la acción: qué es el aviso, los cuatro pasos para continuar (aviso del
-  navegador, «Más información», «Ejecutar de todas formas», instalación sin permisos de
-  administrador) y una advertencia de descargar el instalador solo desde esta página. La presencia de
-  la guía es dato del modelo, no una rama por plataforma, y ensancha la tarjeta a toda la rejilla en
-  escritorio (`download-card--guided`). Solo se ofrece el instalador: el `.zip` portable no registra
-  `pseudolearn://` y en él el inicio de sesión no vuelve a la app.
-- **Microsoft Store como vía principal.** Con la versión 1.1.1 la app también se publica en
-  Microsoft Store (`SITE.microsoftStoreUrl`). La tarjeta de Windows ofrece la ficha de la tienda
-  como acción principal, en pestaña nueva como las de Apple, porque instala sin la pantalla de
-  SmartScreen; el instalador directo pasa a acción secundaria (`pl-btn--ghost`) y la guía se
-  presenta como condicional a esa vía. La especificación «Distribución» declara las dos. La entrada
-  `microsoft-store` del registro de cambios se añade a 1.1.1 sin cambiar su número ni su fecha,
-  porque la ficha publica esa misma versión.
-- **El canal de instalación es dato de soporte.** El formulario de contacto no ofrece «Windows» a
-  secas: `REPORTABLE_PLATFORMS` distingue `windows-store` y `windows-installer`, porque las
-  actualizaciones y los avisos difieren entre las dos vías. `PLATFORMS` sigue anunciando Windows
-  una sola vez en la franja de disponibilidad. Los términos añaden la tarjeta de licencia de las
-  copias de Microsoft Store junto a la del App Store.
-- **Descartado.** _Retirar el instalador directo_: hay equipos con Microsoft Store deshabilitada por
-  administración, y la ruta de descarga ya es estable.
-- **Descartado.** _Una ruta propia para la guía_: exige la pareja en los dos idiomas, un hueco en la
-  navegación y en el sitemap, y aleja las instrucciones del botón justo cuando hacen falta.
-- **Descartado.** _Ocultar la guía en un `<details>` plegado_: quien no lo abre llega a la pantalla
-  azul sin aviso, que es el fallo que la guía existe para evitar.
-- **Coste asumido.** Cuando el instalador se firme, la guía se retira quitando `guide` de la tarjeta y
-  sus claves de los diccionarios; no queda nada más que deshacer.
-
----
-
-### Decisión 14: `llms.txt` y `llms-full.txt` publican la ficha del lenguaje generada
-
-- **Problema:** los asistentes de código de terceros conocen PSeInt y no PseudoLearn, y escriben índices desde uno,
-  omiten el punto y coma o declaran parámetros sin tipo cuando alguien les pide ayuda con un programa.
-- **Elección:** `/llms.txt` sigue la convención de llmstxt.org (título, resumen y enlaces) y `/llms-full.txt` sirve la
-  ficha del lenguaje para agentes completa, primero en inglés y luego en español. Ambas son rutas estáticas en
-  `src/pages/` que delegan en `src/shared/agent-sheet/llms.ts`, que importa como texto los Markdown de
-  `src/shared/agent-sheet/generated/`. Esa carpeta la escribe `see agent-sheet` desde el corpus en
-  `packages/pseudolearn_spec`; no se edita a mano (`GEN-NO-HAND-COPY`), Prettier la ignora y `cargo xtask verify` de
-  ese miembro falla si está desfasada. Al no tener página `.astro`, no entran en la paridad de rutas por idioma.
-- **Alternativas descartadas:** copiar la ficha en `public/` (se desfasa sin que nada lo detecte) o generarla en el
-  build de Astro (obligaría a la web a leer el corpus y su exportación).
-
-### Decisión 15: `/checkout` completa los pagos de Paddle que abre la app de Windows
-
-- **Problema.** Windows cobra con Paddle, que es comerciante registrado. Paddle abre el pago de una
-  transacción creada por el servidor en el «enlace de pago por defecto» de la cuenta, con
-  `?_ptxn=txn_…`, y esa página tiene que cargar Paddle.js. El checkout alojado por Paddle sin página
-  propia exige su aprobación.
-- **Elección.** Una vista `checkout` (`views/checkout/`) con la feature `paddle-checkout`: lee el
-  token de cliente y el entorno al compilar, valida que `_ptxn` tenga forma de transacción, carga
-  `https://cdn.paddle.com/paddle/v2/paddle.js` solo en esta ruta y sigue los eventos
-  `checkout.completed`, `checkout.closed` y `checkout.error` con mensajes traducidos. Al completar o
-  cerrar, ofrece volver a la app con `pseudolearn://agent/purchase`, que refresca el saldo. La ruta
-  vive en `UNLISTED_ROUTES`, fuera del sitemap, con `noIndex`, y se prueba en la suite de
-  accesibilidad.
-- **Cabeceras.** `public/_headers` retira para `/checkout` y `/en/checkout` la CSP y la
-  `Permissions-Policy` globales (`!`) y declara versiones que solo amplían lo que Paddle necesita:
-  script y estilos de `cdn.paddle.com`, marcos de `buy.paddle.com` y `sandbox-buy.paddle.com`,
-  conexiones e imágenes de `*.paddle.com` y `payment` para esos marcos. El resto del sitio conserva
-  la política estricta.
-- **Descartado.** _Ampliar la CSP global:_ abriría todas las páginas a scripts de terceros. _El
-  checkout alojado de Paddle:_ depende de una aprobación que no controla el proyecto.
-
-### Decisión 16: la especificación ilustrada se publica en `/spec` como HTML estático y Markdown
-
-- **Problema.** La especificación del lenguaje solo se leía dentro de la app, y los asistentes de IA no tenían
-  más que la ficha de `llms-full.txt`. Hacía falta publicarla en la web, legible para personas y rápida de leer
-  para agentes, sin escribir el libro dos veces ni hacer que la web dependa de la app.
-- **Fuente.** `packages/pseudolearn_reference` compila el libro y escribe aquí, en
-  `src/entities/specification/generated/<es|en>/`, las dos ediciones de perfil propio (`toc.json` y
-  `sections/<id>.json`). La dependencia va del paquete a la web, igual que hacia la app; nadie la edita a mano
-  (`GEN-NO-HAND-COPY`), Prettier la ignora y `reference check` falla con `REF-WEB-BUNDLE-STALE` si se desfasa. Se
-  versiona porque el build de la web la consume y no ejecuta Cargo.
-- **Lectura.** `entities/specification/model/specification-catalog.ts` carga los JSON con `import.meta.glob` y
-  los pasa por `readEdition`, que devuelve como valores los problemas: índice vacío, sección sin archivo o sin
-  entrada en el índice, archivo sin forma de sección, identificador que no se puede convertir en ruta y enlace a
-  una sección inexistente. Si hay alguno, el catálogo detiene el build con la lista, como el registro de cambios.
-- **Rutas.** `/spec` y `/en/spec` son el índice; cada sección `area.tema` vive en `/spec/area/tema` (sin puntos
-  en la ruta, que el servidor de assets confundiría con una extensión). `ROUTES.specification` la incluye en el
-  sitemap y el pie y la barra de soporte enlazan ahí; el ancla `#specification` de la home, que no existía, se
-  retiró.
-- **Pintado.** Cero JavaScript propio. El texto en línea y los tokens de código se convierten a HTML en
-  `widgets/specification-reader/runs-html.ts` y `token-html.ts`, con escape, y se insertan con `set:html`: así
-  ningún formateo de plantilla puede colar espacios dentro de un `<code>`. Los colores de los tokens repiten la
-  correspondencia del editor de la app sobre los tokens `--pl-syn-*`. Las figuras se componen en el build: una
-  viñeta por paso (base más capas activas) con su texto y los paneles acumulados por zona, en vez del control
-  paso a paso de la app. Los centinelas de rol pasan a variables CSS (`var(--pl-…)`), así que el tema oscuro
-  funciona sin otra copia del SVG.
-- **Agentes.** Cada página tiene su par en Markdown (`/spec/area/tema.md`, `/spec/index.md`), anunciado con
-  `<link rel="alternate" type="text/markdown">` y con enlaces absolutos a los demás Markdown. Las figuras se
-  describen con su texto alternativo, su descripción y sus pasos. `/llms.txt` enlaza los dos índices. Las
-  etiquetas («Salida», «Paso»…) salen de los diccionarios; el Markdown no tiene texto escrito a mano.
-- **Descartado.** _Un subdominio:_ reparte la autoridad del dominio y duplica cabeceras, sitemap y marca.
-  _Leer el paquete de `apps/pseudolearn_app/assets/`:_ la web no importa nada de otras aplicaciones.
-  _Analizar el Markdown fuente del libro en Astro:_ duplicaría el compilador y sus verificaciones. _Un control
-  paso a paso en cliente:_ gasta presupuesto de JavaScript y esconde a los agentes los pasos que no se ven.
-  _Las ediciones cruzadas (español con perfil inglés):_ nadie las pidió.
-
-## 5. Reglas de código
-
-Están en el [`AGENTS.md`](../../AGENTS.md) de la raíz con identificador estable y verificador asociado. Las tres que más
-condicionan el día a día:
-
-- **Cero comentarios** en `src/`, `scripts/` y `tests/`. El _qué_ lo dicen los nombres; el _porqué_
-  vive en este README. Quitar un comentario sin escribir el README es pérdida de
-  información, no limpieza.
-- **BEM estricto** `block__element--modifier`, con `pl-` solo en el vocabulario público.
-- **Código en inglés**, textos de la interfaz en los diccionarios, documentación en español.
-
----
-
-## 6. Decisiones de producto que condicionan el código
-
-- **El contacto lo lee una persona.** No hay clasificadores automáticos ni respuestas enlatadas. El
-  endpoint nunca devuelve texto localizado: solo códigos que el cliente traduce con el diccionario
-  del idioma activo, para que el servidor no tenga que elegir idioma por nadie.
-- **La preferencia de tema se respeta y se recuerda**, y se aplica antes del primer pintado para que
-  no haya parpadeo ni salto de contenido.
-- **La web presenta la versión de la aplicación y su registro de cambios.** Al usuario final de la landing
-  le interesa la app: qué versión instala desde el App Store, desde Microsoft Store o desde la descarga directa de Windows, qué
-  novedades trae y el changelog de cada actualización. El versionado interno del motor del lenguaje y sus contratos técnicos pertenecen al desarrollo del
-  núcleo y la app, no a la superficie pública de la web comercial.
-- **Nada de métricas de terceros.** No hay analítica, ni píxeles, ni fuentes remotas: las fuentes se
-  autohospedan, lo que además evita transferir la IP de cada visitante a un tercero.
-
----
-
-## 7. Verificación
-
-Pirámide de cinco niveles, que se ejecuta en local y, cuando se autoriza una comprobación puntual, en GitHub Actions manualmente:
-
-| Nivel                 | Herramienta               | Alcance                                                                      |
-| --------------------- | ------------------------- | ---------------------------------------------------------------------------- |
-| Unidad                | Vitest, co-localizado     | traductor, validación, protocolo SMTP, contraste de tokens, cada verificador |
-| Componente            | Astro Container API       | render de widgets y del formulario, en los dos idiomas                       |
-| Extremo a extremo     | Playwright sobre el build | rutas, redirecciones, tema, idioma, formulario                               |
-| Accesibilidad         | `@axe-core/playwright`    | 10 rutas × 2 temas, cero violaciones _serious_ o _critical_                  |
-| Renderizado adaptable | Playwright                | 3 páginas × 2 anchos; contenido visible y sin desbordamiento horizontal      |
-
-Y siete verificadores propios: arquitectura, i18n, texto incrustado, paridad de rutas, comentarios,
-ámbito del CSS y tamaño. **Cada uno tiene un fixture con una violación deliberada** en
-`scripts/__fixtures__/`, y un test que exige que ese fixture lo haga fallar: un verificador que nunca
-falla no verifica nada.
-
-Los verificadores mecánicos comprueban lo que un humano no debería tener que revisar. La revisión
-humana queda para lo que ninguna regla puede juzgar.
-
----
-
-## 8. Fuentes consultadas
-
-- **Catálogo pedagógico**: los 15 módulos y los 11 documentos de especificación provienen del
-  manifiesto de conocimiento de la app nativa.
-- **Identidad visual**: los tonos de marca y la tipografía anclan en los fundamentos visuales de la
-  app, adaptados para lectura editorial en web. La web no calca ese documento: la app es una
-  herramienta de trabajo y esto es una portada.
-- **Estructura FSD**: se tomó la separación en capas y la disciplina de envoltorios finos de un
-  proyecto hermano. Se **rechazó** su patrón de reglas incrustadas en el script de verificación, a
-  favor de `architecture.yaml` como fuente única.
-
-La CI de verificación usa macOS y Chromium de la versión de Playwright del lockfile. La suite comprueba
-que el contenido principal se renderice y que el documento no exceda el ancho del viewport.
+## Reglas que conviene saber
+
+- Las capas solo importan lo que `architecture.yaml` permite; `src/components`, `layouts`, `lib`, `styles`, `i18n`,
+  `utils` y `helpers` están prohibidas.
+- `cloudflare:workers`, `cloudflare:sockets` y `@changelog` (la raíz `CHANGELOG.json`) solo se importan desde un archivo
+  cada uno.
+- Los límites son 210 líneas por `.astro`, 160 por TypeScript, 40 por función, 3 parámetros posicionales y 3 niveles de
+  anidación.
+- El presupuesto del build es 10 KiB de JavaScript por ruta, 24 KiB en total y 50 KiB de CSS por ruta
+  (`pnpm check:budget`).
+- Los artefactos generados (`shared/agent-sheet/generated/`, `entities/specification/generated/`, el símbolo de marca)
+  no se editan a mano (`GEN-NO-HAND-COPY`); sin comentarios en el código.
+
+## Comandos útiles
+
+| Para qué                                    | Comando                                               |
+|:--------------------------------------------|:------------------------------------------------------|
+| Servidor de desarrollo                      | `pnpm dev`                                            |
+| Build de producción                         | `pnpm build`                                          |
+| Servir el build sobre el runtime de Workers | `pnpm preview`                                        |
+| Compilar y desplegar                        | `pnpm deploy`                                         |
+| Tests de unidad y componentes               | `pnpm test`                                           |
+| Extremo a extremo, accesibilidad y visual   | `pnpm test:e2e`, `pnpm test:a11y`, `pnpm test:visual` |
+| ESLint, Stylelint y Prettier                | `pnpm lint`, `pnpm lint:css`, `pnpm format:check`     |
+| Tipos                                       | `pnpm check:types`                                    |
+| Los ocho verificadores propios              | `pnpm check:static`                                   |
+| Presupuesto de JavaScript y CSS             | `pnpm check:budget`                                   |
+| Todo lo anterior, en orden                  | `pnpm check:all`                                      |
+
+Requisitos: Node `>=22.23.3` (`.nvmrc`) y pnpm; Wrangler con cuenta de Cloudflare solo para desplegar. Las variables de
+entorno están en `.env.example`.

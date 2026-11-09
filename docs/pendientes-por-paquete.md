@@ -94,3 +94,9 @@ Heredados de un README anterior, sin confirmar:
 - Medir el consumo real de créditos por `turn_id` en `agent_ledger_events` para confirmar los 300 créditos del plan.
 - Segundo proveedor de modelo mediante otro `ModelGateway`.
 - Prueba de extremo a extremo de `delete-account` contra Apple real.
+
+## pseudolearn_web
+
+Heredados de un README anterior, sin confirmar:
+
+- El instalador de Windows de descarga directa no lleva firma Authenticode; la guía de SmartScreen de la descarga directa depende de ello.
