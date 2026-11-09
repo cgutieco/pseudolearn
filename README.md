@@ -19,7 +19,7 @@ Las mediciones históricas conservan sus fuentes, hashes y condiciones; no certi
 | `packages/pseudolearn_engine` | Núcleo Rust, VM, backend nativo y servicio de lenguaje | Cargo y rustup |
 | `packages/pseudolearn_spec` | Corpus y herramienta SEE | Cargo y rustup |
 | `packages/pseudolearn_rust_checks` | Reglas mecánicas Rust y casos negativos | Cargo y rustup |
-| `packages/pseudolearn_reference` | Compilador y verificadores de la especificación ilustrada; genera el paquete que lee la app | Cargo y rustup |
+| `packages/pseudolearn_reference` | Compilador y verificadores de la especificación ilustrada; genera los paquetes que leen la app y la web | Cargo y rustup |
 | `packages/pseudolearn_benchmarks` | Recolectores, estadísticas y evidencia de rendimiento | Dart; experimento Rust anidado |
 | `packages/pseudolearn_brand` | Generación paramétrica de identidad visual | Python y fonttools |
 | `apps/pseudolearn_app` | Cliente Flutter con puente Rust generado | Flutter, Dart y Cargo |

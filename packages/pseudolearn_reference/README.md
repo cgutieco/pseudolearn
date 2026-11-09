@@ -6,7 +6,7 @@ Compilador de los **dos libros** de PseudoLearn: la **Especificación ilustrada*
 aprendizaje** (`route/`). Lee las fuentes escritas en Markdown con directivas, las figuras SVG y la exportación
 del corpus normativo; tokeniza, traduce y ejecuta cada fragmento de código con el motor real; verifica lo que
 promete el texto y, en la ruta, cada ejercicio según su tipo; y publica dos **paquetes de datos neutrales**
-(JSON y SVG) que la app Flutter pinta y que la web Astro podrá pintar.
+(JSON y SVG) que pintan la app Flutter y la web Astro.
 
 La Especificación explica cómo se escribe y qué hace exactamente el lenguaje. La ruta enseña a resolver
 problemas con el ciclo PseudoLearn y cinco paradigmas; enlaza a la Especificación en vez de reexplicarla y
@@ -34,12 +34,12 @@ Rust. Antes de compilar hace falta la exportación del corpus, que no se version
 
 | Orden | Qué hace |
 |---|---|
-| `cargo run -p reference_cli -- build` | Compila las cuatro ediciones de los dos libros y escribe `../../apps/pseudolearn_app/assets/reference/` y `../../apps/pseudolearn_app/assets/route/`. Solo escribe si no hay violaciones |
-| `cargo run -p reference_cli -- check` | Compila en memoria, ejecuta todos los verificadores y compara los dos paquetes versionados en la app (`REF-BUNDLE-STALE`, `RUTA-BUNDLE-STALE`) |
+| `cargo run -p reference_cli -- build` | Compila las cuatro ediciones de los dos libros y escribe `../../apps/pseudolearn_app/assets/reference/`, `../../apps/pseudolearn_app/assets/route/` y la edición web de la Especificación en `../../apps/fe-pseudolearn/src/entities/specification/generated/`. Solo escribe si no hay violaciones |
+| `cargo run -p reference_cli -- check` | Compila en memoria, ejecuta todos los verificadores y compara los tres paquetes versionados: los dos de la app y el de la web (`REF-BUNDLE-STALE`, `RUTA-BUNDLE-STALE`, `REF-WEB-BUNDLE-STALE`) |
 | `cargo run -p reference_cli -- coverage` | Informe de cobertura de la Especificación por área y de la ruta: términos por lección, ejercicios por tipo y nivel, secciones enlazadas y secciones que ninguna lección enlaza |
 | `cargo run -p reference_cli -- lock` | Registra la huella actual de cada ancla después de revisar las secciones afectadas |
 
-`--out DIR` cambia el destino de la Especificación, `--out-ruta DIR` el de la ruta y `--root DIR` el miembro. `--borrador` escribe aunque haya violaciones; solo
+`--out DIR` cambia el destino de la Especificación, `--out-ruta DIR` el de la ruta, `--out-web DIR` el de la edición web y `--root DIR` el miembro. `--borrador` escribe aunque haya violaciones; solo
 sirve para redactar y nunca se usa en verificación.
 
 Verificación completa: `cargo xtask verify` (exportación del corpus, formato, Clippy estricto, tests,
@@ -55,7 +55,7 @@ fuentes y los paquetes generados juntos.
 corpus see/1 ──export.json──┐
                             ├──► reference (este miembro) ──► assets/reference/<idioma>/<perfil>/
 fuentes .md + figuras .svg ─┤                                         │
-motor (pseudolearn_api) ────┘                              app Flutter · web Astro (futuro)
+motor (pseudolearn_api) ────┘                              app Flutter · web Astro
 ```
 
 Un crate por capa; la matriz de imports está en `architecture.yaml`.
@@ -146,6 +146,11 @@ no vacía se escribe en perfil inglés para que sus huecos estén en inglés.
 - `manifest.json` declara el formato `pseudolearn-reference/1`, idioma, perfil, huella de la exportación
   del corpus, huella del motor y el SHA-256 de cada archivo.
 
+La edición web es una proyección del mismo paquete: solo las dos ediciones cuyo perfil coincide con el idioma
+(`es/es` y `en/en`), publicadas como `<idioma>/toc.json` y `<idioma>/sections/<id>.json` en
+`apps/fe-pseudolearn/src/entities/specification/generated/`. Los archivos son byte a byte los de la app; no se
+publican `search.json`, `links.json` ni `manifest.json`, que la web no consume.
+
 ### 3.4 Figuras
 
 Contrato (`REF-FIGURE-CONTRACT` y `REF-FIGURE-NARROW`):
@@ -196,6 +201,7 @@ discontinua/>` dibuja una polilínea con punta.
 | `REF-NO-INTERNAL-IDS` | Ningún texto publicado contiene identificadores del corpus | Párrafo con `LANG.CONTROL.IF` |
 | `REF-LINK-VALID` | Todo enlace interno apunta a una sección existente | Enlace a una sección inexistente |
 | `REF-BUNDLE-STALE` | El paquete versionado en la app es idéntico al que produce el compilador | Archivo editado, ausente o sobrante |
+| `REF-WEB-BUNDLE-STALE` | La edición web versionada en `fe-pseudolearn` es idéntica a la proyección del compilador | `bundle_files_tests.rs` (la misma comparación) y `web_bundles_tests.rs` (qué ediciones y archivos se proyectan) |
 
 Anatomía por tipo:
 
@@ -410,6 +416,15 @@ descartadas y números comparados con tolerancia relativa `1e-9`.
 - **Problema:** los diagnósticos son 284 y casi ninguno merece una sección propia. **Elección:** el
   Apéndice C los genera todos desde el corpus; `links.json` lleva cada código a la sección que lo explica
   (cabecera `diagnosticos`) o, si ninguna lo hace, al apéndice.
+- **Problema:** la Especificación tiene que publicarse también en la web, y la web no importa nada de otras
+  aplicaciones. Leer el paquete desde `apps/pseudolearn_app/assets/` haría depender la web de la app, y copiarlo a
+  mano rompería `GEN-NO-HAND-COPY`. **Elección:** el compilador es el único productor y escribe directamente en los
+  dos consumidores: paquete → app y paquete → web. La web recibe solo las dos ediciones de perfil propio, porque
+  sus rutas son `/spec` (español con perfil español) y `/en/spec` (inglés con perfil inglés), y solo `toc.json` y
+  las secciones, porque la búsqueda, las fichas de ayuda y el manifiesto sirven al editor y al lector de la app.
+  `reference check` compara la copia web con `REF-WEB-BUNDLE-STALE`, así que una edición del libro sin
+  `reference build` falla en `cargo xtask verify`. **Descartado:** un comando aparte para la web (dos pasos que se
+  olvidan por separado) y publicar las cuatro ediciones (rutas cruzadas que nadie pidió).
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

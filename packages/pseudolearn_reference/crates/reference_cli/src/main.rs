@@ -9,6 +9,7 @@ mod route_book;
 mod route_checks;
 mod route_coverage;
 mod route_workspace;
+mod web_bundles;
 mod workspace;
 mod workspace_files;
 
@@ -28,5 +29,7 @@ fn main() -> std::process::ExitCode {
 mod bundle_files_tests;
 #[cfg(test)]
 mod commands_tests;
+#[cfg(test)]
+mod web_bundles_tests;
 #[cfg(test)]
 mod workspace_tests;

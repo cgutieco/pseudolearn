@@ -1,5 +1,6 @@
-use crate::book::compile;
+use crate::book::{Book, compile};
 use crate::checks::{documents, verify};
+use crate::web_bundles::web_editions;
 use crate::workspace::{LOCK_FILE, Workspace, load};
 use reference_engine::ApiEngine;
 use reference_model::{Profile, RuleId, Violation};
@@ -11,6 +12,7 @@ struct Options {
     root: PathBuf,
     output: PathBuf,
     route_output: PathBuf,
+    web_output: PathBuf,
     draft: bool,
 }
 
@@ -34,31 +36,41 @@ fn compiled(command: &str, workspace: &Workspace, options: &Options) -> Result<b
             crate::route_coverage::print_route_coverage(&book);
             return Ok(true);
         }
-        "build" if violations.is_empty() || options.draft => {
-            crate::bundle_files::write(&options.output, &book.bundles)?;
-            crate::bundle_files::write(&options.route_output, &book.route_bundles)?;
-            println!(
-                "reference: bundles written to {} and {}",
-                options.output.display(),
-                options.route_output.display()
-            );
-        }
-        "check" => {
-            violations.extend(crate::bundle_files::compare(
-                &options.output,
-                &book.bundles,
-                RuleId::BundleStale,
-            )?);
-            violations.extend(crate::bundle_files::compare(
-                &options.route_output,
-                &book.route_bundles,
-                RuleId::RouteBundleStale,
-            )?);
-        }
+        "build" if violations.is_empty() || options.draft => write_bundles(&book, options)?,
+        "check" => violations.extend(stale_bundles(&book, options)?),
         _ => {}
     }
     report_violations(&violations);
     Ok(violations.is_empty())
+}
+
+fn write_bundles(book: &Book, options: &Options) -> Result<(), String> {
+    crate::bundle_files::write(&options.output, &book.bundles)?;
+    crate::bundle_files::write(&options.route_output, &book.route_bundles)?;
+    crate::bundle_files::write(&options.web_output, &web_editions(&book.bundles))?;
+    println!(
+        "reference: bundles written to {}, {} and {}",
+        options.output.display(),
+        options.route_output.display(),
+        options.web_output.display()
+    );
+    Ok(())
+}
+
+fn stale_bundles(book: &Book, options: &Options) -> Result<Vec<Violation>, String> {
+    let mut violations =
+        crate::bundle_files::compare(&options.output, &book.bundles, RuleId::BundleStale)?;
+    violations.extend(crate::bundle_files::compare(
+        &options.route_output,
+        &book.route_bundles,
+        RuleId::RouteBundleStale,
+    )?);
+    violations.extend(crate::bundle_files::compare(
+        &options.web_output,
+        &web_editions(&book.bundles),
+        RuleId::WebBundleStale,
+    )?);
+    Ok(violations)
 }
 
 fn lock(workspace: &Workspace) -> Result<bool, String> {
@@ -81,7 +93,7 @@ fn report_violations(violations: &[Violation]) {
             .filter(|violation| {
                 matches!(
                     violation.rule,
-                    RuleId::BundleStale | RuleId::RouteBundleStale
+                    RuleId::BundleStale | RuleId::RouteBundleStale | RuleId::WebBundleStale
                 )
             })
             .count();
@@ -119,6 +131,7 @@ fn parse(arguments: &[String]) -> Result<(String, Options), String> {
     let mut root = PathBuf::from(".");
     let mut output = None;
     let mut route_output = None;
+    let mut web_output = None;
     let mut draft = false;
     while let Some(flag) = words.next() {
         if flag == "--borrador" {
@@ -130,23 +143,28 @@ fn parse(arguments: &[String]) -> Result<(String, Options), String> {
             "--root" => root = PathBuf::from(value),
             "--out" => output = Some(PathBuf::from(value)),
             "--out-ruta" => route_output = Some(PathBuf::from(value)),
+            "--out-web" => web_output = Some(PathBuf::from(value)),
             _ => return Err(usage()),
         }
     }
     let output = output.unwrap_or_else(|| root.join("../../apps/pseudolearn_app/assets/reference"));
     let route_output =
         route_output.unwrap_or_else(|| root.join("../../apps/pseudolearn_app/assets/route"));
+    let web_output = web_output.unwrap_or_else(|| {
+        root.join("../../apps/fe-pseudolearn/src/entities/specification/generated")
+    });
     Ok((
         command,
         Options {
             root,
             output,
             route_output,
+            web_output,
             draft,
         },
     ))
 }
 
 fn usage() -> String {
-    "usage: reference <build|check|coverage|lock> [--root DIR] [--out DIR] [--out-ruta DIR] [--borrador]".to_owned()
+    "usage: reference <build|check|coverage|lock> [--root DIR] [--out DIR] [--out-ruta DIR] [--out-web DIR] [--borrador]".to_owned()
 }
