@@ -72,7 +72,10 @@ final class _CreditsBody extends StatelessWidget {
         AppText(l10n.agentCreditsLastSpend(credits.lastRequestSpent > 0 ? credits.lastRequestSpent : lastSpent), variant: AppTextVariant.bodySmall),
         if (failure != null) AppText(agentFailureText(l10n, failure), variant: AppTextVariant.caption),
         const SizedBox(height: SpacingTokens.space4),
-        AppButton(key: const ValueKey('agent-settings-top-up'), label: l10n.agentCreditsTopUp, variant: AppButtonVariant.primary, onPressed: () => context.read<PurchaseCubit>().buy(AgentProduct.topUp)),
+        if (credits.topUpNeedsPlan)
+          AppText(l10n.agentCreditsTopUpNeedsPlan, key: const ValueKey('agent-settings-top-up-needs-plan'), variant: AppTextVariant.caption)
+        else
+          AppButton(key: const ValueKey('agent-settings-top-up'), label: l10n.agentCreditsTopUp, variant: AppButtonVariant.primary, onPressed: () => context.read<PurchaseCubit>().buy(AgentProduct.topUp)),
         const SizedBox(height: SpacingTokens.space2),
         AppButton(label: l10n.agentCreditsRefresh, variant: AppButtonVariant.secondary, onPressed: () => context.read<CreditsCubit>().refresh()),
         const SizedBox(height: SpacingTokens.space2),

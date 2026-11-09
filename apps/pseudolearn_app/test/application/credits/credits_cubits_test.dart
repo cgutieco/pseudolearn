@@ -60,6 +60,17 @@ void main() {
     expect(unconfigured.needsOffer, isFalse);
   });
 
+  test('a top-up needs a known active period, and a remaining top-up does not stand in for it', () {
+    const lapsedWithTopUp = CreditsState(status: CreditsStatus.known, balance: CreditBalance(remaining: 150, allowance: 0, topUp: 150));
+    expect(lapsedWithTopUp.topUpNeedsPlan, isTrue);
+    const inTrial = CreditsState(status: CreditsStatus.known, periodActive: true, balance: CreditBalance(remaining: 3, allowance: 40, topUp: 0, trial: true));
+    expect(inTrial.topUpNeedsPlan, isFalse);
+    const unknown = CreditsState();
+    expect(unknown.topUpNeedsPlan, isFalse);
+    const unavailable = CreditsState(status: CreditsStatus.unavailable, failure: CreditFailure.offline);
+    expect(unavailable.topUpNeedsPlan, isFalse);
+  });
+
   test('access goes sign in, offer, consent, conversation', () {
     const known = CreditsState(status: CreditsStatus.known, periodActive: true, balance: CreditBalance(remaining: 5, allowance: 40, topUp: 0));
     const idle = AgentSessionState();

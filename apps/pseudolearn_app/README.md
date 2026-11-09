@@ -121,7 +121,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Capturas de producto y material de tiendas con la ruta de aprendizaje | Regenerar §2.8 y §2.9 sobre la ruta publicada; las imágenes versionadas muestran todavía la base de conocimiento anterior | Abierto |
 | Ancla dentro de una sección al seguir un enlace de especificación desde la ruta | `ReferenceSectionPage` abre la sección por identidad y no desplaza a un ancla interior; el enlace conserva el ancla en el paquete | Abierto |
 | Límite de ejecución de los ejercicios | La app corta a 10 000 pasos (`ProgramRunner.defaultStepLimit`) y el compilador de la ruta a 100 000 sentencias; `route_exercise_gate_test` garantiza que cada solución de referencia cabe en el límite de la app | Vigilado por test |
-| Compras reales del agente | Adaptadores `PurchaseStore` de StoreKit (iOS y macOS de la App Store, obligatorio dentro de iOS), Microsoft Store y Stripe para la descarga directa, y sus verificadores en el backend | Abierto; solo existe la compra simulada (§4.63) |
+| Compras reales del agente | Adaptadores `PurchaseStore` de StoreKit 2 (iOS y macOS de la App Store, mismo `com.pseudolearn.app`, obligatorio dentro de iOS) y de Paddle en Windows (MSIX e instalador, con vuelta por `pseudolearn://`), y sus verificadores en el backend; precios y pasarelas en el README del backend | Abierto; solo existe la compra simulada (§4.63) |
 | Clave del proveedor del agente | El propietario pone `OPENAI_API_KEY` en el servidor y compila con `AGENT_BACKEND=proxy` y `AGENT_PROXY_URL` | Abierto; sin clave el agente responde «no disponible» sin cobrar |
 | Markdown enriquecido en el chat del agente | Lector propio sobre el paquete `markdown` y vistas propias (§4.66) | Resuelto |
 | Enlaces externos en las respuestas del agente | Un caso de uso de aplicación sobre `ExternalUrlLauncher` que la presentación pueda invocar; hoy el enlace se muestra subrayado y se puede seleccionar y copiar, pero no se abre | Abierto |
@@ -3008,6 +3008,10 @@ proyecto no simula participantes ni resultados. Mientras no existan, ese resulta
     servidor solo lo acepta con `AGENT_PURCHASES=simulated`. `agentAccessOf` decide la vista del panel: sin cuenta →
     oferta con «Inicia sesión»; sin plan ni recarga → oferta con prueba de 7 días y plan mensual; sin consentimiento →
     consentimiento; si no, conversación. Con el saldo agotado, el compositor se sustituye por el panel de recarga.
+    La recarga solo se ofrece con un periodo vigente, plan o prueba (`CreditsState.topUpNeedsPlan`): con el periodo
+    vencido, el panel y Ajustes → Nodo explican que hace falta el plan y no muestran el botón. Con el saldo aún
+    desconocido el botón sigue visible y decide el servidor, que rechaza la recarga sin periodo con
+    `subscription_required`. Las recargas ya canjeadas se siguen gastando después de vencer el plan.
   - **Consentimiento.** Antes del primer mensaje: nombra a OpenAI, qué se envía, la retención y la edad mínima (13
     años). Se guarda en `agent_consent.json` del directorio de documentos (`FileAgentConsentStore`) y se retira en
     Ajustes → Nodo (`/ajustes/nodo`, que también muestra saldo, renovación, gasto de la última petición y recarga).

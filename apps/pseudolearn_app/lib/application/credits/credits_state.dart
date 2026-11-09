@@ -25,5 +25,7 @@ final class CreditsState {
           (failure == CreditFailure.subscriptionRequired || failure == CreditFailure.unauthenticated) ||
       status == CreditsStatus.known && !periodActive && (balance?.topUp ?? 0) == 0;
 
+  bool get topUpNeedsPlan => status == CreditsStatus.known && !periodActive;
+
   bool get isExhausted => status == CreditsStatus.known && (balance?.isExhausted ?? false);
 }

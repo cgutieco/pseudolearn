@@ -2550,6 +2550,7 @@
   "agentCreditsTrial": "Free trial",
   "agentCreditsLastSpend": "Last request: {count}",
   "agentCreditsTopUp": "Top up 150 credits",
+  "agentCreditsTopUpNeedsPlan": "Top-ups need an active monthly plan or trial. Credits you already topped up keep working.",
   "agentCreditsRefresh": "Refresh balance",
   "agentCreditsWithdrawConsent": "Withdraw consent",
   "agentCreditsConsentWithdrawn": "Consent withdrawn. Nodo will ask again before your next message.",

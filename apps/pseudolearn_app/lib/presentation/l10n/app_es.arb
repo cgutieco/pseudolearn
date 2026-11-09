@@ -2694,6 +2694,7 @@
   "agentCreditsLastSpend": "Última petición: {count}",
   "@agentCreditsLastSpend": {"placeholders": {"count": {"type": "int"}}},
   "agentCreditsTopUp": "Recargar 150 créditos",
+  "agentCreditsTopUpNeedsPlan": "Las recargas se compran con el plan mensual o la prueba activos. Lo que ya recargaste se sigue gastando.",
   "agentCreditsRefresh": "Actualizar saldo",
   "agentCreditsWithdrawConsent": "Retirar consentimiento",
   "agentCreditsConsentWithdrawn": "Consentimiento retirado. Nodo te lo pedirá de nuevo antes del próximo mensaje.",
