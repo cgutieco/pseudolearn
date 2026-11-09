@@ -26,7 +26,7 @@ export function packageLocalExtension(root = extensionRoot) {
   writeThirdPartyNotices();
   mkdirSync(outputDirectory, { recursive: true });
   const artifactPath = resolve(outputDirectory, contract.artifactName);
-  runCommand("pnpm", ["exec", "vsce", "package", "--target", contract.target.vscodeTarget, "--no-dependencies", "--out", artifactPath], root);
+  runCommand("pnpm", ["exec", "vsce", "package", "--target", contract.target.vscodeTarget, "--no-dependencies", "--readme-path", contract.readme, "--out", artifactPath], root);
   inspectArtifact(artifactPath, root, contract);
   writeArtifactRecord(artifactPath, root, contract);
   return artifactPath;

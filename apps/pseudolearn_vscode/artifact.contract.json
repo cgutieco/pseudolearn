@@ -15,6 +15,7 @@
     "architecture": "arm64"
   },
   "artifactName": "pseudolearn-0.1.0-darwin-arm64.vsix",
+  "readme": "marketplace/README.md",
   "executable": "bin/darwin-arm64/pseudo",
   "grammar": "media/pseudolearn.tmLanguage.json",
   "languageConfiguration": "media/language-configuration.json",

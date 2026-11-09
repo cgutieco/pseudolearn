@@ -1,403 +1,91 @@
 # pseudolearn_vscode
 
-## 1. Qué es y qué no es
+Extensión de VS Code para escritorio y navegador. Trae al editor el resaltado, los diagnósticos, la navegación, la
+ayuda, la ejecución y la depuración de los programas `.pseudo`, delegando todo el análisis en el binario `pseudo`
+(escritorio) o en el módulo Wasm del motor (navegador).
 
-Extensión privada de escritorio y navegador que integra PseudoLearn con VS Code. Se distribuye para uso local mediante F5 durante el desarrollo y archivos VSIX instalados manualmente. El primer artefacto calificado es para macOS Apple silicon (`darwin-arm64`). El paquete incluye el ejecutable `pseudo` para ese destino; no busca ejecutables en el workspace ni descarga binarios al activar.
+**No hace:** analizar, ejecutar ni validar el lenguaje por su cuenta (eso es de Rust); publicarse en Marketplace ni Open
+VSX; actualizarse sola ni enviar telemetría.
 
-El código propio se distribuye bajo Apache-2.0 (`LICENSE.md` y `NOTICE`). El empaquetado genera `third-party-notices.md` desde el grafo Cargo específico del binario incluido y conserva los textos de licencia disponibles junto a la lista SPDX de dependencias. La extensión no se publica en Marketplace ni Open VSX.
+> Este README es para quien desarrolla la extensión. Lo que ven los usuarios al instalarla es [
+> `marketplace/README.md`](marketplace/README.md): el empaquetado lo incluye en el VSIX como su `readme.md`.
 
-El servidor LSP de proyecto expone navegación, diagnósticos relacionados, símbolos, `prepareRename`/`rename` y tokens semánticos `full` solo bajo las garantías negociadas. Para renombrar en varias fuentes, el cliente materializa y sincroniza los documentos cerrados, recalcula la selección y las referencias y aplica una edición versionada en una sola transacción. El transporte limita cabeceras a 8 KiB y cuerpos a 8 MiB. La configuración declarativa permite el perfil de workspace, idioma de interfaz personal y una ruta absoluta de desarrollo para el servidor; el workspace no selecciona ejecutables ni concede permisos. Los recursos TextMate y de lenguaje se generan desde la exportación SEE.
+## Dónde encaja
 
-La depuración de VM se ofrece en escritorio. La variante browser usa Workers y proveedores URI. Quedan fuera depuración browser, AOT/FFI/procesos browser, plataformas desktop no calificadas, actualizaciones automáticas, telemetría y publicación. No se incluye migrador ni selector de compatibilidad: cada edición se ofrece como la oficial aunque introduzca cambios incompatibles. VS Code y el cliente LSP completo siguen siendo una verificación de host separada.
-
-## 2. Guía operativa y ciclo de vida
-
-Usa Node.js 22.23.3, pnpm 12.8.1, TypeScript 6.0.3, VS Code API 1.144.0 y `@vscode/vsce` 4.0.0. TextMate 9.3.2 y Oniguruma 1.7.0 tokenizan la gramática en pruebas. `vscode-languageclient` se fija en 10.1.2 para el cliente LSP fino de la siguiente etapa. El mínimo de VS Code es `^1.144.0`. La versión `0.1.0` identifica este artefacto de extensión, no una versión del lenguaje.
-
-La activación valida `pseudolearn.profile` desde workspace, y `pseudolearn.interfaceLanguage` desde el usuario. `pseudolearn.server.path` acepta únicamente una ruta absoluta de usuario en desarrollo confiable; Restricted Mode y cualquier valor de workspace la rechazan. El binario incluido es la ruta predeterminada. La activación inicia el cliente LSP (`vscode-languageclient/node`) con el ejecutable resuelto y el argumento `lsp`, con entorno vacío; el ciclo es acotado (tres arranques fallidos consecutivos y parada con plazo de 2 s) y `PseudoLearn: Restart Language Server` lo reinicia con el presupuesto restablecido. El cliente entrega `profile` y el idioma como `initializationOptions`; la CLI carga el workspace por su cuenta (ver README de la CLI). Antes de cada rename el cliente abre como modelos (en lotes de 64) todos los `.pseudo` del workspace para que el servidor los vea sincronizados; sin eso el servidor rechaza el rename con «all affected documents must be synchronized and open» cuando hay dependientes cerrados. La prueba de host no abre el archivo cerrado antes de renombrar. El ejecutable se lanza como `Executable` simple (`pseudo lsp`): el modo `TransportKind.stdio` del SDK añade `--stdio`, que `pseudo` rechaza. El servidor anuncia el comando `pseudolearn.explain` y el SDK lo registra en el host; por eso el comando propio de la extensión se llama `pseudolearn.explainAtCursor` y no colisiona. Para empaquetado de desarrollo, `PSEUDOLEARN_PSEUDO_PATH` selecciona el archivo de entrada del empaquetador y no es una configuración de workspace ni una opción de ejecución. El empaquetado ordinario compila e incluye el binario `darwin-arm64`. El VSIX usa el binario incluido, sin red ni toolchains en tiempo de ejecución.
-
-F5 requiere el checkout y la cadena de construcción; una instalación VSIX coincidente requiere VS Code Stable para macOS Apple silicon y no requiere Cargo, Rust, Node ni pnpm. En otra plataforma el artefacto no está calificado. La instalación y actualización son manuales: conservar el VSIX anterior permite revertir reinstalándolo. No hay actualización automática.
-
-## 3. Arquitectura y modelo del sistema
-
-Las capas son `contracts`, `application`, `adapters` y `activation`. `contracts` declara puertos y datos; `application` implementa casos de uso sobre esos puertos; `adapters` integra VS Code, Node y el proceso Rust; `activation` compone las capas y registra sus recursos. La dirección de imports está declarada en `architecture.json` y se verifica localmente.
-
-TypeScript no implementa parser, resolución semántica, gramática ni políticas de proyecto. Los contratos observables pertenecen al corpus; Rust es el único analizador y servicio semántico. La activación compone los puertos y registra los comandos; la lógica de ejecución, entrada, cancelación y traducción vive en `application` y se prueba con procesos y documentos falsos.
-
-El bundle de producción reúne el código JavaScript y sus dependencias runtime. El VSIX incluye solo el bundle, recursos generados, el binario del target declarado, metadata, README, aviso de derechos y avisos de licencias del binario; excluye fuentes, tests, fixtures, scripts de verificación, secretos, mapas y `node_modules`.
-
-## 4. Decisiones de diseño y fundamentos técnicos
-
-La extensión vive en `apps/` porque es un producto distribuible y no una biblioteca. Node/pnpm son una cadena declarada para este miembro; no se importan reglas ni verificadores del frontend. TypeScript no puede elegir rutas de proyecto, leer fuera de raíces autorizadas ni ejecutar un shell.
-
-La activación y desactivación son idempotentes. Los recursos se registran en un `Disposable` de composición y los errores esperables salen por resultados tipados. El proceso y los puertos son dependencias inyectadas para que las pruebas no necesiten VS Code ni el binario. La resolución distingue la configuración de workspace de las preferencias globales: solo el perfil acepta valores del workspace; idioma de interfaz y ruta del ejecutable se leen del usuario. La ruta del servidor solo se habilita en desarrollo confiable, debe ser absoluta y nunca procede de `.vscode/settings.json`.
-
-TextMate se genera desde las definiciones léxicas, la política de plegado español y el vocabulario exportado por SEE. El hash de la exportación queda dentro de la gramática generada. Sus patrones son deliberadamente tolerantes; no identifican símbolos ni deciden validez. El parser y el servicio Rust deciden ambas cosas. Las palabras contextuales (`Interfaz`, `Variante`, `Alternativa`, `FinVariante` y sus equivalentes en inglés) no están entre las palabras clave de TextMate, porque fuera de su posición son nombres ordinarios; las resalta como palabra clave el token semántico que devuelve el servidor del motor, que solo las reconoce en su posición estructural, y un parámetro de tipo llega como `typeParameter`. Tras cambiar el vocabulario o la exportación se regenera la gramática con `pnpm generate:grammar`; un cambio del corpus solo actualizó el hash de la exportación. `pnpm generate:grammar` actualiza los recursos y `pnpm check:grammar` detecta diferencias sin escribirlas. Las pruebas ejecutan los patrones con `vscode-textmate` y `vscode-oniguruma`.
-
-## 5. Reglas de legibilidad, estilo y estructura de código
-
-Código en inglés y sin comentarios. README y documentación en español. Cada archivo tiene una responsabilidad y reside en una capa declarada. Límites: 300 líneas por archivo, 40 por función, cuatro parámetros posicionales, anidación de tres niveles y siete métodos públicos por clase. Los verificadores propios rechazan imports inversos, capas no declaradas, comentarios fuera de cadenas, tamaños excedidos, secretos y contenido de paquete excluido.
-
-## 6. Verificación y testing
-
-Desde este directorio:
-
-- `pnpm install --frozen-lockfile`
-- `pnpm check:types`
-- `pnpm check:architecture`
-- `pnpm check:comments`
-- `pnpm check:size`
-- `pnpm check:package`
-- `pnpm check:grammar` (falla si la gramática no corresponde a la exportación vigente del corpus; también la ejecutan `build` y `build:web`)
-- `pnpm test`
-- `pnpm build`
-- `pnpm build:cli`
-- `pnpm package`
-- `node tests/host/run-host.mjs trusted [vsix]` y `node tests/host/run-host.mjs restricted [vsix]` (host real)
-- `node tests/host/replay-transcript.mjs <directorio-transcripción> <pseudo>`
-
-Los tests reflejan `src/` bajo `tests/`. Los verificadores tienen fixtures positivos y negativos; los tests de activación usan puertos falsos. `pnpm package` crea un VSIX local para macOS Apple silicon, genera los avisos del binario desde `cargo metadata` y valida su lista de contenidos. F5 y la instalación local del VSIX en VS Code Stable 1.144.0 son verificaciones del host, no publicación. `tests/host/run-host.mjs` copia a un workspace temporal el proyecto de `tests/host/fixtures/project` (no `examples/project`, que lleva el programa de aceptación de red y no importa `geo`) e instala el VSIX en directorios de usuario y extensiones aislados (ruta con espacios y acentos, `PATH` reducido a `/usr/bin:/bin`, sin Cargo, Node ni checkout en el entorno) y abre VS Code con `--extensionTestsPath`. El modo `restricted` no desactiva Workspace Trust. El modo `trusted` usa `--disable-workspace-trust`, el mecanismo de VS Code para automatización: sembrar la confianza en `state.vscdb` no surtió efecto en 1.144.0 y la única forma de ejecutar programas en el host de pruebas es que el workspace sea de confianza. Con `PSEUDOLEARN_HOST_TRANSCRIPT=<dir>` el servidor configurado es un envoltorio que copia el tráfico LSP, y `replay-transcript.mjs` reenvía los mensajes del cliente A a un `pseudo lsp` nuevo, esperando cada respuesta, y exige respuestas y diagnósticos finales idénticos. Las pruebas que revierten una edición lo hacen con `workbench.action.files.revert` sobre el editor activo, porque `undo` no deshace una edición aplicada por la API del host de pruebas. Límites: el cuadro de entrada de `Leer` y el selector de entrada se accionan solo con comandos del workbench; escribir un valor concreto en el cuadro de entrada es una comprobación manual. Con `PSEUDOLEARN_HOST_RUN_OUTPUT=<archivo>` el modo `trusted` sustituye el servidor por un envoltorio que copia la salida de las ejecuciones y añade el paso de aceptación: `pseudolearn.runFile` sobre el programa de aceptación de la API pública, que exige `200`, `Rick Sanchez` y `Alive`; requiere Internet y por eso no forma parte de la ejecución por omisión. El mismo modo ejecuta antes `constructs.pseudo`, el programa de aceptación de construcciones de la CLI, y exige sus líneas. `tests/web/language_constructs_scenario.ts` ejecuta en Chromium y WebKit ese programa y su proyecto (copiados en `tests/fixtures/web-scenarios/es/construcciones/`). Con `PSEUDOLEARN_WEB_ACCEPTANCE=<programa>` `tests/web/run-web.mjs` ejecuta el mismo programa en Chromium y WebKit con la misma salvedad.
-
-## 7. Comandos, ejecución interactiva y ayuda
-
-Todos los comandos están bajo la categoría `PseudoLearn` en la paleta. Los IDs son estables.
-
-| ID | Qué hace |
-|---|---|
-| `pseudolearn.runFile` | Ejecuta el archivo `.pseudo` activo guardado con `pseudo ejecutar --editor` |
-| `pseudolearn.runProject` | Ejecuta el proyecto de la primera carpeta del workspace con la entrada elegida |
-| `pseudolearn.selectEntry` | Elige el punto de entrada entre los módulos que informa `pseudo comprobar --json --proyecto`; se guarda en el estado del workspace |
-| `pseudolearn.stopRun` | Solicita cancelación a la sesión activa |
-| `pseudolearn.explainAtCursor` | Muestra la ayuda de la posición del cursor; teclado `Cmd+K Cmd+E` (`Ctrl+K Ctrl+E`) y paleta |
-| `pseudolearn.translate` | Traduce el vocabulario del archivo guardado a `es` o `en` como una sola edición deshacible |
-| `pseudolearn.restartServer` | Reinicia el cliente LSP |
-
-**Ejecución.** Se lanza `pseudo ejecutar --editor` sin shell, con argumentos como lista (rutas con espacios o metacaracteres
-llegan intactas) y con entorno vacío; los idiomas y el perfil salen de la configuración resuelta. Solo hay una sesión
-activa: una segunda ejecución se rechaza con un mensaje hasta que termine o se detenga. Ejecutar exige el snapshot guardado
-de la raíz o del archivo; con cambios sin guardar se rechaza y no se ejecuta una versión distinta de la que se ve. Comprobar y
-la navegación usan el overlay del editor a través del LSP. La salida de `Escribir` permanece intacta en el canal `PseudoLearn`.
-Los diagnósticos se agrupan y ordenan por archivo, línea y columna; en proyectos la ruta es relativa a la raíz. Cada error muestra
-el mensaje original del catálogo y, cuando se puede leer el archivo, su línea y un subrayado. Se muestran hasta 20 errores y una
-línea indica cuántos quedan ocultos. Los errores, advertencias e información también se publican en «Problemas» con sus rangos.
-Los campos JSON de cada diagnóstico van solo a `PseudoLearn (technical)`, con un límite de 40 registros, 2 KiB por registro y
-32 KiB por evento. Un archivo borrado, binario, ilegible o mayor a 1 MiB conserva línea y columna, pero no el fragmento.
-
-Las posiciones `line` y `column` del evento son base 1 y cuentan escalares Unicode, como define `LANG.SOURCE.POSITION`.
-La comprobación con `pseudo run --editor` y `variableUsedUninitialized` en `    Escribir nombre;`, tras
-`    Definir nombre Como Cadena;`, informó línea 3, columna 14, sobre el nombre, con la declaración como origen relacionado. El marco separa CRLF, expande tabuladores según `editor.tabSize`
-y adapta escalares suplementarios a unidades UTF-16 al publicar rangos en VS Code.
-
-El resumen usa el evento `finished`: con errores informa que el programa no se ejecutó; solo `completed` sin errores dice
-«Ejecución completada». Cancelación, cierre de entrada, aborto del anfitrión y fallo del anfitrión tienen mensajes separados.
-Las líneas no reconocidas permanecen en el canal técnico; las líneas de salida no se interpretan como eventos. El JSON de
-diagnósticos nunca se presenta como salida del estudiante. La barra de estado muestra el estado de la sesión.
-
-**Entrada.** `awaiting_input` abre un cuadro de entrada: aceptar con texto vacío envía una línea vacía, mientras que cancelar
-el cuadro envía `cancel` y no una cadena vacía. El canal se muestra conservando el foco y `showInputBox` recibe el texto; la
-recepción de texto se verifica manualmente en el Extension Development Host. **Detener** envía `cancel` y, si el proceso no responde en 5 s, lo termina
-(`SIGKILL`) y lo presenta como «abortado por el anfitrión», sin inventar limpieza del lenguaje. Cerrar la ventana o desactivar
-la extensión envía `close` y termina el proceso propio; ningún proceso ajeno se toca. Las líneas de una sesión anterior que
-llegan tarde se ignoran. Un `hello` con otro `schema` aborta la sesión. La ejecución usa el anfitrión físico completo de la CLI (archivos del sistema, red, reloj y temporizador reales) con la carpeta del workspace o del archivo como carpeta de trabajo; no hay opciones ni comandos de concesión.
-
-**Ayuda.** El hover estándar lo contesta el servidor LSP y `pseudolearn.explainAtCursor` envía `workspace/executeCommand` con la
-versión del documento y formato `plaintext`: el resultado es el mismo contenido y rango que el hover, y un documento cambiado
-responde `ContentModified`, que se presenta como «repite la consulta». La prosa de la ficha viene siempre del catálogo
-(`TOOL.SERVICE.CATALOG`); la extensión solo localiza sus propias etiquetas de interfaz (es/en) y no guarda ninguna tabla de
-fichas, lo que verifica la auditoría de fuente única, que recorre `src/` de este miembro. El hover se muestra como Markdown
-no confiable que gestiona el cliente LSP (sin HTML, enlaces de comando ni ejecución de ejemplos) y `explain` se muestra como
-texto plano en el canal `PseudoLearn Help`. Sin ayuda en la posición se informa «No hay ayuda en esta posición».
-
-**Límites y pendientes declarados.** `pseudolearn.translate` usa la CLI sobre el archivo guardado y reemplaza el documento
-completo solo si su versión no cambió; una colisión de traducción no escribe nada. El formato usa el proveedor LSP estándar.
-La verificación en host real (completar, diagnosticar, navegar, renombrar, ejecutar con entrada, detener y limpieza tras
-cierre) y la ayuda desde un segundo cliente quedan para las verificaciones pesadas.
-
-### Asistentes de código: servidor MCP y plantillas
-
-La extensión de escritorio registra el servidor MCP del binario incluido con el proveedor de definiciones de servidores
-MCP de la API de VS Code (`vscode.lm.registerMcpServerDefinitionProvider`, contribución `mcpServerDefinitionProviders`
-con id `pseudolearn.mcp`). La definición lanza `pseudo mcp` con la misma ruta resuelta que el servidor de lenguaje y
-`PSEUDO_IDIOMA` igual al idioma de interfaz; el chat de VS Code y Copilot ven entonces las herramientas `check`, `run`,
-`format`, `translate`, `explain`, `search_reference` y `example` y la ficha del lenguaje como recurso. La construcción
-de la definición es una función pura (`application/mcp_server_definition.ts`) y el registro vive en
-`activation/agent_commands.ts`. La variante browser no lo registra: no puede lanzar procesos.
-
-`PseudoLearn: Create Agent Instructions` (`pseudolearn.createAgentInstructions`) escribe en la primera carpeta del
-espacio de trabajo `AGENTS.md` y `.github/copilot-instructions.md` con las reglas que más confunden a un modelo que
-conoce PSeInt (base cero, punto y coma, tipos) y con la indicación de comprobar con el servidor MCP. Nunca sobrescribe un
-archivo existente: informa cuántos creó y cuántos ya estaban. El texto vive en `application/agent_instructions.ts` por
-idioma de interfaz.
-
-## 8. Contrato del artefacto local
-
-`artifact.contract.json` es el único dato que fija el artefacto: identidad `pseudolearn.pseudolearn-vscode` versión `0.1.0`
-(identifica el paquete, no una versión del lenguaje), VS Code mínimo `^1.144.0` (Stable), target `darwin-arm64`
-(`aarch64-apple-darwin` en Cargo), ejecutable `bin/darwin-arm64/pseudo`, gramática y configuración de lenguaje generadas,
-bundle `dist/extension.js`, licencia Apache-2.0 (`LICENSE.md` y `NOTICE`) y SHA-256 como algoritmo de hash. Solo se afirma la plataforma
-de la que se dispone para ensayo real; ninguna otra tiene soporte declarado.
-
-- **Construcción por scripts, cada paso con un dueño.** `pnpm build:cli` (`scripts/build-cli.mjs`) ejecuta
-  `cargo build --locked --release --target aarch64-apple-darwin` en `apps/pseudolearn_cli`, copia el binario y escribe
-  `.artifacts/provenance.json` (revisión Git y si el árbol estaba sucio, `rustc`, `cargo`, `node`, target y hashes del binario y
-  de la gramática). Cargo se ejecuta en la CLI y nunca como toolchain interna de TypeScript. `pnpm build` comprueba que la
-  gramática esté vigente y genera el bundle. `pnpm package` encadena ambos y `scripts/package.mjs` empaqueta con `vsce`.
-- **El empaquetado falla** si el binario no tiene registro de procedencia o no coincide con él, si la gramática cambió después de
-  compilar el binario o necesita regenerarse, si el host no es `darwin-arm64`, si el bundle deja fuera una dependencia runtime
-  (`vscode-languageclient`) o `require`a un módulo que no contiene (solo `vscode` y módulos nativos de Node), si la identidad o el
-  mínimo de VS Code difieren del contrato, si `extension.vsixmanifest` declara otra plataforma, o si el contenido no es
-  exactamente el declarado: faltan archivos requeridos, hay un recurso no declarado o uno excluido (`src`, `tests`, `scripts`,
-  `examples`, `node_modules`, `.git`, `.artifacts`, `*.map`, `.env*`).
-- **Salida.** `.artifacts/pseudolearn-0.1.0-darwin-arm64.vsix`, más `<nombre>.vsix.json` (ruta, bytes, SHA-256 del VSIX, del
-  binario, de la gramática y del bundle, revisión, versiones de `rustc`, `cargo` y `node`) y `<nombre>.vsix.sha256`. Esos archivos
-  no se versionan. Un hash detecta una diferencia respecto del registro local; no es una firma ni prueba la autenticidad.
-- **Enlazador de `compilar`.** El VSIX no contiene ningún enlazador: el `pseudo` empaquetado descarga LLD la primera vez que
-  compila a nativo, lo verifica con la suma SHA-256 que trae fijada y lo guarda en la caché del usuario
-  (`~/Library/Caches/pseudolearn/linker/` en macOS), igual que la CLI instalada aparte (README de `apps/pseudolearn_cli`).
-  Por eso el contrato no declara archivos nuevos y `bin/darwin-arm64/` sigue conteniendo solo `pseudo`; distribuir LLD
-  dentro del VSIX añadiría 146 MB a cada instalación aunque nunca se compile a nativo. La extensión ejecuta programas con
-  `pseudo run --editor` (VM); no tiene una orden de ejecución nativa, y `run --nativo` y `compilar` se verifican con el
-  binario empaquetado.
-- **Ejemplos mínimos reproducibles**, fuera del VSIX, en `examples/`: `file/saludo.pseudo` (entrada y salida),
-  `file/con-error.pseudo`, `project/` (paquetes `app` y `geo`, importado, `Leer` y `Escribir`) y `project-con-error/` (error en el
-  módulo importado).
-
-## 9. Uso antes del lanzamiento
-
-Estado: software previo a producción para uso privado. Plataforma ensayada: macOS Apple silicon con VS Code Stable 1.144.0 o
-superior. Que el VSIX se instale y funcione no certifica el lenguaje ni lo declara listo para producción. No hay Marketplace,
-Open VSX, telemetría ni actualización automática.
-
-**Con F5 (desde el checkout).** Requiere Node 22.23.3, pnpm 12.8.1 y la cadena Rust del repositorio.
-
-```bash
-pnpm install --frozen-lockfile
-pnpm build:cli
-pnpm build
+```mermaid
+flowchart BT
+    spec["packages/pseudolearn_spec<br/>(export.json)"] --> ext
+    cli["apps/pseudolearn_cli<br/>(binario pseudo)"] --> ext
+    engine["packages/pseudolearn_engine<br/>(Wasm, solo navegador)"] --> ext
+    ext["apps/pseudolearn_vscode"] --> host["VS Code Stable / VS Code Web"]
 ```
 
-Abre esta carpeta en VS Code y pulsa F5 con la configuración de extensión: se abre un Extension Development Host. Abre
-`examples/file/saludo.pseudo`: no se ejecuta al abrirlo.
+## Arquitectura
 
-**Con el VSIX (sin checkout ni toolchains).**
-
-```bash
-pnpm package
-code --install-extension .artifacts/pseudolearn-0.1.0-darwin-arm64.vsix
+```mermaid
+flowchart BT
+    contracts["contracts"] --> application["application"]
+    application --> adapters["adapters"]
+    adapters --> activation["activation"]
 ```
 
-También sirve «Extensions: Install from VSIX…» de la paleta. Comprueba el hash con `shasum -a 256` contra el
-archivo `.sha256` generado. Para un ensayo aislado que no toque el perfil habitual:
-`code --user-data-dir <dir-usuario> --extensions-dir <dir-extensiones> --install-extension <archivo.vsix>`. El VSIX usa el
-binario incluido y no necesita Cargo, Rust, Node ni pnpm. Las políticas de la organización se comprueban en el equipo de destino;
-no se desactiva ningún control de VS Code.
+Se omiten las aristas desde `contracts` hacia `adapters` y `activation`, y desde `application` hacia `activation`.
 
-**Seleccionar entrada, ejecutar, leer y detener.** Abre la carpeta `examples/project`. `PseudoLearn: Select Project Entry`
-elige `app/main` entre los módulos con algoritmo; `PseudoLearn: Run Project` la ejecuta y, cuando el programa espera, abre un
-cuadro de entrada (acepta vacío; cancelar el cuadro envía cancelación). `PseudoLearn: Run File` ejecuta el archivo activo
-guardado y `PseudoLearn: Stop Run` lo detiene. Con cambios sin guardar no se ejecuta. En Restricted Mode solo hay resaltado
-declarativo.
+| Capa          | Qué contiene                                                                                                                                                                   |
+|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `contracts`   | Puertos y datos: documentos del editor, cliente de lenguaje, anfitrión, configuración, transporte de Workers                                                                   |
+| `application` | Casos de uso sobre los puertos: controlador de ejecución, ciclo de vida del cliente, resolución de configuración, diagnósticos, ayuda, traducción, definición del servidor MCP |
+| `adapters`    | VS Code, Node y el proceso `pseudo` (escritorio); Workers, `workspace.fs` y Fetch (navegador)                                                                                  |
+| `activation`  | Composición y registro de comandos para escritorio (`extension.ts`) y navegador (`browser_extension.ts`, más los dos Workers)                                                  |
 
-**Actualizar, revertir y desinstalar.** Instalar un VSIX con la misma identidad sustituye al anterior. Para volver atrás se
-conserva el VSIX previo compatible, se desinstala la extensión (`code --uninstall-extension pseudolearn.pseudolearn-vscode`) y se
-instala ese archivo; volver a un VSIX anterior no restaura sintaxis anterior del lenguaje. Desinstalar cierra los procesos de la
-extensión y no borra los programas del usuario.
+Las dos activaciones comparten `contracts` y `application`; solo difieren en los adaptadores que componen.
 
-**Logs y versión.** El canal `PseudoLearn (technical)` guarda los registros técnicos locales; la versión instalada aparece en la
-vista de extensiones y en `code --list-extensions --show-versions`. La identidad del binario incluido se comprueba con su SHA-256, que
-consta en el registro `.vsix.json` del paquete. No se registra la entrada del estudiante ni el entorno completo.
+## Flujo principal
 
-## 10. Depuración VM de escritorio
+Flujo de datos al ejecutar un archivo en escritorio (la dirección difiere de la de dependencias).
 
-El debugger `pseudolearn` lanza `pseudo dap` sin shell ni entorno heredado. `pseudolearn.debugFile` y
-`pseudolearn.debugProject` crean configuraciones de archivo/proyecto guardados. `launch.json` admite `args` (lista de cadenas) y `cwd`; las claves `grants`, `permissions`, `origins` y `filesRoot` del modelo de concesiones anterior se rechazan con un error explícito en vez de ignorarse en silencio, para que ninguna configuración antigua aparente restringir una ejecución que ya tiene autoridad plena.
-El adaptador TS transporta DAP y presenta entrada; Rust conserva puntos de parada, tareas, marcos,
-control de ejecución, historia y evaluación. Cabeceras de 8 KiB, cuerpos de 8 MiB y referencias de stop
-acotadas impiden reservas ilimitadas. El backend es VM; no se anuncia depuración AOT ni browser.
-
-La evaluación de inspección admite literales, nombres visibles, campos, índices y operadores puros;
-rechaza llamadas, asignación, espera, tareas y capacidades. El pasado se consulta sin reemplazar la
-continuación viva ni repetir HTTP/escrituras/salida. Las capacidades anunciadas dependen del contrato
-y la implementación Rust; la calificación exige ambos clientes e integración física del replay.
-
-## 11. Variante browser y capacidades
-
-Las cuatro capas existentes alojan una activación browser y dos Workers separados: lenguaje y ejecución.
-Cada Worker posee su propia instancia Wasm y recurso API. El servidor de lenguaje conserva LSP en Rust;
-TypeScript enumera fuentes y entrega snapshots por URI, sin interpretar manifiestos ni imports.
-`vscode-languageclient/browser` 10.1.2 y `vscode-languageserver-protocol/browser` 3.18.4 aportan el
-cliente y transporte. Se toman de estos SDK el protocolo y lifecycle; no semántica del lenguaje.
-
-El transporte conserva el JSON API exacto como texto y analiza la proyección numérica de Rust. Los
-números de control se reconstruyen solo en campos del esquema con rango seguro. El límite por mensaje
-es 8 MiB, hay ocho consultas RPC simultáneas y hasta 256 notificaciones en la cola LSP. Saturación o
-fallo del Worker cierra la sesión; reiniciar lenguaje reconstruye snapshot y overlays, conservando la
-ejecución separada. Cancelar una consulta síncrona de Wasm descarta su resultado al recuperar control;
-no se promete interrupción preemptiva. Una ejecución usa lotes de 64 eventos y cesión al event loop.
-
-Los comandos de ejecución, entrada, detener, formato, traducción, ayuda y selección de entrada usan
-los mismos contratos Rust. Solo se ejecutan fuentes guardadas en workspace confiable; Restricted Mode
-mantiene resaltado declarativo. El cargador atiende la primera raíz, rechaza enlaces detectables y
-limita profundidad a 64, archivos a 4096, cada fuente a 1 MiB y lectura de snapshot a 32 MiB; el límite
-de mensaje de 8 MiB sigue siendo el techo efectivo de transporte. Guardados y cambios de archivos
-resincronizan; un error informa snapshot desactualizado, sin inventar fuentes vacías.
-
-| Capacidad | Garantía y límite del navegador |
-| --- | --- |
-| Archivos del programa | `workspace.fs` sobre el sistema de archivos del editor, con rutas absolutas o relativas a la carpeta del workspace; `..` permitido; escritura committed tras la confirmación del proveedor; no acredita persistencia tras expulsión |
-| HTTP | `fetch` a cualquier destino `http` o `https`; CORS, contenido mixto y cabeceras que Fetch reserva (`cookie`, `origin`, `referer`, `user-agent`, `sec-*`, `proxy-*`) llegan como `ErrorES` con causa de plataforma; el navegador sigue las redirecciones y valida TLS |
-| Reloj y temporizador | `Date.now()` en cada lectura; `Esperar` espera tiempo real sin bloquear otras tareas y se corta al detener |
-| Argumentos | Los de `BrowserHostContext.args`, en orden y sin el nombre del programa |
-| Ausencias | Sin DAP web, AOT, FFI, procesos, cookies ambientales ni servidor remoto |
-
-Fetch procede del adaptador canónico Wasm, importado y hasheado por build. Conserva el descriptor A4:
-TLS del navegador, sin bytes de cable ni ubicación portable de redirección. Se aborta al cancelar; una
-mutación enviada puede terminar incierta. Las escrituras del proveedor solo son committed tras su
-confirmación; un fallo posterior al despacho es incierto y no se reintenta. El almacenamiento propio
-Cada lectura o escritura de archivo admite hasta 1 MiB. No existen comandos ni diálogos de concesión:
-`Solicitar*` concede la familia que el navegador soporta y una familia ausente es un `ErrorES` de
-plataforma. `pseudolearn.showCapabilities` muestra los límites del navegador.
-
-## 12. Construcción y verificación browser
-
-`artifact.contract.json` mantiene desktop y añade el destino web. El manifiesto web se deriva del
-manifest único: declara browser y omite main, debugger y configuración de ejecutable. El staging
-`.artifacts/web-extension/` contiene únicamente bundles/Workers, glue/Wasm, gramática, avisos y metadata;
-el VSIX web no contiene binario. Los generados Wasm y Fetch se consumen sin copiarlos a mano.
-
-```bash
-pnpm build:wasm
-pnpm build:web
-pnpm check:web
-node scripts/package-web.mjs
-node tests/web/run-web.mjs
-node scripts/bench-web.mjs
-node scripts/physical-kit.mjs
-pnpm test:lsp:contrast
+```mermaid
+flowchart LR
+    command["run_commands"] --> controller["run_controller"]
+    controller --> runner["node_command_runner"]
+    runner --> pseudo["pseudo ejecutar --editor"]
+    pseudo -- " eventos " --> controller
+    controller --> presenter["vscode_run_presenter"]
+    presenter --> output["canal PseudoLearn<br/>y panel Problemas"]
 ```
 
-El checker verifica grafo browser sin Node, entradas externas declaradas, globals de Node mediante
-AST, inventario exacto, hashes de archivos/Fetch/lock, máximo de memoria 4096 páginas y Wasm Brotli
-Q11/lgwin22 ≤921 600 bytes. Un resultado fuera de presupuesto falla aunque el bundle cargue. Los
-avisos incluyen dependencias Cargo alcanzables del módulo Wasm y paquetes JS realmente empaquetados.
-Los registros guardan revisión, árbol sucio, toolchains y hashes. No se publica ni instala el perfil habitual.
+## Reglas que conviene saber
 
-El bundle web define `process` como indefinido para que las rutas de detección de plataforma de las
-dependencias elijan su rama no-Node; el verificador solo cuenta identificadores libres, no nombres de
-propiedad. `tool/wasm.sh` se ejecuta desde la raíz del motor para que `build:wasm` use la cadena fijada
-por su `rust-toolchain.toml`, no la del directorio desde el que se invoca.
+- Los imports siguen la matriz de `architecture.json`; las carpetas `src/common`, `src/helpers`, `src/misc` y
+  `src/utils` están prohibidas.
+- Límites: 300 líneas por archivo, 40 por función, 4 parámetros posicionales, anidación 3 y 7 métodos públicos por
+  clase.
+- La gramática TextMate y la configuración del lenguaje se generan desde `export.json` del corpus; no se editan a mano
+  (`pnpm check:grammar` detecta la diferencia).
+- El VSIX contiene solo lo declarado en `artifact.contract.json`; excluye fuentes, tests, scripts, ejemplos, mapas y
+  `node_modules`.
+- El README del VSIX es `marketplace/README.md` (`readme` del contrato). El `README.md` de esta carpeta no se empaqueta.
 
-**Escenarios de host web.** `tests/web/index.ts` orquesta, dentro del host VS Code web, las comprobaciones de activación y los
-escenarios con aserciones por paso (cada paso se registra en el log como `STEP` y en el resultado JSON). Los escenarios de red usan
-`tests/web/http-fixture.mjs`, un servidor Node con listeners HTTP y TLS (certificado autofirmado generado con `openssl`) que ofrece
-rutas de cuerpo, vacío, 500, cuerpo excesivo, redirección, plazo, conexión colgada, corte de conexión y respuesta sin CORS, y
-cuenta las visitas por ruta. El runner lo arranca de forma asíncrona (un `spawnSync` bloquearía su propio servidor). Los archivos
-del programa usan `tests/web/memory_provider.ts`, un proveedor virtual con fallos inyectables (guardado rechazado, lectura
-perdida). `tests/web/http_scenarios.ts` y `file_scenarios.ts` ejecutan `BrowserEffectHost` real del producto sobre el `fetch` del
-navegador y ese proveedor; `program_scenarios.ts` ejecuta archivos sueltos y proyectos de tres módulos en español e inglés
-(`tests/fixtures/web-scenarios/`) con Workers reales del artefacto: salida Unicode, entrada, entrada vacía, cancelación (por
-parada y por descarte del cuadro de entrada), extremos de 64 bits, error en el módulo importado, y efectos concedidos y denegados.
-Cada resultado esperado procede de las reglas del lenguaje y del contrato de efectos, no de una captura.
+## Comandos útiles
 
-Límite declarado: Chromium y WebKit rechazan el certificado autofirmado (el runner no permite confiar en él: ni las opciones de
-línea de comandos de Chromium surtieron efecto), de modo que el camino exitoso de HTTP se ejerce sobre HTTP y TLS se comprueba como
-rechazo ordinario de transporte, indistinguible de otro fallo de conexión (descriptor A4). El resultado registra `tls` como
-`accepted` o `untrusted`; no se declara cobertura de TLS exitoso.
+Desde esta carpeta.
 
-`pnpm test:lsp:contrast` (`tests/web/lsp-contrast.mjs`) conduce el mismo diálogo LSP contra el recurso LSP del Wasm empaquetado y
-contra `pseudo lsp` sobre el mismo proyecto de tres módulos (carpeta con espacios y caracteres no ASCII), incluidos cambios
-inválidos, columnas UTF-16 tras un emoji y una versión obsoleta, y exige respuestas y diagnósticos idénticos. Su primera
-ejecución encontró un defecto real: el snapshot web identificaba cada fuente como `app/main.pseudo` y Rust espera la ruta de
-módulo `app/main`, por lo que los diagnósticos de proyecto no se actualizaban; ahora `BrowserWorkspace` usa rutas de módulo.
-Otro defecto real hallado por los escenarios: cancelar mientras el programa espera entrada nunca terminaba; ahora se cancela y se
-entrega una línea vacía para que la cancelación surta efecto, como hace la CLI.
+| Para qué                              | Comando                                                             |
+|---------------------------------------|---------------------------------------------------------------------|
+| Instalar dependencias                 | `pnpm install --frozen-lockfile`                                    |
+| Tipos                                 | `pnpm check:types`                                                  |
+| Arquitectura, comentarios y tamaños   | `pnpm check:architecture`, `pnpm check:comments`, `pnpm check:size` |
+| Contenido del paquete                 | `pnpm check:package`                                                |
+| Gramática vigente                     | `pnpm check:grammar` (regenerar: `pnpm generate:grammar`)           |
+| Tests                                 | `pnpm test`                                                         |
+| Compilar el binario `pseudo` incluido | `pnpm build:cli`                                                    |
+| Bundle de escritorio                  | `pnpm build`                                                        |
+| VSIX de escritorio (`darwin-arm64`)   | `pnpm package`                                                      |
+| VSIX web                              | `pnpm package:web`                                                  |
+| Escenarios en navegador               | `pnpm test:web`                                                     |
+| Contraste LSP escritorio/Wasm         | `pnpm test:lsp:contrast`                                            |
+| Depuración por stdio                  | `pnpm test:dap:stdio`                                               |
+| Prueba en VS Code real                | `node tests/host/run-host.mjs trusted` (o `restricted`)             |
 
-El runner oficial está fijado en `tests/web/runner/package.json` a `@vscode/test-web` 0.0.81, con su lock;
-su instalación está separada de las dependencias de producto y no se descarga al activar la extensión.
-`tests/web/campaign.json` fija VS Code 1.144.0 commit `2c33b50b16c472efe58357d1d2a8a5414bc23fbf` y la
-matriz Chromium/Firefox/WebKit. El runner copia el staging a `.artifacts/web-host-test/` y añade allí el
-módulo de pruebas, porque la ruta de pruebas debe vivir dentro de la extensión servida; el artefacto de
-producto no se modifica. Un navegador solo califica si su proceso termina sin error ni señal y su log
-contiene el resultado `passed`; un tiempo agotado o un arranque fallido es «no calificado». Cada navegador
-conserva log y hash. El runner usa filesystem virtual, sin acreditar durabilidad ni Safari físico.
-
-El host de extensión web de VS Code carga la extensión como CommonJS y envuelve `Worker` con
-`importScripts`: la extensión se empaqueta como CJS y los Workers como IIFE clásicos (sin `type: module`);
-el glue Wasm se carga con `import()` dinámico desde el Worker. Cada manifiesto se resuelve con su
-directorio contenedor como ubicación, igual que el escritorio.
-
-Las cargas de `scripts/lib/web-workloads.mjs` declaran su resultado correcto antes de medir y cualquier intento con salida distinta
-o terminación inesperada invalida la comparación: entero de 64 bits extremo, bucle acotado, bucle cancelable (cancelación tras
-diez lotes), proyecto de tres módulos, edición (veinte `didChange` LSP alternando inválido/válido, con diagnósticos finales
-vacíos), memoria creciente (vector de 4000 elementos), HTTP simulado (el adaptador Fetch canónico con un `fetch` virtual, sin red)
-y arranque en caliente (misma página con instancias previas) y en frío (contexto de navegador nuevo por intento). La página de
-medición se renueva en cada iteración porque un contexto acumula reservas de memoria Wasm y agota el espacio de direcciones.
-
-`bench-web.mjs` ejecuta diez procesos Node y navegador independientes con treinta intentos por carga,
-alterna Worker/control y conserva fallos. Mide el transporte/VM con instancia nueva frente a la página
-mínima del mismo Wasm; no mide por sí solo edición/render del editor ni RAM total. Los resúmenes
-recalculan p95 e IC95 bootstrap sobre medias por proceso (semilla 42681). La métrica normativa nueva
-permanece sin aprobación; los criterios experimentales no cambian presupuestos del corpus.
-
-El kit físico contiene 32 combinaciones y veinte ciclos por combinación, fuentes, hashes, control,
-formularios vacíos y analizador. `node scripts/physical-kit.mjs analyze <results.json>` rechaza muestras
-sintéticas, duplicadas, incompletas, de otro dispositivo/Wasm y pérdida de texto. Sin resultados físicos
-se conserva «no evaluado físicamente» y el diferimiento; WebKit no se presenta como Safari iPhone.
-
-Pendientes de calificación: campañas de host completas, evidencias reales de navegador, resultados de
-medición y revisión de cobertura. Las comprobaciones puntuales no certifican esos resultados ni CF-14.
-
-## Anfitriones reales
-
-Escritorio usa la CLI compartida: carpeta del workspace o archivo, args y cwd para DAP, sin concesiones
-de capacidades. La Confianza de Workspace de VS Code sigue siendo el límite para ejecutar programas.
-El host web usa workspace.fs para archivos, Date.now para reloj, esperas cancelables reales y los
-argumentos de la ejecución. No mantiene un sistema de archivos virtual propio ni comandos de concesión.
-
-Fetch accede directamente a HTTP/HTTPS según el navegador, sigue sus redirecciones y conserva CORS,
-contenido mixto y restricciones de cabeceras. Omite cookies ambientales y caché; errores de plataforma
-son resultados tipados. No se evita CORS mediante proxies ni se sustituye una respuesta rechazada.
-La capacidad de red no necesita una lista de orígenes. showCapabilities describe estos límites.
-
-Las subcapacidades de archivos del host web rechazan enlaces simbólicos en el recorrido: workspace.fs
-no ofrece descriptores confinados. La raíz inicial conserva acceso pleno a los enlaces que soporte
-el proveedor. Las respuestas API de éxito con valor null se reconocen como confirmaciones; entrada
-y efectos validan las respuestas y mantienen la identidad completa de solicitud.
-
-Operaciones de directorio y de archivo: `browser_directory_ops.ts` implementa en el host web `Existe`, `EsDirectorio`, `Listar`, `Borrar`, `Renombrar`,
-`CrearDirectorio`, `AgregarTexto` y `AgregarBytes` con la semántica de `LIB.IO` R5–R11 sobre `vscode.workspace.fs`
-(`stat`, `readDirectory`, `delete`, `rename`, `createDirectory`, `readFile` y `writeFile`); `browser_file_support.ts` reúne las
-respuestas, los helpers de rutas y el mapeo de errores del proveedor. El adaptador no confía en los proveedores: `createDirectory`
-de VS Code crea niveles intermedios y no falla si el directorio existe, por lo que el adaptador comprueba antes existencia y
-padre, y `rename` se llama con `overwrite: false` tras comprobar el destino. `Listar` ordena por puntos de código con una
-comparación propia porque el orden de cadenas de JavaScript compara unidades UTF-16. Añadir lee y reescribe el archivo
-completo porque `workspace.fs` no ofrece escritura al final; está limitado al tope de 1 MiB y una interrupción se informa como
-incierta. Los errores tipados del proveedor (`FileNotFound`, `FileExists`, `FileNotADirectory`, `FileIsADirectory`,
-`NoPermissions`) se mapean a las variantes de `ErrorES`; cualquier otro fallo es `interrumpido`, incierto solo si la operación
-muta. El host web rastrea el derecho de lectura de cada capacidad derivada para rechazar consultas sin lectura. Las pruebas
-usan un sistema de archivos en memoria (`tests/adapters/memory_vscode.ts`).
-
-## Reloj local y entorno en el navegador
-
-`BrowserEffectHost` atiende `clock_local_now` con `Date.now()` y `Date#getTimezoneOffset`: el desplazamiento llega en
-minutos enteros, sin precisión de segundos ni reglas históricas de la zona. El navegador no tiene entorno de proceso:
-`request_environment` concede la capacidad y `environment_get` responde `permiso_denegado`, el `ErrorES` de plataforma
-del corpus (nunca una denegación por política).
-
-## Consola: error y código de salida
-
-El anfitrión del navegador (`browser_effect_host.ts`) confirma `console_write_error`; la salida combinada de
-la API ya trae el texto en orden, así que el presentador lo muestra junto con el resto (sin estilo propio todavía). `console_set_exit_code` valida el rango y se
-confirma, pero el presentador no usa el código (una pestaña web no tiene código de proceso).
-
-### Cobertura de operaciones de efecto en la extensión web
-
-`src/adapters/browser_operation_support.ts` declara, para cada operación de efecto de la biblioteca, si el adaptador
-web responde con un valor o con un `ErrorES` tipado de plataforma (`environment_get` responde `permiso_denegado`: el
-navegador no tiene entorno). `tests/adapters/browser_operation_coverage.test.ts` compara esa tabla con
-`resources.capabilityLibrary` de `export.json` y falla si se añade una operación sin rama o si la tabla conserva una que
-la biblioteca ya no exporta; incluye un caso negativo con una operación retirada. La extensión de escritorio ejecuta por
-`pseudo ejecutar --editor`, así que cualquier operación del anfitrión físico la alcanza sin código propio. No se
-verificaron Firefox, WebKit ni Windows en esta fase.
-
-`tests/web/general_purpose_scenario.ts` ejecuta en el host web los programas de `tests/fixtures/web-scenarios/es/proposito-general/` y exige la salida de las operaciones puras de la biblioteca y el error tipado `permiso_denegado` de `Entorno`. Pasó en Chromium y WebKit; Firefox no se ejecutó. Antes hay que reconstruir con `pnpm build:wasm`, `pnpm generate:grammar` y `pnpm build:web`.
+Requisitos: Node 22.23.3, pnpm 12.8.1; `build:cli` y `package` necesitan Cargo y un host `darwin-arm64`; `package:web`
+necesita además la cadena del motor para el Wasm.

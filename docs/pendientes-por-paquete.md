@@ -100,3 +100,20 @@ Heredados de un README anterior, sin confirmar:
 Heredados de un README anterior, sin confirmar:
 
 - El instalador de Windows de descarga directa no lleva firma Authenticode; la guía de SmartScreen de la descarga directa depende de ello.
+
+## pseudolearn_vscode
+
+Confirmados contra el código:
+
+- `pnpm package` incluye en el VSIX de escritorio cualquier archivo bajo `dist/`, porque `allowedPrefixes` admite `dist/` completo; un `dist/web/test/index.js` residual de una compilación local entró en el VSIX de prueba. El contrato debería limitar el prefijo de escritorio a `dist/extension.js`.
+
+Heredados de un README anterior, sin confirmar:
+
+- Las verificaciones pesadas en VS Code real (completar, diagnosticar, navegar, renombrar, ejecutar con entrada, detener y limpieza tras cierre) y la ayuda desde un segundo cliente quedan pendientes.
+- Escribir un valor concreto en el cuadro de entrada de `Leer` y en el selector de entrada se comprueba a mano; la automatización solo acciona comandos del workbench.
+- Campañas de host web completas, evidencias reales de navegador, resultados de medición y revisión de cobertura quedan pendientes; las comprobaciones puntuales no los certifican.
+- Firefox, WebKit y Windows no se verificaron; el escenario de propósito general del host web no se ejecutó en Firefox.
+- El camino exitoso de HTTP en el host web se ejerce sobre HTTP: Chromium y WebKit rechazan el certificado autofirmado, así que no hay cobertura de TLS exitoso.
+- El kit físico de medición (32 combinaciones) no tiene resultados: «no evaluado físicamente»; WebKit no equivale a Safari en iPhone.
+- La métrica normativa nueva del benchmark web permanece sin aprobación.
+- El código de salida de la consola (`console_set_exit_code`) se valida pero el presentador web no lo usa, y la salida de error no tiene estilo propio.

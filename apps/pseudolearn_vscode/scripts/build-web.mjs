@@ -39,7 +39,8 @@ function browserManifest() {
 
 async function buildBrowser() {
   mkdirSync(stage, { recursive: true });
-  for (const file of ["README.md", "LICENSE.md", "NOTICE", "media/pseudolearn.tmLanguage.json", "media/language-configuration.json"]) {
+  copy(resolve(root, contract.readme), resolve(stage, "README.md"));
+  for (const file of ["LICENSE.md", "NOTICE", "media/pseudolearn.tmLanguage.json", "media/language-configuration.json"]) {
     copy(resolve(root, file), resolve(stage, file));
   }
   for (const file of ["pseudolearn_wasm.js", "pseudolearn_wasm_bg.wasm"]) copy(resolve(wasmRoot, file), resolve(stage, "dist/web/wasm", file));
