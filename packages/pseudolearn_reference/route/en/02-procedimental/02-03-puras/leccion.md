@@ -138,7 +138,7 @@ The same calculation now serves the receipt and the day's summary without change
 - procedimental.puras.por-que-pura
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **«Pure means without variables».** `ConDescuento` declares a box and is pure: what matters is that it has no effects.
 - **Showing something inside «to see what happens».** The engine rejects it. To look at a value, show it from whoever calls.
 - **Confusing pure with short.** A long function can be pure, and a one-line one can have an effect.

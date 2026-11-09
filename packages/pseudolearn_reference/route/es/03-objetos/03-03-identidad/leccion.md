@@ -182,7 +182,7 @@ Compartir no siempre es un error. Si todas las pantallas del kiosco tienen que v
 - objetos.identidad.registro-u-objeto
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **«Asignar copia».** Con registros sí; con objetos, no. El programa del inténtalo lo muestra.
 - **Comparar objetos con igual esperando comparar el contenido.** Dos pedidos con los mismos productos no son el mismo objeto; los detalles están en [la Especificación](especificacion:objetos.copia).
 - **«El alias es siempre un error».** A veces se quiere justamente compartir.

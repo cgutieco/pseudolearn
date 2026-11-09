@@ -75,6 +75,6 @@ oculto | 0 ; 5 | Cada uno paga: 0
 Cambia la propina al 15 %. ¿Cuántas líneas tocaste?
 :::
 
-::: docentes
+::: explicacion
 Los casos son los de la calculadora original: lo que muestra no cambia. Las aserciones comprueban los dos nombres y cuántos parámetros recibe cada uno.
 :::

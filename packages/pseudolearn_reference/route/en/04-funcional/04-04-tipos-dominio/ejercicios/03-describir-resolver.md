@@ -32,6 +32,6 @@ The order is a variant with one shape per state, and the description is a functi
 Add state 5, returned with a reason. What does the engine warn you about?
 :::
 
-::: docentes
+::: explicacion
 The app's catalogue of checks cannot require a variant; the restriction asks for it. Hidden cases: the four states.
 :::

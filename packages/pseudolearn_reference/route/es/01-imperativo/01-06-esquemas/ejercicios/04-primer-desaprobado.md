@@ -47,6 +47,6 @@ oculto | 0 ; 0 ; 0 ; 0 ; 0 ; 0 | 0
 Muestra la posición de la última nota menor que 6. ¿Qué cambia en el recorrido?
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: la primera en la posición 0, la última en la 5 y todas desaprobadas (gana la 0). Error frecuente: no salir del bucle, que devuelve la última y no la primera.
 :::

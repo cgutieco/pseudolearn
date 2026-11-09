@@ -102,7 +102,7 @@ Adding the transfer is writing a new class that implements `MedioDePago`. `Cobra
 - objetos.contratos.por-que-contrato
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **An interface with methods nobody uses.** The contract has to be what the till needs, no more and no less.
 - **The choice by method that reappears somewhere else.** When choosing the method needs a decision, let it be a single one at the start of the program.
 - **Confusing an interface with sharing code.** An interface promises methods; it does not share code. The next lesson shows how code is shared.

@@ -80,6 +80,6 @@ oculto | + ; + ; + ; + ; + ; + ; + ; + ; + ; + ; + ; + ; - ; fin | 29
 Agrega `Fijar(grados)`, que acepta solo valores dentro del rango.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: subir más allá de 30, bajar más allá de 16, ninguna orden y bajar después de tocar el techo.
 :::

@@ -40,6 +40,6 @@ Do not write code. Write between two and four lines for the exercise of reading 
 Which of your lines could you remove without letting any wrong version escape?
 :::
 
-::: docentes
+::: explicacion
 Wrong versions: it does not check the semicolon, it cuts at the last one and it shows the name without the stock. Without a line with two semicolons, the second one survives.
 :::

@@ -31,6 +31,6 @@ The program reads two marks and shows their average. With 7 and 8 it shows 7. Fi
 With 6 and 6 the fixed program shows `6.0`, not `6`. Why? (Because `/` always gives a number with decimals.)
 :::
 
-::: docentes
+::: explicacion
 It is a logic error: it compiles, finishes and shows a number. The 6 and 6 case is the one that does not uncover it; that is why you need more than one case.
 :::

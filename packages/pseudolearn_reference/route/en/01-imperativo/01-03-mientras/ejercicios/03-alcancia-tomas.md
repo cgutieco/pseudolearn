@@ -34,6 +34,6 @@ Tomás wrote his version of the money box. With price 50 it shows «Día 9 con 5
 Fix Tomás's condition by changing a single sign.
 :::
 
-::: docentes
+::: explicacion
 The prices that are gathered exactly break Tomás's version: 2, 5, 9, 14, 20, 27, 35, 44, 54. The app runs the proposed price in both versions and accepts it if they differ.
 :::

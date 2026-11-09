@@ -62,6 +62,6 @@ oculto | 9 ; 0 | 0 9
 Escribe `OrdenarTres`, que deja tres números de menor a mayor usando `Intercambiar`.
 :::
 
-::: docentes
+::: explicacion
 El subprograma intercambia sus copias. Como hay que devolver dos valores, la solución presta las dos cajas. El caso 1 y 1 no descubre el error: por eso hacen falta más casos.
 :::

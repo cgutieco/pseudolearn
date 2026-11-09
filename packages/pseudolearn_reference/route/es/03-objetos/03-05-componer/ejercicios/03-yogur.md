@@ -144,6 +144,6 @@ oculto | 1 ; 0 | 0
 Agrega el envase retornable, que suma 2 pesos al precio. ¿Cuántas clases nuevas hacen falta?
 :::
 
-::: docentes
+::: explicacion
 El catálogo de comprobaciones de la app no puede prohibir que una clase herede de otra; la restricción lo pide y el tipo 4 lo exige, porque con herencia haría falta una clase más. Casos ocultos: cada rasgo solo, la combinación con otro precio y un precio 0.
 :::

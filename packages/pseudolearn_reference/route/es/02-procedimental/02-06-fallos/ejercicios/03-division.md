@@ -57,6 +57,6 @@ oculto | 9 ; 4 | 2
 Agrega un segundo motivo: «El dividendo es negativo».
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: 0 en el numerador (es válido) y 0 entre 0 (es un error). Error frecuente: comprobar el numerador en lugar del divisor.
 :::

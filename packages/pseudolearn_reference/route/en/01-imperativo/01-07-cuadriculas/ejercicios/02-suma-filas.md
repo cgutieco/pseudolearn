@@ -28,6 +28,6 @@ Read the 9 numbers of a 3 × 3 grid, row by row, and show the sum of each row, o
 Also show the sum of each column.
 :::
 
-::: docentes
+::: explicacion
 Frequent mistake: setting the sum to 0 only once, before all the loops, which piles up the previous rows: 6, 21, 45.
 :::

@@ -28,6 +28,6 @@ Read a day and a month of a year that is not a leap year, in that order. Show «
 Add the year and take into account the leap years of [lesson 1.2](ruta:imperativo.caminos).
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: 29 February, the edges of April and December, day 0 and a case with both values wrong, where the month rules.
 :::

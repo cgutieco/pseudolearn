@@ -63,6 +63,6 @@ oculto | 7 | 8
 Usa `ConIva` para mostrar el total con IVA de dos productos leídos.
 :::
 
-::: docentes
+::: explicacion
 La aserción comprueba que exista `ConIva` con un parámetro; que sea una `Funcion`, y por lo tanto pura, lo comprueba el propio motor al compilarla. Los casos son los del programa inicial: lo que se muestra no cambia.
 :::

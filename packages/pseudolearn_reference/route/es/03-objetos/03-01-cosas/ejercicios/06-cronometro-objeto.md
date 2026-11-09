@@ -70,6 +70,6 @@ oculto | 86399 ; 0 | 23 h 59 min 59 s
 Agrega `Reiniciar()`, que vuelve el cronómetro a 0.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: el cronómetro sin avanzar, justo antes del minuto, una hora exacta y el último segundo del día.
 :::

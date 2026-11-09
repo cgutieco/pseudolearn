@@ -37,6 +37,6 @@ visible | — | 3
 ¿Cuántos litros de pintura sobran después de pintar? (Respuesta: 1.2.)
 :::
 
-::: docentes
+::: explicacion
 Solución: 108 metros cuadrados, 10.8 litros, 2.7 latas, se compran 3. Error frecuente: redondear los litros antes de dividir entre 4, que también da 3 aquí pero falla con otras medidas.
 :::

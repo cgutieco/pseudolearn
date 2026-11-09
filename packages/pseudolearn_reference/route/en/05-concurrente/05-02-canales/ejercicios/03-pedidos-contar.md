@@ -36,6 +36,6 @@ The kitchen is a task that sends the orders through a channel created with `Chan
 Make the window also show the number of the last order handed over.
 :::
 
-::: docentes
+::: explicacion
 With 0 orders the kitchen closes without sending anything and the first `Receive` gives `None`. With 7 orders the channel fills up several times and the kitchen waits: the output is the same.
 :::

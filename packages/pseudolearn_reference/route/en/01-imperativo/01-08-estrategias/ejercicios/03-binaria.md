@@ -28,6 +28,6 @@ Read 10 numbers sorted from smallest to largest and then a searched number. Show
 Also show how many steps were needed. With 10 values, what is the maximum?
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: the searched number at both ends, smaller than all and greater than all. Frequent mistake: leaving the middle inside the interval, which in some cases never ends.
 :::

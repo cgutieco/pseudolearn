@@ -36,6 +36,6 @@ The price, the line amount and the discount are functions; the main algorithm on
 Also show how much was saved with the discount, without computing anything twice.
 :::
 
-::: docentes
+::: explicacion
 In «3, 5, 5, 0» there are 5 biscuits (10 pesos) and 0 fruit: total 10, with discount 9. The assertion checks that `ConDescuento` exists; that it is pure is checked by the engine when compiling it.
 :::

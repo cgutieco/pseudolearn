@@ -34,6 +34,6 @@ This program computes how many 40-seat buses are needed. With 95 pupils it says 
 Find another number that breaks it, and a third one greater than 100. (Any multiple of 40: 40, 120, 160.)
 :::
 
-::: docentes
-Any multiple of 40 breaks the program. Ask them to explain why before typing the input.
+::: explicacion
+Any multiple of 40 breaks the program. Before typing the input, try to explain why.
 :::

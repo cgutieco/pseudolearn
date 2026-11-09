@@ -36,6 +36,6 @@ Each pair is built by a pure function, `ParJson`, which receives the name and th
 Extend it to the five products of the kiosk, as in the lesson.
 :::
 
-::: docentes
+::: explicacion
 Separating the pair from the object lets you reuse `ParJson` for any number of products. A name with an accent changes nothing: JSON accepts any text.
 :::

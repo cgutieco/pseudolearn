@@ -47,8 +47,8 @@ Verdadero
 
 La asignación `<-` y la comparación `=` son operadores distintos: `<-` guarda un valor, `=` pregunta si dos valores son iguales.
 
-::: docentes
-El error más común es leer `x = 1` como «x vale 1». Insiste en que `=` solo pregunta; para guardar se usa la flecha, que se lee «recibe».
+::: nota
+El error más común es leer `x = 1` como «x vale 1». `=` solo pregunta; para guardar se usa la flecha, que se lee «recibe».
 :::
 
 ::: resumen

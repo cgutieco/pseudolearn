@@ -142,7 +142,7 @@ Compárala con la versión de atributo público: allí la regla tenía que repet
 - objetos.invariantes.invariantes-ascensor
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **«Privado es para esconder errores».** Es para que nadie pueda romper el invariante desde afuera.
 - **Validar afuera en vez de en el método.** Funciona hasta que alguien usa la tarjeta desde otro programa.
 - **Un método público para asignar cada atributo.** Con un método que pone cualquier saldo, la protección desaparece.

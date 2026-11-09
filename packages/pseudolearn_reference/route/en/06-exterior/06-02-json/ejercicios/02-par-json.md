@@ -36,6 +36,6 @@ The text is built by a pure function, `ParJson`, which receives the name and the
 Check the result with `parseJson` before showing it.
 :::
 
-::: docentes
+::: explicacion
 The space after the colon is part of the format asked for. The cases include stock 0 and a three-digit number.
 :::

@@ -31,6 +31,6 @@ Ana has 12 stickers and Beto has 7. They want to swap their piles: Ana keeps Bet
 Now Carla plays too, with 3 stickers. Make Ana get Beto's, Beto get Carla's and Carla get Ana's. (Answer: `Ana: 7 Beto: 3 Carla: 12`.)
 :::
 
-::: docentes
+::: explicacion
 The first assignment overwrites 12 before copying it. The solution uses an extra box. Frequent mistake: swapping the two lines, which leaves both with 12.
 :::

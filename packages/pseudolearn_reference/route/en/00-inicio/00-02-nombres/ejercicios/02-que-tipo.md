@@ -28,8 +28,6 @@ Place each value in the kind of box that can hold it.
 
 ::: explicacion
 Numbers without a point go in an `Integer` box; with a point, even if they end in `.0`, in a `Real` box. Everything between quotes is a `String`, even if it has digits inside: `"23"` cannot be multiplied.
-:::
 
-::: docentes
-The trap is `"23"`. If someone places it among the numbers, ask them to predict what `Write "23" + "1";` shows.
+The trap is `"23"`. If you placed it among the numbers, predict what `Write "23" + "1";` shows.
 :::

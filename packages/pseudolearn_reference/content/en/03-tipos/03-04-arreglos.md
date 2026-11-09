@@ -79,8 +79,8 @@ In the intermediate representation, accessing a box is an instruction that check
 ```
 :::
 
-::: docentes
-The classic mistake is going from 1 to N instead of 0 to N − 1. Ask the class to write the `notas` loop with `For i <- 1 To 4` and discuss the failure it produces: the message says which index and which size.
+::: nota
+The classic mistake is going from 1 to N instead of 0 to N − 1. Write the `notas` loop with `For i <- 1 To 4` and look at the failure it produces: the message says which index and which size.
 :::
 
 ::: resumen

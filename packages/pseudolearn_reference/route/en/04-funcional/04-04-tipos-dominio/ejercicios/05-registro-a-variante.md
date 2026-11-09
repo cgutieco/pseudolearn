@@ -35,6 +35,6 @@ The delivery is a variant with one shape per state, and each shape carries only 
 Add the delivered state with its time, without touching the other shapes.
 :::
 
-::: docentes
+::: explicacion
 The record version accepts any text as a state. The variant forces you to decide what to do with what is not recognised.
 :::

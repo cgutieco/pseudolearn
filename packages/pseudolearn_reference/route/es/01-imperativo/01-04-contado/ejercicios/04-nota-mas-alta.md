@@ -45,6 +45,6 @@ oculto | 5 ; 6 ; 7 ; 8 ; 9 | 9
 Muestra también en qué posición, del 1 al 5, apareció la más alta por primera vez.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: la mayor al final y al principio. Error frecuente: empezar la mayor en 0, que acierta con notas de 0 a 10 pero falla con temperaturas bajo cero.
 :::

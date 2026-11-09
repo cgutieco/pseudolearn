@@ -317,7 +317,6 @@
         "hints",
         "variant",
         "explanation",
-        "teachers",
         "evaluation"
       ],
       "properties": {
@@ -371,9 +370,6 @@
           "$ref": "#/$defs/blocks"
         },
         "explanation": {
-          "$ref": "#/$defs/blocks"
-        },
-        "teachers": {
           "$ref": "#/$defs/blocks"
         },
         "program": {

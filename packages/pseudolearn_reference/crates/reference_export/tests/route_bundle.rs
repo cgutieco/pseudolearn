@@ -54,7 +54,6 @@ fn exercise() -> PublishedExercise {
         }]],
         variant: Vec::new(),
         explanation: Vec::new(),
-        teachers: Vec::new(),
         program: None,
         starter_code: None,
         evaluation: Evaluation::Cases {

@@ -95,7 +95,6 @@ pub struct PublishedExercise {
     pub hints: Vec<Vec<Run>>,
     pub variant: Vec<LessonBlock>,
     pub explanation: Vec<LessonBlock>,
-    pub teachers: Vec<LessonBlock>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub program: Option<ProgramBlock>,
     #[serde(skip_serializing_if = "Option::is_none")]

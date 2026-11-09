@@ -28,6 +28,6 @@ The teacher dictates the exam marks one by one. When she finishes, she says -1. 
 Also show the highest mark. (You will need it in the next lesson.)
 :::
 
-::: docentes
+::: explicacion
 Without checking the amount, the «-1 straight away» case stops with a division by zero. The marks 0 and 0 check that the signal is not confused with a low mark.
 :::

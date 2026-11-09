@@ -118,9 +118,9 @@ Volver privado un subprograma auxiliar, como `RedondearCentavos`, no rompe a nad
 - procedimental.modulos.ciclo
 :::
 
-::: docentes
-- **Módulos por tipo de construcción.** Un módulo de «todas las funciones» y otro de «todos los registros» cambian por mil motivos. Pide agrupar por lo que cambia junto.
-- **Todo público.** Todo nombre público es una promesa. Pide justificar cada `Publico`.
+::: profundizar titulo="Tropiezos frecuentes"
+- **Módulos por tipo de construcción.** Un módulo de «todas las funciones» y otro de «todos los registros» cambian por mil motivos. Agrupa por lo que cambia junto.
+- **Todo público.** Todo nombre público es una promesa. Justifica cada `Publico`.
 :::
 
 ::: siguiente

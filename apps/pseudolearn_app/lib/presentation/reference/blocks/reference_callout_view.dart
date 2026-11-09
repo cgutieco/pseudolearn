@@ -107,7 +107,6 @@ Color calloutAccent(ReferenceCalloutKind kind, AppThemeExtension theme) =>
       ReferenceCalloutKind.limit => theme.syntax.literalNumber,
       ReferenceCalloutKind.errors => theme.colors.severities.error.fg,
       ReferenceCalloutKind.inside => theme.syntax.keywordOop,
-      ReferenceCalloutKind.teachers => theme.syntax.keywordProcedural,
       ReferenceCalloutKind.analogy => theme.colors.severities.success.fg,
       ReferenceCalloutKind.parts ||
       ReferenceCalloutKind.note => theme.colors.text.tertiary,
@@ -117,7 +116,6 @@ String calloutTitle(ReferenceCalloutKind kind, AppLocalizations l10n) =>
     switch (kind) {
       ReferenceCalloutKind.phrase => l10n.referenceCalloutPhrase,
       ReferenceCalloutKind.limit => l10n.referenceCalloutLimit,
-      ReferenceCalloutKind.teachers => l10n.referenceCalloutTeachers,
       ReferenceCalloutKind.inside => l10n.referenceCalloutInside,
       ReferenceCalloutKind.analogy => l10n.referenceCalloutAnalogy,
       ReferenceCalloutKind.note => l10n.referenceCalloutNote,

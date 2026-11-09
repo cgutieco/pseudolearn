@@ -28,6 +28,6 @@ Write the till program. Read pairs of code and amount until code 0 and show the 
 Add to the closing how many valid sales there were and the average price per sale.
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: an invalid code in the middle, a tie (biscuit and juice with 2 units: juice wins, with the lowest code), a single sale, the five products, large amounts and a day whose only sale is invalid. Frequent mistake: searching for the best seller with `>=`, which in a tie picks the one with the highest code.
 :::

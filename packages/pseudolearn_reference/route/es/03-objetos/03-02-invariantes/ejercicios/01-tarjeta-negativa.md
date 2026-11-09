@@ -110,6 +110,6 @@ oculto | 100 ; 0 | Falso 100
 Agrega un método `Transferir(otra, monto)` que pase saldo de una tarjeta a otra sin romper el invariante en ninguna de las dos.
 :::
 
-::: docentes
+::: explicacion
 El método resta sin preguntar. Casos ocultos: cobrar justo el saldo, uno más, cobrar de una tarjeta vacía y un cobro de 0.
 :::

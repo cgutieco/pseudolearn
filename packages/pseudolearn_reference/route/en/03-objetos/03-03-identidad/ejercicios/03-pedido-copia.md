@@ -31,6 +31,6 @@ The program reads two products for an order and a third one for a similar order.
 What would happen if the copy were built with `copy(pedido)`? Try it and explain the result.
 :::
 
-::: docentes
+::: explicacion
 `copia <- pedido` gives the same order another name. The fix uses `Duplicar`, which builds a new list. `copy` is not enough: it shares the list.
 :::

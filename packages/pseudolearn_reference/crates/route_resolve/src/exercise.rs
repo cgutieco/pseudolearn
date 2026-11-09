@@ -119,7 +119,6 @@ fn publish(
     let restriction = section(CalloutKind::Restriction);
     let variant = section(CalloutKind::Variant);
     let explanation = section(CalloutKind::Explanation);
-    let teachers = section(CalloutKind::Teachers);
     let hints = hints(context, parts);
     check_translated_order(context, collector, header.kind, parts);
     PublishedExercise {
@@ -134,7 +133,6 @@ fn publish(
         hints,
         variant,
         explanation,
-        teachers,
         program: visible_program(context, collector, parts),
         starter_code: parts
             .program("inicial")

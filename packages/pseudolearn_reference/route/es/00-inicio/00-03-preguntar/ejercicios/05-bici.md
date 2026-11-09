@@ -40,6 +40,6 @@ oculto | 5 ; 12 | 25
 Muestra el resultado como horas y minutos: con 25 kilómetros a 15 por hora, `1 h 40 min`.
 :::
 
-::: docentes
+::: explicacion
 Error frecuente: dividir primero y multiplicar por 60 después, que da lo mismo aquí pero acumula decimales. Otro: redondear las horas antes de pasar a minutos.
 :::

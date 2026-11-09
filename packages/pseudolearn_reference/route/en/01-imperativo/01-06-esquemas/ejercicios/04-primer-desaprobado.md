@@ -28,6 +28,6 @@ Read 6 marks and show the position, from 0 to 5, of the first mark less than 6. 
 Show the position of the last mark less than 6. What changes in the walk?
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: the first one in position 0, the last one in 5 and all failing (0 wins). Frequent mistake: not exiting the loop, which returns the last one and not the first.
 :::

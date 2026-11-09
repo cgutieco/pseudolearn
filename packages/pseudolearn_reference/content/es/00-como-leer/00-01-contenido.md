@@ -43,7 +43,7 @@ Cada sección tiene un cuerpo que se entiende sin conocimientos previos. Alreded
 | Límite exacto | El número preciso cuando hace falta: rangos, tamaños, profundidades |
 | Errores frecuentes | Los mensajes reales del motor y cómo arreglarlos |
 | Por dentro | Lo que hace el motor: representación intermedia y traza |
-| Para docentes | Confusiones típicas y preguntas para la clase |
+| Nota | Confusiones típicas y algo para probar por tu cuenta |
 
 El cuerpo nunca depende de los recuadros plegables. Puedes saltarte todos los «Por dentro» sin perder el hilo.
 

@@ -69,8 +69,8 @@ The selector is kept in a temporary and every branch is a comparison with a jump
 ```
 :::
 
-::: docentes
-`Switch` and a chain of nested `If`s do the same with concrete values. Ask the class to rewrite `dia-semana` with `If` and compare which reads better and which catches an omission sooner.
+::: nota
+`Switch` and a chain of nested `If`s do the same with concrete values. Rewrite `dia-semana` with `If` and compare which reads better and which catches an omission sooner.
 :::
 
 ::: resumen

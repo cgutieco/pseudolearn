@@ -147,7 +147,7 @@ En una frase: «El inventario se escribe como texto JSON con una función pura, 
 - exterior.json.dos-pares
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **Comillas simples dentro del JSON.** JSON solo acepta comillas dobles; las simples son del programa que lo arma.
 - **La coma final.** Es el error más común, y `AnalizarJson` lo marca con línea y columna.
 - **Creer que JSON es un tipo de archivo.** Es una forma de escribir texto: puede ir en un archivo, en un mensaje o en una respuesta de internet.

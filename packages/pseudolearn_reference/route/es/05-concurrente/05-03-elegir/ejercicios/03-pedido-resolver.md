@@ -65,6 +65,6 @@ oculto | 9 ; 0 ; 9 | Pedido suspendido: Sur no tiene stock
 Muestra también cuántos proveedores tenían stock cuando el pedido se confirma.
 :::
 
-::: docentes
+::: explicacion
 Los casos tienen como mucho un proveedor sin stock, así que el motivo no depende de los turnos de la agenda. Cuando un proveedor falla, el ámbito cancela a las consultas que siguen vivas; el ejercicio no pregunta cuántas.
 :::

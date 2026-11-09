@@ -39,6 +39,6 @@ The attribute `saldo` of the class `Tarjeta` is private; the card offers methods
 Try, from the main algorithm, to set the balance directly. What does the engine say?
 :::
 
-::: docentes
+::: explicacion
 The assertion checks that `saldo` is private. The cases are those of the initial program: what is shown does not change, but now the rule lives in the class.
 :::

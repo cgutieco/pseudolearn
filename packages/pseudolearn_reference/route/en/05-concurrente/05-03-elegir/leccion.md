@@ -110,7 +110,7 @@ Compare `Select` with waiting for the answers one after another. If only one ans
 - concurrente.elegir.pedido-pruebas
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **«The same channel always wins».** The schedule decides it: do not assume it.
 - **«Cancelling erases what the task already did».** What was already written stays; cancelling only cuts what was missing.
 - **Confusing cancelling with failing.** One task fails; the ones cut because of it did not fail.

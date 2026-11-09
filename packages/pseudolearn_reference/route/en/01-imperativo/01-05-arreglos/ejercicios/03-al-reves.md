@@ -28,6 +28,6 @@ Read 5 numbers and show them in reverse order, one per line.
 Show only the ones in even positions: 0, 2 and 4.
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: repeated numbers that make a program that does not reverse look right (7, 7, 7) and negatives. Frequent mistake: starting the second loop at 5.
 :::

@@ -99,6 +99,6 @@ oculto | triangulo ; 4 ; 4 | 8.0
 Agrega el círculo, con área 3.14 por el radio al cuadrado. ¿Qué piezas cambian?
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: un triángulo con área no entera, medidas 0 y un triángulo de área entera. Error frecuente: calcular el área en el principal con una decisión por figura, que no usa el contrato.
 :::

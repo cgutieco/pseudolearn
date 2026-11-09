@@ -48,6 +48,6 @@ oculto | -1 ; 1 ; 0 ; 2 ; 2 ; 2 ; 5 ; 0 ; 0 | 0 ⏎ 6 ⏎ 5
 Muestra también la suma de cada columna.
 :::
 
-::: docentes
+::: explicacion
 Error frecuente: poner la suma en 0 una sola vez, antes de todos los bucles, que acumula las filas anteriores: 6, 21, 45.
 :::

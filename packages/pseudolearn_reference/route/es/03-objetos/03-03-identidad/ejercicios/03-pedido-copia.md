@@ -110,6 +110,6 @@ oculto | Alfajor ; Agua ; Sándwich | Original: Alfajor, Agua ⏎ Copia: Alfajor
 ¿Qué pasaría si la copia se armara con `Copiar(pedido)`? Pruébalo y explica el resultado.
 :::
 
-::: docentes
+::: explicacion
 `copia <- pedido` da otro nombre al mismo pedido. La corrección usa `Duplicar`, que arma una lista nueva. `Copiar` no alcanza: comparte la lista.
 :::

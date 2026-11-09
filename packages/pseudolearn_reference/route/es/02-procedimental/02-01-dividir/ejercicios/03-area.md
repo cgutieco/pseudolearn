@@ -51,6 +51,6 @@ oculto | 10 ; 7 | 70
 Agrega un subprograma `PerimetroRectangulo` y muestra también el perímetro.
 :::
 
-::: docentes
+::: explicacion
 La aserción comprueba que exista `AreaRectangulo` con dos parámetros. Error frecuente: leer los datos dentro del subprograma, que entonces no recibe nada.
 :::

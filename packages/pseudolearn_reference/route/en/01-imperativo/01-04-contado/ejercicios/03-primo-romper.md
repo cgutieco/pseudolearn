@@ -34,6 +34,6 @@ This program gets 7 and 9 right. Find a number it gets wrong.
 Is there any number greater than 1 that breaks it? (No: for all of them the loop tries at least one divisor or, with 2, none and gets it right.)
 :::
 
-::: docentes
+::: explicacion
 1, 0 and the negatives break the program: for them the loop makes no passes and the answer stays true. The reference starts with `n >= 2`.
 :::

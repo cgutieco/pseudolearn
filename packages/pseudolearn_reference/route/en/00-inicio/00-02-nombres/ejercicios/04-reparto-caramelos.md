@@ -31,6 +31,6 @@ There are 47 sweets for 6 friends. Everyone gets the same amount, and the sweets
 One more friend arrives. What does the program show now? (Answer: `Cada amigo recibe 6 y sobran 5`.)
 :::
 
-::: docentes
+::: explicacion
 Solution with `div` and `mod` on the variables. Frequent mistake: writing `7` and `5` by hand, which passes the case but not the variant.
 :::

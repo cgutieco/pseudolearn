@@ -49,6 +49,6 @@ oculto | 7 ; 8 ; -1 | 7.5
 Muestra también la nota más alta. (Lo vas a necesitar en la próxima lección.)
 :::
 
-::: docentes
+::: explicacion
 Sin comprobar la cantidad, el caso «-1 directo» se detiene con una división entre cero. Las notas 0 y 0 comprueban que el aviso no se confunde con una nota baja.
 :::

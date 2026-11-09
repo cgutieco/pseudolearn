@@ -133,7 +133,6 @@ RouteExercise sampleExercise(
   hints: [runsOf('Pista uno'), runsOf('Pista dos')],
   variant: const [],
   explanation: const [],
-  teachers: const [],
   program: null,
   starterCode: 'Algoritmo X\nFinAlgoritmo\n',
   evaluation: evaluation,

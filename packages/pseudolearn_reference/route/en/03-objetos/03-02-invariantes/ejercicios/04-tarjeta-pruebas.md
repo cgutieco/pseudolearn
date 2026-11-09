@@ -40,6 +40,6 @@ A program reads the initial balance, an amount to charge and an amount to load, 
 Which case would you add for an error that charged negative amounts?
 :::
 
-::: docentes
+::: explicacion
 Wrong versions: it does not allow charging exactly the balance, it allows going negative and it accepts negative loads. Each case of the solution uncovers one.
 :::

@@ -97,8 +97,13 @@ Cuerpo:
 - `## Título {#id}`: encabezado numerado; `#funciona` marca «Cómo funciona».
 - Párrafos, listas `-` y `1.`, tablas `| … |`.
 - En línea: `` `código` ``, `**fuerte**`, `*énfasis*`, `«hueco»`, `[texto](#seccion)` y `[[término|texto]]`.
-- Recuadros `::: tipo` … `:::` con `frase`, `limite`, `docentes`, `por-dentro`, `analogia`, `nota`,
-  `partes`, `errores`, `resumen` y `vease`.
+- Recuadros `::: tipo` … `:::` con `frase`, `limite`, `por-dentro`, `analogia`, `nota`, `partes`, `errores`,
+  `resumen` y `vease`. No hay recuadros por rol: la app no distingue a quien enseña de quien aprende, y todo el
+  que la abre viene a aprender. Un recuadro «para docentes» presentaba como material reservado confusiones típicas y
+  pruebas que le sirven a cualquiera, así que ese contenido se escribe para quien lee: en la Especificación va en una
+  `nota`; en una lección, en `profundizar titulo="Tropiezos frecuentes"` (las lecciones no llevan catálogos
+  `errores`); en un ejercicio, en su `explicacion`, que solo aparece al pedir la respuesta. La directiva `docentes`
+  ya no existe y el formato la rechaza como cualquier recuadro desconocido.
 - Bloques cercados:
 
 | Bloque | Atributos | Contenido |
@@ -233,7 +238,7 @@ Extiende §3.2; todo lo que allí existe vale igual. Cabecera de lección: `id`,
 - Recuadros nuevos: `frase`, `problema`, `intento` seguido de `respuesta`, `ficha`, `roles`, `paradigma`,
   `recuerda termino=<id>` (vacío), `especificacion` (lista de ids de sección), `profundizar titulo="…"`,
   `practica` (lista de ids de ejercicio) y `siguiente`. En los ejercicios: `enunciado`, `restriccion`, `pistas`
-  (cuatro, en lista), `variante`, `explicacion` y `docentes`. Un recuadro admite atributos `clave=valor` después
+  (cuatro, en lista), `variante` y `explicacion`. Un recuadro admite atributos `clave=valor` después
   de su nombre.
 - `ficha` y `paradigma` son listas de zonas: `- entra: …`, `- sale: …`, `- relacion: …`, `- ejemplo: …` y
   `- pregunta: …`, `- metafora: …`, `- historia: …`, `- costo: …`. `roles` es una lista

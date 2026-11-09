@@ -40,6 +40,6 @@ Use a subprogram `TotalConPropina` that receives the bill and another `ParteDeCa
 Change the tip to 15 %. How many lines did you touch?
 :::
 
-::: docentes
+::: explicacion
 The cases are those of the original calculator: what it shows does not change. The assertions check both names and how many parameters each one receives.
 :::

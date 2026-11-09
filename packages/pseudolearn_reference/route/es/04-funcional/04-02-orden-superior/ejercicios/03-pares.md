@@ -65,6 +65,6 @@ oculto | -4 ; -3 ; 6 ; 0 | [-4, 6]
 Muestra la suma de los pares con `Reducir`.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: ningún par, el 0 directo y negativos pares. Error frecuente: pasar `EsPar(x)`, que es un valor y no la función.
 :::

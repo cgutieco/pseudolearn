@@ -33,7 +33,6 @@ RouteExercise _predict() {
     hints: base.hints,
     variant: base.variant,
     explanation: base.explanation,
-    teachers: base.teachers,
     program: const ReferenceProgram(
       id: 'p',
       title: '',

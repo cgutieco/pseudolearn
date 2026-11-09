@@ -28,8 +28,8 @@ Names are compared **exactly**: `edad` and `Edad` are two different variables, j
 Initial alphabet: ASCII letters, ñ, Ñ, accented vowels, ü, Ü and underscore. Following alphabet: the initial one plus the digits 0 to 9. There is no maximum length. A name may not match a reserved word of the profile.
 :::
 
-::: docentes
-That `edad` and `Edad` are different variables surprises many people, especially because reserved words do ignore case. Ask the class to find the mistake in a program that defines `Total` and then writes `total`.
+::: nota
+That `edad` and `Edad` are different variables surprises many people, especially because reserved words do ignore case. To check it, find the mistake in a program that defines `Total` and then writes `total`.
 :::
 
 ::: resumen

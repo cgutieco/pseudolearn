@@ -136,8 +136,8 @@ If the email of each contact has to be added, with records you add a field and a
 - procedimental.datos.buscar-telefono
 :::
 
-::: docentes
-- **Choosing the shape before looking at the questions.** Ask them to write the questions the program has to answer before drawing the shape.
+::: profundizar titulo="Common pitfalls"
+- **Choosing the shape before looking at the questions.** List the questions the program has to answer before drawing the shape.
 - **A record with one field per contact.** A record describes a single thing; many things go in a vector.
 - **Confusing key with value.** Here, the name is the key and the phone the value: you search by what you know.
 :::

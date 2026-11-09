@@ -160,9 +160,9 @@ Un programa real suele mezclarlos: un núcleo funcional para los cálculos, obje
 - funcional.cara-a-cara.mezcla
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **«Funcional es lo moderno».** Los tres paradigmas tienen décadas; lo que importa es qué cambio facilita cada uno.
-- **Elegir por gusto.** Pide que nombren el cambio que esperan antes de elegir.
+- **Elegir por gusto.** Nombra el cambio que esperas antes de elegir.
 :::
 
 ::: siguiente

@@ -46,6 +46,6 @@ oculto | 10 ; 10 ; 10 ; 10 ; 10 ; 10 | 6
 Muestra también el promedio de las aprobadas, o «Nadie aprobó».
 :::
 
-::: docentes
+::: explicacion
 El borde es el 6, que aprueba. Casos ocultos: todos en el borde y ninguno aprobado. Error frecuente: `> 6`.
 :::

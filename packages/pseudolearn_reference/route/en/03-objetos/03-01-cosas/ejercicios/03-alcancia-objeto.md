@@ -36,6 +36,6 @@ A class `Alcancia` with a public method `Depositar(monedas)` and another `Total(
 Add a method `Romper()` that returns the total and leaves the money box at 0.
 :::
 
-::: docentes
+::: explicacion
 The assertion checks that `Depositar` exists and is public. Frequent mistake: adding in the main algorithm and using the class only to keep the number.
 :::

@@ -28,6 +28,6 @@ Ask for a number again and again until it is between 1 and 10, both included, an
 Also show how many attempts were needed. (With 0, 15 and 7: 3 attempts.)
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: the edges 10 and 1 and several invalid attempts in a row. Frequent mistake: `Or` instead of `And`, which accepts any number.
 :::

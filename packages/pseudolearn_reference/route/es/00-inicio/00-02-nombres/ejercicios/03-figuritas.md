@@ -47,6 +47,6 @@ visible | — | Ana: 7 Beto: 12
 Ahora también juega Carla, con 3 figuritas. Haz que Ana reciba las de Beto, Beto las de Carla y Carla las de Ana. (Respuesta: `Ana: 7 Beto: 3 Carla: 12`.)
 :::
 
-::: docentes
+::: explicacion
 La primera asignación pisa el 12 antes de copiarlo. La solución usa una caja auxiliar. Error frecuente: invertir las dos líneas, que deja a los dos con 12.
 :::

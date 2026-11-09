@@ -86,7 +86,7 @@ What if tomorrow they ask for the average per sale? It is another function on th
 - funcional.proyecto.reporte
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **Showing from a function.** The engine rejects it; use it to remember where each thing goes.
 - **Walking through the sales four times by hand.** It is right, but the exercise asks for the three pieces of Part IV.
 - **The tie-break.** With a strict `>` the first one checked wins, which is the one with the lowest code.

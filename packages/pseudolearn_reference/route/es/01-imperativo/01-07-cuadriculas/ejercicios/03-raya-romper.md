@@ -96,6 +96,6 @@ visible | 1 ; 2 ; 1 ; 2 ; 1 ; 2 ; 2 ; 1 ; 1 | Gana X
 Arma un tablero en el que este programa diga el ganador correcto aunque la otra diagonal esté completa. (Uno que también tenga una fila completa del mismo jugador.)
 :::
 
-::: docentes
+::: explicacion
 Al programa le falta la diagonal de la esquina de arriba a la derecha a la de abajo a la izquierda. Lo rompe cualquier tablero ganado solo por esa diagonal.
 :::

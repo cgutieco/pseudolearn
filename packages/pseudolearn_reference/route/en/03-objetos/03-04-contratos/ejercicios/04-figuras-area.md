@@ -36,6 +36,6 @@ A contract `Figura` with a method `Area()`, one class per figure that meets it a
 Add the circle, with area 3.14 times the radius squared. Which pieces change?
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: a triangle with a non-whole area, measurements of 0 and a triangle with a whole area. Frequent mistake: computing the area in the main algorithm with a decision per figure, which does not use the contract.
 :::

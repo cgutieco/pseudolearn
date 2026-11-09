@@ -177,8 +177,8 @@ Si hay que agregar el correo de cada contacto, con registros se agrega un campo 
 - procedimental.datos.buscar-telefono
 :::
 
-::: docentes
-- **Elegir la forma antes de mirar las preguntas.** Pide escribir las preguntas que el programa tiene que responder antes de dibujar la forma.
+::: profundizar titulo="Tropiezos frecuentes"
+- **Elegir la forma antes de mirar las preguntas.** Escribe las preguntas que el programa tiene que responder antes de dibujar la forma.
 - **Un registro con un campo por cada contacto.** Un registro describe una sola cosa; muchas cosas van en un vector.
 - **Confundir clave con valor.** Aquí, el nombre es la clave y el teléfono el valor: se busca por lo que se sabe.
 :::

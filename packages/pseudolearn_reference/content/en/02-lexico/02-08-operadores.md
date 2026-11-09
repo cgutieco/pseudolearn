@@ -34,8 +34,8 @@ pie: The same symbols, split differently, are different pieces. The space decide
 
 The assignment `<-` and the comparison `=` are different operators: `<-` stores a value, `=` asks whether two values are equal.
 
-::: docentes
-The most common mistake is reading `x = 1` as "x is 1". Insist that `=` only asks; storing uses the arrow, which reads "gets".
+::: nota
+The most common mistake is reading `x = 1` as "x is 1". `=` only asks; storing uses the arrow, which reads "gets".
 :::
 
 ::: resumen

@@ -22,7 +22,6 @@ RouteExercise parseRouteExercise(Object? json) {
     hints: parseRunGroups(source['hints']),
     variant: parseLessonBlocks(source['variant']),
     explanation: parseLessonBlocks(source['explanation']),
-    teachers: parseLessonBlocks(source['teachers']),
     program: program == null ? null : parseProgram(objectOf(program)),
     starterCode: starter is String ? starter : null,
     evaluation: parseRouteEvaluation(objectOf(source['evaluation'])),

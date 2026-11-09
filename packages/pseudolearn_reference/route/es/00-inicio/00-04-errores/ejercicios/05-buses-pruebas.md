@@ -63,6 +63,6 @@ visible | 95 | 3
 ¿Hay una sola entrada que descubra a las tres versiones equivocadas a la vez? (No: 81 → 3 descubre a dos de ellas, pero a quien suma uno de más no.)
 :::
 
-::: docentes
+::: explicacion
 Versiones equivocadas: sin redondeo, una de más y redondeo al más cercano. El redondeo al más cercano cae con cualquier caso que sobre poco, como 81 o 95.
 :::

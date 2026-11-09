@@ -37,6 +37,6 @@ A class `Cronometro` with a method `Avanzar(segundos)` and another `Lectura()` t
 Add `Reiniciar()`, which sets the stopwatch back to 0.
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: the stopwatch without moving, just before the minute, an exact hour and the last second of the day.
 :::

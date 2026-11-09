@@ -28,6 +28,6 @@ Read a non-negative whole number and show the sum of its digits. The program sho
 Show how many digits the number has. What happens with 0?
 :::
 
-::: docentes
+::: explicacion
 You do not know beforehand how many digits there are: `While` goes. 0 makes zero passes and adds 0, which is right.
 :::

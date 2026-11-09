@@ -40,6 +40,6 @@ Write between 2 and 4 test cases for the 40-seat bus program, so that any wrong 
 Is there a single input that uncovers all three wrong versions at once? (No: 81 → 3 uncovers two of them, but not the one that adds one too many.)
 :::
 
-::: docentes
+::: explicacion
 Wrong versions: no rounding, one too many, and rounding to the nearest. Rounding to the nearest falls with any case where a few are left over, such as 81 or 95.
 :::

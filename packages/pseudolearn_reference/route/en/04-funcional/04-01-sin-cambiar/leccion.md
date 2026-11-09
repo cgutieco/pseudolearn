@@ -156,8 +156,8 @@ The last row is honest: some problems are better thought of as something that ch
 - funcional.sin-cambiar.cual-probar
 :::
 
-::: docentes
-- **«If nothing changes, it does nothing».** The program does show things: it does so from the edge. Ask them to mark in the functional till which lines are edge.
+::: profundizar titulo="Common pitfalls"
+- **«If nothing changes, it does nothing».** The program does show things: it does so from the edge. Mark in the functional till which lines are edge.
 - **Confusing immutable with a constant written by hand.** `aPagar` is computed; what it does not do is change afterwards.
 - **Believing you have to choose a paradigm forever.** The closing table shows that each one makes something different easy.
 :::

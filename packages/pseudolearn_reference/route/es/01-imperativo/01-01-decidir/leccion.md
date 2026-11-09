@@ -194,10 +194,10 @@ Antes, el caso raro era una caída. Ahora es una respuesta.
 - imperativo.decidir.estacionamiento
 :::
 
-::: docentes
-- **«Se ejecutan las dos ramas».** Usa la figura del dedo y pide que lo sigan con el lápiz en el programa del cine.
+::: profundizar titulo="Tropiezos frecuentes"
+- **«Se ejecutan las dos ramas».** Usa la figura del dedo y síguelo con el lápiz en el programa del cine.
 - **«Menor que 12 incluye al 12».** La partición lo desarma: el 12 está del otro lado del borde.
-- **Un número usado como condición.** El motor lo rechaza con un diagnóstico; enlaza [la sección](especificacion:control.si) y sigue.
+- **Un número usado como condición.** El motor lo rechaza con un diagnóstico; los detalles están en [la sección](especificacion:control.si).
 :::
 
 ::: siguiente

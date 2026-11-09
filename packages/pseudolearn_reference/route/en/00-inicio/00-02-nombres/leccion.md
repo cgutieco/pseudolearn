@@ -144,8 +144,8 @@ One problem remains. Every day someone has to open the program and change the fi
 - inicio.nombres.buen-nombre
 :::
 
-::: docentes
-- **«The variable updates itself, like a spreadsheet».** Use the figure of the boxes that do not recompute and ask them to predict what the slices box holds before the third step.
+::: profundizar titulo="Common pitfalls"
+- **«The variable updates itself, like a spreadsheet».** Look at the figure of the boxes that do not recompute and predict what the slices box holds before the third step.
 - **«Adding 1 to a box using the same box is impossible».** Say `x <- x + 1` aloud as «new `x` is old `x` plus 1».
 - **«Everything with digits is a number».** The types exercise takes it apart: `"23"` is between quotes, so it is text.
 :::

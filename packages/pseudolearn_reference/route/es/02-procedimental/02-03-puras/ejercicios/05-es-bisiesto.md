@@ -55,6 +55,6 @@ oculto | 2100 | No es bisiesto
 Escribe `DiasDelAnio(anio)`, que retorna 366 o 365 usando `EsBisiesto`.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: las dos excepciones y 2100. Error frecuente: mostrar el texto dentro de la función, que el motor rechaza.
 :::

@@ -39,6 +39,6 @@ A function `Mapear` that receives the vector and the operation, and three small 
 Add a fourth vector with the prices squared. How many lines did you write?
 :::
 
-::: docentes
+::: explicacion
 The assertion checks that `Mapear` exists. The cases are those of the initial program: what is shown does not change.
 :::

@@ -144,7 +144,7 @@ It is the pure core and the edge of Part IV: if tomorrow the stock is saved some
 - exterior.archivos.linea-pruebas
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **«The file saves itself».** Nothing stays saved if the program does not write it.
 - **«If the file does not exist, the program crashes».** A `Failure` arrives that is handled, as on the first day.
 - **Believing the deferred cleanup runs where it is written.** It runs on leaving the subprogram; the door and light program shows it.

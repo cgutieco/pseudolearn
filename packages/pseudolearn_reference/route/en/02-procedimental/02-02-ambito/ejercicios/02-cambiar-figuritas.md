@@ -31,6 +31,6 @@ The program reads two numbers and should show them the other way round, using `I
 Write `OrdenarTres`, which leaves three numbers from smallest to largest using `Intercambiar`.
 :::
 
-::: docentes
+::: explicacion
 The subprogram swaps its copies. Since two values have to come back, the solution lends both boxes. The 1 and 1 case does not uncover the error: that is why more cases are needed.
 :::

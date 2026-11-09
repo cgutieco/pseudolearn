@@ -36,6 +36,6 @@ A factory `CrearMultiplicador(factor)` that gives back the function that multipl
 Make two multipliers and show each number times both.
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: factor 0 and factor -1. Frequent mistake: making the function inside the loop, which works but repeats work.
 :::

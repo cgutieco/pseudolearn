@@ -263,9 +263,9 @@ Con 97, de 95 divisiones a 8.
 - imperativo.estrategias.seleccion-tabla
 :::
 
-::: docentes
-- **«El más rápido es el que tiene menos líneas».** La búsqueda binaria es más larga que la de uno por uno y mucho más rápida. Cuenten los pasos con 1000 datos.
-- **Búsqueda binaria sobre datos sin ordenar.** Muestra un arreglo desordenado donde la búsqueda no encuentra un número que sí está.
+::: profundizar titulo="Tropiezos frecuentes"
+- **«El más rápido es el que tiene menos líneas».** La búsqueda binaria es más larga que la de uno por uno y mucho más rápida. Cuenta los pasos con 1000 datos.
+- **Búsqueda binaria sobre datos sin ordenar.** Con un arreglo desordenado, la búsqueda puede no encontrar un número que sí está.
 - **El medio que no avanza.** Cuando al descartar se deja el medio dentro del intervalo, el bucle puede no terminar: lo muestra el ejercicio de romper.
 :::
 

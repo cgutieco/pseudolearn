@@ -98,6 +98,6 @@ oculto | 100 ; 1 | 99
 Intenta, desde el principal, asignar el saldo directamente. ¿Qué dice el motor?
 :::
 
-::: docentes
+::: explicacion
 La aserción comprueba que `saldo` sea privado. Los casos son los del programa inicial: lo que se muestra no cambia, pero ahora la regla vive en la clase.
 :::

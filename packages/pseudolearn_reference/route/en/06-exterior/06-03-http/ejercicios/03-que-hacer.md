@@ -37,6 +37,6 @@ The message is built by a pure function, `QueMostrar`, which receives the code a
 Accept as fine any code from 200 to 299.
 :::
 
-::: docentes
+::: explicacion
 The case 201 confirms that the task asks for exactly 200. The breaking exercise of this lesson shows why it is better to accept the whole range.
 :::

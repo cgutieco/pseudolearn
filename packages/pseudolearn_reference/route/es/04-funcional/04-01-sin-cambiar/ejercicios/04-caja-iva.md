@@ -71,6 +71,6 @@ oculto | 1000 | Total: 1062
 El IVA pasa a ser un dato que se lee. ¿Qué funciones cambian?
 :::
 
-::: docentes
+::: explicacion
 El orden de la composición importa: `ConIva(ConDescuento(100))` da otro resultado. Que eso se vea en una sola línea es el punto del ejercicio.
 :::

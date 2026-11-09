@@ -36,6 +36,6 @@ The calculation is done by a pure function, `PrecioEnPesos`, which receives the 
 Add a function that rounds the price up to the nearest ten.
 :::
 
-::: docentes
+::: explicacion
 The function is tested without a network: it is the part of the program that the app can check. A rate of 0 gives 0 pesos; it makes no real sense, but the sum handles it.
 :::

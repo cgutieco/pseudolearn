@@ -65,6 +65,6 @@ oculto | 1 | 3 ⏎ 4
 Usa `Componer` dos veces para armar «el doble del doble más uno».
 :::
 
-::: docentes
+::: explicacion
 El orden importa: componer no es conmutativo. Casos ocultos: negativos, 10 y 1.
 :::

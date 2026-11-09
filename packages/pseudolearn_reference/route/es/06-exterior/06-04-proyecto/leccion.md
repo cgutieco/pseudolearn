@@ -369,7 +369,7 @@ Mira qué parte del programa cambió desde la Parte II: el núcleo casi nada. Lo
 - exterior.proyecto.final-nucleo
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **Planear antes de abrir el editor.** La ficha y el plan son ejercicios por algo: el programa es el más largo de la ruta.
 - **Separar núcleo y borde.** El ejercicio comprobado es solo el núcleo; el borde se prueba en la lección con el anfitrión de memoria.
 - **Probar el día sin archivo.** Es el primer caso que encuentra cualquier persona que usa el kiosco.

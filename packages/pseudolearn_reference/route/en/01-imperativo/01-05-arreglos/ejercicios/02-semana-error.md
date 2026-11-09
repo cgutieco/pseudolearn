@@ -31,6 +31,6 @@ The program reads the 7 temperatures of the week and shows their sum, but it sto
 Write the loop so that it works with any size, keeping the size in a box with a name.
 :::
 
-::: docentes
+::: explicacion
 The loop makes 8 passes for 7 cells: on the eighth it asks for cell 7, which does not exist, and the program stops out of range. Frequent mistake: fixing it with an array of 8.
 :::

@@ -36,6 +36,6 @@ The calculation goes in a subprogram `AreaRectangulo` that receives the length a
 Add a subprogram `PerimetroRectangulo` and also show the perimeter.
 :::
 
-::: docentes
+::: explicacion
 The assertion checks that `AreaRectangulo` exists with two parameters. Frequent mistake: reading the data inside the subprogram, which then receives nothing.
 :::

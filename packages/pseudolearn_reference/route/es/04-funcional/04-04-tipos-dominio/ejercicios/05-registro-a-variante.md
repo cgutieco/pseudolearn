@@ -95,6 +95,6 @@ oculto | nada | Estado desconocido: nada
 Agrega el estado entregado con su hora, sin tocar las otras formas.
 :::
 
-::: docentes
+::: explicacion
 La versión con registro acepta cualquier texto como estado. La variante obliga a decidir qué hacer con lo que no se reconoce.
 :::

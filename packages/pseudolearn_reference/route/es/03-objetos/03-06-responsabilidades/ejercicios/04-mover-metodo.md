@@ -218,6 +218,6 @@ oculto | 1 ; 1 | Jugo x 1 = 3 ⏎ Sándwich x 1 = 5 ⏎ Total: 8
 Agrega un impuesto del 10 % a los sándwiches. ¿Qué piezas cambiaste?
 :::
 
-::: docentes
+::: explicacion
 La aserción comprueba que `Producto` tenga `Importe`. Los casos son los del programa inicial: lo que se muestra no cambia, pero el cálculo queda donde está la información.
 :::

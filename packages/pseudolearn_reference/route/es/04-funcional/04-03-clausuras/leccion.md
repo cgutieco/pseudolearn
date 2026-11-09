@@ -143,7 +143,7 @@ Dos campañas a la vez son dos funciones de la misma fábrica: `CrearDescuento(1
 - funcional.clausuras.mochila
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **Creer que la clausura ve cambios posteriores.** Aquí no puede haberlos: el motor no deja capturar algo que después se reasigna.
 - **Confundir la fábrica con la función fabricada.** `CrearDescuento` recibe un porcentaje; la función que devuelve recibe un precio.
 :::

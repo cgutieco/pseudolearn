@@ -28,6 +28,6 @@ You plant a magic bean that already measures a few centimetres; the program read
 What if the window is at 1000 centimetres? (With 3 centimetres, it takes 10 days.)
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: 99 → 1 (one day is enough), 0 → 7, 50 → 6 (51, 53, 57, 65, 81, 113). Frequent mistake: doubling the growth before adding it, which gives 6 with 3 centimetres.
 :::

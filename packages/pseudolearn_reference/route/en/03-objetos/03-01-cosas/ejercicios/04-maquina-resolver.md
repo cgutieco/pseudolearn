@@ -28,6 +28,6 @@ Each machine starts with 10 cans and charges 3 pesos per can. Read machine numbe
 Add a method `Cargar(latas)` and a code 3 that loads 5 cans into the machine with fewer.
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: sales at a single machine, a machine that runs out of cans (the two extra sales only report) and alternating sales.
 :::

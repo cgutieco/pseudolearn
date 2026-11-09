@@ -34,6 +34,6 @@ This search by halves finds the number in the centre. Find a searched number it 
 Fix the line that does not move.
 :::
 
-::: docentes
+::: explicacion
 With a searched number to the right of the middle, the program does `bajo <- medio`. When `bajo` and `alto` end up together, the middle is `bajo` and the interval no longer changes: the loop is infinite and the engine cuts it by limit.
 :::

@@ -97,8 +97,8 @@ En una frase: «El programa lee las ventas hasta el 0, escribe cada línea del t
 - imperativo.proyecto.caja
 :::
 
-::: docentes
-- **Abrir el editor antes de planear.** Pide la ficha y el plan en papel; el editor se abre después.
+::: profundizar titulo="Tropiezos frecuentes"
+- **Abrir el editor antes de planear.** Haz la ficha y el plan en papel; el editor se abre después.
 - **No probar el día sin ventas.** Es el caso que más programas rompe: el más vendido no existe.
 - **El desempate.** Cuando el más vendido se reemplaza también con unidades iguales, gana el de mayor código.
 :::

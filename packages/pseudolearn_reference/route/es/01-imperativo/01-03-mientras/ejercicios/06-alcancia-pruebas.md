@@ -113,6 +113,6 @@ visible | 50 | Día 9 con 54 monedas
 ¿Cuál de los cuatro precios podrías quitar sin dejar escapar ninguna versión equivocada? (Pruébalo: la app te dice cuál sobrevive.)
 :::
 
-::: docentes
+::: explicacion
 Versiones equivocadas: `<=` en la condición, la alcancía empezando en 0, sumar antes de aumentar lo de cada día y el día empezando en 0. Un conjunto sin un precio exacto (como 54) y sin uno menor o igual que 2 no detecta la primera.
 :::

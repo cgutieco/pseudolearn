@@ -57,8 +57,8 @@ A `While` is three blocks: the header with the condition, the body that jumps ba
 ```
 :::
 
-::: docentes
-The typical mistake is forgetting to update the variable in the condition. Ask the class to predict what happens if `n <- n - 1;` is deleted, and let them check in the app, which cuts the run when it reaches its limit.
+::: nota
+The typical mistake is forgetting to update the variable in the condition. Predict what happens if `n <- n - 1;` is deleted, and check it in the app, which cuts the run when it reaches its limit.
 :::
 
 ::: resumen

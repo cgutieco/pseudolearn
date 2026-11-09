@@ -50,6 +50,6 @@ oculto | 5 ; 8 | 6.5
 Con 6 y 6 el programa corregido muestra `6.0`, no `6`. ¿Por qué? (Porque `/` siempre da un número con decimales.)
 :::
 
-::: docentes
+::: explicacion
 Es un error de lógica: compila, termina y muestra un número. El caso 6 y 6 es el que no lo descubre; por eso hace falta más de un caso.
 :::

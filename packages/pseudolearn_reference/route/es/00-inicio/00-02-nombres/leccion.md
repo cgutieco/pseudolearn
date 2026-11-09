@@ -160,8 +160,8 @@ Queda un problema. Cada día alguien tiene que abrir el programa y cambiar la pr
 - inicio.nombres.buen-nombre
 :::
 
-::: docentes
-- **«La variable se actualiza sola, como en una planilla».** Usa la figura de las cajas que no se recalculan y pide predecir qué guarda `porciones` antes del tercer paso.
+::: profundizar titulo="Tropiezos frecuentes"
+- **«La variable se actualiza sola, como en una planilla».** Mira la figura de las cajas que no se recalculan y predice qué guarda `porciones` antes del tercer paso.
 - **«Sumarle 1 a una caja usando la misma caja es imposible».** Lee `x <- x + 1` en voz alta como «nuevo `x` es el viejo `x` más 1».
 - **«Todo lo que tiene cifras es un número».** El ejercicio de los tipos lo desarma: `"23"` va entre comillas, así que es texto.
 :::

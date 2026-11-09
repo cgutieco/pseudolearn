@@ -28,6 +28,6 @@ Read 6 numbers and show them from smallest to largest, one per line.
 Show them from largest to smallest by changing a single sign.
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: reverse order, repeats and negatives. Frequent mistake: swapping inside the inner loop, which sorts but makes many more swaps.
 :::

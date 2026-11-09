@@ -76,6 +76,6 @@ oculto | 3 ; Ana ; 23 | Entregado por Ana a las 23
 Agrega el estado 5, devuelto con motivo. ¿Qué te avisa el motor?
 :::
 
-::: docentes
+::: explicacion
 El catálogo de comprobaciones de la app no puede exigir una variante; lo pide la restricción. Casos ocultos: los cuatro estados.
 :::

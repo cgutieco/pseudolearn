@@ -124,7 +124,7 @@ It is the pure core and the edge again: if tomorrow the rate comes from a file, 
 - exterior.http.borde-o-nucleo
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **«If there is internet, it always answers 200».** A service can answer and still say there was a problem.
 - **Mixing the calculation with the request.** The price is computed in a function that knows nothing about networks.
 - **Believing that the app can test the network.** The exercises test the pure functions; the network is simulated with a memory host.

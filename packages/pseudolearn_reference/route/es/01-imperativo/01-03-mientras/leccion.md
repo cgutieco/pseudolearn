@@ -259,10 +259,10 @@ Hay dos `Leer`, y los dos hacen falta. El primero trae el primer dato para que l
 - imperativo.mientras.alcancia-pruebas
 :::
 
-::: docentes
-- **«El bucle revisa la condición todo el tiempo».** Solo antes de cada vuelta. Pide que predigan qué pasa si lo juntado supera el precio a mitad de una vuelta.
+::: profundizar titulo="Tropiezos frecuentes"
+- **«El bucle revisa la condición todo el tiempo».** Solo antes de cada vuelta. Predice qué pasa si lo juntado supera el precio a mitad de una vuelta.
 - **Inicializar dentro del bucle.** Poner la alcancía en 0 dentro del cuerpo borra lo juntado en cada vuelta. La tabla por vuelta lo muestra de inmediato.
-- **El invariante parece teoría.** Preséntalo como «la frase que la tabla repite en cada fila». Con eso basta en semilla y brote.
+- **El invariante parece teoría.** Piénsalo como «la frase que la tabla repite en cada fila». Con eso basta en semilla y brote.
 :::
 
 ::: siguiente

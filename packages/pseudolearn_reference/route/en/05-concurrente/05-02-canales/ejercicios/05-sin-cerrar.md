@@ -31,6 +31,6 @@ The program hands over all the orders, but it never shows the final count and th
 What would happen if the window closed the channel instead of the kitchen?
 :::
 
-::: docentes
+::: explicacion
 The engine ends with `taskDeadlock`: no task can move forward. It is the error of forgetting to close the channel, the second one in the lesson's list.
 :::

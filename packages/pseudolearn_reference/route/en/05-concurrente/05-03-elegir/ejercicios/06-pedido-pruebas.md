@@ -40,6 +40,6 @@ Do not write code. Write between two and four cases for the fruit order, with th
 Which of your cases could you remove without letting any wrong version escape?
 :::
 
-::: docentes
+::: explicacion
 Wrong versions: it only really queries the stock of North, it uses `< 0` instead of `= 0` and it confirms with the sum of the first two. A set without a confirmed case does not detect the third; one where only North fails does not detect the first. The cases have at most one supplier without stock, so the reason does not depend on the turns of the schedule.
 :::

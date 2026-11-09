@@ -65,6 +65,6 @@ oculto | 0 ; 13 | mes fuera de rango
 Agrega el año y ten en cuenta los bisiestos de [la lección 1.2](ruta:imperativo.caminos).
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: el 29 de febrero, los bordes de abril y diciembre, el día 0 y un caso con los dos datos mal, donde manda el mes.
 :::

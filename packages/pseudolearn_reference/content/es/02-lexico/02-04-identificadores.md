@@ -39,8 +39,8 @@ FinAlgoritmo
 Alfabeto inicial: letras ASCII, ñ, Ñ, vocales con tilde, ü, Ü y guion bajo. Alfabeto siguiente: el inicial más los dígitos del 0 al 9. No hay longitud máxima. Un nombre no puede coincidir con una palabra reservada del perfil.
 :::
 
-::: docentes
-Que `edad` y `Edad` sean variables distintas sorprende a muchas personas, sobre todo porque las palabras reservadas sí ignoran las mayúsculas. Propón buscar el error en un programa que define `Total` y luego escribe `total`.
+::: nota
+Que `edad` y `Edad` sean variables distintas sorprende a muchas personas, sobre todo porque las palabras reservadas sí ignoran las mayúsculas. Para comprobarlo, busca el error en un programa que define `Total` y luego escribe `total`.
 :::
 
 ::: resumen

@@ -97,8 +97,8 @@ What if the kiosk adds a sixth product? If the names and prices are in arrays, m
 - imperativo.proyecto.caja
 :::
 
-::: docentes
-- **Opening the editor before planning.** Ask for the card and the plan on paper; the editor opens afterwards.
+::: profundizar titulo="Common pitfalls"
+- **Opening the editor before planning.** Make the card and the plan on paper; the editor opens afterwards.
 - **Not testing the day without sales.** It is the case that breaks most programs: the best seller does not exist.
 - **The tie-break.** When the best seller is also replaced with equal units, the one with the highest code wins.
 :::

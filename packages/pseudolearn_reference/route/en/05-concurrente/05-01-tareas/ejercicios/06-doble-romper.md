@@ -34,6 +34,6 @@ This program computes in two tasks the double and the triple of a number and sho
 Which line has to be moved for the program to be right?
 :::
 
-::: docentes
+::: explicacion
 Any number other than 0 breaks it. It is the error of using a result before awaiting it: the provisional value hides the missing wait.
 :::

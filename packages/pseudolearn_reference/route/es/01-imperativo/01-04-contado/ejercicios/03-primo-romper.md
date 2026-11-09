@@ -70,6 +70,6 @@ visible | 9 | No es primo
 ¿Hay algún número mayor que 1 que lo rompa? (No: para todos ellos el bucle prueba al menos un divisor o, con 2, ninguno y acierta.)
 :::
 
-::: docentes
+::: explicacion
 Rompen el programa el 1, el 0 y los negativos: para ellos el bucle no da vueltas y la respuesta queda en verdadero. La referencia arranca con `n >= 2`.
 :::

@@ -182,9 +182,9 @@ With 97, from 95 divisions to 8.
 - imperativo.estrategias.seleccion-tabla
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **«The fastest is the one with fewer lines».** Binary search is longer than one by one and much faster. Count the steps with 1000 values.
-- **Binary search over unsorted data.** Show an unsorted array where the search does not find a number that is there.
+- **Binary search over unsorted data.** On an unsorted array, the search may not find a number that is there.
 - **The middle that does not move.** When discarding leaves the middle inside the interval, the loop may never end: the breaking exercise shows it.
 :::
 

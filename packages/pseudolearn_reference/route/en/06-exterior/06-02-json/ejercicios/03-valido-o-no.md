@@ -32,6 +32,6 @@ Read a text and parse it as JSON. If it is valid, show «Válido: » and its typ
 Also show the line of the error, as well as the column.
 :::
 
-::: docentes
+::: explicacion
 The columns are the ones the engine gives: they count from 1 and mark the first character that does not fit. An unclosed brace is `UnexpectedEnd`: the text ended too early.
 :::

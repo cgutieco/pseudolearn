@@ -105,7 +105,7 @@ Compare it with the public attribute version: there the rule had to be repeated 
 - objetos.invariantes.invariantes-ascensor
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **«Private is for hiding errors».** It is so that nobody can break the invariant from outside.
 - **Checking outside instead of in the method.** It works until someone uses the card from another program.
 - **A public method to set each attribute.** With a method that sets any balance, the protection disappears.

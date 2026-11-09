@@ -28,6 +28,6 @@ Read 9 numbers, row by row, of a 3 × 3 grid. It is magic if all the rows, all t
 Also require the nine numbers to be different.
 :::
 
-::: docentes
+::: explicacion
 The last hidden case has rows and diagonals that add up to 15 but two columns that do not: it uncovers whoever does not check the columns.
 :::

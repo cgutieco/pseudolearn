@@ -155,10 +155,10 @@ What if a wave became 4 or more days? You have to change the 3 in two places. If
 - imperativo.esquemas.buscar-pruebas
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **Forgetting the last streak.** It is the most common error. The breaking exercise exposes it with a wave at the end.
 - **Resetting the streak in the wrong place.** Setting it to 0 before checking whether it was a wave loses it.
-- **Wanting a new pattern for every problem.** Ask them to name the patterns a problem combines before writing.
+- **Wanting a new pattern for every problem.** Name the patterns a problem combines before writing.
 :::
 
 ::: siguiente

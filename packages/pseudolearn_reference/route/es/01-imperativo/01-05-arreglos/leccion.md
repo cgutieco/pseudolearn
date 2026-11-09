@@ -181,8 +181,8 @@ Compáralo con una versión de siete cajas sueltas: si la semana tuviera 30 día
 - imperativo.arreglos.rotar
 :::
 
-::: docentes
-- **Índices desde 1.** La casilla 1 es la segunda. Pide que señalen la primera casilla en la figura antes de escribir.
+::: profundizar titulo="Tropiezos frecuentes"
+- **Índices desde 1.** La casilla 1 es la segunda. Señala la primera casilla en la figura antes de escribir.
 - **Confundir la posición con el valor.** `notas[1]` es lo que está en la casilla 1, no el número 1.
 - **Una sola pasada para el promedio.** No se puede comparar con el promedio antes de conocerlo: la figura de las dos pasadas lo muestra.
 :::

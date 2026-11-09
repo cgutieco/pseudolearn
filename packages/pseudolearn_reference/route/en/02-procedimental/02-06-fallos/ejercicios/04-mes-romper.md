@@ -34,6 +34,6 @@ This program validates a month number: it shows «válido» (valid) or «inváli
 Fix the validation by changing a single number.
 :::
 
-::: docentes
+::: explicacion
 Only 0 breaks this program: the negatives are already left out. It is the edge error of [lesson 1.1](ruta:imperativo.decidir), now inside a validation.
 :::

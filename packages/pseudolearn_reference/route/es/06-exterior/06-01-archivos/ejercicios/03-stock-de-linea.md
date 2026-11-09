@@ -55,6 +55,6 @@ oculto | té;1 | té tiene 1
 Haz que la función devuelva «Línea inválida» también cuando el nombre está vacío.
 :::
 
-::: docentes
+::: explicacion
 Es la inversa de `LineaStock`. «x;y;3» confirma que el corte es en el primer punto y coma: lo de después queda entero, aunque tenga otro.
 :::

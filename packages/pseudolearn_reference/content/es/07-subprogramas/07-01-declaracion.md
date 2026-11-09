@@ -112,8 +112,8 @@ Cada subprograma es una función de la representación intermedia con sus propio
 ```
 :::
 
-::: docentes
-Antes de escribir subprogramas, pide a la clase que busque en un programa largo dos trozos casi iguales. Ese es el primer candidato a subprograma.
+::: nota
+Antes de escribir subprogramas, busca en un programa largo dos trozos casi iguales. Ese es el primer candidato a subprograma.
 :::
 
 ::: resumen

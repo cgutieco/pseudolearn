@@ -120,10 +120,10 @@ Before running, the engine translates the program into its intermediate represen
 The four fixed-size types fit in one machine slot; a string can be any length, so it lives on the heap and the slot only holds a reference.
 :::
 
-::: docentes
-- "A number in quotes is a number": `"7"` is a `Character` and `"75"` a `String`. Ask the class to predict the type before running.
+::: nota
+- "A number in quotes is a number": `"7"` is a `Character` and `"75"` a `String`. Predict the type before running.
 - "`/` between integers gives an integer": in PseudoLearn it always gives a real.
-- "0.1 + 0.2 = 0.3": do not present it as a quirk of the language; the ruler figure is good for drawing it on the board.
+- "0.1 + 0.2 = 0.3": it is not a quirk of the language; the ruler figure shows why it happens.
 :::
 
 ::: resumen

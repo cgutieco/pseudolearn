@@ -64,6 +64,6 @@ oculto | 100 ; 100 | 200
 Escribe `CrearRestador(cantidad)` con la misma forma.
 :::
 
-::: docentes
+::: explicacion
 El motor rechaza capturar una variable que después se reasigna, porque la función no sabría qué valor usar. La corrección captura el parámetro, que no cambia.
 :::

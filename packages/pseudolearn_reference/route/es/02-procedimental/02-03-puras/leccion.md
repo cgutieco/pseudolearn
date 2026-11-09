@@ -188,7 +188,7 @@ El mismo cálculo sirve ahora para el ticket y para el resumen del día sin camb
 - procedimental.puras.por-que-pura
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **«Pura significa sin variables».** `ConDescuento` declara una caja y es pura: lo que importa es que no tenga efectos.
 - **Mostrar algo adentro «para ver qué pasa».** El motor lo rechaza. Para mirar un valor, se muestra desde quien llama.
 - **Confundir pura con corta.** Una función larga puede ser pura, y una de una línea puede tener un efecto.

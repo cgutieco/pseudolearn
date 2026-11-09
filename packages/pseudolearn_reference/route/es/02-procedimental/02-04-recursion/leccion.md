@@ -152,10 +152,10 @@ El costo crece rápido: con 20 discos son más de un millón de movimientos. La 
 - procedimental.recursion.munecas
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **Olvidar el caso base.** El programa se llama sin fin hasta que el motor lo detiene por profundidad. El ejercicio de encontrar el error lo muestra.
-- **Un caso recursivo que no se achica.** Pide que digan, para cada llamada, qué número se acerca a cero.
-- **«La recursión es siempre mejor».** Hanói la necesita; el factorial no. Comparen las dos versiones.
+- **Un caso recursivo que no se achica.** Di, en cada llamada, qué número se acerca a cero.
+- **«La recursión es siempre mejor».** Hanói la necesita; el factorial no. Compara las dos versiones.
 :::
 
 ::: siguiente

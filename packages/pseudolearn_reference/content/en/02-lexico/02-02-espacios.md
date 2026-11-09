@@ -28,8 +28,8 @@ This program has careless indentation and extra spaces; even so it runs exactly 
 
 A line break does **not** replace the semicolon. If you forget the `;`, the engine points it out even if the next statement starts on another line. Multi-word reserved words, such as `Step` or `Until`, cannot be split across two lines either.
 
-::: docentes
-Ask the class to write the same program with two different indentations and run it: the result does not change. Then explain why indentation is still essential for reading it. It is a good way of separating "what the machine understands" from "what a person needs".
+::: nota
+Write the same program with two different indentations and run it: the result does not change. Even so, indentation is essential for reading it. It is a good way of separating "what the machine understands" from "what a person needs".
 :::
 
 ::: resumen

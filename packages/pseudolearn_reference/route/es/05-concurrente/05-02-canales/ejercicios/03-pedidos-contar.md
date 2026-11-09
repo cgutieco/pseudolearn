@@ -69,6 +69,6 @@ oculto | 7 | Entrego el pedido 1 ⏎ Entrego el pedido 2 ⏎ Entrego el pedido 3
 Haz que el mostrador muestre también el número del último pedido entregado.
 :::
 
-::: docentes
+::: explicacion
 Con 0 pedidos la cocina cierra sin enviar nada y el primer `Recibir` da `Nada`. Con 7 pedidos el canal se llena varias veces y la cocina espera: la salida es la misma.
 :::

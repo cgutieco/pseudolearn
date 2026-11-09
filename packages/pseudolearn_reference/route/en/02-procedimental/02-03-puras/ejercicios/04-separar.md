@@ -39,6 +39,6 @@ The calculation goes in a `Function ConIva` that receives the price; the main al
 Use `ConIva` to show the total with VAT of two products read.
 :::
 
-::: docentes
+::: explicacion
 The assertion checks that `ConIva` exists with one parameter; that it is a `Function`, and therefore pure, is checked by the engine itself when compiling it. The cases are those of the initial program: what is shown does not change.
 :::

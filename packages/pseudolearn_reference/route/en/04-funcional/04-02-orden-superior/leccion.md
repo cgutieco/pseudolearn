@@ -111,10 +111,10 @@ The three programs of the problem become three calls to `Mapear`, with `MasUno`,
 - funcional.orden-superior.por-que-pasar
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **Calling the function instead of passing it.** `Mapear(v, MasUno(1))` passes a number, not the function. The engine rejects it by type.
 - **Reducing with the wrong initial value.** With the greatest, starting at 0 fails with negative numbers.
-- **Wanting to map when filtering is needed.** Ask: does the result have the same length or can it be shorter?
+- **Wanting to map when filtering is needed.** Ask yourself: does the result have the same length or can it be shorter?
 :::
 
 ::: siguiente

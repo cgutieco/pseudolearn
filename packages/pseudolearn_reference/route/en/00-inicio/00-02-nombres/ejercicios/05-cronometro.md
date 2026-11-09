@@ -31,6 +31,6 @@ The race stopwatch shows 3725 seconds. Show it as `1 h 2 min 5 s`, computing eac
 With 90061 seconds you also have to count the days: `1 d 1 h 1 min 1 s`.
 :::
 
-::: docentes
+::: explicacion
 Solution: 3725 seconds hold 1 hour with 125 left over; 125 hold 2 minutes with 5 seconds left over. Frequent mistake: computing the minutes as `segundos div 60`, which gives 62.
 :::

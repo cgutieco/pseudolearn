@@ -187,10 +187,10 @@ Without `Exit`, 9 would make the 7 passes even though from the second one the an
 - imperativo.contado.suma-digitos
 :::
 
-::: docentes
-- **The maximum that starts at 0.** It works with summer temperatures and fails with negative data. Show it with -3, -5 and -1.
+::: profundizar titulo="Common pitfalls"
+- **The maximum that starts at 0.** It works with summer temperatures and fails with negative data. Try it with -3, -5 and -1.
 - **The flag that changes again on every pass.** Assigning it the result of the division on every pass leaves only the answer for the last divisor. The pass table shows it.
-- **Using a counted loop when you do not know how many passes there will be.** Ask them to answer the two questions of the figure before writing.
+- **Using a counted loop when you do not know how many passes there will be.** Answer the two questions of the figure before writing.
 :::
 
 ::: siguiente

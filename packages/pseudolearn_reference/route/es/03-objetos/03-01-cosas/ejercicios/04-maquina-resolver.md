@@ -76,6 +76,6 @@ oculto | 1 ; 2 ; 1 ; 2 ; 0 | Máquina 1: 8 latas, 6 pesos ⏎ Máquina 2: 8 lata
 Agrega un método `Cargar(latas)` y un código 3 que cargue 5 latas en la máquina que tenga menos.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: ventas en una sola máquina, una máquina que se queda sin latas (las dos ventas de más solo avisan) y ventas alternadas.
 :::

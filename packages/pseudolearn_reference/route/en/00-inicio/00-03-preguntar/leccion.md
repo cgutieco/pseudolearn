@@ -138,8 +138,8 @@ An awkward question remains: what if someone types 0 friends? Do not run it yet;
 - inicio.preguntar.que-calcula
 :::
 
-::: docentes
-- **A value of the wrong type.** Answering «twelve» when an `Integer` is expected stops the program. Show it once and link it to the types of the previous lesson.
+::: profundizar titulo="Common pitfalls"
+- **A value of the wrong type.** Answering «twelve» when an `Integer` is expected stops the program. Try it once and link it to the types of the previous lesson.
 - **Forgetting to read the value.** The box is declared but, without `Read`, it never receives the value: the program computes with its initial value.
 - **Believing that reading shows something.** `Read` shows nothing; the message is written by the `Write` before it.
 :::

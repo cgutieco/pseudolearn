@@ -91,8 +91,8 @@ Compárala con la caja de [la Parte I](ruta:imperativo.proyecto): si cambia el d
 - procedimental.proyecto.kiosco-partes
 :::
 
-::: docentes
-- **Escribir todo en el principal.** Funciona, pero se pierde lo aprendido en la parte. Pide que nombren las piezas antes de escribir.
+::: profundizar titulo="Tropiezos frecuentes"
+- **Escribir todo en el principal.** Funciona, pero se pierde lo aprendido en la parte. Nombra las piezas antes de escribir.
 - **Descontar el stock antes de validar.** Una venta rechazada no debe tocar el stock: el caso «todo rechazado» lo descubre.
 - **Olvidar el registro de vuelta.** Una ficha copiada del vector se modifica sola; hay que guardarla otra vez en el vector.
 :::

@@ -43,6 +43,6 @@ Write between 2 and 4 test cases for the cinema program, so that any wrong versi
 Why are 10 and 30 not enough? (No version that moves the edge one step changes what it charges at 10 or at 30.)
 :::
 
-::: docentes
+::: explicacion
 Wrong versions: including 12, edge at 11, edge at 13 and swapped prices. The one that includes 12 and the one with the edge at 13 are the same as each other for whole ages, but neither is the same as the right one.
 :::

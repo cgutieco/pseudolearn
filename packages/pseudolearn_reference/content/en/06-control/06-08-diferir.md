@@ -64,8 +64,8 @@ The engine copies the body of every cleanup into every exit of the block, in rev
 ```
 :::
 
-::: docentes
-A stack of plates helps: the last one put down is the first one taken off. Ask someone to predict the output of `vueltas-diferir` before running it: round 2 cleans up even though it leaves with `Exit`.
+::: nota
+A stack of plates helps: the last one put down is the first one taken off. Predict the output of `vueltas-diferir` before running it: round 2 cleans up even though it leaves with `Exit`.
 :::
 
 ::: resumen

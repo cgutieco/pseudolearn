@@ -38,6 +38,6 @@ The calculation uses three functions, `Mapear`, `Filtrar` and `Reducir`, that re
 Add the average amount per sale, without walking through the sales again.
 :::
 
-::: docentes
+::: explicacion
 The assertions check the three functions; that they show nothing is guaranteed by the engine, because they are pure. Hidden cases: all sales of 5 pesos or less, a tie (the lowest code wins), a single big sale and large amounts.
 :::

@@ -112,9 +112,9 @@ A third trait, such as the deposit bottle, adds a class and an attribute, not fo
 - objetos.componer.cuando-heredar
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **Inheriting to reuse code.** When the child is not a particular case of the parent, inheritance ties together two things that will change differently.
-- **Deep hierarchies.** Understanding a class means reading all its parents. Ask them to draw the hierarchy before adding a level.
+- **Deep hierarchies.** Understanding a class means reading all its parents. Draw the hierarchy before adding a level.
 - **«Composing is less object-oriented».** Composing is building objects from objects: it is as object-oriented as it gets.
 :::
 

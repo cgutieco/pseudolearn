@@ -36,6 +36,6 @@ Each dish is computed in its own task, launched with `Spawn` inside a `Tasks` sc
 Add a fourth cook who makes waters of 2 pesos.
 :::
 
-::: docentes
+::: explicacion
 The assertion requires the cook subprogram. The case of 0 portions confirms that the tray still waits for the three; 10 portions of each dish test larger amounts.
 :::

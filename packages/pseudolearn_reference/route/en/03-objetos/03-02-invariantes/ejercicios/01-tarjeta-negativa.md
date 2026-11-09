@@ -31,6 +31,6 @@ This program reads the initial balance of a card and an amount to charge, and sh
 Add a method `Transferir(otra, monto)` that moves balance from one card to another without breaking the invariant in either.
 :::
 
-::: docentes
+::: explicacion
 The method subtracts without asking. Hidden cases: charging exactly the balance, one more, charging an empty card and a charge of 0.
 :::

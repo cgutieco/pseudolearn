@@ -59,6 +59,6 @@ oculto | 10 ; 10 ; 10 | Bandeja: 100 pesos
 Agrega un cuarto cocinero que prepara aguas de 2 pesos.
 :::
 
-::: docentes
+::: explicacion
 La aserción exige el subprograma del cocinero. El caso de 0 porciones confirma que la bandeja igual espera a los tres; 10 porciones de cada plato prueban cantidades más grandes.
 :::

@@ -164,8 +164,8 @@ The school raises the pass mark to 7. A single line changes, inside `Estado`, an
 - procedimental.dividir.boletin-chico
 :::
 
-::: docentes
-- **A subprogram that does two things.** Ask them to describe it in one sentence without «and»; if they cannot, it is two subprograms.
+::: profundizar titulo="Common pitfalls"
+- **A subprogram that does two things.** Describe it in one sentence without «and»; if you cannot, it is two subprograms.
 - **Names that do not say what they do.** `Calcular` or `Procesar` do not help: the name is half of the documentation.
 - **Forgetting the return.** A subprogram with a return type and no `Return` does not compile; the diagnostic says so.
 :::

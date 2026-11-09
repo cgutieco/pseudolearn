@@ -20,8 +20,6 @@ Ana and Beto solved the pizza problem. Ana wrote `ceil(23 * 3 / 8)` and Beto wro
 
 ::: explicacion
 Beto adds 1 «just in case something is left over». When the division is exact nothing is left over, and he orders one pizza too many. Any number of people whose slices divide exactly by 8 breaks his solution.
-:::
 
-::: docentes
-It is the first contact with the idea of looking for the case that breaks a solution, which lesson 0.4 develops. Ask the group for another number that also breaks it: 8, 24 or 32.
+It is the first time you look for the case that breaks a solution, an idea that lesson 0.4 develops. Other numbers that also break it: 8, 24 or 32.
 :::

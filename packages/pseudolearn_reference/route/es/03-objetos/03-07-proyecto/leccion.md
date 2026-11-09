@@ -79,7 +79,7 @@ Agregar un medio de pago nuevo, como el vale, es una clase más que cumple el co
 - objetos.proyecto.kiosco-objetos
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **Una pieza que hace todo, con otro nombre.** Cuando la caja calcula importes y descuenta stock, es la pieza que hace todo de la lección 3.6.
 - **El stock público.** Cuando el principal puede cambiar el stock, el invariante depende de que nadie se equivoque.
 - **Un medio de pago elegido con muchos caminos.** La elección va una sola vez, al cerrar; el cobro lo hace el medio.

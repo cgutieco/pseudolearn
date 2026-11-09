@@ -91,6 +91,6 @@ visible | 10 | Paga 5
 ¿Por qué 10 y 30 no alcanzan? (Ninguna versión que mueva el borde un paso cambia lo que cobra a 10 o a 30.)
 :::
 
-::: docentes
+::: explicacion
 Versiones equivocadas: incluir el 12, borde en 11, borde en 13 y precios cambiados. La que incluye el 12 y la del borde en 13 son iguales entre sí con edades enteras, pero ninguna es igual a la correcta.
 :::

@@ -62,6 +62,6 @@ oculto | Ana ; 10 ; 10 ; Beto ; 9 ; 9 ; Caro ; 6 ; 5 | Ana: 10.0 aprobado ⏎ Be
 Si hay empate, muestra todos los nombres empatados.
 :::
 
-::: docentes
+::: explicacion
 El empate lo gana el primero porque la comparación es estricta. Casos ocultos: empate en el primer lugar, todos desaprobados y un promedio de 6.0 justo en el segundo visible.
 :::

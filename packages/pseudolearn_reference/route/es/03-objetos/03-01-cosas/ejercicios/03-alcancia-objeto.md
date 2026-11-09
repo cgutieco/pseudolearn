@@ -67,6 +67,6 @@ oculto | 7 ; 0 | 7
 Agrega un método `Romper()` que retorna el total y deja la alcancía en 0.
 :::
 
-::: docentes
+::: explicacion
 La aserción comprueba que `Depositar` exista y sea público. Error frecuente: sumar en el principal y usar la clase solo para guardar el número.
 :::

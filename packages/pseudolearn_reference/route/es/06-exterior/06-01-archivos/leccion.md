@@ -208,7 +208,7 @@ Es el núcleo puro y el borde de la Parte IV: si mañana el stock se guarda en o
 - exterior.archivos.linea-pruebas
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **«El archivo se guarda solo».** No queda nada guardado si el programa no lo escribe.
 - **«Si el archivo no existe, el programa se cae».** Llega un `Error` que se trata, como en el primer día.
 - **Creer que la limpieza diferida se ejecuta donde se escribe.** Se ejecuta al salir del subprograma; el programa de la puerta y la luz lo muestra.

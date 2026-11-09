@@ -5,7 +5,6 @@ use serde::Serialize;
 pub enum CalloutKind {
     Phrase,
     Limit,
-    Teachers,
     Inside,
     Analogy,
     Note,
@@ -31,10 +30,9 @@ pub enum CalloutKind {
     Explanation,
 }
 
-const DIRECTIVES: [(CalloutKind, &str); 26] = [
+const DIRECTIVES: [(CalloutKind, &str); 25] = [
     (CalloutKind::Phrase, "frase"),
     (CalloutKind::Limit, "limite"),
-    (CalloutKind::Teachers, "docentes"),
     (CalloutKind::Inside, "por-dentro"),
     (CalloutKind::Analogy, "analogia"),
     (CalloutKind::Note, "nota"),
@@ -76,7 +74,7 @@ impl CalloutKind {
     }
 
     pub fn collapsible(self) -> bool {
-        matches!(self, Self::Teachers | Self::Inside | Self::Deepen)
+        matches!(self, Self::Inside | Self::Deepen)
     }
 
     pub fn route_only(self) -> bool {

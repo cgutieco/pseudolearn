@@ -25,8 +25,6 @@ FinAlgoritmo
 
 ::: explicacion
 Primero aparece `10 / 4` tal cual, porque está entre comillas. Después aparece `2.5`, porque sin comillas se calcula. Los decimales se escriben con punto.
-:::
 
-::: docentes
-Error frecuente: responder `2.5` dos veces o `10 / 4` dos veces. Pide que señalen las comillas de cada línea antes de responder.
+Error frecuente: responder `2.5` dos veces o `10 / 4` dos veces. Antes de responder, señala las comillas de cada línea.
 :::

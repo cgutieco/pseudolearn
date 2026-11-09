@@ -89,6 +89,6 @@ oculto | 9 ; 3 ; 0 | Código 9 no existe ⏎ Total: 0 ⏎ Con descuento: 0 ⏎ M
 Agrega al cierre cuántas ventas válidas hubo y el importe promedio por venta.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: un código inválido en medio, un empate (alfajor y jugo con 2 unidades: gana el jugo, de menor código), una sola venta, los cinco productos, cantidades grandes y un día cuya única venta es inválida. Error frecuente: buscar el más vendido con `>=`, que en un empate elige el de mayor código.
 :::

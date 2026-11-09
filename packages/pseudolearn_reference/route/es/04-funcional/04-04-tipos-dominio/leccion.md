@@ -174,7 +174,7 @@ Si se agrega el estado `Devuelto(motivo)`, el motor marca cada `Segun` que no lo
 - funcional.tipos-dominio.por-que-variante
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **Una variante con un campo «tipo» adentro.** Es volver al registro: la forma ya dice el tipo.
 - **Una rama «otro» que esconde formas nuevas.** Cuando el `Segun` tiene un caso para todo lo demás, el motor no puede avisar cuando aparece una forma nueva.
 - **Confundir variante con enumerado.** El enumerado no lleva datos; la variante sí.

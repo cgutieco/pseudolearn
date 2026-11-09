@@ -31,6 +31,6 @@ The classroom walls add up to 54 square metres. They need two coats of paint. On
 How many litres of paint are left after painting? (Answer: 1.2.)
 :::
 
-::: docentes
+::: explicacion
 Solution: 108 square metres, 10.8 litres, 2.7 tins, so 3 are bought. Frequent mistake: rounding the litres before dividing by 4, which also gives 3 here but fails with other sizes.
 :::

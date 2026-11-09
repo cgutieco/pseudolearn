@@ -31,6 +31,6 @@ After the pizza, the 23 people at the party sit down in the canteen. Each table 
 The new tables have 6 chairs. How many are needed now? (Answer: 4.)
 :::
 
-::: docentes
+::: explicacion
 Solution: `Write ceil(23 / 4);`. Frequent mistake: answering 5, which leaves three people standing, or 5.75. There are no hidden cases: before reading values, the program has a single case.
 :::

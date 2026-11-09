@@ -58,6 +58,6 @@ oculto | 10 ; 1 | 10
 Hazla más rápida: si el exponente es par, `Potencia(base, exponente)` es el cuadrado de `Potencia(base, exponente div 2)`.
 :::
 
-::: docentes
+::: explicacion
 Las aserciones rechazan cualquier bucle. Casos ocultos: exponente 1, base 1 con exponente grande y exponente 0 en los visibles.
 :::

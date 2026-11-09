@@ -92,7 +92,7 @@ Changing the format of the receipt touches only `Ticket`. Adding a tax to the am
 - objetos.responsabilidades.clase-dios
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **Classes named after verbs.** A «Calculator» is usually a job that belongs to another class.
 - **Sharing out by size and not by information.** Splitting a big class into two halves does not help if both need the same data.
 - **Cards with ten responsibilities.** A card that does not fit on the paper is a class that does too much.

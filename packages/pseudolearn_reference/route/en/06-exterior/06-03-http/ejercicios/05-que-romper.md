@@ -34,6 +34,6 @@ This program says «bien» or «problema» according to the code of an answer. W
 Is there any code that this program marks as fine and is not?
 :::
 
-::: docentes
+::: explicacion
 Any code between 201 and 299 breaks it. The variant has a negative answer: the program only says «bien» with 200, which is fine.
 :::

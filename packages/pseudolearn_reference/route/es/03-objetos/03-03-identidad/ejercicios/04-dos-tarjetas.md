@@ -76,6 +76,6 @@ oculto | 0 | 0 0
 Haz que la segunda tarjeta sea un alias de la primera. ¿Qué muestra ahora con 20?
 :::
 
-::: docentes
+::: explicacion
 Error frecuente: crear una tarjeta y asignarla a las dos variables, que muestra 15 15. Casos ocultos: cobrar justo el saldo, un saldo que no alcanza y uno vacío.
 :::

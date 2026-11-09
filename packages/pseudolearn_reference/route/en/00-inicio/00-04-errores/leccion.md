@@ -159,10 +159,10 @@ The odd case has no fix yet: to warn «nobody is paying» instead of stopping, t
 - inicio.errores.donde-se-corrige
 :::
 
-::: docentes
-- **«If it compiles, it is right».** Version C compiles and finishes. Ask them to test it before showing the worked example.
+::: profundizar titulo="Common pitfalls"
+- **«If it compiles, it is right».** Version C compiles and finishes. Test it before looking at the worked example.
 - **«The error is on the line the engine points at».** Sometimes it is just before: in version A, the semicolon is missing at the end of line 6.
-- **Testing only with the example in the statement.** Always ask for an edge case and an odd one.
+- **Testing only with the example in the statement.** Always test with an edge case and an odd one.
 :::
 
 ::: siguiente

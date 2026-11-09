@@ -63,6 +63,6 @@ visible | 50 | Día 9 con 54 monedas
 Corrige la condición de Tomás cambiando un solo signo.
 :::
 
-::: docentes
+::: explicacion
 Rompen la versión de Tomás los precios que se juntan exacto: 2, 5, 9, 14, 20, 27, 35, 44, 54. La app ejecuta el precio propuesto en las dos versiones y acepta si difieren.
 :::

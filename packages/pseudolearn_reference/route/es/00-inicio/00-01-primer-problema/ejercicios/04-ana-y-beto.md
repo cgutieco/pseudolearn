@@ -20,8 +20,6 @@ Ana y Beto resolvieron el problema de las pizzas. Ana escribió `techo(23 * 3 / 
 
 ::: explicacion
 Beto suma 1 «por si sobra algo». Cuando la división es exacta no sobra nada, y pide una pizza de más. Cualquier cantidad de personas cuyas porciones se dividan exacto entre 8 rompe su solución.
-:::
 
-::: docentes
-Es el primer contacto con la idea de buscar el caso que rompe una solución, que la lección 0.4 desarrolla. Pide al grupo otra cantidad que también la rompa: 8, 24 o 32.
+Es la primera vez que buscas el caso que rompe una solución, una idea que la lección 0.4 desarrolla. Otras cantidades que también la rompen: 8, 24 o 32.
 :::

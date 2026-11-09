@@ -59,6 +59,6 @@ oculto | 2 ; 4 ; 6 ; 8 ; 10 ; 12 ; 14 ; 16 ; 18 ; 20 ; 21 | -1
 Muestra también cuántos pasos hicieron falta. Con 10 datos, ¿cuál es el máximo?
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: el buscado en los dos extremos, menor que todos y mayor que todos. Error frecuente: dejar el medio dentro del intervalo, que en algunos casos no termina.
 :::

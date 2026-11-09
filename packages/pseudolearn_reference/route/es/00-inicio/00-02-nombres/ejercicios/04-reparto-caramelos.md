@@ -41,6 +41,6 @@ visible | — | Cada amigo recibe 7 y sobran 5
 Llega un amigo más. ¿Qué muestra ahora el programa? (Respuesta: `Cada amigo recibe 6 y sobran 5`.)
 :::
 
-::: docentes
+::: explicacion
 Solución con `div` y `mod` sobre las variables. Error frecuente: escribir `7` y `5` a mano, que pasa el caso pero no la variante.
 :::

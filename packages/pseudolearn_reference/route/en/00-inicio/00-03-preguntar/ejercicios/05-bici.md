@@ -28,6 +28,6 @@ Read the distance in kilometres and the speed in kilometres per hour, in that or
 Show the result as hours and minutes: with 25 kilometres at 15 per hour, `1 h 40 min`.
 :::
 
-::: docentes
+::: explicacion
 Frequent mistake: dividing first and multiplying by 60 afterwards, which gives the same here but piles up decimals. Another: rounding the hours before converting to minutes.
 :::

@@ -38,6 +38,6 @@ visible | — | Buses: 3
 ¿Cuántos alumnos más podrían ir sin pedir un cuarto bus? (Respuesta: 25, porque 3 buses llevan 120.)
 :::
 
-::: docentes
+::: explicacion
 El programa del compañero descarta los 15 alumnos que no llenan un bus. La corrección usa `techo`. Error frecuente: sumar 1 a mano, que funciona con 95 y falla con 80.
 :::

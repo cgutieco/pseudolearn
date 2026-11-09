@@ -73,6 +73,6 @@ oculto | Eva ; repartidor | Hola, soy Eva
 Agrega un `Repositor` que se presenta como `Hola, soy Beto y repongo los estantes`.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: un puesto parecido pero distinto (`cajera`), otro cajero y otro puesto. Error frecuente: copiar el texto del saludo en lugar de llamar a `Super`.
 :::

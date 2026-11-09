@@ -36,7 +36,7 @@ Every section has a body that makes sense without prior knowledge. Around the bo
 | Exact limit | The precise number when it matters: ranges, sizes, depths |
 | Common errors | The real engine messages and how to fix them |
 | Inside | What the engine does: intermediate representation and trace |
-| For teachers | Typical confusions and questions for the class |
+| Note | Typical confusions and something to try on your own |
 
 The body never depends on the collapsible boxes. You can skip every "Inside" without losing the thread.
 

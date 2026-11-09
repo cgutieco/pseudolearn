@@ -79,7 +79,7 @@ Adding a new payment method, such as the voucher, is one more class that meets t
 - objetos.proyecto.kiosco-objetos
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **A piece that does everything, under another name.** When the till computes amounts and takes off stock, it is the piece that does everything of lesson 3.6.
 - **Public stock.** When the main algorithm can change the stock, the invariant depends on nobody making a mistake.
 - **A payment method chosen with many paths.** The choice happens once, when closing; the payment is done by the method.

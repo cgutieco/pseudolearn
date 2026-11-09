@@ -36,6 +36,6 @@ One task reads the temperatures and sends them through a channel; another receiv
 Also show the highest temperature.
 :::
 
-::: docentes
+::: explicacion
 `/` between integers gives a real, which is why 24 is shown as 24.0. The negative temperatures test that the sum can go down; the case of zeros, that there is no division by zero because 5 measurements always arrive.
 :::

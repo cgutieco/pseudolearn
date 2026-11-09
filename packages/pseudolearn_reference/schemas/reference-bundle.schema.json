@@ -303,7 +303,6 @@
           "enum": [
             "phrase",
             "limit",
-            "teachers",
             "inside",
             "analogy",
             "note",

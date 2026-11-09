@@ -130,8 +130,8 @@ El selector se guarda en un temporal y cada rama es una comparación con salto. 
 ```
 :::
 
-::: docentes
-`Segun` y una cadena de `Si` anidados hacen lo mismo con valores concretos. Pide reescribir `dia-semana` con `Si` y comparar cuál se lee mejor y cuál detecta antes un olvido.
+::: nota
+`Segun` y una cadena de `Si` anidados hacen lo mismo con valores concretos. Reescribe `dia-semana` con `Si` y compara cuál se lee mejor y cuál detecta antes un olvido.
 :::
 
 ::: resumen

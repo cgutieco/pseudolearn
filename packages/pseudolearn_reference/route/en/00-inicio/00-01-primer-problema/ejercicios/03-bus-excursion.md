@@ -31,6 +31,6 @@ titulo: The school trip bus
 How many more pupils could go without ordering a fourth bus? (Answer: 25, because 3 buses carry 120.)
 :::
 
-::: docentes
+::: explicacion
 The classmate's program drops the 15 pupils who do not fill a bus. The fix uses `ceil`. Frequent mistake: adding 1 by hand, which works with 95 and fails with 80.
 :::

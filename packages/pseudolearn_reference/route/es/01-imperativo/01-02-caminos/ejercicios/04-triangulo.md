@@ -55,6 +55,6 @@ oculto | 2 ; 3 ; 2 | isósceles
 Agrega `rectángulo` cuando el cuadrado del lado mayor es la suma de los cuadrados de los otros dos. (Con 3, 4 y 5.)
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: lados iguales en distintas posiciones (2, 3, 2) y triángulos imposibles con el lado grande primero (5, 1, 1). Error frecuente: comprobar isósceles solo con `a = b`.
 :::

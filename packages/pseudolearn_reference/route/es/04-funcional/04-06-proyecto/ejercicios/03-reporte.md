@@ -162,6 +162,6 @@ oculto | 4 ; 30 ; 0 | Total: 30 ⏎ Con descuento: 27 ⏎ Ventas de más de 5 pe
 Agrega el importe promedio por venta, sin recorrer las ventas otra vez.
 :::
 
-::: docentes
+::: explicacion
 Las aserciones comprueban las tres funciones; que no muestren nada lo garantiza el motor, porque son puras. Casos ocultos: todas las ventas de 5 pesos o menos, un empate (gana el de menor código), una sola venta grande y cantidades grandes.
 :::

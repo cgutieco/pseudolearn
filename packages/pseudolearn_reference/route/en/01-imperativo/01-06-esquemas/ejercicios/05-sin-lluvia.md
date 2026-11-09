@@ -28,6 +28,6 @@ Read 10 days: 1 if it rained and 0 if not. Show how many days the longest streak
 Also show on which day the longest streak started.
 :::
 
-::: docentes
+::: explicacion
 Updating the longest inside the dry branch avoids the last streak error. Hidden cases: ten dry days and the longest streak at the end.
 :::

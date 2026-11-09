@@ -227,10 +227,10 @@ Sin `Salir`, el 9 haría las 7 vueltas aunque desde la segunda ya se sabe la res
 - imperativo.contado.suma-digitos
 :::
 
-::: docentes
-- **El máximo que empieza en 0.** Funciona con temperaturas de verano y falla con datos negativos. Muéstralo con -3, -5 y -1.
+::: profundizar titulo="Tropiezos frecuentes"
+- **El máximo que empieza en 0.** Funciona con temperaturas de verano y falla con datos negativos. Pruébalo con -3, -5 y -1.
 - **La bandera que vuelve a cambiar en cada vuelta.** Asignarle el resultado de la división en cada vuelta deja solo la respuesta del último divisor. La tabla por vuelta lo muestra.
-- **Usar un bucle contado cuando no se sabe cuántas vueltas habrá.** Pide que respondan las dos preguntas de la figura antes de escribir.
+- **Usar un bucle contado cuando no se sabe cuántas vueltas habrá.** Responde las dos preguntas de la figura antes de escribir.
 :::
 
 ::: siguiente

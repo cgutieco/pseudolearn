@@ -42,6 +42,6 @@ oculto | -1 ; 2 ; -3 ; 4 ; -5 | -5 ⏎ 4 ⏎ -3 ⏎ 2 ⏎ -1
 Muestra solo los que están en posiciones pares: 0, 2 y 4.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: números repetidos que hacen parecer correcto un programa que no invierte (7, 7, 7) y negativos. Error frecuente: empezar el segundo bucle en 5.
 :::

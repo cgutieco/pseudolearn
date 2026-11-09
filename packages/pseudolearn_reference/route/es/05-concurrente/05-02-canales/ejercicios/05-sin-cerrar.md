@@ -91,6 +91,6 @@ oculto | 5 | Entrego el pedido 1 ⏎ Entrego el pedido 2 ⏎ Entrego el pedido 3
 ¿Qué pasaría si el mostrador cerrara el canal en vez de la cocina?
 :::
 
-::: docentes
+::: explicacion
 El motor termina con `taskDeadlock`: ninguna tarea puede avanzar. Es el error de olvidar cerrar el canal, el segundo de la lista de la lección.
 :::

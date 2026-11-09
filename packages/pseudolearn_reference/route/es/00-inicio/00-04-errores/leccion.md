@@ -189,10 +189,10 @@ El caso raro todavía no tiene solución: para avisar «no hay quien pague» en 
 - inicio.errores.donde-se-corrige
 :::
 
-::: docentes
-- **«Si compila, está bien».** La versión C compila y termina. Pide que la prueben antes de mostrar el ejemplo a mano.
+::: profundizar titulo="Tropiezos frecuentes"
+- **«Si compila, está bien».** La versión C compila y termina. Pruébala antes de mirar el ejemplo a mano.
 - **«El error está en la línea que marca el motor».** A veces está justo antes: en la versión A, el punto y coma falta al final de la línea 6.
-- **Probar solo con el ejemplo del enunciado.** Pide siempre un caso borde y uno raro.
+- **Probar solo con el ejemplo del enunciado.** Prueba siempre con un caso borde y con uno raro.
 :::
 
 ::: siguiente

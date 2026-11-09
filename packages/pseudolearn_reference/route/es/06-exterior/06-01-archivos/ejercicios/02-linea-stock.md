@@ -53,6 +53,6 @@ oculto | té ; 1 | té;1
 Haz otra función que arme la línea con el precio además del stock: «jugo;10;3».
 :::
 
-::: docentes
+::: explicacion
 La función no abre ningún archivo: por eso se puede probar sola. Los casos incluyen stock 0, un número de tres cifras y un nombre con tilde.
 :::

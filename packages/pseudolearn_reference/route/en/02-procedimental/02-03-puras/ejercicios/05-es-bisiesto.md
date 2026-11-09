@@ -36,6 +36,6 @@ The decision goes in a `Function EsBisiesto` that receives the year and returns 
 Write `DiasDelAnio(anio)`, which returns 366 or 365 using `EsBisiesto`.
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: the two exceptions and 2100. Frequent mistake: showing the text inside the function, which the engine rejects.
 :::

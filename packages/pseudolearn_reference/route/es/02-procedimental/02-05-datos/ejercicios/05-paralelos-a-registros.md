@@ -70,6 +70,6 @@ oculto | Chicle ; 1 ; 100 ; Agua ; 1 ; 0 ; Fruta ; 2 ; 50 | Chicle 1 (quedan 100
 Muestra al final el producto con menos stock.
 :::
 
-::: docentes
+::: explicacion
 El catálogo de comprobaciones de la app no puede exigir un registro; lo pide la restricción, y los casos exigen el stock nuevo. Error frecuente: agregar una tercera fila separada, que funciona pero deja las tres filas por alinear.
 :::

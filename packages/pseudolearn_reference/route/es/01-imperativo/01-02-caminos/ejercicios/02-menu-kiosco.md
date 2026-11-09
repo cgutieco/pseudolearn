@@ -51,6 +51,6 @@ oculto | 0 | No existe
 Los códigos 4 y 5 pasan a costar lo mismo. ¿Puedes juntarlos en una sola opción? (Sí: `4, 5:` si muestran el mismo texto.)
 :::
 
-::: docentes
+::: explicacion
 Los casos ocultos prueban los extremos de la lista y el 0. Error frecuente: olvidar el camino de los códigos inexistentes, que deja al programa sin mostrar nada.
 :::

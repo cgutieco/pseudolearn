@@ -197,6 +197,6 @@ visible | 30 ; 10 ; 5 | Verdadero Verdadero 25
 ¿Qué caso agregarías para un error que cobrara montos negativos?
 :::
 
-::: docentes
+::: explicacion
 Versiones equivocadas: no deja cobrar justo el saldo, permite quedar en negativo y acepta cargas negativas. Cada caso de la solución descubre a una.
 :::

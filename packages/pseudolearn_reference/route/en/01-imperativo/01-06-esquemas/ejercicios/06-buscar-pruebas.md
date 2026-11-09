@@ -40,6 +40,6 @@ A program reads 5 numbers and then a searched number, and shows the position of 
 Why does the visible case uncover none of the three wrong versions? (15 appears once, it is not in position 0 and it is there.)
 :::
 
-::: docentes
+::: explicacion
 Wrong versions: returns the last appearance, starts searching at position 1 and answers 0 when it finds nothing. Each of the three cases of the solution uncovers one.
 :::

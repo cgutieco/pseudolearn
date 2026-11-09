@@ -39,6 +39,6 @@ The program reads a way of paying (1 cash, 2 card, 3 voucher of 15) and an amoun
 Add a fifth method, the kiosk points, which charge twice the amount. Which lines did you change?
 :::
 
-::: docentes
+::: explicacion
 The initial program does not know method 4 and charges as a voucher. The reference adds a class and a case in the main algorithm; `CobrarCon` stays the same. The assertion prevents solving it with a `Switch`.
 :::

@@ -28,6 +28,6 @@ Read 5 numbers and show them rotated one place to the right: the last becomes th
 Really rotate the array, moving the values inside it, and then show it from 0 to 4. (You need to keep the last one before moving the others.)
 :::
 
-::: docentes
+::: explicacion
 The shortest solution moves nothing: it only changes the order in which it shows. The variant forces moving the values, from back to front.
 :::

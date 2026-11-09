@@ -107,6 +107,6 @@ visible | 4 ; 8 ; 15 ; 16 ; 23 ; 15 | 2
 ¿Por qué el caso visible no descubre a ninguna de las tres versiones equivocadas? (El 15 aparece una vez, no está en la posición 0 y sí está.)
 :::
 
-::: docentes
+::: explicacion
 Versiones equivocadas: devuelve la última aparición, empieza a buscar en la posición 1 y responde 0 cuando no encuentra. Cada uno de los tres casos de la solución descubre a una.
 :::

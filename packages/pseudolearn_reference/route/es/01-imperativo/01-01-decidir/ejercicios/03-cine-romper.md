@@ -55,6 +55,6 @@ visible | 30 | Paga 8
 Corrige el programa cambiando un solo signo, sin cambiar los textos. (Con `>=`.)
 :::
 
-::: docentes
+::: explicacion
 Solo el 12 rompe este programa: es el único entero donde `> 12` y `>= 12` difieren. Por eso un caso de cada lado del borde es obligatorio.
 :::

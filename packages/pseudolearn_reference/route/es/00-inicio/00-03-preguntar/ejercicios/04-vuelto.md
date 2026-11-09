@@ -40,6 +40,6 @@ oculto | 2 ; 1 | 0
 El precio sube a 3 pesos. ¿Cuántas líneas tuviste que cambiar? Si fueron más de una, guarda el precio en una caja con nombre.
 :::
 
-::: docentes
+::: explicacion
 Error frecuente: leer en el orden inverso al enunciado. Los casos con vuelto 0 comprueban que no se restó de más.
 :::

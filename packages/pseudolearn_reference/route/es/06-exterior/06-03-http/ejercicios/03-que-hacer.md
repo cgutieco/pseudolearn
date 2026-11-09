@@ -58,6 +58,6 @@ oculto | 201 ; 5 | Servicio no disponible (201)
 Acepta como bien cualquier código del 200 al 299.
 :::
 
-::: docentes
+::: explicacion
 El caso 201 confirma que la consigna pide exactamente 200. El ejercicio de romper de esta lección muestra por qué conviene aceptar todo el rango.
 :::

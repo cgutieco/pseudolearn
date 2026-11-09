@@ -57,6 +57,6 @@ oculto | Ana ; 111 ; 5 ; Beto ; 222 ; 11 ; Ana ; 999 ; 2 ; Dani ; 444 ; 3 ; Ana 
 Muestra también cuántos compañeros cumplen años en el mismo mes que el buscado.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: un nombre ausente, el último de la lista y un nombre repetido (gana el primero). Error frecuente: reemplazar el teléfono en cada coincidencia, que devuelve el último.
 :::

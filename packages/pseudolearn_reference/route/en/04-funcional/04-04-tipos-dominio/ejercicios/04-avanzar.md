@@ -28,6 +28,6 @@ An order starts pending or cancelled: read `pendiente`, or `cancelado` followed 
 Add `Cancelar(pedido, motivo)`, which only cancels orders that are pending or on their way.
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: zero moves, moving forward too many times, moving a cancelled one and a cancelled one without moves.
 :::

@@ -217,8 +217,8 @@ La escuela sube la nota para aprobar a 7. Cambia una sola línea, dentro de `Est
 - procedimental.dividir.boletin-chico
 :::
 
-::: docentes
-- **Un subprograma que hace dos cosas.** Pide describirlo en una frase sin «y»; si no se puede, son dos subprogramas.
+::: profundizar titulo="Tropiezos frecuentes"
+- **Un subprograma que hace dos cosas.** Descríbelo en una frase sin «y»; si no se puede, son dos subprogramas.
 - **Nombres que no dicen qué hacen.** `Calcular` o `Procesar` no ayudan: el nombre es la mitad de la documentación.
 - **Olvidar el retorno.** Un subprograma con tipo de retorno y sin `Retornar` no compila; el diagnóstico lo dice.
 :::

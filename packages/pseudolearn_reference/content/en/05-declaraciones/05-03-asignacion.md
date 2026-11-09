@@ -72,8 +72,8 @@ Every assignment to a local variable is a `store` in its slot. Notice that `auxi
 ```
 :::
 
-::: docentes
-Many students read `a <- b` as a mathematical equality. Ask them to explain why `a <- b; b <- a;` swaps nothing, drawing the boxes.
+::: nota
+It is easy to read `a <- b` as a mathematical equality. Draw the boxes and explain why `a <- b; b <- a;` swaps nothing.
 :::
 
 ::: resumen

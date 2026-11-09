@@ -16,8 +16,6 @@ Without running it, write exactly what this program shows.
 
 ::: explicacion
 `b <- a` copies 5 into `b` at that moment. When `a` later becomes 7, `b` does not notice: each box keeps its own value and does not recompute itself.
-:::
 
-::: docentes
-Frequent mistake: answering `7 7`, as if `b` were tied to `a`. Ask them to draw both boxes and cross out the old value at each assignment.
+Frequent mistake: answering `7 7`, as if `b` were tied to `a`. Draw both boxes and cross out the old value at each assignment.
 :::

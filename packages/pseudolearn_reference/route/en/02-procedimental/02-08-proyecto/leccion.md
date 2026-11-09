@@ -91,8 +91,8 @@ Compare it with the till of [Part I](ruta:imperativo.proyecto): if the discount 
 - procedimental.proyecto.kiosco-partes
 :::
 
-::: docentes
-- **Writing everything in the main algorithm.** It works, but what was learned in this part is lost. Ask them to name the pieces before writing.
+::: profundizar titulo="Common pitfalls"
+- **Writing everything in the main algorithm.** It works, but what was learned in this part is lost. Name the pieces before writing.
 - **Taking off the stock before validating.** A rejected sale must not touch the stock: the «everything rejected» case uncovers it.
 - **Forgetting to put the record back.** A card copied from the vector changes on its own; it has to be stored in the vector again.
 :::

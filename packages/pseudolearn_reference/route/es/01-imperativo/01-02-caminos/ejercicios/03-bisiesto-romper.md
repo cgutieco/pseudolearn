@@ -56,6 +56,6 @@ visible | 2023 | No es bisiesto
 ¿Hay algún año que este programa marque como no bisiesto y sí lo sea? (No: todo bisiesto se divide entre 4.)
 :::
 
-::: docentes
+::: explicacion
 Rompen el programa los años que se dividen entre 100 y no entre 400: 1900, 2100, 2200. 2000 no lo rompe, porque el programa acierta por casualidad.
 :::

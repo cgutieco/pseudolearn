@@ -209,10 +209,10 @@ There are two `Read`, and both are needed. The first brings the first value so t
 - imperativo.mientras.alcancia-pruebas
 :::
 
-::: docentes
-- **«The loop checks the condition all the time».** Only before each pass. Ask them to predict what happens if the total passes the price halfway through a pass.
+::: profundizar titulo="Common pitfalls"
+- **«The loop checks the condition all the time».** Only before each pass. Predict what happens if the total passes the price halfway through a pass.
 - **Initialising inside the loop.** Setting the money box to 0 inside the body wipes the total on every pass. The pass table shows it at once.
-- **The invariant looks like theory.** Present it as «the sentence the table repeats in every row». That is enough for seed and sprout.
+- **The invariant looks like theory.** Think of it as «the sentence the table repeats in every row». That is enough for seed and sprout.
 :::
 
 ::: siguiente

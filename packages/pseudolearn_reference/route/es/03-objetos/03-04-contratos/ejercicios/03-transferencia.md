@@ -153,6 +153,6 @@ oculto | 4 ; 99 | 100
 Agrega un quinto medio, los puntos del kiosco, que cobran el doble del monto. ¿Qué líneas cambiaste?
 :::
 
-::: docentes
+::: explicacion
 El inicial no conoce el medio 4 y cobra como vale. La referencia agrega una clase y un caso en el principal; `CobrarCon` queda igual. La aserción impide resolverlo con un `Segun`.
 :::

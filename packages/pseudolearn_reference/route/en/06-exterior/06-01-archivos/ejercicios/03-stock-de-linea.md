@@ -36,6 +36,6 @@ The text is built by a pure function, `StockDeLinea`, which receives the line.
 Make the function give back «Línea inválida» also when the name is empty.
 :::
 
-::: docentes
+::: explicacion
 It is the inverse of `LineaStock`. «x;y;3» confirms that the cut is at the first semicolon: what comes after stays whole, even if it has another one.
 :::

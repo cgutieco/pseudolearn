@@ -38,6 +38,6 @@ No loops: the power is computed with a function that calls itself.
 Make it faster: if the exponent is even, `Potencia(base, exponente)` is the square of `Potencia(base, exponente div 2)`.
 :::
 
-::: docentes
+::: explicacion
 The assertions reject any loop. Hidden cases: exponent 1, base 1 with a large exponent and exponent 0 among the visible ones.
 :::

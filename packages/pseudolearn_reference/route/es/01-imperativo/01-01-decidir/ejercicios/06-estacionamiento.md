@@ -43,6 +43,6 @@ oculto | 600 | 21
 Los domingos la primera hora es gratis. Agrega un segundo dato, el día, y cobra en consecuencia.
 :::
 
-::: docentes
+::: explicacion
 Bordes: 60 y 61 minutos. Error frecuente: usar `div` en lugar de redondear hacia arriba, que cobra 61 minutos como 60.
 :::

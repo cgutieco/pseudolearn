@@ -36,6 +36,6 @@ A class `Termostato` with private degrees and the methods `Subir`, `Bajar` and `
 Add `Fijar(grados)`, which accepts only values inside the range.
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: going up past 30, going down past 16, no orders and going down after touching the ceiling.
 :::

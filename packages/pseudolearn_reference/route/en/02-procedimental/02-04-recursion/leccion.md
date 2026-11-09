@@ -129,9 +129,9 @@ The cost grows fast: with 20 discs there are more than a million moves. Recursio
 - procedimental.recursion.munecas
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **Forgetting the base case.** The program calls itself endlessly until the engine stops it by depth. The find-the-error exercise shows it.
-- **A recursive case that does not shrink.** Ask them to say, for each call, which number gets closer to zero.
+- **A recursive case that does not shrink.** Say, at each call, which number gets closer to zero.
 - **«Recursion is always better».** Hanoi needs it; the factorial does not. Compare both versions.
 :::
 

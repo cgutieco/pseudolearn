@@ -65,8 +65,8 @@ Every subprogram is a function of the intermediate representation with its own b
 ```
 :::
 
-::: docentes
-Before writing subprograms, ask the class to find two almost identical pieces in a long program. That is the first candidate for a subprogram.
+::: nota
+Before writing subprograms, find two almost identical pieces in a long program. That is the first candidate for a subprogram.
 :::
 
 ::: resumen

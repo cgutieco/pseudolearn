@@ -28,6 +28,6 @@ Read 5 marks, from 0 to 10, and show the highest. The program shows only the num
 Also show in which position, from 1 to 5, the highest first appeared.
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: the highest at the end and at the start. Frequent mistake: starting the highest at 0, which works with marks from 0 to 10 but fails with temperatures below zero.
 :::

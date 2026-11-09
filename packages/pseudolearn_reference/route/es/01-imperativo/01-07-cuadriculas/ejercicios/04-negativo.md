@@ -48,6 +48,6 @@ oculto | 1 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 | 0111 �
 Muestra la imagen dada vuelta de izquierda a derecha, como en un espejo, sin invertir los colores.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: todo negro, la diagonal y un solo punto. Error frecuente: mostrar cada dígito con su propio `Escribir`, que pone uno por línea.
 :::

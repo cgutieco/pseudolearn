@@ -56,7 +56,7 @@ An object is a heap block with one cell per attribute. The access `p.x` becomes,
 ```
 :::
 
-::: docentes
+::: nota
 The "cookie cutter and cookie" pair works: one cutter, many cookies, each with its own decoration. It stops working when two variables share an object: they are not two cookies, they are two names for the same one.
 :::
 

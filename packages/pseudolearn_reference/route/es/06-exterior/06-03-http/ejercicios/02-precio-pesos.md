@@ -53,6 +53,6 @@ oculto | 10 ; 0 | 0
 Agrega una función que redondee el precio hacia arriba a la decena más cercana.
 :::
 
-::: docentes
+::: explicacion
 La función se prueba sin red: es la parte del programa que la app sí puede comprobar. Un cambio 0 da 0 pesos; no tiene sentido real, pero la cuenta lo resuelve.
 :::

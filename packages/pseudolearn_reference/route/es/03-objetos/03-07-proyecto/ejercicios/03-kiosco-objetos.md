@@ -181,6 +181,6 @@ oculto | 3 ; 1 ; 0 ; efectivo | Alfajor x 1 = 2 ⏎ Total: 2 ⏎ Con descuento: 
 Agrega el vale de 20 pesos como tercer medio de pago, sin tocar las otras piezas.
 :::
 
-::: docentes
+::: explicacion
 Cada caso de la Parte II aparece dos veces, con efectivo y con tarjeta. La tarjeta sobre 0 cobra 0. Error frecuente: aplicar el recargo antes del descuento, que da otro número.
 :::

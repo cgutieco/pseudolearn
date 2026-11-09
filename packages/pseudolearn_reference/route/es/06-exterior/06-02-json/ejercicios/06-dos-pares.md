@@ -57,6 +57,6 @@ oculto | x ; 3 ; y ; 4 | {"x": 3, "y": 4}
 Extiéndelo a los cinco productos del kiosco, como en la lección.
 :::
 
-::: docentes
+::: explicacion
 Separar el par del objeto permite reutilizar `ParJson` para cualquier cantidad de productos. Un nombre con tilde no cambia nada: JSON admite cualquier texto.
 :::

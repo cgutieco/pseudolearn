@@ -209,7 +209,7 @@ Queda un problema abierto: si hay dos proveedores, ¿a cuál se le hace caso?
 - concurrente.canales.promedio-sensor
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **«Dos tareas pueden escribir la misma caja sin problema».** Vuelve al aislamiento: lo compartido viaja por el canal.
 - **Olvidar cerrar el canal.** El programa del bloqueo muestra qué pasa.
 - **Esperar que un canal lleno descarte mensajes.** No descarta: quien envía espera hasta que haya lugar.

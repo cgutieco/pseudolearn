@@ -166,10 +166,10 @@ Before, the odd case was a crash. Now it is an answer.
 - imperativo.decidir.estacionamiento
 :::
 
-::: docentes
-- **«Both branches run».** Use the finger figure and ask them to follow it with a pencil on the cinema program.
+::: profundizar titulo="Common pitfalls"
+- **«Both branches run».** Use the finger figure and follow it with a pencil on the cinema program.
 - **«Under 12 includes 12».** The partition takes it apart: 12 is on the other side of the edge.
-- **A number used as a condition.** The engine rejects it with a diagnostic; link [the section](especificacion:control.si) and move on.
+- **A number used as a condition.** The engine rejects it with a diagnostic; the details are in [the section](especificacion:control.si).
 :::
 
 ::: siguiente

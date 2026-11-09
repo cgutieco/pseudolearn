@@ -32,6 +32,6 @@ Use at least three pure functions (for example, the price, the discount and the 
 Also show how many sales were rejected during the day and for which reason.
 :::
 
-::: docentes
+::: explicacion
 The app's closed catalogue of checks cannot count pure functions or require a record: the restriction asks for them, and the cases tell the three rejections apart with their exact reason. Hidden cases: a sale that leaves the stock exactly at 0 and the next one rejected, a sale of 0 units, everything rejected, sales that use up three products, stock rejections after accepted sales and a single sale.
 :::

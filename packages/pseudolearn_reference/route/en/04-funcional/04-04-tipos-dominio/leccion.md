@@ -118,7 +118,7 @@ If the state `Devuelto(motivo)` (returned) is added, the engine marks every `Swi
 - funcional.tipos-dominio.por-que-variante
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **A variant with a «type» field inside.** It is going back to the record: the shape already says the type.
 - **A «default» branch that hides new shapes.** When the `Switch` has a case for everything else, the engine cannot warn when a new shape appears.
 - **Confusing variant with enumeration.** The enumeration carries no data; the variant does.

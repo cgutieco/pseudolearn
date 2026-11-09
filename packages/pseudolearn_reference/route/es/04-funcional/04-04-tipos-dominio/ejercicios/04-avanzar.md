@@ -85,6 +85,6 @@ oculto | cancelado ; sin stock ; 0 | Cancelado: sin stock
 Agrega `Cancelar(pedido, motivo)`, que solo cancela pedidos pendientes o en camino.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: cero avances, avanzar más de la cuenta, avanzar uno cancelado y uno cancelado sin avances.
 :::

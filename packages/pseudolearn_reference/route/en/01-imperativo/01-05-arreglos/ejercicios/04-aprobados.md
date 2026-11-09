@@ -28,6 +28,6 @@ Read 6 marks, from 0 to 10, and show how many are 6 or more. The program shows o
 Also show the average of the passing marks, or «Nadie aprobó».
 :::
 
-::: docentes
+::: explicacion
 The edge is 6, which passes. Hidden cases: all on the edge and nobody passing. Frequent mistake: `> 6`.
 :::

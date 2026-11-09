@@ -31,6 +31,6 @@ This program reads an amount and a number, and should show the number plus the a
 Write `CrearRestador(cantidad)` with the same shape.
 :::
 
-::: docentes
+::: explicacion
 The engine rejects capturing a variable that is reassigned later, because the function would not know which value to use. The fix captures the parameter, which does not change.
 :::

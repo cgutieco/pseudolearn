@@ -57,6 +57,6 @@ oculto | 10 ; 3 ; 0 | 30
 Fabrica dos multiplicadores y muestra cada número por los dos.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: factor 0 y factor -1. Error frecuente: fabricar la función dentro del bucle, que funciona pero repite trabajo.
 :::

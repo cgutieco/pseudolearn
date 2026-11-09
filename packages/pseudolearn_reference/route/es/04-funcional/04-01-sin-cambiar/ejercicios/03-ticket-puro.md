@@ -75,6 +75,6 @@ oculto | 1 ; 0 ; 1 ; 0 | 0
 Muestra también cuánto se ahorró con el descuento, sin calcular nada dos veces.
 :::
 
-::: docentes
+::: explicacion
 En «3, 5, 5, 0» son 5 alfajores (10 pesos) y 0 frutas: total 10, con descuento 9. La aserción comprueba que exista `ConDescuento`; que sea pura lo comprueba el motor al compilarla.
 :::

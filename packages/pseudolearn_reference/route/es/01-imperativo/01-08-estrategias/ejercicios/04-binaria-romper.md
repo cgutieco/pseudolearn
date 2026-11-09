@@ -87,6 +87,6 @@ visible | 1 ; 2 ; 3 ; 4 ; 5 ; 6 ; 7 ; 8 ; 9 ; 10 ; 5 | 4
 Corrige la línea que no avanza.
 :::
 
-::: docentes
+::: explicacion
 Con un buscado a la derecha del medio, el programa hace `bajo <- medio`. Cuando `bajo` y `alto` quedan juntos, el medio es `bajo` y el intervalo ya no cambia: el bucle es infinito y el motor lo corta por límite.
 :::

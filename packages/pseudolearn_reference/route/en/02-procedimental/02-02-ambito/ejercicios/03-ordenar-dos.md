@@ -36,6 +36,6 @@ A subprogram `OrdenarDos` receives both boxes and leaves the smaller in the firs
 Make `OrdenarDos` also return whether it had to swap.
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: equal, negatives and already sorted. Frequent mistake: passing the boxes by value, which shows the original order.
 :::

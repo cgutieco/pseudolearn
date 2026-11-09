@@ -147,8 +147,8 @@ Compare it with a version with seven loose boxes: if the week had 30 days, you w
 - imperativo.arreglos.rotar
 :::
 
-::: docentes
-- **Indices from 1.** Cell 1 is the second one. Ask them to point at the first cell in the figure before writing.
+::: profundizar titulo="Common pitfalls"
+- **Indices from 1.** Cell 1 is the second one. Point at the first cell in the figure before writing.
 - **Confusing the position with the value.** `notas[1]` is what is in cell 1, not the number 1.
 - **A single pass for the average.** You cannot compare with the average before you know it: the figure of the two passes shows it.
 :::

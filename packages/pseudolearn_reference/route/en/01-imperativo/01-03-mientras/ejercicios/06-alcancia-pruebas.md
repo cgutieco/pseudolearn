@@ -43,6 +43,6 @@ Do not write code. Write four prices with the right answer for each one, so that
 Which of the four prices could you remove without letting any wrong version escape? (Try it: the app tells you which one survives.)
 :::
 
-::: docentes
+::: explicacion
 Wrong versions: `<=` in the condition, the money box starting at 0, adding before increasing what is saved each day, and the day starting at 0. A set without an exact price (such as 54) and without one less than or equal to 2 does not detect the first one.
 :::

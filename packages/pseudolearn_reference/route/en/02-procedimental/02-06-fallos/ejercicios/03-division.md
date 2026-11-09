@@ -36,6 +36,6 @@ The division goes in a subprogram `DividirSeguro` that receives both numbers and
 Add a second reason: «El dividendo es negativo».
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: 0 in the numerator (it is valid) and 0 by 0 (it is an error). Frequent mistake: checking the numerator instead of the divisor.
 :::

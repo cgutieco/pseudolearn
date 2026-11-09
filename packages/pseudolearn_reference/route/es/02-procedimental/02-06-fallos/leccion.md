@@ -166,9 +166,9 @@ En una frase: «El programa comprueba que la edad sea un número y que esté en 
 - procedimental.fallos.caer-o-avisar
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **Validar demasiado tarde.** Convertir antes de comprobar detiene el programa con «doce». El orden de los filtros importa.
-- **Un motivo que no dice nada.** «Error» no le dice a nadie qué corregir. Pide un motivo por cada filtro.
+- **Un motivo que no dice nada.** «Error» no le dice a nadie qué corregir. Escribe un motivo por cada filtro.
 - **Atender el error en el lugar equivocado.** Quien sabe qué mostrar es el algoritmo principal; la validación solo informa.
 :::
 

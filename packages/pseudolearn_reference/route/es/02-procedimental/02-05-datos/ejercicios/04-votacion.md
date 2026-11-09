@@ -59,6 +59,6 @@ oculto | Eva ; Eva ; Eva ; Ana ; fin | Eva 3
 Muestra el resultado completo: cada candidato con sus votos, en el orden en que recibió el primero.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: empate (Beto y Ana con 1: gana Ana), ningún voto, empate entre dos con más votos y un ganador claro. Error frecuente: quedarse con el primero que se recorre en un empate, que depende del orden de llegada.
 :::

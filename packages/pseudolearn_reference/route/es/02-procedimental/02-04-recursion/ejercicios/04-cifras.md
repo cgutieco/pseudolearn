@@ -47,6 +47,6 @@ oculto | 10 | 2
 Escribe la suma de las cifras con recursión, sin bucles.
 :::
 
-::: docentes
+::: explicacion
 El 0 es el caso borde: tiene una cifra. Una solución con `Si n = 0` como caso base cuenta 0 cifras para el 0.
 :::

@@ -34,6 +34,6 @@ This heat wave program gets the lesson's case right. Find 14 temperatures it get
 What does this program show if all 14 days are above 30? (Olas: 0. The good one says a wave of 14.)
 :::
 
-::: docentes
+::: explicacion
 The program is missing the closing of the last streak after the loop. Any series whose last streak of 3 or more days reaches the end breaks it.
 :::

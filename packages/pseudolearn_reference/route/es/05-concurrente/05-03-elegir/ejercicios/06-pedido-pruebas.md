@@ -140,6 +140,6 @@ visible | 5 ; 3 ; 2 | Pedido confirmado: 10
 ¿Cuál de tus casos podrías quitar sin dejar escapar ninguna versión equivocada?
 :::
 
-::: docentes
+::: explicacion
 Versiones equivocadas: solo consulta de verdad el stock de Norte, usa `< 0` en vez de `= 0` y confirma con la suma de los dos primeros. Un conjunto sin un caso confirmado no detecta la tercera; uno donde solo falla Norte no detecta la primera. Los casos tienen como mucho un proveedor sin stock, así que el motivo no depende de los turnos de la agenda.
 :::

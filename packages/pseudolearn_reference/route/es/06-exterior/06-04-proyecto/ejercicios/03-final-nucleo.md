@@ -116,6 +116,6 @@ oculto | 3 ; 0 ; 0 | Cantidad 0 no válida ⏎ Total: 0 ⏎ Con descuento: 0 ⏎
 Agrega al cierre cuántas ventas se rechazaron.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: una venta inválida en medio, una venta que deja un stock en 0, una que pide más de lo que hay, los cinco productos, cantidades grandes rechazadas, un día con solo rechazos y una cantidad 0. Las claves del JSON son los nombres del catálogo, con mayúscula y tilde.
 :::

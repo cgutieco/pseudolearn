@@ -41,6 +41,6 @@ visible | — | 1 h 2 min 5 s
 Con 90061 segundos hace falta contar también los días: `1 d 1 h 1 min 1 s`.
 :::
 
-::: docentes
+::: explicacion
 Solución: en 3725 segundos cabe 1 hora y sobran 125; en 125 caben 2 minutos y sobran 5 segundos. Error frecuente: calcular los minutos como `segundos div 60`, que da 62.
 :::

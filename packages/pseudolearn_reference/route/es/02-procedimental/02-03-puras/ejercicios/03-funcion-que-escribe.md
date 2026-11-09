@@ -57,6 +57,6 @@ oculto | 7 | IVA: 1
 Agrega una función `ConIva` que use `Iva` y retorne el precio con el impuesto incluido.
 :::
 
-::: docentes
+::: explicacion
 El motor rechaza el programa porque una `Funcion` no puede mostrar nada. La corrección deja la función pura y, si hace falta, mueve el mensaje al algoritmo principal.
 :::

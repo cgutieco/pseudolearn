@@ -62,6 +62,6 @@ oculto | 2 ; 7 ; 6 ; 9 ; 5 ; 1 ; 4 ; 8 ; 3 | No es mágico
 Exige además que los nueve números sean distintos.
 :::
 
-::: docentes
+::: explicacion
 El último caso oculto tiene filas y diagonales que suman 15 pero dos columnas que no: descubre a quien no revisa las columnas.
 :::

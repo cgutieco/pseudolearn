@@ -178,10 +178,10 @@ Queda un problema abierto: si la cocina tiene que avisarle al mostrador plato po
 - concurrente.tareas.doble-romper
 :::
 
-::: docentes
-- **«Las tareas corren al mismo tiempo».** Avanzan por turnos en una sola computadora: muestra la figura de la cocina.
+::: profundizar titulo="Tropiezos frecuentes"
+- **«Las tareas corren al mismo tiempo».** Avanzan por turnos en una sola computadora: lo muestra la figura de la cocina.
 - **«El orden de la salida siempre será este».** Separa lo garantizado de lo observado con la tabla de la fase 4.
-- **Lanzar una tarea fuera de su ámbito.** El motor lo rechaza; envía a la sección de ámbitos de la Especificación en vez de explicar el diagnóstico.
+- **Lanzar una tarea fuera de su ámbito.** El motor lo rechaza; la sección de ámbitos de la Especificación explica el diagnóstico.
 :::
 
 ::: por-dentro

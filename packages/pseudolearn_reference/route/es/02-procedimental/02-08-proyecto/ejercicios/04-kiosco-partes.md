@@ -103,6 +103,6 @@ oculto | 3 ; 1 ; 0 | Alfajor x 1 = 2 ⏎ Total: 2 ⏎ Con descuento: 2 ⏎ Stock
 Muestra también cuántas ventas se rechazaron en el día y por qué motivo.
 :::
 
-::: docentes
+::: explicacion
 El catálogo cerrado de comprobaciones de la app no puede contar funciones puras ni exigir un registro: lo pide la restricción, y los casos distinguen los tres rechazos con su motivo exacto. Casos ocultos: una venta que deja el stock en 0 justo y la siguiente rechazada, una venta de 0 unidades, todo rechazado, ventas que agotan tres productos, rechazos por stock después de ventas aceptadas y una sola venta.
 :::

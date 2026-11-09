@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pseudolearn_app/domain/model/reference/reference_callout_kind.dart';
 import 'package:pseudolearn_app/data/reference/bundled_reference_repository.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/content_load_failure.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/content_load_result.dart';
@@ -85,6 +86,16 @@ void main() {
       expect((blocks[0] as ReferenceProgramBlock).program.completed, isTrue);
       expect((blocks[1] as ReferenceFigureBlock).figure.layers.single.untilStep, isNull);
       expect((blocks[2] as ReferenceCallout).collapsible, isTrue);
+    });
+
+    test('a callout kind that is no longer published reads as a note', () async {
+      const section = '{"id":"a","number":"1","kind":"concepto","title":[],"phrase":[],"blocks":['
+          '{"type":"callout","kind":"teachers","collapsible":true,"blocks":[]},'
+          '{"type":"callout","kind":"limit","collapsible":false,"blocks":[]}]}';
+      final loaded = await _fromMap({'assets/reference/es/es/sections/a.json': section}).loadSection(_spanish, 'a');
+      final blocks = (loaded as ContentLoaded<ReferenceSection>).value.blocks;
+      expect((blocks[0] as ReferenceCallout).kind, ReferenceCalloutKind.note);
+      expect((blocks[1] as ReferenceCallout).kind, ReferenceCalloutKind.limit);
     });
   });
 }

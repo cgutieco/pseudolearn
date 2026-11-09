@@ -28,6 +28,6 @@ Read a kiosk product code and show its name and price: 1 is `Jugo 3`, 2 is `Sán
 Codes 4 and 5 start costing the same. Can you join them in a single option? (Yes: `4, 5:` if they show the same text.)
 :::
 
-::: docentes
+::: explicacion
 The hidden cases test the ends of the list and 0. Frequent mistake: forgetting the path for codes that do not exist, which leaves the program showing nothing.
 :::

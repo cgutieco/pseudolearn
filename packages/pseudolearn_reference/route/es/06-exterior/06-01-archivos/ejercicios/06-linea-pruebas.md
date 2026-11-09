@@ -106,6 +106,6 @@ x;y;3 | x tiene y;3
 ¿Cuál de tus líneas podrías quitar sin dejar escapar ninguna versión equivocada?
 :::
 
-::: docentes
+::: explicacion
 Versiones equivocadas: no revisa el punto y coma, corta en el último y muestra el nombre sin el stock. Sin una línea de dos puntos y coma, la segunda sobrevive.
 :::

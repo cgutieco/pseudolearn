@@ -114,8 +114,8 @@ El motor copia el cuerpo de cada limpieza en cada salida del bloque, en orden in
 ```
 :::
 
-::: docentes
-La pila de platos ayuda: el último que se pone es el primero que se quita. Pide que alguien prediga la salida de `vueltas-diferir` antes de ejecutarla: la vuelta 2 limpia aunque salga con `Salir`.
+::: nota
+La pila de platos ayuda: el último que se pone es el primero que se quita. Predice la salida de `vueltas-diferir` antes de ejecutarla: la vuelta 2 limpia aunque salga con `Salir`.
 :::
 
 ::: resumen

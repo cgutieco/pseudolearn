@@ -31,6 +31,6 @@ This program reads a non-negative number and should show the sum from 1 to that 
 Write `SumaPares(n)`, the sum of the even numbers from 2 to `n`.
 :::
 
-::: docentes
+::: explicacion
 Without a base case, the function calls itself with -1, -2, … until the engine stops it by depth. The 100 case checks that the reference does not run out of frames.
 :::

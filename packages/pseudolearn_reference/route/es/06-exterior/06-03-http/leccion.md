@@ -212,7 +212,7 @@ Es el núcleo puro y el borde otra vez: si mañana el cambio viene de un archivo
 - exterior.http.borde-o-nucleo
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **«Si hay internet, siempre responde 200».** Un servicio puede responder y aun así decir que hubo un problema.
 - **Mezclar el cálculo con la petición.** El precio se calcula en una función que no sabe de redes.
 - **Creer que la app puede probar la red.** Los ejercicios prueban las funciones puras; la red se simula con un anfitrión de memoria.

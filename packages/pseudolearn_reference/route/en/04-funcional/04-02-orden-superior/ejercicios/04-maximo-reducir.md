@@ -36,6 +36,6 @@ The greatest is computed with `Reducir` and a function `Mayor` of two numbers.
 Also show the smallest, without writing another walk.
 :::
 
-::: docentes
+::: explicacion
 Starting at 0 fails with all negatives: that is why the initial value is the first number. Hidden cases: all negative, none and repeats.
 :::

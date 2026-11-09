@@ -28,6 +28,6 @@ Read three sides, in whole centimetres, and show `equilátero` (equilateral) if 
 Add `rectángulo` (right-angled) when the square of the longest side is the sum of the squares of the other two. (With 3, 4 and 5.)
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: equal sides in different positions (2, 3, 2) and impossible triangles with the long side first (5, 1, 1). Frequent mistake: checking isosceles only with `a = b`.
 :::

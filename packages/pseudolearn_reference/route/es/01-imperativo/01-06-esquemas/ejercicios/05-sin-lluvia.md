@@ -52,6 +52,6 @@ oculto | 0 ; 1 ; 0 ; 1 ; 0 ; 1 ; 0 ; 1 ; 0 ; 0 | 2
 Muestra también en qué día empezó la racha más larga.
 :::
 
-::: docentes
+::: explicacion
 Actualizar la más larga dentro de la rama sin lluvia evita el error de la última racha. Casos ocultos: los diez días secos y la racha más larga al final.
 :::

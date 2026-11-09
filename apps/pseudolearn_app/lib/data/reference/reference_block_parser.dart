@@ -79,7 +79,6 @@ ReferenceSectionLink parseSectionLink(Object? value) {
 ReferenceCalloutKind parseCalloutKind(String name) => switch (name) {
   'phrase' => ReferenceCalloutKind.phrase,
   'limit' => ReferenceCalloutKind.limit,
-  'teachers' => ReferenceCalloutKind.teachers,
   'inside' => ReferenceCalloutKind.inside,
   'analogy' => ReferenceCalloutKind.analogy,
   'parts' => ReferenceCalloutKind.parts,

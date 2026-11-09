@@ -34,6 +34,6 @@ Another school's cinema charges the same as ours: under 12, 5 pesos; everyone el
 Fix the program by changing a single sign, without changing the texts. (With `>=`.)
 :::
 
-::: docentes
+::: explicacion
 Only 12 breaks this program: it is the only whole number where `> 12` and `>= 12` differ. That is why one case on each side of the edge is compulsory.
 :::

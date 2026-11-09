@@ -55,6 +55,6 @@ visible | 13 | inválido
 Corrige la validación cambiando un solo número.
 :::
 
-::: docentes
+::: explicacion
 Solo el 0 rompe este programa: los negativos ya quedan afuera. Es el error de borde de [la lección 1.1](ruta:imperativo.decidir), ahora dentro de una validación.
 :::

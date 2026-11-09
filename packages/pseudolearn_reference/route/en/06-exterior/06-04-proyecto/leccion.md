@@ -127,7 +127,7 @@ Look at which part of the program changed since Part II: the core, almost nothin
 - exterior.proyecto.final-nucleo
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **Planning before opening the editor.** The card and the plan are exercises for a reason: the program is the longest of the route.
 - **Separating core and edge.** The checked exercise is only the core; the edge is tested in the lesson with the memory host.
 - **Testing the day without a file.** It is the first case that anyone who uses the kiosk runs into.

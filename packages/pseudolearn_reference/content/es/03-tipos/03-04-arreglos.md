@@ -134,8 +134,8 @@ En la representación intermedia, el acceso a una casilla es una instrucción qu
 ```
 :::
 
-::: docentes
-El error clásico es recorrer de 1 a N en lugar de 0 a N − 1. Pide escribir el bucle de `notas` con `Para i <- 1 Hasta 4` y comenta el fallo que produce: el mensaje dice qué índice y qué tamaño.
+::: nota
+El error clásico es recorrer de 1 a N en lugar de 0 a N − 1. Escribe el bucle de `notas` con `Para i <- 1 Hasta 4` y mira el fallo que produce: el mensaje dice qué índice y qué tamaño.
 :::
 
 ::: resumen

@@ -45,6 +45,6 @@ oculto | {"a" 1} | SintaxisInvalida en la columna 6
 Muestra también la línea del error, además de la columna.
 :::
 
-::: docentes
+::: explicacion
 Las columnas son las que da el motor: cuentan desde 1 y marcan el primer carácter que no encaja. Una llave sin cerrar es `FinInesperado`: el texto terminó antes de tiempo.
 :::

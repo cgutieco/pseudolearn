@@ -45,8 +45,8 @@ FinAlgoritmo
 undeclaredVariable
 ```
 
-::: docentes
-Pregunta por qué un lenguaje pensado para aprender exige declarar. La respuesta corta: una declaración es una promesa que el motor puede comprobar, y las erratas en nombres de variables son de los errores más difíciles de encontrar a ojo.
+::: nota
+¿Por qué un lenguaje pensado para aprender exige declarar? La respuesta corta: una declaración es una promesa que el motor puede comprobar, y las erratas en nombres de variables son de los errores más difíciles de encontrar a ojo.
 :::
 
 ::: resumen

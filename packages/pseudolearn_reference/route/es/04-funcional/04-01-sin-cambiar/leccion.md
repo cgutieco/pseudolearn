@@ -193,8 +193,8 @@ La última fila es honesta: algunos problemas se piensan mejor como algo que cam
 - funcional.sin-cambiar.cual-probar
 :::
 
-::: docentes
-- **«Si no cambia nada, no hace nada».** El programa sí muestra cosas: lo hace desde el borde. Pide marcar en la caja funcional qué líneas son borde.
+::: profundizar titulo="Tropiezos frecuentes"
+- **«Si no cambia nada, no hace nada».** El programa sí muestra cosas: lo hace desde el borde. Marca en la caja funcional qué líneas son borde.
 - **Confundir inmutable con constante escrita a mano.** `aPagar` se calcula; lo que no hace es cambiar después.
 - **Creer que hay que elegir un paradigma para siempre.** La tabla de cierre muestra que cada uno hace fácil algo distinto.
 :::

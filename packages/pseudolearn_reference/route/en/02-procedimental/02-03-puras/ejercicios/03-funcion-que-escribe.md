@@ -31,6 +31,6 @@ This program reads a price and should show `IVA: ` followed by 21 % of the price
 Add a function `ConIva` that uses `Iva` and returns the price with the tax included.
 :::
 
-::: docentes
+::: explicacion
 The engine rejects the program because a `Function` cannot show anything. The fix leaves the function pure and, if needed, moves the message to the main algorithm.
 :::

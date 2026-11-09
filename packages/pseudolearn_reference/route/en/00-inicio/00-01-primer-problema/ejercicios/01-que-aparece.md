@@ -16,8 +16,6 @@ Without running it, write exactly what will appear in the output of this program
 
 ::: explicacion
 First `10 / 4` appears as it is, because it is between quotes. Then `2.5` appears, because without quotes it is computed. Decimals are written with a point.
-:::
 
-::: docentes
-Frequent mistake: answering `2.5` twice or `10 / 4` twice. Ask them to point at the quotes on each line before answering.
+Frequent mistake: answering `2.5` twice or `10 / 4` twice. Before answering, point at the quotes on each line.
 :::

@@ -16,7 +16,6 @@ final class RouteExercise {
   final List<List<ReferenceRun>> hints;
   final List<LessonBlock> variant;
   final List<LessonBlock> explanation;
-  final List<LessonBlock> teachers;
   final ReferenceProgram? program;
   final String? starterCode;
   final RouteEvaluation evaluation;
@@ -33,7 +32,6 @@ final class RouteExercise {
     required this.hints,
     required this.variant,
     required this.explanation,
-    required this.teachers,
     required this.program,
     required this.starterCode,
     required this.evaluation,

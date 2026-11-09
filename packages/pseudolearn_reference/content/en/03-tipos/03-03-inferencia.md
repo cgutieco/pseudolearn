@@ -28,8 +28,8 @@ Assigning to a name nobody declared does not create a variable: it is an error. 
 ```programa id=sin-declarar titulo="Assigning without declaring"
 ```
 
-::: docentes
-Ask why a language designed for learning requires declarations. The short answer: a declaration is a promise the engine can check, and typos in variable names are among the hardest mistakes to spot by eye.
+::: nota
+Why does a language designed for learning require declarations? The short answer: a declaration is a promise the engine can check, and typos in variable names are among the hardest mistakes to spot by eye.
 :::
 
 ::: resumen

@@ -28,6 +28,6 @@ Read a whole number and show `par` (even) or `impar` (odd).
 Show `múltiplo de 3` or `no es múltiplo de 3`. (With 9: multiple; with 10: not.)
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: 0 is even, 1 is odd and -3 checks negatives. In PseudoLearn, `-3 mod 2` is -1, which is not 0: the solution with `= 0` works; one with `= 1` fails on -3.
 :::

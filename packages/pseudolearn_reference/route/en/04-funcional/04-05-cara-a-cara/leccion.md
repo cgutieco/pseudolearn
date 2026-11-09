@@ -110,9 +110,9 @@ A real program usually mixes them: a functional core for the calculations, objec
 - funcional.cara-a-cara.mezcla
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **«Functional is the modern one».** The three paradigms are decades old; what matters is which change each one makes easy.
-- **Choosing by taste.** Ask them to name the change they expect before choosing.
+- **Choosing by taste.** Name the change you expect before choosing.
 :::
 
 ::: siguiente

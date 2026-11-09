@@ -48,6 +48,6 @@ visible | 95 | 3
 Encuentra otra cantidad que lo rompa, y una tercera mayor que 100. (Cualquier múltiplo de 40: 40, 120, 160.)
 :::
 
-::: docentes
-Cualquier múltiplo de 40 rompe el programa. Pide que expliquen por qué antes de escribir la entrada.
+::: explicacion
+Cualquier múltiplo de 40 rompe el programa. Antes de escribir la entrada, intenta explicar por qué.
 :::

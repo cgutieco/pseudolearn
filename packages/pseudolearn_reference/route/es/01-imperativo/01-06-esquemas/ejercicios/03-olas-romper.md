@@ -91,6 +91,6 @@ visible | 28 ; 31 ; 32 ; 33 ; 29 ; 31 ; 30 ; 31 ; 32 ; 31 ; 35 ; 27 ; 31 ; 32 | 
 ¿Qué muestra este programa si los 14 días están por encima de 30? (Olas: 0. El bueno dice una ola de 14.)
 :::
 
-::: docentes
+::: explicacion
 Al programa le falta cerrar la última racha después del bucle. Lo rompe cualquier serie cuya última racha de 3 o más días llegue hasta el final.
 :::

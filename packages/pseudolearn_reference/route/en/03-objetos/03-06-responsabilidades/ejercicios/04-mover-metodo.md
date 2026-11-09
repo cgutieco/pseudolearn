@@ -39,6 +39,6 @@ In this program, the till computes the amount of each sale with the product's pr
 Add a 10 % tax to the sandwiches. Which pieces did you change?
 :::
 
-::: docentes
+::: explicacion
 The assertion checks that `Producto` has `Importe`. The cases are those of the initial program: what is shown does not change, but the calculation goes where the information is.
 :::

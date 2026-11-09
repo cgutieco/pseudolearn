@@ -36,6 +36,6 @@ The line is built by a pure function, `LineaStock`, which receives the name and 
 Make another function that builds the line with the price as well as the stock: «jugo;10;3».
 :::
 
-::: docentes
+::: explicacion
 The function opens no file: that is why it can be tested on its own. The cases include stock 0, a three-digit number and a name with an accent.
 :::

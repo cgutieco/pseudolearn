@@ -69,6 +69,6 @@ oculto | 4 ; 4 ; 4 ; 0 | 4
 Muestra también el menor, sin escribir otro recorrido.
 :::
 
-::: docentes
+::: explicacion
 Empezar en 0 falla con todos negativos: por eso el inicial es el primer número. Casos ocultos: todos negativos, ninguno y repetidos.
 :::

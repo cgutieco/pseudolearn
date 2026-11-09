@@ -102,9 +102,9 @@ Making a helper subprogram private, such as `RedondearCentavos`, breaks nobody: 
 - procedimental.modulos.ciclo
 :::
 
-::: docentes
-- **Modules by kind of construction.** A module of «all the functions» and another of «all the records» change for a thousand reasons. Ask them to group by what changes together.
-- **Everything public.** Every public name is a promise. Ask them to justify every `Public`.
+::: profundizar titulo="Common pitfalls"
+- **Modules by kind of construction.** A module of «all the functions» and another of «all the records» change for a thousand reasons. Group by what changes together.
+- **Everything public.** Every public name is a promise. Justify every `Public`.
 :::
 
 ::: siguiente

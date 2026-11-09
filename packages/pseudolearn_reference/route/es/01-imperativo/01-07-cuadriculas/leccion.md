@@ -193,10 +193,10 @@ Para un tablero de 4 × 4 cambian los límites de los bucles y la fila de la seg
 - imperativo.cuadriculas.casillas
 :::
 
-::: docentes
-- **Confundir fila con columna.** La fila va primero. Pide que señalen `[0, 2]` en la figura antes de escribir.
+::: profundizar titulo="Tropiezos frecuentes"
+- **Confundir fila con columna.** La fila va primero. Señala `[0, 2]` en la figura antes de escribir.
 - **Índices desde 1.** El centro de un tablero de 3 × 3 es `[1, 1]`.
-- **Revisar solo filas.** Muestra un tablero ganado por una columna y otro por la segunda diagonal.
+- **Revisar solo filas.** Prueba un tablero ganado por una columna y otro por la segunda diagonal.
 :::
 
 ::: siguiente

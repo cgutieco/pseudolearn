@@ -173,10 +173,10 @@ Los tres programas del problema quedan en tres llamadas a `Mapear`, con `MasUno`
 - funcional.orden-superior.por-que-pasar
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **Llamar a la función en lugar de pasarla.** `Mapear(v, MasUno(1))` le pasa un número, no la función. El motor lo rechaza por tipo.
 - **Reducir con un valor inicial equivocado.** Con el mayor, empezar en 0 falla con números negativos.
-- **Querer mapear cuando se necesita filtrar.** Pregunta: ¿el resultado tiene el mismo largo o puede ser más corto?
+- **Querer mapear cuando se necesita filtrar.** Pregúntate: ¿el resultado tiene el mismo largo o puede ser más corto?
 :::
 
 ::: siguiente

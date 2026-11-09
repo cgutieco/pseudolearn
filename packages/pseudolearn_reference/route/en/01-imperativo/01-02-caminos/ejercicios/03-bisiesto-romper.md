@@ -34,6 +34,6 @@ This program gets 2024 and 2023 right. Find a year it gets wrong.
 Is there a year this program marks as not a leap year that actually is one? (No: every leap year divides by 4.)
 :::
 
-::: docentes
+::: explicacion
 The years that divide by 100 and not by 400 break the program: 1900, 2100, 2200. 2000 does not break it, because the program gets it right by chance.
 :::

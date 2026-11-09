@@ -28,6 +28,6 @@ The kiosk sells biscuits at 2 pesos. Read the value of the note and the number o
 The price goes up to 3 pesos. How many lines did you have to change? If it was more than one, keep the price in a box with a name.
 :::
 
-::: docentes
+::: explicacion
 Frequent mistake: reading in the opposite order to the statement. The cases with 0 change check that nothing extra was subtracted.
 :::

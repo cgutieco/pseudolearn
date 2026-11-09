@@ -36,6 +36,6 @@ Each supplier is queried in its own task, which gives back a `Result`: `Success`
 Also show how many suppliers had stock when the order is confirmed.
 :::
 
-::: docentes
+::: explicacion
 The cases have at most one supplier without stock, so the reason does not depend on the turns of the schedule. When a supplier fails, the scope cancels the queries that are still alive; the exercise does not ask how many.
 :::

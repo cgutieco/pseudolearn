@@ -132,7 +132,7 @@ An open problem remains: if there are two suppliers, which one do you listen to?
 - concurrente.canales.promedio-sensor
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **«Two tasks can write the same box without problems».** Go back to isolation: what is shared travels through the channel.
 - **Forgetting to close the channel.** The deadlock program shows what happens.
 - **Expecting a full channel to drop messages.** It does not drop them: whoever sends waits until there is room.

@@ -28,6 +28,6 @@ Read a non-negative whole number and show how many digits it has. The program sh
 Write the sum of the digits with recursion, without loops.
 :::
 
-::: docentes
+::: explicacion
 0 is the edge case: it has one digit. A solution with `If n = 0` as the base case counts 0 digits for 0.
 :::

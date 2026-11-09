@@ -202,10 +202,10 @@ Antes de ejecutar, el motor traduce el programa a su representación intermedia.
 Los cuatro tipos de tamaño fijo caben en una casilla de la máquina; una cadena puede medir cualquier cosa, así que vive en el montón y la casilla guarda solo una referencia.
 :::
 
-::: docentes
-- «Un número entre comillas es un número»: `"7"` es un `Caracter` y `"75"` una `Cadena`. Pide predecir el tipo antes de ejecutar.
+::: nota
+- «Un número entre comillas es un número»: `"7"` es un `Caracter` y `"75"` una `Cadena`. Predice el tipo antes de ejecutar.
 - «`/` entre enteros da entero»: en PseudoLearn siempre da real.
-- «0.1 + 0.2 = 0.3»: no lo presentes como una rareza del lenguaje; la figura de la regla sirve para dibujarlo en la pizarra.
+- «0.1 + 0.2 = 0.3»: no es una rareza del lenguaje; la figura de la regla muestra por qué pasa.
 :::
 
 ::: resumen

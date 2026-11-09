@@ -133,9 +133,9 @@ Compare the two solutions. With a return, whoever reads `saldo <- Duplicar(saldo
 - procedimental.ambito.retorno-o-referencia
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **«They are the same box because they have the same name».** The program of the problem takes it apart: the inner `saldo` is another box.
-- **Lending the box for everything.** It hides the changes. Ask them to read a call and say which boxes change without looking at the subprogram.
+- **Lending the box for everything.** It hides the changes. Read a call and say which boxes change without looking at the subprogram.
 - **«The boxes of the subprogram survive between calls».** Every call opens a new frame, with new boxes.
 :::
 

@@ -99,6 +99,6 @@ oculto | 1 ; 1 ; 1 ; 1 ; 1 | [2, 2, 2, 2, 2] ⏎ [2, 2, 2, 2, 2] ⏎ [0, 0, 0, 0
 Agrega un cuarto vector con los precios al cuadrado. ¿Cuántas líneas escribiste?
 :::
 
-::: docentes
+::: explicacion
 La aserción comprueba que exista `Mapear`. Los casos son los del programa inicial: lo que se muestra no cambia.
 :::

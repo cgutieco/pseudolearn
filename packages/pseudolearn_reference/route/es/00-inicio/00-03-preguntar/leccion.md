@@ -154,8 +154,8 @@ Queda una pregunta incómoda: ¿y si alguien escribe 0 amigos? No lo ejecutes to
 - inicio.preguntar.que-calcula
 :::
 
-::: docentes
-- **Un dato del tipo equivocado.** Responder «doce» cuando se espera un `Entero` detiene el programa. Muéstralo una vez y relaciónalo con los tipos de la lección anterior.
+::: profundizar titulo="Tropiezos frecuentes"
+- **Un dato del tipo equivocado.** Responder «doce» cuando se espera un `Entero` detiene el programa. Pruébalo una vez y relaciónalo con los tipos de la lección anterior.
 - **Olvidar leer el dato.** La caja se declara pero, sin `Leer`, nunca recibe el dato: el programa calcula con su valor inicial.
 - **Creer que leer muestra algo.** `Leer` no muestra nada; el mensaje lo escribe el `Escribir` de antes.
 :::

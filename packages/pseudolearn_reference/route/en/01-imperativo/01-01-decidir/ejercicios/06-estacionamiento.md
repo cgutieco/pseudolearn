@@ -28,6 +28,6 @@ The car park charges 3 pesos for the first hour and 2 pesos for each extra hour 
 On Sundays the first hour is free. Add a second value, the day, and charge accordingly.
 :::
 
-::: docentes
+::: explicacion
 Edges: 60 and 61 minutes. Frequent mistake: using `div` instead of rounding up, which charges 61 minutes as 60.
 :::

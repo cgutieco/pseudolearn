@@ -110,7 +110,7 @@ Sharing is not always an error. If all the kiosk screens have to see the same up
 - objetos.identidad.registro-u-objeto
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **«Assigning copies».** With records yes; with objects, no. The program in the try-it shows it.
 - **Comparing objects with equals expecting to compare the content.** Two orders with the same products are not the same object; the details are in [the Specification](especificacion:objetos.copia).
 - **«An alias is always an error».** Sometimes sharing is exactly what you want.

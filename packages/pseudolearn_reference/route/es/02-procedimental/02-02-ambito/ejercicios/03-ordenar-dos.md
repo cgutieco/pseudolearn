@@ -56,6 +56,6 @@ oculto | 0 ; 10 | 0 10
 Haz que `OrdenarDos` retorne además si tuvo que intercambiar.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: iguales, negativos y ya ordenados. Error frecuente: pasar las cajas por valor, que muestra el orden original.
 :::

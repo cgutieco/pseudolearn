@@ -95,8 +95,8 @@ El cuerpo es el primer bloque y la condición va al final, con un salto hacia at
 ```
 :::
 
-::: docentes
-Pide traducir `cuenta-atras` de `Mientras` a `Repetir`. Hay que invertir la condición, y con `n` en 0 desde el principio la versión con `Repetir` escribe un 0 que la otra no escribe.
+::: nota
+Traduce `cuenta-atras` de `Mientras` a `Repetir`. Hay que invertir la condición, y con `n` en 0 desde el principio la versión con `Repetir` escribe un 0 que la otra no escribe.
 :::
 
 ::: resumen

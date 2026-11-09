@@ -66,6 +66,6 @@ visible | 503 | problema
 ¿Hay algún código que este programa marque como bien y no lo sea?
 :::
 
-::: docentes
+::: explicacion
 Lo rompe cualquier código entre 201 y 299. La variante tiene respuesta negativa: el programa solo dice «bien» con el 200, que sí es bien.
 :::

@@ -40,6 +40,6 @@ oculto | -5 ; 0 ; 11 ; 5 | Aceptado: 5
 Muestra también cuántos intentos hicieron falta. (Con 0, 15 y 7: 3 intentos.)
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: los bordes 10 y 1 y varios intentos inválidos seguidos. Error frecuente: `O` en lugar de `Y`, que acepta cualquier número.
 :::

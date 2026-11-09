@@ -35,6 +35,6 @@ Each product is kept as a card with its three values together, in a vector.
 Show at the end the product with the least stock.
 :::
 
-::: docentes
+::: explicacion
 The app's catalogue of checks cannot require a record; the restriction asks for it, and the cases require the new stock. Frequent mistake: adding a third separate row, which works but leaves three rows to keep aligned.
 :::

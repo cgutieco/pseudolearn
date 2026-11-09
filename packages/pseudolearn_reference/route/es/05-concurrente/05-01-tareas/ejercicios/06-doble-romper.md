@@ -73,6 +73,6 @@ visible | 0 | 0
 ¿Qué línea hay que mover para que el programa sea correcto?
 :::
 
-::: docentes
+::: explicacion
 Lo rompe cualquier número distinto de 0. Es el error de usar un resultado antes de aguardarlo: el valor provisorio esconde la espera que faltaba.
 :::

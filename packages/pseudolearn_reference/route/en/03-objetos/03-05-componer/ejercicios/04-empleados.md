@@ -36,6 +36,6 @@ A class `Empleado` with a method `Presentarse` and a class `Cajero` that inherit
 Add a `Repositor` who introduces themselves as `Hola, soy Beto y repongo los estantes`.
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: a similar but different job (`cajera`), another cashier and another job. Frequent mistake: copying the greeting text instead of calling `Super`.
 :::

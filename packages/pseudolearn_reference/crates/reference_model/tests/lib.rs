@@ -27,7 +27,6 @@ fn callouts_round_trip_through_their_directive() {
     for name in [
         "frase",
         "limite",
-        "docentes",
         "por-dentro",
         "analogia",
         "nota",
@@ -42,6 +41,7 @@ fn callouts_round_trip_through_their_directive() {
         );
     }
     assert_eq!(CalloutKind::from_directive("otro"), None);
+    assert_eq!(CalloutKind::from_directive("docentes"), None);
     assert!(CalloutKind::Inside.collapsible() && !CalloutKind::Phrase.collapsible());
 }
 

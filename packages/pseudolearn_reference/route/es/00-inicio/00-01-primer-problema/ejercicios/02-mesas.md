@@ -37,6 +37,6 @@ visible | — | 6
 Las mesas nuevas tienen 6 sillas. ¿Cuántas hacen falta ahora? (Respuesta: 4.)
 :::
 
-::: docentes
+::: explicacion
 Solución: `Escribir techo(23 / 4);`. Error frecuente: responder 5, que deja tres personas de pie, o 5.75. No hay casos ocultos: antes de saber leer datos, el programa tiene un solo caso.
 :::

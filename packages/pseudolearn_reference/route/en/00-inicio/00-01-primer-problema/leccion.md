@@ -187,10 +187,10 @@ No exercise tells you what to write. It gives you a problem, and the cycle is yo
 - inicio.primer-problema.pintar-aula
 :::
 
-::: docentes
-- **«The computer understands what I meant».** The first party attempt shows 8.625. Ask the group to predict the output before running it: almost nobody expects decimals.
-- **Forgotten quotes.** Many write `Write Hola;` without quotes. The engine message mentions things not seen yet: just say «the quotes are missing» and move on.
-- **Skipping step 1.** Demand the two worked examples before opening the editor. The 8-people one is what breaks Beto's solution in the exercises.
+::: profundizar titulo="Common pitfalls"
+- **«The computer understands what I meant».** The first party attempt shows 8.625. Predict the output before running it: almost nobody expects decimals.
+- **Forgotten quotes.** It is easy to write `Write Hola;` without quotes. The engine message mentions things you have not seen yet: for now it is enough to know that the quotes are missing.
+- **Skipping step 1.** Work out the two examples by hand before opening the editor. The 8-people one is what breaks Beto's solution in the exercises.
 :::
 
 ::: por-dentro

@@ -110,7 +110,7 @@ Two campaigns at once are two functions from the same factory: `CrearDescuento(1
 - funcional.clausuras.mochila
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **Believing the closure sees later changes.** Here there can be none: the engine does not allow capturing something that is reassigned later.
 - **Confusing the factory with the manufactured function.** `CrearDescuento` receives a percentage; the function it gives back receives a price.
 :::

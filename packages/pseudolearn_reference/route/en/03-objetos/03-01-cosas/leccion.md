@@ -141,7 +141,7 @@ A third machine is one more line: `New Maquina(10)`.
 - objetos.cosas.cronometro-objeto
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **«The class and the object are the same».** Use the cutter figure: one cutter, many biscuits.
 - **A method that does not use the object's state.** When it does not touch `This`, it is probably a function that goes outside.
 - **Attributes that should be local variables.** A value that only one method uses during a call is not part of the state.

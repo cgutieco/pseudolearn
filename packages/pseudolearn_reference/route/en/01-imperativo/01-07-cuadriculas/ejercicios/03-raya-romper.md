@@ -34,6 +34,6 @@ This noughts and crosses program gets the lesson's board right. Find a board it 
 Build a board where this program gives the right winner even though the other diagonal is complete. (One that also has a full row of the same player.)
 :::
 
-::: docentes
+::: explicacion
 The program is missing the diagonal from the top right corner to the bottom left. Any board won only by that diagonal breaks it.
 :::

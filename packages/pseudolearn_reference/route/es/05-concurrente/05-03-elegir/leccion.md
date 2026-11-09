@@ -157,7 +157,7 @@ Compara `Elegir` con esperar las respuestas una tras otra. Si solo importa una r
 - concurrente.elegir.pedido-pruebas
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **«Siempre gana el mismo canal».** Lo decide la agenda: no se asume.
 - **«Cancelar borra lo que la tarea ya hizo».** Lo ya escrito queda; cancelar solo corta lo que faltaba.
 - **Confundir cancelar con fallar.** Falla una tarea; las que se cortan por eso no fallaron.

@@ -28,6 +28,6 @@ Read 4 contacts, each with name, phone and birthday month, and then a name. Show
 Also show how many classmates have their birthday in the same month as the searched one.
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: a missing name, the last one on the list and a repeated name (the first wins). Frequent mistake: replacing the phone on each match, which returns the last one.
 :::

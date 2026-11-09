@@ -36,6 +36,6 @@ A function `Componer(f, g)` that gives back a function that applies `g` and then
 Use `Componer` twice to build «double of double plus one».
 :::
 
-::: docentes
+::: explicacion
 The order matters: composing is not commutative. Hidden cases: negatives, 10 and 1.
 :::

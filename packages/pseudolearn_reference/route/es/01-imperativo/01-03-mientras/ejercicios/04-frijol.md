@@ -45,6 +45,6 @@ oculto | 50 | 6
 ¿Y si la ventana está a 1000 centímetros? (Con 3 centímetros, tarda 10 días.)
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: 99 → 1 (un día basta), 0 → 7, 50 → 6 (51, 53, 57, 65, 81, 113). Error frecuente: duplicar el crecimiento antes de sumarlo, que da 6 con 3 centímetros.
 :::

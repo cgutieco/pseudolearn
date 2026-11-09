@@ -85,8 +85,8 @@ Un `Mientras` son tres bloques: la cabecera con la condición, el cuerpo que sal
 ```
 :::
 
-::: docentes
-El error típico es olvidar actualizar la variable de la condición. Pide predecir qué pasa si se borra `n <- n - 1;`, y deja que lo comprueben en la app, que corta la ejecución al alcanzar su límite.
+::: nota
+El error típico es olvidar actualizar la variable de la condición. Predice qué pasa si se borra `n <- n - 1;` y compruébalo en la app, que corta la ejecución al alcanzar su límite.
 :::
 
 ::: resumen

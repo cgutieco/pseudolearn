@@ -153,10 +153,10 @@ An open problem remains: if the kitchen has to report dish by dish, waiting for 
 - concurrente.tareas.doble-romper
 :::
 
-::: docentes
-- **«The tasks run at the same time».** On a single computer they move forward by turns: show the kitchen figure.
+::: profundizar titulo="Common pitfalls"
+- **«The tasks run at the same time».** On a single computer they move forward by turns: the kitchen figure shows it.
 - **«The order of the output will always be this one».** Separate what is guaranteed from what is observed with the table of phase 4.
-- **Launching a task outside its scope.** The engine rejects it; send them to the scopes section of the Specification instead of explaining the diagnostic.
+- **Launching a task outside its scope.** The engine rejects it; the scopes section of the Specification explains the diagnostic.
 :::
 
 ::: por-dentro

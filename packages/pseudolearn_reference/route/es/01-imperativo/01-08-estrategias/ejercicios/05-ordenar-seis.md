@@ -53,6 +53,6 @@ oculto | -2 ; 0 ; -5 ; 3 ; 3 ; -1 | -5 ⏎ -2 ⏎ -1 ⏎ 0 ⏎ 3 ⏎ 3
 Muéstralos de mayor a menor cambiando un solo signo.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: orden inverso, repetidos y negativos. Error frecuente: intercambiar dentro del bucle de adentro, que ordena pero hace muchos más intercambios.
 :::

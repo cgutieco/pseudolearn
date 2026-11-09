@@ -87,8 +87,6 @@ final class ExerciseReveal extends StatelessWidget {
           RevealSection(title: l10n.routeExerciseExplanation, color: theme.colors.text.link, child: LessonBlockColumn(blocks: exercise.explanation, scope: scope)),
         if (exercise.variant.isNotEmpty)
           RevealSection(title: l10n.routeExerciseVariant, color: theme.colors.severities.success.fg, child: LessonBlockColumn(blocks: exercise.variant, scope: scope)),
-        if (exercise.teachers.isNotEmpty)
-          RevealSection(title: l10n.referenceCalloutTeachers, color: theme.syntax.keywordProcedural, child: LessonBlockColumn(blocks: exercise.teachers, scope: scope)),
       ],
     );
   }

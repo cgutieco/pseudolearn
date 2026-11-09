@@ -40,6 +40,6 @@ The VAT and the discount are pure functions; the main algorithm composes both in
 VAT becomes a value that is read. Which functions change?
 :::
 
-::: docentes
+::: explicacion
 The order of the composition matters: `ConIva(ConDescuento(100))` gives another result. That this shows in a single line is the point of the exercise.
 :::

@@ -87,7 +87,7 @@ Un objeto es un bloque del montón con una celda por atributo. El acceso `p.x` s
 ```
 :::
 
-::: docentes
+::: nota
 La pareja «molde y galleta» funciona: un molde, muchas galletas, cada una con su decoración. Deja de valer cuando dos variables comparten un objeto: no son dos galletas, son dos nombres para la misma.
 :::
 

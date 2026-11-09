@@ -1300,7 +1300,10 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       publica: se ve al recargar la pestaña, igual que antes.
     - `presentation/route/` es el lector: bloques de lección, avisos de la ruta, tira del ciclo, panel de respuesta por
       tipo y enlaces. Un enlace `ruta:<lección>` abre otra lección; un enlace de especificación abre su sección en el
-      lector de §4.62.
+      lector de §4.62. Al pedir la respuesta de un ejercicio, `ExerciseReveal` muestra su explicación y su variante, y
+      nada más: la app no distingue roles, así que no hay sección «Para docentes» ni `ReferenceCalloutKind.teachers`.
+      Un paquete antiguo que todavía publique ese tipo de recuadro se lee como una nota, igual que cualquier tipo
+      desconocido.
     - El camino de vuelta, de la Especificación a la ruta, sale de `spec-links.json`: `RouteSpecLinksCubit` cruza ese
       mapa con el índice una vez por edición y deja, por sección, las lecciones que la enlazan en el orden del archivo,
       descartando identidades que el índice no publica. `presentation/reference/reference_route_links.dart` las pinta

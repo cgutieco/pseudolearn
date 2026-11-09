@@ -32,6 +32,6 @@ The name and the price are kept together in a record `Producto`.
 Add a field `stock` and show how much is left after the sale.
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: amount 0 and price 1. The record does not change the output; it organises the data for the variant.
 :::

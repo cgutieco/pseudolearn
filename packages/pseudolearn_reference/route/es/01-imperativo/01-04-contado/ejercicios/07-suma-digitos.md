@@ -43,6 +43,6 @@ oculto | 9999 | 36
 Muestra cuántas cifras tiene el número. ¿Qué pasa con el 0?
 :::
 
-::: docentes
+::: explicacion
 No se sabe de antemano cuántas cifras hay: va `Mientras`. El 0 da cero vueltas y suma 0, que es correcto.
 :::

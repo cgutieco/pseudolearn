@@ -113,7 +113,7 @@ In one sentence: «The inventory is written as JSON text with a pure function, a
 - exterior.json.dos-pares
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **Single quotes inside the JSON.** JSON only accepts double quotes; the single ones belong to the program that builds it.
 - **The trailing comma.** It is the most common error, and `parseJson` marks it with line and column.
 - **Believing that JSON is a kind of file.** It is a way of writing text: it can go in a file, in a message or in an answer from the internet.

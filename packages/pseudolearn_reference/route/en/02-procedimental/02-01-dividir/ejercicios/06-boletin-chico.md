@@ -28,6 +28,6 @@ Three pupils have two marks each. Read, for each pupil, their name and their two
 If there is a tie, show all the tied names.
 :::
 
-::: docentes
+::: explicacion
 The first one wins the tie because the comparison is strict. Hidden cases: a tie for first place, everyone failing and an average of exactly 6.0 in the second visible case.
 :::

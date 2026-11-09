@@ -60,6 +60,6 @@ oculto | 100 | 5050
 Escribe `SumaPares(n)`, la suma de los pares desde 2 hasta `n`.
 :::
 
-::: docentes
+::: explicacion
 Sin caso base, la función se llama con -1, -2, … hasta que el motor la detiene por profundidad. El caso 100 comprueba que la referencia no agote los marcos.
 :::

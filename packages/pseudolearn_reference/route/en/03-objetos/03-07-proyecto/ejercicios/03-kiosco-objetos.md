@@ -37,6 +37,6 @@ A contract `MedioDePago` that `Efectivo` and `Tarjeta` meet, and a class `Invent
 Add the 20-peso voucher as a third payment method, without touching the other pieces.
 :::
 
-::: docentes
+::: explicacion
 Each case of Part II appears twice, with cash and with card. The card on 0 charges 0. Frequent mistake: applying the surcharge before the discount, which gives another number.
 :::

@@ -98,8 +98,8 @@ Cada variable local ocupa una ranura numerada del marco de su subprograma. En la
 ```
 :::
 
-::: docentes
-Pide a la clase que dibuje las cajas de `mochila` antes de ejecutarlo. Quien dibuja `cuadernos` con un 0 desde el principio está suponiendo un valor por defecto que no existe.
+::: nota
+Antes de ejecutarlo, dibuja las cajas de `mochila`. Si dibujas `cuadernos` con un 0 desde el principio, estás suponiendo un valor por defecto que no existe.
 :::
 
 ::: resumen

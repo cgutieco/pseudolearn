@@ -58,8 +58,8 @@ The body is the first block and the condition goes at the end, with a backward j
 ```
 :::
 
-::: docentes
-Ask the class to translate `cuenta-atras` from `While` to `Repeat`. The condition has to be inverted, and with `n` at 0 from the start the `Repeat` version writes a 0 that the other one does not.
+::: nota
+Translate `cuenta-atras` from `While` to `Repeat`. The condition has to be inverted, and with `n` at 0 from the start the `Repeat` version writes a 0 that the other one does not.
 :::
 
 ::: resumen

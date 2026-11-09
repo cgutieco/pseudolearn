@@ -227,7 +227,7 @@ Una tercera máquina es una línea más: `Nuevo Maquina(10)`.
 - objetos.cosas.cronometro-objeto
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **«La clase y el objeto son lo mismo».** Usa la figura del molde: un molde, muchas galletas.
 - **Un método que no usa el estado del objeto.** Cuando no toca `Este`, probablemente es una función que va afuera.
 - **Atributos que deberían ser variables locales.** Un dato que solo usa un método durante una llamada no es parte del estado.

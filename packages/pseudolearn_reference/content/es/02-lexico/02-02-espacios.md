@@ -38,8 +38,8 @@ mayor que dos
 
 Un salto de línea **no** sustituye al punto y coma. Si olvidas el `;`, el motor lo señala aunque la sentencia siguiente empiece en otra línea. Las palabras reservadas de varias palabras, como `Con Paso` o `Hasta Que`, tampoco pueden partirse en dos líneas.
 
-::: docentes
-Pide escribir el mismo programa con dos sangrías distintas y ejecutarlo: el resultado no cambia. Después explica por qué la sangría sigue siendo imprescindible para leerlo. Es una buena forma de separar «lo que entiende la máquina» de «lo que necesita una persona».
+::: nota
+Escribe el mismo programa con dos sangrías distintas y ejecútalo: el resultado no cambia. Aun así, la sangría es imprescindible para leerlo. Es una buena forma de separar «lo que entiende la máquina» de «lo que necesita una persona».
 :::
 
 ::: resumen

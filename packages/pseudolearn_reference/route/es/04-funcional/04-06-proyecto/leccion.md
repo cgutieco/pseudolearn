@@ -86,7 +86,7 @@ En una frase: «El reporte lee las ventas en el borde y calcula todo lo demás c
 - funcional.proyecto.reporte
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **Mostrar desde una función.** El motor lo rechaza; aprovéchalo para recordar dónde va cada cosa.
 - **Recorrer las ventas cuatro veces a mano.** Es correcto, pero el ejercicio pide usar las tres piezas de la Parte IV.
 - **El desempate.** Con `>` estricto gana el primero que se revisa, que es el de menor código.

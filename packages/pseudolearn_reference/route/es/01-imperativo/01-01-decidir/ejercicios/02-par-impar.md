@@ -42,6 +42,6 @@ oculto | -3 | impar
 Muestra `múltiplo de 3` o `no es múltiplo de 3`. (Con 9: múltiplo; con 10: no.)
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: 0 es par, 1 es impar y -3 comprueba los negativos. En PseudoLearn, `-3 mod 2` vale -1, que no es 0: la solución con `= 0` funciona; una con `= 1` falla en -3.
 :::

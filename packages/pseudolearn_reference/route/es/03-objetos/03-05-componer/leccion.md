@@ -199,9 +199,9 @@ Un tercer rasgo, como el envase retornable, agrega una clase y un atributo, no c
 - objetos.componer.cuando-heredar
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **Heredar para reutilizar código.** Cuando la hija no es un caso particular de la madre, la herencia ata dos cosas que van a cambiar distinto.
-- **Jerarquías profundas.** Entender una clase obliga a leer todas sus madres. Pide dibujar la jerarquía antes de agregar un nivel.
+- **Jerarquías profundas.** Entender una clase obliga a leer todas sus madres. Dibuja la jerarquía antes de agregar un nivel.
 - **«Componer es menos orientado a objetos».** Componer es armar objetos con objetos: es lo más orientado a objetos que hay.
 :::
 

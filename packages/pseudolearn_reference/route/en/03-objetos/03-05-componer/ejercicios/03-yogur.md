@@ -35,6 +35,6 @@ The product holds its traits inside, instead of having a particular case for eac
 Add the deposit bottle, which adds 2 pesos to the price. How many new classes are needed?
 :::
 
-::: docentes
+::: explicacion
 The app's catalogue of checks cannot forbid a class from inheriting from another; the restriction asks for it and type 4 requires it, because with inheritance one more class would be needed. Hidden cases: each trait alone, the combination with another price and a price of 0.
 :::

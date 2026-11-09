@@ -54,6 +54,6 @@ oculto | -1 ; -1 ; -1 ; -1 ; -1 ; -1 ; -1 | -7
 Escribe el bucle para que funcione con cualquier tamaño, guardando el tamaño en una caja con nombre.
 :::
 
-::: docentes
+::: explicacion
 El bucle da 8 vueltas para 7 casillas: en la octava pide la casilla 7, que no existe, y el programa se detiene fuera de rango. Error frecuente: arreglarlo con un arreglo de 8.
 :::

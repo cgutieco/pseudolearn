@@ -199,10 +199,10 @@ En una frase: «El programa sigue la racha de días calurosos, cuenta las que ll
 - imperativo.esquemas.buscar-pruebas
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **Olvidar la última racha.** Es el error más común. El ejercicio de romper lo pone en evidencia con una ola al final.
 - **Reiniciar la racha en el lugar equivocado.** Ponerla en 0 antes de revisar si fue una ola la pierde.
-- **Querer un esquema nuevo para cada problema.** Pide que nombren los esquemas que combina un problema antes de escribir.
+- **Querer un esquema nuevo para cada problema.** Nombra los esquemas que combina un problema antes de escribir.
 :::
 
 ::: siguiente

@@ -175,9 +175,9 @@ Compara las dos soluciones. Con retorno, quien lee `saldo <- Duplicar(saldo);` v
 - procedimental.ambito.retorno-o-referencia
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **«Son la misma caja porque se llaman igual».** El programa del problema lo desarma: el `saldo` de adentro es otra caja.
-- **Prestar la caja para todo.** Esconde los cambios. Pide que lean una llamada y digan qué cajas cambian sin mirar el subprograma.
+- **Prestar la caja para todo.** Esconde los cambios. Lee una llamada y di qué cajas cambian sin mirar el subprograma.
 - **«Las cajas del subprograma sobreviven entre llamadas».** Toda llamada abre un marco nuevo, con cajas nuevas.
 :::
 

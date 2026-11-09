@@ -27,8 +27,6 @@ FinAlgoritmo
 
 ::: explicacion
 `b <- a` copia el 5 en `b` en ese momento. Cuando después `a` pasa a 7, `b` no se entera: cada caja guarda su propio valor y no se recalcula sola.
-:::
 
-::: docentes
-Error frecuente: responder `7 7`, como si `b` quedara atada a `a`. Pide dibujar las dos cajas y tachar el valor viejo en cada asignación.
+Error frecuente: responder `7 7`, como si `b` quedara atada a `a`. Dibuja las dos cajas y tacha el valor viejo en cada asignación.
 :::

@@ -68,8 +68,8 @@ Every local variable takes a numbered slot in the frame of its subprogram. In th
 ```
 :::
 
-::: docentes
-Ask the class to draw the boxes of `mochila` before running it. Whoever draws `cuadernos` with a 0 from the start is assuming a default value that does not exist.
+::: nota
+Before running it, draw the boxes of `mochila`. If you draw `cuadernos` with a 0 from the start, you are assuming a default value that does not exist.
 :::
 
 ::: resumen

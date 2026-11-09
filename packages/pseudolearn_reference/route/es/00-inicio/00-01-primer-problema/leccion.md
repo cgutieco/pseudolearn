@@ -203,10 +203,10 @@ Ningún ejercicio te dice qué escribir. Te da un problema, y el ciclo es tuyo.
 - inicio.primer-problema.pintar-aula
 :::
 
-::: docentes
-- **«La computadora entiende lo que quise decir».** El primer intento de la fiesta muestra 8.625. Pide al grupo que prediga la salida antes de ejecutarlo: casi nadie espera decimales.
-- **Comillas olvidadas.** Muchos escriben `Escribir Hola;` sin comillas. El mensaje del motor habla de cosas que todavía no se vieron: di solo «faltan las comillas» y sigue.
-- **Saltarse el paso 1.** Exige los dos ejemplos a mano antes de abrir el editor. El de 8 personas es el que desarma la solución de Beto en los ejercicios.
+::: profundizar titulo="Tropiezos frecuentes"
+- **«La computadora entiende lo que quise decir».** El primer intento de la fiesta muestra 8.625. Predice la salida antes de ejecutarlo: casi nadie espera decimales.
+- **Comillas olvidadas.** Es fácil escribir `Escribir Hola;` sin comillas. El mensaje del motor habla de cosas que todavía no viste: por ahora basta con saber que faltan las comillas.
+- **Saltarse el paso 1.** Resuelve los dos ejemplos a mano antes de abrir el editor. El de 8 personas es el que desarma la solución de Beto en los ejercicios.
 :::
 
 ::: por-dentro

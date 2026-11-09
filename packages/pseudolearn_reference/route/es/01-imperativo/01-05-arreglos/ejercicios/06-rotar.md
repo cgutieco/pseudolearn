@@ -43,6 +43,6 @@ oculto | 3 ; 4 ; 5 ; 6 ; 7 | 7 ⏎ 3 ⏎ 4 ⏎ 5 ⏎ 6
 Rota de verdad el arreglo, moviendo los valores dentro de él, y después muéstralo de 0 a 4. (Hace falta guardar el último antes de correr los demás.)
 :::
 
-::: docentes
+::: explicacion
 La solución más corta no mueve nada: solo cambia el orden en que se muestra. La variante obliga a mover los valores, de atrás hacia adelante.
 :::

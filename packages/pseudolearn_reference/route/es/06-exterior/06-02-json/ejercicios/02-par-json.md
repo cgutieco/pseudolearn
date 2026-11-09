@@ -53,6 +53,6 @@ oculto | sandwich ; 1 | {"sandwich": 1}
 Comprueba el resultado con `AnalizarJson` antes de mostrarlo.
 :::
 
-::: docentes
+::: explicacion
 El espacio después de los dos puntos es parte del formato pedido. Los casos incluyen stock 0 y un número de tres cifras.
 :::

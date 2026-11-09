@@ -179,7 +179,7 @@ Cambiar el formato del ticket toca solo `Ticket`. Agregar un impuesto al importe
 - objetos.responsabilidades.clase-dios
 :::
 
-::: docentes
+::: profundizar titulo="Tropiezos frecuentes"
 - **Clases con nombre de verbo.** Un «Calculador» suele ser una tarea que le toca a otra clase.
 - **Repartir por tamaño y no por información.** Partir una clase grande en dos mitades no ayuda si las dos necesitan los mismos datos.
 - **Tarjetas con diez responsabilidades.** Una tarjeta que no entra en el papel es una clase que hace demasiado.

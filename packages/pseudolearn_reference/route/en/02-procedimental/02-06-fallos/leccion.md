@@ -119,9 +119,9 @@ What if the empty reply had its own reason, «empty»? A filter is added at the 
 - procedimental.fallos.caer-o-avisar
 :::
 
-::: docentes
+::: profundizar titulo="Common pitfalls"
 - **Validating too late.** Converting before checking stops the program with «doce». The order of the filters matters.
-- **A reason that says nothing.** «Error» tells nobody what to fix. Ask for one reason per filter.
+- **A reason that says nothing.** «Error» tells nobody what to fix. Write one reason per filter.
 - **Handling the error in the wrong place.** Whoever knows what to show is the main algorithm; the validation only reports.
 :::
 

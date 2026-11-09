@@ -51,6 +51,6 @@ oculto | Chicle ; 1 ; 25 | Chicle x 25 = 25
 Agrega un campo `stock` y muestra cuánto queda después de la venta.
 :::
 
-::: docentes
+::: explicacion
 Casos ocultos: cantidad 0 y precio 1. El registro no cambia la salida; ordena los datos para la variante.
 :::

@@ -36,6 +36,6 @@ A function `Filtrar` that receives the vector and a condition, and a function `E
 Show the sum of the even ones with `Reducir`.
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: no even number, 0 straight away and negative even numbers. Frequent mistake: passing `EsPar(x)`, which is a value and not the function.
 :::

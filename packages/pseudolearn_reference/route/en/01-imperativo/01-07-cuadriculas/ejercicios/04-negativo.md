@@ -28,6 +28,6 @@ A 4 × 4 image is made of white (0) and black (1) dots. Read the 16 values, row 
 Show the image flipped from left to right, like in a mirror, without inverting the colours.
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: all black, the diagonal and a single dot. Frequent mistake: showing each digit with its own `Write`, which puts one per line.
 :::

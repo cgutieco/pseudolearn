@@ -103,8 +103,8 @@ Cada asignación a una variable local es un `store` en su ranura. Fíjate en que
 ```
 :::
 
-::: docentes
-Muchos estudiantes leen `a <- b` como una igualdad matemática. Pide que expliquen por qué `a <- b; b <- a;` no intercambia nada, dibujando las cajas.
+::: nota
+Es fácil leer `a <- b` como una igualdad matemática. Dibuja las cajas y explica por qué `a <- b; b <- a;` no intercambia nada.
 :::
 
 ::: resumen

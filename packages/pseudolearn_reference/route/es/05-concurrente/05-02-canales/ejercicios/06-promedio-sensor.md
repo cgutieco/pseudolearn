@@ -74,6 +74,6 @@ oculto | 1 ; 2 ; 3 ; 4 ; 5 | 3.0
 Muestra también la temperatura más alta.
 :::
 
-::: docentes
+::: explicacion
 `/` entre enteros da un real, por eso 24 se muestra 24.0. Las temperaturas negativas prueban que la suma puede bajar; el caso de ceros, que no hay división entre cero porque siempre llegan 5 medidas.
 :::

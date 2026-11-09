@@ -36,6 +36,6 @@ The JSON text of the inventory is built by a pure function, `InventarioJson`, wh
 Add to the closing how many sales were rejected.
 :::
 
-::: docentes
+::: explicacion
 Hidden cases: an invalid sale in the middle, a sale that leaves a stock at 0, one that asks for more than there is, the five products, large amounts rejected, a day with only rejections and an amount of 0. The keys of the JSON are the names of the catalogue, with a capital letter and an accent.
 :::

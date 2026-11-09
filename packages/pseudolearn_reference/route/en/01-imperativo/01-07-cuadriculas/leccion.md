@@ -136,10 +136,10 @@ For a 4 × 4 board the limits of the loops and the row of the second diagonal ch
 - imperativo.cuadriculas.casillas
 :::
 
-::: docentes
-- **Confusing row and column.** The row comes first. Ask them to point at `[0, 2]` in the figure before writing.
+::: profundizar titulo="Common pitfalls"
+- **Confusing row and column.** The row comes first. Point at `[0, 2]` in the figure before writing.
 - **Indices from 1.** The centre of a 3 × 3 board is `[1, 1]`.
-- **Checking only rows.** Show a board won by a column and another by the second diagonal.
+- **Checking only rows.** Try a board won by a column and another by the second diagonal.
 :::
 
 ::: siguiente
