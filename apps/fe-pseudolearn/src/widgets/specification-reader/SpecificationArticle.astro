@@ -1,0 +1,129 @@
+---
+import type { SpecificationSection } from '@entities/specification/model/specification';
+import type { Locale } from '@shared/i18n/locales';
+import { useTranslations } from '@shared/i18n/translator';
+import SpecBlocks from './SpecBlocks.astro';
+import SpecRuns from './SpecRuns.astro';
+
+export interface Props {
+  section: SpecificationSection;
+  locale: Locale;
+  markdownHref: string;
+}
+
+const { section, locale, markdownHref } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+<article class="article">
+  <header class="article__header">
+    <p class="article__number pl-overline pl-overline--brand">{section.number}</p>
+    <h1 class="article__title">
+      <SpecRuns runs={section.title} locale={locale} />
+    </h1>
+    <p class="article__phrase">
+      <SpecRuns runs={section.phrase} locale={locale} />
+    </p>
+    <a class="article__markdown pl-mono" href={markdownHref} type="text/markdown">
+      {t('specification.section.markdown')}
+    </a>
+  </header>
+  <SpecBlocks blocks={section.blocks} locale={locale} />
+</article>
+
+<style>
+  .article {
+    min-width: 0;
+    max-width: 760px;
+    color: var(--pl-ink);
+    font-size: 1.0625rem;
+  }
+
+  .article__header {
+    padding-bottom: var(--pl-space-lg);
+    border-bottom: 1px solid var(--pl-line);
+  }
+
+  .article__title {
+    margin-top: var(--pl-space-xs);
+    font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .article__phrase {
+    margin-top: var(--pl-space-sm);
+    color: var(--pl-ink-2);
+    font-size: 1.1875rem;
+    line-height: 1.55;
+  }
+
+  .article :global(.runs__code),
+  .article :global(code),
+  .article :global(pre) {
+    font-family: var(--pl-font-code);
+  }
+
+  .article :global(.runs__code) {
+    padding: 1px 3px;
+    border-radius: var(--pl-radius-sm);
+    background: var(--pl-sunken);
+    font-size: 0.92em;
+    overflow-wrap: anywhere;
+  }
+
+  .article :global(.runs__slot),
+  .article :global(.code__slot) {
+    color: var(--pl-ink-2);
+    font-style: italic;
+  }
+
+  .article :global(.runs__link) {
+    color: var(--pl-brand);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .article :global(.code__optional) {
+    color: var(--pl-brand);
+    font-weight: 600;
+  }
+
+  .article :global(.code__token--structured) {
+    color: var(--pl-syn-struct);
+    font-weight: 600;
+  }
+
+  .article :global(.code__token--procedural) {
+    color: var(--pl-syn-proc);
+    font-weight: 600;
+  }
+
+  .article :global(.code__token--object) {
+    color: var(--pl-syn-oop);
+    font-weight: 600;
+  }
+
+  .article :global(.code__token--identifier) {
+    color: var(--pl-syn-id);
+  }
+
+  .article :global(.code__token--number) {
+    color: var(--pl-syn-num);
+  }
+
+  .article :global(.code__token--string) {
+    color: var(--pl-syn-str);
+  }
+
+  .article :global(.code__token--muted) {
+    color: var(--pl-ink-3);
+  }
+
+  .article__markdown {
+    display: inline-block;
+    margin-top: var(--pl-space-md);
+    color: var(--pl-brand);
+    font-size: 0.875rem;
+  }
+</style>

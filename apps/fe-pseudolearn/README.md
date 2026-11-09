@@ -3,7 +3,7 @@
 # PseudoLearn — sitio web
 
 **Programar se entiende cuando se ve.**
-Sitio oficial de [PseudoLearn](https://pseudolearn.app): landing, contacto y soporte, e historial de versiones.
+Sitio oficial de [PseudoLearn](https://pseudolearn.app): landing, especificación del lenguaje, contacto y soporte, e historial de versiones.
 
 [![Node](https://img.shields.io/badge/node-%3E%3D22.23.3-339933?logo=node.js&logoColor=white)](.nvmrc)
 ![Astro](https://img.shields.io/badge/Astro-7-BC52EE?logo=astro&logoColor=white)
@@ -39,7 +39,9 @@ eso se sostiene con un estándar de verificación más alto que el del resto del
   (decisión 13).
 - Recibir y entregar los mensajes del formulario de contacto, con verificación anti-bot.
 - Completar el pago de Paddle que abre la app de Windows en `/checkout` (decisión 15).
-- Cumplir WCAG 2.1 AA, verificado automáticamente en las doce rutas y en los dos temas.
+- Publicar la especificación ilustrada del lenguaje en `/spec` y `/en/spec`, con una versión en Markdown de cada
+  página para asistentes y agentes de IA (decisión 16).
+- Cumplir WCAG 2.1 AA, verificado automáticamente en las rutas de la suite de accesibilidad y en los dos temas.
 - Sostener el presupuesto de rendimiento: cero JavaScript de cliente salvo cinco excepciones
   declaradas y medidas.
 
@@ -79,6 +81,13 @@ Antes de ejecutar `pnpm check:all` o compilar desde un checkout limpio, genera l
 ```bash
 (cd ../../packages/pseudolearn_brand && python3 -m pip install fonttools && python3 -m pseudolearn_brand build)
 (cd ../pseudolearn_app && flutter pub get && flutter test tool/generate_product_shot.dart)
+```
+
+La especificación ilustrada (`src/entities/specification/generated/`) sí está versionada. Tras editar el libro en
+`packages/pseudolearn_reference`, se regenera desde ese miembro:
+
+```bash
+(cd ../../packages/pseudolearn_reference && cargo run --locked -p reference_cli -- build)
 ```
 
 El build de CI ejecuta estos pasos antes de `pnpm build`. Las capturas y salidas de marca se regeneran bajo sus rutas
@@ -155,7 +164,7 @@ src/
 ├── views/      Composición completa de cada ruta, y el manejador del formulario
 ├── widgets/    Bloques compuestos: cabecera, pie, hero, superficies, ruta, descargas…
 ├── features/   Interacción: conmutador de tema, conmutador de idioma, formulario
-├── entities/   contact-request, learning-module, platform, release
+├── entities/   contact-request, learning-module, platform, release, specification
 ├── shared/     i18n, estilos, ui, lib, config, dobles de prueba
 ├── pages/      Rutas de Astro: envoltorios de 14 líneas o menos
 └── assets/     Capturas del producto
@@ -167,7 +176,8 @@ segunda copia de las reglas dentro de los scripts.
 
 Una sola dependencia de datos sale del paquete: el registro de cambios `CHANGELOG.json` de la raíz del
 monorepo, importado con el alias `@changelog` únicamente desde `entities/release/model/release-catalog.ts`
-(decisión 9). Por eso el workflow `push-production-web.yml` se lanza solo a mano (`workflow_dispatch`); al registrar una versión en ese
+(decisión 9). Las dos carpetas `generated/` (`shared/agent-sheet/` y `entities/specification/`) no son
+dependencias: las escriben los generadores de `packages/` dentro de este paquete (decisiones 14 y 16). Por eso el workflow `push-production-web.yml` se lanza solo a mano (`workflow_dispatch`); al registrar una versión en ese
 archivo hay que lanzarlo para publicar la web.
 
 ---
@@ -427,6 +437,41 @@ sin segunda implementación es coste sin beneficio.
   la política estricta.
 - **Descartado.** _Ampliar la CSP global:_ abriría todas las páginas a scripts de terceros. _El
   checkout alojado de Paddle:_ depende de una aprobación que no controla el proyecto.
+
+### Decisión 16: la especificación ilustrada se publica en `/spec` como HTML estático y Markdown
+
+- **Problema.** La especificación del lenguaje solo se leía dentro de la app, y los asistentes de IA no tenían
+  más que la ficha de `llms-full.txt`. Hacía falta publicarla en la web, legible para personas y rápida de leer
+  para agentes, sin escribir el libro dos veces ni hacer que la web dependa de la app.
+- **Fuente.** `packages/pseudolearn_reference` compila el libro y escribe aquí, en
+  `src/entities/specification/generated/<es|en>/`, las dos ediciones de perfil propio (`toc.json` y
+  `sections/<id>.json`). La dependencia va del paquete a la web, igual que hacia la app; nadie la edita a mano
+  (`GEN-NO-HAND-COPY`), Prettier la ignora y `reference check` falla con `REF-WEB-BUNDLE-STALE` si se desfasa. Se
+  versiona porque el build de la web la consume y no ejecuta Cargo.
+- **Lectura.** `entities/specification/model/specification-catalog.ts` carga los JSON con `import.meta.glob` y
+  los pasa por `readEdition`, que devuelve como valores los problemas: índice vacío, sección sin archivo o sin
+  entrada en el índice, archivo sin forma de sección, identificador que no se puede convertir en ruta y enlace a
+  una sección inexistente. Si hay alguno, el catálogo detiene el build con la lista, como el registro de cambios.
+- **Rutas.** `/spec` y `/en/spec` son el índice; cada sección `area.tema` vive en `/spec/area/tema` (sin puntos
+  en la ruta, que el servidor de assets confundiría con una extensión). `ROUTES.specification` la incluye en el
+  sitemap y el pie y la barra de soporte enlazan ahí; el ancla `#specification` de la home, que no existía, se
+  retiró.
+- **Pintado.** Cero JavaScript propio. El texto en línea y los tokens de código se convierten a HTML en
+  `widgets/specification-reader/runs-html.ts` y `token-html.ts`, con escape, y se insertan con `set:html`: así
+  ningún formateo de plantilla puede colar espacios dentro de un `<code>`. Los colores de los tokens repiten la
+  correspondencia del editor de la app sobre los tokens `--pl-syn-*`. Las figuras se componen en el build: una
+  viñeta por paso (base más capas activas) con su texto y los paneles acumulados por zona, en vez del control
+  paso a paso de la app. Los centinelas de rol pasan a variables CSS (`var(--pl-…)`), así que el tema oscuro
+  funciona sin otra copia del SVG.
+- **Agentes.** Cada página tiene su par en Markdown (`/spec/area/tema.md`, `/spec/index.md`), anunciado con
+  `<link rel="alternate" type="text/markdown">` y con enlaces absolutos a los demás Markdown. Las figuras se
+  describen con su texto alternativo, su descripción y sus pasos. `/llms.txt` enlaza los dos índices. Las
+  etiquetas («Salida», «Paso»…) salen de los diccionarios; el Markdown no tiene texto escrito a mano.
+- **Descartado.** _Un subdominio:_ reparte la autoridad del dominio y duplica cabeceras, sitemap y marca.
+  _Leer el paquete de `apps/pseudolearn_app/assets/`:_ la web no importa nada de otras aplicaciones.
+  _Analizar el Markdown fuente del libro en Astro:_ duplicaría el compilador y sus verificaciones. _Un control
+  paso a paso en cliente:_ gasta presupuesto de JavaScript y esconde a los agentes los pasos que no se ven.
+  _Las ediciones cruzadas (español con perfil inglés):_ nadie las pidió.
 
 ## 5. Reglas de código
 

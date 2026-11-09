@@ -11,8 +11,12 @@ const indexLines = [
   '- [Full language sheet for agents](/llms-full.txt): vocabulary, grammar, library, differences from PSeInt and executed examples, in English and Spanish.',
 ];
 
-export function llmsIndex(): string {
-  return `${indexLines.join('\n')}\n`;
+const SPECIFICATION_HEADING = ['', '## Illustrated specification', ''];
+
+export function llmsIndex(specificationLinks: readonly string[] = []): string {
+  const specification =
+    specificationLinks.length === 0 ? [] : [...SPECIFICATION_HEADING, ...specificationLinks];
+  return `${[...indexLines, ...specification].join('\n')}\n`;
 }
 
 export function llmsFull(): string {

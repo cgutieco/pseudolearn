@@ -1,0 +1,101 @@
+---
+import type { ContentsPart } from '@entities/specification/model/specification';
+import { sectionPath } from '@entities/specification/model/section-address';
+import { runsText } from '@entities/specification/model/plain-text';
+import type { Locale } from '@shared/i18n/locales';
+import { localizePath } from '@shared/i18n/routes';
+
+export interface Props {
+  parts: readonly ContentsPart[];
+  locale: Locale;
+}
+
+const { parts, locale } = Astro.props;
+---
+
+<ol class="contents">
+  {parts.map((part) => (
+    <li class="contents__part">
+      <h2 class="contents__title">
+        <span class="contents__number pl-mono">{part.number}</span> {part.title}
+      </h2>
+      <p class="contents__summary">{part.summary}</p>
+      <ol class="contents__sections">
+        {part.sections.map((entry) => (
+          <li>
+            <a class="contents__link" href={localizePath(sectionPath(entry.id), locale)}>
+              <span class="contents__section-number pl-mono">{entry.number}</span>
+              <span class="contents__section-title">{runsText(entry.title)}</span>
+              <span class="contents__phrase">{runsText(entry.phrase)}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .contents {
+    display: grid;
+    gap: var(--pl-space-2xl);
+    list-style: none;
+  }
+
+  .contents__title {
+    font-size: 1.5rem;
+    line-height: 1.25;
+  }
+
+  .contents__number {
+    color: var(--pl-brand);
+  }
+
+  .contents__summary {
+    margin-top: var(--pl-space-xs);
+    color: var(--pl-ink-2);
+  }
+
+  .contents__sections {
+    display: grid;
+    gap: var(--pl-space-xs);
+    margin-top: var(--pl-space-md);
+    list-style: none;
+  }
+
+  .contents__link {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    column-gap: var(--pl-space-sm);
+    padding: var(--pl-space-sm) var(--pl-space-md);
+    border: 1px solid var(--pl-line);
+    border-radius: var(--pl-radius-control);
+    background: var(--pl-surface);
+    color: var(--pl-ink);
+    text-decoration: none;
+  }
+
+  .contents__link:hover {
+    border-color: var(--pl-brand);
+  }
+
+  .contents__section-number {
+    grid-row: span 2;
+    color: var(--pl-ink-3);
+  }
+
+  .contents__section-title {
+    font-weight: 600;
+  }
+
+  .contents__phrase {
+    color: var(--pl-ink-2);
+    font-size: 0.9375rem;
+  }
+
+  @media (min-width: 900px) {
+    .contents__sections {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

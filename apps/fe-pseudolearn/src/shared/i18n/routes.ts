@@ -6,6 +6,7 @@ export const ROUTES = {
   versions: '/versions',
   privacy: '/privacy',
   terms: '/terms',
+  specification: '/spec',
 } as const;
 
 export const UNLISTED_ROUTES = {

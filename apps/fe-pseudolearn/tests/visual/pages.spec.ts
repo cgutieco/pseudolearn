@@ -4,6 +4,9 @@ const ROUTES = [
   { path: '/', name: 'home' },
   { path: '/contact', name: 'contact' },
   { path: '/versions', name: 'versions' },
+  { path: '/spec', name: 'specification' },
+  { path: '/spec/control/si', name: 'specification section' },
+  { path: '/spec/apendice/diagnosticos', name: 'specification appendix' },
 ];
 
 const VIEWPORTS = [

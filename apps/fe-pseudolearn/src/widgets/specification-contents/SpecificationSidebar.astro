@@ -1,0 +1,81 @@
+---
+import type { ContentsPart } from '@entities/specification/model/specification';
+import { sectionPath } from '@entities/specification/model/section-address';
+import { runsText } from '@entities/specification/model/plain-text';
+import type { Locale } from '@shared/i18n/locales';
+import { ROUTES, localizePath } from '@shared/i18n/routes';
+import { useTranslations } from '@shared/i18n/translator';
+
+export interface Props {
+  part: ContentsPart;
+  currentId: string;
+  locale: Locale;
+}
+
+const { part, currentId, locale } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+<nav class="sidebar" aria-label={t('specification.contents.label')}>
+  <a class="sidebar__index" href={localizePath(ROUTES.specification, locale)}>
+    {t('specification.contents.index')}
+  </a>
+  <p class="sidebar__part pl-overline">
+    {part.number}. {part.title}
+  </p>
+  <ol class="sidebar__list">
+    {part.sections.map((entry) => (
+      <li>
+        <a
+          class="sidebar__link"
+          href={localizePath(sectionPath(entry.id), locale)}
+          aria-current={entry.id === currentId ? 'page' : undefined}
+        >
+          <span class="pl-mono">{entry.number}</span> {runsText(entry.title)}
+        </a>
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style>
+  .sidebar {
+    display: grid;
+    gap: var(--pl-space-sm);
+    align-content: start;
+    font-size: 0.9375rem;
+  }
+
+  .sidebar__index {
+    color: var(--pl-brand);
+    font-weight: 600;
+  }
+
+  .sidebar__part {
+    margin-top: var(--pl-space-xs);
+  }
+
+  .sidebar__list {
+    display: grid;
+    gap: 2px;
+    list-style: none;
+  }
+
+  .sidebar__link {
+    display: block;
+    padding: var(--pl-space-2xs) var(--pl-space-xs);
+    border-radius: var(--pl-radius-sm);
+    color: var(--pl-ink-2);
+    text-decoration: none;
+  }
+
+  .sidebar__link:hover {
+    color: var(--pl-ink);
+  }
+
+  .sidebar__link[aria-current='page'] {
+    background: var(--pl-brand-faint);
+    color: var(--pl-brand-deep);
+    font-weight: 600;
+  }
+</style>

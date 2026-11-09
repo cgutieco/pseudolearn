@@ -15,7 +15,6 @@ export const SITE = {
 export const ANCHORS = {
   editor: 'editor',
   track: 'track',
-  specification: 'specification',
   downloads: 'downloads',
   releaseHistory: 'release-history',
 } as const;

@@ -1,0 +1,72 @@
+---
+import BaseLayout from '@app/layouts/BaseLayout.astro';
+import { specificationEdition } from '@entities/specification/model/specification-catalog';
+import type { Locale } from '@shared/i18n/locales';
+import { ROUTES } from '@shared/i18n/routes';
+import { useTranslations } from '@shared/i18n/translator';
+import PageHero from '@widgets/page-hero/PageHero.astro';
+import SpecificationContents from '@widgets/specification-contents/SpecificationContents.astro';
+import { contentsMarkdownPath } from './specification-pages';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t } = useTranslations(locale);
+const markdownPath = contentsMarkdownPath(locale);
+---
+
+<BaseLayout
+  locale={locale}
+  path={ROUTES.specification}
+  title={t('specification.seoTitle')}
+  description={t('specification.seoDescription')}
+>
+  <link slot="head" rel="alternate" type="text/markdown" href={markdownPath} />
+  <PageHero
+    overline={t('specification.hero.overline')}
+    title={t('specification.hero.title')}
+    lead={t('specification.hero.lead')}
+  />
+  <div class="pl-container index">
+    <aside class="pl-card index__agents">
+      <p class="pl-overline pl-overline--brand">{t('specification.agents.title')}</p>
+      <p class="index__agents-text">{t('specification.agents.text')}</p>
+      <p class="index__agents-links">
+        <a class="pl-link-arrow" href={markdownPath} type="text/markdown">
+          {t('specification.agents.contents')}
+        </a>
+        <a class="pl-link-arrow" href="/llms.txt" type="text/plain">
+          {t('specification.agents.sheet')}
+        </a>
+      </p>
+    </aside>
+    <SpecificationContents parts={specificationEdition(locale).contents} locale={locale} />
+  </div>
+</BaseLayout>
+
+<style>
+  .index {
+    display: grid;
+    gap: var(--pl-space-2xl);
+    padding-top: var(--pl-space-2xl);
+    padding-bottom: var(--pl-space-4xl);
+  }
+
+  .index__agents {
+    display: grid;
+    gap: var(--pl-space-xs);
+    padding: var(--pl-space-lg);
+  }
+
+  .index__agents-text {
+    color: var(--pl-ink-2);
+  }
+
+  .index__agents-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--pl-space-lg);
+  }
+</style>

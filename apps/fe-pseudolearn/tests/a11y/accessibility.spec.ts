@@ -14,6 +14,11 @@ const ROUTES = [
   '/en/privacy',
   '/en/terms',
   '/en/checkout',
+  '/spec',
+  '/spec/control/si',
+  '/spec/apendice/diagnosticos',
+  '/en/spec',
+  '/en/spec/vision/viaje',
 ];
 const THEMES = ['light', 'dark'] as const;
 

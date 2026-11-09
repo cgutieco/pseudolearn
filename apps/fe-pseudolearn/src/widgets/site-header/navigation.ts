@@ -43,7 +43,7 @@ export function buildFooterColumns(locale: Locale): readonly FooterColumn[] {
       links: [
         { labelKey: 'nav.editor', href: anchor(ANCHORS.editor) },
         { labelKey: 'nav.track', href: anchor(ANCHORS.track) },
-        { labelKey: 'footer.linkSpec', href: anchor(ANCHORS.specification) },
+        { labelKey: 'footer.linkSpec', href: localizePath(ROUTES.specification, locale) },
         { labelKey: 'nav.downloads', href: anchor(ANCHORS.downloads) },
       ],
     },

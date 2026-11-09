@@ -2,11 +2,13 @@ import type { APIRoute } from 'astro';
 import { SITE } from '@shared/config/site';
 import { LOCALES } from '@shared/i18n/locales';
 import { ROUTES, localizePath } from '@shared/i18n/routes';
+import { specificationSitemapPaths } from '@views/specification/specification-pages';
 
 const CHANGE_FREQUENCY = 'monthly';
 
 export const GET: APIRoute = () => {
-  const entries = Object.values(ROUTES).flatMap((route) =>
+  const routes = [...Object.values(ROUTES), ...specificationSitemapPaths()];
+  const entries = routes.flatMap((route) =>
     LOCALES.map((locale) => ({ locale, route, url: new URL(localizePath(route, locale), SITE.url).href })),
   );
 

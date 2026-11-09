@@ -13,3 +13,4 @@ docs/
 .wrangler/
 coverage/
 src/shared/agent-sheet/generated/
+src/entities/specification/generated/
