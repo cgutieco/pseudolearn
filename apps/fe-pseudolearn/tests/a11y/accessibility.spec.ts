@@ -7,11 +7,13 @@ const ROUTES = [
   '/versions',
   '/privacy',
   '/terms',
+  '/checkout',
   '/en',
   '/en/contact',
   '/en/versions',
   '/en/privacy',
   '/en/terms',
+  '/en/checkout',
 ];
 const THEMES = ['light', 'dark'] as const;
 

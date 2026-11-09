@@ -8,6 +8,10 @@ export const ROUTES = {
   terms: '/terms',
 } as const;
 
+export const UNLISTED_ROUTES = {
+  checkout: '/checkout',
+} as const;
+
 export type RouteName = keyof typeof ROUTES;
 
 export interface LocalizedAlternate {

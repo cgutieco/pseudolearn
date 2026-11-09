@@ -38,8 +38,9 @@ eso se sostiene con un estándar de verificación más alto que el del resto del
   directa del instalador explicando cómo superar el aviso de SmartScreen mientras no esté firmado
   (decisión 13).
 - Recibir y entregar los mensajes del formulario de contacto, con verificación anti-bot.
-- Cumplir WCAG 2.1 AA, verificado automáticamente en las diez rutas y en los dos temas.
-- Sostener el presupuesto de rendimiento: cero JavaScript de cliente salvo cuatro excepciones
+- Completar el pago de Paddle que abre la app de Windows en `/checkout` (decisión 15).
+- Cumplir WCAG 2.1 AA, verificado automáticamente en las doce rutas y en los dos temas.
+- Sostener el presupuesto de rendimiento: cero JavaScript de cliente salvo cinco excepciones
   declaradas y medidas.
 
 ### Fuera de alcance a propósito (`SCOPE-YAGNI`)
@@ -49,10 +50,11 @@ eso se sostiene con un estándar de verificación más alto que el del resto del
   caso real sin multipart, sin límites de tamaño, sin superficie de malware y sin almacenamiento.
 - **Sin frameworks SPA** ni librerías de componentes. Todo el estilo sale de tokens propios.
 - **Sin `astro:i18n`.** El porqué está en la decisión 2.
-- **Sin apoyo económico ni pasarela de pago.** La app se distribuye en las tiendas de Apple, y una
-  web enlazada desde su ficha que cobre por fuera es motivo de observación en revisión. Si algún día
-  hay una forma de apoyar el proyecto, vivirá dentro de la app y por el canal de la tienda, no aquí.
-  Por eso la pestaña que ocupaba ese sitio ahora publica las versiones.
+- **Sin venta en el sitio.** La app se distribuye en las tiendas de Apple, y una web enlazada desde
+  su ficha que ofrezca comprar por fuera es motivo de observación en revisión. El sitio no anuncia
+  precios ni enlaza a ningún pago. La única página de pago, `/checkout`, solo completa una
+  transacción que ya creó la app de Windows (decisión 15): no se indexa, no está en el sitemap ni en
+  la navegación, y la app de iOS y macOS nunca la abre.
 
 ---
 
@@ -105,8 +107,10 @@ Sin ellas el sitio funciona, pero cae a la familia de respaldo.
 
 ### Secretos
 
-`PUBLIC_TURNSTILE_SITE_KEY` es público. Los demás son secretos de servidor y en producción se cargan
-como _secrets_ de Wrangler, nunca como variables en texto plano:
+`PUBLIC_TURNSTILE_SITE_KEY`, `PUBLIC_PADDLE_CLIENT_TOKEN` y `PUBLIC_PADDLE_ENVIRONMENT`
+(`production` o `sandbox`) son públicos y se leen al compilar: el workflow de producción los toma de
+las variables del repositorio. Los demás son secretos de servidor y en producción se cargan como
+_secrets_ de Wrangler, nunca como variables en texto plano:
 
 ```bash
 wrangler secret put TURNSTILE_SECRET_KEY
@@ -402,6 +406,27 @@ sin segunda implementación es coste sin beneficio.
   ese miembro falla si está desfasada. Al no tener página `.astro`, no entran en la paridad de rutas por idioma.
 - **Alternativas descartadas:** copiar la ficha en `public/` (se desfasa sin que nada lo detecte) o generarla en el
   build de Astro (obligaría a la web a leer el corpus y su exportación).
+
+### Decisión 15: `/checkout` completa los pagos de Paddle que abre la app de Windows
+
+- **Problema.** Windows cobra con Paddle, que es comerciante registrado. Paddle abre el pago de una
+  transacción creada por el servidor en el «enlace de pago por defecto» de la cuenta, con
+  `?_ptxn=txn_…`, y esa página tiene que cargar Paddle.js. El checkout alojado por Paddle sin página
+  propia exige su aprobación.
+- **Elección.** Una vista `checkout` (`views/checkout/`) con la feature `paddle-checkout`: lee el
+  token de cliente y el entorno al compilar, valida que `_ptxn` tenga forma de transacción, carga
+  `https://cdn.paddle.com/paddle/v2/paddle.js` solo en esta ruta y sigue los eventos
+  `checkout.completed`, `checkout.closed` y `checkout.error` con mensajes traducidos. Al completar o
+  cerrar, ofrece volver a la app con `pseudolearn://agent/purchase`, que refresca el saldo. La ruta
+  vive en `UNLISTED_ROUTES`, fuera del sitemap, con `noIndex`, y se prueba en la suite de
+  accesibilidad.
+- **Cabeceras.** `public/_headers` retira para `/checkout` y `/en/checkout` la CSP y la
+  `Permissions-Policy` globales (`!`) y declara versiones que solo amplían lo que Paddle necesita:
+  script y estilos de `cdn.paddle.com`, marcos de `buy.paddle.com` y `sandbox-buy.paddle.com`,
+  conexiones e imágenes de `*.paddle.com` y `payment` para esos marcos. El resto del sitio conserva
+  la política estricta.
+- **Descartado.** _Ampliar la CSP global:_ abriría todas las páginas a scripts de terceros. _El
+  checkout alojado de Paddle:_ depende de una aprobación que no controla el proyecto.
 
 ## 5. Reglas de código
 
