@@ -55,3 +55,16 @@ Heredados de un README anterior, sin confirmar:
 - `ejecutar --nativo` no ofrece anfitrión físico completo.
 - La paridad nativa de registros, genéricos, variantes y liberación por ámbito queda pendiente de la paridad del sujeto nativo; sus programas de aceptación no se ejecutan en nativo.
 - Verificación de ejecución de los programas de aceptación de la biblioteca solo en macOS arm64; Linux y Windows no se ejecutaron localmente.
+
+## pseudolearn_reference
+
+Confirmados contra el código:
+
+- La comilla (`quote`) está excluida de la cobertura de vocabulario en `coverage-exclusions.json`.
+
+Heredados de un README anterior, sin confirmar:
+
+- La categoría de resaltado (`categories.json`) debería salir del corpus como propiedad propia.
+- Los textos entre comillas de los programas no se traducen en la edición inglesa.
+- Las aserciones estructurales de los ejercicios se validan en su forma, no contra la referencia, porque el puerto del motor no publica la vista del programa.
+- La ruta no verifica mecánicamente que «La herramienta nueva» aparezca cuando una lección introduce una construcción.
