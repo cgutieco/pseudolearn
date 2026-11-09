@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/route/route_bank_cubit.dart';
 import 'package:pseudolearn_app/application/route/route_bank_state.dart';
@@ -49,5 +50,47 @@ void main() {
     final cubit = RouteBankCubit(repository: FakeRouteRepository(failToc: true), progressStore: InMemoryLocalProgressStore());
     await cubit.load(_edition);
     expect(cubit.state.status, RouteBankStatus.error);
+  });
+
+  test('a progress change marks the solved exercise and keeps the filter', () async {
+    final store = InMemoryLocalProgressStore();
+    final changes = StreamController<void>.broadcast();
+    final cubit = RouteBankCubit(
+      repository: FakeRouteRepository(toc: sampleToc),
+      progressStore: store,
+      progressChanges: changes.stream,
+    );
+    await cubit.load(_edition);
+    cubit.filter(const RouteBankFilter(partId: 'parte-inicio'));
+
+    await store.markExerciseCompleted(routeExerciseProgressId('inicio.primero.a'));
+    changes.add(null);
+    await cubit.stream.first;
+
+    expect(cubit.state.status, RouteBankStatus.success);
+    expect(cubit.state.completedIds, {'inicio.primero.a'});
+    expect(cubit.state.filter.partId, 'parte-inicio');
+    expect(cubit.state.visible.length, 3);
+    await cubit.close();
+    await changes.close();
+  });
+
+  test('a progress change before any load does not read the route', () async {
+    final repository = FakeRouteRepository(toc: sampleToc);
+    final changes = StreamController<void>.broadcast();
+    final cubit = RouteBankCubit(
+      repository: repository,
+      progressStore: InMemoryLocalProgressStore(),
+      progressChanges: changes.stream,
+    );
+
+    changes.add(null);
+    await Future<void>.delayed(Duration.zero);
+
+    expect(repository.requestedEditions, isEmpty);
+    expect(cubit.state.status, RouteBankStatus.initial);
+    await cubit.close();
+    expect(changes.hasListener, isFalse);
+    await changes.close();
   });
 }

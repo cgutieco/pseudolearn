@@ -1,3 +1,4 @@
+import '../application/route/progress_updates.dart';
 import '../domain/ports/account_deletion_gateway.dart';
 import '../domain/ports/app_version_source.dart';
 import '../domain/ports/auth_gateway.dart';
@@ -69,6 +70,7 @@ final class AppDependencies {
   final SyntaxHelpSource syntaxHelpSource;
   final ProgramExporter programExporter;
   final LocalProgressStore localProgressStore;
+  final ProgressUpdates progressUpdates;
   final ProgressHistory progressHistory;
   final ProgramConstructReader programConstructReader;
   final ExerciseChecker exerciseChecker;
@@ -108,6 +110,7 @@ final class AppDependencies {
     required this.syntaxHelpSource,
     required this.programExporter,
     required this.localProgressStore,
+    required this.progressUpdates,
     required this.progressHistory,
     required this.programConstructReader,
     required this.exerciseChecker,

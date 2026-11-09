@@ -1286,6 +1286,16 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       lección: la tarjeta del índice añade «N de M obligatorios» mientras la lección no está completada. El borde
       resaltado de una tarjeta marca la lección sugerida —la primera sin completar cuyas lecciones previas lo están—,
       no la lección abierta más reciente.
+    - El índice y el banco se proyectan de nuevo cuando cambia el progreso, sin esperar a reabrir la app: la pestaña de
+      la ruta queda viva debajo de la lección y del ejercicio, y al volver mostraba la proyección de cuando se cargó.
+      `PublishingProgressStore` (`application/route/`) decora `LocalProgressStore` como `ReviewPromptingProgressStore`:
+      persiste la marca en el almacén interno y después publica en `ProgressUpdates`, un flujo de difusión sin carga.
+      Un fallo al persistir no publica. `RouteIndexCubit` y `RouteBankCubit` reciben ese flujo como `progressChanges`
+      (vacío por omisión) y lo atienden con `refresh`, que reproyecta la última edición sin emitir el estado de carga
+      —sin parpadeo del esqueleto— y conserva el filtro del banco; antes de la primera carga no hace nada y al cerrar
+      el cubit se cancela la suscripción. La composición coloca el decorador por fuera del de reseña, así que ninguna
+      sesión de ejercicio sabe que el índice escucha. El progreso que llega por sincronización entra por SQL y no
+      publica: se ve al recargar la pestaña, igual que antes.
     - `presentation/route/` es el lector: bloques de lección, avisos de la ruta, tira del ciclo, panel de respuesta por
       tipo y enlaces. Un enlace `ruta:<lección>` abre otra lección; un enlace de especificación abre su sección en el
       lector de §4.62.

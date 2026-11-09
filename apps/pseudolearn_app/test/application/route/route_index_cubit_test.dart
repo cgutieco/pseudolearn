@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/route/route_index_cubit.dart';
 import 'package:pseudolearn_app/application/route/route_index_state.dart';
@@ -65,5 +66,51 @@ void main() {
     await cubit.load(_edition);
     await cubit.refresh();
     expect(repository.requestedEditions.length, 2);
+  });
+
+  test('a progress change refreshes the index without a loading state', () async {
+    final store = InMemoryLocalProgressStore();
+    final changes = StreamController<void>.broadcast();
+    final cubit = RouteIndexCubit(
+      repository: FakeRouteRepository(toc: sampleToc),
+      progressStore: store,
+      progressChanges: changes.stream,
+    );
+    await cubit.load(_edition);
+    final statuses = <RouteIndexStatus>[];
+    final watched = cubit.stream.listen((state) => statuses.add(state.status));
+
+    await store.markExerciseCompleted(routeExerciseProgressId('inicio.primero.a'));
+    await store.markExerciseCompleted(routeExerciseProgressId('inicio.primero.b'));
+    changes.add(null);
+    await cubit.stream.first;
+
+    expect(statuses, [RouteIndexStatus.success]);
+    expect(cubit.state.progressOf('inicio.primero'), LessonProgress.completed);
+    expect(cubit.state.requiredOf('inicio.primero'), const CoverageCount(done: 2, total: 2));
+    await watched.cancel();
+    await cubit.close();
+    await changes.close();
+  });
+
+  test('a progress change before any load and after closing is ignored', () async {
+    final repository = FakeRouteRepository(toc: sampleToc);
+    final changes = StreamController<void>.broadcast();
+    final cubit = RouteIndexCubit(
+      repository: repository,
+      progressStore: InMemoryLocalProgressStore(),
+      progressChanges: changes.stream,
+    );
+
+    changes.add(null);
+    await Future<void>.delayed(Duration.zero);
+    expect(repository.requestedEditions, isEmpty);
+
+    await cubit.close();
+    changes.add(null);
+    await Future<void>.delayed(Duration.zero);
+    expect(repository.requestedEditions, isEmpty);
+    expect(changes.hasListener, isFalse);
+    await changes.close();
   });
 }

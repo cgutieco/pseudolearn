@@ -161,6 +161,7 @@ List<BlocProvider> createKnowledgeProviders(
       create: (_) => RouteIndexCubit(
         repository: dependencies.routeRepository,
         progressStore: dependencies.localProgressStore,
+        progressChanges: dependencies.progressUpdates.stream,
       ),
     ),
     BlocProvider<RouteLessonCubit>(
@@ -194,6 +195,7 @@ List<BlocProvider> createExerciseProviders(
       create: (_) => RouteBankCubit(
         repository: dependencies.routeRepository,
         progressStore: dependencies.localProgressStore,
+        progressChanges: dependencies.progressUpdates.stream,
       ),
     ),
     BlocProvider<RouteExerciseCubit>(

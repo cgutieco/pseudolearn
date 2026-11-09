@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:bloc/bloc.dart';
 import '../../domain/model/knowledge/content_load_result.dart';
 import '../../domain/model/reference/reference_edition.dart';
@@ -10,16 +11,29 @@ import 'route_progress.dart';
 final class RouteIndexCubit extends Cubit<RouteIndexState> {
   final RouteRepository _repository;
   final LocalProgressStore _progressStore;
+  late final StreamSubscription<void> _progressChanges;
 
   RouteIndexCubit({
     required RouteRepository repository,
     required LocalProgressStore progressStore,
+    Stream<void> progressChanges = const Stream.empty(),
   }) : _repository = repository,
        _progressStore = progressStore,
-       super(const RouteIndexState());
+       super(const RouteIndexState()) {
+    _progressChanges = progressChanges.listen((_) => refresh());
+  }
 
   Future<void> load(ReferenceEdition edition) async {
     emit(RouteIndexState(status: RouteIndexStatus.loading, edition: edition));
+    await _project(edition);
+  }
+
+  Future<void> refresh() async {
+    final edition = state.edition;
+    if (edition != null) await _project(edition);
+  }
+
+  Future<void> _project(ReferenceEdition edition) async {
     final toc = await _repository.loadToc(edition);
     final progress = RouteProgress(await _progressStore.readProgress());
     if (isClosed) return;
@@ -45,8 +59,9 @@ final class RouteIndexCubit extends Cubit<RouteIndexState> {
     );
   }
 
-  Future<void> refresh() async {
-    final edition = state.edition;
-    if (edition != null) await load(edition);
+  @override
+  Future<void> close() async {
+    await _progressChanges.cancel();
+    return super.close();
   }
 }

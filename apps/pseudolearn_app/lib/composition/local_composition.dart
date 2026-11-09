@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:supabase/supabase.dart' show SupabaseClient;
 import '../application/review/review_prompting_progress_store.dart';
+import '../application/route/progress_updates.dart';
+import '../application/route/publishing_progress_store.dart';
 import '../data/auth/native_credential_source.dart';
 import '../data/auth/session_storage.dart';
 import '../data/auth/supabase_account_deletion_gateway.dart';
@@ -39,11 +41,13 @@ import 'sync_composition.dart';
 final class _LocalStores {
   final PreferencesStore preferences;
   final LocalProgressStore progress;
+  final ProgressUpdates progressUpdates;
   final ProgressHistory history;
 
   const _LocalStores({
     required this.preferences,
     required this.progress,
+    required this.progressUpdates,
     required this.history,
   });
 }
@@ -154,14 +158,21 @@ _LocalStores _localStores(
   Directory documentsDirectory,
   LocalProgressStore progressStore,
   MetadataIndex index,
-) => _LocalStores(
-  preferences: FilePreferencesStore(directory: documentsDirectory),
-  progress: ReviewPromptingProgressStore(
-    inner: progressStore,
-    prompt: const PlatformStoreReviewPrompt(),
-  ),
-  history: SqliteProgressHistory(index.database),
-);
+) {
+  final updates = ProgressUpdates();
+  return _LocalStores(
+    preferences: FilePreferencesStore(directory: documentsDirectory),
+    progress: PublishingProgressStore(
+      inner: ReviewPromptingProgressStore(
+        inner: progressStore,
+        prompt: const PlatformStoreReviewPrompt(),
+      ),
+      updates: updates,
+    ),
+    progressUpdates: updates,
+    history: SqliteProgressHistory(index.database),
+  );
+}
 
 AppDependencies _assembleDependencies(_DependencyAssembly assembly) {
   return AppDependencies(
@@ -194,6 +205,7 @@ AppDependencies _assembleDependencies(_DependencyAssembly assembly) {
     syntaxHelpSource: assembly.engine.syntaxHelpSource,
     programExporter: assembly.engine.programExporter,
     localProgressStore: assembly.stores.progress,
+    progressUpdates: assembly.stores.progressUpdates,
     progressHistory: assembly.stores.history,
     programConstructReader: assembly.engine.programConstructReader,
     exerciseChecker: assembly.engine.exerciseChecker,

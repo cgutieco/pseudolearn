@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:bloc/bloc.dart';
 import '../../domain/model/knowledge/content_load_result.dart';
 import '../../domain/model/reference/reference_edition.dart';
@@ -11,16 +12,31 @@ final class RouteBankCubit extends Cubit<RouteBankState> {
   final RouteRepository _repository;
   final LocalProgressStore _progressStore;
   RouteToc _toc = const RouteToc.empty();
+  ReferenceEdition? _edition;
+  late final StreamSubscription<void> _progressChanges;
 
   RouteBankCubit({
     required RouteRepository repository,
     required LocalProgressStore progressStore,
+    Stream<void> progressChanges = const Stream.empty(),
   }) : _repository = repository,
        _progressStore = progressStore,
-       super(const RouteBankState());
+       super(const RouteBankState()) {
+    _progressChanges = progressChanges.listen((_) => refresh());
+  }
 
   Future<void> load(ReferenceEdition edition) async {
     emit(const RouteBankState(status: RouteBankStatus.loading));
+    await _project(edition);
+  }
+
+  Future<void> refresh() async {
+    final edition = _edition;
+    if (edition != null) await _project(edition);
+  }
+
+  Future<void> _project(ReferenceEdition edition) async {
+    _edition = edition;
     final toc = await _repository.loadToc(edition);
     final progress = RouteProgress(await _progressStore.readProgress());
     if (isClosed) return;
@@ -62,5 +78,11 @@ final class RouteBankCubit extends Cubit<RouteBankState> {
     return (filter.partId == null || filter.partId == partId) &&
         (filter.kind == null || exercise.kind == filter.kind) &&
         (filter.level == null || exercise.level == filter.level);
+  }
+
+  @override
+  Future<void> close() async {
+    await _progressChanges.cancel();
+    return super.close();
   }
 }

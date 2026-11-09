@@ -16,6 +16,7 @@ import 'package:pseudolearn_app/domain/ports/local_progress_store.dart';
 import 'package:pseudolearn_app/domain/ports/preferences_store.dart';
 import 'package:pseudolearn_app/domain/ports/program_construct_reader.dart';
 import 'package:pseudolearn_app/domain/ports/program_exporter.dart';
+import 'package:pseudolearn_app/application/route/progress_updates.dart';
 import 'package:pseudolearn_app/domain/ports/progress_history.dart';
 import 'package:pseudolearn_app/domain/ports/remote_progress_store.dart';
 import 'package:pseudolearn_app/domain/ports/sync_coordinator.dart';
@@ -61,6 +62,7 @@ AppDependencies buildTestDependencies({
   SyntaxHelpSource? syntaxHelpSource,
   ProgramExporter? programExporter,
   LocalProgressStore? localProgressStore,
+  ProgressUpdates? progressUpdates,
   ProgressHistory? progressHistory,
   ProgramConstructReader? programConstructReader,
   ExerciseChecker? exerciseChecker,
@@ -126,6 +128,7 @@ AppDependencies buildTestDependencies({
     programExporter:
         programExporter ?? engine?.programExporter ?? FakeProgramExporter(),
     localProgressStore: localProgressStore ?? InMemoryLocalProgressStore(),
+    progressUpdates: progressUpdates ?? ProgressUpdates(),
     progressHistory: progressHistory ?? InMemoryProgressHistory(),
     programConstructReader:
         programConstructReader ??
