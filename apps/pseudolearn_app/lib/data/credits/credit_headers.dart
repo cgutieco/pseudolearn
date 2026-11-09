@@ -1,5 +1,6 @@
 import '../../domain/model/credits/credit_balance.dart';
 import '../../domain/model/credits/credit_failure.dart';
+import '../../domain/model/credits/purchase_channel.dart';
 
 CreditBalance? creditBalanceFromHeaders(String? Function(String name) header) {
   final remaining = int.tryParse(header('x-pseudolearn-credits-remaining') ?? '');
@@ -10,6 +11,7 @@ CreditBalance? creditBalanceFromHeaders(String? Function(String name) header) {
     topUp: int.tryParse(header('x-pseudolearn-credits-top-up') ?? '') ?? 0,
     renewsAt: DateTime.tryParse(header('x-pseudolearn-credits-renews-at') ?? ''),
     trial: header('x-pseudolearn-credits-trial') == 'true',
+    managedBy: PurchaseChannel.fromWireName(header('x-pseudolearn-credits-store')),
   );
 }
 
@@ -23,6 +25,9 @@ const Map<String, CreditFailure> _failuresByCode = {
   'model_unconfigured': CreditFailure.modelUnconfigured,
   'purchases_disabled': CreditFailure.purchasesDisabled,
   'trial_used': CreditFailure.trialUsed,
+  'already_subscribed': CreditFailure.alreadySubscribed,
+  'purchase_owned_elsewhere': CreditFailure.purchaseOwnedElsewhere,
+  'invalid_signature': CreditFailure.invalidPurchase,
 };
 
 CreditFailure creditFailureOf(Object? body) {

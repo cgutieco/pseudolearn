@@ -7,6 +7,9 @@ enum CreditFailure {
   modelUnconfigured,
   purchasesDisabled,
   trialUsed,
+  alreadySubscribed,
+  purchaseOwnedElsewhere,
+  invalidPurchase,
   offline,
   upstream,
 }

@@ -12,14 +12,10 @@ import 'package:pseudolearn_app/domain/model/credits/agent_product.dart';
 import 'package:pseudolearn_app/domain/model/credits/credit_balance.dart';
 import 'package:pseudolearn_app/domain/model/credits/credit_failure.dart';
 import 'package:pseudolearn_app/domain/model/credits/credits_outcome.dart';
-import 'package:pseudolearn_app/domain/ports/purchase_store.dart';
 import '../../fakes/fake_agent_ports.dart';
 import '../../fakes/fake_identifier_generator.dart';
-
-final class _CancellingStore implements PurchaseStore {
-  @override
-  Future<PurchaseReceipt?> purchase(AgentProduct product) async => null;
-}
+import '../../fakes/fake_purchase_ports.dart';
+import 'package:pseudolearn_app/domain/model/credits/purchase_attempt.dart';
 
 void main() {
   test('refresh reads the balance and failures keep the last known balance', () async {
@@ -85,7 +81,7 @@ void main() {
   test('a simulated purchase is redeemed and applied; cancelled and failed purchases are reported', () async {
     final gateway = FakeCreditsGateway();
     final credits = CreditsCubit(gateway: gateway);
-    final purchases = PurchaseCubit(store: SimulatedPurchaseStore(FakeIdentifierGenerator(['tx-9'])), gateway: gateway, credits: credits);
+    final purchases = PurchaseCubit(store: SimulatedPurchaseStore(FakeIdentifierGenerator(['tx-9'])), pending: FakePendingPurchases(), gateway: gateway, credits: credits, links: RecordingUrlLauncher());
     await purchases.buy(AgentProduct.monthly);
     expect(purchases.state.status, PurchaseStatus.completed);
     expect(gateway.redeemed.single.transactionId, 'tx-9');
@@ -94,7 +90,7 @@ void main() {
     gateway.next = const CreditsUnavailable(CreditFailure.purchasesDisabled);
     await purchases.buy(AgentProduct.topUp);
     expect(purchases.state.failure, CreditFailure.purchasesDisabled);
-    final cancelled = PurchaseCubit(store: _CancellingStore(), gateway: gateway, credits: credits);
+    final cancelled = PurchaseCubit(store: ScriptedPurchaseStore(attempt: const PurchaseCancelled()), pending: FakePendingPurchases(), gateway: gateway, credits: credits, links: RecordingUrlLauncher());
     await cancelled.buy(AgentProduct.trial);
     expect(cancelled.state.status, PurchaseStatus.cancelled);
     await purchases.close();

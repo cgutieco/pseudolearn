@@ -61,18 +61,21 @@ List<BlocProvider> buildAgentProviders({
   return [
     BlocProvider<AgentSessionCubit>(create: (_) => session),
     BlocProvider<CreditsCubit>(create: (_) => credits),
-    BlocProvider<PurchaseCubit>(
-      create: (_) => PurchaseCubit(
-        store: dependencies.agent.purchaseStore,
-        gateway: dependencies.agent.creditsGateway,
-        credits: credits,
-      ),
-    ),
+    BlocProvider<PurchaseCubit>(create: (_) => _purchases(dependencies, credits)),
     BlocProvider<AgentConsentCubit>(
       create: (_) => AgentConsentCubit(store: dependencies.agent.consentStore)..load(),
     ),
   ];
 }
+
+PurchaseCubit _purchases(AppDependencies dependencies, CreditsCubit credits) => PurchaseCubit(
+  store: dependencies.agent.purchaseStore,
+  pending: dependencies.agent.pendingPurchases,
+  gateway: dependencies.agent.creditsGateway,
+  credits: credits,
+  links: dependencies.agent.externalLinks,
+  returns: dependencies.incomingLinkSource.incomingLinks(),
+);
 
 AgentSessionCubit _session(AppDependencies dependencies, AgentLoop loop, AgentLanguage language) =>
     AgentSessionCubit(

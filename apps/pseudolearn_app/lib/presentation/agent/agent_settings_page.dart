@@ -6,8 +6,6 @@ import '../../application/agent/agent_session_state.dart';
 import '../../application/credits/agent_consent_cubit.dart';
 import '../../application/credits/credits_cubit.dart';
 import '../../application/credits/credits_state.dart';
-import '../../application/credits/purchase_cubit.dart';
-import '../../domain/model/credits/agent_product.dart';
 import '../components/button/app_button.dart';
 import '../components/layout/app_page.dart';
 import '../components/typography/app_text.dart';
@@ -15,6 +13,8 @@ import '../l10n/generated/app_localizations.dart';
 import '../theme/app_theme.dart';
 import '../theme/tokens/spacing.dart';
 import 'agent_labels.dart';
+import 'agent_subscription_controls.dart';
+import 'agent_top_up_button.dart';
 
 final class AgentSettingsPage extends StatefulWidget {
   const AgentSettingsPage({super.key});
@@ -72,10 +72,9 @@ final class _CreditsBody extends StatelessWidget {
         AppText(l10n.agentCreditsLastSpend(credits.lastRequestSpent > 0 ? credits.lastRequestSpent : lastSpent), variant: AppTextVariant.bodySmall),
         if (failure != null) AppText(agentFailureText(l10n, failure), variant: AppTextVariant.caption),
         const SizedBox(height: SpacingTokens.space4),
-        if (credits.topUpNeedsPlan)
-          AppText(l10n.agentCreditsTopUpNeedsPlan, key: const ValueKey('agent-settings-top-up-needs-plan'), variant: AppTextVariant.caption)
-        else
-          AppButton(key: const ValueKey('agent-settings-top-up'), label: l10n.agentCreditsTopUp, variant: AppButtonVariant.primary, onPressed: () => context.read<PurchaseCubit>().buy(AgentProduct.topUp)),
+        const AgentTopUpButton(keyPrefix: 'agent-settings-top-up'),
+        const SizedBox(height: SpacingTokens.space2),
+        const AgentSubscriptionControls(),
         const SizedBox(height: SpacingTokens.space2),
         AppButton(label: l10n.agentCreditsRefresh, variant: AppButtonVariant.secondary, onPressed: () => context.read<CreditsCubit>().refresh()),
         const SizedBox(height: SpacingTokens.space2),

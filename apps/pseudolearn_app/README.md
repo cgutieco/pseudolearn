@@ -121,7 +121,7 @@ del núcleo; la aplicación traduce, orquesta y renderiza los resultados.
 | Capturas de producto y material de tiendas con la ruta de aprendizaje | Regenerar §2.8 y §2.9 sobre la ruta publicada; las imágenes versionadas muestran todavía la base de conocimiento anterior | Abierto |
 | Ancla dentro de una sección al seguir un enlace de especificación desde la ruta | `ReferenceSectionPage` abre la sección por identidad y no desplaza a un ancla interior; el enlace conserva el ancla en el paquete | Abierto |
 | Límite de ejecución de los ejercicios | La app corta a 10 000 pasos (`ProgramRunner.defaultStepLimit`) y el compilador de la ruta a 100 000 sentencias; `route_exercise_gate_test` garantiza que cada solución de referencia cabe en el límite de la app | Vigilado por test |
-| Compras reales del agente | Adaptadores `PurchaseStore` de StoreKit 2 (iOS y macOS de la App Store, mismo `com.pseudolearn.app`, obligatorio dentro de iOS) y de Paddle en Windows (MSIX e instalador, con vuelta por `pseudolearn://`), y sus verificadores en el backend; precios y pasarelas en el README del backend | Abierto; solo existe la compra simulada (§4.63) |
+| Compras reales del agente | `StoreKitPurchaseStore` (iOS y macOS) y `PaddlePurchaseStore` (Windows) con sus verificadores en el backend; falta la compra de prueba en sandbox de App Store y de Paddle con productos creados y un build firmado | Abierto; implementado y probado con dobles (§4.63) |
 | Clave del proveedor del agente | El propietario pone `OPENAI_API_KEY` en el servidor y compila con `AGENT_BACKEND=proxy` y `AGENT_PROXY_URL` | Abierto; sin clave el agente responde «no disponible» sin cobrar |
 | Markdown enriquecido en el chat del agente | Lector propio sobre el paquete `markdown` y vistas propias (§4.66) | Resuelto |
 | Enlaces externos en las respuestas del agente | Un caso de uso de aplicación sobre `ExternalUrlLauncher` que la presentación pueda invocar; hoy el enlace se muestra subrayado y se puede seleccionar y copiar, pero no se abre | Abierto |
@@ -606,7 +606,7 @@ La capa `host` comparte el anillo 2 con engine y data; solo importa model y port
 | `application/`           | Casos de uso, orquestación y cubits de estado inmutable                                                                                                                                                                                                                                                            | `model`, `ports`, `package:bloc`, `package:equatable`                     | `engine`, `data`, `presentation`, `flutter/`, el transporte del motor, `go_router`, `sqflite`, `dart:io`, `dart:ui`, `BuildContext`, `RegExp`       |
 | `application/agent/`     | Bucle del agente, registro y política de confirmación, ensamblado del prompt, instantáneas de pantalla, verificación de bloques, resaltado léxico (`highlight/`), disposición de diagramas de flujo (`flowchart/`) y una herramienta por caso de uso (`tools/`) | `model`, `ports`, `package:bloc` | Lo mismo que `application/`; ninguna herramienta habla con un repositorio sin pasar por su caso de uso cuando existe |
 | `application/credits/`   | Estado de créditos, compras y consentimiento del agente (`CreditsCubit`, `PurchaseCubit`, `AgentConsentCubit`) | `model`, `ports`, `package:bloc` | Lo mismo que `application/` |
-| `data/agent/`, `data/credits/` | Proxy HTTP del modelo y de créditos, códec de la Responses API, lector de Markdown de las respuestas (`markdown/`) y de diagramas Mermaid (`mermaid/`), índice de conocimiento, consentimiento en disco y compra simulada | `model`, `ports`, `dart:io` | Lo mismo que `data/` |
+| `data/agent/`, `data/credits/` | Proxy HTTP del modelo y de créditos, códec de la Responses API, lector de Markdown de las respuestas (`markdown/`) y de diagramas Mermaid (`mermaid/`), índice de conocimiento, consentimiento en disco, compra simulada, compras de la App Store (`StoreKitPurchaseStore`, `StoreKitTransactionQueue`, `InAppPurchaseStoreKitClient`) y pagos de Paddle (`PaddlePurchaseStore`, `ProxyCheckoutGateway`) | `model`, `ports`, `dart:io`, `package:in_app_purchase` | Lo mismo que `data/` |
 | `presentation/agent/`    | Glifo, botón flotante, panel de chat, vistas de la respuesta enriquecida (`reply/`), confirmaciones, oferta, consentimiento, ajustes de Nodo y publicadores de contexto de pantalla | `model`, `application`, `flutter/` | Lo mismo que `presentation/` |
 | `application/<área>/use_cases/` | Casos de uso: clases puras con un único método público `call` (y, como mucho, una variante con nombre) que ejecutan un comando o una consulta de negocio contra los puertos y devuelven un valor tipado en lugar de lanzar (`CreateDocument`, `RenameDocument`, `DeleteDocument`, `SaveDocumentSource`, `SetExecutionArguments`, `ListDocuments`, `LoadDocument`, `CheckProgram`, `RunProgram`, `TranslateProgram`, `FormatProgram`) | `model`, `ports` | Lo mismo que `application/`; además, un caso de uso no conoce ningún Cubit ni estado de vista |
 | `presentation/`          | Widgets, CustomPainters, renderizado de lienzo y temas                                                                                                                                                                                                                                                             | `model`, `application`, `flutter/`, `go_router`, `flutter_bloc`           | `ports`, `engine`, `data`, el transporte del motor, `sqflite`, `dart:io`, constructores adaptativos OS, métodos de colección derivados              |
@@ -3004,14 +3004,39 @@ proyecto no simula participantes ni resultados. Mientras no existan, ese resulta
     panel de progreso muestra cuántos ejercicios resueltos fueron asistidos.
   - **Créditos y compras.** `CreditsCubit` lee el saldo por `CreditsGateway` y lo actualiza con las cabeceras de cada
     respuesta y con un agotamiento detectado a mitad de turno. `PurchaseCubit` compra con `PurchaseStore` y canjea con
-    `CreditsGateway.redeem`; el único adaptador es `SimulatedPurchaseStore` (`purchase_store_simulation.dart`), y el
-    servidor solo lo acepta con `AGENT_PURCHASES=simulated`. `agentAccessOf` decide la vista del panel: sin cuenta →
+    `CreditsGateway.redeem`. Los detalles de las tiendas están en «Compras de tienda», más abajo. `agentAccessOf` decide la vista del panel: sin cuenta →
     oferta con «Inicia sesión»; sin plan ni recarga → oferta con prueba de 7 días y plan mensual; sin consentimiento →
     consentimiento; si no, conversación. Con el saldo agotado, el compositor se sustituye por el panel de recarga.
     La recarga solo se ofrece con un periodo vigente, plan o prueba (`CreditsState.topUpNeedsPlan`): con el periodo
     vencido, el panel y Ajustes → Nodo explican que hace falta el plan y no muestran el botón. Con el saldo aún
     desconocido el botón sigue visible y decide el servidor, que rechaza la recarga sin periodo con
     `subscription_required`. Las recargas ya canjeadas se siguen gastando después de vencer el plan.
+  - **Compras de tienda.** Dos puertos con una responsabilidad cada uno: `PurchaseStore` (canal, comprar, precios y
+    gestionar la suscripción) y `PendingPurchases` (transacciones pendientes, finalizarlas y restaurar). La
+    composición elige el par con `--dart-define=AGENT_PURCHASES=simulated|storekit|paddle` por búsqueda en un mapa;
+    los workflows de producción pasan `storekit` en iOS y macOS y `paddle` en las dos builds de Windows, junto con
+    `AGENT_BACKEND=proxy` y `AGENT_PROXY_URL`.
+    - `simulated`: `SimulatedPurchaseStore` y `NoPendingPurchases`; vende la prueba propia.
+    - `storekit`: `StoreKitPurchaseStore` y `StoreKitTransactionQueue` sobre `StoreKitClient`, cuyo adaptador real
+      (`InAppPurchaseStoreKitClient`) usa `in_app_purchase` con StoreKit 2. El plan se compra como suscripción y la
+      recarga como consumible, con `appAccountToken` igual al uuid de la cuenta; la prueba es la oferta introductoria
+      de Apple. La cola envía el JWS al servidor y solo finaliza la transacción cuando el servidor la acepta: una
+      recarga rechazada queda sin finalizar y StoreKit la vuelve a entregar. Las renovaciones y lo restaurado llegan
+      como recibos pendientes que `PurchaseCubit` canjea en segundo plano. Gestionar abre
+      `https://apps.apple.com/account/subscriptions`.
+    - `paddle`: `PaddlePurchaseStore` pide el pago al servidor (`ProxyCheckoutGateway`), abre el enlace en el
+      navegador y deja la compra en `continuesOutside`; el pago entra por webhook en el servidor. El sitio devuelve con
+      `pseudolearn://agent/purchase`, que `PurchaseCubit` reconoce en `IncomingLinkSource` para refrescar el saldo.
+      Gestionar abre el portal de cliente de Paddle. No hay pendientes en la app.
+    - **Oferta (guía 3.1.2 de Apple).** Con precio de la tienda, la cifra facturada («S/ 12,90 al mes») es el texto
+      principal; la prueba va debajo, en texto menor, con un único botón «Suscribirme». Siempre se muestran el texto
+      de renovación automática y cancelación y los enlaces a Términos de uso y Privacidad (`LegalDocument`, abiertos
+      por `ExternalUrlLauncher` en el idioma de la interfaz). En Windows, sin precio en la app, se avisa de que el
+      precio final aparece en el pago de Paddle. «Restaurar compras» solo existe en el canal App Store.
+    - **Ajustes → Nodo.** `AgentTopUpButton` muestra la recarga con su precio cuando la tienda lo conoce;
+      `AgentSubscriptionControls` ofrece gestionar la suscripción si el plan vigente es de este canal y, si es de otro
+      (`CreditBalance.managedBy`, de la cabecera `X-PseudoLearn-Credits-Store`), solo dice dónde se gestiona, para no
+      vender un segundo plan.
   - **Consentimiento.** Antes del primer mensaje: nombra a OpenAI, qué se envía, la retención y la edad mínima (13
     años). Se guarda en `agent_consent.json` del directorio de documentos (`FileAgentConsentStore`) y se retira en
     Ajustes → Nodo (`/ajustes/nodo`, que también muestra saldo, renovación, gasto de la última petición y recarga).
@@ -3473,6 +3498,8 @@ El revisor o agente de IA debe rechazar inmediatamente un cambio si detecta:
 | BLoC Pattern (`package:bloc`)                                     | Modelo de estados inmutables precalculados y comandos unidireccionales mediante `Cubit`.                                                                                      | Patrón completo de eventos por introducir burocracia redundante frente a la traza ya provista por el núcleo.                                  |
 | ISO 5807:1985 (Símbolos para diagramas de procesamiento de datos) | Convenciones geométricas: terminal ovalado, proceso rectangular, decisión en rombo, E/S en romboide y proceso predefinido en rectángulo con barras.                           | Símbolos de almacenamiento físico (cintas magnéticas, discos, tarjetas perforadas) por carecer de sentido en pseudocódigo abstracto.          |
 | PSeInt (Pablo Novara)                                             | Representación del bucle `Para` como nodo único de preparación e inspiración en estructogramas integrados.                                                                    | Estética visual no estructurada, diagramado como imágenes fijas no interactivas y falta de determinismo algorítmico documentado.              |
+| `in_app_purchase` (Flutter) con StoreKit 2 | Compra, restauración y flujo de transacciones; `applicationUserName` como `appAccountToken` y el JWS en `serverVerificationData`. | StoreKit 1 y los recibos de aplicación: el servidor verifica cada transacción firmada. |
+| Guía 3.1.2 de App Store Review | Precio facturado como dato principal, prueba en segundo plano, texto de renovación y enlaces a Términos y Privacidad. | Un botón que anuncia solo la gratuidad. |
 | Nassi, I. y Shneiderman, B. (1973)                                | Principio fundamental del estructograma: modelado jerárquico de control estructurado sin aristas explícitas de salto.                                                         | Repertorio original sin normalizar previo a la adopción de selección múltiple estandarizada.                                                  |
 | DIN 66261:1985-11                                                 | Catálogo de celdas para estructogramas: proceso, selección con cabecera de cuñas, bucles con franja indentada y subprogramas con doble barra.                                 | Proporciones fijas inflexibles y ausencia de representaciones explícitas para salida anticipada (`Retornar`).                                 |
 | Ruteo ortogonal y diagramas de clases UML (OMG UML 2.5)           | Caja de tres compartimentos, visibilidad `+`/`-`, jerarquía de generalización y relación de asociación.                                                                       | Diagramado libre manual, multiplicidades complejas innecesarias en el nivel de abstracción del lenguaje y conectores diagonales.              |

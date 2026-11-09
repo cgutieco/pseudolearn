@@ -14,6 +14,8 @@ import 'package:pseudolearn_app/presentation/shell/design_canvas.dart';
 import 'package:pseudolearn_app/presentation/theme/app_theme.dart';
 import '../../fakes/fake_agent_ports.dart';
 import '../../fakes/fake_identifier_generator.dart';
+import '../../fakes/fake_purchase_ports.dart';
+import '../../fakes/purchase_widget_harness.dart';
 
 const _lapsedWithoutCredits = CreditsKnown(CreditBalance(remaining: 0, allowance: 0, topUp: 0));
 const _subscribedWithoutCredits = CreditsKnown(CreditBalance(remaining: 0, allowance: 300, topUp: 0), periodActive: true);
@@ -22,7 +24,7 @@ Future<FakeCreditsGateway> _pumpPanel(WidgetTester tester, CreditsOutcome balanc
   final gateway = FakeCreditsGateway(balance);
   final credits = CreditsCubit(gateway: gateway);
   if (refresh) await credits.refresh();
-  final purchases = PurchaseCubit(store: SimulatedPurchaseStore(FakeIdentifierGenerator()), gateway: gateway, credits: credits);
+  final purchases = PurchaseCubit(store: SimulatedPurchaseStore(FakeIdentifierGenerator()), pending: FakePendingPurchases(), gateway: gateway, credits: credits, links: RecordingUrlLauncher());
   addTearDown(credits.close);
   addTearDown(purchases.close);
   await tester.pumpWidget(MaterialApp(
@@ -64,6 +66,15 @@ void main() {
     expect(find.byKey(const ValueKey('agent-top-up')), findsNothing);
     expect(find.byKey(const ValueKey('agent-top-up-needs-plan')), findsOneWidget);
     expect(gateway.redeemed, isEmpty);
+  });
+
+  testWidgets('the top-up shows its store price when the store knows it', (tester) async {
+    final harness = PurchaseWidgetHarness(
+      store: ScriptedPurchaseStore(knownPrices: {AgentProduct.topUp: 'MXN 45'}),
+      balance: _subscribedWithoutCredits,
+    );
+    await harness.pump(tester, const AgentCreditsExhausted());
+    expect(find.text('Recargar 150 créditos · MXN 45'), findsOneWidget);
   });
 
   testWidgets('an unknown balance keeps the top-up and lets the server decide', (tester) async {

@@ -6,6 +6,13 @@ enum AgentProduct {
   final String storeId;
 
   const AgentProduct(this.storeId);
+
+  static AgentProduct? fromStoreId(String storeId) {
+    for (final product in values) {
+      if (product.storeId == storeId) return product;
+    }
+    return null;
+  }
 }
 
 final class PurchaseReceipt {
