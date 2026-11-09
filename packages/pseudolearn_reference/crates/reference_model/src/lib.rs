@@ -24,13 +24,13 @@ pub use category::TokenCategory;
 pub use engine_port::{
     CodeEngine, EngineDiagnostic, ExecutionReport, ExecutionRequest, RawToken, TraceRecord,
 };
-pub use header::{Profile, RailRequest, SectionHeader};
+pub use header::{Profile, SectionHeader};
 pub use inline::Inline;
 pub use published::{
     Block, FigureLayer, FigureStep, PanelEntry, PublishedSection, SectionLink, TableBlock,
     TraceLine,
 };
-pub use published_program::{FormSegment, ProgramBlock, PublishedDiagnostic};
+pub use published_program::{AnatomyPart, FormSegment, ProgramBlock, PublishedDiagnostic};
 pub use published_run::{Run, Token};
 pub use route_check::{ExerciseCheck, LapCheck, RoleRuns, RunRecord};
 pub use route_exercise::{
@@ -49,7 +49,7 @@ pub use route_source::{
     RouteFence,
 };
 pub use section_kind::SectionKind;
-pub use source_block::{SourceBlock, SourceDocument};
+pub use source_block::{AnatomySource, SourceBlock, SourceDocument};
 pub use source_figure::{FigurePanelSource, FigureSource, FigureStepSource};
 pub use source_program::{ExampleCheck, ProgramPromise, ProgramSource};
 pub use violation::{RuleId, Violation};

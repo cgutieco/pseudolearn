@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+mod anatomy_body;
 mod assembly;
 mod fence;
 mod fence_blocks;

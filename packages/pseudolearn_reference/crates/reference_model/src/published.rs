@@ -1,4 +1,6 @@
-use crate::{CalloutKind, FormSegment, ProgramBlock, PublishedDiagnostic, Run, SectionKind};
+use crate::{
+    AnatomyPart, CalloutKind, FormSegment, ProgramBlock, PublishedDiagnostic, Run, SectionKind,
+};
 use serde::Serialize;
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
@@ -60,9 +62,8 @@ pub enum Block {
     Form {
         lines: Vec<Vec<FormSegment>>,
     },
-    Rails {
-        svg: String,
-        alt: String,
+    Anatomy {
+        parts: Vec<AnatomyPart>,
     },
     Program(ProgramBlock),
     Figure {

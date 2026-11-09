@@ -1,4 +1,4 @@
-use crate::Token;
+use crate::{Run, Token};
 use serde::Serialize;
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
@@ -7,6 +7,12 @@ pub enum FormSegment {
     Token { token: Token },
     Slot { text: String },
     Optional { text: String },
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+pub struct AnatomyPart {
+    pub tokens: Vec<Token>,
+    pub label: Vec<Run>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]

@@ -18,9 +18,6 @@ terminos: [early exit]
 ```forma
 ```
 
-```railes produccion=breakStatement contextuales=Salir
-```
-
 ::: partes
 - `Exit` is a simple statement and ends with `;`.
 - It is only valid inside `While`, `Repeat`, `For` or `For Each`.

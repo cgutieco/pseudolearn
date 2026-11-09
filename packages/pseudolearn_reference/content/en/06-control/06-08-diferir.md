@@ -18,9 +18,6 @@ terminos: [cleanup, scope]
 ```forma
 ```
 
-```railes produccion=deferStatement contextuales=Diferir,FinDiferir
-```
-
 ::: partes
 - `Defer` opens the cleanup.
 - «statements» is what will be done on leaving. It does not run now.

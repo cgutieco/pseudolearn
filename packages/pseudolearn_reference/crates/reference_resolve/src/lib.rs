@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+mod anatomy;
 mod blocks;
 mod cached_engine;
 mod callouts;
@@ -10,7 +11,6 @@ mod generated;
 mod generated_tables;
 mod language_pack;
 mod programs;
-mod rails;
 mod resolution;
 mod runs;
 mod section;

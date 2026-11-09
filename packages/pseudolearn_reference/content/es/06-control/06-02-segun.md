@@ -24,9 +24,6 @@ Segun «selector» Hacer
 FinSegun
 ```
 
-```railes produccion=switch
-```
-
 ::: partes
 - `Segun` abre la selección y «selector» es el valor que se mira: un entero, un enumerado o una variante.
 - `Hacer` separa el selector de las ramas.

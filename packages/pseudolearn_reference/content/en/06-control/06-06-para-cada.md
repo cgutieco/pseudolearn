@@ -18,9 +18,6 @@ terminos: [traversal, element]
 ```forma
 ```
 
-```railes produccion=forEachLoop contextuales=Cada,En
-```
-
 ::: partes
 - `For Each` opens the traversal.
 - «element» is a new name that, on every round, holds the visited element. It cannot be assigned.

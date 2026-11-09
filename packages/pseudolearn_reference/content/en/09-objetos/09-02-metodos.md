@@ -18,9 +18,6 @@ A method is a subprogram that lives inside a class and works on a particular obj
 ```forma
 ```
 
-```railes produccion=methodMember
-```
-
 ::: partes
 - `Method` opens the method. It may be preceded by `Public` (the default) or `Private`.
 - «parameters» and `As` «type» follow the same rules as in a [subprogram](#subprogramas.declaracion).

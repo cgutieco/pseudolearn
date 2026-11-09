@@ -17,11 +17,8 @@ Un enumerado es un tipo con una lista cerrada de valores con nombre, como los co
 
 ```forma
 Enumerado «Nombre»
-  «miembro», «miembro», …
+  ⟦«miembro», «miembro», …⟧
 FinEnumerado
-```
-
-```railes produccion=enumUnit
 ```
 
 ## Cómo funciona {#funciona}

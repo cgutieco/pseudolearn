@@ -16,13 +16,16 @@ A subroutine is also a value: it can be stored in a variable, passed as an argum
 ## How to write it {#escribe}
 
 ```forma
-Define «name» As Subroutine(«parameter types») As «return type»
-Subroutine(«parameters») As «return type»
+Define «name» As Subroutine(«parameter types») ⟦As «return type»⟧
+Subroutine(«parameters») ⟦As «return type»⟧
   «statements»
 EndSubroutine
 ```
 
-```railes produccion=functionType
+```anatomia
+Define operacion As | a variable, declared like any other
+Subroutine(Integer) | parameter types, in order
+As Integer | type it returns; without this part it returns nothing
 ```
 
 ## How it works {#funciona}

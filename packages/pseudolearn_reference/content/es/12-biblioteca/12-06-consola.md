@@ -16,14 +16,8 @@ terminos: [entrada, salida]
 ## Cómo se escribe {#escribe}
 
 ```forma
-Escribir «expresión», «expresión» ⟦Sin Saltar⟧;
+Escribir ⟦«expresión», «expresión»⟧ ⟦Sin Saltar⟧;
 Leer «destino», «destino»;
-```
-
-```railes produccion=output
-```
-
-```railes produccion=input
 ```
 
 ::: partes

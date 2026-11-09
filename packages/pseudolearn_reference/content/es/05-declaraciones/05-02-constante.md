@@ -19,9 +19,6 @@ Una `Constante` da nombre a un valor que nunca cambia, y el motor lo calcula ant
 Constante «NOMBRE» Como «tipo» <- «valor»;
 ```
 
-```railes produccion=constantDeclaration
-```
-
 ::: partes
 - `Constante` abre la declaración. Puede ir fuera de todo algoritmo, en el módulo, o dentro de un cuerpo.
 - «NOMBRE» es un identificador. Escribirlo en mayúsculas es una costumbre, no una regla.

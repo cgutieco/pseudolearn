@@ -20,9 +20,6 @@ Definir «nombre» Como «tipo» ⟦<- «valor inicial»⟧;
 Definir «nombre», «nombre» Como «tipo»;
 ```
 
-```railes produccion=declaration
-```
-
 ::: partes
 - `Definir` abre la declaración.
 - «nombre» es un identificador. Una letra sola también vale.

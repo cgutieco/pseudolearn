@@ -101,7 +101,7 @@ pub fn check_no_spec_duplicate(lesson: &LessonDocument) -> Vec<Violation> {
     for block in all_blocks(&lesson.blocks) {
         match block {
             SourceBlock::Form(_)
-            | SourceBlock::Rails(_)
+            | SourceBlock::Anatomy(_)
             | SourceBlock::Intermediate { .. }
             | SourceBlock::Trace { .. } => {
                 problems.push("a lesson does not draw syntax or engine views")

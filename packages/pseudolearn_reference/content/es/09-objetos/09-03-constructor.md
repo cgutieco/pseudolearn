@@ -22,9 +22,6 @@ FinMetodo
 Nuevo «Clase»(«argumentos»)
 ```
 
-```railes produccion=constructorMember
-```
-
 ::: partes
 - `Metodo Constructor` declara el constructor. No lleva visibilidad ni tipo de retorno.
 - Cada clase tiene **como mucho uno**. Si no se escribe, existe uno implícito sin parámetros que no da valor a nada.

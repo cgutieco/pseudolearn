@@ -22,9 +22,6 @@ Registro «Nombre»
 FinRegistro
 ```
 
-```railes produccion=recordUnit
-```
-
 ## Cómo funciona {#funciona}
 
 Un **registro** se declara fuera del algoritmo, con un nombre y sus **campos**. Después se usa como un tipo más: se construye escribiendo su nombre con un valor por campo, en el orden en que se declararon, y cada campo se lee o se cambia con un punto.

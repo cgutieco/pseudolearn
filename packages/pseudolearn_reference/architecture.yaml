@@ -23,7 +23,7 @@ layers:
     unsafe_allowed: false
   - name: reference_figures
     path: crates/reference_figures
-    may_import: [reference_model, reference_corpus]
+    may_import: [reference_model]
     external_dependencies: [roxmltree]
     unsafe_allowed: false
   - name: reference_resolve

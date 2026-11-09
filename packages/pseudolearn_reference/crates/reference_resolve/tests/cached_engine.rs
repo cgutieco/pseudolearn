@@ -37,7 +37,7 @@ fn runs_each_distinct_request_once() {
 fn the_fixtures_are_consistent() {
     assert!(support::corpus().lexicon.entry("ifKeyword").is_some());
     assert!(support::categories().category("ifKeyword").is_some());
-    assert_eq!(support::pack().phrase("rails.title"), "Raíles:");
+    assert_eq!(support::pack().phrase("trace.output"), "escribe");
     assert!(support::figures().contains_key("caja"));
     assert_eq!(support::document("").header.id, "prueba");
     assert!(support::index().get("prueba").is_some());

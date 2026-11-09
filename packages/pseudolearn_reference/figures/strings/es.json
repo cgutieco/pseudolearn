@@ -1,7 +1,5 @@
 {
   "interface": {
-    "rails.title": "Diagrama de sintaxis:",
-    "rails.description": "Se recorre como una vía de tren, de izquierda a derecha y de arriba abajo. Las píldoras son palabras que se escriben tal cual; las cajas punteadas son huecos que se rellenan; un desvío por debajo se puede tomar o no, y una vuelta hacia atrás se puede repetir.",
     "trace.statement_entered": "entra en sentencia",
     "trace.decision": "decisión",
     "trace.output": "escribe",
@@ -636,16 +634,17 @@
       "programa": "Instrucciones",
       "total": "total ="
     },
-    "leer-raíles": {
-      "titulo": "Cómo se recorre un diagrama de sintaxis",
-      "descripcion": "Tres tiras de vía. La primera va recta pasando por la palabra Mientras y el hueco expresión. La segunda tiene un desvío que baja hasta Sino y vuelve a subir, de modo que Sino se puede saltar. La tercera pasa por el hueco sentencia y tiene una vuelta por debajo que regresa al principio, de modo que la sentencia se puede repetir.",
-      "fijo": "Tramo fijo: se recorre todo",
-      "expresion": "expresión",
-      "opcional": "Desvío: se puede saltar",
-      "se-salta": "vía recta: sin la parte opcional",
-      "repetir": "Vuelta: se puede repetir",
-      "sentencia": "sentencia",
-      "vuelve": "la vuelta permite otra sentencia"
+    "leer-forma": {
+      "titulo": "Cómo se lee una forma",
+      "descripcion": "Arriba, la forma de Si: la palabra Si y la palabra Entonces van fijas, y entre ellas hay un hueco punteado llamado condición. Una flecha baja desde el hueco hasta la línea rellenada Si n > 0 Entonces. Abajo, Sino aparece entre corchetes dobles: es una parte opcional que se puede omitir.",
+      "forma": "La forma",
+      "fija": "fija",
+      "hueco": "hueco: lo rellenas",
+      "condicion": "condición",
+      "rellenada": "Rellenada",
+      "opcional": "Parte opcional",
+      "se-omite": "puedes escribirla u omitirla",
+      "sin-sino": "Un Si sin Sino también es válido."
     },
     "limites-recursos": {
       "titulo": "Recursos con tope",

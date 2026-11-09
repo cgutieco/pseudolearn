@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Contrato y producción de figuras SVG: elementos y atributos permitidos, colores solo por rol con centinelas, familias `sans`/`mono`, textos solo desde cadenas, lexemas o fragmentos de código, `viewBox` de 340 de ancho y letra de 12 o más. Expande las piezas del kit (`caja`, `flecha`), separa los grupos por paso en capas y genera diagramas de raíles desde la gramática.
+Contrato y producción de figuras SVG: elementos y atributos permitidos, colores solo por rol con centinelas, familias `sans`/`mono`, textos solo desde cadenas, lexemas o fragmentos de código, `viewBox` de 340 de ancho y letra de 12 o más. Expande las piezas del kit (`caja`, `flecha`) y separa los grupos por paso en capas.
 
 ## 2. Guía operativa y ciclo de vida
 
@@ -10,11 +10,11 @@ Contrato y producción de figuras SVG: elementos y atributos permitidos, colores
 
 ## 3. Arquitectura y modelo del sistema
 
-Importa `reference_model` y `reference_corpus`; usa `roxmltree`. La dirección de dependencias está en `architecture.yaml` del miembro. `src/` implementa la capa; `tests/` refleja sus módulos.
+Importa `reference_model`; usa `roxmltree`. La dirección de dependencias está en `architecture.yaml` del miembro. `src/` implementa la capa; `tests/` refleja sus módulos.
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: Flutter (`flutter_svg`) no admite `marker`, CSS ni `dominant-baseline`. Elección: el contrato los prohíbe y el kit dibuja las puntas de flecha como polígonos. Las capas por paso viajan aparte y el consumidor las añade antes de `</svg>`; publicar un SVG completo por paso multiplicaba el paquete por cinco. Los raíles se disponen en vertical con ancho útil de 312 unidades y fallan con `REF-FIGURE-NARROW` si no caben.
+Problema: Flutter (`flutter_svg`) no admite `marker`, CSS ni `dominant-baseline`. Elección: el contrato los prohíbe y el kit dibuja las puntas de flecha como polígonos. Las capas por paso viajan aparte y el consumidor las añade antes de `</svg>`; publicar un SVG completo por paso multiplicaba el paquete por cinco.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

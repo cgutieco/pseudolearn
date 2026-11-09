@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Lector del Markdown con directivas: cabecera YAML, encabezados con identificador, párrafos, listas, tablas, recuadros `:::` y bloques cercados (`forma`, `programa`, `salida`, `diagnosticos`, `entrada`, `anfitrion`, `figura`, `railes`, `ri`, `traza`, `generado`). Devuelve un `SourceDocument` o una violación `REF-FORMAT`.
+Lector del Markdown con directivas: cabecera YAML, encabezados con identificador, párrafos, listas, tablas, recuadros `:::` y bloques cercados (`forma`, `anatomia`, `programa`, `salida`, `diagnosticos`, `entrada`, `anfitrion`, `figura`, `ri`, `traza`, `generado`). Devuelve un `SourceDocument` o una violación `REF-FORMAT`.
 
 Lee también las lecciones y los ejercicios de la ruta: encabezados de fase, recuadros con atributos, definiciones de término, enlaces `especificacion:` y `ruta:` y las cercas de datos de ejercicio.
 

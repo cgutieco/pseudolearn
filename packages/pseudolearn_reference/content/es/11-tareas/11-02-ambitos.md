@@ -23,9 +23,6 @@ Tareas ⟦«fallo»⟧
 FinTareas
 ```
 
-```railes produccion=taskScope
-```
-
 ::: partes
 - `Tareas` abre el ámbito. «fallo» es un nombre opcional que, después de `FinTareas`, dice si alguna tarea falló.
 - `Lanzar` crea una tarea hija que ejecuta una unidad `Suspendible`. Solo se escribe directamente dentro del ámbito.

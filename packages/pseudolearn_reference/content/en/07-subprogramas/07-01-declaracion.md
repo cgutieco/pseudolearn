@@ -18,9 +18,6 @@ A subprogram is a named piece of program: it is written once and used as many ti
 ```forma
 ```
 
-```railes produccion=subprogram
-```
-
 ::: partes
 - `Subroutine` opens a subprogram. The parentheses are required even with no parameters.
 - `As` «type» is optional: with it, the subprogram **returns** a value; without it, it only does things.

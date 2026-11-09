@@ -19,9 +19,6 @@ terminos: [retorno]
 Retornar ⟦«expresión»⟧;
 ```
 
-```railes produccion=returnStatement
-```
-
 ::: partes
 - `Retornar` termina la llamada.
 - «expresión» es obligatoria si el subprograma declara `Como` tipo, y está prohibida si no.

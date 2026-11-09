@@ -16,6 +16,9 @@ fn collect<'block>(block: &'block SourceBlock, groups: &mut Vec<&'block [Inline]
             groups.extend(header.iter().map(Vec::as_slice));
             groups.extend(rows.iter().flatten().map(Vec::as_slice));
         }
+        SourceBlock::Anatomy(parts) => {
+            groups.extend(parts.iter().map(|part| part.label.as_slice()))
+        }
         SourceBlock::Figure(figure) => {
             groups.push(&figure.caption);
             groups.extend(figure.steps.iter().map(|step| step.text.as_slice()));

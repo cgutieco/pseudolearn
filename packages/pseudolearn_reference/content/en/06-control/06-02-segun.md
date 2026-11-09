@@ -18,9 +18,6 @@ terminos: [selector, label, exhaustiveness]
 ```forma
 ```
 
-```railes produccion=switch
-```
-
 ::: partes
 - `Switch` opens the selection and «selector» is the value being looked at: an integer, an enumeration or a variant.
 - `Do` separates the selector from the branches.

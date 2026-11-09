@@ -163,7 +163,7 @@ pub fn categories() -> CategoryTable {
 
 pub fn pack() -> LanguagePack {
     LanguagePack::from_json(
-        r#"{"interface": {"rails.title": "Raíles:", "trace.output": "escribe", "trace.statement_entered": "entra", "table.spanish": "Español"},
+        r#"{"interface": {"trace.output": "escribe", "trace.statement_entered": "entra", "table.spanish": "Español"},
             "productions": {"expression": "expresión", "body": "instrucciones", "conditional": "decisión", "line": "línea"},
             "figures": {"caja": {"titulo": "Caja", "descripcion": "Una caja", "nombre": "edad"}}}"#,
     )

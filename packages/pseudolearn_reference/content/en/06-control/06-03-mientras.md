@@ -18,9 +18,6 @@ terminos: [loop, iteration]
 ```forma
 ```
 
-```railes produccion=whileLoop
-```
-
 ::: partes
 - `While` opens the loop.
 - «condition» is a `Boolean` expression.

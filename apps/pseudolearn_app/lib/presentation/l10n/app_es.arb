@@ -2390,7 +2390,7 @@
     }
   },
   "referenceOpenInSpecification": "Ver en la especificación",
-  "referenceRailsLabel": "Diagrama de sintaxis",
+  "referenceAnatomyLabel": "Pieza por pieza",
   "referenceFormLabel": "Forma",
   "referenceTerminationCompleted": "Terminó con normalidad",
   "referenceTerminationFailed": "Se detuvo por un fallo",

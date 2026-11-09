@@ -19,9 +19,6 @@ terminos: [salida anticipada]
 Salir;
 ```
 
-```railes produccion=breakStatement contextuales=Salir
-```
-
 ::: partes
 - `Salir` es una sentencia simple y termina con `;`.
 - Solo vale dentro de `Mientras`, `Repetir`, `Para` o `Para Cada`.

@@ -18,9 +18,6 @@ A class is a mould: it describes what data every object keeps (its **attributes*
 ```forma
 ```
 
-```railes produccion=classUnit
-```
-
 ::: partes
 - `Class` opens the declaration and «Name» is the name of the new type.
 - `Inherits From` is optional and names a single [superclass](#objetos.herencia).

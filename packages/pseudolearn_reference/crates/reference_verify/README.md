@@ -16,7 +16,7 @@ Importa `reference_model`, `reference_corpus` y, solo en pruebas, `reference_for
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Problema: sin medición la especificación vuelve a desactualizarse. Elección: cada regla tiene un ID estable y un caso negativo. La paridad compara la estructura (encabezados, programas, figuras, formas, raíles y recuadros), no el texto. La regla de código en línea solo marca palabras con mayúscula fuera del inicio de frase o con mayúscula interna, para no confundir el «Si» de una oración con la palabra reservada.
+Problema: sin medición la especificación vuelve a desactualizarse. Elección: cada regla tiene un ID estable y un caso negativo. La paridad compara la estructura (encabezados, programas, figuras, formas, anatomías y recuadros), no el texto. La regla de código en línea solo marca palabras con mayúscula fuera del inicio de frase o con mayúscula interna, para no confundir el «Si» de una oración con la palabra reservada.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 

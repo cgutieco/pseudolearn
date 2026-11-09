@@ -18,9 +18,6 @@ A `Constant` names a value that never changes, and the engine computes it before
 ```forma
 ```
 
-```railes produccion=constantDeclaration
-```
-
 ::: partes
 - `Constant` opens the declaration. It can go outside every algorithm, in the module, or inside a body.
 - «NAME» is an identifier. Writing it in upper case is a habit, not a rule.

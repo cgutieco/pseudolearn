@@ -22,9 +22,6 @@ Clase «Nombre» ⟦Hereda De «Superclase»⟧
 FinClase
 ```
 
-```railes produccion=classUnit
-```
-
 ::: partes
 - `Clase` abre la declaración y «Nombre» es el nombre del tipo nuevo.
 - `Hereda De` es opcional y nombra una sola [superclase](#objetos.herencia).

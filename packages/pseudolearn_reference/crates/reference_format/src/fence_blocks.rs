@@ -1,5 +1,5 @@
 use crate::fence::FenceOpening;
-use reference_model::{ProgramSource, RailRequest, SourceBlock};
+use reference_model::{ProgramSource, SourceBlock};
 
 pub enum FenceOutcome {
     Block(Box<SourceBlock>),
@@ -12,6 +12,9 @@ pub enum FenceOutcome {
 pub fn interpret(opening: &FenceOpening, body: String) -> Result<FenceOutcome, String> {
     let outcome = match opening.name.as_str() {
         "forma" => FenceOutcome::Block(Box::new(SourceBlock::Form(body))),
+        "anatomia" => FenceOutcome::Block(Box::new(SourceBlock::Anatomy(
+            crate::anatomy_body::parse(&body)?,
+        ))),
         "programa" => FenceOutcome::Block(Box::new(SourceBlock::Program(program(opening, body)?))),
         "salida" => FenceOutcome::Output(body),
         "diagnosticos" => FenceOutcome::Diagnostics(non_empty_lines(&body)),
@@ -37,7 +40,6 @@ fn reference_block(opening: &FenceOpening, body: String) -> Result<SourceBlock, 
         "traza" => SourceBlock::Trace {
             program: required(opening, "programa")?.to_owned(),
         },
-        "railes" => SourceBlock::Rails(rails(opening)?),
         "generado" => SourceBlock::Generated {
             catalog: required(opening, "catalogo")?.to_owned(),
         },
@@ -76,21 +78,6 @@ fn program(opening: &FenceOpening, code: String) -> Result<ProgramSource, String
     };
     source.promise.termination = opening.attribute("termina").map(str::to_owned);
     Ok(source)
-}
-
-fn rails(opening: &FenceOpening) -> Result<RailRequest, String> {
-    let contextual = opening
-        .attribute("contextuales")
-        .map(|list| {
-            list.split(',')
-                .map(|entry| (entry != "-").then(|| entry.to_owned()))
-                .collect()
-        })
-        .unwrap_or_default();
-    Ok(RailRequest {
-        production: required(opening, "produccion")?.to_owned(),
-        contextual,
-    })
 }
 
 fn required<'opening>(opening: &'opening FenceOpening, key: &str) -> Result<&'opening str, String> {

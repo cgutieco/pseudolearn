@@ -18,9 +18,6 @@ terminos: [task, task scope, handle]
 ```forma
 ```
 
-```railes produccion=taskScope
-```
-
 ::: partes
 - `Tasks` opens the scope. «failure» is an optional name that, after `EndTasks`, tells whether any task failed.
 - `Spawn` creates a child task that runs a `Suspendible` unit. It is only written directly inside the scope.

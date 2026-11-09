@@ -88,6 +88,38 @@ void main() {
       expect((blocks[2] as ReferenceCallout).collapsible, isTrue);
     });
 
+    test('parses an anatomy into code parts with their labels', () async {
+      const section = '{"id":"a","number":"1","kind":"tipo","title":[],"phrase":[],"blocks":['
+          '{"type":"anatomy","parts":['
+          '{"tokens":[["Dimension","keywordStructured"]],"label":[{"type":"text","text":"palabra"}]},'
+          '{"tokens":[["notas","identifier"],["["],["4","literalNumber"],["]"]],"label":[{"type":"code","tokens":[["Como"]]}]}]}]}';
+      final loaded = await _fromMap({'assets/reference/es/es/sections/a.json': section}).loadSection(_spanish, 'a');
+      final anatomy = (loaded as ContentLoaded<ReferenceSection>).value.blocks.single as ReferenceAnatomy;
+      expect(anatomy.parts, hasLength(2));
+      expect(anatomy.parts.first.tokens.single.text, 'Dimension');
+      expect(anatomy.parts.last.tokens.map((token) => token.text).join(), 'notas[4]');
+      expect(anatomy.parts.last.label.single.plainText, 'Como');
+    });
+
+    test('an anatomy without parts or labels is malformed', () async {
+      const withoutParts = '{"id":"a","number":"1","kind":"tipo","title":[],"phrase":[],"blocks":[{"type":"anatomy"}]}';
+      const withoutLabel = '{"id":"b","number":"1","kind":"tipo","title":[],"phrase":[],"blocks":[{"type":"anatomy","parts":[{"tokens":[["x"]]}]}]}';
+      final repository = _fromMap({
+        'assets/reference/es/es/sections/a.json': withoutParts,
+        'assets/reference/es/es/sections/b.json': withoutLabel,
+      });
+      for (final id in ['a', 'b']) {
+        final result = await repository.loadSection(_spanish, id);
+        expect((result as ContentLoadFailed<ReferenceSection>).failure, ContentLoadFailure.malformedReference);
+      }
+    });
+
+    test('a rails block is no longer published and is malformed', () async {
+      const section = '{"id":"a","number":"1","kind":"tipo","title":[],"phrase":[],"blocks":[{"type":"rails","svg":"<svg/>","alt":"A"}]}';
+      final result = await _fromMap({'assets/reference/es/es/sections/a.json': section}).loadSection(_spanish, 'a');
+      expect(result, isA<ContentLoadFailed<ReferenceSection>>());
+    });
+
     test('a callout kind that is no longer published reads as a note', () async {
       const section = '{"id":"a","number":"1","kind":"concepto","title":[],"phrase":[],"blocks":['
           '{"type":"callout","kind":"teachers","collapsible":true,"blocks":[]},'

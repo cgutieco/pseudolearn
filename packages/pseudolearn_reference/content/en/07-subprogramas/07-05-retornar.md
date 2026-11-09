@@ -18,9 +18,6 @@ terminos: [return]
 ```forma
 ```
 
-```railes produccion=returnStatement
-```
-
 ::: partes
 - `Return` ends the call.
 - «expression» is required if the subprogram declares `As` type, and forbidden otherwise.

@@ -24,9 +24,6 @@ Para Cada «clave», «valor» En «diccionario» Hacer
 FinPara
 ```
 
-```railes produccion=forEachLoop contextuales=Cada,En
-```
-
 ::: partes
 - `Para Cada` abre el recorrido.
 - «elemento» es un nombre nuevo que en cada vuelta vale el elemento visitado. No se puede asignar.

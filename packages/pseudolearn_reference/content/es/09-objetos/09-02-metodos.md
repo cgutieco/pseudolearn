@@ -21,9 +21,6 @@ Un método es un subprograma que vive dentro de una clase y trabaja sobre un obj
 FinMetodo
 ```
 
-```railes produccion=methodMember
-```
-
 ::: partes
 - `Metodo` abre el método. Puede ir precedido de `Publico` (por omisión) o `Privado`.
 - «parámetros» y `Como` «tipo» siguen las mismas reglas que en un [subprograma](#subprogramas.declaracion).

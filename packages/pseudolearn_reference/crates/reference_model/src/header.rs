@@ -28,12 +28,6 @@ impl Profile {
     }
 }
 
-#[derive(Clone, Debug, Default, Eq, PartialEq)]
-pub struct RailRequest {
-    pub production: String,
-    pub contextual: Vec<Option<String>>,
-}
-
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct SectionHeader {

@@ -18,9 +18,6 @@ terminos: [variable, declaration, initial value]
 ```forma
 ```
 
-```railes produccion=declaration
-```
-
 ::: partes
 - `Define` opens the declaration.
 - «name» is an identifier. A single letter is valid too.

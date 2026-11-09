@@ -21,9 +21,6 @@ Repetir
 Hasta Que «condición»
 ```
 
-```railes produccion=repeatLoop
-```
-
 ::: partes
 - `Repetir` abre el bucle.
 - «instrucciones» es el cuerpo.

@@ -66,8 +66,8 @@ Un crate por capa; la matriz de imports está en `architecture.yaml`.
 | `reference_format` | Lector del Markdown con directivas |
 | `reference_corpus` | Léxico, especificaciones con huella por regla, diagnósticos, fichas y gramática desde la exportación |
 | `reference_engine` | Adaptador del puerto sobre `pseudolearn_api` (tokenizar, traducir, ejecutar, RI) |
-| `reference_figures` | Contrato SVG, kit de piezas, capas por paso y diagramas de raíles |
-| `reference_resolve` | Fuente → sección publicada para un idioma y un perfil |
+| `reference_figures` | Contrato SVG, kit de piezas y capas por paso |
+| `reference_resolve` | Fuente → sección publicada para un idioma y un perfil, con formas, anatomías, programas y figuras resueltos |
 | `route_resolve` | Lección y ejercicio fuente → lección y ejercicio publicados, con tarjetas de recuerdo, figuras de la Especificación incrustadas y las ejecuciones que verifican cada ejercicio |
 | `reference_verify` | Verificadores de los dos libros y cobertura |
 | `reference_export` | Paquetes por edición de cada libro con manifiesto de huellas |
@@ -109,7 +109,7 @@ Cuerpo:
 | Bloque | Atributos | Contenido |
 |---|---|---|
 | `forma` | — | Forma de escritura; `«hueco»` y opcionales `⟦…⟧` |
-| `railes` | `produccion`, `contextuales` | Diagrama generado desde la gramática |
+| `anatomia` | — | Un ejemplo real partido en piezas: una línea `código | etiqueta` por pieza, al menos dos |
 | `programa` | `id`, `titulo`, `ejecutar`, `termina` | Programa en perfil español |
 | `salida` | — | Salida prometida del programa anterior |
 | `diagnosticos` | — | Códigos prometidos, uno por línea |
@@ -118,6 +118,10 @@ Cuerpo:
 | `figura` | `id` | `pie:`, `paso:` y `panel <zona> <paso>: texto` |
 | `ri`, `traza` | `programa` | Representación intermedia y traza generadas |
 | `generado` | `catalogo` | `palabras`, `diagnosticos`, `funciones`, `gramatica`, `indice` |
+
+El código de una anatomía es un ejemplo concreto, sin huecos, escrito en el perfil del idioma del archivo, igual
+que una forma no vacía; la etiqueta admite las marcas en línea. La anatomía se usa solo donde la forma tiene
+piezas que se repiten, opcionales o alternativas difíciles de ver; una forma lineal no la necesita.
 
 En la edición inglesa los bloques `programa` y `forma` pueden ir vacíos: se reutiliza el de la sección
 española con el mismo `id` (o la misma posición, para las formas) y el motor lo traduce. Una forma inglesa
@@ -128,9 +132,11 @@ no vacía se escribe en perfil inglés para que sus huecos estén en inglés.
 `assets/reference/<idioma>/<perfil>/` contiene `toc.json`, `sections/<id>.json`, `search.json`,
 `links.json` y `manifest.json`. El esquema está en `schemas/reference-bundle.schema.json`.
 
-- Los bloques son `heading`, `paragraph`, `list`, `table`, `form`, `rails`, `program`, `figure`,
+- Los bloques son `heading`, `paragraph`, `list`, `table`, `form`, `anatomy`, `program`, `figure`,
   `callout`, `summary`, `see_also`, `diagnostic`, `intermediate` y `trace`.
 - Las corridas en línea son `text`, `strong`, `emphasis`, `code`, `slot`, `link` y `term`.
+- Una anatomía trae `parts`: cada pieza con sus `tokens` en el perfil de la edición y su `label` en corridas. El
+  consumidor pinta las piezas en una fila, cada una con su etiqueta debajo.
 - Un token es `[texto]` o `[texto, categoría]`; las categorías son las de `HighlightCategory` del editor.
 - Una figura trae `svg` (base), `layers` (`from_step`, `until_step`, `svg`), `steps` (texto por paso) y
   `panels` (zona, paso desde el que se muestra y texto). Para el paso *k* el consumidor inserta antes de
@@ -183,10 +189,10 @@ discontinua/>` dibuja una polilínea con punta.
 | `REF-ANCHOR-STALE` | `reference.lock.json` coincide con la huella actual de cada ancla | Huella alterada |
 | `REF-COVERAGE` | Vocabulario, palabras contextuales, fichas, diagnósticos y especificaciones `LANG`, `LIB`, `ENG`, `MEM`, `RT` cubiertos o excluidos con motivo | Identidad sin sección |
 | `REF-ANATOMY` | Cada sección tiene los bloques obligatorios de su tipo | `fixtures/anatomy/` |
-| `REF-PARITY` | `es` y `en` tienen las mismas secciones, cabeceras y estructura | `fixtures/parity-en/` |
+| `REF-PARITY` | `es` y `en` tienen las mismas secciones, cabeceras y estructura, con el mismo número de piezas en cada anatomía | `fixtures/parity-en/` y anatomía con una pieza de más |
 | `REF-INLINE-CODE` | Una palabra reservada con mayúscula fuera del inicio de frase, o con mayúscula interna, va como código | `fixtures/inline-code/` |
 | `REF-FIGURE-CONTRACT` | Contrato SVG | `fill="#ff0000"` |
-| `REF-FIGURE-NARROW` | 340 de ancho y letra de 12 o más; raíles que caben | Figura de 760 de ancho |
+| `REF-FIGURE-NARROW` | 340 de ancho y letra de 12 o más | Figura de 760 de ancho |
 | `REF-NO-INTERNAL-IDS` | Ningún texto publicado contiene identificadores del corpus | Párrafo con `LANG.CONTROL.IF` |
 | `REF-LINK-VALID` | Todo enlace interno apunta a una sección existente | Enlace a una sección inexistente |
 | `REF-BUNDLE-STALE` | El paquete versionado en la app es idéntico al que produce el compilador | Archivo editado, ausente o sobrante |
@@ -286,7 +292,7 @@ manifiesto de la Especificación de la misma edición y SHA-256 de cada archivo)
 | `RUTA-PREREQ` | `necesita` solo tiene lecciones anteriores y alcanza a las dueñas de todos los términos de `usa` | `fixtures/route/prereq/` |
 | `RUTA-SPEC-LINK` | Toda sección, ancla y figura de la Especificación citada existe | `tests/route.rs` de `reference_verify` y de `route_resolve` |
 | `RUTA-LINK-VALID` | Todo enlace `ruta:` apunta a una lección existente | `tests/route.rs` de `reference_verify` |
-| `RUTA-NO-SPEC-DUP` | Sin formas, raíles, RI, trazas, partes, límites ni catálogos de errores; «Bajo el capó» solo con párrafos y enlaces | `fixtures/route/no-spec-dup/` |
+| `RUTA-NO-SPEC-DUP` | Sin formas, anatomías, RI, trazas, partes, límites ni catálogos de errores; «Bajo el capó» solo con párrafos y enlaces | `fixtures/route/no-spec-dup/` y una lección con anatomía |
 | `RUTA-EXAMPLE-VERIFIED` | `REF-EXAMPLE-VERIFIED` aplicado a cada programa de lección y de ejercicio | `fixtures/route/example-verified/` |
 | `RUTA-EXERCISE-VERIFIED` | Las comprobaciones por tipo de §3.10 | `tests/route.rs` de `reference_verify` |
 | `RUTA-EXERCISE-MIX` | Toda lección que no es proyecto tiene al menos 5 ejercicios, 3 tipos, 2 niveles y 3 obligatorios; práctica y archivos coinciden | `fixtures/route/exercise-mix/` |
@@ -377,9 +383,14 @@ descartadas y números comparados con tolerancia relativa `1e-9`.
 - **Problema:** `flutter_svg` no admite marcadores, CSS ni `dominant-baseline`. **Elección:** el contrato
   los prohíbe y el kit dibuja las puntas de flecha como polígonos y centra el texto con un desplazamiento
   de 0,35 veces el cuerpo.
-- **Problema:** la gramática usa `identifier` también para palabras contextuales (`Cada`, `En`).
-  **Elección:** el bloque `railes` declara con `contextuales` qué apariciones de `identifier` son palabras,
-  en orden de recorrido (`-` deja el hueco).
+- **Problema:** las secciones traían un diagrama de raíles generado desde la gramática. Para leerlo había que
+  saber que el recorrido va de izquierda a derecha, que una vuelta atrás repite y que un desvío es opcional, y
+  nada de eso se enseña; además nombraba producciones («arreglo dimensionado», «miembros») que el texto no usa
+  y repetía la forma con otro vocabulario, así que quien lee perdía el hilo para traducir entre dos notaciones.
+  **Elección:** se retiran. La forma dice cómo se escribe; donde tiene piezas que se repiten, opcionales o
+  alternativas, una anatomía parte un ejemplo real y nombra cada pieza con las palabras del texto, y una tabla
+  o un programa muestra las variantes. **Descartado:** rediseñar los raíles, que conserva la notación ajena al
+  texto; y moverlos a un apéndice, porque la gramática completa ya está en el Apéndice generado.
 - **Problema:** la categoría de resaltado no existe en el corpus. **Elección:** `categories.json` la declara
   por identidad y el verificador de cobertura falla si una identidad del vocabulario no aparece en ninguna
   sección. Pendiente: proponer al corpus una propiedad de categoría para que el editor y este miembro
@@ -443,7 +454,8 @@ Pendientes declarados:
 
 ## 8. Fuentes consultadas y genealogía conceptual
 
-La estructura por partes numeradas se inspira en ECMA-262; los diagramas de raíles, en la tradición de
-los diagramas de sintaxis de Wirth. Se toma la idea de numeración estable y de anatomía por tipo de
-sección; se rechaza el registro formal y las gramáticas como única explicación. PseudoLearn es dueño de su
+La estructura por partes numeradas se inspira en ECMA-262. Se toma la idea de numeración estable y de
+anatomía por tipo de sección; se rechaza el registro formal y las gramáticas como única explicación. Los
+diagramas de sintaxis de la tradición de Wirth se probaron y se retiraron (§4): piden una notación que el
+libro no enseña. PseudoLearn es dueño de su
 formato y de su motor.

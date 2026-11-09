@@ -1,6 +1,4 @@
-use crate::{
-    CalloutKind, FigureSource, Inline, ProgramSource, RailRequest, RouteFence, SectionHeader,
-};
+use crate::{CalloutKind, FigureSource, Inline, ProgramSource, RouteFence, SectionHeader};
 use std::collections::BTreeMap;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -20,7 +18,7 @@ pub enum SourceBlock {
         rows: Vec<Vec<Vec<Inline>>>,
     },
     Form(String),
-    Rails(RailRequest),
+    Anatomy(Vec<AnatomySource>),
     Program(ProgramSource),
     Figure(FigureSource),
     Callout {
@@ -38,6 +36,12 @@ pub enum SourceBlock {
         catalog: String,
     },
     Route(RouteFence),
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct AnatomySource {
+    pub code: String,
+    pub label: Vec<Inline>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]

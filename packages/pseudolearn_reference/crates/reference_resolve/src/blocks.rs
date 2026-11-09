@@ -76,7 +76,7 @@ fn companion(
     block: &SourceBlock,
 ) -> Option<Block> {
     match block {
-        SourceBlock::Rails(request) => crate::rails::rails_block(resolution, collector, request),
+        SourceBlock::Anatomy(parts) => Some(crate::anatomy::anatomy_block(resolution, parts)),
         SourceBlock::Figure(source) => crate::figures::figure_block(resolution, collector, source),
         SourceBlock::Callout { kind, blocks, .. } => {
             crate::callouts::callout(resolution, collector, *kind, blocks)

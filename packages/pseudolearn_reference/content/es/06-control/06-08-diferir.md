@@ -21,9 +21,6 @@ Diferir
 FinDiferir
 ```
 
-```railes produccion=deferStatement contextuales=Diferir,FinDiferir
-```
-
 ::: partes
 - `Diferir` abre la limpieza.
 - «instrucciones» es lo que se hará al salir. No se ejecuta ahora.

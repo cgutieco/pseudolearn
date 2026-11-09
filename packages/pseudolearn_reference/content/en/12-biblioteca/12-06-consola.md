@@ -18,12 +18,6 @@ terminos: [input, output]
 ```forma
 ```
 
-```railes produccion=output
-```
-
-```railes produccion=input
-```
-
 ::: partes
 - `Write` evaluates zero or more comma-separated expressions, from left to right.
 - `Without Newline` is optional and goes at the end: it avoids the line break.

@@ -120,6 +120,23 @@ fn a_syntax_form_duplicates_the_specification() {
 }
 
 #[test]
+fn an_anatomy_duplicates_the_specification() {
+    let mut broken = lesson("valid/leccion.md");
+    broken
+        .blocks
+        .push(reference_model::SourceBlock::Anatomy(vec![
+            reference_model::AnatomySource {
+                code: "Escribir".to_owned(),
+                label: vec![reference_model::Inline::Text("orden".to_owned())],
+            },
+        ]));
+    assert_eq!(
+        rules(&check_no_spec_duplicate(&broken)),
+        vec![RuleId::RouteNoSpecDuplicate]
+    );
+}
+
+#[test]
 fn four_exercises_are_not_enough() {
     let lessons = [lesson("exercise-mix/leccion.md")];
     assert!(rules(&book_check(&lessons, check_exercise_mix)).contains(&RuleId::RouteExerciseMix));

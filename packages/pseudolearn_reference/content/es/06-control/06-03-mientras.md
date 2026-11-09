@@ -21,9 +21,6 @@ Mientras «condición» Hacer
 FinMientras
 ```
 
-```railes produccion=whileLoop
-```
-
 ::: partes
 - `Mientras` abre el bucle.
 - «condición» es una expresión `Logico`.

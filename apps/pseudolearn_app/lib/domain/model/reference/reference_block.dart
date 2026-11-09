@@ -1,3 +1,4 @@
+import 'reference_anatomy.dart';
 import 'reference_callout_kind.dart';
 import 'reference_figure.dart';
 import 'reference_form.dart';
@@ -46,11 +47,10 @@ final class ReferenceFormBlock extends ReferenceBlock {
   const ReferenceFormBlock(this.lines);
 }
 
-final class ReferenceRails extends ReferenceBlock {
-  final String svg;
-  final String alt;
+final class ReferenceAnatomy extends ReferenceBlock {
+  final List<ReferenceAnatomyPart> parts;
 
-  const ReferenceRails({required this.svg, required this.alt});
+  const ReferenceAnatomy(this.parts);
 }
 
 final class ReferenceProgramBlock extends ReferenceBlock {

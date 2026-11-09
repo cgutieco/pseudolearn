@@ -18,10 +18,16 @@ An array is a row (or a table) of boxes of the same type, with a fixed size and 
 ```forma
 Dimension «name»[«size»] As «type»
 Dimension «name»[«rows», «columns»] As «type»
+Dimension «name»[«size»], «name»[«size»] As «type»
 «name»[«index»] <- «value»
 ```
 
-```railes produccion=dimensionDeclaration
+```anatomia
+Dimension | word that creates the arrays
+notas[4] | name and size in brackets
+, | separates another array on the same line
+tabla[2, 3] | two sizes: rows and columns
+As Integer | type of the boxes, for every array on the line
 ```
 
 ## How it works {#funciona}
@@ -38,6 +44,11 @@ pie: An array of size 4 has boxes 0 to 3. Box 4 does not exist.
 An array can have several **dimensions**. A table with 2 rows and 3 columns is declared with two sizes and each box is named with two indices inside the same brackets:
 
 ```programa id=tabla titulo="A small multiplication table"
+```
+
+A single statement can create several arrays separated by commas. The `As` at the end applies to all of them:
+
+```programa id=varios titulo="Two arrays on one line"
 ```
 
 ## Dimensioning in two steps {#dos-pasos}

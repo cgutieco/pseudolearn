@@ -74,7 +74,7 @@ fn block_signature(block: &SourceBlock) -> Option<String> {
         SourceBlock::Program(program) => format!("program:{}", program.id),
         SourceBlock::Figure(figure) => format!("figure:{}:{}", figure.id, figure.steps.len()),
         SourceBlock::Form(_) => "form".to_owned(),
-        SourceBlock::Rails(request) => format!("rails:{}", request.production),
+        SourceBlock::Anatomy(parts) => format!("anatomy:{}", parts.len()),
         SourceBlock::Intermediate { program } => format!("intermediate:{program}"),
         SourceBlock::Trace { program } => format!("trace:{program}"),
         SourceBlock::Generated { catalog } => format!("generated:{catalog}"),

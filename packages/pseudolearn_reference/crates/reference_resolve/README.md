@@ -2,7 +2,7 @@
 
 ## 1. Qué es y qué no es
 
-Convierte cada documento fuente en una sección publicada para un idioma de interfaz y un perfil de sintaxis: tokeniza y traduce el código en línea, las formas y los programas; ejecuta los ejemplos en español y en el perfil de destino; produce figuras, raíles, representación intermedia, traza y apéndices generados.
+Convierte cada documento fuente en una sección publicada para un idioma de interfaz y un perfil de sintaxis: tokeniza y traduce el código en línea, las formas y los programas; ejecuta los ejemplos en español y en el perfil de destino; produce anatomías, figuras, representación intermedia, traza y apéndices generados.
 
 ## 2. Guía operativa y ciclo de vida
 

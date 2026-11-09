@@ -209,16 +209,29 @@ fn reports_a_missing_figure_and_an_unknown_link() {
 }
 
 #[test]
-fn draws_rails_and_reports_unknown_productions() {
+fn spells_each_anatomy_part_in_the_target_profile() {
     let resolved = resolve(
-        "```railes produccion=conditional\n```\n\n```railes produccion=nada\n```\n",
+        "```anatomia\nSi | palabra que abre\nx | condición antes de `Entonces`\n```\n",
         Profile::English,
         &SpanishReuse::default(),
     );
-    assert!(
-        matches!(resolved.section.blocks.first(), Some(Block::Rails { svg, alt }) if svg.contains(">If<") && alt == "Raíles: decisión")
+    let candidate = resolved.section.blocks.first();
+    assert!(matches!(candidate, Some(Block::Anatomy { parts }) if parts.len() == 2));
+    let Some(Block::Anatomy { parts }) = candidate else {
+        return;
+    };
+    let first = parts.first().and_then(|part| part.tokens.first());
+    assert_eq!(first.map(|token| token.text.as_str()), Some("If"));
+    assert_eq!(
+        first.and_then(|token| token.category),
+        Some(TokenCategory::KeywordStructured)
     );
-    assert_eq!(resolved.violations.len(), 1);
+    let label = parts
+        .get(1)
+        .map(|part| code(&part.label))
+        .unwrap_or_default();
+    assert_eq!(label.first().map(|token| token.text.as_str()), Some("Then"));
+    assert!(resolved.violations.is_empty());
 }
 
 #[test]

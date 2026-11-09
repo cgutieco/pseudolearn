@@ -1,7 +1,5 @@
 {
   "interface": {
-    "rails.title": "Syntax diagram:",
-    "rails.description": "Follow it like a railway track, left to right and top to bottom. Pills are words written exactly as shown; dashed boxes are slots you fill in; a detour below may be taken or skipped, and a loop back may be repeated.",
     "trace.statement_entered": "enters statement",
     "trace.decision": "decision",
     "trace.output": "writes",
@@ -636,16 +634,17 @@
       "programa": "Instructions",
       "total": "total ="
     },
-    "leer-raíles": {
-      "titulo": "How to follow a syntax diagram",
-      "descripcion": "Three strips of track. The first runs straight through the word While and the slot expression. The second has a detour that goes down to Else and back up, so Else can be skipped. The third passes through the slot statement and has a loop underneath back to the start, so the statement can be repeated.",
-      "fijo": "Fixed stretch: follow all of it",
-      "expresion": "expression",
-      "opcional": "Detour: may be skipped",
-      "se-salta": "straight track: without the optional part",
-      "repetir": "Loop: may be repeated",
-      "sentencia": "statement",
-      "vuelve": "the loop allows another statement"
+    "leer-forma": {
+      "titulo": "How to read a form",
+      "descripcion": "At the top, the If form: the word If and the word Then are fixed, and between them there is a dashed slot called condition. An arrow goes down from the slot to the filled line If n > 0 Then. At the bottom, Else appears between double brackets: it is an optional part that can be left out.",
+      "forma": "The form",
+      "fija": "fixed",
+      "hueco": "slot: you fill it",
+      "condicion": "condition",
+      "rellenada": "Filled in",
+      "opcional": "Optional part",
+      "se-omite": "you may write it or leave it out",
+      "sin-sino": "An If without Else is also valid."
     },
     "limites-recursos": {
       "titulo": "Capped resources",

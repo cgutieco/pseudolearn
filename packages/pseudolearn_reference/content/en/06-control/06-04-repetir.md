@@ -18,9 +18,6 @@ terminos: [post-test loop]
 ```forma
 ```
 
-```railes produccion=repeatLoop
-```
-
 ::: partes
 - `Repeat` opens the loop.
 - «statements» is the body.

@@ -156,7 +156,7 @@
             "list",
             "table",
             "form",
-            "rails",
+            "anatomy",
             "program",
             "figure",
             "callout",
@@ -202,6 +202,29 @@
         },
         "lines": {
           "type": "array"
+        },
+        "parts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "tokens",
+              "label"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "tokens": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "$ref": "#/$defs/token"
+                }
+              },
+              "label": {
+                "$ref": "#/$defs/runs"
+              }
+            }
+          }
         },
         "svg": {
           "type": "string"

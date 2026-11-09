@@ -62,6 +62,24 @@ void main() {
     });
   }
 
+  testWidgets('renders the arrays section with its anatomy on a phone', (tester) async {
+    tester.view.physicalSize = const Size(375, 812);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final section = await tester.runAsync(() => _section('tipos.arreglos'));
+    await tester.pumpWidget(
+      _app(
+        ReferenceReader(section: section!, edition: _edition, anchor: null, onOpenSection: (_) {}),
+        dark: false,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Pieza por pieza'), findsOneWidget);
+    expect(find.textContaining('para todos los arreglos', findRichText: true), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('steps through a figure', (tester) async {
     tester.view.physicalSize = const Size(375, 2400);
     tester.view.devicePixelRatio = 1;

@@ -16,13 +16,16 @@ Un subprograma también es un valor: se puede guardar en una variable, pasar com
 ## Cómo se escribe {#escribe}
 
 ```forma
-Definir «nombre» Como SubProceso(«tipos de parámetros») Como «tipo de retorno»
-SubProceso(«parámetros») Como «tipo de retorno»
+Definir «nombre» Como SubProceso(«tipos de parámetros») ⟦Como «tipo de retorno»⟧
+SubProceso(«parámetros») ⟦Como «tipo de retorno»⟧
   «instrucciones»
 FinSubProceso
 ```
 
-```railes produccion=functionType
+```anatomia
+Definir operacion Como | una variable, declarada como cualquier otra
+SubProceso(Entero) | tipos de los parámetros, en orden
+Como Entero | tipo que devuelve; sin esta parte no devuelve nada
 ```
 
 ## Cómo funciona {#funciona}

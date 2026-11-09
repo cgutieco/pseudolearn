@@ -17,11 +17,8 @@ An enumeration is a type with a closed list of named values, like the colours of
 
 ```forma
 Enum «Name»
-  «member», «member», …
+  ⟦«member», «member», …⟧
 EndEnum
-```
-
-```railes produccion=enumUnit
 ```
 
 ## How it works {#funciona}

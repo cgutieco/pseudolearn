@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../domain/model/reference/reference_block.dart';
 import '../../../domain/model/reference/reference_edition.dart';
 import '../reference_runs_text.dart';
-import '../reference_svg.dart';
+import 'reference_anatomy_view.dart';
 import 'reference_callout_view.dart';
 import 'reference_figure_view.dart';
 import 'reference_form_view.dart';
@@ -43,9 +43,9 @@ final class ReferenceBlockView extends StatelessWidget {
       ReferenceList() => ReferenceListView(list: block, onOpenSection: open),
       ReferenceTable() => ReferenceTableView(table: block, onOpenSection: open),
       ReferenceFormBlock(:final lines) => ReferenceFormView(lines: lines),
-      ReferenceRails(:final svg, :final alt) => ReferenceSvg(
-        svg: svg,
-        label: alt,
+      ReferenceAnatomy(:final parts) => ReferenceAnatomyView(
+        parts: parts,
+        onOpenSection: open,
       ),
       _ => ReferenceRichBlockView(
         block: block,

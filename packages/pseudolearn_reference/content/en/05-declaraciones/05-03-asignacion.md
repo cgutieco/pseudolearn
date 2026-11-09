@@ -18,9 +18,6 @@ terminos: [assignment, target]
 ```forma
 ```
 
-```railes produccion=assignmentStatement
-```
-
 ::: partes
 - «target» is a [designator](#declaraciones.designadores): a variable, an array cell or an attribute.
 - `<-` is the assignment arrow. It reads "receives".

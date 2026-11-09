@@ -22,9 +22,6 @@ Record «Name»
 EndRecord
 ```
 
-```railes produccion=recordUnit
-```
-
 ## How it works {#funciona}
 
 A **record** is declared outside the algorithm, with a name and its **fields**. After that it is used like any other type: it is built by writing its name with one value per field, in the order they were declared, and each field is read or changed with a dot.

@@ -4,7 +4,7 @@ numero: "0.3"
 tipo: concepto
 titulo: Cómo leer una forma de escritura
 anclas: [LANG.SYNTAX.GRAMMAR#R1]
-terminos: [forma, diagrama de sintaxis, opcional]
+terminos: [forma, anatomía, opcional]
 ---
 
 ::: frase
@@ -21,13 +21,16 @@ Mientras «condición» Hacer
 FinMientras
 ```
 
-Debajo de la forma suele aparecer un **diagrama de sintaxis**. Se recorre como una vía de tren: de izquierda a derecha y de arriba abajo. Las píldoras son palabras fijas; las cajas punteadas son huecos; una vía que pasa por debajo de algo indica que puedes saltarlo, y una vía que vuelve hacia atrás indica que puedes repetirlo.
-
-```railes produccion=whileLoop
+```figura id=leer-forma
+pie: Una forma tiene palabras fijas y huecos. Al rellenar los huecos sale una línea de código; lo que va entre ⟦ y ⟧ puedes omitirlo.
 ```
 
-```figura id=leer-raíles
-pie: Las tres piezas de un diagrama de sintaxis: tramo fijo, desvío opcional y vuelta para repetir.
+Cuando una forma tiene piezas que se repiten u opcionales, la acompaña una **anatomía**: una línea de código real partida en piezas, con el nombre de cada una debajo.
+
+```anatomia
+Mientras | palabra que abre el ciclo
+n <= 3 | condición: se comprueba antes de cada vuelta
+Hacer | palabra que cierra la línea
 ```
 
 Este programa rellena la forma de `Mientras` con una condición y una instrucción:
@@ -49,14 +52,14 @@ FinAlgoritmo
 ```
 
 ::: nota
-Los diagramas de sintaxis se generan a partir de la gramática oficial del lenguaje. Por eso a veces muestran nombres de huecos más generales que los de la forma, como «expresión» en lugar de «condición».
+La forma muestra la manera habitual de escribir una construcción, con los nombres que usa el texto, como «condición». La gramática completa, con todas sus variantes, está en el apéndice.
 :::
 
 ::: resumen
 - Palabras en color: van tal cual.
 - Huecos «así»: los rellenas tú.
 - ⟦…⟧: parte opcional.
-- En los raíles, un desvío por debajo se puede saltar y una vuelta se puede repetir.
+- Una anatomía parte un ejemplo real y nombra cada pieza.
 :::
 
 ::: vease

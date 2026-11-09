@@ -19,9 +19,6 @@ terminos: [asignación, destino]
 «destino» <- «expresión»;
 ```
 
-```railes produccion=assignmentStatement
-```
-
 ::: partes
 - «destino» es un [designador](#declaraciones.designadores): una variable, una casilla de arreglo o un atributo.
 - `<-` es la flecha de asignación. Se lee «recibe».

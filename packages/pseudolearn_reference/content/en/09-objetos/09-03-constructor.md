@@ -18,9 +18,6 @@ terminos: [constructor, instance]
 ```forma
 ```
 
-```railes produccion=constructorMember
-```
-
 ::: partes
 - `Method Constructor` declares the constructor. It has no visibility or return type.
 - Every class has **at most one**. If none is written, there is an implicit one without parameters that sets nothing.

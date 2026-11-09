@@ -2922,13 +2922,14 @@ proyecto no simula participantes ni resultados. Mientras no existan, ese resulta
   ejemplos no se ejecutaban, las figuras no existían y nada impedía que el texto y el motor divergieran.
 - **Elección:** `packages/pseudolearn_reference` compila el libro y escribe en `assets/reference/<idioma>/<perfil>/`
   un paquete JSON ya resuelto: índice, búsqueda, enlaces y una sección por archivo con bloques tipados, programas
-  ejecutados con su salida, diagnósticos, raíles y figuras SVG con capas por paso. La app solo lo lee:
+  ejecutados con su salida, diagnósticos, anatomías y figuras SVG con capas por paso. La app solo lo lee:
     - `domain/model/reference/` modela edición, sección, bloques, programas, figuras, índice y enlaces; el puerto
       `ReferenceRepository` lo abstrae y `data/reference/BundledReferenceRepository` lo lee de `rootBundle`, con un
       fallo `ContentLoadFailure.malformedReference` ante un JSON inválido.
     - `application/reference/` tiene `ReferenceIndexCubit` (índice, búsqueda y enlaces, cargados una vez por edición) y
       `ReferenceSectionCubit` (secciones en caché por identidad).
-    - `presentation/reference/` es el lector: cabecera, bloques, programas con «Probar en el editor», figuras con
+    - `presentation/reference/` es el lector: cabecera, bloques, programas con «Probar en el editor», anatomías
+      (cada pieza de código con su etiqueta debajo, en una fila que salta de línea en pantallas estrechas), figuras con
       controles de paso y paneles, y botones que llevan desde fichas de sintaxis y diagnósticos a su sección
       (`ReferenceLinkButton`).
     - La edición la decide el idioma de la interfaz y el perfil de vocabulario activo (`ReferenceEditionResolver`).

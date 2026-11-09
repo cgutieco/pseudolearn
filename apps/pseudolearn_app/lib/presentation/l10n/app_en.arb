@@ -2276,7 +2276,7 @@
   "referenceIndexErrorTitle": "The specification could not be loaded",
   "referenceSearchEmpty": "No section matches “{query}”",
   "referenceOpenInSpecification": "See in the specification",
-  "referenceRailsLabel": "Syntax diagram",
+  "referenceAnatomyLabel": "Piece by piece",
   "referenceFormLabel": "Form",
   "referenceTerminationCompleted": "Finished normally",
   "referenceTerminationFailed": "Stopped by a failure",

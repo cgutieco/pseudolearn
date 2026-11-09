@@ -1,3 +1,4 @@
+import '../../domain/model/reference/reference_anatomy.dart';
 import '../../domain/model/reference/reference_block.dart';
 import '../../domain/model/reference/reference_callout_kind.dart';
 import 'reference_figure_parser.dart';
@@ -31,9 +32,8 @@ ReferenceBlock parseBlock(Map<String, Object?> source) {
 
 ReferenceBlock _richBlock(String type, Map<String, Object?> source) {
   return switch (type) {
-    'rails' => ReferenceRails(
-      svg: textOf(source, 'svg'),
-      alt: optionalTextOf(source, 'alt'),
+    'anatomy' => ReferenceAnatomy(
+      mappedList(source['parts'], parseAnatomyPart),
     ),
     'program' => ReferenceProgramBlock(parseProgram(source)),
     'figure' => ReferenceFigureBlock(parseFigure(source)),
@@ -65,6 +65,14 @@ ReferenceBlock _listing(String type, Map<String, Object?> source) {
 String _traceLine(Object? value) {
   final source = objectOf(value);
   return '${numberOf(source, 'line')} · ${textOf(source, 'detail')}';
+}
+
+ReferenceAnatomyPart parseAnatomyPart(Object? value) {
+  final source = objectOf(value);
+  return ReferenceAnatomyPart(
+    tokens: parseTokens(source['tokens']),
+    label: parseRuns(source['label']),
+  );
 }
 
 ReferenceSectionLink parseSectionLink(Object? value) {

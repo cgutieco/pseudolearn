@@ -25,9 +25,6 @@ Funcion «resultado» <- «nombre»(«parámetros»)
 FinFuncion
 ```
 
-```railes produccion=subprogram
-```
-
 ::: partes
 - `SubProceso` abre un subprograma. Los paréntesis son obligatorios aunque no haya parámetros.
 - `Como` «tipo» es opcional: con él, el subprograma **devuelve** un valor; sin él, solo hace cosas.

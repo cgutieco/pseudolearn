@@ -18,10 +18,16 @@ Un arreglo es una fila (o una tabla) de casillas del mismo tipo, con un tamaño 
 ```forma
 Dimension «nombre»[«tamaño»] Como «tipo»
 Dimension «nombre»[«filas», «columnas»] Como «tipo»
+Dimension «nombre»[«tamaño»], «nombre»[«tamaño»] Como «tipo»
 «nombre»[«índice»] <- «valor»
 ```
 
-```railes produccion=dimensionDeclaration
+```anatomia
+Dimension | palabra que crea los arreglos
+notas[4] | nombre y tamaño entre corchetes
+, | separa otro arreglo de la misma línea
+tabla[2, 3] | dos tamaños: filas y columnas
+Como Entero | tipo de las casillas, para todos los arreglos de la línea
 ```
 
 ## Cómo funciona {#funciona}
@@ -67,6 +73,21 @@ FinAlgoritmo
 
 ```salida
 3 6
+```
+
+Una sola sentencia puede crear varios arreglos separados por comas. El `Como` del final vale para todos:
+
+```programa id=varios titulo="Dos arreglos en una línea" ejecutar
+Algoritmo Varios
+  Dimension precios[3], cantidades[3] Como Entero;
+  precios[0] <- 12;
+  cantidades[0] <- 2;
+  Escribir precios[0] * cantidades[0];
+FinAlgoritmo
+```
+
+```salida
+24
 ```
 
 ## Dimensionar en dos pasos {#dos-pasos}
