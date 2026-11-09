@@ -459,7 +459,7 @@ Windows. Xcode valida y compila los catálogos durante el build.
 
 ### 2.8 Regeneración de las capturas de producto de la web
 
-La landing (`apps/fe-pseudolearn`) no dibuja una reconstrucción del editor: muestra la app real. Las ocho imágenes las
+La landing (`apps/pseudolearn_web`) no dibuja una reconstrucción del editor: muestra la app real. Las ocho imágenes las
 rasteriza esta herramienta montando la composición completa —`CubitScope`, enrutador y armazón—, cargando el programa
 correspondiente (`assets/demo/guided_demo_es.pseudo` con `SyntaxProfileId.classicSpanish` y
 `UiLanguageId.spanish`

@@ -25,7 +25,7 @@ Las mediciones históricas conservan sus fuentes, hashes y condiciones; no certi
 | `apps/pseudolearn_app` | Cliente Flutter con puente Rust generado | Flutter, Dart y Cargo |
 | `apps/pseudolearn_cli` | Órdenes de usuario y adaptadores de conformidad | Cargo y rustup |
 | `apps/pseudolearn_backend` | Backend Supabase | Deno y CLI de Supabase |
-| `apps/fe-pseudolearn` | Sitio web Astro | Node y pnpm |
+| `apps/pseudolearn_web` | Sitio web Astro | Node y pnpm |
 | `apps/pseudolearn_vscode` | Extensión local de escritorio para VS Code | Node 22.23.3 y pnpm 12.8.1 |
 
 Los presupuestos AOT incumplidos y las validaciones de plataforma sin evidencia permanecen declarados

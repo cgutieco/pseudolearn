@@ -34,7 +34,7 @@ Rust. Antes de compilar hace falta la exportación del corpus, que no se version
 
 | Orden | Qué hace |
 |---|---|
-| `cargo run -p reference_cli -- build` | Compila las cuatro ediciones de los dos libros y escribe `../../apps/pseudolearn_app/assets/reference/`, `../../apps/pseudolearn_app/assets/route/` y la edición web de la Especificación en `../../apps/fe-pseudolearn/src/entities/specification/generated/`. Solo escribe si no hay violaciones |
+| `cargo run -p reference_cli -- build` | Compila las cuatro ediciones de los dos libros y escribe `../../apps/pseudolearn_app/assets/reference/`, `../../apps/pseudolearn_app/assets/route/` y la edición web de la Especificación en `../../apps/pseudolearn_web/src/entities/specification/generated/`. Solo escribe si no hay violaciones |
 | `cargo run -p reference_cli -- check` | Compila en memoria, ejecuta todos los verificadores y compara los tres paquetes versionados: los dos de la app y el de la web (`REF-BUNDLE-STALE`, `RUTA-BUNDLE-STALE`, `REF-WEB-BUNDLE-STALE`) |
 | `cargo run -p reference_cli -- coverage` | Informe de cobertura de la Especificación por área y de la ruta: términos por lección, ejercicios por tipo y nivel, secciones enlazadas y secciones que ninguna lección enlaza |
 | `cargo run -p reference_cli -- lock` | Registra la huella actual de cada ancla después de revisar las secciones afectadas |
@@ -148,7 +148,7 @@ no vacía se escribe en perfil inglés para que sus huecos estén en inglés.
 
 La edición web es una proyección del mismo paquete: solo las dos ediciones cuyo perfil coincide con el idioma
 (`es/es` y `en/en`), publicadas como `<idioma>/toc.json` y `<idioma>/sections/<id>.json` en
-`apps/fe-pseudolearn/src/entities/specification/generated/`. Los archivos son byte a byte los de la app; no se
+`apps/pseudolearn_web/src/entities/specification/generated/`. Los archivos son byte a byte los de la app; no se
 publican `search.json`, `links.json` ni `manifest.json`, que la web no consume.
 
 ### 3.4 Figuras
@@ -201,7 +201,7 @@ discontinua/>` dibuja una polilínea con punta.
 | `REF-NO-INTERNAL-IDS` | Ningún texto publicado contiene identificadores del corpus | Párrafo con `LANG.CONTROL.IF` |
 | `REF-LINK-VALID` | Todo enlace interno apunta a una sección existente | Enlace a una sección inexistente |
 | `REF-BUNDLE-STALE` | El paquete versionado en la app es idéntico al que produce el compilador | Archivo editado, ausente o sobrante |
-| `REF-WEB-BUNDLE-STALE` | La edición web versionada en `fe-pseudolearn` es idéntica a la proyección del compilador | `bundle_files_tests.rs` (la misma comparación) y `web_bundles_tests.rs` (qué ediciones y archivos se proyectan) |
+| `REF-WEB-BUNDLE-STALE` | La edición web versionada en `pseudolearn_web` es idéntica a la proyección del compilador | `bundle_files_tests.rs` (la misma comparación) y `web_bundles_tests.rs` (qué ediciones y archivos se proyectan) |
 
 Anatomía por tipo:
 

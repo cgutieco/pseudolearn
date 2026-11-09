@@ -81,7 +81,7 @@ tratamiento concreto de cada choque requiere sus decisiones de §A.6.
 | CLI `pseudo` | macOS arm64 empaquetada en el VSIX; compilable en otros destinos **[I]** | VM o AOT (`--nativo`); anfitrión físico Rust | **[O]** `apps/pseudolearn_cli/README.md`, `apps/pseudolearn_vscode/artifact.contract.json` |
 | Extensión VS Code escritorio | Solo `darwin-arm64` | Lanza `pseudo run --editor` y `pseudo dap` | **[O]** `artifact.contract.json`, `apps/pseudolearn_vscode/src/application/run_arguments.ts` |
 | Extensión VS Code web | Navegadores (Chromium y WebKit aprobados; Firefox no evaluado) | Wasm en Workers; Fetch del navegador | **[O]** README extensión §11–§12, plan PG-6B |
-| Sitio `fe-pseudolearn` | — | **No ejecuta el lenguaje** | **[O]** `apps/fe-pseudolearn/README.md` «Sin ejecución del lenguaje en el navegador» |
+| Sitio `pseudolearn_web` | — | **No ejecuta el lenguaje** | **[O]** `apps/pseudolearn_web/README.md` «Sin ejecución del lenguaje en el navegador» |
 | Backend Supabase | — | No ejecuta el lenguaje | **[O]** `apps/pseudolearn_backend/README.md` §1.1 |
 
 **Conflicto con el encargo (`CONFLICT-REPORT`, CF-N01):** el encargo cita «web» como plataforma de la app. La app no
@@ -844,7 +844,7 @@ Hoja de ruta y plan general según §B.1; plan de PG-B (D-PGB-10, PG-B.04) anota
 - Extensión: `apps/pseudolearn_vscode/README.md`, `package.json`, `artifact.contract.json`,
   `src/application/run_arguments.ts`, `src/application/debug_configuration.ts`, `src/adapters/browser_effect_host.ts`,
   `src/adapters/browser_commands.ts`, `src/adapters/browser_file_host.ts` (búsqueda).
-- Sitio y backend: `apps/fe-pseudolearn/README.md` (§1), `apps/pseudolearn_backend/README.md` (§1).
+- Sitio y backend: `apps/pseudolearn_web/README.md` (§1), `apps/pseudolearn_backend/README.md` (§1).
 - Auditoría de completitud (§A.8): `packages/pseudolearn_engine/crates/pseudolearn_semantic/README.md` (registros,
   ámbitos, genéricos), `crates/pseudolearn_codegen/README.md` (tareas nativas), `packages/pseudolearn_engine/README.md`
   (aislamiento de red y AOT), `packages/pseudolearn_engine/architecture.yaml` (`isolation`),

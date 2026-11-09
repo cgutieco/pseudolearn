@@ -496,7 +496,7 @@ marca es una silueta maciza de una sola tinta: el caso más favorable posible.
 | Coherencia del catálogo  | `python3 -m pseudolearn_brand check`         | `BRAND-CATALOG`: variante duplicada, composición desconocida, clave no declarada, inscripción fuera del círculo seguro | `brand.json`, §3.7                            |
 | Capas y límites          | `python3 tool/check_limits.py`               | `BRAND-LAYER-*`, `BRAND-SIZE-*`, `BRAND-NO-COMMENTS`, `BRAND-FORBIDDEN-IMPORT`                                         | `architecture.json`                           |
 | Tests                    | `python3 -m unittest discover -s test -t .`  | Regresiones de geometría, tipografía, composición, emisión y verificación                                              | `test/`                                       |
-| Marca pegada en el sitio | `cd apps/fe-pseudolearn && pnpm check:brand` | `FE-BRAND-GENERATED`: geometría de marca escrita a mano en un componente en vez de importada                           | `apps/fe-pseudolearn/scripts/check-brand.mjs` |
+| Marca pegada en el sitio | `cd apps/pseudolearn_web && pnpm check:brand` | `FE-BRAND-GENERATED`: geometría de marca escrita a mano en un componente en vez de importada                           | `apps/pseudolearn_web/scripts/check-brand.mjs` |
 
 El último vive en el sitio y no aquí a propósito: es el único que tiene que correr en un CI que no tiene
 Python, y no necesita recalcular la geometría para hacer su trabajo —le basta con detectar que alguien

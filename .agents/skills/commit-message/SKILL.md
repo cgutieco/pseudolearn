@@ -1,6 +1,6 @@
 ---
 name: commit-message
-description: Formato de los mensajes de commit de fe-pseudolearn. Úsala siempre que vayas a escribir un commit en este repositorio.
+description: Formato de los mensajes de commit de PseudoLearn. Úsala siempre que vayas a escribir un commit en este repositorio.
 ---
 
 # Mensajes de commit

@@ -81,7 +81,7 @@ fn consumer_roots() -> Vec<PathBuf> {
         root.join("apps/pseudolearn_cli/src"),
         root.join("apps/pseudolearn_app/lib"),
         root.join("apps/pseudolearn_app/native/src"),
-        root.join("apps/fe-pseudolearn/src"),
+        root.join("apps/pseudolearn_web/src"),
         root.join("apps/pseudolearn_vscode/src"),
     ]
 }

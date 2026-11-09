@@ -212,7 +212,7 @@ panel de créditos agotados en lugar del compositor, y traducción de cada `Cred
 recorrido completo simulado (sin cuenta → oferta → prueba → conversación → agotado → recarga → conversación).
 
 **AG-9 · Ecosistema externo.**
-1. `apps/fe-pseudolearn`: publicar `llms.txt` y `llms-full.txt` desde el módulo generado de la ficha.
+1. `apps/pseudolearn_web`: publicar `llms.txt` y `llms-full.txt` desde el módulo generado de la ficha.
 2. `pseudo mcp` en `apps/pseudolearn_cli`, con `SPEC-FIRST`: especificación `TOOL.MCP` en el corpus con reglas y casos
    (herramientas `check`, `run` con límites y sin capacidades por defecto, `format`, `translate`, `explain`,
    `search_reference`, `example`; la ficha como recurso). Después tests y código.
@@ -293,7 +293,7 @@ Ejecutada el 2026-11-08 sobre `d28fabd8`, antes de cualquier cambio.
 | `apps/pseudolearn_backend` | `deno task verify` | Verde: 71 tests |
 | `packages/pseudolearn_spec` | `cargo xtask verify` | Verde: 3370 observaciones, 0 divergencias |
 | `apps/pseudolearn_cli` | `cargo xtask verify` | Verde |
-| `apps/fe-pseudolearn` | `pnpm check:all` | Verde |
+| `apps/pseudolearn_web` | `pnpm check:all` | Verde |
 | `apps/pseudolearn_vscode` | `pnpm check:types`, `pnpm test` | Verde |
 
 ### 9.1 Decisiones abiertas resueltas en AG-0

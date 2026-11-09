@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: apps/fe-pseudolearn
+        working-directory: apps/pseudolearn_web
     steps:
       - uses: actions/checkout@v7
         with:
@@ -42,9 +42,9 @@ jobs:
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:
-          node-version-file: apps/fe-pseudolearn/.nvmrc
+          node-version-file: apps/pseudolearn_web/.nvmrc
           cache: pnpm
-          cache-dependency-path: apps/fe-pseudolearn/pnpm-lock.yaml
+          cache-dependency-path: apps/pseudolearn_web/pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
         env:
@@ -55,4 +55,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: apps/fe-pseudolearn
+          workingDirectory: apps/pseudolearn_web

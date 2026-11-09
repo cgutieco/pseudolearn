@@ -2,9 +2,9 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "fe-pseudolearn",
+      "name": "pseudolearn-web",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--dir", "apps/fe-pseudolearn", "exec", "astro", "dev", "--port", "4321"],
+      "runtimeArgs": ["--dir", "apps/pseudolearn_web", "exec", "astro", "dev", "--port", "4321"],
       "port": 4321
     }
   ]

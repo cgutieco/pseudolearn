@@ -257,7 +257,7 @@ junto con su consumidor; el reanclaje ocurre en esa misma fase. La persona autor
   ejecutadas y 4.026 observaciones de conformidad sin divergencias. `cargo xtask verify` de `pseudolearn_engine` y
   `pseudolearn_cli` también terminó en verde, incluidos Clippy, tests, verificadores Rust y auditorías de dependencias.
   `pseudolearn_app`: `flutter analyze --fatal-infos --fatal-warnings`, límites, contenido, sistema visual y cobertura de
-  sintaxis en verde; `flutter test` pasó 2.673 tests y omitió 2; el generador pasó 9 tests. `fe-pseudolearn`: `pnpm
+  sintaxis en verde; `flutter test` pasó 2.673 tests y omitió 2; el generador pasó 9 tests. `pseudolearn_web`: `pnpm
   check:all`, `test:e2e` (32), `test:a11y` (22) y `test:visual` (6) en verde; el chequeo integral también cubrió 198
   tests unitarios. `pseudolearn_vscode`: checks de tipos, arquitectura, comentarios, tamaño y paquete en verde; 165 tests.
   `pseudolearn_benchmarks`: 29 tests, análisis, límites y formato en verde. Backend: la búsqueda no encontró código ni

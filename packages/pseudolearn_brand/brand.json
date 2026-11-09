@@ -149,12 +149,12 @@
       "rounded": true,
       "gradient_id": "ground",
       "ink": "#FFFFFF",
-      "copies": ["apps/fe-pseudolearn/public/favicon.svg"]
+      "copies": ["apps/pseudolearn_web/public/favicon.svg"]
     }
   ],
   "emitters": {
     "typescript_symbol_path": {
-      "path": "apps/fe-pseudolearn/src/shared/ui/brand-mark/symbol-path.generated.ts",
+      "path": "apps/pseudolearn_web/src/shared/ui/brand-mark/symbol-path.generated.ts",
       "mode": "write"
     },
     "dart_brand_metrics": {

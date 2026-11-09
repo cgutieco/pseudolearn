@@ -29,7 +29,7 @@ class CheckTest(unittest.TestCase):
 
     def test_a_consumer_copy_that_drifted_is_reported(self):
         with self.repository_copy() as copy:
-            favicon = copy / "apps/fe-pseudolearn/public/favicon.svg"
+            favicon = copy / "apps/pseudolearn_web/public/favicon.svg"
             favicon.parent.mkdir(parents=True, exist_ok=True)
             favicon.write_text("<svg/>", encoding="utf-8")
             rules = [violation.rule for violation in artefacts.check(copy)]
@@ -41,7 +41,7 @@ class CheckTest(unittest.TestCase):
 
     def test_a_generated_module_that_drifted_is_reported(self):
         with self.repository_copy() as copy:
-            module = copy / "apps/fe-pseudolearn/src/shared/ui/brand-mark/symbol-path.generated.ts"
+            module = copy / "apps/pseudolearn_web/src/shared/ui/brand-mark/symbol-path.generated.ts"
             module.parent.mkdir(parents=True, exist_ok=True)
             module.write_text("export const BRAND_SYMBOL_PATH = 'M0 0';\n", encoding="utf-8")
             rules = [violation.rule for violation in artefacts.check(copy)]

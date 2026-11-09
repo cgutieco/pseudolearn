@@ -1,4 +1,4 @@
-package: fe-pseudolearn
+package: pseudolearn_web
 
 layers:
   app:

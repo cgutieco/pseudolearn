@@ -151,7 +151,7 @@ fn parse(arguments: &[String]) -> Result<(String, Options), String> {
     let route_output =
         route_output.unwrap_or_else(|| root.join("../../apps/pseudolearn_app/assets/route"));
     let web_output = web_output.unwrap_or_else(|| {
-        root.join("../../apps/fe-pseudolearn/src/entities/specification/generated")
+        root.join("../../apps/pseudolearn_web/src/entities/specification/generated")
     });
     Ok((
         command,

@@ -222,7 +222,7 @@ nivel. El banco no tiene ejercicios propios.
 
 ## 6. Fuera de alcance
 
-- La web Astro (`apps/fe-pseudolearn`) no consume la ruta en este plan; el paquete neutral la deja preparada.
+- La web Astro (`apps/pseudolearn_web`) no consume la ruta en este plan; el paquete neutral la deja preparada.
 - Patrones de diseño: release posterior.
 - Calificar las fases Entender y Planear fuera de los proyectos.
 - Regenerar capturas de producto y material de tiendas: solo si la persona lo autoriza en la fase RA-7.

@@ -402,7 +402,7 @@ PSeInt y ejemplos canónicos.
   ejecutar los ejemplos desde SEE porque obligaría a importar un sujeto en la exportación.
 - Los textos normativos se citan en español, el idioma del corpus, también en la ficha inglesa.
 - Destinos: `apps/pseudolearn_app/assets/agent/<idioma>/language-sheet.md` (lo empaqueta la app),
-  `apps/fe-pseudolearn/src/shared/agent-sheet/generated/` (lo publica la web como `llms-full.txt`) y
+  `apps/pseudolearn_web/src/shared/agent-sheet/generated/` (lo publica la web como `llms-full.txt`) y
   `apps/pseudolearn_cli/generated/language-sheet.<idioma>.md` (la incrusta `pseudo mcp`). Son
   los únicos consumidores, por eso se versionan (`GEN-NO-HAND-COPY`). `cargo xtask verify` ejecuta
   `agent-sheet --check`, que falla con `SEE-STALE` si una copia difiere de la generada.

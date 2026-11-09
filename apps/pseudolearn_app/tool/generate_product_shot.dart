@@ -24,7 +24,7 @@ import '../test/fakes/in_memory_preferences_store.dart';
 import '../test/fakes/load_bundled_fonts.dart';
 import '../test/fakes/test_dependencies.dart';
 
-const String _outputDirectory = '../fe-pseudolearn/src/assets/product';
+const String _outputDirectory = '../pseudolearn_web/src/assets/product';
 
 const double _rasterScale = 2.0;
 
