@@ -1,701 +1,141 @@
 # pseudolearn_engine
 
-## 1. Qué es y qué no es
-
-Núcleo estático y determinista de PseudoLearn, con arquitectura Remanso. Sirve a CLI, Flutter, Wasm y servicio de lenguaje mediante una API pública única.
-
-1. **Ejecutar y observar son actividades distintas.** El motor ejecuta siempre a velocidad completa;
-   observar es reconstruir, sobre un tramo, lo que la ejecución hizo. Nada que solo sirva para observar
-   puede costar en el camino rápido.
-2. **El determinismo es un recurso.** Como una ejecución queda definida por programa, configuración,
-   semilla y cinta de entradas, el motor puede reproducir en lugar de registrar. Toda decisión interna
-   que introduzca no determinismo, como recolectar por tiempo o identificar por dirección, está
-   prohibida.
-3. **Verificar una vez, no comprobar nunca.** Lo que se puede demostrar antes de ejecutar (tipos, rangos
-   de registros, destinos de salto) se demuestra en el verificador. La representación hace imposible
-   el resto sin ramas: potencias de dos y máscaras.
-4. **Los tipos estáticos se cobran en ejecución.** Ningún valor lleva etiqueta de tipo. La clase de valor
-   de cada registro (escalar o referencia) se conoce al compilar y decide en qué banco vive.
-5. **Una sola disciplina para todos los motores.** VM y AOT comparten RI, disposición de marco,
-   disposición de objetos y raíces del recolector. Una diferencia de representación entre motores es
-   una divergencia esperando a ocurrir.
-6. **Seguridad estructural.** Cero `unsafe` fuera de los puentes generados y de la frontera ABI del backend
-   nativo (`pseudolearn_aot_rt`). La velocidad sale del diseño, no de saltarse las comprobaciones de Rust.
-7. **Lo que no se mide no se afirma.** Cada técnica nombra la métrica de `PERF.*` que la
-   valida, y el resultado se publica aunque la refute.
-8. **Las escrituras no pagan la observación.** Las diferencias se calculan en los puntos de control;
-   el camino rápido no lleva barreras por página, escritura ni bandera de trampa.
-9. **La observación tiene presupuesto.** La densidad de puntos depende de la masa de sentencia y del
-   tamaño del estado; el reloj no programa puntos.
-10. **La máquina nocional conserva su exactitud.** Mapas estáticos separan raíces, definición y variables
-    observables del contenido accidental de los registros.
-
-La VM ejecuta cooperativamente la tarea raíz y sus hijas: conserva bancos y marcos separados por tarea, comparte montón y salida, y usa una cola FIFO para reanudar tareas listas. `Tareas`, `Lanzar`, `Aguardar` y la unión normal al salir del ámbito ya llegan a la ejecución. La cancelación cooperativa, el agregado de errores de hijas, las esperas por canal y la entrega de efectos pendientes ya se conectan con la agenda. Los canales acotados y Elegir comparten colas FIFO y decisiones por orden textual. La persistencia histórica completa y el registro concurrente de efectos abandonados siguen pendientes; AOT todavía no ejecuta las operaciones nuevas.
-Fuera de alcance técnico: motor durante la especificación, dependencias de UI, Cargo raíz y unsafe fuera de puentes generados y de `pseudolearn_aot_rt`.
-
-Codegen: Cranelift permanece como backend release y cumple `PERF.AOT.LEVEL#R1` a `#R3` (≤ 1,70 frente a V1F); trampas inmediatas con bloque frío compartido con identidad por sitio; sin transferencia AOT → VM porque `aot` está exento de observación. El nivel optimizado (≤ 1,30 frente a V1F-S) se retiró del contrato: ningún backend lo implementa y no hay fase que lo pida.
-
-La edición oficial declara variables locales con `Definir a, b Como Entero;`; el valor inicial `<- expresión` es opcional y solo se admite con un único nombre. Toda variable de `Definir` y todo parámetro por valor se puede reasignar: no existe la palabra `Mutable`. Leer una variable a la que algún camino no le dio valor es un error estático que nombra la causa del camino (asignación definitiva en `pseudolearn_semantic`); las clausuras solo capturan variables que nunca se reasignan. `Con Paso` es opcional (paso 1), un `Caracter` se amplía a `Cadena` como un `Entero` a `Real`, `Dimension v[n];` adopta una variable ya declarada y `Funcion r <- nombre(…)` devuelve su variable de retorno. La mutación de un objeto no reasigna su vínculo. Los tipos incorporados `Opcional<T>` y `Resultado<T,E>` aceptan argumentos concretos anidados; `Segun` exige cubrir sus variantes y los miembros de enumerados. `Propagar` retorna la alternativa de ausencia o error, y `Descartar` consume explícitamente un resultado. No hay migrador ni selector de compatibilidad. Los registros y subprogramas aceptan parámetros de tipo con inferencia local: semantic comprueba cada cuerpo una vez con parámetros opacos y monomorfiza hasta 64 instancias, cada una con su función o registro concretos, sin instrucción nueva ni despacho indirecto; los genéricos de clases y variantes de usuario, y los que cruzan módulos, quedan fuera. Las variantes comparten unión por banco y raíces estáticas entre VM y AOT; el opcional de referencia usa el centinela solo cuando no pierde la distinción entre `Nada` y `Algo(Nada)`.
-
-## 2. Guía operativa y ciclo de vida
-
-El workspace contiene el motor que consumen CLI, Flutter y los puentes. La conformidad vigente ejecuta los sujetos activos contra el corpus; el contraste diferencial vigente compara engine con aot. Los registros de medición histórica no forman parte del checkout y no certifican la revisión actual ni plataformas pendientes.
-
-El sujeto `aot` (código nativo generado por `pseudolearn_codegen` y ejecutado como proceso real) se declara en `conformance-aot.yaml` y se contrasta con `see conform --subject aot` desde `packages/pseudolearn_spec`; su adaptador es `pseudo --see-adapter aot` de la CLI, no `pseudolearn_conformance`, porque enlazar y lanzar ejecutables es capacidad de la CLI. Anuncia `execute` y `gc_stress` y está exento de observación e inspección paso a paso. Sus reglas se vinculan como `cumple` cuando el corpus las mide, `exento` cuando solo las verifican casos de análisis, de representación intermedia o de traza, y `pendiente` cuando ningún ejecutor de propiedades las cubre aún. Deuda asumida del sujeto `aot`: no implementa traza, estado ni entrada incremental (`ENG.INPUT#R3`, `IR.OBSERVATION-POINTS#R1` y `#R3`, `RT.HOST.INTERFACE#R2`), que verifica el sujeto `engine`; `ENG.LIMITS#R8` es de revisión humana y también figura `exento`. La entrada de consola, la lectura de puntos de control en la RI y la interfaz de anfitrión que `aot` sí ofrece figuran `cumple`. Los casos con anfitrión simulado exigen que el runtime nativo enlazado lleve el anfitrión de memoria; por eso `see` lanza el adaptador con la feature `test-host` de la CLI, que el aislamiento prohíbe en distribución. El ejecutable nativo distribuido todavía no enlaza anfitrión físico: sus efectos de capacidad terminan `interrumpido` (pendiente declarado en el README de la CLI). El rendimiento del código nativo se mide con `cargo run --release -p pseudolearn_bench_worker -- paired <directorio-nuevo>` (README del trabajador).
-
-El motor ejecuta enteros, reales, control, subprogramas, referencias, texto, arreglos, celdas, objetos,
-copia superficial, recolección determinista y azar con semilla. La API conserva entradas y eventos,
-cambia entre los gemelos rápido y sondeado, y expone `execute` mediante `ExecutionResource` y
-`CheckpointStore`.
-
-Los builds directos necesitan primero la exportación ignorada del corpus:
-`(cd ../pseudolearn_spec && cargo run --locked -p see_cli --bin see -- export --root .)`. `cargo xtask verify`
-la genera antes de compilar.
-
-`ExecutionLimits` configura `max_json_depth` y los topes de HTTP. Engine usa 64 niveles JSON, 1 MiB
-de cuerpo decodificado y cable, 16 KiB y 64 cabeceras, cuatro peticiones pendientes y 30 segundos
-como valores predeterminados. `ConLimiteRespuesta` y `ConTiempoMaximo` solo reducen esos topes;
-`LimiteExcedido` y `TiempoAgotado` son resultados de `ErrorES`, no terminaciones del programa.
-
-La medición final histórica de AWFY-core en macOS ARM64 obtuvo media geométrica de 30,026× y mínimo de
-19,866×, con cero muestras descartadas. Las campañas nuevas escriben sus datos en directorios locales
-ignorados y aceptan archivos de referencia externos.
-Comandos de compilación y verificación:
-- Verificación completa del motor: `cargo xtask verify`.
-- Grafo de API sin AOT y transporte HTTP: `cargo tree --locked -e normal -p pseudolearn_api --no-default-features` y `cargo tree --locked -e normal -p pseudolearn_wasm`; `cargo xtask verify` comprueba el aislamiento declarado.
-- Compilación optimizada: `cargo build --release`.
-- Pruebas unitarias y de integración: `cargo test --workspace`.
-- Preparación Wasm: `rustup target add wasm32-unknown-unknown --toolchain 1.99.0` y `cargo install wasm-bindgen-cli --version 0.2.129 --locked`.
-- Generación reproducible del módulo y enlaces: `bash tool/wasm.sh build`; el script entra en la raíz del motor para usar la cadena de `rust-toolchain.toml` sea cual sea el directorio de invocación.
-- Prueba del artefacto final en Chrome: `bash tool/wasm.sh test`.
-- Conformidad desde `packages/pseudolearn_spec`: `cargo run -p see_cli --bin see -- conform --subject engine --operation analyze`.
-- La campaña E-08 y sus datos de entrada son locales; no se incluyen capturas históricas en el checkout.
-Plataformas soportadas: macOS (arm64/x86_64), Linux y Windows. No hay secretos ni despliegue propio: los consumidores distribuyen sus artefactos.
-
-## 3. Arquitectura y modelo del sistema
-
-`pseudolearn_native_probe` es tooling sin consumidores de producto: enlaza el objeto medido, el runtime AOT y los núcleos V1F de ceiling. Solo este trabajador recibe la dependencia externa por ruta `ceiling_kernels`; ceiling no importa el motor. Su única conversión insegura presta los bytes de configuración de C durante la llamada.
-
-Un crate por capa; Cargo impide ciclos y el verificador contrasta dependencias con architecture.yaml.
-Los niveles siguientes solo importan los anteriores permitidos explícitamente.
-
-| Nivel | Crate | Responsabilidad | Imports internos permitidos |
-|---|---|---|---|
-| 0 | pseudolearn_source | Representa el texto fuente original con posiciones verificadas | — |
-| 0 | pseudolearn_abi | Declara la disposición compartida de los valores de ejecución | — |
-| 1 | pseudolearn_project | Modela paquetes, módulos y entradas de un proyecto en memoria | source |
-| 1 | pseudolearn_diagnostics | Representa diagnósticos mediante códigos con argumentos tipados | source |
-| 1 | pseudolearn_lexicon | Expone vocabularios bilingües generados desde el corpus | source |
-| 2 | pseudolearn_syntax | Construye un árbol sintáctico sin pérdida para cualquier texto | source, diagnostics, lexicon |
-| 3 | pseudolearn_semantic | Produce un HIR tipado desde la resolución estática | source, project, diagnostics, lexicon, syntax |
-| 3 | pseudolearn_ir | Define la representación intermedia verificada | source, abi |
-| 4 | pseudolearn_lowering | Traduce el HIR a representación intermedia observable | semantic, ir, diagnostics |
-| 4 | pseudolearn_bytecode | Traduce RI verificada a representación de bytecode y gemelos | ir, source |
-| 4 | pseudolearn_runtime | Proporciona aritmética comprobada, montón, colecciones, valores JSON y recolección | abi, diagnostics |
-| 5 | pseudolearn_library | Implementa conversiones, texto, bytes, JSON e intrínsecos matemáticos | runtime, diagnostics |
-| 6 | pseudolearn_aot_rt | Frontera `extern "C"` entre código nativo generado y runtime: contexto `#[repr(C)]`, asignación, acceso a memoria, celdas, texto, matemática, azar, E/S y fallos con sitio | source, abi, diagnostics, runtime, library |
-| 7 | pseudolearn_codegen | Genera el objeto nativo del sujeto `aot` con Cranelift: las 74 operaciones de la RI, con acceso a memoria en línea, despacho virtual, pila de raíces y trampa fría compartida con identidad por sitio; en modo ejecutable añade `main` y los metadatos | ir, diagnostics, aot_rt |
-| 6 | pseudolearn_service | Proporciona análisis incremental por unidad, sesión persistente de workspace, consultas bilingües y sesión LSP | source, diagnostics, lexicon, syntax, semantic, project |
-| 6 | pseudolearn_vm | Ejecuta bytecode verificado y devuelve terminación, servicio o trampa tipada | bytecode, runtime, library, diagnostics, vm_dispatch (compilación) |
-| 7 | pseudolearn_timeline | Reconstruye el estado observable de cualquier instante mediante puntos de control | vm, runtime, bytecode, diagnostics |
-| 7 | pseudolearn_transpiler | Traduce el HIR tipado a código equivalente en Rust y Python con solo la biblioteca estándar del destino | source, lexicon, semantic (syntax en pruebas) |
-| 8 | pseudolearn_api | Ofrece operaciones públicas totales sobre recursos del núcleo | transpiler, source, project, abi, diagnostics, lexicon, syntax, semantic, ir, lowering, bytecode, runtime, library, vm, timeline, service, codegen, aot_rt |
-| 9 | pseudolearn_conformance | Adapta la API al protocolo de conformidad por procesos | api |
-| 10 | pseudolearn_wasm | Expone la API pública como módulo para navegadores | api |
-| tooling | pseudolearn_vm_tracer | Mide directamente la VM y prepara bytecode antes del intervalo medido | api, bytecode, vm |
-| tooling | pseudolearn_vm_dispatch | Genera la forma de despacho de la VM desde la tabla de formas y `IR.INSTRUCTIONS` | ninguna |
-| tooling | pseudolearn_math_probe | Evalúa la biblioteca matemática sobre los argumentos del contraste de SEE | library |
-
-
-texto → source → syntax (árbol sin pérdida) → semantic (HIR) → lowering → ir verificada → bytecode → vm → timeline → api → consumidor nativo, Wasm o de conformidad.
-El backend nativo consume la misma RI; pseudolearn_service consume el árbol sintáctico y el análisis semántico. diagnostics y lexicon suministran datos generados a las etapas.
-
-`crates` contiene las capas documentadas y las herramientas internas; `specification-export` aloja datos cuando exista el consumidor.
-Prohibido que una capa importe consumidores, UI, el núcleo Dart o see como crate. La exportación del corpus es una dependencia de datos, no de código.
-Concurrencia: `pseudolearn_runtime` conserva identidades monotónicas, ámbitos, estados, dependencias de espera y una cola FIFO. La VM guarda el cursor, los bancos, las celdas y los marcos de cada tarea en contextos separados; los mapas estáticos de raíces recorren también las tareas suspendidas durante el GC. La ejecución es cooperativa y usa una sola tarea a la vez, con montón y salida compartidos. El cambio entre contextos permite `Aguardar` y la unión de ámbitos; la propagación de fallos, las limpiezas de `Diferir` durante cancelación y las esperas por canal/efecto dentro de tareas están integradas en VM. La API expone su avance, eventos y estado por tarea; no expone un comando para que el anfitrión altere la agenda.
-`pseudolearn_aot_rt` es una hoja que importa source, abi, diagnostics, runtime y library; `pseudolearn_runtime` no importa `pseudolearn_library`, por lo que la frontera con la biblioteca matemática no puede vivir en el runtime. `pseudolearn_codegen` importa ir, diagnostics y `pseudolearn_aot_rt` (desplazamientos del contexto y tipos de sitio de fallo) y depende de `cranelift-codegen`, `cranelift-frontend`, `cranelift-module`, `cranelift-object` y `target-lexicon`; solo `pseudolearn_api` lo importa, para exponer la construcción de objetos ejecutables a la CLI y al adaptador `aot`. `pseudolearn_service` reside en el nivel 6 y alimenta a `pseudolearn_api`; `pseudolearn_wasm` reside en el nivel 10 y solo importa esa API.
-
-## 4. Decisiones de diseño y fundamentos técnicos
-
-Problema: los consumidores móviles y Wasm no compilan programas nativos, mientras CLI y app necesitan efectos reales sin duplicar el transporte. Elección: la API desactiva AOT por omisión y expone sus módulos y dependencias de compilación solo con la feature `native`; la CLI y el trabajador AOT la activan explícitamente. `pseudolearn_host` concentra HTTP con Hyper y Rustls, archivos y tiempo físicos para CLI y puente de app. API y Wasm excluyen transporte nativo; el puente lo incorpora sin AOT ni Cranelift. Se descarta confiar en la eliminación de símbolos del enlazador: la clave `isolation` de `architecture.yaml` comprueba los grafos por destino y también impide distribuir `test-host`.
-
-
-La arquitectura explota el determinismo para separar ejecución rápida de reconstrucción observable.
-La VM despacha sobre instrucciones inmutables del bytecode verificado sin clonarlas en cada paso;
-los errores de ejecución siguen rutas frías separadas del despacho habitual.
-
-### source
-
-Problema: representa el texto fuente original con posiciones verificadas. Elección: `SourceText` con los bytes originales; índice de inicios de línea; conversión perezosa de desplazamiento de byte a columna en puntos de código; detección de BOM; NFC solo para comparar nombres, con camino rápido ASCII.
-Alternativas descartadas: Unicode aporta UTF-8 y NFC para comparar identificadores; se rechaza normalizar el texto almacenado porque perdería posiciones originales.
-
-### abi
-
-Problema: declara la disposición compartida de los valores de ejecución. Elección: Disposición de valores, cabeceras de objeto (clase o tipo de arreglo, ordinal), mapas de referencias por clase, nodos JSON de ocho palabras y forma del marco bicameral, como constantes y tipos compartidos. `JsonNodeKind` fija los ordinales nulos, lógico, número, cadena, arreglo y objeto usados entre el HIR, el runtime y la biblioteca.
-Alternativas descartadas: V8 y JVM inspiran referencias comprimidas. La disposición canónica permite banco de referencias como pila sombra; se rechazan marcos distintos por motor.
-
-### diagnostics
-
-Problema: representa diagnósticos mediante códigos con argumentos tipados. Elección: `Diagnostic { code, class, severity, span, related, arguments }`; `enum DiagnosticCode` generado; plantillas bilingües generadas; ordenación de `DIAG.ORDERING`.
-Alternativas descartadas: El corpus DIAG aporta el catálogo y las plantillas. Se rechaza traducir lexemas del usuario o mezclar idioma de interfaz con vocabulario.
-
-### lexicon
-
-Problema: expone vocabularios bilingües generados desde el corpus. Elección: Tablas generadas de vocabulario y funciones por perfil; **hash perfecto** generado en `build.rs`; normalización de caja y acentos por perfil; identidades de apertura de nivel superior para autodeclarar el vocabulario.
-Alternativas descartadas: El hash perfecto generado reconoce palabras sin búsquedas con asignaciones. Se rechaza copiar el vocabulario o usar la grafía de la orden para inferir idioma.
-
-### syntax
-
-Problema: construye un árbol sintáctico sin pérdida para cualquier texto. Elección: Lexer por tabla de 256 clases de byte y escaneo Unicode de identificadores completos; tokens en columnas (`kinds: Vec<TokenKind>`, `starts: Vec<u32>`) con la trivia como tokens; parser de descenso recursivo con recuperación por conjuntos de sincronización; **árbol postorden** `Node { kind: u16, first_token: u32, subtree_size: u32 }`; vistas tipadas generadas de `LANG.SYNTAX.GRAMMAR`. `pseudolearn_source` valida el alfabeto español exacto sobre NFC, en ambos perfiles, mientras conserva bytes y rangos originales.
-Alternativas descartadas: Carbon y Zig inspiran tokens en columnas y postorden; se rechaza el árbol verde/rojo rowan por asignaciones e indirecciones. El descenso recursivo facilita recuperación explícita; se descartan LALR y PEG para mantener sus decisiones visibles.
-
-En el modo de archivo suelto, `Importar`/`Exportar` y `import`/`export` son identificadores dentro
-del programa. Las grafías del perfil activo solo se reconocen como directivas de módulo en posición
-de unidad superior y conservan allí `moduleSyntaxOutsideProject`; el modo de proyecto conserva su
-reconocimiento de directivas. `Suspendible`/`suspendable` es contextual únicamente entre la apertura
-de un `SubProceso` y su nombre, y en esa posición se conserva como nodo del árbol. Fuera de ella
-permanece identificador. `Aguardar`/`await` es reservada y forma un prefijo unario; el parser conserva
-el token y la trivia del operando en el árbol sin pérdida.
-Los tipos reservados `ValorJson`/`JsonValue`, `TipoJson`/`JsonKind`, `ErrorJson`/`JsonError` y
-`CodigoErrorJson`/`JsonErrorCode` se aceptan en posición de tipo; el resto de palabras reservadas
-sigue rechazado allí.
-
-### semantic
-
-Problema: produce un hir tipado desde la resolución estática y verifica contratos de pureza transitiva. Elección: Columnas con índices tipados (`LocalId`, `FunctionId`, `ExpressionId`, `TypeId`); registro de firmas, jerarquía, ámbitos por unidad, tipos y flujo; HIR tipado con la clase de valor de cada expresión y una marca explícita `suspendible` por unidad; desvirtualización por jerarquía de clases en mundo cerrado; análisis transitivo de efectos (`effect_check`) sobre el grafo cerrado de llamadas, clausuras capturadas, propagación de valores funcionales en argumentos e implementaciones de interfaz. `suspension_checker` valida declaraciones y evita que una unidad suspendible escape como valor. `await_checker` exige una unidad suspendible o raíz, rechaza su uso dentro de `Diferir` y valida la llamada directa, mientras que el análisis de expresiones conserva el resultado del operando. Los ámbitos y asas de tarea tienen nodos HIR propios; el análisis limita `Lanzar` al ámbito léxico y restringe `Tarea<T>` a su uso con `Aguardar`, además de comprobar transferibilidad y parámetros por referencia. Una función pura sigue rechazando el efecto de una unidad suspendible aunque aparezca bajo `Aguardar`.
-Alternativas descartadas: Arenas con índices tipados evitan referencias enlazadas y sus tiempos de vida. Se rechaza Rc<RefCell<…>> por coste y errores dinámicos de préstamo. Se descarta marcar efectos en tiempo de ejecución o confiar en anotaciones manuales sin verificación del grafo de llamadas.
-
-### project
-
-Problema: modelar paquetes, módulos y entradas sin tocar disco ni sintaxis. Elección: `ProjectCatalog` inmutable
-construido desde datos, con módulos ordenados por ruta y una fuente con identidad por módulo; la resolución de
-nombres vive en semantic.
-Alternativas descartadas: Gleam y Rust inspiran módulo por archivo y nombre calificado; se rechazan la búsqueda en
-disco y la declaración de módulos dentro del código.
-
-### ir
-
-Problema: define la representación intermedia verificada. Elección: CFG SSA con parámetros de bloque; clases de valor; celdas; `observe` con masa de sentencia; pureza derivada de efectos; verificador; formato textual con ida y vuelta; catálogo generado de la exportación de `IR.INSTRUCTIONS`.
-Alternativas descartadas: SSA con parámetros de bloque permite compartir semántica con Cranelift. Las banderas pegajosas de IEEE 754 inspiran acumulación de trampas; se rechaza perder la primera trampa o hacer visible un efecto posterior.
-
-El verificador aplica la asignabilidad de clases a bloques, celdas y elementos de arreglos. Una instancia de subclase puede ocupar un destino declarado con la clase base; una clase no relacionada sigue siendo inválida.
-
-### lowering
-
-Problema: traduce el hir a representación intermedia observable. Elección: HIR → RI; orden de evaluación normativo; inserción de puntos de observación y cálculo de masa por bloque; paso por referencia escalar como celda y parámetros arreglo como asas compartidas, porque el arreglo completo no se asigna. El lowering emite operaciones de RI propias para abrir y unir ámbitos, lanzar y esperar tareas, además de conservar uniones en las salidas léxicas. Las cancelaciones no se representan como aristas independientes: VM y agenda coordinan su orden al fallar un ámbito. Los puntos `task.yield_check` se insertan en retornos de bucle de unidades suspendibles. Un bucle `Mientras`, `Repetir`, `Para` o `Para Cada` con el cuerpo vacío emite en cada iteración un par `stmt.enter`/`stmt.exit` con el tramo del bucle (`empty_loop_body.rs`): sin él, el bloque de retorno tiene masa cero y ningún presupuesto de sentencias lo detendría, de modo que un `Mientras Verdadero` vacío agotaría el reloj del anfitrión en lugar de terminar en `limit_reached` (`ENG.LIMITS#R14`). El coste es un evento más por iteración vacía en la traza (`ENG.TRACE.EVENTS#R4`); se descartó contar los retornos de masa cero como pasos en la VM porque habría contado también las vueltas de bucles con cuerpo y la VM y AOT habrían divergido.
-Alternativas descartadas: La RI tipada deriva del orden de evaluación del corpus; se rechaza optimizar antes de conservar los observables y sus nodos fuente.
-
-### bytecode
-
-La implementación compila RI verificada en los gemelos y valida sus destinos, clases y puntos de retorno.
-El código se rellena a potencia de dos, y `SuperInstruction::CompareBranch` se activa por omisión.
-
-Problema: traduce la ri verificada a bytecode gemelo con asignación bicameral de registros. Elección: Salida de SSA con copias paralelas; asignación de registros **por clase** sobre dos ventanas; generación **gemela** (rápida y sondeada) con una sola función parametrizada; tabla de correspondencia de puntos de observación; superinstrucciones elegidas por frecuencia de bigramas; `enum Instruction` de 8 bytes con operandos de 16 bits; código acolchado a potencia de dos; verificador de bytecode; despacho generado en `build.rs`.
-Alternativas descartadas: Lua 5 y SPARC inspiran ventanas solapadas; el verificador de la JVM inspira verificar una vez. CPython inspira generar el catálogo. Self inspira el cambio de código en punto seguro; se descartan JIT, desoptimización y selección manual de superinstrucciones.
-
-### runtime (B4 aceptada)
-
-El runtime cubre aritmética comprobada, montón plano, objetos, arreglos, mapas de definición de enteros,
-raíces exactas por punto seguro, texto, recolección no móvil, azar con estado explícito y la tabla de
-capacidades confinadas (`CapabilityTable`). Cada asignación guarda forma y metadatos en una cabecera común
-en banda; no consulta `BTreeMap<Handle, Allocation>` en el camino de lectura y escritura. `BlockRecord`
-conserva dirección, tamaño físico y celdas lógicas para recolección y diferenciales. Las lecturas y
-escrituras obtienen sus metadatos de la cabecera y del diseño de clase indexado. Los diferenciales del
-montón cubren solo palabras usadas. Las asas pueden reutilizar una dirección física sin reutilizar su
-identidad ordinal. La tabla de capacidades aplica invalidación generacional por ranura, garantiza el
-invariante de no amplificación (`child_rights ⊆ parent_rights`) y aísla la E/S binaria mediante
-`BytesBuffer` y `IoError`. `#![forbid(unsafe_code)]` rige en este crate.
-La agenda de tareas es una estructura de datos determinista compartida: asigna identidades monotónicas, guarda el padre, el ámbito y los hijos, comprueba transiciones de estado, mantiene dependencias de espera y permite consultar si una unión terminó o sigue esperando. El cambio de tarea, el despertar por finalización y el orden FIFO están conectados a la VM. Al fallar una hija, VM y agenda ordenan la cancelación cooperativa, ejecutan las limpiezas suspendidas en orden LIFO y conservan solo los errores ya terminados cuando se solicita la cancelación. Los efectos pendientes de tareas canceladas quedan abandonados; la cinta registra ese desenlace y descarta una respuesta externa tardía.
-Alternativas descartadas: V8 y JVM inspiran asas comprimidas; Swift inspira migas para texto UTF-8;
-Wasi y Capsicum inspiran descriptores por capacidad y generaciones. Se rechaza conteo de referencias
-por ciclos, movimiento por identidad, acceso directo a `std::fs` o `std::time` sin capacidad, e unsafe
-en el runtime. Immix, LXR y Perceus son alternativas medibles sin adopción técnica.
-`ValorJson` conserva su documento como texto compacto en un bloque de texto administrado por el montón; las operaciones del anfitrión guardan raíces mediante las mismas asas y reglas de recolección que una cadena. Es una representación inmutable y transferible que no introduce un segundo grafo de nodos ni una política de recorrido del GC.
-
-### library (B4 aceptada)
-
-La biblioteca implementa conversiones, truncamiento, redondeo, valor absoluto, raíz cuadrada y las
-trascendentes con redondeo correcto. `Copiar` comparte referencias, conserva ciclos y ausencia y no
-ejecuta constructores; el azar llega por la capacidad sembrada del anfitrión.
-
-Problema: implementa las funciones incorporadas sobre valores del runtime. Elección: Funciones incorporadas sobre los valores del runtime, sin estado global; azar desde la capacidad inyectada.
-Alternativas descartadas: LIB.MODEL y LIB.CORE definen firmas y efectos. Se rechazan reloj global, azar no inyectado y conversiones de tipos implícitas.
-
-Las funciones puras de texto, bytes y JSON se generan desde las identidades de `LIB.MODEL` y llegan a VM y AOT mediante `EffectCall`; no añaden instrucciones de RI. El analizador JSON usa `serde_json` con `arbitrary_precision` y `preserve_order` para conservar lexemas numéricos y el orden de claves. Una visita validante adicional rechaza claves repetidas y profundidad excesiva, y la compactación léxica elimina solo espacios fuera de cadenas para mantener el texto de cada número. Se aprovecha de `serde_json` el análisis de escapes y la representación de valores; se rechazan la conversión de números fuera de rango, el reemplazo silencioso de claves duplicadas y la serialización que altere el lexema numérico.
-
-`ValorJson` es una vista inmutable `(asa del bloque, índice del nodo)`. El bloque del montón contiene una tabla plana de ocho palabras por nodo y bytes UTF-8 compactados para claves y escalares; un wrapper pequeño guarda la asa del bloque y el índice. El recolector sigue la referencia del wrapper al bloque, y `Copiar` comparte las vistas y sus bloques inmutables. `Elemento` y `Campo` recorren los enlaces de hijos y crean otra vista al nodo encontrado, sin copiar el subárbol. Las actualizaciones construyen un bloque nuevo. La serialización y las operaciones que cruzan la interfaz `HostValue` materializan temporalmente el texto compacto del subárbol; por eso esos caminos cuestan O(n) en su tamaño y no mantienen otra tabla mutable.
-
-### vm (B7)
-
-La VM ejecuta valores escalares y referencias, texto, arreglos, celdas, objetos, llamadas virtuales,
-`Copiar`, formato de salida y azar. B5 conserva el gemelo sondeado, eventos, cambio de gemelo y entrada.
-La máquina inicializa una raíz y conserva contextos de ejecución por hija con función, cursor, bancos, celdas y marcos independientes. La cola cambia entre esos contextos cuando una tarea espera otra o llega a la unión del ámbito. Las raíces estáticas del GC incluyen los contextos guardados. VM integra ámbitos, lanzamientos, resultados `Resultado::Error`, cancelación cooperativa con `Diferir`, canales acotados, selección textual, esperas por efecto, bloqueos y diagnósticos relacionados por tarea. Una trampa global termina la ejecución sin ejecutar limpiezas pendientes; AOT todavía no ofrece la continuación de tareas.
-
-Problema: ejecuta bytecode verificado emitiendo eventos observables. Elección: Bancos escalar (`u64`) y de referencias (`u32`) crecientes con longitud potencia de dos, con acceso `bank.get(index & MASK)`; ventanas solapadas para los argumentos; crecimiento en llamadas y comprobación independiente de la profundidad; **combustible por bloque** con caída exacta al gemelo sondeado; cambio de gemelo en O(1); trampas como `Result` de manejadores pequeños `#[inline(always)]`.
-Alternativas descartadas: Lua 5 inspira ventanas de registros; Ertl y Gregg inspiran superinstrucciones; Rohou, Swamy y Seznec apoyan medir match con tabla de saltos. Se descartan computed goto y ensamblador. La seguridad sale de máscaras y verificación previa.
-
-Los accesos a campos por valor usan `object.load` (`O49`) y `object.store` (`O50`); los argumentos por
-referencia conservan celdas administradas. El cargador resuelve los desplazamientos de campo y
-decodifica los accesos directos a campos y arreglos 1D como formas de operación propias, evitando
-la búsqueda de `MemoryOp` por instrucción. Los arreglos de rango mayor usan búferes de pila para los
-índices, dentro del rango máximo del bytecode. El runtime valida de una vez la cabecera de objetos y
-arreglos 1D para reutilizar el tipo, rango y desplazamiento ya comprobados durante cada acceso.
-
-Las llamadas virtuales guardan los destinos por clase en una tabla plana calculada al cargar el
-programa. La VM consulta `Heap::needs_collection` antes de construir raíces; solo recorre los bancos
-cuando la política o el presupuesto pueden iniciar una recolección. `CompareBranch` está activa por
-omisión al compilar bytecode. `LoadedProgram` comparte su contenido inmutable con `Arc`; la máquina
-posee ese contenido y permanece viva entre lotes de API sin referencias autorreferenciales. Las
-imágenes conservan solo los bancos de ventanas activas, los límites se mantienen al entrar y retornar
-llamadas, y los deltas de bancos y marcos comparan desde el primer índice modificado. Estas decisiones
-mantienen comprobaciones de límites y tipos sin reservas dinámicas
-por acceso normal. En la campaña `AWFY-core` de macOS ARM64, el motor obtuvo
-30,026× de media geométrica y 19,866× de mínimo frente a `macos-r3-awfy`, con cero muestras
-descartadas; los detalles por programa se guardan en
-directorios locales ignorados suministrados al trabajador de medición.
-
-### timeline
-
-Problema: reconstruye el estado observable de cualquier instante mediante puntos de control y gestiona la cinta canónica de efectos. Elección: Cinta de entradas con esquema canónico `pseudolearn.tape/v1`, encadenamiento criptográfico SHA-256 por entrada (`entry_hash`), redacción obligatoria de secretos en cinta (`SecretRef`), soporte determinista de presupuesto de cinta (`max_tape_bytes`) y tres modos cerrados de ejecución (`LiveRecord`, `ReplayFromTape`, `HistorySeek`); puntos de control diferenciales (sombra del montón, segmentos de deshacer por bloques de 64 palabras, bancos de ventanas activas, registros, azar, cursor de salida) por masa de sentencia ejecutada, con **raleo exponencial** y presupuesto; consulta por instante = restaurar + reproducir con el gemelo sondeado; caché de vistas de marcos, variables y cortes de arreglos.
-Alternativas descartadas: rr inspira grabar solo el no determinismo y reproducir; Python Tutor y Sorva inspiran la máquina nocional observable. Se rechazan grabación del sistema operativo, almacenamiento de secretos en texto plano en la cinta, cinta de longitud ilimitada sin corte determinista, copia completa por evento, deltas de vista duplicados y tope fijo de pasos.
-
-### matemática y memoria observables
-
-Problema: el último bit de una trascendente y el signo de cero cambian la salida. Elección: redondeo
-correcto mediante aproximación acotada y reevaluación adaptativa, oráculo racional independiente y
-formato mínimo de ida y vuelta. Ziv, CRlibm y CORE-MATH inspiran el método; se rechaza libm del anfitrión.
-El texto comparte apéndice conservando prefijos; Go y CPython inspiran apéndice sin conteo de referencias.
-Las migas conservan UTF-8. El mapa por clase compone con herencia sin mover campos heredados.
-Young y Daly inspiran densidad de puntos derivada del coste; HPC inspira comparación exacta con sombra.
-Se rechazan reloj para programar puntos, hashes con falsos negativos y protección de páginas del SO.
-Hölzle aporta tarjetas como alternativa medida y no como barrera por defecto.
-
-### api
-
-Problema: ofrece operaciones públicas totales sobre recursos del núcleo. Elección: Recursos con identificador; operaciones totales que devuelven `Result`; captura de defectos internos como `DIAG.ENGINE.INTERNAL-FAULT`; codificaciones JSON canónica y binaria columnar; negociación de capacidades; renderizado en el idioma de interfaz pedido. `analyze` devuelve también cada token léxico, su identidad estable y su tramo, incluidos comentarios y tokens de programas con errores recuperables, para que los editores proyecten resaltado sin repetir el análisis. `help_query` consulta una sesión de edición con revisión exacta y posiciones explícitas en escalares Unicode o unidades UTF-16; rechaza coordenadas que no coinciden con un límite de fuente y solo anuncia `service_help` cuando la operación está disponible. La consulta es de solo lectura y no expone índices del árbol. `ExecutionResource` conserva la máquina viva y delega los checkpoints a `pseudolearn_timeline::CheckpointStore`; las consultas reproducen en una máquina temporal desde el checkpoint más cercano. El recurso y la ejecución soportan el estado de suspensión `awaiting_effect` con reanudación por `effect_result`, y permiten inyectar `FakeHostProvider` en memoria para pruebas deterministas y conformidad sin efectos ambientales reales.
-
-La compilación para `execute` conserva los diagnósticos `Warning` del análisis cuando no hay errores; si
-la compilación falla, la respuesta mantiene los diagnósticos de error ordenados.
-`editor_vocabulary` devuelve los lexemas de `pseudolearn_lexicon` para el perfil elegido y las grafías de
-los operadores de edición; la app Rust consume esa respuesta en sus teclas y su editor, sin copiar el
-vocabulario generado. `reference_vocabulary` añade, por perfil, las funciones incorporadas con su lexema, firma
-y tipo de retorno, la tabla de precedencia y la etiqueta de identificador; `diagnostic_template` devuelve la
-plantilla de mensaje de un código en el idioma pedido y su severidad fija. Con ellas la referencia de
-sintaxis de la app no mantiene tablas propias.
-`open_edit_session` crea un recurso con estado que posee un `EditSession` y su revisión; `apply_edit`, `edit_complete`, `edit_accept`, `edit_on_type` y `edit_navigate_stop` lo operan con posiciones UTF-8 y revisiones como texto, igual que `complete`, que se conserva sin estado para conformidad. Una petición sobre una revisión no vigente devuelve el valor `stale_revision` con la revisión actual y no tiene efectos; un argumento mal formado es un fallo de uso. La aceptación y la asistencia al teclear se aplican en la sesión y devuelven la revisión nueva, de modo que el cliente solo replica ediciones. `apply_edit` devuelve solo la revisión: los diagnósticos siguen saliendo de `analyze`, porque el análisis de servicio no produce el mismo conjunto que el análisis completo y sustituirlo cambiaría lo que el editor muestra. Pendiente declarado: unificar ambos análisis para que una pulsación pague un solo análisis. El servidor LSP anuncia `onTypeFormattingProvider` y entrega los candidatos estructurados como fragmentos (`insertTextFormat` 2) derivados de la misma estructura que el resto de transportes.
-Alternativas descartadas: El corpus API define recursos y codificaciones; se rechaza un objeto por evento en FFI, copiar todo el estado en cada lote y mantener un segundo almacén de snapshots completos.
-
-### wasm
-
-Problema: el navegador no representa con exactitud todos los enteros de 64 bits del protocolo y no puede conservar vistas de memoria cuando crece el módulo. Elección: `pseudolearn_wasm` importa solo `pseudolearn_api` sin features por omisión, recibe argumentos y devuelve respuestas como texto JSON, y limita la memoria lineal a 256 MiB en su build canónico. El consumidor no crea vistas sobre memoria; la prueba de crecimiento confirma que una vista previa queda invalidada y que la sesión sigue respondiendo. Se descartan objetos JavaScript con números ya convertidos, buffers prestados entre llamadas y memoria sin máximo declarado.
-
-Problema: la generación de enlaces debe corresponder a la versión del crate y dejar un paquete repetible que cargue en un navegador real. Elección: `wasm-bindgen` y `wasm-bindgen-cli` se fijan en `0.2.129`; `tool/wasm.sh` compila `wasm32-unknown-unknown`, rechaza Cranelift y compara dos generaciones del paquete. Playwright Core `1.64.0` carga ese paquete en Chrome y compara completado, ejecución, entrada, cancelación, liberación y bordes numéricos con la misma traza ejecutada por `wasm_native_probe`. Una prueba adicional codifica un lote binario `PLEV` versión 2 con identidad compuesta de fuente, hace crecer la memoria lineal, lo decodifica desde la copia propia del consumidor y exige igualdad exacta de eventos; es la evidencia de `API.WIRE-FORMAT#R3`, cuyo caso C3 pertenece al sujeto app, que no anuncia la capacidad `wasm`. Se descartan enlaces versionados a mano y una verificación limitada a Node WASI.
-Fuentes: [versiones de wasm-bindgen](https://github.com/wasm-bindgen/wasm-bindgen/releases/tag/0.2.129) y
-[documentación de wasm-bindgen](https://rustwasm.github.io/wasm-bindgen/).
-
-### conformance
-
-Problema: adapta la API al protocolo de conformidad por procesos. Elección: Binario del protocolo `see-protocol/1` sobre la API, con las capacidades `analyze`, `execute`, `observe`, `ir`, `api`, `service_help`, `service` y `cli` (esta última a través del binario `pseudo`). Los casos API pueden ejecutar una secuencia de operaciones en una misma sesión y pasar el recurso devuelto por una llamada anterior sin fijar su identificador.
-
-La vista pública del programa es una proyección inmutable asociada a una revisión del documento. Los
-consumidores de diagramas, emisores y comprobaciones estructurales usan esa misma proyección; sus
-identificadores opacos no exponen índices ni disposiciones de CST, HIR o bytecode. Las relaciones de
-hijo declaran su papel sintáctico; los campos exponen tipo y dimensiones y los parámetros su cantidad
-de dimensiones, para que la app no vuelva a analizar el texto. La asociación de un evento de ejecución
-con un nodo y un tramo pertenece a la misma revisión. Los nodos de expresión declaran semántica independiente del
-perfil, calculada con los tokens y el análisis semántico: `operators` y `operator` con identidades canónicas,
-`literal` con tipo y valor, `builtin` en la llamada a función incorporada que ningún subprograma homónimo oculta,
-`receiver` y `super_constructor` en accesos con receptor de superclase, `without_newline` en salidas y `primitive` en
-tipos primitivos; cada array de una declaración de dimensiones es un nodo `dimensioned` y los subprogramas declaran
-los roles `signature` y `body`. Así los emisores y los diagramas no interpretan lexemas ni vuelven a resolver
-nombres. La API implementa
-`program_view` y `state_pages`; el adaptador de conformidad devuelve la vista cuando el análisis la solicita
-y resuelve la página de estado de una ejecución observada. La referencia `source` viaja junto con `data` en
-el registro canónico de cada evento, tanto en JSON como en el formato binario columnar PLEV.
-Alternativas descartadas: SEE.ADAPTER.PROTOCOL define JSONL y negociación. Se rechaza importar internos del motor o declarar observe sin soportar eventos.
-
-`program_view` calcula una única `ServiceAnalysis` por revisión y de ella proyecta realizaciones explícitas y heredadas con su estado, restricciones genéricas, cargas de variantes, capturas por valor e iteraciones con sus ámbitos. Las relaciones llevan IDs de nodos de la misma fuente y revisión; un contrato sin resolver se representa por el nodo de destino y su diagnóstico, nunca por el nombre como identidad. La consulta no expone objetos HIR, direcciones ni entornos de clausura. `AnalyzeRequest` conserva texto y perfil explícitos; el archivo suelto no requiere manifiesto y la API de estado no se amplía porque estos datos pertenecen a la vista estática.
-
-### Paridad VM/AOT de las construcciones de propósito general
-
-Problema: ninguna construcción nueva puede comportarse distinto en el intérprete y en el código nativo. Elección: cada disposición tiene un único dueño en `pseudolearn_abi` (registros, variantes, clausuras, vectores y diccionarios) y VM, runtime y Cranelift la consumen sin recalcular desplazamientos; la paridad se comprueba con los mismos casos del corpus ejecutados por los sujetos `engine` y `aot`, y con la comparación de gemelos acotada a los contratos de cada cambio. Las reglas que solo analizan (diagnósticos, exhaustividad, límites de instancia o de constante) se declaran `exento` en `conformance-aot.yaml` porque el adaptador AOT no anuncia análisis, y se cubren en `engine`. Las trampas se comparan por código de fallo y, en la comparación de gemelos, por sitio.
-
-| Construcción | Dueño de la disposición | Casos ejecutables compartidos | Trampa cubierta en ambos motores |
-|---|---|---|---|
-| Constante y enumerado | `semantic` (plegado) y ordinal `u32` | `LANG.DECL.CONSTANT`, `LANG.TYPES.ENUM` | `constantArithmeticOverflow` y división por cero son de análisis, solo `engine` |
-| Registro por valor | `abi::RecordLayout` | `LANG.TYPES.RECORD` | `integerOverflow` al actualizar un campo (R2/C22) |
-| `Opcional` y `Resultado` | `abi::VariantLayout` | `LANG.TYPES.RELATIONS` | propagación sin trampa; ranuras inactivas bajo recolección forzada |
-| `Segun` exhaustivo | `ir` (`switch` denso) y `br_table` | `LANG.CONTROL.SWITCH` | sin rama implícita: no hay trampa de «sin coincidencia» |
-| Función y clausura | `abi::ClosureLayout` | `LANG.TYPES.FUNCTION` | `integerOverflow` a través de un valor función (C17) |
-| Genéricos | `semantic` (monomorfización) | `LANG.TYPES.GENERIC` | `integerOverflow` sobre una instancia (C20) |
-| Interfaces | `semantic`; llamada directa o despacho de clase | `LANG.TYPES.INTERFACE` | las de la clase real |
-| `Vector` y `Diccionario` | `abi::VectorLayout` y `DictionaryLayout` | `LANG.TYPES.VECTOR`, `LANG.TYPES.DICTIONARY` | `arrayIndexOutOfRange`, invalidación en `Para Cada` |
-| Limpieza de ámbito | `lowering` (aristas de salida) | `LANG.CONTROL.CLEANUP` | una ejecución por salida |
-
-Alternativas descartadas: ramas por motor para absorber una divergencia (se corrige en el dueño de la disposición) y marcar un caso ejecutable como no aplicable en AOT sin motivo de capacidad.
-
-### service
-
-Problema: proporcionar herramientas de edición de alta respuesta (autocompletado sensible al contexto, navegación, información emergente, formateo canónico, traducción y servidor LSP) sin dependencias externas masivas ni duplicar el árbol sintáctico.
-Elección: sesión de documento (`DocumentSession`) que aplica ediciones por rango, reconstruye árbol, análisis e índice de símbolos y calcula las huellas de firma y de cuerpo de cada unidad para informar qué unidades cambiaron; autocompletado determinista derivado de los tokens anteriores al cursor, el análisis semántico y el vocabulario; formateador y traductor sobre los tokens sin pérdida del analizador, con ortografía canónica tomada del vocabulario generado; servidor LSP sin entrada ni salida propias, con ciclo de vida, sincronización incremental y posiciones UTF-16. El detalle de cada decisión vive en el README del crate.
-El servicio de workspace conserva el snapshot completo del proyecto y los overlays abiertos como fuente efectiva de análisis. Las consultas de definición, referencias y símbolos incluyen archivos cerrados del snapshot; cerrar un overlay restaura sus bytes de origen. Los diagnósticos relacionados solo se serializan si el cliente negocia `relatedInformation`. `workspace/symbol` expone funciones y clases públicas del proyecto.
-El rename de proyecto anuncia `prepareRename` y acepta `rename` únicamente si el cliente negocia `workspaceEdit.documentChanges` y declara `failureHandling` transaccional. Antes de pedir rename, el cliente materializa cada documento cerrado afectado, sincroniza su versión y vuelve a calcular `prepareRename` y referencias; cada `TextDocumentEdit` devuelve entonces la versión observada. La propuesta se rechaza completa si algún archivo afectado no tiene URI o versión sincronizada, si el nombre colisiona o si el cliente no puede aplicarla transaccionalmente. La selección de identificador convierte desde UTF-16 LSP a offsets de fuente y compara nombres en NFC; los calificadores resueltos evitan confundir símbolos homónimos.
-`semanticTokens/full` se anuncia solo si el cliente ofrece capacidades de semantic tokens. El servicio codifica posiciones relativas en UTF-16 y cancela el recorrido al observar `$/cancelRequest`. La CLI posee el framing y la concurrencia; el servicio solo recibe mensajes ya parseados y el token de cancelación inyectado.
-Alternativas descartadas: frameworks externos de cómputo incremental (Salsa, Rowan), por dependencias pesadas y duplicación del árbol; reutilizar resultados semánticos entre ediciones, porque exige desplazar los intervalos posteriores a cada edición y la latencia medida de la reconstrucción completa cumple el presupuesto hasta diez mil líneas; formatear o traducir por líneas de texto, que no distingue cadenas, comentarios ni sombreado de funciones estándar.
-
-Problema: una plantilla en texto plano obliga al cliente a adivinar qué parte rellenar y a re-sangrar por su cuenta, lo que duplica lógica del lenguaje en cada editor. Elección: la plantilla es una lista de segmentos (texto, salto de línea, sangría relativa, parada numerada con rol y marcador, parada final) que un renderizador convierte, para una sangría de línea destino, en texto, tramos de paradas absolutos y punto final, y en un fragmento LSP derivado de la misma estructura. El marcador sigue siendo un identificador legal del perfil para conservar la propiedad de que la plantilla analiza sin errores mientras se rellena; solo cambia que es una parada seleccionable. Los roles se limitan a `expression` y `new_identifier`, los únicos que alguna plantilla usa; la parada final siempre cae sobre la primera línea de cuerpo. Aceptar un candidato (`build_insertion`) devuelve la edición, las paradas, la selección inicial y el fragmento; las llamadas a funciones y métodos de usuario se construyen como plantillas con una parada por parámetro. Alternativas descartadas: marcar paradas dentro del texto con una sintaxis propia, porque convertiría el texto de la plantilla en un segundo lenguaje que cada consumidor debe analizar; una parada con rol de cuerpo o de tipo, porque ninguna plantilla la necesita; ediciones adicionales en la aceptación, porque ninguna construcción las exige.
-Problema: ordenar candidatos solo por nivel y etiqueta ignora lo que el contexto exige (una condición espera un lógico) y obliga a teclear completo lo compuesto. Elección: el cursor deriva una ranura esperada (condición, destino de asignación, argumento de una llamada de usuario) de los tokens de su línea; el análisis la resuelve a un tipo y la clave de orden pasa a ser `(nivel, tipo de coincidencia, compatibilidad, no exacto, distancia a la declaración, etiqueta plegada, etiqueta)`. La compatibilidad vale 0 idéntico, 1 ampliable (Entero a Real), 2 sin dato y 3 incompatible: un candidato incompatible baja pero no se oculta, porque el tipo inferido puede equivocarse. La distancia en bytes favorece lo declarado cerca sin depender del reloj ni del historial. Las iniciales de los segmentos (`fm`, `dom`) se aceptan con dos o más caracteres y solo después de todo candidato por prefijo directo del mismo nivel. El detalle se emite como clave estable con argumentos (`close_block`, `structure`, `bilingual_equivalent`, `primitive_type`, `class`, `standard_function`, `type_name`, `signature`) y la prosa por perfil se conserva solo para clientes LSP; la localización a la interfaz es del consumidor. Un candidato se marca `inline` con prefijo directo de al menos dos caracteres, único y no exacto, o como continuación de asignación tras una variable o parámetro completo, declarado previamente y asignable; las líneas vacías quedan en silencio. Los cierres y plantillas consideran el emparejamiento por tipo y anidamiento del documento completo para no duplicar cierres existentes; una plantilla reutiliza el cierre disponible conservando las paradas de cabecera y cuerpo. La continuación `nombre <- ` usa los campos y la aceptación existentes, admite nombres de un carácter y objetos, excluye arreglos completos, tipos desconocidos, inferencias implícitas y colisiones; no inventa la expresión derecha. Los detalles de contexto y aceptación pertenecen al README del servicio. Alternativas descartadas: ocultar los incompatibles, porque un error de inferencia haría invisible el candidato correcto; ordenar por frecuencia de uso, porque rompe el determinismo exigido; subclases como compatibles, porque ninguna medición las pide todavía.
-Problema: el cierre de bloques, la sangría y los pares viven hoy en cada editor y divergen entre ellos. Elección: `on_type` recibe el documento ya modificado por la pulsación y el cursor posterior, y devuelve ediciones con coordenadas del texto recibido más el cursor resultante. Un mapa de bloques empareja por pila cada cierre con la apertura más reciente de su clase y marca como sin cerrar toda apertura que quedó por encima de un cierre ajeno, lo que reproduce el mismo bloque que la recuperación sintáctica informa; `Sino` y `De Otro Modo` se anclan a su `Si` o `Segun`. El salto de línea realinea la línea anterior si es un cierre, inserta `;` cuando la sentencia está completa, sangra una unidad tras una apertura, `Sino` o etiqueta y, si la apertura no tiene cierre y el resto de la línea está en blanco, añade el cierre canónico alineado con ella; `Repetir` solo se sangra porque su cierre exige una condición. Los pares se insertan fuera de comentarios y literales con el siguiente carácter ajeno a un identificador y el cierre tecleado atraviesa al igual que sigue. Garantía por construcción: cada plan se aplica a una copia, se reanaliza y solo se devuelve si no aumenta los diagnósticos sintácticos; . `EditSession` agrupa documento, revisión monotónica, la última oferta de candidatos (se descarta con cada edición) y la sesión de plantilla, que desplaza los tramos de las paradas con cada edición interior y termina con la primera edición exterior o al salir de la última parada; la aceptación y `on_type` se aplican en la sesión y devuelven la revisión nueva, de modo que el cliente solo replica ediciones. Alternativas descartadas: un estado de «cierre insertado automáticamente» para atravesar pares, porque exige que el cliente y la sesión coincidan en cada pulsación; ediciones por línea en el cliente, porque duplica la lógica; el disparador `typed` del contrato de la API, porque el núcleo no distingue entre invocación y escritura y la decisión de preguntar es del cliente. Pendiente declarado: SEE no registra aún una propiedad ejecutable de no regresión sintáctica de `on_type`; las pruebas del servicio la ejercen sobre los programas de referencia. Esos programas son el campo `program.source` de los ejercicios de la ruta empaquetada en la app (`assets/route/{es/es,en/en}/exercises`), sin los de lecciones que enseñan errores (`.errores.`), que son inválidos a propósito; la base de conocimiento anterior de la app, de la que salían, se retiró.
-Problema: una máscara puede convertir un índice inválido en otro registro válido. Elección: bancos con capacidad creciente en potencias de dos y acceso indexado comprobado después de validar bytecode; el relleno de capacidad no amplía la ventana lógica.
-Alternativa descartada: enmascarar índices de bytecode, porque puede ocultar un operando fuera de ventana.
-Problema: validar resultados no debe introducir E/S cruda en el camino medido. Elección: la VM acumula la salida en memoria y la devuelve al llamador; el tracer valida el resultado después del intervalo.
-Alternativa descartada: escribir en stdout o en archivos desde la VM.
-Problema: límites portables. Elección: combustible por masa de sentencia con caída exacta al código sondeado, celdas alcanzables y marcos activos.
-Alternativa descartada: usar bytes o reloj para decidir fallos deterministas.
-Problema: memoria retenida. Elección: presupuesto y raleo exponencial de puntos de control con horizonte declarado.
-Alternativa descartada: guardar instantáneas ilimitadas o truncar silenciosamente.
-Problema: recursos exactos sin recolección por asignación. Elección: cota de vivas tras recolección más nuevas asignadas; al superar el límite se recolecta y se decide con las vivas exactas.
-Alternativa descartada: fallar sobre la cota aproximada.
-Problema: marco común entre AOT y VM. Elección: banco de referencias como pila sombra y bloques fríos de transferencia en puntos seguros.
-Alternativa descartada: representar objetos y raíces de forma distinta por backend.
-
-Problema: el recolector y la consulta de estado no pueden contar temporales muertos como raíces.
-Elección: mapas nocionales por punto seguro, ranuras de origen por variable y definición de enteros
-separada del valor. Reales, lógicos, caracteres y referencias usan centinelas fuera de su dominio.
-Los puntos de retorno identifican una continuación canónica con posición en cada gemelo; cambiar
-la observación no reescribe marcos suspendidos. La reproducción empieza en modo `Fast` y cae a
-`Probed` solo cuando necesita reconstruir estado o eventos. La VM entrega una salida de servicio al
-agotar combustible; la capa superior decide cancelación, punto de control o reproducción.
-Alternativas descartadas: raíces como prefijo completo del banco, retorno ligado a un gemelo y
-acumulación de banderas de trampa fuera de expresiones puras fusionadas.
-
-`crates/pseudolearn_bench_worker` es la herramienta de medición de API pública y solo importa esa API.
-La trazadora de la VM es una herramienta interna distinta: compila antes de medir y llama a la VM
-directamente para ejecutar las cargas conservadas en el corpus; no llama a la API de ejecución ni se mezcla
-con el trabajador público. Ambas conservan procedencia, muestras por proceso y validación de resultados
-según el protocolo de rendimiento.
-
-### Resultados de cierre de B7
-
-AWFY-core se midió contra `macos-r3-awfy` con diez cargas y sin PGO.
-
-| Carga | Aceleración |
-|---|---:|
-| `sieve` | 35,178× |
-| `permute` | 30,440× |
-| `queens` | 20,449× |
-| `towers` | 35,338× |
-| `list` | 33,393× |
-| `storage` | 19,866× |
-| `bounce` | 25,971× |
-| `mandelbrot` | 60,261× |
-| `nbody` | 23,372× |
-| `richards` | 31,726× |
-| **Media geométrica** | **30,026×** |
-
-E-06 pasó sus criterios registrados. El agregado de retroceso cumple aunque una carga individual
-excede el presupuesto:
-
-| Métrica | Resultado | Criterio | Estado |
-|---|---:|---|---|
-| M2 paso observado y consulta | p95 0,001125 ms | ≤ 0,1 ms | Pasa |
-| M3 retroceso | p95 agregado 32,868 ms; `storage-10` 59,020 ms | ≤ 50 ms | Pasa agregado; carga individual excedida |
-| M4 sobrecoste en pausa | 1,007× | ≤ 1,02× | Pasa |
-| E06-DELTA | 1,191× | ≤ 1,3× | Pasa |
-| E06-DEPTH | 3,34×10⁻⁶ ns/marco | Dentro del margen de 4,46×10⁻⁶ | Pasa |
-| E06-STACK | 3 231 ranuras con 100 222 marcos | ≤ 1,5× el caso superficial más un bloque | Pasa |
-| E06-RETENTION | 72 577 ranuras, 64 puntos, horizonte 1 024 | ≤ 1 048 576 ranuras; 64 puntos | Pasa |
-| E06-RSS | 1,637× de huella viva; 173 817 856 bytes extra | ≤ 2,5× | Pasa |
-
-Los valores corresponden a una medición histórica local; las nuevas ejecuciones escriben resultados ignorados.
-
-E-16 sigue parcial; el puntaje mide mutantes viables cazados y no es un puntaje final de cada crate.
-
-| Crate | Cazados / encontrados | Estado |
-|---|---:|---|
-| `pseudolearn_timeline` | 124 / 151 (100 % viables) | Completo |
-| `pseudolearn_lowering` | 311 / 330 (100 % viables) | Completo |
-| `pseudolearn_bytecode` | 337 / 384 (100 % viables) | Completo |
-| `pseudolearn_runtime` | 563 / 607 (100 % viables) | Completo |
-| `pseudolearn_vm` | 198 / 201 ejecutados viables; 820 sin probar; 3 expiraciones | Parcial |
-| `pseudolearn_library` | Sin campaña | No iniciada |
-
-El puntaje corresponde a una campaña histórica local; no certifica el estado del código actual.
-
-E-17 pasó sobre binarios nativos y Wasm finales: 968 peticiones del corpus, 10 000 programas generados,
-10 000 pares EMI, 48 casos de frontera de formato y cero diferencias en seis funciones matemáticas con
-un millón de argumentos cada una. El módulo Wasm mide 2 179 619 bytes y 480 752 bytes con Brotli.
-El contraste corresponde a una campaña histórica local; se puede volver a generar con los adaptadores actuales.
-
-| B7.4 diferencial | Resultado |
-|---|---:|
-| Observaciones comparadas | 1 180 |
-| Coincidencias | 888 |
-| Diferencias exentas | 94 |
-| Diferencias de span o avisos sin contratar | 198 |
-| Diferencias no resueltas en salida, terminación o códigos de error | 0 |
-
-La clasificación de las 198 observaciones sin contratar separa cambios de span y cambios en diagnósticos
-no error (presencia, código, severidad o span):
-
-| Clase | Observaciones |
-|---|---:|
-| Solo span | 154 |
-| Solo diagnósticos no error | 24 |
-| Ambos | 20 |
-| **Total** | **198** |
-
-En total, 174 observaciones tienen spans distintos y 44 cambian diagnósticos no error. Solo 12 difieren
-exclusivamente en `end_col`; las demás diferencias de span también alcanzan columnas de inicio o líneas.
-La clasificación descarta que las diferencias restantes sean únicamente precisión benigna de columna,
-por lo que B7.4 permanece abierto. Las ejecuciones diferenciales actuales guardan informes localmente.
-
-## 5. Reglas de legibilidad, estilo y estructura de código
-
-Código inglés sin comentarios ni atributos doc/allow/expect. Cada archivo tiene una responsabilidad; los límites y nombres viven en architecture.yaml.
-Todos los crates presentes prohíben unsafe salvo `pseudolearn_aot_rt` y `pseudolearn_wasm`. `pseudolearn_aot_rt` lo confina a dos funciones de la frontera ABI; `pseudolearn_wasm` permite únicamente la salida de macro de `wasm-bindgen` y no escribe bloques `unsafe`. Cada excepción tiene su configuración de crate y su fila en architecture.yaml; el workspace no concede permisos globales.
-Errores esperables como Result; DIAG.ENGINE.INTERNAL-FAULT captura defectos internos en la frontera.
-No se copian datos del corpus: build.rs genera vocabulario, gramática, diagnósticos y despacho desde la exportación verificada.
-Las carpetas generated son salidas del generador; los límites no justifican dividir lógica arbitrariamente ni modificar generados a mano.
-
-## 6. Decisiones de producto que condicionan el código
-
-El comportamiento observable lo define el corpus. Una ejecución queda determinada por programa, perfil, semilla, límites y cinta de entradas.
-Toda capacidad del anfitrión es grabable. La salida del programa nunca se traduce; la prosa de herramientas sigue el idioma de interfaz.
-El camino rápido no ejecuta instrucciones de observación. Ambos gemelos comparten registros y marco; cambiar entre ellos solo cambia el contador de programa.
-El montón usa palabras contiguas y asas u32 directas; la identidad es ordinal, nunca dirección.
-Texto UTF-8, indicador ASCII y migas cada 64 puntos de código. Recolector preciso sin movimiento, marcas laterales y disparo por celdas.
-Los bancos crecen por duplicación en llamadas; el límite de marcos es independiente del tamaño del banco.
-Los umbrales provisionales y los controles de rendimiento viven en PERF; resultados desfavorables de E-02 se conservan y condicionan el motor de ejecución.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-La política de licencias admite las que usan las dependencias presentes; no conserva permisos preventivos sin consumidor, para que la auditoría no produzca avisos ignorados. Cranelift aporta `Apache-2.0 WITH LLVM-exception` y `foldhash` aporta `Zlib`. `cranelift-object` activa `gimli`, que depende de `hashbrown` 0.16 mientras `cranelift-codegen` e `indexmap` usan 0.17; la política de versiones duplicadas exime solo `hashbrown@0.16.1`.
-
-| Puerta | Evidencia exigida |
-|---|---|
-| layers declarativo | README por capa, ninguna carpeta huérfana ni fuente prematura |
-| cargo xtask verify al implementar | Formato, Clippy, tests, dependencias, cadena y seis verificadores |
-| isolation | Ningún paquete del backend nativo alcanzable desde Wasm ni desde el puente móvil y de escritorio | `rust-checks isolation` |
-| Wasm y navegador | Grafo sin AOT, generación reproducible, ciclo de vida, límites y memoria | `bash tool/wasm.sh test` |
-| see conform engine | Casos de análisis y ejecución según el contrato, ambos perfiles |
-| see conform aot | Casos de ejecución contra el binario real, ambos perfiles, y propiedades con recolección forzada |
-| Diferencial de gemelos | Igualdad de salida, fallos y estado observable |
-| PERF | Medición local contra los controles y protocolos declarados |
-
-Tests espejo de src/, internos en archivos hermanos, nunca casos del corpus duplicados.
-Camino válido e inválido: texto vacío, binario, Unicode descompuesto, profundidad extrema, colecciones vacías, bordes numéricos e identificadores de un carácter.
-Los verificadores tienen casos negativos. Ningún pánico con programas del corpus o generados.
-Las mediciones se registran con los protocolos activos y sus controles declarados.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Unicode aporta UTF-8 y NFC para comparar identificadores; se rechaza normalizar el texto almacenado porque perdería posiciones originales.
-
-El corpus DIAG aporta el catálogo y las plantillas. Se rechaza traducir lexemas del usuario o mezclar idioma de interfaz con vocabulario.
-
-El hash perfecto generado reconoce palabras sin búsquedas con asignaciones. Se rechaza copiar el vocabulario o usar la grafía de la orden para inferir idioma.
-
-Carbon y Zig inspiran tokens en columnas y postorden; se rechaza el árbol verde/rojo rowan por asignaciones e indirecciones. El descenso recursivo facilita recuperación explícita; se descartan LALR y PEG para mantener sus decisiones visibles.
-
-Arenas con índices tipados evitan referencias enlazadas y sus tiempos de vida. Se rechaza Rc<RefCell<…>> por coste y errores dinámicos de préstamo.
-
-SSA con parámetros de bloque permite compartir semántica con Cranelift. Las banderas pegajosas de IEEE 754 inspiran acumulación de trampas; se rechaza perder la primera trampa o hacer visible un efecto posterior.
-
-La RI tipada deriva del orden de evaluación del corpus; se rechaza optimizar antes de conservar los observables y sus nodos fuente.
-
-Lua 5 y SPARC inspiran ventanas solapadas; el verificador de la JVM inspira verificar una vez. CPython inspira generar el catálogo. Self inspira el cambio de código en punto seguro; se descartan JIT, desoptimización y selección manual de superinstrucciones.
-
-V8 y JVM inspiran referencias comprimidas. La disposición canónica permite banco de referencias como pila sombra; se rechazan marcos distintos por motor.
-
-V8 y JVM inspiran asas comprimidas; Swift inspira migas para texto UTF-8. Se rechaza conteo de referencias por ciclos, movimiento por identidad e unsafe en el runtime. Immix, LXR y Perceus son alternativas medibles sin adopción técnica.
-
-LIB.MODEL y LIB.CORE definen firmas y efectos. Se rechazan reloj global, azar no inyectado y conversiones de tipos implícitas.
-
-Lua 5 inspira ventanas de registros; Ertl y Gregg inspiran superinstrucciones; Rohou, Swamy y Seznec apoyan medir match con tabla de saltos. Se descartan computed goto y ensamblador. La seguridad sale de máscaras y verificación previa.
-
-rr inspira grabar solo el no determinismo y reproducir; Python Tutor y Sorva inspiran la máquina nocional observable. Se rechazan grabación del sistema operativo, copia completa por evento y tope fijo de pasos.
-
-El corpus API define recursos y codificaciones; se rechaza un objeto por evento en FFI y copiar todo el estado en cada paso.
-
-SEE.ADAPTER.PROTOCOL define JSONL y negociación. Se rechaza importar internos del motor o declarar observe sin soportar eventos.
-
-## Decisiones de tareas y comprobación dirigida
-
-La política de primer fallo usa orden de terminación, no identidad. Las entradas internas de lanzamiento
-separan las celdas de resultado de padre e hija; la cancelación usa continuaciones de limpieza
-registradas antes de suspender. Canales y selección permanecen como datos puros del runtime compartido,
-con reserva contable y raíces explícitas en la VM. Se conserva como referencia conceptual el ámbito
-estructurado y el canal acotado; se rechazan tareas desprendidas, selección aleatoria y envío por
-selección. La segunda tarea que aún no ejecutó su retorno al solicitar cancelación termina cancelada;
-los asociados solo contienen errores terminales ya registrados antes de aplicar esa cancelación.
-
-La comprobación ligera comprende los filtros de runtime y semantic documentados en sus README y
-los archivos `task_failure_tests`, `task_channel_tests`, `task_deadlock_tests` y `task_lowering_tests`
-de API, además de Clippy, formato, reglas mecánicas e integridad y exportación del corpus. La
-conformidad de engine y aot, ejecución nativa, campañas y recolección forzada se verifican por separado.
-
-## Aislamiento, cesión y memoria de tareas
-
-El análisis comparte un predicado transitivo de transferibilidad y conserva `Inmutable<T>` como tipo
-distinto. `Instantanea` crea una copia profunda explícita con alias internos y ciclos preservados;
-las lecturas de sus componentes mutables conservan inmutabilidad. Se comprueban en compilación las
-escrituras y los métodos mutadores. Se adopta la comprobación estructural de Swift Sendable y la
-idea de aislamiento transitivo de Pony; se rechazan actores, anotaciones de confianza y capacidades
-de referencia visibles. Bytes no ofrece operaciones mutadoras y puede transferirse.
-
-Las unidades suspendibles contienen comprobaciones de cesión únicamente en aristas de retorno de
-bucle. Cada reanudación reinicia la masa; los bloques y las llamadas síncronas la acumulan hasta el
-cuanto 1024. Las imágenes y diferencias de control incluyen la agenda y los contextos de tareas.
-Al suspenderse, cada marco vuelca solo sus valores vivos en un registro de continuación del montón
-con la disposición de `pseudolearn_abi` (cabecera, función, estado, enlace padre, resultado y
-segmentos escalar y de referencias, con la capacidad máxima de vivos de sus puntos de suspensión);
-los bancos se liberan y se restauran al reanudar con el mapa de vivos de la RI. Cada tarea, canal y
-continuación es una forma reservada del montón que el recolector recorre en orden de identidad de
-tarea; sus etiquetas de forma son distintas de las de bytes, capacidades y clases de usuario, por lo
-que las clases ocupan solo las etiquetas inferiores a la de continuación. Los límites de celdas
-cuentan tareas y canales (`ENG.LIMITS#R10`). El sujeto `engine` mide estos contratos
-(`ENG.TASK.MEMORY`, `ENG.TASK.AGENDA`, `LANG.TASK.ISOLATION`). El sujeto `aot` solo ofrece
-`Instantanea` (`rt_aot_snapshot_copy`) y trata `task.yield_check` como operación vacía; las tareas,
-los canales y la espera de efectos nativos quedan `pendiente` hasta que el sujeto nativo ofrezca tareas.
-
-## Límites, entrega concurrente de efectos y eventos de tarea
-
-Los límites de tareas y canales son recursos del anfitrión como los de profundidad y celdas
-(`ENG.LIMITS#R11`): el máximo de tareas vivas (omisión 4 096) y el máximo de capacidad de un canal
-(omisión 65 536). Una tarea está viva desde su lanzamiento hasta que termina; la raíz y las
-terminadas no cuentan, de modo que un límite de `N` admite `N` hijas simultáneas y falla en el
-`Lanzar` número `N + 1` con `taskLimitExceeded`. La agenda guarda el límite (`TaskLimit`) y rechaza
-el lanzamiento antes de asignar identidad, así que un lanzamiento rechazado no consume identidades.
-La API acepta `tasks` y `channel_capacity` en `limits`; la CLI solo expone `--tareas`/`--tasks`
-porque ya expone los otros límites y la capacidad de canal no la pide ningún flujo de usuario. El
-límite de tareas entra en la identidad de ejecución de la cinta solo cuando se declara, para que las
-cintas de programas sin él conserven su forma.
-
-La entrega de efectos concurrentes separa tres números. `effect_seq` numera cada efecto o registro
-de consola en orden de petición: la API reserva los números de todos los efectos pendientes de la
-máquina antes de grabar cualquier entrada (`EffectSession::reserve`), así que la numeración refleja
-el orden en que las tareas pidieron, no el de entrega. La cinta se escribe en orden de entrega;
-`delivery_seq` es la posición de la entrada en la cinta y se omite cuando coincide con
-`effect_seq`, por lo que un programa sin efectos concurrentes graba la misma cinta de siempre
-(`task_id` vale 0 para la raíz). La validación exige posiciones coherentes y `effect_seq` únicos. La
-máquina entrega solo con la agenda ociosa y elige el efecto con menor rango en su orden de entrega
-(`set_delivery_order`); sin orden declarado es el de `effect_seq`. En grabación el orden sale de la
-clave `orden_entrega` del anfitrión falso; en reproducción sale de la cinta
-(`pseudolearn_runtime::delivery_order`), de modo que reproducir nunca consulta al anfitrión y una
-cinta cuyas entregas no corresponden a lo que pide el programa termina en `replay_divergence`.
-Un efecto cuya tarea se cancela mientras lo espera se mueve a una lista de abandonados; al terminar
-la ejecución se sella con el desenlace `abandoned` (y la cinta pasa a `UncertainExternalState` si la
-operación escribía). Un anfitrión desprendido recibe el efecto elegido en `pending_effect` y la
-lista completa en `pending_effects`; el efecto elegido es siempre el primero de la lista, porque la
-entrega fuera de orden con un anfitrión externo se declara antes de ejecutar (`orden_entrega`) y no
-se reordena a mitad de la espera. Los puntos de control de la cinta guardan el cursor de entrega
-separado de la secuencia reservada.
-
-Los eventos de tarea (`ENG.TRACE.EVENTS#R7`) se emiten solo con el gemelo sondeado, no llevan valores
-de mensajes y usan clases numeradas a continuación de las ordinarias en la codificación binaria. Las
-causas de listo (`spawn`, `completion`, `channel`, `yield`, `resume`) se obtienen comparando la cola
-de listas con la última observada, así que ninguna operación de la agenda necesita conocer los
-eventos. La línea de un evento de tarea es la de la instrucción que lo emite, y para suspensión y
-reanudación la de la instrucción que se reejecutará. El estado en un evento añade un resumen de
-todas las tareas cuando existe alguna además de la raíz; la captura de estado corresponde al
-instante posterior a la instrucción que produjo el evento, incluso si esa instrucción produjo
-varios. La vista pública proyecta como nodos explícitos `task_scope`, `spawn_statement`,
-`spawn_expression`, `await_expression`, `select_statement` y `receive_branch`, con roles
-estructurales y las marcas `builtin_type` y `suspendable`. Se añaden las identidades `channelClose` y
-`snapshotBuiltin` al vocabulario para que el catálogo de ayuda cubra todas las formas.
-
-La campaña `pg-tasks` del trabajador de medición genera programas desde una semilla (SplitMix64 vive
-solo en el trabajador) en ocho familias y comprueba salida, terminación, repetición byte a byte de la
-cinta y reproducción. La agenda no tiene semilla: la semilla solo elige tamaños, capacidades,
-permutaciones de entrega y la tarea que falla.
-
-## Sujeto nativo y tareas
-
-El código nativo ejecuta tareas, canales y esperas de efecto con la misma agenda que la VM. Cada tarea corre en un hilo
-del sistema operativo con su propia pila nativa y su propia pila de raíces, y un testigo único (`task_baton`) garantiza
-que solo una ejecuta código del programa; la semántica (agenda, canales, fallos, cancelación, reservas de cinta y orden de
-entrega) la ponen las piezas compartidas de `pseudolearn_runtime`, que `pseudolearn_aot_rt` conduce desde sus entradas
-`rt_aot_task_*`. La cancelación y el aborto de un ámbito desenrollan por propagación del estado 3 hasta el marco que
-registró el punto de cancelación o la frontera (`RT.ABI#R5`). Se eligió así frente a transformar las funciones
-suspendibles en máquinas de estados (la opción del plan original), porque el desenrollado por estado ya existía para los
-fallos, no exige `unsafe` nuevo ni duplicar la bajada, y deja intacto el código de las funciones sin tareas. El detalle vive
-en los README de `pseudolearn_codegen` y `pseudolearn_aot_rt`. Ya no existe el diagnóstico de rechazo de tareas nativas.
-
-### Cliente HTTP/HTTPS del motor
-
-El motor representa método, petición y respuesta como valores tipados y conserva las operaciones
-HTTP en `pseudolearn_library`; autorización por origen, validación de solicitudes,
-redirecciones explícitas y doble de memoria de pruebas pertenecen a `pseudolearn_runtime`. `Redirigida`
-construye la siguiente petición sin enviarla; el programa llama a `Enviar`, que vuelve a comprobar
-la atenuación voluntaria de la capacidad. Al cambiar el origen se retiran credenciales y un descenso de
-HTTPS a HTTP se permite. La API no añade conexiones reales: las pruebas usan guiones locales del anfitrión. Los
-estados 4xx y 5xx se devuelven como respuestas completas para que el programa decida cómo
-interpretarlos. `pseudolearn_ir` mantiene su tabla de operaciones existente; solo reconoce
-`HttpMethod` en el banco escalar. Las pruebas HTTP también cubren entregas concurrentes fuera del
-orden de petición y la divergencia de una solicitud durante reproducción desde cinta; el replay
-conserva aislamiento y nunca recurre al anfitrión.
-
-El proveedor físico conserva el mismo ciclo de compromiso para HTTP. Registra una sola respuesta
-`network_send` por llamada y no reintenta. `GET` y `HEAD` nunca producen `Uncertain`; `POST`, `PUT`,
-`PATCH` y `DELETE` fallidos antes de enviar son `Failed`, y los fallidos después del primer byte y
-antes de completar la respuesta son `Uncertain`. Si se cancela la tarea que espera un método con
-potencial de mutación, la cinta registra `abandoned` y `UncertainExternalState`, porque el servidor
-pudo haber procesado la petición.
-
-## Depuración persistente y variante browser
-
-La API es dueña del control de depuración VM, de las consultas por tarea y del cursor histórico.
-La CLI traduce DAP sin importar VM ni timeline; service conserva exclusivamente lenguaje y LSP.
-Los pasos no reinician el recurso ni introducen efectos adicionales. Las vistas de proyecto
-conservan fuentes y revisiones por módulo, y las consultas paginadas leen solo sus valores pedidos.
-Evaluate reutiliza syntax, semantic, lowering, bytecode y VM en una copia aislada con presupuesto.
-
-El borde Wasm sigue importando solo API. Un recurso API conserva la sesión LSP y el consumidor
-browser separa lenguaje y ejecución en Workers distintos. La proyección de transporte preserva el
-JSON exacto y convierte números a texto canónico para que JavaScript no redondee identidades o
-valores del programa. El anfitrión concede capacidades de forma explícita; la política del navegador
-no se anuncia como garantía nativa. La distribución web no incorpora DAP nativo ni AOT.
-
-## Anfitrión físico y autoridad inicial
-
-`pseudolearn_host` es una capa hoja sin imports del motor. CLI y puente nativo comparten su transporte
-real: archivos del sistema, HTTP/HTTPS, reloj, temporizador, argumentos y entropía. La API y Wasm
-siguen sin dependencias de red o AOT por omisión. El puente incorpora la hoja HTTP/TLS y mantiene
-excluido AOT. `isolation` rechaza `pseudolearn_runtime/test-host` y `pseudolearn_api/test-host` en los
-grafos de distribución de CLI, puente y Wasm, comprobando las features efectivamente habilitadas.
-
-La autoridad inicial es plena; el runtime valida capacidades y límites sin listas de permisos ni
-orígenes concedidos. `Subdirectorio` y `Limitar` son atenuaciones voluntarias. No existe filtro de
-rangos de direcciones. Los dobles de memoria quedan tras `test-host`, sin activación por omisión;
-conformidad y benchmarks los activan explícitamente. Las dependencias de desarrollo sobre el propio
-crate activan esa feature para sus pruebas; la matriz declara ese acceso a la misma capa. No forman
-parte del grafo normal que verifican los consumidores.
-
-Las vistas de proyectos conservan el perfil resuelto de cada fuente del módulo compilado. Esto
-permite ejecutar e inspeccionar proyectos con excepciones de vocabulario sin reinterpretar cada
-archivo con el perfil de entrada. Los cuerpos de funciones literales exponen roles de unidad para
-que los consumidores recorran su cuerpo sin deducir relaciones a partir del texto.
-
-El transporte reutiliza getrandom 0.2.17, ya presente por ring, para evitar una segunda versión del
-proveedor de entropía. Las licencias de transporte permiten BSD-3-Clause (subtle), ISC (ring y WebPKI)
-y CDLA-Permissive-2.0 para los datos de raíces de respaldo del verificador de plataforma. La puerta
-de dependencias mantiene el rechazo de duplicados y omite versiones exactas inevitables de
-io-lifetimes y bindings Windows heredadas de cap-std. El puente también omite hashbrown 0.14.5
-(oslog de FRB) y miniz_oxide 0.8.9 (backtrace de FRB), manteniendo las versiones actuales usadas por
-indexmap y flate2. Estas excepciones son de compatibilidad de dependencias, sin cambiar validación TLS.
-
-## Claves de resolución de vínculos pendientes
-
-Un vínculo `pendiente` de `conformance*.yaml` declara en `resuelve_en` una clave estable que nombra el trabajo que lo
-cerrará. La clave describe el trabajo, no un documento ni una fase numerada, y deja de ser válida cuando se añade a
-`fases_cerradas` del mismo archivo.
-
-| Clave | Reglas que espera | Qué falta |
-|---|---|---|
-| `tareas-ambitos-y-canales` | `LANG.TASK.SCOPE` R11 a R16, `LANG.TASK.CHANNEL` R1 a R8 | Verificación de ejecutor para los ámbitos de tareas y los canales |
-| `planificador-de-tareas` | `LANG.CONTROL.CLEANUP` R2, `LANG.TASK.SUSPENSION` R7 y R8, `LANG.TASK.SCOPE` R5 y R6 | Verificación del planificador lógico de tareas con cesión por masa |
-| `agendas-sembradas-reproducibles` | `LANG.TASK.SCOPE` R8 | Reproducción de agendas sembradas con cero diferencias |
-| `limites-y-http-en-sujeto-nativo` | `ENG.LIMITS` R12 y R13, `LIB.HTTP` R7 | Pruebas pesadas de límites, JSON y HTTP en `engine` y `aot` |
-| `adaptador-dap-y-depuracion` | `API.EXECUTE`, `API.STATE.QUERY`, `API.MODEL`, `API.ERRORS` y `TOOL.DAP` | Adaptador DAP y la API de depuración que lo sustenta |
-| `catalogo-ayuda-operativo` | `TOOL.SERVICE.CATALOG` R1 y R2 | Consulta de catálogo de ayuda en el servicio |
+Núcleo del lenguaje PseudoLearn: recibe texto fuente y lo analiza, ejecuta, observa paso a paso, traduce a Rust/Python o
+compila a código nativo. Es determinista y no tiene interfaz de usuario: lo consumen la CLI, la app, los puentes y el
+navegador a través de **una sola API pública** (`pseudolearn_api`).
+
+**No hace:** definir el comportamiento del lenguaje (eso es el corpus de `pseudolearn_spec`), dibujar UI ni conocer a
+sus consumidores.
+
+## Dónde encaja
+
+```mermaid
+flowchart BT
+    subgraph NEEDS["Dependencias del motor"]
+        SPEC["Corpus exportado<br/>packages/pseudolearn_spec"]
+        CHK["Verificadores<br/>packages/pseudolearn_rust_checks"]
+    end
+
+    ENG["<b>pseudolearn_engine</b><br/>API pública + 27 crates"]
+
+    subgraph USERS["Usan el motor"]
+        CLI["CLI<br/>apps/pseudolearn_cli"]
+        APP["App Flutter<br/>apps/pseudolearn_app<br/>(puente Rust en native/)"]
+        VSC["Extensión VS Code<br/>apps/pseudolearn_vscode<br/>(vía Wasm)"]
+        BEN["Benchmarks<br/>packages/pseudolearn_benchmarks"]
+    end
+
+    SPEC -->|" datos generados al compilar "| ENG
+    CHK -->|" cargo xtask verify "| ENG
+    ENG --> CLI
+    ENG --> APP
+    ENG --> VSC
+    ENG --> BEN
+```
+
+## Arquitectura
+
+Un crate por responsabilidad, agrupados en capas. Cada flecha va de la dependencia a quien la usa y corresponde a una
+dependencia real de `Cargo.toml`; las reglas de capas están en `architecture.yaml`.
+
+```mermaid
+flowchart TD
+    subgraph FRONT["Frontera pública"]
+        API["pseudolearn_api"]
+        WASM["pseudolearn_wasm"]
+        CONF["pseudolearn_conformance"]
+    end
+    subgraph ANALYSIS["Análisis"]
+        SRC["source"]
+        PRJ["project"]
+        LEX["lexicon"]
+        DIA["diagnostics"]
+        SYN["syntax"]
+        SEM["semantic"]
+        SVC["service (LSP)"]
+        TRA["transpiler"]
+    end
+    subgraph EXEC["Ejecución"]
+        LOW["lowering"]
+        IR["ir"]
+        BYT["bytecode"]
+        VM["vm"]
+        TL["timeline"]
+    end
+    subgraph NATIVE["Backend nativo"]
+        COD["codegen (Cranelift)"]
+        AOT["aot_rt"]
+    end
+    subgraph BASE["Base compartida"]
+        ABI["abi"]
+        RT["runtime"]
+        LIB["library"]
+        HOST["host"]
+    end
+
+    SVC & TRA & SEM & LOW & TL & COD --> API
+    API --> WASM
+    API --> CONF
+    SRC --> PRJ & LEX & DIA
+    SYN --> SEM
+    SEM --> LOW & SVC & TRA
+    IR --> LOW & BYT & COD
+    BYT --> VM --> TL
+    ABI --> RT --> LIB --> VM
+    LIB --> AOT
+    HOST --> AOT
+    AOT --> COD
+```
+
+El diagrama agrupa y omite aristas hacia `source`, `diagnostics` y `abi`, que casi todos los crates importan.
+
+| Capa         | Crates                                                                             | Responsabilidad                                                                                                                |
+|--------------|------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| Base         | `source`, `abi`, `host`, `runtime`, `library`                                      | Texto con posiciones, disposición de valores, anfitrión físico, montón con recolección determinista, intrínsecos               |
+| Análisis     | `project`, `lexicon`, `diagnostics`, `syntax`, `semantic`, `service`, `transpiler` | Árbol sintáctico sin pérdida, HIR tipado, análisis incremental y sesión LSP, traducción a Rust y Python                        |
+| Ejecución    | `lowering`, `ir`, `bytecode`, `vm`, `timeline`                                     | HIR → representación intermedia verificada → bytecode → VM cooperativa; `timeline` reconstruye el estado en cualquier instante |
+| Nativo       | `codegen`, `aot_rt`                                                                | Objeto nativo con Cranelift y la frontera `extern "C"` que lo ejecuta                                                          |
+| Frontera     | `api`, `wasm`, `conformance`                                                       | API total sobre recursos del núcleo; módulo para navegador; adaptador del protocolo de conformidad                             |
+| Herramientas | `vm_dispatch`, `vm_tracer`, `bench_worker`, `math_probe`, `native_probe`           | Generación del despacho de la VM y mediciones; sin consumidores de producto                                                    |
+
+Los crates `syntax`, `lexicon`, `diagnostics`, `ir`, `bytecode` y `vm` incluyen código generado desde el corpus; no se
+edita a mano.
+
+## Flujo principal
+
+```mermaid
+flowchart LR
+    T["texto"] --> P["syntax"] --> S["semantic"] --> L["lowering"] --> I["ir"]
+    I --> B["bytecode"] --> V["vm"] --> O["resultado, eventos"]
+    V --> TL["timeline"] --> E["estado por instante"]
+    I --> C["codegen"] --> N["ejecutable nativo"]
+    S --> TR["transpiler"] --> R["Rust / Python"]
+    S --> SV["service"] --> D["diagnósticos, consultas, LSP"]
+```
+
+Este diagrama es de flujo de datos, no de dependencias. La misma RI alimenta a la VM y al backend nativo, de modo que
+comparten disposición de marco y de objetos.
+
+## Reglas que conviene saber
+
+- **Determinismo**: una ejecución queda fijada por programa, configuración, semilla y entradas.
+- **`unsafe`** solo en `pseudolearn_wasm`, `pseudolearn_aot_rt` y `pseudolearn_native_probe`.
+- **Aislamiento**: `api` y `wasm` compilados para `wasm32` no pueden traer red nativa, `codegen` ni `aot_rt`.
+- **Sin capas hacia arriba**: `architecture.yaml` fija qué puede importar cada crate.
+
+## Comandos útiles
+
+| Para qué                                                              | Comando                                                                                  |
+|-----------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| Verificación completa (formato, clippy, tests, verificadores, `deny`) | `cargo xtask verify`                                                                     |
+| Tests del workspace                                                   | `cargo test --workspace`                                                                 |
+| Compilación optimizada                                                | `cargo build --release`                                                                  |
+| Exportar el corpus antes de compilar a mano                           | `(cd ../pseudolearn_spec && cargo run --locked -p see_cli --bin see -- export --root .)` |
+| Módulo Wasm                                                           | `bash tool/wasm.sh build`                                                                |
+| Probar el Wasm en Chrome                                              | `bash tool/wasm.sh test`                                                                 |
+| Conformidad desde `pseudolearn_spec`                                  | `cargo run -p see_cli --bin see -- conform --subject engine --operation analyze`         |
+| Conformidad del backend nativo                                        | `cargo run -p see_cli --bin see -- conform --subject aot`                                |
+| Medir rendimiento nativo                                              | `cargo run --release -p pseudolearn_bench_worker -- paired <directorio-nuevo>`           |
+
+Requisitos: toolchain fijada en `rust-toolchain.toml`; para Wasm, el target `wasm32-unknown-unknown` y
+`wasm-bindgen-cli` 0.2.129, y además `pnpm` para `tool/wasm.sh test`.

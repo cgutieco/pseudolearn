@@ -181,6 +181,7 @@ En `.agents/skills/`:
 |-------------------------------|--------------------------------------------------------------------------------|
 | `commit-message`              | Formato de los mensajes de commit del repositorio y sus paquetes               |
 | `update-pseudolearn-vscode`   | Instalar y verificar la extensión local en el perfil personal de VS Code       |
+| `rewrite-package-readme`      | Reescribir el README de un paquete o app con la plantilla corta y visual       |
 
 ---
 
