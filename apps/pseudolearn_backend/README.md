@@ -82,14 +82,16 @@ Lo consume `apps/pseudolearn_app` por HTTP: `supabase.functions.invoke('delete-a
 
 ### 1.5 Pendientes técnicos declarados
 
-| Pendiente                                           | De quién depende                                                                                                                                                                                                                                                                                   | Estado actual |
-| :-------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| Eliminar `public.delete_account()` en producción    | Publicación del build de `apps/pseudolearn_app` 1.0.0 que invoca `delete-account`: el build rechazado de la misma versión todavía llama a la RPC. Mover `supabase/deferred/…_drop_delete_account.sql` a `supabase/migrations/` y aplicarla                                                         | Abierto       |
-| Límite de líneas por función en el verificador      | Un analizador de TypeScript sin dependencias remotas; hoy el tamaño de función se revisa en revisión de código                                                                                                                                                                                     | Abierto       |
-| Verificadores de compra reales (`PurchaseVerifier`) | Cuentas de App Store Server API, Microsoft Store y Stripe para la descarga directa de macOS y Windows. Dentro de iOS la venta tiene que ser compra integrada. Hoy solo existe el adaptador simulado, activo con `AGENT_PURCHASES=simulated` o para las cuentas de `AGENT_SIMULATED_PURCHASE_USERS` | Abierto       |
-| Notificaciones de reembolso de las tiendas          | Los adaptadores reales de compra; revocar periodo o recarga al recibir el reembolso                                                                                                                                                                                                                | Abierto       |
-| Segundo proveedor de modelo opcional                | Un `ModelGateway` adicional; el dominio ya no depende de OpenAI salvo por la forma de `usage`                                                                                                                                                                                                      | Abierto       |
-| Prueba de extremo a extremo contra Apple real       | Una cuenta de Apple de prueba y un build de la app firmado; los tests cubren el contrato REST con respuestas simuladas                                                                                                                                                                             | Abierto       |
+| Pendiente                                           | De quién depende                                                                                                                                                                                                                                                   | Estado actual |
+| :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
+| Eliminar `public.delete_account()` en producción    | Publicación del build de `apps/pseudolearn_app` 1.0.0 que invoca `delete-account`: el build rechazado de la misma versión todavía llama a la RPC. Mover `supabase/deferred/…_drop_delete_account.sql` a `supabase/migrations/` y aplicarla                         | Abierto       |
+| Límite de líneas por función en el verificador      | Un analizador de TypeScript sin dependencias remotas; hoy el tamaño de función se revisa en revisión de código                                                                                                                                                     | Abierto       |
+| Verificadores de compra reales (`PurchaseVerifier`) | App Store Server API (StoreKit 2 en iOS y macOS, mismo `com.pseudolearn.app`) y Paddle en Windows, MSIX e instalador (§4.12). Hoy solo existe el adaptador simulado, activo con `AGENT_PURCHASES=simulated` o para las cuentas de `AGENT_SIMULATED_PURCHASE_USERS` | Abierto       |
+| Renovaciones, vencimientos y reembolsos             | App Store Server Notifications V2 y webhooks de Paddle: el periodo toma las fechas de la tienda en vez de `p_now` más 30 días, y un reembolso revoca el periodo o la recarga                                                                                       | Abierto       |
+| Una suscripción de tienda por cuenta                | Tabla única de tienda y transacción original por cuenta, con `appAccountToken` en StoreKit y `custom_data` en Paddle, y rechazo de un segundo plan activo en otra tienda                                                                                           | Abierto       |
+| Medir el consumo real por petición                  | Créditos por `turn_id` en `agent_ledger_events` de las cuentas con compras simuladas; confirma o corrige los 300 créditos del plan (§4.12)                                                                                                                         | Abierto       |
+| Segundo proveedor de modelo opcional                | Un `ModelGateway` adicional; el dominio ya no depende de OpenAI salvo por la forma de `usage`                                                                                                                                                                      | Abierto       |
+| Prueba de extremo a extremo contra Apple real       | Una cuenta de Apple de prueba y un build de la app firmado; los tests cubren el contrato REST con respuestas simuladas                                                                                                                                             | Abierto       |
 
 ---
 
@@ -465,6 +467,56 @@ estado parcial; la app impide la doble pulsación.
   `false`) y reescribe `push_progress` para fusionarlo por O lógico, como `visited` y `completed`:
   una vez asistido, siempre asistido. La migración vuelve a aplicar la restricción de `EXECUTE`
   porque `create or replace` conserva los permisos pero se declara para que no dependa del orden.
+
+### 4.12 Precios, pasarelas y equilibrio entre plan y recarga
+
+- **Problema:** el plan y la recarga se venden en App Store y en Windows, en países con poder
+  adquisitivo muy distinto, y la persona que mantiene el producto no puede gestionar un precio por
+  país. Además, una recarga más barata por crédito que el plan permitiría suscribirse un mes,
+  acumular recargas que no caducan y cancelar.
+- **Elección:**
+  - **Precios.** Los créditos viven en `domain/credits.ts`; los precios, solo en las tiendas.
+
+    | Mercado         | Plan mensual, 300 créditos | Recarga, 150 créditos |
+    | :-------------- | :------------------------- | :-------------------- |
+    | Perú            | S/ 12,90                   | S/ 7,90               |
+    | México          | MXN 69                     | MXN 45                |
+    | Resto del mundo | US$ 4,99                   | US$ 2,99              |
+
+    Perú y México son las dos únicas excepciones manuales: concentran las descargas y sus precios
+    equivalen a unos US$ 5,40–5,70 por paridad de poder adquisitivo. El resto usa un único precio en
+    dólares; en App Store, Estados Unidos es el país base con ajuste automático de moneda e
+    impuestos. Una excepción nueva solo se añade cuando los datos de un país lo justifican.
+  - **Reglas del equilibrio**, en este orden: el neto tras comisiones cubre el coste de API de todos
+    los créditos (1 crédito = US$ 0,001 con `gpt-6-luna`); el crédito de la recarga cuesta al menos
+    1,2 veces el del plan; la parte fija de la comisión de Paddle no pasa del 20–25 % del precio; el
+    plan deja al usuario medio en el 40–60 % de su asignación y la recarga cubre el exceso mensual
+    del usuario intensivo; los precios se ajustan a los niveles de Apple y son iguales en todas las
+    tiendas de un mismo mercado. Con esas cifras, el margen sobre el coste de API supera el 85 % en
+    todos los mercados aunque se gaste el crédito entero.
+  - **Pasarelas.** iOS y macOS venden con StoreKit 2: macOS solo se distribuye por Mac App Store y
+    comparte `com.pseudolearn.app` con iOS, así que la compra vale en ambos. Windows vende con
+    Paddle, tanto en el MSIX de Microsoft Store como en el instalador: las apps que no son juegos
+    pueden usar su propio sistema de pago sin comisión de Microsoft. Paddle es comerciante
+    registrado y liquida los impuestos de cada país. La identidad es la cuenta de Supabase, así que
+    un plan comprado en una tienda se usa en todas.
+  - **La recarga exige plan antes de cobrar.** La app solo ofrece la recarga con un periodo vigente,
+    prueba incluida, y el servidor lo vuelve a comprobar al canjear. En StoreKit una transacción no
+    canjeada queda sin finalizar y se canjea cuando vuelve a haber periodo; en Paddle el servidor
+    comprobará el periodo antes de crear el pago.
+- **Referencia consultada:** el análisis de monetización de Maestro en TraceIron, del que se toman
+  la unidad de crédito, la escala de precios por paridad de poder adquisitivo y la recarga que se
+  gasta después del plan. Se rechazan sus precios (S/ 14,90 y US$ 4,99 con temas incluidos) y su
+  recarga más barata por crédito que el plan. De las políticas de Microsoft Store se toma que una
+  app que no es juego puede cobrar con un sistema propio.
+- **Alternativas descartadas y por qué:**
+  - _Stripe para Windows:_ no actúa como comerciante registrado de forma general y obligaría a
+    liquidar impuestos país por país.
+  - _Sistema de pago de Microsoft Store en el MSIX:_ cobra un 15 % y exige una segunda integración
+    distinta de la del instalador.
+  - _Precio por país en todos los mercados:_ coste de gestión que no compensa con el volumen actual.
+  - _US$ 5,99 como precio único:_ más cercano a la paridad de EE. UU., pero aleja todavía más a los
+    países de ingresos medios que comparten el precio único.
 
 ---
 
