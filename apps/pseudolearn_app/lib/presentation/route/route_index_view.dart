@@ -39,6 +39,7 @@ final class RouteIndexView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const RouteCompletionRule(),
             for (final part in state.toc.parts)
               RoutePartSection(part: part, state: state, onOpenLesson: onOpenLesson),
           ],
@@ -46,6 +47,20 @@ final class RouteIndexView extends StatelessWidget {
       ),
       _ => const AppSkeletonList(itemExtent: 88),
     };
+  }
+}
+
+final class RouteCompletionRule extends StatelessWidget {
+  const RouteCompletionRule({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = AppThemeExtension.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: SpacingTokens.space4),
+      child: AppText(l10n.routeIndexCompletionRule, variant: AppTextVariant.bodySmall, color: theme.colors.text.secondary),
+    );
   }
 }
 

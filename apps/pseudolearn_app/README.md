@@ -1283,9 +1283,11 @@ Toda la apariencia visual se rige estrictamente por los tokens declarados en `pr
       aparte. Una lección abierta queda «En curso» y solo se completa al resolver todos sus ejercicios obligatorios
       (o al abrirla si no tiene ninguno); los opcionales no cuentan. Como esa regla no se ve desde fuera,
       `RouteProgress.requiredExercisesOf` da el recuento de obligatorios resueltos y `RouteIndexState` lo lleva por
-      lección: la tarjeta del índice añade «N de M obligatorios» mientras la lección no está completada. El borde
-      resaltado de una tarjeta marca la lección sugerida —la primera sin completar cuyas lecciones previas lo están—,
-      no la lección abierta más reciente.
+      lección: la tarjeta del índice añade «Obligatorios resueltos: N de M» mientras la lección no está completada. Un
+      recuento suelto («2 de 3») no decía qué contaba ni para qué servía, así que la regla se enuncia también en dos
+      lugares: `RouteCompletionRule` encabeza el índice y `PracticeRequiredHint` encabeza la lista de práctica de una
+      lección que tiene obligatorios (`LessonScope.hasRequiredExercises`). El borde resaltado de una tarjeta marca la
+      lección sugerida —la primera sin completar cuyas lecciones previas lo están—, no la lección abierta más reciente.
     - El índice y el banco se proyectan de nuevo cuando cambia el progreso, sin esperar a reabrir la app: la pestaña de
       la ruta queda viva debajo de la lección y del ejercicio, y al volver mostraba la proyección de cuando se cargó.
       `PublishingProgressStore` (`application/route/`) decora `LocalProgressStore` como `ReviewPromptingProgressStore`:

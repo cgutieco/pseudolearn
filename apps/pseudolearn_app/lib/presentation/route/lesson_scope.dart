@@ -23,4 +23,11 @@ final class LessonScope {
     }
     return null;
   }
+
+  bool get hasRequiredExercises {
+    for (final entry in exercises) {
+      if (entry.required) return true;
+    }
+    return false;
+  }
 }

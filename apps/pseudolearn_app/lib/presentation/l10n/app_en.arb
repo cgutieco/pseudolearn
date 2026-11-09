@@ -2286,7 +2286,7 @@
   "routeLessonMinutes": "{minutes} min",
   "routeLessonCompleted": "Completed",
   "routeLessonVisited": "In progress",
-  "routeLessonRequired": "{done} of {total} required",
+  "routeLessonRequired": "Required solved: {done} of {total}",
   "@routeLessonRequired": {
     "description": "Required exercises solved in a lesson of the route index",
     "placeholders": {
@@ -2302,6 +2302,10 @@
   },
   "routeNextLesson": "Next up",
   "routeIndexErrorTitle": "The route could not be loaded",
+  "routeIndexCompletionRule": "A lesson is complete once you solve all its required exercises; if it has none, opening it is enough.",
+  "@routeIndexCompletionRule": {
+    "description": "Rule shown in the route index explaining when a lesson counts as completed"
+  },
   "routeLessonNotFoundTitle": "The lesson was not found",
   "routeExerciseNotFoundTitle": "The exercise was not found",
   "routeLessonNeeds": "You need",
@@ -2335,6 +2339,10 @@
   "routeNextTitle": "Next",
   "routePracticeRequired": "Required",
   "routePracticeDone": "Solved",
+  "routePracticeRequiredHint": "Solve the exercises marked “Required” to complete this lesson.",
+  "@routePracticeRequiredHint": {
+    "description": "Notice above the practice list of a lesson with required exercises"
+  },
   "routeKindPredict": "Predict",
   "routeKindTrace": "Trace",
   "routeKindOrder": "Order",

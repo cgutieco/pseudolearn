@@ -48,8 +48,8 @@ void main() {
       )));
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('En curso · 0 de 1 obligatorios'), findsOneWidget);
-    expect(find.textContaining('2 de 2 obligatorios'), findsNothing);
+    expect(find.textContaining('En curso · Obligatorios resueltos: 0 de 1'), findsOneWidget);
+    expect(find.textContaining('Obligatorios resueltos: 2 de 2'), findsNothing);
   });
 
   testWidgets('a lesson without required exercises shows no requirement', (tester) async {
@@ -60,7 +60,29 @@ void main() {
       )));
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('obligatorios'), findsNothing);
+    expect(find.textContaining('Obligatorios resueltos'), findsNothing);
+  });
+
+  testWidgets('states the rule that completes a lesson above the parts', (tester) async {
+    await tester.pumpWidget(routeTestApp(RouteIndexView(
+        state: RouteIndexState(status: RouteIndexStatus.success, toc: sampleToc),
+        onOpenLesson: (_) {},
+        onRetry: () {},
+      )));
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('Una lección se completa cuando resuelves todos sus ejercicios obligatorios'), findsOneWidget);
+  });
+
+  testWidgets('the completion rule is not shown while the route fails to load', (tester) async {
+    await tester.pumpWidget(routeTestApp(RouteIndexView(
+      state: const RouteIndexState(status: RouteIndexStatus.error),
+      onOpenLesson: (_) {},
+      onRetry: () {},
+    )));
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('Una lección se completa'), findsNothing);
   });
 
   testWidgets('an error offers a retry', (tester) async {

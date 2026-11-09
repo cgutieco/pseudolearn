@@ -20,10 +20,25 @@ final class PracticeView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (scope.hasRequiredExercises) const PracticeRequiredHint(),
         for (final id in ids)
           if (scope.exercise(id) case final entry?)
             PracticeTile(entry: entry, scope: scope),
       ],
+    );
+  }
+}
+
+final class PracticeRequiredHint extends StatelessWidget {
+  const PracticeRequiredHint({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = AppThemeExtension.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: SpacingTokens.space2),
+      child: AppText(l10n.routePracticeRequiredHint, variant: AppTextVariant.bodySmall, color: theme.colors.text.secondary),
     );
   }
 }

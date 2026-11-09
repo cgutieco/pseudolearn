@@ -2401,7 +2401,7 @@
   "@routeLessonMinutes": {"placeholders": {"minutes": {"type": "int"}}},
   "routeLessonCompleted": "Completada",
   "routeLessonVisited": "En curso",
-  "routeLessonRequired": "{done} de {total} obligatorios",
+  "routeLessonRequired": "Obligatorios resueltos: {done} de {total}",
   "@routeLessonRequired": {
     "description": "Ejercicios obligatorios resueltos de una lección en el índice de la ruta",
     "placeholders": {
@@ -2417,6 +2417,10 @@
   },
   "routeNextLesson": "Sigue esta",
   "routeIndexErrorTitle": "No se pudo cargar la ruta",
+  "routeIndexCompletionRule": "Una lección se completa cuando resuelves todos sus ejercicios obligatorios; si no tiene ninguno, basta con abrirla.",
+  "@routeIndexCompletionRule": {
+    "description": "Regla visible en el índice de la ruta que explica cuándo una lección queda completada"
+  },
   "routeLessonNotFoundTitle": "No se encontró la lección",
   "routeExerciseNotFoundTitle": "No se encontró el ejercicio",
   "routeLessonNeeds": "Necesitas",
@@ -2453,6 +2457,10 @@
   "routeNextTitle": "Siguiente",
   "routePracticeRequired": "Obligatorio",
   "routePracticeDone": "Resuelto",
+  "routePracticeRequiredHint": "Resuelve los ejercicios marcados como «Obligatorio» para completar esta lección.",
+  "@routePracticeRequiredHint": {
+    "description": "Aviso sobre la lista de práctica de una lección con ejercicios obligatorios"
+  },
   "routeKindPredict": "Predecir",
   "routeKindTrace": "Rastrear",
   "routeKindOrder": "Ordenar",
