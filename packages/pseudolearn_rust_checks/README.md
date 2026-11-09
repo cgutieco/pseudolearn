@@ -1,134 +1,91 @@
 # pseudolearn_rust_checks
 
-## 1. Qué es y qué no es
+Verificadores mecánicos para los miembros Rust del monorepo: comentarios, nombres, tamaños, capas, aislamiento por
+destino, `unsafe` y atributos. Cada miembro declara sus reglas en su `architecture.yaml` y este paquete las hace
+cumplir.
 
-Verificadores mecánicos de los miembros Rust. No implementa el lenguaje ni el sistema `see`.
-La API devuelve diagnósticos ordenados o un error de configuración; nunca oculta fallos de lectura.
-Los fixtures negativos son datos deliberadamente inválidos y no fuentes del producto.
+**No hace:** no implementa el lenguaje ni el sistema `see`, y no verifica miembros que no sean Rust.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-Rust se fija en `rust-toolchain.toml`, con rustfmt y Clippy. Plataformas: macOS, Linux y Windows.
-Preparación: `cargo fetch` y `cargo install cargo-deny --locked`.
-Desarrollo: `cargo run -p pseudolearn_check_command --bin rust-checks -- comments .`.
-Compilación: `cargo build --release`; salida en `target/release/rust-checks`.
-Verificación completa: `cargo xtask verify`. No se despliega ni publica a un registro.
+```mermaid
+flowchart BT
+    cargo["cargo metadata / cargo tree"]
+    rules["architecture.yaml del miembro"]
+    me["packages/pseudolearn_rust_checks"]
+    engine["packages/pseudolearn_engine"]
+    spec["packages/pseudolearn_spec"]
+    reference["packages/pseudolearn_reference"]
+    cargo --> me
+    rules --> me
+    me --> engine
+    me --> spec
+    me --> reference
+```
 
-Cada comando `layers`, `isolation`, `comments`, `names`, `limits`, `unsafe` y `attributes` recibe una ruta de
-miembro. `all` ejecuta los seis. Salida 0: válido; 1: violaciones; 2: configuración o lectura inválida.
-La salida textual inglesa contiene ruta, línea, ID estable y descripción. La biblioteca retorna
-`Result<Vec<Violation>, String>`; el error es operativo, no una violación aceptable del producto.
+Los tres consumidores lo invocan desde su `xtask` con `--manifest-path ../pseudolearn_rust_checks/Cargo.toml`. El
+paquete también se verifica a sí mismo.
 
-## 3. Arquitectura y modelo del sistema
+## Arquitectura
 
-Un crate por capa, con dependencias declaradas en `architecture.yaml`:
+```mermaid
+flowchart BT
+    model["model"]
+    source["source"]
+    checks["checks"]
+    command["command"]
+    model --> source
+    model --> checks
+    source --> checks
+    checks --> command
+    model --> command
+```
 
-| Capa | Responsabilidad | Puede importar | Prohibido |
-|---|---|---|---|
-| model | Contratos de reglas y diagnósticos | serde | source, checks, command |
-| source | Lectura de fuentes Rust y reglas | model, syn, proc-macro2, lexer, serde_yaml, serde_json | checks, command |
-| checks | Evaluación de reglas | model, source, syn, proc-macro2, serde_json | command |
-| command | Adaptación CLI | checks, model | otras aplicaciones |
-| tooling | Ejecución de puertas de calidad | biblioteca estándar | lógica del lenguaje |
+`xtask` queda aparte, sin dependencias internas.
 
-Las carpetas `crates/<capa>/src` son la implementación; `tests` refleja sus módulos.
-La capa source carga reglas y fuentes, checks reúne violaciones, command las presenta.
-La ejecución es síncrona; el recorrido ordena rutas y diagnósticos para ser reproducible.
-Los miembros Cargo, incluidas dependencias por target y desarrollo, se contrastan con reglas mediante
-`cargo metadata --no-deps --format-version 1`. Los crates tooling también tienen lista cerrada.
-Con `declarative: true`, `layers` comprueba carpetas y README sin ejecutar Cargo: cada capa declarada
-existe, no hay carpeta de crate sin declarar, todas las dependencias internas tienen dueño y no existe
-ningún Cargo.toml ni fuente Rust. El modo es explícito; la falta de un manifiesto de un miembro
-ejecutable sigue siendo un error. `unsafe_allowed`, `generated_sources` y `deterministic_output_crates` declaran
-restricciones del miembro. `generated_sources` acepta rutas exactas o directorios relativos al
-miembro; las fuentes listadas quedan fuera de los analizadores de código escrito a mano, mientras
-Cargo continúa comprobando sus dependencias. Las rutas absolutas, ascendentes y duplicadas fallan.
-Problema: especificar arquitectura antes del motor. Elección: validación declarativa con rechazo
-SPEC-FIRST para código prematuro. Se descarta crear crates vacíos para satisfacer Cargo.
-Las dependencias internas siguen `may_import`; las externas siguen `external_dependencies`.
-Las capas con `pending: true` permiten fases intermedias: el verificador exige su carpeta y `README.md`, y rechaza cualquier `Cargo.toml` o fuente Rust prematuro sin exigir que Cargo las compile.
+| Pieza   | Crate                       | Responsabilidad                                               |
+|---------|-----------------------------|---------------------------------------------------------------|
+| model   | `pseudolearn_check_model`   | Reglas (`Architecture`) y diagnósticos (`Violation`)          |
+| source  | `pseudolearn_check_source`  | Lee `architecture.yaml` y los fuentes Rust; tokeniza          |
+| checks  | `pseudolearn_checks`        | Un módulo por verificador, más `declarative` y `toolchain`    |
+| command | `pseudolearn_check_command` | Binario `rust-checks`: argumentos, salida y código de salida  |
+| xtask   | `xtask`                     | `cargo xtask verify`: la puerta de calidad del propio paquete |
 
-## 4. Decisiones de diseño y fundamentos técnicos
+## Flujo principal
 
-- **Problema:** una feature apagada por omisión protege a los consumidores móviles y Wasm del backend
-  nativo solo mientras nadie la active, y nada lo comprobaba por destino. **Elección:** la clave
-  `isolation` de `architecture.yaml` declara, por paquete, los destinos y los paquetes prohibidos (un
-  sufijo `*` admite prefijo); `isolation` ejecuta `cargo tree --package --target --edges normal,build` y
-  rechaza con `LAYER-DIRECTION` cualquier paquete prohibido alcanzable, y falla si el paquete no existe.
-  **Descartado:** `cargo metadata --filter-platform`, porque exige reconstruir el cierre del grafo desde
-  `resolve`; y confiar en la eliminación de símbolos del enlazador, que no retira el grafo de compilación.
-- **Problema:** expresiones regulares confunden cadenas y comentarios. **Elección:** lexer Rust para
-  comentarios y `syn` para sintaxis, visitas y métricas. **Descartado:** un parser Rust propio por coste.
-- **Problema:** no debe duplicarse el grafo de Cargo. **Elección:** metadatos Cargo, comparados contra
-  reglas explícitas. **Descartado:** inferir dependencias desde imports, que omite targets y aliases.
-- **Problema:** las excepciones de lint en código invalidan las reglas. **Elección:** atributos
-  `allow`/`expect` prohibidos; tests separados con aserciones de test, sin unwrap/expect.
-  **Descartado:** excepciones por archivo fuente sin contrato.
-- **Problema:** los límites necesitan métricas consistentes. **Elección:** líneas físicas inclusivas
-  por span; profundidad de bloques de control; métodos públicos agregados por tipo entre impls.
-  Las funciones unsafe tienen límite propio y correspondencia exacta con la tabla del README.
-  **Descartado:** contabilizar delimitadores dentro de literales como estructuras.
-- **Problema:** el workspace se verifica a sí mismo. **Elección:** `xtask` usa procesos para formato,
-  Clippy, auditoría, tests y el binario de reglas; los casos negativos se ejercitan desde tests.
-  **Descartado:** incluir fixtures inválidos como miembros Cargo reales.
-- **Problema:** los tests usan `assert!` y `assert_eq!` como contrato de prueba. **Elección:** esos
-  contratos se admiten; los pánicos explícitos y unwrap/expect siguen prohibidos en tests.
-- **Problema:** el proyecto es propietario y no publica estos crates. **Elección:** `publish = false`,
-  sin inventar licencia pública; cargo-deny permite dependencias MIT/Apache-2.0/BSD/ISC/Unicode/Zlib.
-  **Descartado:** asignar al proyecto una licencia de terceros. La licencia de publicación es una decisión pendiente.
+Flujo de ejecución, no de dependencias.
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+```mermaid
+flowchart LR
+    args["rust-checks comando miembro"]
+    read["Lee architecture.yaml"]
+    load["Carga fuentes"]
+    run["Ejecuta verificador"]
+    out["ruta:línea REGLA mensaje"]
+    args --> read --> load --> run --> out
+```
 
-El código inglés no lleva comentarios, atributos doc, allow ni expect. `#![forbid(unsafe_code)]`
-protege cada crate verificado salvo los crates que declaran una salida generada con `unsafe_allowed`.
-Límites, rutas generadas y listas de nombres están únicamente en `architecture.yaml`. Los tests se
-excluyen de tamaño, no de comentarios, nombres o atributos. Se inspeccionan `src`, `tests`, ejemplos
-y build scripts; no se inspeccionan target, .git, fixtures negativos ni salidas listadas en
-`generated_sources`.
-Las declaraciones, aliases de imports, genéricos, bindings y tiempos de vida se verifican como declaraciones; rutas de terceros y
-palabras de Rust no son nombres propios. Las firmas heredadas de traits externos no son nombres
-propios renombrables: se verifican sus bindings y genéricos, no el nombre impuesto por el contrato. Los componentes camelCase y snake_case se normalizan.
+`layers` e `isolation` no cargan fuentes: usan `cargo metadata` y `cargo tree`. Salida 0: válido; 1: violaciones; 2:
+configuración o lectura inválida.
 
-## 6. Decisiones de producto que condicionan el código
+## Reglas que conviene saber
 
-La decisión fundacional exige una fundación sin motor. La ausencia inicial de corpus no habilita implementar `see`,
-conformidad, exportaciones ni capas del motor. No hay uso de unsafe en estos verificadores.
+- Cada capa declara en `architecture.yaml` qué puede importar y qué dependencias externas admite.
+- Sin `unsafe`: `#![forbid(unsafe_code)]` en todo el workspace y `unsafe_allowed: false` en todas las capas.
+- Clippy deniega `unwrap`, `expect`, `panic`, indexado, aritmética implícita y `as`.
+- Límites: 300 líneas por archivo, 40 por función, 4 parámetros, anidación 3 y 7 métodos públicos por tipo.
+- Los fixtures de `fixtures/` son violaciones deliberadas; no son fuentes del producto.
 
-## 7. Verificación, testing y aseguramiento de calidad
+## Comandos útiles
 
-`cargo xtask verify` ejecuta `cargo fmt --all --check`, Clippy estricto, tests del workspace,
-`rust-checks all .` y `cargo deny check`. `deny.toml` define licencias, fuentes y duplicados.
+| Para qué                                                                                | Comando                                                                       |
+|-----------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| Verificación completa                                                                   | `cargo xtask verify`                                                          |
+| Todos los verificadores sobre un miembro                                                | `cargo run -p pseudolearn_check_command --bin rust-checks -- all <miembro>`   |
+| Uno solo (`layers`, `isolation`, `comments`, `names`, `limits`, `unsafe`, `attributes`) | `cargo run -p pseudolearn_check_command --bin rust-checks -- comments .`      |
+| Versión de Rust idéntica entre miembros                                                 | `cargo run -p pseudolearn_check_command --bin rust-checks -- toolchain ../..` |
+| Tests                                                                                   | `cargo test --workspace`                                                      |
+| Binario de release                                                                      | `cargo build --release` (salida en `target/release/rust-checks`)              |
 
-| Verificador | Violación negativa |
-|---|---|
-| comments | Comentarios reales y atributos doc; cadenas con // válidas |
-| names | Binding corto, abreviatura, genérico/lifetime corto y archivo prohibido |
-| limits | Archivo, función, parámetros, anidación y métodos públicos excesivos |
-| layers | Dependencia no permitida, crate ausente o no declarado |
-| isolation | Paquete prohibido alcanzable desde un paquete en un destino declarado, o paquete de la regla inexistente |
-| unsafe | Crate prohibido, función larga, fila ausente o huérfana |
-| attributes | allow y expect, incluidas formas cfg_attr |
-| Clippy | unwrap, expect y pánicos explícitos |
-| toolchain | Miembros con versiones divergentes |
-
-Entradas vacías, Rust inválido y reglas inválidas tienen tests explícitos. No se aprueba una fase
-con un verificador fallando. La evidencia de aceptación vive en el informe de verificación. No hay pendientes de implementación del verificador.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Cargo aporta metadatos versionados y la convención xtask. syn aporta AST y spans; proc-macro2 spans
-con posiciones; ra_ap_rustc_lexer tokenización; serde serialización; serde-saphyr/serde_json formatos.
-Se rechaza usar rustdoc y comentarios SAFETY: el contrato exige documentación en README.
-Las dependencias se usan para infraestructura, nunca como especificación del lenguaje PseudoLearn.
-
-El lexer se fija a la serie 0.143; su API cubre tokens de comentarios y literales de Rust usados aquí.
-Se usa serde-saphyr seguro en lugar de serde_yaml y forks con unsafe-libyaml sin mantenimiento. syn 3 evita versiones duplicadas
-con serde_derive. Estas selecciones no alteran el comportamiento del lenguaje PseudoLearn.
-
-La auditoría de licencias excluye solo crates privados con publish=false; sus dependencias externas
-se auditan normalmente. Los avisos de seguridad no se ignoran.
-
-La lista `isolation.forbidden` también admite `paquete/característica`. El árbol se lee con
-`--format "{p}|{f}"` y aristas normales y de build: una característica prohibida solo falla cuando
-Cargo la activa en el grafo del producto. El caso negativo activa `test-host` transitivamente; el
-control con la característica declarada pero apagada pasa. No se incorpora el grafo de desarrollo.
+Requisitos: Rust 1.99.0 con rustfmt y Clippy (`rust-toolchain.toml`) y `cargo-deny`
+(`cargo install cargo-deny --locked`). `all` no incluye `toolchain`.
