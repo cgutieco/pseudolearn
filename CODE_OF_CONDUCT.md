@@ -4,14 +4,15 @@
 
 Este proyecto quiere ser un espacio donde cualquiera pueda participar sin acoso, con independencia de
 su experiencia, edad, discapacidad, aspecto, identidad o expresión de género, nacionalidad, raza,
-religión u orientación sexual.
+religión u orientación sexual. Vale para todo el monorepo: código, issues, pull requests y cualquier
+espacio donde se represente al proyecto.
 
 ## Conducta esperada
 
 - Trata a las personas con respeto, también cuando estés en desacuerdo.
 - Acepta la crítica sobre tu trabajo sin tomarla como crítica sobre ti.
 - Da por buena la intención ajena antes de suponer mala fe.
-- Recuerda que casi todo el mundo aquí está aprendiendo algo.
+- Recuerda que casi todo el mundo aquí está aprendiendo algo; PseudoLearn existe para eso.
 
 ## Conducta inaceptable
 
