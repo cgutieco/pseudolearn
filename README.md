@@ -33,10 +33,10 @@ ejecutable nativo como cualquier lenguaje serio.
 
 ```
 Algoritmo Saludo
-Definir nombre Como Cadena <- "";
-Escribir "Como te llamas?";
-Leer nombre;
-Escribir "Hola " + nombre;
+  Definir nombre Como Cadena;
+  Escribir "Como te llamas?";
+  Leer nombre;
+  Escribir "Hola " + nombre;
 FinAlgoritmo
 ```
 
