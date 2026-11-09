@@ -37,37 +37,37 @@ las aristas hacia `see_model` y `see_format`, que casi todos importan.
 ```mermaid
 flowchart BT
     model["see_model"]
-    format["see_format"] --> graph["see_graph"]
-    format --> change["see_change"]
-    graph --> validation["see_validation"]
-    change --> validation
-    change --> export["see_export"]
-    translation["see_translation"] --> generators["see_generators"]
-    translation --> conformance["see_conformance"]
-    generators --> conformance
-    oracles["see_oracles"] --> conformance
-    format --> report["see_report"]
-    validation --> cli["see_cli"]
-    conformance --> cli
-    export --> cli
-    report --> cli
+    fmt["see_format"] --> grf["see_graph"]
+    fmt --> chg["see_change"]
+    grf --> val["see_validation"]
+    chg --> val
+    chg --> exp["see_export"]
+    trn["see_translation"] --> gen["see_generators"]
+    trn --> conf["see_conformance"]
+    gen --> conf
+    orc["see_oracles"] --> conf
+    fmt --> rep["see_report"]
+    val --> cli["see_cli"]
+    conf --> cli
+    exp --> cli
+    rep --> cli
 ```
 
-| Crate | Responsabilidad |
-|---|---|
-| `see_model` | Entidades de los contratos |
-| `see_format` | Lectura de Markdown y YAML |
-| `see_oracles` | Oráculos independientes de enteros, racionales y celdas |
-| `see_graph` | Dependencias e impacto entre especificaciones |
-| `see_change` | Hash canónico y clasificación de cambios |
-| `see_validation` | Integridad del corpus: esquema, referencias, ciclo de vida, cobertura y recursos |
-| `see_translation` | Reimpresión léxica entre perfiles |
-| `see_generators` | Programas bien tipados por semilla e índice |
-| `see_conformance` | Protocolo con los sujetos, peticiones por operación y comparación |
-| `see_export` | Exportación de los contratos y sus recursos |
-| `see_report` | Matriz de conformidad, cobertura de RI, estados y características |
-| `see_cli` | La orden `see`: orquesta todo lo anterior |
-| `xtask` | Puerta local `cargo xtask verify` |
+| Crate             | Responsabilidad                                                                  |
+|-------------------|----------------------------------------------------------------------------------|
+| `see_model`       | Entidades de los contratos                                                       |
+| `see_format`      | Lectura de Markdown y YAML                                                       |
+| `see_oracles`     | Oráculos independientes de enteros, racionales y celdas                          |
+| `see_graph`       | Dependencias e impacto entre especificaciones                                    |
+| `see_change`      | Hash canónico y clasificación de cambios                                         |
+| `see_validation`  | Integridad del corpus: esquema, referencias, ciclo de vida, cobertura y recursos |
+| `see_translation` | Reimpresión léxica entre perfiles                                                |
+| `see_generators`  | Programas bien tipados por semilla e índice                                      |
+| `see_conformance` | Protocolo con los sujetos, peticiones por operación y comparación                |
+| `see_export`      | Exportación de los contratos y sus recursos                                      |
+| `see_report`      | Matriz de conformidad, cobertura de RI, estados y características                |
+| `see_cli`         | La orden `see`: orquesta todo lo anterior                                        |
+| `xtask`           | Puerta local `cargo xtask verify`                                                |
 
 Los datos viven fuera de los crates: `specifications/` (el corpus), `schemas/`, `fixtures/` (violaciones
 deliberadas), `results/` (evidencia generada, ignorada por git) y `agents/` (selección editorial de la ficha
@@ -108,20 +108,20 @@ y pedir su ejecución produce `SEE-SUBJECT-RETIRED`.
 
 Se ejecutan desde `packages/pseudolearn_spec`. `see` es `cargo run -p see_cli --bin see --`.
 
-| Para qué | Comando |
-|---|---|
-| Verificación completa del paquete | `cargo xtask verify` |
-| Validar el corpus | `see validate` |
-| Crear un borrador de especificación | `see new <ID> --domain <dominio>` |
-| Ver o comprobar los anclajes | `see lock --check` · `see lock --refresh ID,ID` |
-| Comparar contra una revisión de Git | `see diff <rev>` |
-| Ver el impacto de una especificación | `see impact <ID>` |
-| Grafo de dependencias | `see graph [--focus ID] [--dot]` |
-| Contrastar un sujeto | `see conform --subject <engine\|aot\|service\|cli\|app> [--only ID]` |
-| Contrastar sus propiedades | `see conform --subject engine --operation properties` |
-| Matriz regla × sujeto | `see matrix` |
-| Regenerar o comprobar la exportación | `see export [--check]` |
-| Regenerar o comprobar las fichas de agente | `see agent-sheet [--check]` |
+| Para qué                                   | Comando                                                              |
+|--------------------------------------------|----------------------------------------------------------------------|
+| Verificación completa del paquete          | `cargo xtask verify`                                                 |
+| Validar el corpus                          | `see validate`                                                       |
+| Crear un borrador de especificación        | `see new <ID> --domain <dominio>`                                    |
+| Ver o comprobar los anclajes               | `see lock --check` · `see lock --refresh ID,ID`                      |
+| Comparar contra una revisión de Git        | `see diff <rev>`                                                     |
+| Ver el impacto de una especificación       | `see impact <ID>`                                                    |
+| Grafo de dependencias                      | `see graph [--focus ID] [--dot]`                                     |
+| Contrastar un sujeto                       | `see conform --subject <engine\|aot\|service\|cli\|app> [--only ID]` |
+| Contrastar sus propiedades                 | `see conform --subject engine --operation properties`                |
+| Matriz regla × sujeto                      | `see matrix`                                                         |
+| Regenerar o comprobar la exportación       | `see export [--check]`                                               |
+| Regenerar o comprobar las fichas de agente | `see agent-sheet [--check]`                                          |
 
 `cargo xtask verify` ejecuta formato, Clippy estricto, tests, `cargo-deny`, los verificadores de
 `pseudolearn_rust_checks`, `see validate`, `export --check`, `agent-sheet --check` y la conformidad del
