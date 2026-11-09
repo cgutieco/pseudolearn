@@ -10,7 +10,7 @@
     "responsable-lenguaje"
   ],
   "revisado_por": [
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ],
   "sujetos": [
     "reference",
@@ -19,7 +19,7 @@
   ],
   "resumen": "Edición del lenguaje.",
   "edicion": {
-    "introducida_en": "2026"
+    "introducida_en": "2027"
   },
   "depende_de": [
     {
@@ -48,7 +48,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La edición vigente se identifica como 2026 en metadatos del corpus. La edición no es una sentencia ni una bandera del perfil. Ninguna construcción de ediciones futuras se admite por cambiar idioma.",
+  "texto": "La edición vigente se identifica como 2027 en metadatos del corpus. La edición no es una sentencia ni una bandera del perfil. Ninguna construcción de ediciones futuras se admite por cambiar idioma.",
   "verificacion": [
     "C1",
     "C2"
@@ -61,7 +61,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El preludio estándar de 2026 es fijo y está formado solo por los símbolos incorporados declarados por LIB.MODEL y los tipos intrínsecos declarados por los contratos de lenguaje. No se lee del entorno, del directorio de trabajo ni de paquetes instalados y no requiere un archivo adicional. La colisión de nombres sigue el contrato dueño de cada símbolo; un subprograma homónimo oculta una función libre incorporada. El preludio declara símbolos, nunca permisos: todo efecto requiere una capacidad solicitada al anfitrión.",
+  "texto": "El preludio estándar de 2027 es fijo y está formado solo por los símbolos incorporados declarados por LIB.MODEL y los tipos intrínsecos declarados por los contratos de lenguaje. No se lee del entorno, del directorio de trabajo ni de paquetes instalados y no requiere un archivo adicional. La colisión de nombres sigue el contrato dueño de cada símbolo; un subprograma homónimo oculta una función libre incorporada. El preludio declara símbolos, nunca permisos: todo efecto requiere una capacidad solicitada al anfitrión.",
   "verificacion": [
     "C3",
     "C4"
@@ -120,13 +120,13 @@
     "en"
   ],
   "programas": {
-    "es": "Algoritmo P\nEscribir 2026;\nFinAlgoritmo\n",
-    "en": "algorithm P\nwrite 2026;\nendAlgorithm\n"
+    "es": "Algoritmo P\nEscribir 2027;\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite 2027;\nendAlgorithm\n"
   },
   "origen": "derivado",
   "operacion": "execute",
   "espera": {
-    "salida": "2026\n",
+    "salida": "2027\n",
     "terminacion": "completed"
   }
 }

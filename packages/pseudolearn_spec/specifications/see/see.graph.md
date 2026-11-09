@@ -15,7 +15,7 @@
   "resumen": "Grafo de dependencias.",
   "depende_de": [],
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

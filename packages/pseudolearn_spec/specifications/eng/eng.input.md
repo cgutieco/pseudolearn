@@ -29,7 +29,7 @@
   ],
   "titulo_en": "Program input",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

@@ -28,8 +28,7 @@
   ],
   "titulo_en": "Host interface",
   "revisado_por": [
-    "revision-independiente-automatizada-r9",
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

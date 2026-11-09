@@ -37,7 +37,7 @@
     }
   ],
   "revisado_por": [
-    "cesar-antonio-gutierrez-contreras"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

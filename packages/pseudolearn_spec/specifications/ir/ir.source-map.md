@@ -28,7 +28,7 @@
   ],
   "titulo_en": "Source map",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

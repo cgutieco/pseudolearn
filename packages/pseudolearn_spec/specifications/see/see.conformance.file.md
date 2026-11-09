@@ -15,7 +15,7 @@
   "resumen": "Vínculos de conformidad.",
   "depende_de": [],
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

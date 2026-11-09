@@ -52,7 +52,7 @@
   ],
   "titulo_en": "CLI MCP server",
   "revisado_por": [
-    "cesar-antonio-gutierrez-contreras-2026-11-08"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---
@@ -109,7 +109,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "initialize responde protocolVersion 2025-06-18, capabilities con tools y resources vacíos, y serverInfo con name pseudolearn y version igual a la edición del lenguaje, 2026. ping responde un objeto vacío.",
+  "texto": "initialize responde protocolVersion 2025-06-18, capabilities con tools y resources vacíos, y serverInfo con name pseudolearn y version igual a la edición del lenguaje, 2027. ping responde un objeto vacío.",
   "verificacion": [
     "C2"
   ]
@@ -127,7 +127,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 0,
-    "salida": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{\"protocolVersion\":\"2025-06-18\",\"capabilities\":{\"tools\":{},\"resources\":{}},\"serverInfo\":{\"name\":\"pseudolearn\",\"version\":\"2026\"}}}\n{\"jsonrpc\":\"2.0\",\"id\":2,\"result\":{}}\n",
+    "salida": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{\"protocolVersion\":\"2025-06-18\",\"capabilities\":{\"tools\":{},\"resources\":{}},\"serverInfo\":{\"name\":\"pseudolearn\",\"version\":\"2027\"}}}\n{\"jsonrpc\":\"2.0\",\"id\":2,\"result\":{}}\n",
     "salida_error": ""
   },
   "cli": {

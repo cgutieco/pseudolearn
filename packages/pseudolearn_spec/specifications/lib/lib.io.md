@@ -16,7 +16,7 @@
   "resumen": "Tipo Bytes, variantes portables de ErrorES, separación estricta texto/binario y limpieza con Diferir.",
   "titulo_en": "Input and output types and operations",
   "edicion": {
-    "introducida_en": "2026"
+    "introducida_en": "2027"
   },
   "depende_de": [
     {
@@ -31,7 +31,7 @@
     }
   ],
   "revisado_por": [
-    "revision-independiente-automatizada-pg3"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

@@ -16,7 +16,7 @@
   "resumen": "Tipos de capacidad opacos, autoridad plena por omisión, atenuación sin amplificación e invalidación por cierre.",
   "titulo_en": "Explicit capability model",
   "edicion": {
-    "introducida_en": "2026"
+    "introducida_en": "2027"
   },
   "depende_de": [
     {
@@ -31,7 +31,7 @@
     }
   ],
   "revisado_por": [
-    "revision-independiente-automatizada-pg3"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

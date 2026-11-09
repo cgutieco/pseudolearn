@@ -38,7 +38,7 @@
   ],
   "titulo_en": "Instruction catalog",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

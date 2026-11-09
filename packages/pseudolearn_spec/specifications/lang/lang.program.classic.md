@@ -10,7 +10,7 @@
     "responsable-lenguaje"
   ],
   "revisado_por": [
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ],
   "sujetos": [
     "reference",
@@ -21,7 +21,7 @@
   ],
   "resumen": "Programas de pseudocódigo clásico que se ejecutan sin retoques.",
   "edicion": {
-    "introducida_en": "2026"
+    "introducida_en": "2027"
   },
   "depende_de": [
     {

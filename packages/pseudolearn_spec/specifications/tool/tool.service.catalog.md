@@ -10,7 +10,7 @@
     "responsable-herramientas"
   ],
   "revisado_por": [
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ],
   "sujetos": [
     "service"
@@ -282,7 +282,7 @@
   "id": "R4",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La edición 2026 declara los operadores desde las producciones de expresión y asignación, deriva las palabras reservadas del vocabulario y toma las funciones incorporadas de la biblioteca. Los roles pedagógicos se declaran con sus producciones fuente y no se infieren de la EBNF. Cada identidad exigible y cada rol se asocia a una ficha con contenido específico es/en en todas las combinaciones activas de edición y perfil, o a una exclusión tipada vigente; una identidad repetida como alias conserva la identidad fuente y una ficha genérica no satisface cobertura.",
+  "texto": "La edición 2027 declara los operadores desde las producciones de expresión y asignación, deriva las palabras reservadas del vocabulario y toma las funciones incorporadas de la biblioteca. Los roles pedagógicos se declaran con sus producciones fuente y no se infieren de la EBNF. Cada identidad exigible y cada rol se asocia a una ficha con contenido específico es/en en todas las combinaciones activas de edición y perfil, o a una exclusión tipada vigente; una identidad repetida como alias conserva la identidad fuente y una ficha genérica no satisface cobertura.",
   "justificacion": "El inventario explícito permite comprobar su denominador y separar la clasificación pedagógica de la estructura gramatical. Las formas, alias y firmas siguen teniendo un único dueño normativo.",
   "verificacion": [
     "estructural"
@@ -573,7 +573,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -726,7 +726,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -936,7 +936,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -1174,7 +1174,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -1474,7 +1474,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -1688,7 +1688,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -1851,7 +1851,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -1995,7 +1995,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -2192,7 +2192,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -2445,7 +2445,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -2698,7 +2698,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -2889,7 +2889,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -3101,7 +3101,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -3440,7 +3440,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -3715,7 +3715,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -4032,7 +4032,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -4317,7 +4317,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -4522,7 +4522,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -4698,7 +4698,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -4874,7 +4874,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -5066,7 +5066,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -5246,7 +5246,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -5455,7 +5455,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -5607,7 +5607,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -5743,7 +5743,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -5883,7 +5883,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -6155,7 +6155,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -6385,7 +6385,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -6583,7 +6583,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -6767,7 +6767,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -6970,7 +6970,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -7177,7 +7177,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -7336,7 +7336,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -7545,7 +7545,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -7732,7 +7732,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -7922,7 +7922,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -8109,7 +8109,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -8282,7 +8282,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -8555,7 +8555,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -8744,7 +8744,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -9025,7 +9025,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -9218,7 +9218,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -9451,7 +9451,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -9810,7 +9810,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -9999,7 +9999,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -10259,7 +10259,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -10514,7 +10514,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -10792,7 +10792,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -11023,7 +11023,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -11360,7 +11360,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -11656,7 +11656,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -12062,7 +12062,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -12415,7 +12415,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -12621,7 +12621,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -12748,7 +12748,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -13025,7 +13025,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -13314,7 +13314,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -13479,7 +13479,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -13686,7 +13686,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -13854,7 +13854,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -14035,7 +14035,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -14195,7 +14195,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -14347,7 +14347,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -14507,7 +14507,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -14667,7 +14667,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -14846,7 +14846,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -15008,7 +15008,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -15158,7 +15158,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -15291,7 +15291,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -15434,7 +15434,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -15614,7 +15614,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -15775,7 +15775,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -16064,7 +16064,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -16221,7 +16221,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -16350,7 +16350,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -16493,7 +16493,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -16636,7 +16636,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -16779,7 +16779,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -16932,7 +16932,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -17059,7 +17059,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -17186,7 +17186,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -17333,7 +17333,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -17554,7 +17554,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -17783,7 +17783,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -18006,7 +18006,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -18233,7 +18233,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -18370,7 +18370,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -18625,7 +18625,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -18880,7 +18880,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -19017,7 +19017,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -19204,7 +19204,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -19408,7 +19408,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -19570,7 +19570,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -19744,7 +19744,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -19938,7 +19938,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -20090,7 +20090,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -20185,7 +20185,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -20282,7 +20282,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -20379,7 +20379,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -20476,7 +20476,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -20587,7 +20587,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -20684,7 +20684,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -20809,7 +20809,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -20936,7 +20936,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -21061,7 +21061,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -21192,7 +21192,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -21289,7 +21289,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -21388,7 +21388,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -21485,7 +21485,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -21582,7 +21582,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -21679,7 +21679,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -21820,7 +21820,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -21961,7 +21961,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -22124,7 +22124,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -22273,7 +22273,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -22422,7 +22422,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -22563,7 +22563,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -22700,7 +22700,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -22896,7 +22896,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -23074,7 +23074,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -23221,7 +23221,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -23368,7 +23368,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -23515,7 +23515,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -23658,7 +23658,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -23819,7 +23819,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -23966,7 +23966,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -24135,7 +24135,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -24320,7 +24320,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -24429,7 +24429,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -24574,7 +24574,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -24723,7 +24723,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -24858,7 +24858,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -24999,7 +24999,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -25160,7 +25160,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -25323,7 +25323,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -25468,7 +25468,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -25624,7 +25624,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -25800,7 +25800,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -25961,7 +25961,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -26122,7 +26122,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -26285,7 +26285,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -26454,7 +26454,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -26599,7 +26599,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -26734,7 +26734,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -26877,7 +26877,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -27004,7 +27004,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -27131,7 +27131,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -27278,7 +27278,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -27405,7 +27405,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -27566,7 +27566,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -27707,7 +27707,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -27848,7 +27848,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -28011,7 +28011,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -28170,7 +28170,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -28324,7 +28324,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -28503,7 +28503,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -28680,7 +28680,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -28843,7 +28843,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -28988,7 +28988,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -29151,7 +29151,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -29314,7 +29314,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -29494,7 +29494,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -29657,7 +29657,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -29818,7 +29818,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -29959,7 +29959,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -30122,7 +30122,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -30291,7 +30291,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -30424,7 +30424,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -30684,7 +30684,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -30825,7 +30825,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -30974,7 +30974,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -31123,7 +31123,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -31270,7 +31270,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -31417,7 +31417,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -31552,7 +31552,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -31687,7 +31687,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -31820,7 +31820,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -31953,7 +31953,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -32088,7 +32088,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -32223,7 +32223,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -32358,7 +32358,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -32491,7 +32491,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -32652,7 +32652,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -32810,7 +32810,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -32968,7 +32968,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -33101,7 +33101,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -33234,7 +33234,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -33365,7 +33365,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -33506,7 +33506,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -33647,7 +33647,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -33797,7 +33797,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -33940,7 +33940,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -34083,7 +34083,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -34216,7 +34216,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -34347,7 +34347,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -34578,7 +34578,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -34721,7 +34721,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -34858,7 +34858,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -35039,7 +35039,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -35208,7 +35208,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -35366,7 +35366,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -35573,7 +35573,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -35744,7 +35744,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -35896,7 +35896,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -36069,7 +36069,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -36405,7 +36405,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -36719,7 +36719,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -36976,7 +36976,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -37197,7 +37197,7 @@
         ],
         "availability": {
           "editions": [
-            "2026"
+            "2027"
           ],
           "profiles": [
             "es",
@@ -40383,7 +40383,7 @@
 }
 ```
 
-R1-R3 se verifican de forma estructural mediante el esquema del paquete, unicidad de identidades y comprobación de referencias. El esquema acepta solo la edición 2026 y los perfiles actuales. `content.es` y `content.en` son idiomas editoriales; `availability.profiles` describe por separado el vocabulario del programa. Las fichas y exclusiones identifican sus fuentes por claves estables; la plantilla `form` y los programas de ejemplo se presentan en el perfil del documento, con el texto de cada identidad tomado del vocabulario y de la biblioteca, y la sangría canónica de dos espacios por nivel. Las traducciones editoriales son datos escritos en ambos idiomas, nunca una transformación en tiempo de ejecución.
+R1-R3 se verifican de forma estructural mediante el esquema del paquete, unicidad de identidades y comprobación de referencias. El esquema acepta solo la edición 2027 y los perfiles actuales. `content.es` y `content.en` son idiomas editoriales; `availability.profiles` describe por separado el vocabulario del programa. Las fichas y exclusiones identifican sus fuentes por claves estables; la plantilla `form` y los programas de ejemplo se presentan en el perfil del documento, con el texto de cada identidad tomado del vocabulario y de la biblioteca, y la sangría canónica de dos espacios por nivel. Las traducciones editoriales son datos escritos en ambos idiomas, nunca una transformación en tiempo de ejecución.
 
 Una ancla contiene `specification`, `version` y `element`. Cada token contiene su identidad y un `source` con esos mismos tres campos; cuando la fuente es el recurso `vocabulary` o `functions`, la identidad debe existir como clave de ese recurso. Una referencia de ejemplo contiene además `case`, `kind` y una nota localizada; el programa por perfil y el resultado independiente se leen del caso. Un error común contiene su texto y, opcionalmente, la referencia `case` a un caso que lo muestra. Cada perfil de la ficha debe estar declarado en el caso referenciado y tener programa.
 

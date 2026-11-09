@@ -65,7 +65,7 @@ fn feature_aggregates_states_and_rejects_missing_contracts() -> Result<(), Strin
         caracteristica: "pilot".to_owned(),
         titulo: "Piloto".to_owned(),
         estado_agregado: "generado".to_owned(),
-        edicion: "2026".to_owned(),
+        edicion: "2027".to_owned(),
         especificaciones: vec!["LANG.TEST.SAMPLE".to_owned()],
         criterio_de_terminado: vec![],
     };

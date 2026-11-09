@@ -22,7 +22,7 @@
   ],
   "titulo_en": "Intermediate representation text format",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

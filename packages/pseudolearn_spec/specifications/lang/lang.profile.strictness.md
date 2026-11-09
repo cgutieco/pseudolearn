@@ -10,16 +10,16 @@
     "responsable-lenguaje"
   ],
   "revisado_por": [
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ],
   "sujetos": [
     "reference",
     "engine",
     "aot"
   ],
-  "resumen": "Reglas comunes de la edición 2026.",
+  "resumen": "Reglas comunes de la edición 2027.",
   "edicion": {
-    "introducida_en": "2026"
+    "introducida_en": "2027"
   },
   "depende_de": [
     {
@@ -38,7 +38,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La edición 2026 aplica una sola gramática y una sola política semántica. Toda sentencia simple termina en punto y coma, cada bucle Para declara Con Paso, cada parámetro declara su tipo y las etiquetas de Según tienen tipo entero o enumerado. La base de índices, la sensibilidad de nombres y el significado de operadores son reglas comunes.",
+  "texto": "La edición 2027 aplica una sola gramática y una sola política semántica. Toda sentencia simple termina en punto y coma, cada bucle Para declara Con Paso, cada parámetro declara su tipo y las etiquetas de Según tienen tipo entero o enumerado. La base de índices, la sensibilidad de nombres y el significado de operadores son reglas comunes.",
   "verificacion": [
     "C1",
     "C2",

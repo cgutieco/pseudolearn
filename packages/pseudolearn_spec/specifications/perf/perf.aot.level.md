@@ -10,7 +10,7 @@
     "responsable-rendimiento"
   ],
   "revisado_por": [
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ],
   "sujetos": [
     "aot"

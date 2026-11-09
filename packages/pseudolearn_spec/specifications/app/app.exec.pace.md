@@ -10,7 +10,7 @@
     "responsable-aplicacion"
   ],
   "revisado_por": [
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ],
   "sujetos": [
     "app"
@@ -128,7 +128,7 @@
   "regla": "R2",
   "perfiles": ["es", "en"],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "app",
   "aplicacion": {"scenario": "pace", "input": {"programs": {"es": "Algoritmo P\nDefinir a Como Entero <- 0;\nDefinir b Como Entero <- 1;\nDefinir c Como Entero <- 0;\nDefinir i Como Entero <- 0;\nPara i <- 1 Hasta 20 Con Paso 1 Hacer\nc <- a + b;\na <- b;\nb <- c;\nFinPara\nEscribir a;\nFinAlgoritmo\n", "en": "algorithm P\ndefine a as integer <- 0;\ndefine b as integer <- 1;\ndefine c as integer <- 0;\ndefine i as integer <- 0;\nfor i <- 1 to 20 step 1 do\nc <- a + b;\na <- b;\nb <- c;\nendFor\nwrite a;\nendAlgorithm\n"}, "paces": ["nextStatement", "overBlock", "outOfBlock", "toEnd"]}},
   "espera": {"aplicacion": {"output": "6765\n", "termination": "completed", "pace_results_equal": true}}

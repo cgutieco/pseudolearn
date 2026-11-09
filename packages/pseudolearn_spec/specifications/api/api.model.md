@@ -27,7 +27,7 @@
   ],
   "titulo_en": "Core API resources",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

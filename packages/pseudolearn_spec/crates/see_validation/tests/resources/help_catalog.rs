@@ -61,7 +61,7 @@ fn rejects_duplicate_source_roles_and_incompatible_availability() {
         set(
             &mut incompatible,
             "/cards/0/availability/editions/0",
-            json!("2027")
+            json!("2026")
         )
         .is_ok()
     );
@@ -274,7 +274,7 @@ fn sample_catalog() -> Value {
             "id":"construct.sample",
             "identity":{"kind":"construction","id":"sample","role":"body"},
             "tokens":[{"identity":"algorithm","source":{"specification":"LANG.PROFILE.VOCABULARY","version":"1.0.0","element":"D1"}}],
-            "availability":{"editions":["2026"],"profiles":["es","en"]},
+            "availability":{"editions":["2027"],"profiles":["es","en"]},
             "anchors":[{"specification":"LANG.TEST.SAMPLE","version":"1.0.0","element":"R1"}],
             "category":"block",
             "form":[
@@ -385,7 +385,7 @@ fn rejects_unknown_example_kind_and_cards_without_examples() -> Result<(), Strin
 }
 
 #[test]
-fn every_2026_card_has_an_example_in_both_locales() -> Result<(), String> {
+fn every_2027_card_has_an_example_in_both_locales() -> Result<(), String> {
     let corpus = reference_corpus()?;
     assert!(
         check_references(&corpus)

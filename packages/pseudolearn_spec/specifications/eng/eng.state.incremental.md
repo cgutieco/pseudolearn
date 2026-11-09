@@ -22,7 +22,7 @@
   ],
   "titulo_en": "Incremental state",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

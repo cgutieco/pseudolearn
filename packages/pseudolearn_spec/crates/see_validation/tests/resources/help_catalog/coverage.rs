@@ -5,7 +5,7 @@ use serde_json::{Value, json};
 use std::collections::BTreeSet;
 
 #[test]
-fn produces_complete_2026_identity_role_matrix() -> Result<(), String> {
+fn produces_complete_2027_identity_role_matrix() -> Result<(), String> {
     let corpus = reference_corpus()?;
     let catalog = catalog_value(&corpus)?;
     let matrix = coverage_matrix(&catalog, &corpus)?;

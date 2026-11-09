@@ -15,7 +15,7 @@
   "resumen": "Manifiesto de característica.",
   "depende_de": [],
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

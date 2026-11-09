@@ -380,7 +380,7 @@ Execution cases from the corpus with their expected output; engine conformance r
 
 ### `LANG.PROGRAM.STRUCTURE#C6`
 
-Un texto suelto de la edición 2026 contiene exactamente un algoritmo con nombre y cierre. Puede contener antes o después declaraciones hermanas de subprogramas, clases, interfaces, registros, enumerados y constantes de módulo, cada una con las restricciones de su contrato dueño. No hay unidades anidadas ni sentencias ejecutables al nivel superior. El algoritmo vacío es válido; texto vacío requiere diagnóstico de inicio y un árbol recuperable. El nombre del algoritmo no ocupa un espacio de variables.
+Un texto suelto de la edición 2027 contiene exactamente un algoritmo con nombre y cierre. Puede contener antes o después declaraciones hermanas de subprogramas, clases, interfaces, registros, enumerados y constantes de módulo, cada una con las restricciones de su contrato dueño. No hay unidades anidadas ni sentencias ejecutables al nivel superior. El algoritmo vacío es válido; texto vacío requiere diagnóstico de inicio y un árbol recuperable. El nombre del algoritmo no ocupa un espacio de variables.
 
 ```pseudolearn
 Algorithm Greeting

@@ -28,7 +28,7 @@
     }
   ],
   "revisado_por": [
-    "revision-independiente-automatizada-pg3"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

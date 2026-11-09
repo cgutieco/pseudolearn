@@ -16,7 +16,7 @@
   "resumen": "Consulta de reloj grabado y temporizador lógico determinista.",
   "titulo_en": "Time and timer operations",
   "edicion": {
-    "introducida_en": "2026"
+    "introducida_en": "2027"
   },
   "depende_de": [
     {
@@ -26,7 +26,7 @@
     }
   ],
   "revisado_por": [
-    "revision-independiente-automatizada-pg3"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

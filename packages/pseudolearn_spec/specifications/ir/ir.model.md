@@ -28,7 +28,7 @@
   ],
   "titulo_en": "Intermediate representation model",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

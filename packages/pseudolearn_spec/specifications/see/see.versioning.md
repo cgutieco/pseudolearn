@@ -15,7 +15,7 @@
   "resumen": "Versionado de contratos.",
   "depende_de": [],
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

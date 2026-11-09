@@ -2,7 +2,7 @@
   "caracteristica": "engine-r3",
   "titulo": "Motor y fronteras especificados para la reescritura",
   "estado_agregado": "estable",
-  "edicion": "2026",
+  "edicion": "2027",
   "especificaciones": [
     "ENG.LIMITS",
     "ENG.EXEC.MODEL",

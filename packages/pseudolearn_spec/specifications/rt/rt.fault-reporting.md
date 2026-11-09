@@ -32,7 +32,7 @@
   ],
   "titulo_en": "Executable fault reporting",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

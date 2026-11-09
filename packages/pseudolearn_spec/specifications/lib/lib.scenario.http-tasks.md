@@ -17,7 +17,9 @@
     {"id": "ENG.LIMITS", "version": ">=1.0.0, <2.0.0", "tipo": "usa"},
     {"id": "API.STATE.QUERY", "version": ">=1.0.0, <2.0.0", "tipo": "usa"}
   ],
-  "revisado_por": ["Cesar Antonio Gutierrez Contreras"]
+  "revisado_por": [
+    "César Antonio Gutiérrez Contreras"
+  ]
 }
 ---
 

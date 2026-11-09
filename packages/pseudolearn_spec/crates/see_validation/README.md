@@ -14,7 +14,7 @@ Imports internos permitidos: model, graph, change. Prohibidas las capas superior
 
 ## 4. Decisiones de diseño y fundamentos técnicos
 
-Las definiciones admiten valor como objeto normativo. `helpCatalog` usa el esquema `help-catalog/1`: verifica identidades y papeles únicos, identidades léxicas enlazadas a su fuente, disponibilidad 2026 por perfil, categoría, plantilla con segmentos que resuelven una identidad léxica, huecos explicados exactamente una vez por idioma, partes que nombran tokens de la ficha, contenido es/en con la misma estructura en ambos idiomas, anclajes y ejemplos con versión exacta, y exclusiones tipadas sin solapamiento con fichas disponibles. Los ejemplos no contienen programas ni resultados duplicados; el caso referenciado debe declarar cada perfil de la ficha con su programa. Los casos admiten semilla opcional de entero; las fichas bilingües y las firmas se verifican estructuralmente, sin presentar esta revisión como ejecución de reference.
+Las definiciones admiten valor como objeto normativo. `helpCatalog` usa el esquema `help-catalog/1`: verifica identidades y papeles únicos, identidades léxicas enlazadas a su fuente, disponibilidad 2027 por perfil, categoría, plantilla con segmentos que resuelven una identidad léxica, huecos explicados exactamente una vez por idioma, partes que nombran tokens de la ficha, contenido es/en con la misma estructura en ambos idiomas, anclajes y ejemplos con versión exacta, y exclusiones tipadas sin solapamiento con fichas disponibles. Los ejemplos no contienen programas ni resultados duplicados; el caso referenciado debe declarar cada perfil de la ficha con su programa. Los casos admiten semilla opcional de entero; las fichas bilingües y las firmas se verifican estructuralmente, sin presentar esta revisión como ejecución de reference.
 
 La validación del catálogo compara los operadores declarados con las producciones de asignación y
 expresión, deriva las palabras reservadas del vocabulario y las incorporadas de la biblioteca, y
@@ -22,7 +22,7 @@ comprueba cada rol declarado contra una producción de gramática vigente. La fi
 ancla `LANG.LEXICAL.IDENTIFIER#R1` para describir el alfabeto español en ambos perfiles y la
 normalización NFC; mantiene explícitas la distinción de caja y acentos, sin atribuir equivalencia
 general a los homógrafos. La matriz identidad/rol
-requiere una ficha o exclusión con disponibilidad completa en 2026, ambos perfiles;
+requiere una ficha o exclusión con disponibilidad completa en 2027, ambos perfiles;
 cada token cubierto debe tener una parte editorial es/en propia. La función `coverage_matrix` expone
 las filas ordenadas que justifican el 100 % y los negativos ejercitan identidad duplicada, rol sin
 ficha, alias, exclusión incompatible y traducción ausente.

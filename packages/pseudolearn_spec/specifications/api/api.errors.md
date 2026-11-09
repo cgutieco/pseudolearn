@@ -27,7 +27,7 @@
   ],
   "titulo_en": "API errors",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

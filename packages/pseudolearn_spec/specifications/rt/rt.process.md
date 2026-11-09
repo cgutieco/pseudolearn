@@ -32,7 +32,7 @@
   ],
   "titulo_en": "Executable process",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

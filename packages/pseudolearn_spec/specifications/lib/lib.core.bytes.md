@@ -13,7 +13,7 @@ sujetos:
 resumen: Conversión UTF-8 y operaciones puras sobre bytes.
 titulo_en: Immutable byte sequences
 edicion:
-  introducida_en: "2026"
+  introducida_en: "2027"
 depende_de:
 - id: LIB.MODEL
   version: ">=1.0.0, <2.0.0"
@@ -22,7 +22,7 @@ depende_de:
   version: ">=1.0.0, <2.0.0"
   tipo: usa
 revisado_por:
-- Cesar Antonio Gutierrez Contreras
+- César Antonio Gutiérrez Contreras
 ---
 
 # Secuencias binarias inmutables

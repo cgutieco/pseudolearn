@@ -47,14 +47,14 @@
     "responsable-especificaciones"
   ],
   "edicion": {
-    "introducida_en": "2026"
+    "introducida_en": "2027"
   },
   "estado": "estable",
   "formato": "see/1",
   "id": "LANG.TASK.SUSPENSION",
   "resumen": "Identidad sintáctica y reglas estáticas de unidades suspendibles y espera explícita.",
   "revisado_por": [
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ],
   "sujetos": [
     "engine",

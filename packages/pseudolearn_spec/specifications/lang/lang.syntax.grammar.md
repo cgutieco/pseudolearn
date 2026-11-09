@@ -10,7 +10,7 @@
     "responsable-lenguaje"
   ],
   "revisado_por": [
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ],
   "sujetos": [
     "reference",
@@ -19,7 +19,7 @@
   ],
   "resumen": "Gramática abstracta formal.",
   "edicion": {
-    "introducida_en": "2026"
+    "introducida_en": "2027"
   },
   "depende_de": [
     {
@@ -57,7 +57,7 @@
 {
   "id": "D1",
   "termino": "grammar",
-  "texto": "Producciones EBNF abstractas de la edición 2026.",
+  "texto": "Producciones EBNF abstractas de la edición 2027.",
   "valor": {
     "inicial": "program",
     "producciones": {

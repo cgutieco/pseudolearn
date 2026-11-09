@@ -32,7 +32,7 @@
   ],
   "titulo_en": "Incremental document analysis",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

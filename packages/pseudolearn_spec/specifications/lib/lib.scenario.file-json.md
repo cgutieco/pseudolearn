@@ -16,7 +16,9 @@
     {"id": "ENG.EXEC.MODEL", "version": ">=1.0.0, <2.0.0", "tipo": "usa"},
     {"id": "ENG.EFFECT.TAPE", "version": ">=1.0.0, <2.0.0", "tipo": "usa"}
   ],
-  "revisado_por": ["Cesar Antonio Gutierrez Contreras"]
+  "revisado_por": [
+    "César Antonio Gutiérrez Contreras"
+  ]
 }
 ---
 

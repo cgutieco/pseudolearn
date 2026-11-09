@@ -24,6 +24,11 @@ Todas las órdenes admiten `--root <directorio>` para seleccionar otro miembro d
 `matrix [--subject reference]`, `feature <nombre>`, `export [--check]`, `agent-sheet [--check]`. Solicitar conformidad de reference produce `SEE-SUBJECT-RETIRED`; su matriz lo presenta como no aplicable sin cargar resultados retirados.
 `matrix` imprime un objeto con `conformance` (regla × sujeto), `ir_coverage` (tabla regla → instrucciones
 de los bloques `cobertura`) y `states` (especificaciones por dominio y estado).
+La edición vigente del lenguaje es 2027: se escoge el año siguiente al de la redacción para que el corpus no parezca
+anticuado al publicarse, y `introducida_en` de los contratos de lenguaje y de biblioteca la declara. En `revisado_por`
+figura un único valor en todo el corpus, el nombre completo y con tildes de la persona responsable, `César Antonio
+Gutiérrez Contreras`; no se admiten identificadores de revisión automatizada ni variantes de escritura.
+
 `new` crea una plantilla estable `1.0.0` sin `cambio`; deja `revisado_por` vacío para que no se atribuya una
 revisión inexistente. La plantilla de lenguaje declara engine y aot como sujetos candidatos. El contrato queda
 incompleto hasta que tenga reglas, casos, evidencia y una revisión independiente, por lo que `validate` puede
@@ -95,7 +100,7 @@ admitir en la prosa los signos que el validador prohíbe. `see_validation` valid
 esquema del recurso y sus referencias versionadas; `see_export` lo extrae sin convertirlo en una
 dependencia de documentación transitoria.
 
-El inventario 2026 deriva palabras reservadas de `vocabulary`, operadores de las producciones de
+El inventario 2027 deriva palabras reservadas de `vocabulary`, operadores de las producciones de
 expresión y asignación, e incorporadas de `functions` y `capabilityLibrary`. Las 41 agrupaciones
 pedagógicas se declaran como datos con sus producciones fuente; no se infieren de la EBNF. Las 143
 identidades de palabras reservadas, 17 operadores y las identidades incorporadas se explican en el
@@ -106,7 +111,7 @@ redactan en ambos idiomas desde sus reglas ancladas; antes de mantener el invent
 texto, identidades, disponibilidad, anclajes y la matriz completa. Cada elemento activo debe llegar
 a una ficha específica o a una exclusión tipada; una ficha genérica no cubre elementos sin asociar.
 
-El texto suelto de la edición 2026 tiene una sola entrada algorítmica y no requiere manifiesto. `LANG.PROGRAM.STRUCTURE` admite como declaraciones hermanas los tipos nominales, subprogramas y constantes de módulo; `LANG.MODULE.MODEL` conserva los diagnósticos de importación y exportación fuera de proyecto. El preludio fijo usa exclusivamente el catálogo exportado de `LIB.MODEL` y los tipos intrínsecos del lenguaje. Los contratos dueños determinan disponibilidad y colisiones; el preludio no concede capacidades ni lee el entorno. Los casos vigentes de estructura, edición, módulo, codificación, posiciones y capacidades cubren ambos perfiles, entrada vacía, colisiones, símbolos ausentes, BOM y efectos denegados.
+El texto suelto de la edición 2027 tiene una sola entrada algorítmica y no requiere manifiesto. `LANG.PROGRAM.STRUCTURE` admite como declaraciones hermanas los tipos nominales, subprogramas y constantes de módulo; `LANG.MODULE.MODEL` conserva los diagnósticos de importación y exportación fuera de proyecto. El preludio fijo usa exclusivamente el catálogo exportado de `LIB.MODEL` y los tipos intrínsecos del lenguaje. Los contratos dueños determinan disponibilidad y colisiones; el preludio no concede capacidades ni lee el entorno. Los casos vigentes de estructura, edición, módulo, codificación, posiciones y capacidades cubren ambos perfiles, entrada vacía, colisiones, símbolos ausentes, BOM y efectos denegados.
 
 Los ejemplos de una ficha no contienen programas ni resultados: referencian casos vigentes del corpus por
 especificación, versión e identidad, con la misma secuencia en ambos idiomas y una nota por idioma que
@@ -427,8 +432,8 @@ movimiento de `TOOL.CLI.CONVENTIONS#R11` a `R16` hacia `TOOL.MCP` se confirmó e
 El contrato de `pseudo mcp` nació como las reglas R11 a R16 de `TOOL.CLI.CONVENTIONS` porque se creyó que el
 congelamiento impedía una especificación nueva sin revisión independiente. Tiene identidad propia porque su ciclo de
 vida, su esquema de herramientas y sus casos no dependen de las convenciones de órdenes, idioma y códigos de salida. Nace
-estable `1.0.0` y sin `cambio` (`check_initial`), con `revisado_por` igual a `cesar-antonio-gutierrez-contreras-2026-11-08`:
-la persona responsable autorizó crearla y registró su aprobación como revisión independiente en esa fecha, con
+estable `1.0.0` y sin `cambio` (`check_initial`), con `revisado_por` igual a la persona responsable,
+quien autorizó crearla y registró su aprobación como revisión independiente, con
 precedencia sobre el congelamiento solo para esta especificación. El resto del corpus sigue congelado.
 
 La revisión corrigió lo que el contrato dejaba al código: faltaban casos para `tools/list`, `search_reference`, `example`,

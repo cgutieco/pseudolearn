@@ -26,8 +26,7 @@
     }
   ],
   "revisado_por": [
-    "cesar-antonio-gutierrez-contreras",
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---
@@ -80,7 +79,7 @@
   "regla": "R1",
   "perfiles": ["es"],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -120,7 +119,7 @@
   "regla": "R2",
   "perfiles": ["es"],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {"coincide_con_frio": true, "diagnostics": [], "errores": []}
@@ -151,7 +150,7 @@
   "regla": "R3",
   "perfiles": ["es"],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -202,7 +201,7 @@
   "regla": "R4",
   "perfiles": ["es"],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -242,7 +241,7 @@
   "regla": "R2",
   "perfiles": ["es"],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {"coincide_con_frio": true, "errores": ["DocumentNotOpen"]}
@@ -272,7 +271,7 @@
   "regla": "R1",
   "perfiles": ["es"],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {"coincide_con_frio": true, "project_errors": ["emptyWorkspace"]}
@@ -299,7 +298,7 @@
   "regla": "R3",
   "perfiles": ["es"],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {"coincide_con_frio": true, "errores": ["ProjectIdentityChanged"]}
@@ -340,7 +339,7 @@
   "regla": "R2",
   "perfiles": ["es"],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {"coincide_con_frio": true, "diagnostics": [], "errores": []}

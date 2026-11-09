@@ -17,7 +17,7 @@
   "depende_de": [],
   "titulo_en": "Measurement protocol",
   "revisado_por": [
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

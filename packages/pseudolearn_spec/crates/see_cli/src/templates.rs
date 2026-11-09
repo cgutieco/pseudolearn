@@ -17,7 +17,7 @@ pub fn metadata(id: &str, domain: &str) -> Metadata {
         resumen: "Contrato por redactar".to_owned(),
         titulo_en: None,
         edicion: if domain == "lang" {
-            std::collections::BTreeMap::from([("introducida_en".to_owned(), "2026".to_owned())])
+            std::collections::BTreeMap::from([("introducida_en".to_owned(), "2027".to_owned())])
         } else {
             Default::default()
         },

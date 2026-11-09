@@ -10,7 +10,7 @@
     "responsable-lenguaje"
   ],
   "revisado_por": [
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ],
   "sujetos": [
     "engine",
@@ -18,7 +18,7 @@
   ],
   "resumen": "Iteración tipada sobre colecciones y arreglos",
   "edicion": {
-    "introducida_en": "2026"
+    "introducida_en": "2027"
   },
   "depende_de": [
     {

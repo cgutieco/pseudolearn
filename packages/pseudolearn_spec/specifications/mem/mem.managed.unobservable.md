@@ -28,7 +28,7 @@
   ],
   "titulo_en": "Unobservable memory reclamation",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

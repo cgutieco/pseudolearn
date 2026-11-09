@@ -10,7 +10,7 @@
     "responsable-herramientas"
   ],
   "revisado_por": [
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ],
   "sujetos": [
     "service"
@@ -225,7 +225,7 @@
     "es"
   ],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -256,7 +256,7 @@
     "es"
   ],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {

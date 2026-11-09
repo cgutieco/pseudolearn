@@ -34,7 +34,7 @@
   ],
   "titulo_en": "Value copy and sharing",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

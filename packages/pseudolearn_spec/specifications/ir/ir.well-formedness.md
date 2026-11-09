@@ -33,7 +33,7 @@
   ],
   "titulo_en": "Intermediate representation well-formedness",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

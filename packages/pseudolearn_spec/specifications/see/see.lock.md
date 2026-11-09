@@ -15,7 +15,7 @@
   "resumen": "Anclaje de especificaciones.",
   "depende_de": [],
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

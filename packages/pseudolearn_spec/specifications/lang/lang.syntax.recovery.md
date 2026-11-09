@@ -10,7 +10,7 @@
     "responsable-lenguaje"
   ],
   "revisado_por": [
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ],
   "sujetos": [
     "reference",
@@ -20,7 +20,7 @@
   "resumen": "Recuperación sintáctica.",
   "depende_de": [],
   "edicion": {
-    "introducida_en": "2026"
+    "introducida_en": "2027"
   }
 }
 ---

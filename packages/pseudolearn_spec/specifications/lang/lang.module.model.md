@@ -16,7 +16,7 @@
   "resumen": "Archivo como módulo, paquete, workspace local y entrada única.",
   "titulo_en": "Modules, packages, workspace and entry",
   "edicion": {
-    "introducida_en": "2026"
+    "introducida_en": "2027"
   },
   "depende_de": [
     {
@@ -31,7 +31,7 @@
     }
   ],
   "revisado_por": [
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

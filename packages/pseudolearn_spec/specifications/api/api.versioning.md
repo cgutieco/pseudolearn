@@ -27,7 +27,7 @@
   ],
   "titulo_en": "API versioning",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---
@@ -39,7 +39,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La API declara una versión semántica, las ediciones del lenguaje que admite (la vigente es 2026) y las capacidades que ofrece. El conjunto de capacidades reconocidas incluye analyze, execute, observe, seek, interface_language, program_view, state_pages, service_completion, service_help, generated_vocabulary, source_identity y event_binary (definidas por API.WIRE-FORMAT). Una capacidad opcional que el sujeto no ofrece se omite de su anuncio y no puede negociarse como disponible.",
+  "texto": "La API declara una versión semántica, las ediciones del lenguaje que admite (la vigente es 2027) y las capacidades que ofrece. El conjunto de capacidades reconocidas incluye analyze, execute, observe, seek, interface_language, program_view, state_pages, service_completion, service_help, generated_vocabulary, source_identity y event_binary (definidas por API.WIRE-FORMAT). Una capacidad opcional que el sujeto no ofrece se omite de su anuncio y no puede negociarse como disponible.",
   "verificacion": [
     "P1"
   ]

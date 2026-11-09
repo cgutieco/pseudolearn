@@ -37,8 +37,7 @@
   ],
   "titulo_en": "Bilingual round-trip translation",
   "revisado_por": [
-    "revision-independiente-automatizada-r9",
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---
@@ -107,7 +106,7 @@
     "es"
   ],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -131,7 +130,7 @@
     "es"
   ],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -154,7 +153,7 @@
     "en"
   ],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {

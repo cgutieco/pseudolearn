@@ -15,7 +15,7 @@
   ],
   "resumen": "Clases de diagnóstico.",
   "edicion": {
-    "introducida_en": "2026"
+    "introducida_en": "2027"
   },
   "depende_de": [
     {
@@ -25,7 +25,7 @@
     }
   ],
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

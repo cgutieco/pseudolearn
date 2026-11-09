@@ -37,8 +37,7 @@
   ],
   "titulo_en": "Code navigation service",
   "revisado_por": [
-    "revision-independiente-automatizada-r9",
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---
@@ -110,7 +109,7 @@
     "es"
   ],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -145,7 +144,7 @@
     "es"
   ],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -192,7 +191,7 @@
     "es"
   ],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -255,7 +254,7 @@
     "es"
   ],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -360,7 +359,7 @@
     "en"
   ],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {
@@ -449,7 +448,7 @@
   "regla": "R4",
   "perfiles": ["es"],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {"servicio":{"rename_edits":3,"document_versions":{"file:///app/main.pseudo":3,"file:///geo/vector.pseudo":8}}},
   "servicio": {"suboperacion":"lsp","mensajes":[{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"locale":"es","capabilities":{"workspace":{"workspaceEdit":{"documentChanges":true,"failureHandling":"transactional"}}}}},{"jsonrpc":"2.0","method":"pseudolearn/workspaceSnapshot","params":{"project":{"project_id":7,"revision_id":1,"packages":[{"name":"app","root":"app","kind":"application","entries":["app/main"],"dependencies":{"geo":"geo"}},{"name":"geo","root":"geo","kind":"library","entries":[],"dependencies":{}}],"files":[{"path":"app/main","source_id":1,"text":"Importar geo.vector.Double;\nAlgoritmo Main\nEscribir Double(2);\nFinAlgoritmo\n"},{"path":"geo/vector","source_id":2,"text":"Publico SubProceso Double(value Como Entero) Como Entero\nRetornar value * 2;\nFinSubProceso\n"}]},"uris":{"app/main":"file:///app/main.pseudo","geo/vector":"file:///geo/vector.pseudo"}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///app/main.pseudo","languageId":"pseudolearn","version":3,"text":"Importar geo.vector.Double;\nAlgoritmo Main\nEscribir Double(2);\nFinAlgoritmo\n"}}},{"jsonrpc":"2.0","id":2,"method":"textDocument/references","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9},"context":{"includeDeclaration":true}}},{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///geo/vector.pseudo","languageId":"pseudolearn","version":8,"text":"Publico SubProceso Double(value Como Entero) Como Entero\nRetornar value * 2;\nFinSubProceso\n"}}},{"jsonrpc":"2.0","id":3,"method":"textDocument/prepareRename","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9}}},{"jsonrpc":"2.0","id":4,"method":"textDocument/references","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9},"context":{"includeDeclaration":true}}},{"jsonrpc":"2.0","id":5,"method":"textDocument/rename","params":{"textDocument":{"uri":"file:///app/main.pseudo"},"position":{"line":2,"character":9},"newName":"Twice"}}],"proyeccion":"transactional_rename_with_materialized_sources"}
@@ -690,7 +689,7 @@
     "es"
   ],
   "origen": "derivado",
-  "revisado_por": "Cesar Antonio Gutierrez Contreras",
+  "revisado_por": "César Antonio Gutiérrez Contreras",
   "operacion": "service",
   "espera": {
     "servicio": {

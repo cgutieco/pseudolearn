@@ -22,7 +22,7 @@
   ],
   "titulo_en": "Syntax node identity",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

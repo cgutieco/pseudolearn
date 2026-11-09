@@ -16,7 +16,7 @@
   "resumen": "Import nominal, alias, público y privado, exportación y reexportación sin comodines ni efectos.",
   "titulo_en": "Imports, aliases, visibility and re-export",
   "edicion": {
-    "introducida_en": "2026"
+    "introducida_en": "2027"
   },
   "depende_de": [
     {
@@ -36,7 +36,7 @@
     }
   ],
   "revisado_por": [
-    "revision-independiente-automatizada-codex-2026-10-24"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

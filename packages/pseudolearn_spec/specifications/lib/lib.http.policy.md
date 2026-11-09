@@ -10,7 +10,7 @@
     "responsable-lenguaje"
   ],
   "revisado_por": [
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ],
   "sujetos": [
     "engine",
@@ -19,7 +19,7 @@
   "resumen": "Reglas de destinos, redirecciones y garantías de los adaptadores HTTP.",
   "titulo_en": "HTTP security policy",
   "edicion": {
-    "introducida_en": "2026"
+    "introducida_en": "2027"
   },
   "depende_de": [
     {

@@ -6,7 +6,7 @@ dominio: proceso
 estado: estable
 version: 1.0.0
 duenos: [responsable-especificaciones]
-revisado_por: [Cesar Antonio Gutierrez Contreras]
+revisado_por: [César Antonio Gutiérrez Contreras]
 sujetos: [see]
 resumen: Ciclo de vida.
 ---

@@ -23,7 +23,7 @@
   ],
   "titulo_en": "Artifact size",
   "revisado_por": [
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

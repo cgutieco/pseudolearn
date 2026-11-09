@@ -16,7 +16,7 @@
   "resumen": "Prohibición de efectos directos o transitivos en funciones puras, propagación sobre el grafo de llamadas y coherencia en clausuras e interfaces.",
   "titulo_en": "Subprogram purity and transitive side effects",
   "edicion": {
-    "introducida_en": "2026"
+    "introducida_en": "2027"
   },
   "depende_de": [
     {
@@ -36,7 +36,7 @@
     }
   ],
   "revisado_por": [
-    "revision-independiente-automatizada-pg3"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

@@ -85,7 +85,7 @@ pub(super) fn card_token_set(card: &Value) -> Result<BTreeSet<String>, String> {
 }
 
 pub(super) fn complete_scope(value: &Value) -> bool {
-    [("editions", "2026"), ("profiles", "es"), ("profiles", "en")]
+    [("editions", "2027"), ("profiles", "es"), ("profiles", "en")]
         .iter()
         .all(|(dimension, expected)| {
             value

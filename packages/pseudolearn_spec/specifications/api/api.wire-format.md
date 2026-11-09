@@ -29,7 +29,7 @@
   ],
   "titulo_en": "Wire format",
   "revisado_por": [
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

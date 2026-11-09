@@ -32,7 +32,7 @@
   ],
   "titulo_en": "Meaning-preserving lowering",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

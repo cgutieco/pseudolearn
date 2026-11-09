@@ -32,7 +32,7 @@
   ],
   "titulo_en": "Build command",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

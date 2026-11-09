@@ -42,7 +42,7 @@
   ],
   "titulo_en": "CLI conventions",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

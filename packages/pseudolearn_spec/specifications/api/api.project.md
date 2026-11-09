@@ -32,7 +32,7 @@
     }
   ],
   "revisado_por": [
-    "revision-independiente-automatizada-codex-2026-10-24"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

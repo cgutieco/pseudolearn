@@ -37,7 +37,7 @@
   ],
   "titulo_en": "Execution",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

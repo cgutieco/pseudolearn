@@ -15,7 +15,7 @@
   "resumen": "Clasificación preliminar.",
   "depende_de": [],
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---

@@ -10,7 +10,7 @@
     "responsable-lenguaje"
   ],
   "revisado_por": [
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ],
   "sujetos": [
     "engine",
@@ -18,7 +18,7 @@
   ],
   "resumen": "Aislamiento transitivo entre tareas",
   "edicion": {
-    "introducida_en": "2026"
+    "introducida_en": "2027"
   },
   "depende_de": [
     {"id": "LIB.JSON", "version": ">=1.0.0, <2.0.0", "tipo": "requiere"},

@@ -1,8 +1,8 @@
 {
-  "caracteristica": "language-2026",
+  "caracteristica": "language-2027",
   "titulo": "Lenguaje vigente completo",
   "estado_agregado": "experimental",
-  "edicion": "2026",
+  "edicion": "2027",
   "especificaciones": [
     "DIAG.CATALOG",
     "DIAG.CLASSES",

@@ -32,7 +32,7 @@
   ],
   "titulo_en": "Observable state",
   "revisado_por": [
-    "revision-independiente-automatizada-r9"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---
