@@ -12,11 +12,14 @@ import type {
   ModelReply,
   UserVerifier,
 } from "../../supabase/functions/agent-responses/domain/ports.ts";
+import type { PurchaseGrant } from "../../supabase/functions/agent-credits/domain/purchase_grant.ts";
+import type { StoreName } from "../../supabase/functions/agent-credits/domain/purchase.ts";
 import type {
-  CreditsLedger,
-  PurchaseGrant,
   PurchaseGrantOutcome,
-} from "../../supabase/functions/agent-credits/application/credits_service.ts";
+  PurchaseRevocation,
+  StoreLedger,
+  SubscriptionEnd,
+} from "../../supabase/functions/agent-credits/domain/store_ledger.ts";
 
 export const activeBalance: Balance = {
   ...emptyBalance,
@@ -35,12 +38,17 @@ export class FakeUsers implements UserVerifier {
   }
 }
 
-export class FakeLedger implements LedgerGateway, CreditsLedger {
+export class FakeLedger implements LedgerGateway, StoreLedger {
   refusal: AgentErrorCode | null = null;
   grantRefusal: AgentErrorCode | null = null;
   readonly debits: { call: LedgerCall; milli: number }[] = [];
   readonly grants: PurchaseGrant[] = [];
   readonly transactions = new Set<string>();
+  readonly revocations: PurchaseRevocation[] = [];
+  readonly ends: SubscriptionEnd[] = [];
+  readonly owners = new Map<string, string>();
+  readonly customers = new Map<string, string>();
+  currentBalance: Balance = activeBalance;
 
   authorize(): Promise<Authorization> {
     return Promise.resolve(
@@ -56,10 +64,10 @@ export class FakeLedger implements LedgerGateway, CreditsLedger {
   }
 
   balance(): Promise<Balance> {
-    return Promise.resolve(activeBalance);
+    return Promise.resolve(this.currentBalance);
   }
 
-  grant(grant: PurchaseGrant): Promise<PurchaseGrantOutcome> {
+  apply(grant: PurchaseGrant): Promise<PurchaseGrantOutcome> {
     this.grants.push(grant);
     if (this.grantRefusal !== null) {
       return Promise.resolve({ kind: "refused", code: this.grantRefusal, balance: activeBalance });
@@ -67,6 +75,24 @@ export class FakeLedger implements LedgerGateway, CreditsLedger {
     const repeated = this.transactions.has(grant.transactionId);
     this.transactions.add(grant.transactionId);
     return Promise.resolve({ kind: "granted", balance: activeBalance, repeated });
+  }
+
+  revoke(revocation: PurchaseRevocation): Promise<number> {
+    this.revocations.push(revocation);
+    return Promise.resolve(1);
+  }
+
+  end(subscription: SubscriptionEnd): Promise<number> {
+    this.ends.push(subscription);
+    return Promise.resolve(1);
+  }
+
+  owner(store: StoreName, originalTransactionId: string): Promise<string | null> {
+    return Promise.resolve(this.owners.get(`${store}:${originalTransactionId}`) ?? null);
+  }
+
+  customer(userId: string, store: StoreName): Promise<string | null> {
+    return Promise.resolve(this.customers.get(`${store}:${userId}`) ?? null);
   }
 }
 

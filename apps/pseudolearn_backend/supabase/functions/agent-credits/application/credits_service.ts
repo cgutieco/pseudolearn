@@ -1,31 +1,17 @@
 import { authenticatedUser } from "../../agent-responses/application/agent_service.ts";
-import { AgentError, type AgentErrorCode } from "../../agent-responses/domain/agent_error.ts";
+import { AgentError } from "../../agent-responses/domain/agent_error.ts";
 import type { Balance } from "../../agent-responses/domain/balance.ts";
 import type { Clock, UserVerifier } from "../../agent-responses/domain/ports.ts";
-import { productCatalog, type PurchaseClaim, type PurchaseVerifier } from "../domain/purchase.ts";
-
-export interface PurchaseGrant {
-  readonly userId: string;
-  readonly transactionId: string;
-  readonly product: string;
-  readonly milli: number;
-  readonly days: number;
-  readonly now: Date;
-}
-
-export type PurchaseGrantOutcome =
-  | { readonly kind: "granted"; readonly balance: Balance; readonly repeated: boolean }
-  | { readonly kind: "refused"; readonly code: AgentErrorCode; readonly balance: Balance };
-
-export interface CreditsLedger {
-  balance(userId: string, now: Date): Promise<Balance>;
-  grant(grant: PurchaseGrant): Promise<PurchaseGrantOutcome>;
-}
+import type { CheckoutGateway } from "../domain/checkout.ts";
+import type { PurchaseClaim, PurchaseVerifier, VerifiedPurchase } from "../domain/purchase.ts";
+import { purchaseGrantFor } from "../domain/purchase_grant.ts";
+import type { StoreLedger } from "../domain/store_ledger.ts";
 
 export interface CreditsDependencies {
   readonly users: UserVerifier;
-  readonly ledger: CreditsLedger;
+  readonly ledger: StoreLedger;
   readonly purchases: PurchaseVerifier | null;
+  readonly checkouts: CheckoutGateway | null;
   readonly clock: Clock;
 }
 
@@ -46,15 +32,23 @@ export async function redeemPurchase(
   if (dependencies.purchases === null) throw new AgentError("purchases_disabled");
   const verified = await dependencies.purchases.verify(claim, userId);
   if (verified === null) throw new AgentError("invalid_request", "purchase");
-  const terms = productCatalog[verified.product];
-  const outcome = await dependencies.ledger.grant({
-    userId,
-    transactionId: verified.transactionId,
-    product: verified.product,
-    milli: terms.milli,
-    days: terms.days,
-    now: dependencies.clock.now(),
-  });
+  if (!belongsTo(verified, userId)) throw new AgentError("purchase_owned_elsewhere");
+  const now = dependencies.clock.now();
+  if (verified.revoked) {
+    await dependencies.ledger.revoke({
+      store: verified.store,
+      transactionId: verified.transactionId,
+      originalTransactionId: null,
+      now,
+    });
+    throw new AgentError("invalid_request", "revoked");
+  }
+  const outcome = await dependencies.ledger.apply(purchaseGrantFor(userId, verified, now));
   if (outcome.kind === "refused") throw new AgentError(outcome.code);
   return { balance: outcome.balance, repeated: outcome.repeated };
+}
+
+function belongsTo(purchase: VerifiedPurchase, userId: string): boolean {
+  return purchase.accountToken === null ||
+    purchase.accountToken.toLowerCase() === userId.toLowerCase();
 }

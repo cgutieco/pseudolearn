@@ -12,6 +12,7 @@ export function balanceHeaders(balance: Balance): Record<string, string> {
     "x-pseudolearn-credits-top-up": String(displayCredits(balance.topUpMilli)),
     "x-pseudolearn-credits-renews-at": balance.renewsAt ?? "",
     "x-pseudolearn-credits-trial": balance.trial ? "true" : "false",
+    "x-pseudolearn-credits-store": balance.store ?? "",
   };
 }
 

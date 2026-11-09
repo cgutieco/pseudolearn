@@ -9,6 +9,8 @@ import {
 
 export type Product = "trial" | "monthly" | "top_up";
 
+export type StoreName = "simulated" | "app_store" | "paddle";
+
 export interface ProductTerms {
   readonly milli: number;
   readonly days: number;
@@ -34,8 +36,16 @@ export interface PurchaseClaim {
 }
 
 export interface VerifiedPurchase {
+  readonly store: StoreName;
   readonly product: Product;
   readonly transactionId: string;
+  readonly originalTransactionId: string | null;
+  readonly startsAt: Date | null;
+  readonly endsAt: Date | null;
+  readonly trial: boolean;
+  readonly revoked: boolean;
+  readonly accountToken: string | null;
+  readonly customerId: string | null;
 }
 
 export interface PurchaseVerifier {
@@ -44,4 +54,22 @@ export interface PurchaseVerifier {
 
 export function productOf(productId: string): Product | null {
   return storeProductIds[productId] ?? null;
+}
+
+export function simulatedPurchase(
+  product: Product,
+  transactionId: string,
+): VerifiedPurchase {
+  return {
+    store: "simulated",
+    product,
+    transactionId,
+    originalTransactionId: null,
+    startsAt: null,
+    endsAt: null,
+    trial: product === "trial",
+    revoked: false,
+    accountToken: null,
+    customerId: null,
+  };
 }

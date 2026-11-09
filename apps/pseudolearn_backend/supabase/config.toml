@@ -2,3 +2,6 @@ project_id = "pseudolearn-db"
 
 [functions.delete-account]
 verify_jwt = false
+
+[functions.store-events]
+verify_jwt = false

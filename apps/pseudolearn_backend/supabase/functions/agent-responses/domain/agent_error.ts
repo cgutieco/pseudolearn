@@ -13,6 +13,9 @@ export type AgentErrorCode =
   | "model_unconfigured"
   | "purchases_disabled"
   | "trial_used"
+  | "purchase_owned_elsewhere"
+  | "already_subscribed"
+  | "invalid_signature"
   | "misconfigured"
   | "unexpected_failure";
 
@@ -31,6 +34,9 @@ export const statusByCode: Readonly<Record<AgentErrorCode, number>> = {
   model_unconfigured: 503,
   purchases_disabled: 403,
   trial_used: 409,
+  purchase_owned_elsewhere: 409,
+  already_subscribed: 409,
+  invalid_signature: 401,
   misconfigured: 500,
   unexpected_failure: 500,
 };

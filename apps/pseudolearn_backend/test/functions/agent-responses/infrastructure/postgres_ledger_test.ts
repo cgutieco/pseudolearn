@@ -41,33 +41,14 @@ Deno.test("a refusal from the ledger keeps its code", async () => {
   assertEquals(outcome.kind === "refused" ? outcome.code : null, "credits_exhausted");
 });
 
-Deno.test("grant reports repetition and ledger failures reject", async () => {
-  const { ledger: subject } = ledger({ balance, repeated: true });
-  const outcome = await subject.grant({
-    userId: "u",
-    transactionId: "x",
-    product: "top_up",
-    milli: 150_000,
-    days: 0,
-    now: call.now,
-  });
-  assertEquals(outcome.kind === "granted" && outcome.repeated, true);
+Deno.test("ledger failures and replies without a balance reject", async () => {
   await assertRejects(() => ledger({}, 500).ledger.balance("u", call.now));
   await assertRejects(() => ledger({ nope: 1 }).ledger.debit(call, 3));
 });
 
-Deno.test("a top-up refused for lack of a period keeps its code and balance", async () => {
-  const lapsed = { ...balance, period_active: false, period_remaining_milli: 0, top_up_milli: 0 };
-  const { fetcher, ledger: subject } = ledger({ error: "subscription_required", balance: lapsed });
-  const outcome = await subject.grant({
-    userId: "u",
-    transactionId: "late",
-    product: "top_up",
-    milli: 150_000,
-    days: 0,
-    now: call.now,
-  });
-  assertEquals(outcome.kind === "refused" ? outcome.code : null, "subscription_required");
-  assertEquals(outcome.balance.periodActive, false);
-  assertEquals(fetcher.requests[0].url, "https://p/rest/v1/rpc/agent_grant_purchase");
+Deno.test("the balance carries the store of the active period", async () => {
+  const { ledger: subject } = ledger({ ...balance, store: "app_store" });
+  assertEquals((await subject.balance("u", call.now)).store, "app_store");
+  const { ledger: unknown } = ledger({ ...balance, store: null });
+  assertEquals((await unknown.balance("u", call.now)).store, null);
 });

@@ -2,6 +2,7 @@ import { assertEquals, assertRejects } from "@std/assert";
 import { AgentError } from "../../../../supabase/functions/agent-responses/domain/agent_error.ts";
 import { AllowlistedPurchaseVerifier } from "../../../../supabase/functions/agent-credits/infrastructure/allowlisted_purchase_verifier.ts";
 import { SimulatedPurchaseVerifier } from "../../../../supabase/functions/agent-credits/infrastructure/simulated_purchase_verifier.ts";
+import { simulatedPurchase } from "../../../../supabase/functions/agent-credits/domain/purchase.ts";
 
 const claim = {
   store: "simulated",
@@ -16,7 +17,7 @@ function verifierFor(users: string[]) {
 
 Deno.test("an allowlisted account gets the simulated verification", async () => {
   const verified = await verifierFor(["user-1"]).verify(claim, "user-1");
-  assertEquals(verified, { product: "top_up", transactionId: "simulated:tx-1" });
+  assertEquals(verified, simulatedPurchase("top_up", "simulated:tx-1"));
 });
 
 Deno.test("an account outside the allowlist is refused as purchases disabled", async () => {

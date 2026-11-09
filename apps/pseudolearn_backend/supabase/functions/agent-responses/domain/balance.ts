@@ -8,6 +8,7 @@ export interface Balance {
   readonly periodRemainingMilli: number;
   readonly topUpMilli: number;
   readonly renewsAt: string | null;
+  readonly store: string | null;
 }
 
 export const emptyBalance: Balance = {
@@ -18,6 +19,7 @@ export const emptyBalance: Balance = {
   periodRemainingMilli: 0,
   topUpMilli: 0,
   renewsAt: null,
+  store: null,
 };
 
 export function remainingMilli(balance: Balance): number {
@@ -36,5 +38,6 @@ export function balanceFrom(raw: unknown): Balance | null {
     periodRemainingMilli: raw.period_remaining_milli as number,
     topUpMilli: raw.top_up_milli as number,
     renewsAt: typeof raw.renews_at === "string" ? raw.renews_at : null,
+    store: typeof raw.store === "string" ? raw.store : null,
   };
 }

@@ -2,6 +2,7 @@ import {
   productOf,
   type PurchaseClaim,
   type PurchaseVerifier,
+  simulatedPurchase,
   type VerifiedPurchase,
 } from "../domain/purchase.ts";
 
@@ -15,6 +16,6 @@ export class SimulatedPurchaseVerifier implements PurchaseVerifier {
     const transactionId = product === "trial"
       ? `trial:${userId}`
       : `simulated:${claim.transactionId}`;
-    return Promise.resolve({ product, transactionId });
+    return Promise.resolve(simulatedPurchase(product, transactionId));
   }
 }

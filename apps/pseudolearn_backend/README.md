@@ -7,9 +7,11 @@ de decisión de diseño se documenta aquí en el mismo cambio que lo introduce (
 Las reglas transversales del monorepo están en el `AGENTS.md` de la raíz. Las reglas que los
 verificadores ejecutan están en `architecture.json`, junto a este archivo.
 
-**Estado:** Una Edge Function (`delete-account`) con 71 tests en verde, verificador de arquitectura
-con casos negativos, y el esquema SQL de sincronización versionado como migraciones de la CLI de
-Supabase. Proyecto de producción: `iugecdkguazwhdngnoao` (`pseudolearn-db`).
+**Estado:** Cuatro Edge Functions (`delete-account`, `agent-responses`, `agent-credits` y
+`store-events`) con 188 tests en verde, verificador de arquitectura con casos negativos, el esquema
+SQL versionado como migraciones de la CLI de Supabase y un arnés que las ejecuta contra un Postgres
+desechable (`deno task migrations`). Proyecto de producción: `iugecdkguazwhdngnoao`
+(`pseudolearn-db`).
 
 ---
 
@@ -39,6 +41,9 @@ Lo consume `apps/pseudolearn_app` por HTTP: `supabase.functions.invoke('delete-a
 4. **Proxy del modelo del agente Nodo (`agent-responses`) y libro de créditos (`agent-credits`):**
    la app nunca tiene la clave del proveedor; el servidor fija el modelo, autoriza el saldo, reenvía
    la petición a la Responses API, debita según el uso real y devuelve el saldo (§4.10).
+5. **Compras de tienda (`agent-credits` y `store-events`):** verifica las transacciones firmadas de
+   la App Store, abre pagos y el portal de cliente de Paddle, ata cada suscripción a una sola cuenta
+   y aplica renovaciones, cancelaciones y reembolsos que llegan por notificación (§4.12 y §4.13).
 
 ### 1.3 Fuera de alcance a propósito
 
@@ -82,16 +87,18 @@ Lo consume `apps/pseudolearn_app` por HTTP: `supabase.functions.invoke('delete-a
 
 ### 1.5 Pendientes técnicos declarados
 
-| Pendiente                                           | De quién depende                                                                                                                                                                                                                                                   | Estado actual |
-| :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| Eliminar `public.delete_account()` en producción    | Publicación del build de `apps/pseudolearn_app` 1.0.0 que invoca `delete-account`: el build rechazado de la misma versión todavía llama a la RPC. Mover `supabase/deferred/…_drop_delete_account.sql` a `supabase/migrations/` y aplicarla                         | Abierto       |
-| Límite de líneas por función en el verificador      | Un analizador de TypeScript sin dependencias remotas; hoy el tamaño de función se revisa en revisión de código                                                                                                                                                     | Abierto       |
-| Verificadores de compra reales (`PurchaseVerifier`) | App Store Server API (StoreKit 2 en iOS y macOS, mismo `com.pseudolearn.app`) y Paddle en Windows, MSIX e instalador (§4.12). Hoy solo existe el adaptador simulado, activo con `AGENT_PURCHASES=simulated` o para las cuentas de `AGENT_SIMULATED_PURCHASE_USERS` | Abierto       |
-| Renovaciones, vencimientos y reembolsos             | App Store Server Notifications V2 y webhooks de Paddle: el periodo toma las fechas de la tienda en vez de `p_now` más 30 días, y un reembolso revoca el periodo o la recarga                                                                                       | Abierto       |
-| Una suscripción de tienda por cuenta                | Tabla única de tienda y transacción original por cuenta, con `appAccountToken` en StoreKit y `custom_data` en Paddle, y rechazo de un segundo plan activo en otra tienda                                                                                           | Abierto       |
-| Medir el consumo real por petición                  | Créditos por `turn_id` en `agent_ledger_events` de las cuentas con compras simuladas; confirma o corrige los 300 créditos del plan (§4.12)                                                                                                                         | Abierto       |
-| Segundo proveedor de modelo opcional                | Un `ModelGateway` adicional; el dominio ya no depende de OpenAI salvo por la forma de `usage`                                                                                                                                                                      | Abierto       |
-| Prueba de extremo a extremo contra Apple real       | Una cuenta de Apple de prueba y un build de la app firmado; los tests cubren el contrato REST con respuestas simuladas                                                                                                                                             | Abierto       |
+| Pendiente                                           | De quién depende                                                                                                                                                                                                                           | Estado actual |
+| :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
+| Eliminar `public.delete_account()` en producción    | Publicación del build de `apps/pseudolearn_app` 1.0.0 que invoca `delete-account`: el build rechazado de la misma versión todavía llama a la RPC. Mover `supabase/deferred/…_drop_delete_account.sql` a `supabase/migrations/` y aplicarla | Abierto       |
+| Límite de líneas por función en el verificador      | Un analizador de TypeScript sin dependencias remotas; hoy el tamaño de función se revisa en revisión de código                                                                                                                             | Abierto       |
+| Verificadores de compra reales (`PurchaseVerifier`) | App Store: `AppStorePurchaseVerifier` sobre el JWS de StoreKit 2. Paddle: no canjea desde la app; sus compras entran por webhook firmado (§4.13)                                                                                           | Resuelto      |
+| Renovaciones, vencimientos y reembolsos             | `store-events`: App Store Server Notifications V2 y webhooks de Paddle aplican periodos con fechas de la tienda, cancelaciones y reembolsos                                                                                                | Resuelto      |
+| Una suscripción de tienda por cuenta                | `agent_store_links` con clave única tienda + transacción original; `appAccountToken` en StoreKit y `custom_data` en Paddle                                                                                                                 | Resuelto      |
+| Prueba en sandbox de App Store y Paddle             | Productos creados en App Store Connect y en Paddle sandbox, URLs de notificación configuradas y un build firmado; los tests cubren firmas y contratos con datos de prueba                                                                  | Abierto       |
+| `custom_data` en suscripciones de Paddle            | Confirmar en sandbox que la suscripción hereda `custom_data.user_id` de la transacción del pago; si no, el primer evento queda `unowned` hasta que exista el vínculo                                                                       | Abierto       |
+| Medir el consumo real por petición                  | Créditos por `turn_id` en `agent_ledger_events` de las cuentas con compras simuladas; confirma o corrige los 300 créditos del plan (§4.12)                                                                                                 | Abierto       |
+| Segundo proveedor de modelo opcional                | Un `ModelGateway` adicional; el dominio ya no depende de OpenAI salvo por la forma de `usage`                                                                                                                                              | Abierto       |
+| Prueba de extremo a extremo contra Apple real       | Una cuenta de Apple de prueba y un build de la app firmado; los tests cubren el contrato REST con respuestas simuladas                                                                                                                     | Abierto       |
 
 ---
 
@@ -149,6 +156,15 @@ deno task verify
 `verify` encadena `fmt --check`, `lint`, `check`, `architecture` y `test`; ninguno necesita red
 salvo la primera descarga de `@std/assert` para los tests.
 
+```bash
+deno task migrations
+```
+
+`migrations` necesita `initdb`, `pg_ctl` y `psql` de Postgres 17 en el `PATH`. Crea un clúster
+temporal, carga un esquema `auth` mínimo (`test/migrations/supabase_stub.sql`), aplica todas las
+migraciones en orden, ejecuta las aserciones de `test/migrations/*_test.sql` y exige que fallen las
+de `test/migrations/negative/`. No forma parte de `verify` porque depende de Postgres instalado.
+
 ### 2.6 Despliegue y distribución
 
 Orden obligatorio, porque cada paso es seguro solo si el anterior ya está en producción:
@@ -188,17 +204,49 @@ supabase functions deploy agent-responses agent-credits --project-ref <ref>
    vuelve a desplegar `agent-credits`. Esas cuentas compran desde la app con la tienda simulada y
    consumen el modelo real con la clave del proyecto. Para retirar el acceso:
    `supabase secrets unset --project-ref <ref> AGENT_SIMULATED_PURCHASE_USERS`.
-4. La app se compila con `--dart-define=AGENT_BACKEND=proxy` y
-   `--dart-define=AGENT_PROXY_URL=https://<ref>.supabase.co/functions/v1`.
+4. La app se compila con `--dart-define=AGENT_BACKEND=proxy`,
+   `--dart-define=AGENT_PROXY_URL=https://<ref>.supabase.co/functions/v1` y `AGENT_PURCHASES`
+   (`storekit` en iOS y macOS, `paddle` en Windows). Los workflows de producción ya los escriben en
+   `dart_define.ci.json`.
 5. Prueba local sin Docker:
    `SUPABASE_URL=http://127.0.0.1:54321
    SUPABASE_SECRET_KEYS='{"default":"x"}' deno run --allow-net --allow-env
    supabase/functions/agent-responses/index.ts`
    responde `503 model_unconfigured` a un `POST`.
 
+#### Compras reales: App Store y Paddle
+
+```bash
+supabase secrets set --project-ref <ref> APPLE_BUNDLE_ID=com.pseudolearn.app APP_STORE_ENVIRONMENTS=Production,Sandbox
+supabase secrets set --project-ref <ref> PADDLE_ENVIRONMENT=production PADDLE_API_KEY=<clave> PADDLE_WEBHOOK_SECRET=<secreto> PADDLE_PRICE_MONTHLY=<pri_> PADDLE_PRICE_MONTHLY_TRIAL=<pri_> PADDLE_PRICE_TOP_UP=<pri_>
+supabase db push --linked
+supabase functions deploy agent-credits store-events --project-ref <ref>
+```
+
+Orden obligatorio, porque cada paso es seguro solo si el anterior ya existe:
+
+1. **App Store Connect:** grupo de suscripción «Nodo» con `pseudolearn.plus.monthly` (mensual,
+   oferta introductoria de 7 días gratis) y el consumible `pseudolearn.plus.topup150`, con los
+   precios de §4.12. Inscripción en el Small Business Program. URL de App Store Server Notifications
+   V2, en producción y en sandbox: `https://<ref>.supabase.co/functions/v1/store-events/app-store`.
+2. **Paddle:** producto «Nodo» con tres precios (mensual con prueba de 7 días, mensual sin prueba y
+   recarga única), con los precios de §4.12 como precios por país. Destino de notificaciones
+   `https://<ref>.supabase.co/functions/v1/store-events/paddle` con los eventos
+   `transaction.completed`, `subscription.*` y `adjustment.*`; su secreto es
+   `PADDLE_WEBHOOK_SECRET`. Enlace de pago por defecto: `https://pseudolearn.app/checkout`, que el
+   sitio publica con `PUBLIC_PADDLE_CLIENT_TOKEN` y `PUBLIC_PADDLE_ENVIRONMENT`.
+3. **Secretos y despliegue** con los comandos de arriba. Sin `APPLE_BUNDLE_ID`, `agent-credits`
+   rechaza los canjes de la App Store y `store-events/app-store` responde `404`; sin los siete
+   valores de Paddle, los pagos responden `purchases_disabled` y `store-events/paddle` responde
+   `404`. `store-events` se despliega con `verify_jwt = false` (`supabase/config.toml`): lo
+   autentican las firmas de Apple y de Paddle, no una sesión.
+4. **Builds de la app** con los workflows de producción.
+
 - **Checklist de release:**
-  - [ ] `deno task verify` en verde.
+  - [ ] `deno task verify` y `deno task migrations` en verde.
   - [ ] `supabase secrets list` muestra los cuatro secretos de Apple.
+  - [ ] Compra de prueba en sandbox de App Store y de Paddle: el plan aparece en el saldo, la
+        recarga se suma, el reembolso la retira y una segunda cuenta no canjea la misma suscripción.
   - [ ] Tras desplegar: una cuenta de prueba de Apple eliminada desaparece de `auth.users` y de
         Ajustes → Apple ID → Iniciar sesión con Apple en el dispositivo.
   - [ ] Documentación actualizada en el mismo commit (`DOC-README-TRUTH`).
@@ -234,9 +282,12 @@ Una capa importa de sí misma y de las que declara `may_import` en `architecture
 | `infrastructure/`                           | Adaptadores REST de Apple y de GoTrue, firma ES256, lectura del entorno | `domain`                | `Deno`, `fetch` global, `console`, imports remotos    |
 | `http/`                                     | Parseo de la petición, mapeo resultado → estado HTTP, manejador         | `domain`, `application` | `Deno`, `fetch`, `crypto`, `console`, imports remotos |
 | `index.ts`                                  | Composición: lee `Deno.env`, inyecta `fetch`, registra el resultado     | todas                   | imports remotos                                       |
+| `store-events/`                             | Función sin sesión que recibe eventos firmados de la App Store y Paddle | las capas de su función | Aceptar un evento sin verificar su firma              |
 | `supabase/migrations/`                      | Migraciones SQL aplicadas a producción, en orden                        | —                       | Comentarios                                           |
 | `supabase/deferred/`                        | Migraciones listas cuya aplicación espera una condición de §1.5         | —                       | Aplicarse con `db push` mientras estén aquí           |
 | `test/`                                     | Espejo de `supabase/functions/` y `tool/`; `test/support/` con fakes    | todo                    | Red real                                              |
+| `test/migrations/`                          | Aserciones SQL del libro y casos negativos, sobre un Postgres temporal  | —                       | Datos reales                                          |
+| `test/fixtures/app_store/`                  | Cadena de certificados de prueba con los marcadores OID de Apple        | —                       | Valor fuera de las pruebas                            |
 | `tool/`                                     | Verificador de arquitectura (`check_architecture.ts`) y su lexer        | —                       | Comentarios                                           |
 
 ### 3.4 Flujo de datos y ciclo de vida
@@ -421,16 +472,18 @@ estado parcial; la app impide la doble pulsación.
     plan. Una recarga solo se canjea con un periodo vigente, sea plan o prueba; ya canjeada, se
     sigue gastando aunque el periodo venza. Tope de 15 créditos por petición de la persona y 60
     llamadas por minuto. Precios y pasarelas en §4.12.
-  - **Libro** (`20261108000002_agent_credits.sql`): `agent_ledger_periods`, `agent_ledger_top_ups` y
-    `agent_ledger_events`, legibles por su dueño con RLS. Las RPC `agent_balance`,
-    `agent_authorize`, `agent_debit` y `agent_grant_purchase` son `security definer` y solo las
-    ejecuta `service_role`, es decir, la función. `agent_debit` es idempotente por `request_id` y
-    gasta primero el periodo y luego las recargas más antiguas, bajo bloqueo de fila;
-    `agent_grant_purchase` es idempotente por `transaction_id` y recibe las cifras del catálogo
-    desde TypeScript, para que vivan en un solo sitio. Desde
-    `20261109000001_agent_top_up_requires_plan.sql` rechaza una recarga sin periodo vigente con
-    `subscription_required` y no la registra; la transacción repetida de una recarga ya canjeada
-    sigue respondiendo `repeated` aunque el periodo haya vencido.
+  - **Libro** (`20261108000002_agent_credits.sql` y `20261109000002_agent_store_purchases.sql`):
+    `agent_ledger_periods`, `agent_ledger_top_ups` y `agent_ledger_events`, legibles por su dueño
+    con RLS, y `agent_store_links`, solo para el servidor. Las RPC `agent_balance`,
+    `agent_authorize`, `agent_debit`, `agent_apply_purchase`, `agent_revoke_purchase`,
+    `agent_end_subscription`, `agent_store_owner` y `agent_store_customer` son `security definer` y
+    solo las ejecuta `service_role`, es decir, las funciones. `agent_debit` es idempotente por
+    `request_id` y gasta primero el periodo y luego las recargas más antiguas, sin contar lo
+    revocado, bajo bloqueo de fila. `agent_apply_purchase` es idempotente por `transaction_id`,
+    recibe las cifras del catálogo y las fechas ya calculadas desde TypeScript, rechaza una recarga
+    sin periodo vigente con `subscription_required` sin registrarla y responde `repeated` a una
+    transacción ya canjeada aunque el periodo haya vencido. `agent_grant_purchase`, su versión
+    anterior sin tiendas, se elimina en la misma migración.
   - **Orden**: método → configuración → sesión (GoTrue, como `delete-account`) → cuerpo →
     autorización → modelo → débito. Si el modelo falla, devuelve 429 o no trae `usage`, no hay
     débito.
@@ -442,10 +495,12 @@ estado parcial; la app impide la doble pulsación.
   - **Saldo en cabeceras**: `X-PseudoLearn-Credits-Remaining`, `-Allowance`, `-Top-Up`, `-Renews-At`
     y `-Trial`, en créditos enteros redondeados hacia abajo.
   - **Registro**: una línea por petición con evento, estado, código y duración. Nunca contenido.
-  - **Compras**: puerto `PurchaseVerifier` con un adaptador por tienda. Solo existe
-    `SimulatedPurchaseVerifier`, que acepta `store: simulated` y los productos
-    `pseudolearn.plus.trial`, `pseudolearn.plus.monthly` y `pseudolearn.plus.topup150`; la prueba
-    usa `trial:<usuario>` como transacción, de modo que una cuenta no la canjea dos veces.
+  - **Compras**: puerto `PurchaseVerifier` con un adaptador por tienda, elegido por
+    `StoreRoutedPurchaseVerifier` según el campo `store` del canje. `SimulatedPurchaseVerifier`
+    acepta `store: simulated` y los productos `pseudolearn.plus.trial`, `pseudolearn.plus.monthly` y
+    `pseudolearn.plus.topup150`; la prueba usa `trial:<usuario>` como transacción, de modo que una
+    cuenta no la canjea dos veces. `AppStorePurchaseVerifier` acepta `store: app_store` con el JWS
+    de StoreKit 2 como `evidence` (§4.13). Paddle no canjea desde la app.
   - **Cuentas de prueba con compras simuladas:** `AGENT_SIMULATED_PURCHASE_USERS` (uuids separados
     por comas) envuelve el adaptador simulado en `AllowlistedPurchaseVerifier` cuando
     `AGENT_PURCHASES=disabled`. Solo esas cuentas canjean compras simuladas; las demás reciben
@@ -523,6 +578,57 @@ estado parcial; la app impide la doble pulsación.
   - _US$ 5,99 como precio único:_ más cercano a la paridad de EE. UU., pero aleja todavía más a los
     países de ingresos medios que comparten el precio único.
 
+### 4.13 Compras verificadas por la tienda y eventos firmados
+
+- **Problema:** el cliente no es de fiar para decir qué compró. Una suscripción de la App Store
+  podría canjearse desde varias cuentas, una renovación ocurre aunque la app esté cerrada, un
+  reembolso tiene que retirar lo concedido y Paddle cobra en el navegador, no en la app.
+- **Elección:**
+  - **App Store.** La app envía el JWS de la transacción de StoreKit 2. `AppleSignedDataVerifier`
+    comprueba la cadena `x5c` hasta Apple Root CA G3, los marcadores OID de Apple en el intermedio y
+    en la hoja, la vigencia de cada certificado y la firma ES256 con WebCrypto. El lector DER y
+    X.509 (`der_reader.ts`, `x509_certificate.ts`) es propio porque la función no admite imports
+    remotos. `appStorePurchaseOf` exige el `bundleId` y uno de los entornos de
+    `APP_STORE_ENVIRONMENTS`, y reconoce la prueba por `offerType = 1` con descuento `FREE_TRIAL`.
+  - **Una suscripción, una cuenta.** La app compra con `appAccountToken` igual al uuid de la cuenta
+    de Supabase; si el JWS lo trae y no coincide con la sesión, el canje se rechaza con
+    `purchase_owned_elsewhere`. Además, el primer canje o evento de una suscripción crea su fila en
+    `agent_store_links`, y cualquier otra cuenta que intente aplicarla recibe ese mismo código.
+  - **Fechas de la tienda.** El periodo empieza en la fecha de compra y termina en `expiresDate` (o
+    en el `ends_at` de Paddle) más 6 horas de gracia para la renovación que llega tarde. Un periodo
+    nuevo corta en su inicio el que se solapaba; uno antiguo que llega tarde se registra sin
+    desplazar al vigente. Repetir una transacción actualiza su fecha de fin.
+  - **Eventos (`store-events`).** `POST /store-events/app-store` recibe App Store Server
+    Notifications V2: verifica el `signedPayload` y su `signedTransactionInfo` y, sin mirar el tipo
+    de notificación, aplica la transacción o, si trae `revocationDate`, revoca exactamente esa
+    transacción. `POST /store-events/paddle` exige la cabecera `Paddle-Signature` (HMAC-SHA256 de
+    `ts:cuerpo`, cinco minutos de tolerancia, varias firmas durante la rotación del secreto) y
+    traduce `transaction.completed` de la recarga, `subscription.*` activas o en prueba,
+    cancelaciones y pausas (fin del periodo) y ajustes `refund` o `chargeback` aprobados (revocación
+    de la recarga o del periodo vigente de la suscripción). La cuenta sale del vínculo existente y,
+    si no lo hay, del `appAccountToken` o del `custom_data.user_id` que el servidor puso al crear el
+    pago. Un evento ajeno o sin dueño se responde `200` y se registra como ignorado, para que la
+    tienda no lo reintente sin fin; una firma inválida responde `401`.
+  - **Paddle desde la app.** `POST /agent-credits/checkouts` comprueba el saldo (la recarga exige
+    periodo vigente, un segundo plan responde `already_subscribed`, la prueba solo va en el primer
+    plan de la cuenta) y crea una transacción de Paddle con `custom_data.user_id`. Paddle devuelve
+    el enlace de pago por defecto, `https://pseudolearn.app/checkout?_ptxn=…`, donde Paddle.js abre
+    el pago y, al terminar, ofrece volver con `pseudolearn://agent/purchase`.
+    `POST /agent-credits/portal` abre el portal de cliente para gestionar o cancelar.
+  - **Lo cobrado y no canjeable no se pierde.** Si la App Store cobra una recarga y el servidor la
+    rechaza (por ejemplo, sin periodo vigente), la app no finaliza la transacción; StoreKit la
+    vuelve a entregar y se canjea cuando haya periodo.
+- **Referencia consultada:** el verificador StoreKit de TraceIron (cadena x5c, marcadores OID y
+  ES256), del que se toma el algoritmo y se rechaza la identidad por `originalTransactionId`.
+- **Alternativas descartadas y por qué:**
+  - _App Store Server Library o un SDK de Paddle:_ son dependencias npm que la función no admite.
+  - _Checkout alojado por Paddle sin página propia:_ exige aprobación de Paddle; la página de
+    `pseudolearn.app` funciona desde el primer día.
+  - _Mirar el tipo de notificación de Apple:_ la transacción firmada ya dice si hay periodo nuevo,
+    fecha nueva o revocación; aplicarla siempre es idempotente.
+  - _Crear el plan de Paddle desde `transaction.completed`:_ la transacción no distingue la prueba
+    gratuita del pago; la suscripción sí lo dice con su estado `trialing`.
+
 ---
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
@@ -595,6 +701,7 @@ anticipa que las cuentas de Apple piden confirmar la identidad.
 | Tipos        | `deno task check`        | Tipado estricto de la función, el verificador y los tests                                                          | `deno.json`         |
 | Arquitectura | `deno task architecture` | Comentarios, líneas por archivo, dirección de imports, imports remotos, identificadores por capa, capas declaradas | `architecture.json` |
 | Tests        | `deno task test`         | Contratos de cada capa y del verificador                                                                           | `test/`             |
+| Migraciones  | `deno task migrations`   | Migraciones aplicadas en orden, reglas del libro en SQL y casos negativos que deben fallar                         | `test/migrations/`  |
 
 Casos negativos del verificador: `test/tool/architecture_rules_test.ts` (comentario, import hacia
 fuera, import remoto, identificador prohibido, archivo largo, capa no declarada) y
@@ -624,9 +731,13 @@ fuera, import remoto, identificador prohibido, archivo largo, capa no declarada)
 
 ## 8. Fuentes consultadas y genealogía conceptual
 
-| Fuente                                                                       | Qué se tomó                                                                                     | Qué se rechazó y por qué                                                                                     |
-| :--------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------- |
-| App Store Review Guidelines 5.1.1(v)                                         | Eliminación de cuenta dentro de la app y revocación de Sign in with Apple                       | —                                                                                                            |
-| Sign in with Apple REST API (`/auth/token`, `/auth/revoke`, `client_secret`) | Parámetros de canje y revocación, JWT ES256 con `kid`, `iss`, `sub`, `aud`, `exp` ≤ 6 meses     | Verificación del `identityToken` del cliente con JWKS: el `id_token` del canje ya prueba la identidad (§4.3) |
-| Supabase Auth Admin API y guía de gestión de usuarios                        | `DELETE /auth/v1/admin/users/{id}`, cascada por clave foránea, bloqueo por objetos de Storage   | `supabase-js` en la función (§1.3)                                                                           |
-| Supabase: claves publicables y secretas en Edge Functions                    | `SUPABASE_SECRET_KEYS`, clave solo en `apikey`, `verify_jwt = false` con autorización en código | Claves heredadas `service_role` (§1.3)                                                                       |
+| Fuente                                                                                           | Qué se tomó                                                                                                                                        | Qué se rechazó y por qué                                                                                     |
+| :----------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------- |
+| App Store Review Guidelines 5.1.1(v)                                                             | Eliminación de cuenta dentro de la app y revocación de Sign in with Apple                                                                          | —                                                                                                            |
+| App Store Server Notifications V2 y `JWSTransaction` de StoreKit 2                               | Campos de la transacción firmada, `appAccountToken`, `offerType`, `revocationDate`, cadena `x5c` hasta Apple Root CA G3                            | Decidir por `notificationType`: la transacción firmada ya basta (§4.13)                                      |
+| App Store Review Guidelines 3.1.1, 3.1.2 y 3.1.3(b)                                              | Compra integrada en iOS y macOS, recargas que no caducan, precio facturado como dato principal y uso multiplataforma de lo comprado en otra tienda | —                                                                                                            |
+| Paddle Billing: transacciones, enlace de pago por defecto, portal de cliente y firma de webhooks | `custom_data`, `_ptxn`, `Paddle-Signature` con `ts` y `h1`, estados de suscripción y ajustes                                                       | Checkout alojado sin página propia: requiere aprobación (§4.13)                                              |
+| Políticas de Microsoft Store para apps que no son juegos                                         | Cobro con un sistema propio sin comisión de Microsoft                                                                                              | Sistema de pago de Microsoft Store (§4.12)                                                                   |
+| Sign in with Apple REST API (`/auth/token`, `/auth/revoke`, `client_secret`)                     | Parámetros de canje y revocación, JWT ES256 con `kid`, `iss`, `sub`, `aud`, `exp` ≤ 6 meses                                                        | Verificación del `identityToken` del cliente con JWKS: el `id_token` del canje ya prueba la identidad (§4.3) |
+| Supabase Auth Admin API y guía de gestión de usuarios                                            | `DELETE /auth/v1/admin/users/{id}`, cascada por clave foránea, bloqueo por objetos de Storage                                                      | `supabase-js` en la función (§1.3)                                                                           |
+| Supabase: claves publicables y secretas en Edge Functions                                        | `SUPABASE_SECRET_KEYS`, clave solo en `apikey`, `verify_jwt = false` con autorización en código                                                    | Claves heredadas `service_role` (§1.3)                                                                       |

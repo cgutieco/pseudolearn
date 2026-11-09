@@ -14,6 +14,7 @@ function setup(purchases: PurchaseVerifier | null, ledger = new FakeLedger()) {
         users: new FakeUsers(),
         ledger,
         purchases,
+        checkouts: null,
         clock: { now: () => new Date("2026-11-08T12:00:00Z") },
       },
     }),
@@ -53,7 +54,9 @@ Deno.test("a simulated purchase grants the catalog terms", async () => {
   const { handle, ledger } = setup(new SimulatedPurchaseVerifier());
   assertEquals((await handle(purchase("pseudolearn.plus.monthly"))).status, 200);
   assertEquals(ledger.grants[0].product, "monthly");
-  assertEquals([ledger.grants[0].milli, ledger.grants[0].days], [300_000, 30]);
+  const grant = ledger.grants[0];
+  const days = (grant.endsAt.getTime() - grant.startsAt.getTime()) / 86_400_000;
+  assertEquals([grant.milli, days, grant.store], [300_000, 30, "simulated"]);
 });
 
 Deno.test("a repeated purchase is idempotent", async () => {
@@ -120,4 +123,50 @@ Deno.test("an allowlisted account redeems while others get purchases disabled", 
   assertEquals(refused.status, 403);
   assertEquals((await refused.json()).error.code, "purchases_disabled");
   assertEquals(untouched.grants.length, 0);
+});
+
+Deno.test("the balance response names the store of the period", async () => {
+  const { handle } = setup(null);
+  const response = await handle(
+    new Request("http://localhost/agent-credits", { headers: { authorization: "Bearer t" } }),
+  );
+  assertEquals((await response.json()).store, null);
+  assertEquals(response.headers.get("x-pseudolearn-credits-store"), "");
+});
+
+Deno.test("checkout and portal answer with a link, and other methods are refused", async () => {
+  const ledger = new FakeLedger();
+  ledger.customers.set("paddle:user-1", "ctm_1");
+  const handle = createCreditsHandler({
+    kind: "ready",
+    dependencies: {
+      users: new FakeUsers(),
+      ledger,
+      purchases: null,
+      checkouts: {
+        open: () => Promise.resolve("https://pay.test/x"),
+        portal: () => Promise.resolve("https://portal.test"),
+      },
+      clock: { now: () => new Date("2026-11-08T12:00:00Z") },
+    },
+  });
+  const post = (path: string, body: unknown = {}) =>
+    handle(
+      new Request(`http://localhost/agent-credits/${path}`, {
+        method: "POST",
+        headers: { authorization: "Bearer t" },
+        body: JSON.stringify(body),
+      }),
+    );
+  const checkout = await post("checkouts", { product_id: "pseudolearn.plus.topup150" });
+  assertEquals(await checkout.json(), { url: "https://pay.test/x" });
+  assertEquals(await (await post("portal")).json(), { url: "https://portal.test" });
+  const unknown = await post("checkouts", { product_id: 7 });
+  assertEquals((await unknown.json()).error.code, "invalid_request");
+  const wrongMethod = await handle(
+    new Request("http://localhost/agent-credits/portal", {
+      headers: { authorization: "Bearer t" },
+    }),
+  );
+  assertEquals(wrongMethod.status, 405);
 });
