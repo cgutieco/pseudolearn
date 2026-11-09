@@ -117,3 +117,28 @@ Heredados de un README anterior, sin confirmar:
 - El kit físico de medición (32 combinaciones) no tiene resultados: «no evaluado físicamente»; WebKit no equivale a Safari en iPhone.
 - La métrica normativa nueva del benchmark web permanece sin aprobación.
 - El código de salida de la consola (`console_set_exit_code`) se valida pero el presentador web no lo usa, y la salida de error no tiene estilo propio.
+
+## pseudolearn_app
+
+Confirmados contra el código:
+
+- No existe la carpeta `web/`; solo hay `ios/`, `macos/` y `windows/`. El comportamiento en navegador, incluida la barra de teclas sin teclado físico, no está verificado.
+
+Heredados de un README anterior, sin confirmar:
+
+- Purga local sin lápidas en «Cerrar sesión y borrar datos de este dispositivo»: `AccountCubit.signOut(deleteLocalData: true)` borraría por `SyncingDocumentRepository`, que encola una lápida por documento.
+- Inicio de sesión en la nube desde el `.zip` portable de Windows: falta registrar `pseudolearn://` en `HKCU` o avisar en la descarga de que el portable solo sirve sin cuenta.
+- Firma Authenticode del instalador directo de Windows (Inno Setup).
+- Petición de reseña en Microsoft Store: `in_app_review` solo ofrece el diálogo nativo en iOS y macOS.
+- Campaña de medición E-NR2 con muestras independientes en dispositivo, escritorio y navegador.
+- Pruebas de widgets con el puente real: los widgets se prueban con fakes.
+- Valor de un parámetro `Canal` en la vista Variables: se muestra aplanado como `stream.identity = Nulo`; la API debería publicarlo como valor propio.
+- Capturas de producto y material de tiendas regenerados con la ruta de aprendizaje; las imágenes versionadas muestran la base de conocimiento anterior.
+- Ancla interior al seguir un enlace de especificación desde la ruta: `ReferenceSectionPage` no desplaza a ella.
+- Compras reales del agente: falta la compra de prueba en sandbox de App Store y de Paddle con un build firmado.
+- Clave del proveedor del agente (`OPENAI_API_KEY` en el servidor y `AGENT_BACKEND=proxy`, `AGENT_PROXY_URL` al compilar); sin ella el agente responde «no disponible».
+- Enlaces externos en las respuestas del agente: se muestran pero no se abren.
+- Diagramas Mermaid del chat distintos de `flowchart`: se muestran como código.
+- Medición del agente con `packages/pseudolearn_benchmarks` contra el gateway real; requiere autorización.
+- Ampliar el código equivalente según los pendientes del transpilador.
+- Los vínculos `pendiente` de `conformance.yaml` esperan la proyección de eventos de tarea para la app (`resuelve_en: eventos-de-tarea-para-app`).
