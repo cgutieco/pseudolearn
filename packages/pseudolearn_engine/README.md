@@ -316,7 +316,7 @@ Alternativas descartadas: SEE.ADAPTER.PROTOCOL define JSONL y negociación. Se r
 
 `program_view` calcula una única `ServiceAnalysis` por revisión y de ella proyecta realizaciones explícitas y heredadas con su estado, restricciones genéricas, cargas de variantes, capturas por valor e iteraciones con sus ámbitos. Las relaciones llevan IDs de nodos de la misma fuente y revisión; un contrato sin resolver se representa por el nodo de destino y su diagnóstico, nunca por el nombre como identidad. La consulta no expone objetos HIR, direcciones ni entornos de clausura. `AnalyzeRequest` conserva texto y perfil explícitos; el archivo suelto no requiere manifiesto y la API de estado no se amplía porque estos datos pertenecen a la vista estática.
 
-### Paridad VM/AOT de las construcciones de PG-2
+### Paridad VM/AOT de las construcciones de propósito general
 
 Problema: ninguna construcción nueva puede comportarse distinto en el intérprete y en el código nativo. Elección: cada disposición tiene un único dueño en `pseudolearn_abi` (registros, variantes, clausuras, vectores y diccionarios) y VM, runtime y Cranelift la consumen sin recalcular desplazamientos; la paridad se comprueba con los mismos casos del corpus ejecutados por los sujetos `engine` y `aot`, y con la comparación de gemelos acotada a los contratos de cada cambio. Las reglas que solo analizan (diagnósticos, exhaustividad, límites de instancia o de constante) se declaran `exento` en `conformance-aot.yaml` porque el adaptador AOT no anuncia análisis, y se cubren en `engine`. Las trampas se comparan por código de fallo y, en la comparación de gemelos, por sitio.
 
@@ -684,3 +684,18 @@ de dependencias mantiene el rechazo de duplicados y omite versiones exactas inev
 io-lifetimes y bindings Windows heredadas de cap-std. El puente también omite hashbrown 0.14.5
 (oslog de FRB) y miniz_oxide 0.8.9 (backtrace de FRB), manteniendo las versiones actuales usadas por
 indexmap y flate2. Estas excepciones son de compatibilidad de dependencias, sin cambiar validación TLS.
+
+## Claves de resolución de vínculos pendientes
+
+Un vínculo `pendiente` de `conformance*.yaml` declara en `resuelve_en` una clave estable que nombra el trabajo que lo
+cerrará. La clave describe el trabajo, no un documento ni una fase numerada, y deja de ser válida cuando se añade a
+`fases_cerradas` del mismo archivo.
+
+| Clave | Reglas que espera | Qué falta |
+|---|---|---|
+| `tareas-ambitos-y-canales` | `LANG.TASK.SCOPE` R11 a R16, `LANG.TASK.CHANNEL` R1 a R8 | Verificación de ejecutor para los ámbitos de tareas y los canales |
+| `planificador-de-tareas` | `LANG.CONTROL.CLEANUP` R2, `LANG.TASK.SUSPENSION` R7 y R8, `LANG.TASK.SCOPE` R5 y R6 | Verificación del planificador lógico de tareas con cesión por masa |
+| `agendas-sembradas-reproducibles` | `LANG.TASK.SCOPE` R8 | Reproducción de agendas sembradas con cero diferencias |
+| `limites-y-http-en-sujeto-nativo` | `ENG.LIMITS` R12 y R13, `LIB.HTTP` R7 | Pruebas pesadas de límites, JSON y HTTP en `engine` y `aot` |
+| `adaptador-dap-y-depuracion` | `API.EXECUTE`, `API.STATE.QUERY`, `API.MODEL`, `API.ERRORS` y `TOOL.DAP` | Adaptador DAP y la API de depuración que lo sustenta |
+| `catalogo-ayuda-operativo` | `TOOL.SERVICE.CATALOG` R1 y R2 | Consulta de catálogo de ayuda en el servicio |

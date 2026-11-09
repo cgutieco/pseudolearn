@@ -222,7 +222,7 @@ según finalizan. La VM pausa y reanuda la tarea asociada a cada secuencia, y la
 `deny.toml` autoriza `BSD-3-Clause`, licencia de `subtle`, dependencia transitiva de `hmac` que el runtime usa para las
 referencias de secretos de la cinta; es la misma decisión que ya rige en el motor.
 
-#### Vectores adversarios de archivos y cinta (E-PG-09, parte de PG-3)
+#### Vectores adversarios de archivos y cinta (E-PG-09)
 
 La batería `tests/security_vectors.rs` ejecuta el binario real con una raíz concedida y un archivo canario fuera de ella.
 Cada vector debe terminar con el código de error portable esperado, sin que la salida contenga el canario y sin que el
@@ -295,7 +295,7 @@ la CLI no duplica el compilador de proyectos. `src/editor_protocol.rs` define me
 bombeo de lotes, entrada y cancelación sobre puertos (canal y escritor) y `src/editor_command.rs` el arranque y el hilo lector.
 Los tests unitarios usan canal y escritor falsos; `tests/editor_process.rs` ejercita el proceso real con archivo y proyecto.
 
-### Interoperabilidad con dos clientes LSP (PG-6A.09)
+### Interoperabilidad con dos clientes LSP
 
 Problema: que `pseudo lsp` responda bien a un solo cliente no demuestra que el protocolo esté bien dicho; un cliente puede
 tolerar un rango, una revisión o un orden que otro no. Elección: una **secuencia única** de pasos (`tests/fixtures/lsp_interop/sequence.json`)
@@ -587,13 +587,13 @@ io-lifetimes y bindings Windows heredadas de cap-std. El puente también omite h
 (oslog de FRB) y miniz_oxide 0.8.9 (backtrace de FRB), manteniendo las versiones actuales usadas por
 indexmap y flate2. Estas excepciones son de compatibilidad de dependencias, sin cambiar validación TLS.
 
-## Código de salida y salida de error (`PG-S.07`)
+## Código de salida y salida de error
 
 `pseudo ejecutar` termina con el campo `exit_code` de la respuesta final cuando la ejecución completó, y con 1 en
 cualquier otro final (`run_command.rs::process_exit_code`). El texto de `Consola.EscribirError` llega en `output` y sus
 tramos en `error_ranges`; `output_streams.rs` los reparte entre la salida estándar y la de error en el orden del
 programa, y la sesión DAP los informa con la categoría `stderr`. El protocolo de editor lleva `error_ranges` sin
-interpretarlo; la ejecución nativa (`--native`) y el AOT no lo implementan todavía (`PG-N.08`).
+interpretarlo; la ejecución nativa (`--native`) y el AOT no lo implementan todavía.
 
 ### Aceptación de la biblioteca de propósito general
 
@@ -612,4 +612,10 @@ de tipo registro, clase e interfaz genéricas, variante declarada con `Segun` y 
 `scope.es.pseudo` (objetos de bloque bajo `--celdas`) y `project/` (constante, enumerado, registro, interfaz,
 subprograma y clase genéricos importados de otro paquete). `tests/language_constructs_acceptance.rs` ejecuta el binario
 real y exige la salida derivada de las reglas; la extensión de escritorio, la extensión web y la app reutilizan los
-mismos programas. La ejecución nativa no se incluye porque la paridad nativa de estas construcciones es de `PG-N.08`.
+mismos programas. La ejecución nativa no se incluye porque la paridad nativa de estas construcciones queda pendiente de la paridad del sujeto nativo.
+
+## Vínculos pendientes de conformidad
+
+Los vínculos `pendiente` de `conformance.yaml` usan la clave `adaptador-dap-y-depuracion` en `resuelve_en`: el adaptador
+DAP y la API de depuración que `TOOL.DAP` y las reglas de `API.*` de depuración exigen y que este sujeto aún no
+verifica. La clave es el nombre del trabajo pendiente y deja de valer cuando se añade a `fases_cerradas`.

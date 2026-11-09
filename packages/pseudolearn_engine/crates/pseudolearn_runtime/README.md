@@ -141,7 +141,7 @@ operaciones que mutan. `Subdirectorio` acepta ahora también un directorio expl�
 
 `tests/tape_privacy_tests.rs` comprueba la forma de la referencia de secreto, que el HMAC depende de la clave y del valor y que la referencia no contiene el valor; `tests/tape_budget_boundary_tests.rs` comprueba el corte exacto de `max_tape_bytes` sobre el registrador real (`EffectTape::append`): un byte menos que el presupuesto mínimo que admite la entrada trunca, el presupuesto exacto la admite y la cinta serializada mide exactamente ese presupuesto, un byte más también la admite, la segunda entrada tiene su propio borde y una cinta truncada ignora lo posterior. En `pseudolearn_api`, `tests/tape_privacy_budget_tests.rs` ejerce lo mismo de extremo a extremo con `host.max_tape_bytes` y `host.secrets`: la ejecución en vivo continúa y termina con normalidad aunque se agote el presupuesto, la cinta truncada o redactada se rechaza con `replay_non_reproducible`, y el secreto no aparece en la cinta serializada en forma textual, decimal ni hexadecimal ni por consola ni por entrada. Pendiente declarado: el esquema de casos no observa el estado de la cinta ni puede alterarla, por lo que el corpus solo prueba que la ejecución continúa (`ENG.EFFECT.TAPE` C8, `ENG.LIMITS` C19) y que no hay fuga (`ENG.EFFECT.TAPE` C6 y C9, con la comprobación de fuga del arnés); el sellado y el rechazo de la reproducción se prueban con Rust.
 
-### Vocabulario de la cinta, presupuesto y configuración del anfitrión (`PG-3`)
+### Vocabulario de la cinta, presupuesto y configuración del anfitrión
 
 - `capability_kind` de cada entrada de cinta sale de `EffectOperation::capability_family` (`pseudolearn_abi`); como forma parte del hash de la entrada, una cinta grabada con nombres anteriores no verifica contra el formato actual.
 - `tape_codec::validate` no aplica el tope de bytes a una cinta sellada `NonReproducibleTruncated`: el presupuesto gobierna la admisión de entradas, y una cinta truncada puede ser más pequeña que su propia identidad. Así se decodifica y su reproducción se rechaza con `replay_non_reproducible`, no con `replay_corrupted_tape`. Una cinta reproducible que excede su presupuesto sigue siendo adulterada. Cubre `tests/tape_budget_boundary_tests.rs`.
@@ -270,14 +270,14 @@ Durante una ordenación, el bit cero de status_flags de la cabecera (bit 32 de s
 escrituras por alias, incluso reemplazos sin cambio estructural. Commit libera esa protección. Una
 trampa es terminal para esa ejecución; no se reanuda un vector parcialmente protegido después del fallo.
 
-## Entorno de solo lectura y secretos por nombre (`PG-S.06`)
+## Entorno de solo lectura y secretos por nombre
 
 `Entorno` es una capacidad raíz de ejecución con autoridad plena, sin concesiones ni opción de permiso nueva en la
 configuración del anfitrión. `environment_name.rs` es la única fuente de la validez de un nombre (no vacío, sin `=` ni
 NUL) y de la sensibilidad por nombre; `memory_host_environment.rs` resuelve `Obtener` y `AhoraLocal` en el doble de
 memoria con las claves `environment` y `offset_seconds` de la configuración del caso (el nombre distingue mayúsculas).
 
-DS-20: una lectura cuyo nombre termina en `token`, `key`, `secret` o `password`, sin distinguir mayúsculas ASCII, se
+Una lectura cuyo nombre termina en `token`, `key`, `secret` o `password`, sin distinguir mayúsculas ASCII, se
 clasifica como secreta por su nombre (`environment_secret_policy.rs`). La entrada de la cinta lleva
 `secret:environment:<hmac>` y el contenido del efecto se descarta, de modo que la cinta queda `NonReproducibleRedacted`
 y reproducirla se rechaza con `replay_non_reproducible`. El HMAC usa el nombre como clave y un mensaje vacío: la
@@ -294,13 +294,13 @@ sensible aparecen en la cinta serializada.
 (`date_time_values.rs` lo codifica en el montón). La configuración `offset_seconds` fija el desplazamiento del doble de
 memoria; el instante sale de la cola `clock`, como en `Ahora`.
 
-## Trampas de formato (`PG-S.08`)
+## Trampas de formato
 
 `MemoryError` gana `DecimalPlacesOutOfRange`, `InvalidPaddingText` y `PaddingWidthOutOfRange`; la VM y el runtime AOT
 las traducen a `decimalPlacesOutOfRange`, `invalidPaddingText` y `paddingWidthOutOfRange` (catálogo `DIAG.CATALOG`,
 clase `runtime`).
 
-## Código de salida y flujo de error (`PG-S.07`)
+## Código de salida y flujo de error
 
 `console_set_exit_code` y `console_write_error` son operaciones D2 del receptor `Consola`. `exit_code.rs` valida el
 argumento (0–255; otro valor es `ErrorES.PeticionInvalida` y no cambia el código vigente) y lo comparten el doble de

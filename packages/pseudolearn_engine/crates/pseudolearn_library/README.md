@@ -110,7 +110,7 @@ plataformas se apoya en que todas compilan con esa misma cadena. El resultado pu
 la entrada y cuenta celdas como cualquier cadena creada en ejecución. No se acredita todavía en el sujeto nativo:
 su vínculo queda pendiente hasta la paridad nativa de la biblioteca.
 
-`Decimales`, `RellenarIzquierda` y `RellenarDerecha` (`PG-S.08`, DS-23) son operaciones locales de familia `text` sin
+`Decimales`, `RellenarIzquierda` y `RellenarDerecha` son operaciones locales de familia `text` sin
 receptor, despachadas desde `text_format_operations.rs`. `decimal_format.rs` descompone el binario64 en significando y
 exponente, multiplica el significando por 10^cantidad con los naturales de precisión arbitraria de `precision/natural.rs`
 y desplaza por el exponente: el resultado es la expansión decimal exacta, no una aproximación de coma flotante. El
@@ -122,7 +122,7 @@ concepto. La cantidad válida va de 0 a 100 (`decimalPlacesOutOfRange`); con 100
 puntos de código (no bytes), exige un relleno de exactamente un punto de código (`invalidPaddingText`), rechaza un ancho
 negativo (`paddingWidthOutOfRange`) y trata como `cellLimitExceeded` un ancho mayor que 16 777 216 antes de construir la
 cadena, para que una petición enorme no agote la memoria del anfitrión antes de que el presupuesto de celdas la rechace.
-Sin configuración regional ni separadores de miles. Sin equivalente nativo todavía: vínculo `pendiente` (`PG-N.08`).
+Sin configuración regional ni separadores de miles. Sin equivalente nativo todavía: vínculo `pendiente`.
 
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
 de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
@@ -180,7 +180,7 @@ ErrorES>` sin conceder autoridad de red ni enviar la petición.
 
 tan, asin, acos, atan2, log2 y log10 usan intervalos arbitrarios y escalada de Ziv. Los dominios y resultados exactos se resuelven explícitamente; atan2 conserva cuadrantes y ceros con signo. Piso y techo devuelven i64 comprobado. La copia y confirmación de colecciones se delegan al runtime.
 
-## Fecha y hora de calendario (`PG-S.05`)
+## Fecha y hora de calendario
 
 `FechaHora` es un valor opaco de dos componentes: un instante en nanosegundos desde la época Unix (`i64`, la misma
 escala que `Reloj.Ahora`) y un desplazamiento UTC en segundos (`i32`). Rango: de 1677-09-21T00:12:43.145224192Z a

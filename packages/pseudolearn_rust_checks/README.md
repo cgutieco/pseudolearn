@@ -91,7 +91,7 @@ propios renombrables: se verifican sus bindings y genéricos, no el nombre impue
 
 ## 6. Decisiones de producto que condicionan el código
 
-ADR-001 exige una fundación sin motor. La ausencia inicial de corpus no habilita implementar `see`,
+La decisión fundacional exige una fundación sin motor. La ausencia inicial de corpus no habilita implementar `see`,
 conformidad, exportaciones ni capas del motor. No hay uso de unsafe en estos verificadores.
 
 ## 7. Verificación, testing y aseguramiento de calidad

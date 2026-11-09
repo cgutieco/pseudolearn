@@ -28,6 +28,9 @@ pub fn check(root: &Path) -> Result<(), String> {
 }
 
 fn collect(directory: &Path, documents: &mut Vec<String>) -> Result<(), String> {
+    if !directory.is_dir() {
+        return Ok(());
+    }
     for entry in std::fs::read_dir(directory).map_err(|error| error.to_string())? {
         let path = entry.map_err(|error| error.to_string())?.path();
         if path.is_dir() {

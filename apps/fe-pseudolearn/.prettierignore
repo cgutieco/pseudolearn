@@ -9,7 +9,6 @@ playwright-report/
 tests/visual/**/*-snapshots/
 scripts/__fixtures__/
 design/
-docs/
 .wrangler/
 coverage/
 src/shared/agent-sheet/generated/

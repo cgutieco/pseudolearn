@@ -52,7 +52,7 @@ Hyper se usa para protocolo HTTP/1 sobre conexiones explícitas, Tokio para espe
 Rustls con rustls-platform-verifier para validar contra el almacén del sistema, incluido iOS.
 Se descarta un cliente que siga redirecciones o herede proxies ambientales.
 
-## Entorno y zona horaria del sistema (`PG-S.05`, `PG-S.06`)
+## Entorno y zona horaria del sistema
 
 `physical_environment.rs` lee con `std::env::var_os` solo el nombre pedido: no enumera ni hereda nada más. Un nombre
 vacío, con `=` o con NUL es `peticion_invalida` sin consultar al sistema (en Rust esas llamadas harían `panic`); un
@@ -64,7 +64,7 @@ instante en la zona del sistema, que incluye el horario de verano, y lo trunca h
 tests inyectan la zona (`TimeZone::get("America/New_York")` en enero y julio, y zonas fijas); el producto nunca
 modifica `TZ`.
 
-### `PS-E01`: origen del desplazamiento (DS-18)
+### `PS-E01`: origen del desplazamiento
 
 | Alternativa | Resultado |
 |---|---|
@@ -78,7 +78,7 @@ físico. En un sistema sin base de zonas o sin `/etc/localtime` legible, `jiff` 
 es un límite declarado. La extensión web usa `Date#getTimezoneOffset`, que no tiene precisión de segundos ni conoce las
 reglas históricas de la zona.
 
-## Consola: error y código de salida (`PG-S.07`)
+## Consola: error y código de salida
 
 `physical_console.rs` confirma `console_write_error` con la cantidad de bytes UTF-8 (el texto lo separa el consumidor
 según `error_ranges`, no el anfitrión); valida `console_set_exit_code` (0–255, si no `peticion_invalida`). Un solo búfer de salida conserva el orden relativo entre ambos flujos.

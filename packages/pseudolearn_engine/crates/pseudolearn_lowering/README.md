@@ -71,7 +71,7 @@ miembro con una cadena de comparaciones de ordinal y bloques que unen un texto (
 la tabla de saltos del terminador `switch` llega con la exhaustividad de `Segun`. Un enumerado es un entero de RI, por lo que
 `class_density` lo trata como entero para no omitir la máscara de definidos de un campo sin asignar.
 
-**Posiciones de registro (PG-L).** Los consumidores de hojas leen tres orígenes nuevos sin instrucción de RI nueva.
+**Posiciones de registro.** Los consumidores de hojas leen tres orígenes nuevos sin instrucción de RI nueva.
 `class_record_values` carga y almacena las hojas incrustadas de un campo de clase con `object.load`/`object.store`
 evaluando el receptor una sola vez, y entrega una `cell.field` por hoja para el paso por referencia. `record_arrays`
 direcciona los arreglos sintéticos por hoja que semantic creó para un arreglo de registros: evalúa los índices una sola vez y
@@ -163,7 +163,7 @@ SSA conservan sus definiciones y las unidades síncronas no adquieren instruccio
 
 La mezcla estable se sintetiza y reutiliza por tipo y firma de comparador. Los auxiliares no emiten stmt.enter ni decisiones visibles; el comparador conserva sus llamadas y observaciones. Dos copias contabilizadas en celdas aíslan el reordenamiento hasta comprobar la versión y confirmar las hojas completas. Los efectos propios del comparador no se revierten. La búsqueda y la copia de claves usan auxiliares tipados.
 
-## Resultado falible de un opcional (`PG-S.06`)
+## Resultado falible de un opcional
 
 `Obtener` es la primera operación de efecto cuyo resultado es `Resultado<Opcional<T>, ErrorES>`. El tipo de resultado
 de la llamada al efecto es el del valor interno del opcional (`str` en este caso): el verificador de RI exige la misma

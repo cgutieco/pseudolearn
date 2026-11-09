@@ -247,85 +247,85 @@
       "regla": "LANG.TASK.SCOPE@1.0.0#R11",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "resuelve_en": "tareas-ambitos-y-canales"
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R12",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "resuelve_en": "tareas-ambitos-y-canales"
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R13",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "resuelve_en": "tareas-ambitos-y-canales"
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R14",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "resuelve_en": "tareas-ambitos-y-canales"
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R15",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "resuelve_en": "tareas-ambitos-y-canales"
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R16",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "resuelve_en": "tareas-ambitos-y-canales"
     },
     {
       "regla": "LANG.TASK.CHANNEL@1.0.0#R1",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "resuelve_en": "tareas-ambitos-y-canales"
     },
     {
       "regla": "LANG.TASK.CHANNEL@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "resuelve_en": "tareas-ambitos-y-canales"
     },
     {
       "regla": "LANG.TASK.CHANNEL@1.0.0#R3",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "resuelve_en": "tareas-ambitos-y-canales"
     },
     {
       "regla": "LANG.TASK.CHANNEL@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "resuelve_en": "tareas-ambitos-y-canales"
     },
     {
       "regla": "LANG.TASK.CHANNEL@1.0.0#R5",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "resuelve_en": "tareas-ambitos-y-canales"
     },
     {
       "regla": "LANG.TASK.CHANNEL@1.0.0#R6",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "resuelve_en": "tareas-ambitos-y-canales"
     },
     {
       "regla": "LANG.TASK.CHANNEL@1.0.0#R7",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "resuelve_en": "tareas-ambitos-y-canales"
     },
     {
       "regla": "LANG.TASK.CHANNEL@1.0.0#R8",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-4"
+      "resuelve_en": "tareas-ambitos-y-canales"
     },
     {
       "regla": "ENG.TASK.AGENDA@1.0.0#R7",
@@ -1948,7 +1948,7 @@
       "regla": "LANG.CONTROL.CLEANUP@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-4.07"
+      "resuelve_en": "planificador-de-tareas"
     },
     {
       "regla": "ENG.EXEC.EFFECT-COMMIT@1.0.0#R1",
@@ -2154,13 +2154,13 @@
       "regla": "LANG.TASK.SUSPENSION@1.0.0#R7",
       "verificacion": "crates/pseudolearn_semantic/src/suspension_checker.rs",
       "estado": "pendiente",
-      "resuelve_en": "PG-4.07"
+      "resuelve_en": "planificador-de-tareas"
     },
     {
       "regla": "LANG.TASK.SUSPENSION@1.0.0#R8",
       "verificacion": "crates/pseudolearn_api/src/execution_resource.rs",
       "estado": "pendiente",
-      "resuelve_en": "PG-4.07"
+      "resuelve_en": "planificador-de-tareas"
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R1",
@@ -2186,13 +2186,13 @@
       "regla": "LANG.TASK.SCOPE@1.0.0#R5",
       "verificacion": "crates/pseudolearn_runtime/src/task_agenda_tests.rs",
       "estado": "pendiente",
-      "resuelve_en": "PG-4.07"
+      "resuelve_en": "planificador-de-tareas"
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R6",
       "verificacion": "crates/pseudolearn_runtime/src/task_agenda_tests.rs",
       "estado": "pendiente",
-      "resuelve_en": "PG-4.07"
+      "resuelve_en": "planificador-de-tareas"
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R7",
@@ -2203,7 +2203,7 @@
       "regla": "LANG.TASK.SCOPE@1.0.0#R8",
       "verificacion": "crates/pseudolearn_runtime/src/task_agenda_tests.rs",
       "estado": "pendiente",
-      "resuelve_en": "PG-4.10"
+      "resuelve_en": "agendas-sembradas-reproducibles"
     },
     {
       "regla": "LANG.TASK.SCOPE@1.0.0#R9",
@@ -2339,13 +2339,13 @@
       "regla": "ENG.LIMITS@1.0.0#R12",
       "verificacion": "crates/pseudolearn_library/src/json_parse_tests.rs",
       "estado": "pendiente",
-      "resuelve_en": "PG-5.03.07"
+      "resuelve_en": "limites-y-http-en-sujeto-nativo"
     },
     {
       "regla": "ENG.LIMITS@1.0.0#R13",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-5.03.07"
+      "resuelve_en": "limites-y-http-en-sujeto-nativo"
     },
     {
       "regla": "ENG.LIMITS@1.0.0#R14",
@@ -2485,7 +2485,7 @@
       "regla": "LIB.HTTP@1.0.0#R7",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-5.03.07"
+      "resuelve_en": "limites-y-http-en-sujeto-nativo"
     },
     {
       "regla": "LIB.HTTP.POLICY@1.0.0#R1",
@@ -2538,13 +2538,13 @@
       "regla": "API.EXECUTE@1.0.0#R7",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-6B"
+      "resuelve_en": "adaptador-dap-y-depuracion"
     },
     {
       "regla": "API.EXECUTE@1.0.0#R8",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-6B"
+      "resuelve_en": "adaptador-dap-y-depuracion"
     },
     {
       "regla": "API.EXECUTE@1.0.0#R9",
@@ -2555,31 +2555,31 @@
       "regla": "API.STATE.QUERY@1.0.0#R7",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-6B"
+      "resuelve_en": "adaptador-dap-y-depuracion"
     },
     {
       "regla": "API.STATE.QUERY@1.0.0#R8",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-6B"
+      "resuelve_en": "adaptador-dap-y-depuracion"
     },
     {
       "regla": "API.MODEL@1.0.0#R7",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-6B"
+      "resuelve_en": "adaptador-dap-y-depuracion"
     },
     {
       "regla": "API.ERRORS@1.0.0#R4",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-6B"
+      "resuelve_en": "adaptador-dap-y-depuracion"
     },
     {
       "regla": "API.MODEL@1.0.0#R8",
       "verificacion": "ejecutor",
       "estado": "pendiente",
-      "resuelve_en": "PG-6B"
+      "resuelve_en": "adaptador-dap-y-depuracion"
     },
     {
       "regla": "LIB.CORE.MATH@1.0.0#R2",

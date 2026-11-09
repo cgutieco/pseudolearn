@@ -32,7 +32,7 @@ La extensión vive en `apps/` porque es un producto distribuible y no una biblio
 
 La activación y desactivación son idempotentes. Los recursos se registran en un `Disposable` de composición y los errores esperables salen por resultados tipados. El proceso y los puertos son dependencias inyectadas para que las pruebas no necesiten VS Code ni el binario. La resolución distingue la configuración de workspace de las preferencias globales: solo el perfil acepta valores del workspace; idioma de interfaz y ruta del ejecutable se leen del usuario. La ruta del servidor solo se habilita en desarrollo confiable, debe ser absoluta y nunca procede de `.vscode/settings.json`.
 
-TextMate se genera desde las definiciones léxicas, la política de plegado español y el vocabulario exportado por SEE. El hash de la exportación queda dentro de la gramática generada. Sus patrones son deliberadamente tolerantes; no identifican símbolos ni deciden validez. El parser y el servicio Rust deciden ambas cosas. Las palabras contextuales (`Interfaz`, `Variante`, `Alternativa`, `FinVariante` y sus equivalentes en inglés) no están entre las palabras clave de TextMate, porque fuera de su posición son nombres ordinarios; las resalta como palabra clave el token semántico que devuelve el servidor del motor, que solo las reconoce en su posición estructural, y un parámetro de tipo llega como `typeParameter`. Tras cambiar el vocabulario o la exportación se regenera la gramática con `pnpm generate:grammar`; el cambio del corpus de PG-L solo actualizó el hash de la exportación. `pnpm generate:grammar` actualiza los recursos y `pnpm check:grammar` detecta diferencias sin escribirlas. Las pruebas ejecutan los patrones con `vscode-textmate` y `vscode-oniguruma`.
+TextMate se genera desde las definiciones léxicas, la política de plegado español y el vocabulario exportado por SEE. El hash de la exportación queda dentro de la gramática generada. Sus patrones son deliberadamente tolerantes; no identifican símbolos ni deciden validez. El parser y el servicio Rust deciden ambas cosas. Las palabras contextuales (`Interfaz`, `Variante`, `Alternativa`, `FinVariante` y sus equivalentes en inglés) no están entre las palabras clave de TextMate, porque fuera de su posición son nombres ordinarios; las resalta como palabra clave el token semántico que devuelve el servidor del motor, que solo las reconoce en su posición estructural, y un parámetro de tipo llega como `typeParameter`. Tras cambiar el vocabulario o la exportación se regenera la gramática con `pnpm generate:grammar`; un cambio del corpus solo actualizó el hash de la exportación. `pnpm generate:grammar` actualiza los recursos y `pnpm check:grammar` detecta diferencias sin escribirlas. Las pruebas ejecutan los patrones con `vscode-textmate` y `vscode-oniguruma`.
 
 ## 5. Reglas de legibilidad, estilo y estructura de código
 
@@ -111,7 +111,7 @@ texto plano en el canal `PseudoLearn Help`. Sin ayuda en la posición se informa
 **Límites y pendientes declarados.** `pseudolearn.translate` usa la CLI sobre el archivo guardado y reemplaza el documento
 completo solo si su versión no cambió; una colisión de traducción no escribe nada. El formato usa el proveedor LSP estándar.
 La verificación en host real (completar, diagnosticar, navegar, renombrar, ejecutar con entrada, detener y limpieza tras
-cierre) y la ayuda desde un segundo cliente quedan para las verificaciones pesadas `PG-6A.07.07` y `PG-6A.08.07`.
+cierre) y la ayuda desde un segundo cliente quedan para las verificaciones pesadas.
 
 ### Asistentes de código: servidor MCP y plantillas
 
@@ -377,14 +377,14 @@ incierta. Los errores tipados del proveedor (`FileNotFound`, `FileExists`, `File
 muta. El host web rastrea el derecho de lectura de cada capacidad derivada para rechazar consultas sin lectura. Las pruebas
 usan un sistema de archivos en memoria (`tests/adapters/memory_vscode.ts`).
 
-## Reloj local y entorno en el navegador (`PG-S.05`, `PG-S.06`)
+## Reloj local y entorno en el navegador
 
 `BrowserEffectHost` atiende `clock_local_now` con `Date.now()` y `Date#getTimezoneOffset`: el desplazamiento llega en
 minutos enteros, sin precisión de segundos ni reglas históricas de la zona. El navegador no tiene entorno de proceso:
 `request_environment` concede la capacidad y `environment_get` responde `permiso_denegado`, el `ErrorES` de plataforma
 del corpus (nunca una denegación por política).
 
-## Consola: error y código de salida (`PG-S.07`)
+## Consola: error y código de salida
 
 El anfitrión del navegador (`browser_effect_host.ts`) confirma `console_write_error`; la salida combinada de
 la API ya trae el texto en orden, así que el presentador lo muestra junto con el resto (sin estilo propio todavía). `console_set_exit_code` valida el rango y se

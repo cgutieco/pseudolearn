@@ -1649,7 +1649,7 @@
       "regla": "LANG.TASK.SUSPENSION@1.0.0#R5",
       "verificacion": "ejecutor",
       "estado": "exento",
-      "justificacion": "La regla combina análisis estático y evaluación de la llamada, que queda para PG-4.07."
+      "justificacion": "La regla combina análisis estático y evaluación de la llamada, que queda para el planificador de tareas."
     },
     {
       "regla": "LANG.TASK.SUSPENSION@1.0.0#R6",

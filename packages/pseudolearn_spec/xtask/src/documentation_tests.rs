@@ -1,3 +1,4 @@
+use super::collect;
 use super::reject;
 use super::root_references;
 
@@ -43,4 +44,15 @@ fn resolves_root_readme_links_without_rejecting_package_documents() -> Result<()
     );
     root_references(root, "packages/example/README.md", &readme)?;
     root_references(root, "README.md", "docs/")
+}
+
+#[test]
+fn collects_nothing_when_the_root_document_folder_is_absent() -> Result<(), String> {
+    let mut documents = Vec::new();
+    collect(
+        std::path::Path::new("/repository/missing-document-folder"),
+        &mut documents,
+    )?;
+    assert!(documents.is_empty());
+    Ok(())
 }

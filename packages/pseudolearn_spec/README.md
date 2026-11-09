@@ -29,6 +29,10 @@ anticuado al publicarse, y `introducida_en` de los contratos de lenguaje y de bi
 figura un único valor en todo el corpus, el nombre completo y con tildes de la persona responsable, `César Antonio
 Gutiérrez Contreras`; no se admiten identificadores de revisión automatizada ni variantes de escritura.
 
+En los archivos de conformidad, `resuelve_en` de un vínculo `pendiente` es una clave autosustentable que nombra el
+trabajo que lo cerrará (por ejemplo `eventos-de-tarea-para-app`). El validador solo exige que no figure en
+`fases_cerradas`; la convención del corpus prohíbe usar identificadores de fase o rutas a documentos.
+
 `new` crea una plantilla estable `1.0.0` sin `cambio`; deja `revisado_por` vacío para que no se atribuya una
 revisión inexistente. La plantilla de lenguaje declara engine y aot como sujetos candidatos. El contrato queda
 incompleto hasta que tenga reglas, casos, evidencia y una revisión independiente, por lo que `validate` puede
@@ -534,7 +538,7 @@ durante una espera de efecto mediante `cancel_on_awaiting_effect`, la observaci�
 en `anfitrion_observado`, la mutación controlada de la cinta grabada con `alterar_cinta` antes de intentar
 reproducirla y las operaciones `start`, `advance`, `input`, `effect_result` y `cancel` en secuencias `api`.
 
-### Propiedad de trampas y sujetos sin observación (`PG-3`)
+### Propiedad de trampas y sujetos sin observación
 
 `property_traps.rs` genera programas con todos los enlaces inicializados (`Definir r Como Entero <- …`), porque el lenguaje rechaza el enlace sin inicializador y la propiedad fallaba en todos los sujetos antes de ejercer la regla, y solo pide el modo `observe: events` a los sujetos que anuncian la capacidad `observe`; el sujeto nativo lo rechaza por diseño. Cubre `property_traps_tests.rs`. Los casos con anfitrión admiten además `cancel_on_awaiting_effect` y `alterar_cinta` como directivas del corredor.
 
@@ -595,7 +599,7 @@ congelados; los contratos oficiales se corrigen y reanclan juntos conservando su
 
 Los miembros contextuales de ordenación, inversión, búsqueda y claves y las diez funciones numéricas conservan identidades y versiones congeladas. La propiedad math_oracle contrasta muestras reproducibles con el oráculo independiente. Los vínculos nativos nuevos permanecen pendientes de paridad.
 
-## Entorno, fecha y hora (`PG-S.05`, `PG-S.06`)
+## Entorno, fecha y hora
 
 La configuración `anfitrion` de los casos admite `environment` (objeto de cadenas, que el doble de memoria sirve a
 `Obtener`) y `offset_seconds` (entero, el desplazamiento que `AhoraLocal` añade al instante de `clock`). La lista
@@ -607,17 +611,17 @@ independiente del motor; ningún valor se capturó de una ejecución. La propied
 sembrados no tiene generador propio: queda cubierta por el caso `LIB.TIME#C15` (seis semillas fijas) y es un pendiente
 declarado.
 
-## Formato de números (`PG-S.08`)
+## Formato de números
 
-`LIB.CORE.CONVERSION#R2` (`Decimales`) y `LIB.CORE.TEXT#T5` (`RellenarIzquierda`, `RellenarDerecha`) con DS-23. Los
+`LIB.CORE.CONVERSION#R2` (`Decimales`) y `LIB.CORE.TEXT#T5` (`RellenarIzquierda`, `RellenarDerecha`) se verifican con casos del corpus. Los
 valores esperados salen de la definición decimal (expansión exacta del binario64, empates alejados de cero), no de una
 ejecución. Los límites de celdas de `C14`/`C15` y `C41`/`C42` son medidas del contador del motor (la cadena de relleno y
 sus literales cuentan), no una fórmula de la regla. Pendiente declarado: la propiedad de ida y vuelta
 `AReal(Decimales(x, 17)) ≈ x` sobre reales sembrados no tiene generador propio; los casos fijos la cubren puntualmente.
 Exportación a otros lenguajes (`format!("{:.2}")`, `f"{x:.2f}"`): no existe exportador de operaciones D2, así que se
-declara «sin equivalente» y queda pendiente con el sujeto nativo (`PG-N.08`).
+declara «sin equivalente» y queda pendiente con el sujeto nativo.
 
-## Código de salida y salida de error (`PG-S.07`)
+## Código de salida y salida de error
 
 `LIB.IO#R15` (`EstablecerCodigoSalida`), `LIB.IO#R16` (`EscribirError`) y `TOOL.CLI.RUN#R8`. Los casos `TOOL.CLI.RUN`
 `C23`–`C26` ejecutan el binario real y comprueban código de proceso y salida de error. Para que el validador acepte los

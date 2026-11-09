@@ -233,7 +233,7 @@ Las solicitudes de effect_call transportan valores tipados y el nodo de origen r
 HostReply y se materializa en las celdas de resultado mediante el mismo codec que AOT; nunca se
 reinterpretan cadenas o errores como cero. Las consultas puras de Bytes se resuelven localmente.
 
-### Familia de capacidad en el efecto pendiente (`PG-3`)
+### Familia de capacidad en el efecto pendiente
 
 El `capability_kind` de `PendingEffectRequest` es `EffectOperation::capability_family` y coincide con el de la entrada de cinta correspondiente. Antes usaba el nombre de depuración del tipo de receptor, de modo que una solicitud de reloj se anunciaba como `host`.
 
@@ -309,7 +309,7 @@ despacho. Los sitios guardan operandos y evaluador comprobados; no son efectos n
 memoria. Las trascendentes siguen usando la misma biblioteca exacta. El objetivo es limitar el
 crecimiento del despachador cuando el programa no utiliza la ampliación numérica.
 
-## Código de salida (`PG-S.07`)
+## Código de salida
 
 `Machine.exit_code` empieza en 0 y lo fija `complete_effect` cuando `console_set_exit_code` se confirma, tanto en
 ejecución como en reproducción de cinta, porque ambas pasan por la misma finalización de efecto. Viaja en la imagen y en

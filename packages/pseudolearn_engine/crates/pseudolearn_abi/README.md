@@ -88,7 +88,7 @@ producto no depende de serde. Semántica, VM y AOT comparten identidades y firma
 Los métodos llevan su clasificación de efecto: consultas puras de bytes no adquieren autoridad ni
 consultan al anfitrión; los demás producen un Resultado portable.
 
-### Familia de capacidad de cada operación (`PG-3`)
+### Familia de capacidad de cada operación
 
 `EffectOperation::capability_family` es la única fuente del vocabulario cerrado `console`, `arguments`, `filesystem`, `clock`, `timer` y `network` con el que la cinta y la carga de `awaiting_effect` rotulan una operación. Se deriva del receptor (`Directory` y `File` son `filesystem`, la capacidad `Network` es `network`) y, para una solicitud de capacidad (`request_*`), de la capacidad solicitada; una operación sin receptor ni prefijo de solicitud cae en `host`. La función vive en la ABI porque la VM y el runtime la comparten y ninguno puede depender del otro; antes cada uno formateaba el nombre interno de Rust (`Directory`, `File`), que no era un contrato. `tests/effect_operation_family_tests.rs` cubre las operaciones con receptor, las solicitudes y una identidad inexistente.
 
@@ -123,7 +123,7 @@ instrucciones específicas en la representación intermedia.
 
 CollectionCommand conserva los códigos previos y añade Clone=12, Commit=13, Reverse=14 y BeginSort=15. Son operaciones internas sobre vectores con disposición estática compartida; no incorporan autoridad del anfitrión.
 
-## Entorno y fecha y hora (`PG-S.05`, `PG-S.06`)
+## Entorno y fecha y hora
 
 `CapabilityKind::Environment` ocupa la etiqueta 7 y se añadió al final de `ALL`, así que ninguna etiqueta existente
 cambia. `EffectValueKind` gana `Environment`, `DateTime` y `OptionalDateTime`; `build.rs` los lee de `date_time`,

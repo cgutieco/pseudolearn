@@ -309,7 +309,7 @@ La grabación exporta la cinta de la sesión viva. La frontera de ejecución com
 de consola frente al reproductor antes de entregar el lote al consumidor; una cinta inválida nunca
 se normaliza ni se repara al leerla. El formato y sus hashes pertenecen al runtime compartido.
 
-### Rechazo de reproducción y aislamiento verificados (`PG-3.04`–`PG-3.06`)
+### Rechazo de reproducción y aislamiento verificados
 
 - Los cinco códigos `replay_*` se disparan en `tests/tape_rejection_tests.rs` sobre `replay_from_tape` y `history_seek`: identidad (fuente, semilla), fin prematuro (última entrada recortada y cinta vacía, con la cadena de hashes re-sellada para que solo la secuencia delate el corte), divergencia (resumen de petición, orden permutado y entrada sobrante), adulteración (hash, carga, secuencia contigua y campo desconocido) y cinta incompleta o truncada por presupuesto. Una versión de esquema desconocida es `UnsupportedVersion`, no un error de reproducción. Ningún rechazo devuelve salida parcial.
 - `pseudolearn_runtime/tests/tape_replay_host_isolation_tests.rs` demuestra con un proveedor espía que, en cada rechazo de secuencia, el contador de llamadas al anfitrión vale `0`; la reproducción íntegra de control también lo deja en `0` mientras la grabación viva lo deja en `1`.
@@ -336,7 +336,7 @@ no se ejecuta. Nada de este camino abre disco ni red; la API no tiene anfitrión
 resolver el nombre contra el directorio de trabajo porque haría depender el resultado del entorno. Cubre
 `tests/program_view_dependencies.rs` (12) y los casos C48–C52 de `API.PROGRAM.VIEW` por el sujeto app.
 
-### Proyección de tipos y operaciones de capacidad en la vista del programa (`PG-3.09`)
+### Proyección de tipos y operaciones de capacidad en la vista del programa
 
 `program_view_effects.rs` añade a los nodos de la vista pública tres atributos: `builtin_type` (`bytes`, `io_error`) y `capability_type` (`console`, `arguments`, `directory`, `file`, `clock`, `timer`) en los nodos de tipo, reconocidos por su lexema en ambos perfiles con `pseudolearn_semantic::capability_types::find_capability_kind`, y `effect_operation` (identidad de `LIB.MODEL`, por ejemplo `file_open`) en los nodos postfijos, tomado de las expresiones `HirExpression::Effect` del análisis. La anotación reutiliza el análisis único de `program_view_annotations::call_names`, que ya resolvía `builtin`. Un programa sin capacidades no proyecta ninguno de los tres. Cubre `tests/program_view_effects.rs` y el caso `API.PROGRAM.VIEW` C11.
 
@@ -467,7 +467,7 @@ La vista pública añade collection_operation para vectorSort, vectorReverse, ve
 
 Las pruebas de ordenación contrastan estabilidad y multiconjunto con una semilla fija sobre entradas vacías, unitarias y con claves repetidas. La prueba de 100 000 elementos verifica cada posición, además de los extremos; las pruebas de error conservan el tramo de la llamada de usuario.
 
-## Código de salida (`PG-S.07`)
+## Código de salida
 
 La respuesta de `advance` (y la instantánea de punta) añade el campo `exit_code` (entero 0–255, 0 por omisión). Es un
 campo aditivo: los consumidores que no lo conocen lo ignoran. `error_ranges` lista los tramos `[inicio, fin)` de bytes de `output` que escribió `Consola.EscribirError`; `output` conserva
