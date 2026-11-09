@@ -79,3 +79,18 @@ Heredados de un README anterior, sin confirmar:
 
 - Los íconos de iOS y macOS se generan localmente desde la geometría Dart y se validan con `xcrun actool`; no se ejecutó esa validación al reescribir el README.
 - Las medidas de la marca existen en Python y en Dart (la app las redibuja); `BRAND-DART-DRIFT` solo vigila las constantes declaradas como `static const` en `brand_metrics.dart`.
+
+## pseudolearn_backend
+
+Confirmados contra el código:
+
+- `supabase/deferred/20260914000002_drop_delete_account.sql` sigue sin moverse a `supabase/migrations/`: elimina `public.delete_account()` y espera a que se publique el build de `apps/pseudolearn_app` que invoca `delete-account`.
+- `architecture.json` solo declara `file_lines`; el tamaño de función no se verifica mecánicamente.
+
+Heredados de un README anterior, sin confirmar:
+
+- Prueba en sandbox de App Store y de Paddle con productos, URLs de notificación y un build firmado; los tests cubren firmas y contratos con datos de prueba.
+- Confirmar en sandbox que la suscripción de Paddle hereda `custom_data.user_id` de la transacción; si no, el primer evento queda sin dueño.
+- Medir el consumo real de créditos por `turn_id` en `agent_ledger_events` para confirmar los 300 créditos del plan.
+- Segundo proveedor de modelo mediante otro `ModelGateway`.
+- Prueba de extremo a extremo de `delete-account` contra Apple real.
