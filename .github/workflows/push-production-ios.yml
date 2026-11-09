@@ -86,7 +86,10 @@ jobs:
           {
             "SUPABASE_URL": "${{ secrets.SUPABASE_URL }}",
             "SUPABASE_ANON_KEY": "${{ secrets.SUPABASE_ANON_KEY }}",
-            "GOOGLE_IOS_CLIENT_ID": "${{ secrets.GOOGLE_IOS_CLIENT_ID }}"
+            "GOOGLE_IOS_CLIENT_ID": "${{ secrets.GOOGLE_IOS_CLIENT_ID }}",
+            "AGENT_BACKEND": "proxy",
+            "AGENT_PROXY_URL": "${{ secrets.SUPABASE_URL }}/functions/v1",
+            "AGENT_PURCHASES": "storekit"
           }
           JSON
 
