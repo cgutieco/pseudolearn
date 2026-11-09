@@ -34,7 +34,7 @@
   "titulo_en": "Analysis",
   "revisado_por": [
     "revision-independiente-automatizada-r9",
-    "Cesar Antonio Gutierrez Contreras"
+    "César Antonio Gutiérrez Contreras"
   ]
 }
 ---
