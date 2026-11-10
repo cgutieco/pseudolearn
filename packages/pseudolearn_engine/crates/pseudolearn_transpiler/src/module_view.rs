@@ -218,6 +218,57 @@ impl<'module> ModuleView<'module> {
         })
     }
 
+    pub(crate) fn is_emitted_class(&self, class: ClassId) -> bool {
+        !(self.module.collections.contains_key(&class)
+            || self.module.opaque_types.contains_key(&class)
+            || self.is_template_class(class)
+            || self
+                .module
+                .closures
+                .values()
+                .any(|closure| closure.class == Some(class)))
+    }
+
+    pub(crate) fn field_names(&self) -> Vec<String> {
+        let class_fields = self
+            .module
+            .classes
+            .iter()
+            .flat_map(|class| class.fields.iter().map(|field| field.name.as_str()));
+        let flattened = self
+            .module
+            .class_record_fields
+            .iter()
+            .map(|entry| entry.field.name.as_str());
+        let record_fields = self
+            .module
+            .records
+            .iter()
+            .flat_map(|record| record.fields.iter().map(|field| field.name.as_str()));
+        class_fields
+            .chain(flattened)
+            .chain(record_fields)
+            .flat_map(|name| name.split('.'))
+            .map(str::to_owned)
+            .collect()
+    }
+
+    pub(crate) fn declared_type_names(&self) -> Vec<String> {
+        let enums = self.module.enums.iter().map(|entry| entry.name.clone());
+        let records = self
+            .module
+            .records
+            .iter()
+            .filter(|record| !record.fields.is_empty())
+            .map(|record| record.name.clone());
+        let variants = self
+            .module
+            .user_variants
+            .values()
+            .map(|variant| variant.name.clone());
+        enums.chain(records).chain(variants).collect()
+    }
+
     pub(crate) fn is_record_leaf(&self, identifier: LocalId) -> bool {
         self.module
             .record_locals

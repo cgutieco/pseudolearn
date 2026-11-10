@@ -1,6 +1,6 @@
 use super::RustEmitter;
 use crate::code_lines::CodeLines;
-use crate::identifier_spelling::{rust_type_name, rust_value_name, unique_spelling};
+use crate::identifier_spelling::{rust_type_name, unique_spelling};
 use crate::module_view::RecordRole;
 use pseudolearn_semantic::hir::HirRecord;
 use pseudolearn_semantic::variant_model::HirUserVariant;
@@ -111,7 +111,7 @@ impl RustEmitter<'_, '_> {
             .iter()
             .map(|field| {
                 let type_text = self.type_text(field.type_id, span);
-                format!("{}: {type_text}", rust_value_name(&field.name))
+                format!("{}: {type_text}", self.names.field(&field.name))
             })
             .collect()
     }

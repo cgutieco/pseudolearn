@@ -6,6 +6,9 @@ use pseudolearn_semantic::hir::{FunctionKind, HirClass, HirField};
 
 impl<'module> PythonEmitter<'_, 'module> {
     pub(crate) fn class_name(&self, class: ClassId) -> String {
+        if let Some(spelled) = self.names.class(class) {
+            return spelled.to_owned();
+        }
         self.view.class(class).map_or_else(
             || format!("Class{}", class.0),
             |entry| python_type_name(&entry.name),
@@ -19,16 +22,10 @@ impl<'module> PythonEmitter<'_, 'module> {
             self.order_class(identifier, &mut order);
         }
         for identifier in order {
-            let skip = self.view.is_template_class(identifier)
-                || self.view.module.collections.contains_key(&identifier)
-                || self.view.module.opaque_types.contains_key(&identifier)
-                || self
-                    .view
-                    .module
-                    .closures
-                    .values()
-                    .any(|closure| closure.class == Some(identifier));
-            if let (false, Some(class)) = (skip, self.view.class(identifier)) {
+            if let (true, Some(class)) = (
+                self.view.is_emitted_class(identifier),
+                self.view.class(identifier),
+            ) {
                 self.class_definition(identifier, class, lines);
             }
         }
@@ -98,7 +95,7 @@ impl<'module> PythonEmitter<'_, 'module> {
         entry: &'module HirClass,
         lines: &mut CodeLines,
     ) -> String {
-        let defaults = format!("_defaults_{}", python_value_name(&entry.name));
+        let defaults = format!("_defaults_{}", python_value_name(&self.class_name(class)));
         lines.open(&format!("def {defaults}(self):"));
         let fields = self.own_fields(class, entry);
         if fields.is_empty() {
@@ -107,7 +104,7 @@ impl<'module> PythonEmitter<'_, 'module> {
         for field in &fields {
             lines.line(&format!(
                 "self.{} = {}",
-                python_value_name(&field.name),
+                self.names.field(&field.name),
                 self.default_value(field.type_id)
             ));
         }

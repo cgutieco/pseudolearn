@@ -1,7 +1,7 @@
 use super::PythonEmitter;
 use super::python_expressions::python_string;
 use crate::code_lines::CodeLines;
-use crate::identifier_spelling::{python_type_name, python_value_name, unique_spelling};
+use crate::identifier_spelling::{python_type_name, unique_spelling};
 use crate::module_view::RecordRole;
 use pseudolearn_semantic::hir::HirRecord;
 use pseudolearn_semantic::variant_model::HirUserVariant;
@@ -132,7 +132,7 @@ impl PythonEmitter<'_, '_> {
                 lines.line("pass");
             }
             for field in &fields {
-                lines.line(&format!("{}: object", python_value_name(&field.name)));
+                lines.line(&format!("{}: object", self.names.field(&field.name)));
             }
             lines.dedent();
             lines.blank();
@@ -160,7 +160,7 @@ impl PythonEmitter<'_, '_> {
             };
             lines.line(&format!(
                 "{}: object = {default}",
-                python_value_name(&field.name)
+                self.names.field(&field.name)
             ));
         }
         lines.blank();
@@ -175,7 +175,7 @@ impl PythonEmitter<'_, '_> {
             .fields
             .iter()
             .map(|field| {
-                let name = python_value_name(&field.name);
+                let name = self.names.field(&field.name);
                 if self.is_record(field.type_id) {
                     format!("self.{name}.copy()")
                 } else {

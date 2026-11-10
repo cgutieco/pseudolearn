@@ -71,6 +71,9 @@ impl RustEmitter<'_, '_> {
     }
 
     pub(crate) fn class_name(&self, class: ClassId) -> String {
+        if let Some(spelled) = self.names.class(class) {
+            return spelled.to_owned();
+        }
         self.view.class(class).map_or_else(
             || format!("Class{}", class.0),
             |entry| rust_type_name(&entry.name),

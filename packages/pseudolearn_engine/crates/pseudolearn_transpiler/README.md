@@ -47,6 +47,9 @@ Nivel 7. Importa source, lexicon y semantic; syntax solo en pruebas para obtener
 
 - `lib.rs` expone `transpile(&HirModule, &TranspileRequest) -> TranspileOutcome`.
 - `module_view` ofrece consultas totales sobre el HIR (sin índices directos).
+- `member_spellings` fija, una vez por traducción y por destino, el nombre de cada campo, de cada clase y el
+  conjunto de nombres finales de las variables locales; los emisores lo consultan en vez de deletrear
+  nombres crudos en cada sitio.
 - `code_lines` acumula líneas con sangría y el tramo de origen de cada línea; ese tramo es el que la
   API convierte en nodo de la vista del programa para resaltar líneas en la app.
 - `support_requests` registra qué funciones de apoyo pidió la traducción y cierra sus dependencias.
@@ -107,8 +110,16 @@ Correspondencias principales:
   de otro receptor, un envío o un cierre despiertan a todos los receptores en espera, que reintentan en orden
   FIFO.
 - Nombres: los nombres de los destinos, de los módulos importados y de las funciones de apoyo están reservados y
-  el nombre del usuario recibe el sufijo `_value`; una función cuyo nombre coincide con una variable local recibe
-  el sufijo `_routine`.
+  el nombre del usuario recibe el sufijo `_value`; una función cuyo nombre coincide con el nombre final de una
+  variable local, incluido uno con sufijo de desambiguación como `total_2`, recibe el sufijo `_routine`.
+- Campos y clases: el lenguaje distingue `fooBar` y `foo_bar`, pero ambos destinos los escriben `foo_bar`; antes
+  eso producía campos duplicados en Rust y, en Python, dos campos que se pisaban en silencio. Elección: los
+  segmentos de nombre de campo de todo el módulo (clases, campos de registro aplanados y registros) se deletrean
+  con una sola tabla inyectiva en orden de declaración (`foo_bar`, `foo_bar_2`), de modo que tampoco chocan entre
+  una clase y su ancestro; las clases emitidas se deletrean en orden de declaración evitando los nombres de
+  enumerados, registros con campos y variantes, con sufijo numérico (`MiItem2`). Se descarta una tabla por clase:
+  obligaría a conocer al dueño en cada sitio que escribe un campo y no cubriría la jerarquía. Se descarta cambiar
+  la regla de deletreo para todos los nombres: cambiaría la salida de los programas sin colisión.
 - Tareas y canales: Rust usa `async fn` y un ejecutor cooperativo de un hilo con cola FIFO, escrito
   con la biblioteca estándar (`Wake`, `poll_fn`), un `TaskScope` que une a sus hijas al cerrar el
   ámbito y un `Channel` acotado con cierre. Python usa `asyncio`, cuya cola de listos también es FIFO.
@@ -135,7 +146,11 @@ traducción; en otro caso se nombran las construcciones con su tramo. El destino
 
 - `tests/` refleja `src/`: pruebas de caja negra de `transpile` para cada destino con caminos felices
   (programa vacío, tareas, variantes, registros, clases), infelices (construcción sin traducción) y
-  límites (literales enteros extremos, nombres reservados del destino).
+  límites (literales enteros extremos, nombres reservados del destino). `tests/member_spellings.rs` cubre
+  campos, campos heredados, clases y registros con el mismo deletreo, y funciones que coinciden con una local
+  sufijada. `pseudolearn_api/tests/python_builtin_reservation.rs` traduce cada programa del corpus a Python,
+  reúne los integrados y módulos que la salida realmente usa y exige que una variable del usuario con cada uno de
+  esos nombres se renombre.
 - Barrido diferencial en `pseudolearn_api/tests/equivalent_code_sweep.rs` (ignorado por omisión):
   ejecuta cada caso `execute` del corpus que termina con normalidad en el motor, lo traduce, lo
   compila con `rustc --edition 2024` o lo ejecuta con `python3.11 -I` y compara la salida byte a byte.

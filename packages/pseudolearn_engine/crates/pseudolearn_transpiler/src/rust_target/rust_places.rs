@@ -82,12 +82,7 @@ impl RustEmitter<'_, '_> {
         let Some(entry) = self.field(field) else {
             return self.block("field", self.view.expression_span(receiver));
         };
-        let field_name = entry
-            .name
-            .split('.')
-            .map(rust_value_name)
-            .collect::<Vec<_>>()
-            .join(".");
+        let field_name = self.names.field_path(&entry.name);
         let optional = !writing && self.field_is_optional(entry);
         let accessor = self.field_accessor(receiver, entry.owner, writing);
         let access = match self.receiver_text(receiver) {
@@ -155,7 +150,7 @@ impl RustEmitter<'_, '_> {
             return format!(".field{offset}");
         };
         for field in &entry.fields {
-            let name = rust_value_name(&field.name);
+            let name = self.names.field(&field.name);
             if field.offset == offset && !self.is_nested_record(field.type_id) {
                 return format!(".{name}");
             }

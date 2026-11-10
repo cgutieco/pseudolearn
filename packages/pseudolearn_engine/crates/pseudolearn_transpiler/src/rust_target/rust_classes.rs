@@ -1,6 +1,5 @@
 use super::RustEmitter;
 use crate::code_lines::CodeLines;
-use crate::identifier_spelling::rust_value_name;
 use pseudolearn_semantic::hir::{HirClass, HirField, HirFunction};
 use pseudolearn_semantic::{ClassId, FunctionId};
 
@@ -8,16 +7,7 @@ impl<'module> RustEmitter<'_, 'module> {
     pub(crate) fn classes(&mut self, lines: &mut CodeLines) {
         for (index, class) in self.view.module.classes.iter().enumerate() {
             let identifier = ClassId(u32::try_from(index).unwrap_or(u32::MAX));
-            if self.view.module.collections.contains_key(&identifier)
-                || self.view.module.opaque_types.contains_key(&identifier)
-                || self.view.is_template_class(identifier)
-                || self
-                    .view
-                    .module
-                    .closures
-                    .values()
-                    .any(|closure| closure.class == Some(identifier))
-            {
+            if !self.view.is_emitted_class(identifier) {
                 continue;
             }
             if self.is_polymorphic(identifier) {
@@ -86,7 +76,7 @@ impl<'module> RustEmitter<'_, 'module> {
             } else {
                 type_text
             };
-            lines.line(&format!("{}: {stored},", rust_value_name(&field.name)));
+            lines.line(&format!("{}: {stored},", self.names.field(&field.name)));
         }
     }
 

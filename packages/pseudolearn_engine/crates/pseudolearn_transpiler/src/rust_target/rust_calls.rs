@@ -1,5 +1,4 @@
 use super::RustEmitter;
-use crate::identifier_spelling::rust_value_name;
 use pseudolearn_semantic::{ExpressionId, FunctionId, HirExpression, RecordId, Type};
 use pseudolearn_source::Span;
 
@@ -182,7 +181,8 @@ impl RustEmitter<'_, '_> {
             .iter()
             .zip(fields)
             .map(|(field, value)| {
-                format!("{}: {}", rust_value_name(&field.name), self.value(*value))
+                let name = self.names.field(&field.name);
+                format!("{name}: {}", self.value(*value))
             })
             .collect::<Vec<_>>()
             .join(", ");

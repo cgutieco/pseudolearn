@@ -146,7 +146,7 @@ impl PythonEmitter<'_, '_> {
                     .map(|(local, _)| {
                         format!(
                             "{}={}",
-                            crate::identifier_spelling::python_value_name(&field.name),
+                            self.names.field(&field.name),
                             self.local_name(*local)
                         )
                     })

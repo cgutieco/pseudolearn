@@ -39,6 +39,7 @@ pub(crate) struct PythonEmitter<'view, 'module> {
     pub(crate) scope: PythonScope,
     pub(crate) preamble: CodeLines,
     pub(crate) temporaries: usize,
+    pub(crate) names: crate::member_spellings::MemberSpellings,
 }
 
 impl PythonEmitter<'_, '_> {
@@ -70,6 +71,13 @@ pub(crate) fn emit_program(view: &ModuleView<'_>, request: &TranspileRequest) ->
         scope: PythonScope::default(),
         preamble: CodeLines::default(),
         temporaries: 0,
+        names: crate::member_spellings::MemberSpellings::new(
+            view,
+            &crate::member_spellings::SpellingRules {
+                value: crate::identifier_spelling::python_value_name,
+                type_name: crate::identifier_spelling::python_type_name,
+            },
+        ),
     };
     let mut body = CodeLines::default();
     emitter.declarations(&mut body);

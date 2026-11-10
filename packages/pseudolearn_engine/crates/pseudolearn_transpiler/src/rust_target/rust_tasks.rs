@@ -53,7 +53,7 @@ impl RustEmitter<'_, '_> {
                 entry
                     .fields
                     .iter()
-                    .map(|field| crate::identifier_spelling::rust_value_name(&field.name))
+                    .map(|field| self.names.field(&field.name))
                     .collect::<Vec<_>>()
             })
             .unwrap_or_default();

@@ -2,6 +2,7 @@
 
 mod code_lines;
 mod identifier_spelling;
+mod member_spellings;
 mod module_view;
 mod outcome;
 mod python_target;

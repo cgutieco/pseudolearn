@@ -57,6 +57,7 @@ pub(crate) struct RustEmitter<'view, 'module> {
     pub(crate) preamble: CodeLines,
     pub(crate) closures: usize,
     pub(crate) mutation: rust_mutation::Mutation,
+    pub(crate) names: crate::member_spellings::MemberSpellings,
 }
 
 impl<'view, 'module> RustEmitter<'view, 'module> {
@@ -85,6 +86,13 @@ pub(crate) fn emit_program(view: &ModuleView<'_>, request: &TranspileRequest) ->
         preamble: CodeLines::default(),
         closures: 0,
         mutation: rust_mutation::Mutation::scan(view),
+        names: crate::member_spellings::MemberSpellings::new(
+            view,
+            &crate::member_spellings::SpellingRules {
+                value: crate::identifier_spelling::rust_value_name,
+                type_name: crate::identifier_spelling::rust_type_name,
+            },
+        ),
     };
     let mut body = CodeLines::default();
     emitter.declarations(&mut body);

@@ -1,5 +1,4 @@
 use super::PythonEmitter;
-use crate::identifier_spelling::python_value_name;
 use pseudolearn_semantic::collection_model::{CollectionAction, CollectionExpression};
 use pseudolearn_semantic::hir::HirField;
 use pseudolearn_semantic::{
@@ -23,17 +22,10 @@ impl PythonEmitter<'_, '_> {
             .find(|entry| entry.id == field)
     }
 
-    pub(crate) fn field_path(name: &str) -> String {
-        name.split('.')
-            .map(python_value_name)
-            .collect::<Vec<_>>()
-            .join(".")
-    }
-
     pub(crate) fn object_field(&mut self, receiver: ExpressionId, field: FieldId) -> String {
         let name = self
             .field(field)
-            .map(|entry| Self::field_path(&entry.name))
+            .map(|entry| self.names.field_path(&entry.name))
             .unwrap_or_default();
         format!("{}.{name}", self.operand(receiver, 10))
     }
@@ -69,7 +61,7 @@ impl PythonEmitter<'_, '_> {
             return format!(".field{offset}");
         };
         for field in &entry.fields {
-            let name = python_value_name(&field.name);
+            let name = self.names.field(&field.name);
             let nested = matches!(self.view.representation(field.type_id), Type::Record(_));
             if field.offset == offset && !nested {
                 return format!(".{name}");

@@ -1,6 +1,6 @@
 use super::RustEmitter;
 use crate::code_lines::CodeLines;
-use crate::identifier_spelling::{rust_type_name, rust_value_name};
+use crate::identifier_spelling::rust_type_name;
 use pseudolearn_semantic::variant_model::{HirVariantMatch, VariantFamily};
 use pseudolearn_semantic::{
     ExpressionId, HirCase, HirExpression, HirPlace, HirStatement, Literal, LocalId, RecordId,
@@ -136,7 +136,7 @@ impl RustEmitter<'_, '_> {
                 entry
                     .fields
                     .iter()
-                    .map(|field| rust_value_name(&field.name))
+                    .map(|field| self.names.field(&field.name))
                     .collect()
             })
             .unwrap_or_default()
@@ -236,7 +236,7 @@ impl RustEmitter<'_, '_> {
                 let bound = bindings
                     .iter()
                     .find(|binding| binding.offset == Some(field.offset));
-                let name = rust_value_name(&field.name);
+                let name = self.names.field(&field.name);
                 match bound {
                     Some(binding) => format!("{name}: {}", self.local_name(binding.local)),
                     None => format!("{name}: _"),

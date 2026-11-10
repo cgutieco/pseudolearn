@@ -132,7 +132,8 @@ comparten disposición de marco y de objetos.
   escriben igual; `transpiler` desambigua con sufijo numérico determinista (`_2`, `_3`) por ámbito de función
   (variables) y por enumerado (miembros), y renombra por sufijo todo nombre que el preludio generado o los
   integrados del destino ya usan. Los textos de Python se escapan con `\xNN`, `\uNNNN` o `\UNNNNNNNN` para NUL,
-  controles, separadores y marcas bidireccionales. Pendiente declarado: la desambiguación de campos y de clases.
+  controles, separadores y marcas bidireccionales. Los campos se deletrean con una tabla inyectiva para todo el
+  módulo y las clases evitan los nombres de cualquier otro tipo declarado, también con sufijo determinista.
 - **Historial y consultas de depuración**: el almacén de puntos de control tiene un presupuesto finito de ranuras
   retenidas, derivado de las celdas de memoria de la ejecución; al superarlo se adelgaza el punto de menor densidad
   (distancia entre vecinos por antigüedad, y solo en empate la ranura compuesta mínima) y, en último término, se

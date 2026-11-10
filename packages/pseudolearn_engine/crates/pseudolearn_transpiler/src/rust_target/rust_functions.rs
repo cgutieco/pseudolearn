@@ -56,17 +56,7 @@ impl RustEmitter<'_, '_> {
             || format!("function{}", identifier.0),
             |entry| rust_value_name(&entry.name),
         );
-        let shadowed = self
-            .view
-            .module
-            .locals
-            .iter()
-            .any(|local| rust_value_name(&local.name) == name);
-        if shadowed {
-            format!("{name}_routine")
-        } else {
-            name
-        }
+        self.names.routine(name)
     }
 
     pub(crate) fn local_name(&self, identifier: LocalId) -> String {
