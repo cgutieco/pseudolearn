@@ -122,6 +122,14 @@ concepto. La cantidad válida va de 0 a 100 (`decimalPlacesOutOfRange`); con 100
 puntos de código (no bytes), exige un relleno de exactamente un punto de código (`invalidPaddingText`), rechaza un ancho
 negativo (`paddingWidthOutOfRange`) y trata como `cellLimitExceeded` un ancho mayor que 16 777 216 antes de construir la
 cadena, para que una petición enorme no agote la memoria del anfitrión antes de que el presupuesto de celdas la rechace.
+Además, `RellenarIzquierda`, `RellenarDerecha`, `ReemplazarTodo` y `Unir` calculan con aritmética comprobada los puntos
+de código del resultado antes de reservar memoria y lo rechazan con `cellLimitExceeded` si superan
+`8·(celdas − 1)`, el mayor texto que una cadena creada en ejecución (una celda más una por cada ocho puntos) puede
+ocupar con el presupuesto configurado; el montón conserva el conteo exacto de lo alcanzable. La cota se obtiene con
+`maximum_text_points` desde el montón de la petición, de modo que el presupuesto no se enhebra por cada operación. El
+mismo criterio rige al decodificar un vector de textos para el anfitrión: las copias de un mismo texto referenciado
+muchas veces cuestan N·|T| puntos en el anfitrión aunque el montón cobre N + |T|/8 celdas, así que `host_words.rs` suma
+los puntos antes de copiar y rechaza el vector si la suma supera la cota.
 Sin configuración regional ni separadores de miles. Sin equivalente nativo todavía: vínculo `pendiente`.
 
 La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia

@@ -22,6 +22,10 @@ pub fn new_text(
     Ok(handle)
 }
 
+pub fn maximum_text_points(heap: &Heap) -> u64 {
+    heap.options.cells.saturating_sub(1).saturating_mul(8)
+}
+
 pub fn concat_text(
     heap: &mut Heap,
     left: Handle,

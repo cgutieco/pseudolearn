@@ -74,8 +74,8 @@ pub use snapshot::{
     set_heap_live_cells, set_heap_ordinal, set_heap_used_words, truncate_arena,
 };
 pub use text::{
-    TextCompaction, TextPart, compare_text, concat_parts, concat_text, new_text, text_character,
-    text_content, text_length,
+    TextCompaction, TextPart, compare_text, concat_parts, concat_text, maximum_text_points,
+    new_text, text_character, text_content, text_length,
 };
 pub use value::{CollectionPolicy, MemoryError, MemoryOptions, ValueKind};
 

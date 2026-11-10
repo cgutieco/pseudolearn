@@ -25,7 +25,11 @@ pub fn local_operation(
         .map(|kind| pseudolearn_runtime::decode_host_value(heap, kind, u64::from(receiver.0)))
         .transpose()?;
     match operation.family {
-        "text" => text_operation(operation.identity, arguments),
+        "text" => text_operation(
+            operation.identity,
+            arguments,
+            pseudolearn_runtime::maximum_text_points(heap),
+        ),
         "bytes" => bytes_operation(receiver_value.as_ref(), operation.identity, arguments),
         "json" => json_operation(
             receiver_value.as_ref(),

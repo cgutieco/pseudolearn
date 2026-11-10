@@ -8,7 +8,7 @@ use pseudolearn_abi::{
 };
 
 pub use compact::TextCompaction;
-pub use create::{concat_text, new_text};
+pub use create::{concat_text, maximum_text_points, new_text};
 pub use parts::{TextPart, concat_parts};
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]

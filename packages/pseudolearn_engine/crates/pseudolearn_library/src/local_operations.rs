@@ -11,6 +11,7 @@ pub use local_operation_dispatch::{LocalOperationRequest, local_operation};
 fn text_operation(
     identity: &str,
     arguments: &[HostValue],
+    maximum_points: u64,
 ) -> Result<Option<HostValue>, MemoryError> {
     let value = match identity {
         "substring" => Some(substring(arguments)?),
@@ -18,13 +19,17 @@ fn text_operation(
         "positionOf" => Some(position(arguments)?),
         "startsWith" => Some(prefix(arguments)?),
         "endsWith" => Some(suffix(arguments)?),
-        "replaceAll" => Some(replace(arguments)?),
+        "replaceAll" => Some(replace(arguments, maximum_points)?),
         "split" => Some(split(arguments)?),
-        "join" => Some(join(arguments)?),
+        "join" => Some(join(arguments, maximum_points)?),
         "trim" => Some(trim(arguments)?),
         "text_to_upper" => Some(to_upper(arguments)?),
         "text_to_lower" => Some(to_lower(arguments)?),
-        _ => crate::text_format_operations::text_format_operation(identity, arguments)?,
+        _ => crate::text_format_operations::text_format_operation(
+            identity,
+            arguments,
+            maximum_points,
+        )?,
     };
     Ok(value)
 }
@@ -191,7 +196,7 @@ fn suffix(arguments: &[HostValue]) -> Result<HostValue, MemoryError> {
     Ok(HostValue::Boolean(text_search::text_ends_with(text, part)))
 }
 
-fn replace(arguments: &[HostValue]) -> Result<HostValue, MemoryError> {
+fn replace(arguments: &[HostValue], maximum_points: u64) -> Result<HostValue, MemoryError> {
     let [
         HostValue::Text(text),
         HostValue::Text(searched),
@@ -200,11 +205,7 @@ fn replace(arguments: &[HostValue]) -> Result<HostValue, MemoryError> {
     else {
         return Err(MemoryError::Internal);
     };
-    Ok(HostValue::Text(text_replace::replace_all(
-        text,
-        searched,
-        replacement,
-    )))
+    text_replace::replace_all(text, searched, replacement, maximum_points).map(HostValue::Text)
 }
 
 fn split(arguments: &[HostValue]) -> Result<HostValue, MemoryError> {
@@ -212,11 +213,11 @@ fn split(arguments: &[HostValue]) -> Result<HostValue, MemoryError> {
     text_split::split_text(text, separator).map(HostValue::TextList)
 }
 
-fn join(arguments: &[HostValue]) -> Result<HostValue, MemoryError> {
+fn join(arguments: &[HostValue], maximum_points: u64) -> Result<HostValue, MemoryError> {
     let [HostValue::TextList(parts), HostValue::Text(separator)] = arguments else {
         return Err(MemoryError::Internal);
     };
-    Ok(HostValue::Text(text_split::join_text(parts, separator)))
+    text_split::join_text(parts, separator, maximum_points).map(HostValue::Text)
 }
 
 fn trim(arguments: &[HostValue]) -> Result<HostValue, MemoryError> {

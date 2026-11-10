@@ -214,18 +214,32 @@ fn text_list(heap: &Heap, handle: Handle) -> Result<Vec<String>, MemoryError> {
         return Err(MemoryError::Internal);
     }
     let length = crate::collection_length(heap, handle)?;
-    (0..length)
+    let texts = (0..length)
         .map(|index| {
-            let index = i64::from(index);
-            let value = crate::vector_get(heap, handle, index)?;
+            let value = crate::vector_get(heap, handle, i64::from(index))?;
             let text = value
                 .references
                 .first()
                 .copied()
                 .ok_or(MemoryError::Internal)?;
-            crate::text_content(heap, text).map(str::to_owned)
+            crate::text_content(heap, text)
         })
-        .collect()
+        .collect::<Result<Vec<&str>, MemoryError>>()?;
+    ensure_within_text_budget(heap, &texts)?;
+    Ok(texts.into_iter().map(str::to_owned).collect())
+}
+
+fn ensure_within_text_budget(heap: &Heap, texts: &[&str]) -> Result<(), MemoryError> {
+    let maximum = crate::maximum_text_points(heap);
+    let mut total = 0_u64;
+    for text in texts {
+        let points = u64::try_from(text.chars().count()).map_err(|_| MemoryError::Resource)?;
+        total = total.checked_add(points).ok_or(MemoryError::CellLimit)?;
+        if total > maximum {
+            return Err(MemoryError::CellLimit);
+        }
+    }
+    Ok(())
 }
 
 fn text_vector(
