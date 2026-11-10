@@ -23,11 +23,17 @@
 3. Cero comentarios en código, código en inglés, documentación en español. Ediciones quirúrgicas, sin formateadores
    masivos.
 4. Ningún secreto en el repositorio. Las claves de App Store Connect se leen del entorno.
-5. Ninguna subida, colocación ni envío a revisión sin aprobación explícita en el chat. El motor nunca crea
+5. **Todo lo regenerable queda fuera de git** (decisión de la persona, 2026-11-10). Ni las piezas finales ni los
+   intermedios se versionan: vídeos, imágenes, fotogramas, placas, `timeline.json` grabados, bandas sonoras,
+   proyectos HTML compuestos, manifiestos de auditoría, el módulo de marca generado y las descargas (Chromium,
+   plantillas de Apple, respuestas de la API). Se versiona solo lo que los produce: código, catálogo, guiones, textos
+   `es`/`en`, partituras y archivos de contrato o fixtures de test. Cada fase que añada una salida nueva comprueba con
+   `git check-ignore` que está ignorada antes de cerrar.
+6. Ninguna subida, colocación ni envío a revisión sin aprobación explícita en el chat. El motor nunca crea
    *submissions*.
-6. Al cerrar cada fase: verificadores en verde, commit con la skill `commit-message`, push ordinario y **parada**
+7. Al cerrar cada fase: verificadores en verde, commit con la skill `commit-message`, push ordinario y **parada**
    (`PHASE-GREEN`, `PHASE-STOP`).
-7. Una contradicción entre fuentes se reporta y se espera respuesta (`CONFLICT-REPORT`).
+8. Una contradicción entre fuentes se reporta y se espera respuesta (`CONFLICT-REPORT`).
 
 ## 1. Fuentes oficiales consultadas (2026-11-10)
 
@@ -192,7 +198,20 @@ la composición pasa al paquete nuevo y la app conserva solo la exportación de 
 `MarketingAudience.googlePlay`) **se retiran** en F2: una plataforma donde la app no está publicada no se mantiene; se
 planificará cuando se publique.
 
-### 3.6 Audio y localizaciones
+### 3.6 Salidas regenerables
+
+| Salida | Dónde queda | Por qué está ignorada |
+|---|---|---|
+| Piezas, proyectos HTML, fotogramas, bandas sonoras y manifiestos | `packages/pseudolearn_store_media/build/` | `build/` en el `.gitignore` raíz |
+| Placas y `timeline.json` grabados | `apps/pseudolearn_app/build/store-plates/` | `/build/` en el `.gitignore` de la app |
+| Módulo de marca del motor | `packages/pseudolearn_store_media/src/compose/brand.generated.ts` | Entrada explícita en el `.gitignore` raíz |
+| Dependencias y navegador | `node_modules/` y `~/.cache/puppeteer` | `node_modules/` en el `.gitignore` raíz; la caché vive fuera del repo |
+| Plantillas de Apple y respuestas de la API | Directorio temporal de la sesión | Nunca entran al repo |
+
+Se versionan `pnpm-lock.yaml`, `catalog/*.json` y `tests/contracts/`, porque fijan qué se produce y cómo se verifica.
+Cuando una pieza esté aprobada, se publica en la tienda desde `build/`; la tienda es su archivo, no git.
+
+### 3.7 Audio y localizaciones
 
 - **Audio acorde al vídeo** (decisión de la persona, 2026-11-10; sustituye a la de silencio). La banda sonora se
   **sintetiza de forma determinista** en el propio motor: sin muestras grabadas, sin bibliotecas de música y sin IA.
@@ -378,7 +397,7 @@ Consecuencias para el plan:
    (F4); el motor no produce piezas distintas para Mac.
 2. **Duraciones:** el vídeo de encabezado dura entre 10 y 30 s y las app previews entre 15 y 30 s, para cumplir a la
    vez el campo `duration` y el `shortName`, como hizo traceiron.
-3. **Audio:** las app previews **exigen** pista de audio. Llevan la banda sintetizada de §3.6. Los
+3. **Audio:** las app previews **exigen** pista de audio. Llevan la banda sintetizada de §3.7. Los
    vídeos de encabezado y búsqueda no llevan pista.
 4. **Imágenes estáticas en PNG** siempre, y opacas también en Mac, aunque allí el catálogo admita alfa.
 5. **Dynamic Island (medium):** la ayuda la declara obligatoria, pero la 1.1.1 se publicó solo con la clase large. F2
@@ -390,7 +409,7 @@ Consecuencias para el plan:
 1. Microsoft llama «Arte de póster 9:16» en el Centro de partners a una medida de 720 × 1080, que es 2:3, como dice
    su documentación. F5 genera las medidas de la documentación (720 × 1080 y 1440 × 2160).
 2. Las especificaciones de app preview de Apple detallan el audio, pero no dicen si la pista es obligatoria. El
-   catálogo de la API sí lo dice (`audioRequired: true`), y las previews llevan la banda de §3.6.
+   catálogo de la API sí lo dice (`audioRequired: true`), y las previews llevan la banda de §3.7.
 3. La página de creative assets de Apple no rotula sus filas de 16:9. La plantilla confirma que la pieza de
    5244 × 2950 es la **universal**.
 
@@ -420,8 +439,8 @@ Resueltas el 2026-11-10:
 | Google Play | Se retira; se planificará cuando la app se publique allí |
 | Póster y caja de Microsoft Store | Se generan |
 | Tráiler de Microsoft Store | La sección existe para la app; se produce en F5 |
-| Audio | Banda sintetizada de forma determinista y anclada a los hitos de cada vídeo; el vídeo de búsqueda va sin pista (§3.6). Sustituye a la decisión inicial de silencio |
-| Localizaciones | Español neutro y inglés de EE. UU. (§3.6) |
+| Audio | Banda sintetizada de forma determinista y anclada a los hitos de cada vídeo; el vídeo de búsqueda va sin pista (§3.7). Sustituye a la decisión inicial de silencio |
+| Localizaciones | Español neutro y inglés de EE. UU. (§3.7) |
 | Herramienta | Se aprueba D-01: placas de UI real desde la app, composición con HyperFrames y codificación con FFmpeg; la dependencia del sistema se registra en `AGENTS.md` en F0 |
 
 Pendiente fuera de este motor:
