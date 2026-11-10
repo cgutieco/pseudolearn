@@ -379,6 +379,35 @@ Sin diálogo: es infraestructura.
 - B: diálogo — la idea única del encabezado, cómo se anima el símbolo, lema de búsqueda, fps 30 o 60, duración.
 - D: producción, fotogramas de revisión y lámina; revisión humana en **Preview** de App Store Connect (no hay API).
 
+**Resultados de F4 (2026-11-10).**
+
+- **Fuentes.** Se releyeron la página de creative assets, la de buenas prácticas y la de gestión de assets de Apple, y
+  el catálogo `appAssetLibraryRefData` (solo `GET`). Confirman lo de F0: encabezado `t10~30`, búsqueda `t15~30`,
+  universal solo PNG y sin vídeo, 500 MB, sin audio obligatorio, disponibles en iOS 27 y iPadOS 27. La tabla «fuente →
+  qué hace el motor» vive en el README del motor.
+- **Arquitectura.** Perfiles de recorte del encabezado como datos (`viewportProfiles`, los seis de traceiron), zona
+  libre calculada con ellos (`clearZone`), comprobación de todos los fotogramas, costura del bucle medida contra el
+  propio movimiento y lámina `safe-area-review.png` por vídeo. **Hallazgo:** la barra de pestañas del iPad horizontal
+  tapa la zona oficial de la plantilla hasta y = 551 px; los primeros borradores que la llenaban se rechazaron antes
+  de renderizar. El parser también rechazó un obstáculo del iPhone Duo que se salía de su vista (dato heredado).
+- **Diálogo.** Tres conceptos renderizados con el motor y auditados: escalera de marca (A), lente (B) y tríptico de UI
+  real (C). La persona eligió **la lente**: un río de pseudocódigo que, al pasar por una lente oscura, se convierte en
+  el ordinograma, con el nodo del centro iluminado.
+- **Producción.** 6 piezas aceptadas en `packages/pseudolearn_store_media/build/creative/`, fuera de git:
+  encabezado 3840 × 1646 y búsqueda 3840 × 2560, 20 s a 30 fps, y universal 5244 × 2950 PNG opaco, en `es` y `en`. El
+  encabezado lleva la banda sintetizada (−16 LUFS, una nota por nodo que cruza la lente); la búsqueda va sin pista. Las
+  instrucciones son líneas literales de la demo guiada que la app distribuye y ejecuta (`assets/demo/guided_demo_*`),
+  y un test lo exige.
+- **Errores que encontraron las pruebas.** HyperFrames salta de fotograma con los eventos de GSAP suprimidos, así que
+  la animación se dibuja con un reloj de *setter*; la búsqueda dejaba filas cortadas en la lente y ahora caben siempre
+  filas enteras; la universal salía con los nodos partidos y ahora se congela en un cruce.
+- **Audio del encabezado.** La consecuencia 3 de F0 decía «sin pista» y contradecía §3.7 y §8. Se aplicó la decisión de
+  la persona en §8 (solo la búsqueda va sin pista) y se corrigió la consecuencia 3.
+- **Verificación.** `pnpm check` y 397 tests. `git check-ignore` confirma que `build/creative/` está ignorado;
+  `stories/app-store-creative.json` se versiona.
+- **Pendientes.** La revisión humana en Preview de App Store Connect queda para cuando la rama llegue a `master`
+  (decisión de la persona); la subida es de F6. Quedan a 30 fps; 60 fps es un cambio de catálogo si se pide.
+
 ### F5 — Microsoft Store (escritorio)
 
 - A: plantilla de captura **sin texto añadido** y leyendas como datos, super hero art sin texto ni UI, tráiler
@@ -456,8 +485,8 @@ Consecuencias para el plan:
    (F4); el motor no produce piezas distintas para Mac.
 2. **Duraciones:** el vídeo de encabezado dura entre 10 y 30 s y las app previews entre 15 y 30 s, para cumplir a la
    vez el campo `duration` y el `shortName`, como hizo traceiron.
-3. **Audio:** las app previews **exigen** pista de audio. Llevan la banda sintetizada de §3.7. Los
-   vídeos de encabezado y búsqueda no llevan pista.
+3. **Audio:** las app previews **exigen** pista de audio. Llevan la banda sintetizada de §3.7. El vídeo de
+   encabezado la lleva también, aunque no es obligatoria (decisión de §8); el de búsqueda no lleva pista.
 4. **Imágenes estáticas en PNG** siempre, y opacas también en Mac, aunque allí el catálogo admita alfa.
 5. **Dynamic Island (medium):** la ayuda la declara obligatoria, pero la 1.1.1 se publicó solo con la clase large. F2
    produce la clase large en 1320 × 2868 y añade la medium (1206 × 2622) solo si App Store Connect la exige al enviar.
