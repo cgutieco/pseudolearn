@@ -121,7 +121,9 @@ referencias, símbolos de workspace, resaltados, completado y tokens: `TOOL.LSP.
 símbolos sean completos (archivos cerrados, homónimos, alias) y el tamaño de cada respuesta crece linealmente con el
 texto que envía el propio cliente. Tampoco se reduce `textDocument/formatting` a ediciones mínimas: una edición del
 documento completo es válida en LSP y el corpus no pide conservar cursor ni selección; queda como mejora de
-experiencia, no como defecto.
+experiencia, no como defecto. Renombrar una local con el nombre de una constante del módulo, o al revés, es una
+colisión: el lenguaje no tiene otras variables de módulo y `declaration_collides` ya cubre las constantes;
+`tests/lsp_rename.rs` lo fija en ambos sentidos.
 
 ### Invalidación por plantillas en el workspace
 

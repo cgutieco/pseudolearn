@@ -72,3 +72,26 @@ fn renaming_a_local_to_its_own_name_is_not_a_collision() {
     let response = rename(&mut server, 3, 9, "total");
     assert_eq!(edit_count(&response), 2, "{response}");
 }
+
+const CONSTANT_PROGRAM: &str = "Constante LIMITE Como Entero <- 5;\nSubProceso Usa()\nDefinir total Como Entero <- 1;\nEscribir total + LIMITE;\nFinSubProceso\nAlgoritmo Main\nUsa();\nFinAlgoritmo\n";
+
+#[test]
+fn renaming_a_local_onto_a_module_constant_is_rejected() {
+    let mut server = ready_server(CONSTANT_PROGRAM);
+    let response = rename(&mut server, 2, 9, "LIMITE");
+    assert!(response.get("error").is_some(), "{response}");
+}
+
+#[test]
+fn renaming_a_module_constant_onto_a_local_is_rejected() {
+    let mut server = ready_server(CONSTANT_PROGRAM);
+    let response = rename(&mut server, 0, 11, "total");
+    assert!(response.get("error").is_some(), "{response}");
+}
+
+#[test]
+fn renaming_a_module_constant_to_a_free_name_edits_every_occurrence() {
+    let mut server = ready_server(CONSTANT_PROGRAM);
+    let response = rename(&mut server, 0, 11, "TOPE");
+    assert_eq!(edit_count(&response), 2, "{response}");
+}
