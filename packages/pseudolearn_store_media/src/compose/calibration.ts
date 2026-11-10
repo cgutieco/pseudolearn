@@ -1,4 +1,5 @@
 import type { Slot } from "../catalog/catalog_types.ts";
+import { sampleEveryFrame } from "../layout/frame_sampling.ts";
 import { centeredIn, toPixels, type PixelRect } from "../layout/pixel_rect.ts";
 import type { Beat } from "../story/storyboard.ts";
 import {
@@ -43,7 +44,8 @@ export function buildCalibration(request: CalibrationRequest): Composition {
     canvas,
     durationSeconds,
     html,
-    layout: [{ timeSeconds: 0, elements: [{ name: "lockup", rect: scaledAbout(lockup, MAXIMUM_PULSE), essential: true }] }],
+    layout: sampleEveryFrame({ durationSeconds, fps: slot.video?.fps ?? 1 },
+      () => [{ name: "lockup", rect: scaledAbout(lockup, MAXIMUM_PULSE), essential: true }]),
     texts: [],
   };
 }

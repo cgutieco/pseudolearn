@@ -63,6 +63,14 @@ export type Device = {
   readonly insets: Insets;
 };
 
+export type ViewportRect = { readonly x: number; readonly y: number; readonly width: number; readonly height: number };
+
+export type ViewportProfile = {
+  readonly name: string;
+  readonly viewport: { readonly width: number; readonly height: number };
+  readonly occlusions: readonly ViewportRect[];
+};
+
 export type SecondsRange = { readonly min: number; readonly max: number };
 
 export type AudioProfile = {
@@ -108,6 +116,7 @@ export type Slot = {
   readonly maxBytes: number;
   readonly safeArea: NormalizedRect;
   readonly rules: readonly LayoutRule[];
+  readonly viewportProfiles: readonly ViewportProfile[];
   readonly video: VideoTraits | null;
   readonly device: Device | null;
 };

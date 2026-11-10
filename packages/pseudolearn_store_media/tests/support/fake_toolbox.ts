@@ -54,7 +54,7 @@ function fakeMedia(script: FakeScript, probe: VideoProbe, record: MediaRecord): 
     },
     probe: async () => ({ ok: true, value: { ...probe, ...script.probe } }),
     measureLoudness: async () => ({ ok: true, value: loudness.shift() ?? { integratedLufs: -16, truePeakDb: -4 } }),
-    sampleFrame: async (_path, index) => ({ ok: true, value: index === 0 ? FRAME : (script.lastFrame ?? FRAME) }),
+    sampleFrame: async (_path, index) => ({ ok: true, value: index === lastIndex(script) ? (script.lastFrame ?? FRAME) : FRAME }),
     assemblePlate: async (request) => {
       written.set(request.outputPath, new Uint8Array([request.files.length]));
       return script.assemble ?? { ok: true, value: request.outputPath };
@@ -68,6 +68,11 @@ function fakeMedia(script: FakeScript, probe: VideoProbe, record: MediaRecord): 
       return script.flatten ?? { ok: true, value: output };
     },
   };
+}
+
+function lastIndex(script: FakeScript): number {
+  const frames = script.frames ?? DEFAULT_FRAMES;
+  return frames.ok ? frames.value.frameCount - 1 : -1;
 }
 
 function fakeFiles(written: Map<string, string | Uint8Array>): FileStore {

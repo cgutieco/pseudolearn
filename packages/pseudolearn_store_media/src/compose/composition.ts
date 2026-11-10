@@ -58,3 +58,13 @@ export function viewBoxSize(svg: string): Size {
   const match = /viewBox="\s*[-\d.]+[\s,]+[-\d.]+[\s,]+([\d.]+)[\s,]+([\d.]+)\s*"/u.exec(svg);
   return { width: Number(match?.[1] ?? 0), height: Number(match?.[2] ?? 0) };
 }
+
+export function settingClockTimeline(durationSeconds: number): string {
+  return `const clock = { now: 0, get t() { return this.now; }, set t(value) { this.now = value; render(value); } };
+render(0);
+timeline.to(clock, { t: ${durationSeconds}, duration: ${durationSeconds}, ease: "none" }, 0);`;
+}
+
+export function frozenClockTimeline(atSeconds: number): string {
+  return `render(${atSeconds});`;
+}

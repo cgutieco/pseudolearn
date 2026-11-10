@@ -31,7 +31,6 @@ export function produceCalibration(request: CalibrationJob): Promise<Outcome<Man
     composition,
     storyboard,
     voice: CALIBRATION_VOICE,
-    profiles: [],
     outputRoot: request.outputRoot,
   });
 }

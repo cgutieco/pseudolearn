@@ -1,0 +1,32 @@
+{
+  "id": "app-store-creative",
+  "durationSeconds": 20,
+  "posterSeconds": 0,
+  "rows": { "statementsPerRow": 4, "statementStride": 3, "phaseStride": 0.37 },
+  "statements": {
+    "es": [
+      { "text": "Proceso DemostracionGuiada", "kind": "terminal" },
+      { "text": "Definir temperatura Como Entero <- 30;", "kind": "process" },
+      { "text": "Definir lecturas Como Entero <- 0;", "kind": "process" },
+      { "text": "Mientras temperatura > 24 Hacer", "kind": "decision" },
+      { "text": "temperatura <- temperatura - 3;", "kind": "process" },
+      { "text": "lecturas <- lecturas + 1;", "kind": "process" },
+      { "text": "Escribir \"Lectura \", lecturas, \": \", temperatura, \" grados\";", "kind": "io" },
+      { "text": "FinMientras", "kind": "join" },
+      { "text": "Escribir \"Confort alcanzado tras \", lecturas, \" lecturas\";", "kind": "io" },
+      { "text": "FinProceso", "kind": "terminal" }
+    ],
+    "en": [
+      { "text": "algorithm GuidedDemo", "kind": "terminal" },
+      { "text": "define temperature as integer <- 30;", "kind": "process" },
+      { "text": "define readings as integer <- 0;", "kind": "process" },
+      { "text": "while temperature > 24 do", "kind": "decision" },
+      { "text": "temperature <- temperature - 3;", "kind": "process" },
+      { "text": "readings <- readings + 1;", "kind": "process" },
+      { "text": "write \"Reading \", readings, \": \", temperature, \" degrees\";", "kind": "io" },
+      { "text": "endWhile", "kind": "join" },
+      { "text": "write \"Comfort reached after \", readings, \" readings\";", "kind": "io" },
+      { "text": "endAlgorithm", "kind": "terminal" }
+    ]
+  }
+}

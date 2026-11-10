@@ -2,17 +2,19 @@ import type { Catalog } from "../catalog/catalog_types.ts";
 import type { Voice } from "../audio/score.ts";
 import type { Finding } from "../audit/finding.ts";
 import { auditDelivery } from "../audit/delivery_audit.ts";
-import { auditLoop } from "../audit/loop_audit.ts";
-import { auditSafeArea } from "../audit/safe_area_audit.ts";
+import { auditLoopSeam, type SeamFrames } from "../audit/loop_seam_audit.ts";
+import { auditFrameCoverage, auditSafeArea } from "../audit/safe_area_audit.ts";
 import { auditLexicon } from "../audit/text_audit.ts";
 import { auditVideo } from "../audit/video_audit.ts";
 import type { Composition } from "../compose/composition.ts";
-import type { ViewportProfile } from "../layout/crop_projection.ts";
 import type { Storyboard } from "../story/storyboard.ts";
 import { manifestOf, type Manifest } from "./manifest.ts";
 import type { Outcome, Toolbox } from "./ports.ts";
 import type { Job } from "./render_plan.ts";
+import { needsSafeAreaReview, produceSafeAreaReview } from "./safe_area_review.ts";
 import { produceSoundtrack } from "./soundtrack.ts";
+
+export type ProjectAsset = { readonly name: string; readonly bytes: Uint8Array };
 
 export type VideoRequest = {
   readonly toolbox: Toolbox;
@@ -21,7 +23,7 @@ export type VideoRequest = {
   readonly composition: Composition;
   readonly storyboard: Storyboard;
   readonly voice: Voice;
-  readonly profiles: readonly ViewportProfile[];
+  readonly assets?: readonly ProjectAsset[];
   readonly outputRoot: string;
 };
 
@@ -40,10 +42,7 @@ export async function produceVideo(request: VideoRequest): Promise<Outcome<Manif
   if (!frames.ok) {
     return frames;
   }
-  const soundtrack = video.audio === "required"
-    ? await produceSoundtrack({ toolbox, storyboard: request.storyboard, voice: request.voice,
-      sampleRate: video.codecProfile.audio.sampleRate, loudness: request.catalog.loudness, directory })
-    : null;
+  const soundtrack = await soundtrackFor(request, directory);
   if (soundtrack && !soundtrack.ok) {
     return soundtrack;
   }
@@ -57,14 +56,34 @@ export async function produceVideo(request: VideoRequest): Promise<Outcome<Manif
   if (!findings.ok) {
     return findings;
   }
+  const review = needsSafeAreaReview(job.slot)
+    ? await produceSafeAreaReview({ toolbox, slot: job.slot, directory, frames: frames.value, fps: video.fps })
+    : { ok: true as const, value: "" };
+  if (!review.ok) {
+    return review;
+  }
   return writeManifest(request, directory, { file: outputPath, checkedFrames: frames.value.frameCount,
     findings: [...(soundtrack?.value.findings ?? []), ...findings.value] });
 }
 
+function soundtrackFor(request: VideoRequest, directory: string) {
+  const video = request.job.slot.video;
+  if (!video || video.audio !== "required") {
+    return Promise.resolve(null);
+  }
+  return produceSoundtrack({ toolbox: request.toolbox, storyboard: request.storyboard, voice: request.voice,
+    sampleRate: video.codecProfile.audio.sampleRate, loudness: request.catalog.loudness, directory });
+}
+
 function preRenderFindings(request: VideoRequest): readonly Finding[] {
-  const { catalog, job, composition, profiles } = request;
+  const { catalog, job, composition } = request;
+  const fps = job.slot.video?.fps ?? 1;
+  const coverage = job.slot.rules.includes("key-info-centered")
+    ? auditFrameCoverage(composition.id, { durationSeconds: composition.durationSeconds, fps }, composition.layout)
+    : [];
   return [
-    ...auditSafeArea(composition.id, { slot: job.slot, frames: composition.layout, profiles }),
+    ...coverage,
+    ...auditSafeArea(composition.id, { slot: job.slot, frames: composition.layout, profiles: job.slot.viewportProfiles }),
     ...auditLexicon(catalog, job.slot.store, composition.texts),
   ];
 }
@@ -75,24 +94,40 @@ async function renderFrames(request: VideoRequest, directory: string, fps: numbe
   await files.ensureDirectory(projectDirectory);
   await files.writeText(files.join(projectDirectory, "index.html"), request.composition.html);
   await files.copyTimelineLibrary(projectDirectory);
+  for (const asset of request.assets ?? []) {
+    await files.writeBytes(files.join(projectDirectory, asset.name), asset.bytes);
+  }
   return request.toolbox.frames.renderFrames({ projectDirectory, framesDirectory: files.join(directory, "frames"), fps });
 }
 
 async function postRenderFindings(request: VideoRequest, outputPath: string, frameCount: number): Promise<Outcome<readonly Finding[]>> {
   const { media } = request.toolbox;
   const probe = await media.probe(outputPath);
-  const first = await media.sampleFrame(outputPath, 0);
-  const last = await media.sampleFrame(outputPath, frameCount - 1);
-  if (!probe.ok || !first.ok || !last.ok) {
-    return { ok: false, error: [probe, first, last].map((step) => (step.ok ? "" : step.error)).join(" ").trim() };
+  const seam = await sampleSeam(request, outputPath, frameCount);
+  if (!probe.ok || !seam.ok) {
+    return { ok: false, error: [probe, seam].map((step) => (step.ok ? "" : step.error)).join(" ").trim() };
   }
   const target = request.composition.id;
   const profile = request.job.slot.video?.codecProfile;
   return { ok: true, value: [
     ...auditVideo({ slot: request.job.slot, target, probe: probe.value }),
     ...(profile ? auditDelivery({ profile, target, probe: probe.value }) : []),
-    ...auditLoop(target, first.value, last.value),
+    ...auditLoopSeam(target, seam.value),
   ] };
+}
+
+async function sampleSeam(request: VideoRequest, outputPath: string, frameCount: number): Promise<Outcome<SeamFrames>> {
+  const indices = [0, 1, 2, frameCount - 3, frameCount - 2, frameCount - 1].map((index) => Math.max(0, index));
+  const sampled: Uint8Array[] = [];
+  for (const index of indices) {
+    const frame = await request.toolbox.media.sampleFrame(outputPath, index);
+    if (!frame.ok) {
+      return frame;
+    }
+    sampled.push(frame.value);
+  }
+  const [first, second, third, antepenultimate, penultimate, last] = sampled as [Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array, Uint8Array];
+  return { ok: true, value: { first, second, third, antepenultimate, penultimate, last } };
 }
 
 type ManifestBody = { readonly file: string | null; readonly checkedFrames: number; readonly findings: readonly Finding[] };

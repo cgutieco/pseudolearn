@@ -40,14 +40,14 @@ Se omiten las aristas hacia `catalog`, que todas las capas pueden importar, y la
 | Capa       | Qué hace                                                                                         |
 |:-----------|:-------------------------------------------------------------------------------------------------|
 | `catalog`  | Lee y valida `catalog/slots.json` y `catalog/lexicon.json`: ranuras, dispositivos, códecs, sonoridad, léxico |
-| `story`    | Guiones con hitos (`Beat`), historias de capturas y de previews, plan temporal de escenas y lectura de las placas de la app |
-| `layout`   | Zonas seguras, recorte por dispositivo, métricas de fuentes, ajuste de textos, geometría editorial, rótulos de preview y anclaje de anotaciones |
+| `story`    | Guiones con hitos (`Beat`), historias de capturas, de previews y de la lente, plan temporal de escenas y lectura de las placas de la app |
+| `layout`   | Zonas seguras, recorte por dispositivo, muestreo de todos los fotogramas, lámina de revisión, métricas de fuentes, ajuste de textos, geometría editorial, rótulos de preview y anclaje de anotaciones |
 | `audio`    | Partitura, síntesis en bucle exacto, ganancia y codificación WAV, sin dependencias              |
 | `audit`    | Hallazgos con regla estable: medidas, alfa, códec, fps, duración, audio, bucle, placa, léxico, contraste, ajuste, entrega, transiciones, UI visible, portada y tiempo de lectura |
-| `compose`  | Composiciones HyperFrames en HTML: calibración, captura editorial y preview con placas animadas    |
+| `compose`  | Composiciones HyperFrames en HTML: calibración, captura editorial, preview con placas animadas y lámina de zona segura |
 | `pipeline` | Plan objetivo × idioma, producción de capturas, vídeo y previews, banda sonora y manifiesto, contra puertos |
 | `render`   | Adaptadores: productor de HyperFrames, FFmpeg y ffprobe, ensamblado de placas, archivos y catálogo |
-| `cli`      | `plan`, `calibrate`, `screenshots`, `previews` y `audit-image`                                     |
+| `cli`      | `plan`, `calibrate`, `screenshots`, `previews`, `creative` y `audit-image`                         |
 
 ## Flujo principal
 
@@ -126,6 +126,20 @@ Leídas el 2026-11-10. Cada regla del motor que viene de Apple sale de esta tabl
 | [Guías de revisión 2.3](https://developer.apple.com/app-store/review/guidelines/) | 2.3.4: solo capturas de vídeo de la app, con narración y superposiciones de vídeo o texto para explicar | Igual que la fila de metraje: placas de la app y superposiciones |
 | ↑ | 2.3.2 y 2.3.7: indicar compras; sin precios ni términos. 2.3.8: apto 4+. 2.3.9: derechos y datos de cuenta ficticios. 2.3.10: sin otras plataformas | Rótulo `disclosure`, léxico (`price`, `other-platform`) y la cuenta ficticia de las placas |
 | [Catálogo de la API](https://developer.apple.com/documentation/appstoreconnectapi) `GET /v1/appAssetLibraryRefData` | `audioRequired: true`, 23–30 fps, 500 MB, tres por grupo; duración `PT5S`–`PT30S` con `shortName` `t15~30` | Audio obligatorio, 30 fps y 15–30 s (lo más estricto de las dos fuentes) |
+
+## Fuentes de Apple para los creative assets
+
+Leídas el 2026-11-10, junto con el catálogo de la API (solo `GET`). Lo que no aparece aquí es decisión propia.
+
+| Fuente | Qué dice | Qué hace el motor |
+|:--|:--|:--|
+| [Creative assets](https://developer.apple.com/help/app-store-connect/reference/app-information/creative-assets-specifications/) | Encabezado 21:9 de 3840 × 1646; búsqueda 3:2 de 1920 × 1280 a 3840 × 2560; universal 16:9 de 5244 × 2950 solo PNG; sin alfa | Una ranura por medida en `slots.json`; `MEDIA-DIMENSIONS` y `MEDIA-ALPHA` |
+| ↑ | Vídeo a 30 o 60 fps, de 5 a 30 s, en .mov, .m4v o .mp4; silenciado por defecto (en búsqueda no se puede activar el sonido); se reproduce en bucle en los dos sitios | `MEDIA-FPS`, `MEDIA-DURATION`, `MEDIA-LOOP`; la búsqueda va sin pista |
+| ↑ | Disponibles en iOS 27 y iPadOS 27 o posteriores | Las piezas no se hacen por plataforma; ninguna fuente menciona macOS |
+| [Buenas prácticas](https://developer.apple.com/app-store/asset-best-practices/) | Una sola idea clara; texto, si lo hay, en una frase corta que acompañe; funciona primero en silencio; bucle sin saltos ni cortes; portada impactante (el primer fotograma); lo esencial en la zona segura y el centro | Zona segura comprobada en cada fotograma, costura del bucle medida contra el propio movimiento y lámina de revisión por dispositivo |
+| ↑ | Sin precios, URL, ©, premios no verificables, otras plataformas ni reconocimientos de Apple; apto 4+ | Léxico `app-store` |
+| Catálogo `appAssetLibraryRefData` | Encabezado: vídeo `t10~30`, sin audio obligatorio, imagen solo PNG; búsqueda: vídeo `t15~30`, sin audio obligatorio; universal sin vídeo; 500 MB por archivo; grupo `DEFAULT_PROFILE` de plataforma `ANY` | Encabezado de 10 a 30 s y búsqueda de 15 a 30 s; `MEDIA-SIZE` a 524 288 000 bytes |
+| Plantilla Sketch de Apple (2026-08-28) | Rectángulo «Art Safe Area» de cada mesa | `safeArea` de cada ranura, en fracciones del lienzo |
 
 ## Decisiones y su porqué
 
@@ -222,6 +236,60 @@ Leídas el 2026-11-10. Cada regla del motor que viene de Apple sale de esta tabl
   del panel. Una anotación con punto se ancla al rectángulo de su pieza en el fotograma en que aparece; si la UI se
   desplaza debajo (el diagrama sigue la ejecución), el punto se queda donde estaba, así que solo conviene en escenas
   quietas.
+- **Recortes por dispositivo del encabezado (estimados, no oficiales).** Apple no publica cómo recorta el encabezado en
+  cada dispositivo. `slots.json` declara seis perfiles (`viewportProfiles`: iPhone vertical en dos medidas, iPhone Duo
+  vertical y horizontal, iPad horizontal y vertical) con el tamaño visible y los obstáculos (botones y pestañas) que
+  traceiron midió en capturas de Preview de App Store Connect. Se tomaron sus datos; se rechazó su zona segura estimada,
+  porque la oficial de la plantilla es la autoridad. El obstáculo inferior del iPhone Duo vertical se salía de su vista
+  (141 + 41 > 167) y el parser lo rechazó: se recortó a la vista. El recorte es centrado, `s = max(w/W, h/H)`. Un
+  elemento esencial tiene que quedar en la zona oficial **y** visible y libre en cada perfil. Consecuencia práctica: la barra de
+  pestañas del iPad horizontal tapa la franja superior de la zona oficial hasta y = 551 px (de 493), así que en el
+  encabezado lo esencial empieza más abajo; los primeros borradores de F4 que llenaban la zona oficial se rechazaron por
+  eso antes de renderizar. La búsqueda no tiene
+  perfiles medidos: solo se comprueba la zona oficial, y la revisión final es humana en Preview.
+- **Todos los fotogramas.** En una ranura con `key-info-centered`, la composición entrega la disposición de cada
+  fotograma (`sampleEveryFrame`); si falta alguno, `MEDIA-SAFE-AREA` la rechaza antes de renderizar. Comprobar solo el
+  primer fotograma dejaba pasar un elemento que se sale a mitad del bucle.
+- **Costura del bucle medida contra el propio movimiento.** La diferencia entre el último y el primer fotograma se
+  compara con el mayor movimiento entre fotogramas vecinos de cada lado sin incluirlos (segundo y tercero; antepenúltimo
+  y penúltimo). Se acepta hasta el doble de ese movimiento, nunca por debajo de 0,005. Así una pieza que se mueve sin
+  parar no falla por moverse, y una pieza quieta sigue exigiendo una costura invisible. Un último fotograma roto no se
+  disculpa a sí mismo, porque no entra en la medida del movimiento.
+- **Lámina de revisión.** Cada vídeo de App Store con `key-info-centered` deja `safe-area-review.png`: el inicio y cada
+  cuarto del bucle, en el lienzo completo y en cada perfil, con la zona oficial en trazo discontinuo y los obstáculos
+  opacos. Es una simulación geométrica para revisión humana, no una captura de App Store Connect.
+- **Concepto de los creative assets (aprobado por la persona en F4): la lente.** Un río de pseudocódigo cruza el lienzo
+  en filas sobre el papel claro de las capturas; en el centro, una lente oscura muestra esas mismas instrucciones
+  convertidas en el ordinograma, con las formas de la app (terminal, entrada y salida, proceso, decisión y unión), y el
+  nodo que pasa por el centro se ilumina como si se ejecutara. Una sola idea: lo que escribes, el motor lo ve por
+  dentro. Se descartaron en el diálogo una escalera de marca con un contador de programa (A) y un tríptico de UI real
+  alrededor del código (C). Encabezado, búsqueda y universal usan la misma historia
+  (`stories/app-store-creative.json`): las instrucciones del programa de demostración de las placas, en `es` y `en`,
+  con la misma forma y orden en los dos idiomas.
+- **La lente vive en la zona libre, no en la zona oficial.** `clearZone` parte de la zona de la plantilla, la recorta a
+  lo visible en cada perfil y la aparta de cada obstáculo por el lado que conserva más área. La lente es esa zona con un
+  margen de 2,5 % a los lados y 3 % arriba y abajo. Así, si cambian los perfiles, la lente se recoloca sola.
+- **Geometría proporcional.** En la lente caben siempre un número impar de filas enteras (3, 5, 7…) más 0,8 filas de
+  margen, con el paso más grande que no supere en más de un 5 % el ancho de la lente / 7,8: así ninguna fila asoma
+  cortada por arriba o por abajo. El encabezado queda con 3 filas, la búsqueda con 5 y la universal con 7. El código del río
+  mide 0,42 de ese paso, las etiquetas 0,27 y los nodos 0,62 (0,75 la decisión). Con estas proporciones el encabezado
+  repite el borrador aprobado y la búsqueda y la universal se adaptan sin números propios. Cada nodo mide lo que su
+  etiqueta en IBM Plex Sans más un margen, sin pasar del ancho de su instrucción en el río; `TEXT-FIT` rechaza la pieza
+  si una etiqueta no cabe.
+- **Bucle exacto por construcción.** Cada fila avanza exactamente un mosaico (su suma de instrucciones) por vuelta, así
+  el último fotograma enlaza con el primero. Las filas empiezan desfasadas (`phaseStride`) y cada una gira el programa
+  `statementStride` instrucciones, para que no se lean iguales.
+- **Sonido en los cruces.** Cada nodo de una fila de la lente que pasa por el centro es una nota de `PREVIEW_VOICE`: la
+  condición del bucle es un acento y el resto, notas suaves. La altura depende del tipo de instrucción y de la fila (tres registros que se repiten si hay más filas). El
+  vídeo de búsqueda no lleva pista.
+- **La imagen universal es un instante del bucle.** Se congela en el primer cruce de la fila central a partir de
+  `posterSeconds`, para que la lente muestre un nodo entero e iluminado en el centro.
+- **Reloj que se dibuja al saltar.** HyperFrames salta a cada fotograma con `totalTime(t, true)`, que suprime los
+  eventos de GSAP, así que un `onUpdate` no se llamaría. La composición anima un objeto cuya propiedad `t` es un
+  *setter* que llama a `render(t)`: GSAP la asigna al saltar aunque suprima eventos. Lo vio el primer borrador: dos
+  fotogramas distintos salían iguales.
+- **Sin fotogramas en disco.** `creative` borra los fotogramas y los de la lámina tras cada pieza: son regenerables y
+  un vídeo de 20 s a 4K ocupa cientos de megabytes.
 - **Calibración.** `calibrate` produce una pieza neutra (marca, ruta animada y pulsos en los hitos) por ranura de vídeo
   para probar toda la cadena sin narrativa. No es material publicable.
 
@@ -250,7 +318,10 @@ Leídas el 2026-11-10. Cada regla del motor que viene de Apple sale de esta tabl
 | Producir todas las capturas de App Store    | `pnpm media screenshots` (o `--lang es`, `--story otra.json`)  |
 | Capturas de una ranura con el margen visible | `pnpm media screenshots --slot apple.mac.screenshot --guides`  |
 | Producir las app previews                   | `pnpm media previews` (o `--slot`, `--lang`, `--story`, `--plates`) |
+| Producir encabezado, búsqueda y universal   | `pnpm media creative` (o `--slot`, `--lang`, `--story`)        |
 
+`creative` escribe en `build/creative/<historia>/` el vídeo, el manifiesto y la lámina de cada ranura, o la imagen y su
+manifiesto en la universal; no necesita placas.
 `previews` lee las placas animadas de `../../apps/pseudolearn_app/build/store-previews` y escribe en
 `build/previews/<historia>/`. `screenshots` lee las placas de `../../apps/pseudolearn_app/build/store-plates` (o de `--plates`) y escribe en
 `build/screenshots/<historia>/`. Sin `--slot`, produce todas las ranuras que declaran dispositivo.

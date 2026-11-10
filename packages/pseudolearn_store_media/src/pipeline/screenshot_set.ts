@@ -48,7 +48,7 @@ function setProblem(request: ScreenshotSetRequest): string | null {
   return tooMany ? `${request.story.chapters.length} chapters exceed the ${tooMany.slot.maxCount} images ${tooMany.slot.id} allows` : null;
 }
 
-async function loadFont(files: FileStore, path: string): Promise<Outcome<LoadedFont>> {
+export async function loadFont(files: FileStore, path: string): Promise<Outcome<LoadedFont>> {
   const bytes = await files.readBytesIfPresent(path);
   if (!bytes) {
     return { ok: false, error: `missing font ${path}` };

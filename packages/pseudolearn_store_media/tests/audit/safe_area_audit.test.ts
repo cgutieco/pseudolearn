@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { auditSafeArea } from "../../src/audit/safe_area_audit.ts";
+import { auditFrameCoverage, auditSafeArea } from "../../src/audit/safe_area_audit.ts";
 import { slot } from "../support/catalog.ts";
 
 const universal = slot("apple.universal.image");
@@ -15,5 +15,20 @@ describe("auditSafeArea", () => {
     expect(auditSafeArea("universal", { slot: universal, frames, profiles: [] })).toEqual([
       { rule: "MEDIA-SAFE-AREA", target: "universal", message: "lockup leaves the safe area at 2.00s" },
     ]);
+  });
+});
+
+describe("auditFrameCoverage", () => {
+  const lockup = [{ name: "lockup", rect: { x: 0, y: 0, width: 1, height: 1 }, essential: true }];
+
+  it("accepts a layout that checks every frame", () => {
+    const layout = [0, 1, 2].map((index) => ({ timeSeconds: index / 30, elements: lockup }));
+    expect(auditFrameCoverage("header", { durationSeconds: 0.1, fps: 30 }, layout)).toEqual([]);
+  });
+
+  it("rejects a layout that checks a single frame of a moving piece", () => {
+    const findings = auditFrameCoverage("header", { durationSeconds: 10, fps: 30 }, [{ timeSeconds: 0, elements: lockup }]);
+    expect(findings).toEqual([{ rule: "MEDIA-SAFE-AREA", target: "header",
+      message: "layout misses 299 frames (1, 2, 3, 4, 5, …); every frame must be checked" }]);
   });
 });

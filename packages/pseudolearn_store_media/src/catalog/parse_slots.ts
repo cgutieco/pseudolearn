@@ -10,8 +10,9 @@ import {
   type VideoTraits,
 } from "./catalog_types.ts";
 import type { JsonObject, JsonReader } from "./json_reader.ts";
+import { parseViewportProfiles } from "./parse_viewport_profiles.ts";
 
-const SLOT_KEYS = ["id", "store", "surface", "kind", "width", "height", "maxCount", "maxBytes", "safeArea", "rules", "video", "device"];
+const SLOT_KEYS = ["id", "store", "surface", "kind", "width", "height", "maxCount", "maxBytes", "safeArea", "rules", "viewportProfiles", "video", "device"];
 const VIDEO_KEYS = ["fps", "acceptedFps", "duration", "codecProfile", "audio"];
 const APPLE_MAX_BYTES = 524_288_000;
 const FULL_CANVAS: NormalizedRect = { x: 0, y: 0, width: 1, height: 1 };
@@ -59,6 +60,7 @@ function parseSlot(context: SlotContext, entry: JsonObject, path: string): Slot 
     safeArea: entry["safeArea"] === undefined ? FULL_CANVAS : parseRect(reader, entry["safeArea"], `${path}.safeArea`),
     rules: reader.array(entry["rules"] ?? [], `${path}.rules`)
       .map((rule, index) => reader.member(rule, `${path}.rules[${index}]`, LAYOUT_RULES)),
+    viewportProfiles: parseViewportProfiles(reader, entry["viewportProfiles"], `${path}.viewportProfiles`),
     video,
     device: parseDeviceReference(context, entry, { path, kind }),
   };

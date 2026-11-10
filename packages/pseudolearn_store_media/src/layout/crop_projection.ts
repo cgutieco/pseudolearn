@@ -1,10 +1,7 @@
+import type { ViewportProfile } from "../catalog/catalog_types.ts";
 import { contains, intersects, type PixelRect, type Size } from "./pixel_rect.ts";
 
-export type ViewportProfile = {
-  readonly name: string;
-  readonly viewport: Size;
-  readonly occlusions: readonly PixelRect[];
-};
+export type { ViewportProfile };
 
 export type Projection = { readonly scale: number; readonly offsetX: number; readonly offsetY: number };
 
@@ -30,4 +27,13 @@ export function isClearIn(profile: ViewportProfile, canvas: Size, rect: PixelRec
   const projected = project(rect, projectionOf(profile, canvas));
   const visible = { x: 0, y: 0, width: profile.viewport.width, height: profile.viewport.height };
   return contains(visible, projected) && !profile.occlusions.some((occlusion) => intersects(occlusion, projected));
+}
+
+export function unproject(rect: PixelRect, projection: Projection): PixelRect {
+  return {
+    x: (rect.x - projection.offsetX) / projection.scale,
+    y: (rect.y - projection.offsetY) / projection.scale,
+    width: rect.width / projection.scale,
+    height: rect.height / projection.scale,
+  };
 }

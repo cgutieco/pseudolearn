@@ -6,6 +6,7 @@ import { loadCatalog } from "../render/catalog_files.ts";
 import { silenceTelemetry } from "../render/hyperframes_renderer.ts";
 import { runAuditImage } from "./audit_image_command.ts";
 import { runCalibrate } from "./calibrate_command.ts";
+import { runCreative } from "./creative_command.ts";
 import { runPlan } from "./plan_command.ts";
 import { runPreviews } from "./previews_command.ts";
 import { runScreenshots } from "./screenshots_command.ts";
@@ -30,6 +31,7 @@ const COMMANDS: Readonly<Record<string, (context: CommandContext) => Promise<num
   "audit-image": runAuditImage,
   screenshots: runScreenshots,
   previews: runPreviews,
+  creative: runCreative,
 };
 
 async function main(argv: readonly string[]): Promise<number> {

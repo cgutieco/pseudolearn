@@ -22,7 +22,7 @@ function run(slotId: string, script: FakeScript = {}, probe: VideoProbe = previe
   const storyboard = calibrationStoryboard(job.slot);
   const composition = buildCalibration({ slot: job.slot, durationSeconds: storyboard.durationSeconds, beats: storyboard.beats, guides: false });
   const toolbox = fakeToolbox(script, probe);
-  const result = produceVideo({ toolbox, catalog, job, composition, storyboard, voice: CALIBRATION_VOICE, profiles: [], outputRoot: "out" });
+  const result = produceVideo({ toolbox, catalog, job, composition, storyboard, voice: CALIBRATION_VOICE, outputRoot: "out" });
   return { toolbox, result, composition };
 }
 
@@ -46,6 +46,27 @@ describe("produceVideo", () => {
     expect(toolbox.encodes[0]?.audioPath).toBeNull();
   });
 
+
+  it("checks every frame of the header against the device crops and draws the review board", async () => {
+    const probe = { ...previewProbe, width: 3840, height: 1646, durationSeconds: 10 };
+    const { toolbox, result } = run("apple.header.video", { frames: { ok: true, value: { framePattern: "f/frame_%06d.png", startNumber: 1, frameCount: 300 } } }, probe);
+    const outcome = await result;
+    expect(outcome.ok && isAccepted(outcome.value)).toBe(true);
+    expect(toolbox.written.has("out/app-store/apple.header.video/es/safe-area-review.png")).toBe(true);
+  });
+});
+
+describe("produceVideo safe-area coverage", () => {
+  it("refuses to render a header whose layout skips frames", async () => {
+    const [job] = planJobs({ catalog, slotIds: ["apple.header.video"], languages: ["es"] }).jobs;
+    const storyboard = calibrationStoryboard(job!.slot);
+    const full = buildCalibration({ slot: job!.slot, durationSeconds: storyboard.durationSeconds, beats: storyboard.beats, guides: false });
+    const composition = { ...full, layout: full.layout.slice(0, 1) };
+    const toolbox = fakeToolbox({}, previewProbe);
+    const outcome = await produceVideo({ toolbox, catalog, job: job!, composition, storyboard, voice: CALIBRATION_VOICE, outputRoot: "out" });
+    expect(outcome.ok && outcome.value.findings.map((entry) => entry.rule)).toEqual(["MEDIA-SAFE-AREA"]);
+    expect(toolbox.renders).toEqual([]);
+  });
 });
 
 describe("produceVideo rejections", () => {
@@ -75,7 +96,7 @@ describe("produceVideo rejections", () => {
     const [job] = planJobs({ catalog, slotIds: ["apple.mac.screenshot"], languages: ["es"] }).jobs;
     const composition = buildCalibration({ slot: job!.slot, durationSeconds: 1, beats: [], guides: false });
     const outcome = await produceVideo({ toolbox: fakeToolbox({}, previewProbe), catalog, job: job!, composition,
-      storyboard: { id: "still", durationSeconds: 1, beats: [] }, voice: CALIBRATION_VOICE, profiles: [], outputRoot: "out" });
+      storyboard: { id: "still", durationSeconds: 1, beats: [] }, voice: CALIBRATION_VOICE, outputRoot: "out" });
     expect(outcome).toEqual({ ok: false, error: "apple.mac.screenshot is not a video slot" });
   });
 });
