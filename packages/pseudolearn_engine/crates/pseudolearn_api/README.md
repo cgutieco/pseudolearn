@@ -579,7 +579,11 @@ frontera de integración; validación de URL, autorización y representación pe
 del marco y deriva sus tipos de los metadatos públicos de ejecución. La entrada de expresión del parser exige EOF;
 semántica valida un subconjunto sin llamadas y utiliza la resolución ordinaria. Lowering emite una función temporal con
 parámetros de captura, y el bytecode y los operadores de la VM calculan el resultado sobre un heap copiado sin
-anfitrión. No se concatena fuente ni se introduce otro evaluador.
+anfitrión. No se concatena fuente ni se introduce otro evaluador. El tipo de cada captura sale del registro que la
+VM eligió para ese nombre, no de buscar el nombre: la selección léxica deja un solo registro por nombre (gana el ámbito
+más interno), así que ambas formas coinciden hoy, pero la del registro no depende de esa unicidad.
+`tests/inspection_shadowed_names.rs` reutiliza un nombre con tipos distintos en dos bucles y comprueba el tipo y los
+operadores del vínculo en ámbito.
 
 Los literales y capturas de texto se materializan en el heap temporal como valores explícitos. Las identidades y alias
 de arreglos y objetos se conservan dentro de la copia. El presupuesto incluye el heap capturado: una captura que ya
