@@ -5,7 +5,7 @@ from pathlib import Path
 from ..model import catalog as catalog_module
 from ..model import composition as composition_module
 from ..model.catalog import PACKAGE_ROOT
-from ..render import dart, html, svg, typescript
+from ..render import dart, html, store_media, svg, typescript
 from ..model.typography import FONT_DIRECTORY
 from .repository import root
 
@@ -53,6 +53,9 @@ def _tracked(repository, catalog, composition):
     symbol_module = catalog.emitters["typescript_symbol_path"]
     artefacts.append(Artefact(repository / symbol_module.path,
                               typescript.module(composition, catalog)))
+    store_module = catalog.emitters["typescript_store_media"]
+    artefacts.append(Artefact(repository / store_module.path,
+                              store_media.module(composition, catalog)))
     guidelines = catalog.emitters["guidelines"]
     template = (PACKAGE_ROOT / guidelines.template).read_text(encoding="utf-8")
     artefacts.append(Artefact(OUTPUT_DIRECTORY / guidelines.path,

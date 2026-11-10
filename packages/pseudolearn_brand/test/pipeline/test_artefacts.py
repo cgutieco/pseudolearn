@@ -21,7 +21,7 @@ class PlanTest(unittest.TestCase):
     def test_it_plans_local_consumer_outputs_and_the_guidelines(self):
         outputs = {artefact.path.name for artefact in self.plan.tracked}
         self.assertEqual(outputs, {"favicon.svg", "social-card.svg", "symbol-path.generated.ts",
-                                   "guidelines.html"})
+                                   "brand.generated.ts", "guidelines.html"})
 
 
 class CheckTest(unittest.TestCase):
@@ -45,6 +45,14 @@ class CheckTest(unittest.TestCase):
             module = copy / "apps/pseudolearn_web/src/shared/ui/brand-mark/symbol-path.generated.ts"
             module.parent.mkdir(parents=True, exist_ok=True)
             module.write_text("export const BRAND_SYMBOL_PATH = 'M0 0';\n", encoding="utf-8")
+            rules = [violation.rule for violation in artefacts.check(copy)]
+            self.assertIn("BRAND-TS-STALE", rules)
+
+    def test_a_store_media_module_that_drifted_is_reported(self):
+        with self.repository_copy() as copy:
+            module = copy / "packages/pseudolearn_store_media/src/compose/brand.generated.ts"
+            module.parent.mkdir(parents=True, exist_ok=True)
+            module.write_text("export const BRAND_INK = '#000000';\n", encoding="utf-8")
             rules = [violation.rule for violation in artefacts.check(copy)]
             self.assertIn("BRAND-TS-STALE", rules)
 

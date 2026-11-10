@@ -30,6 +30,7 @@ dart_define.local.json
 
 # Salida del motor de marca
 packages/pseudolearn_brand/out/
+packages/pseudolearn_store_media/src/compose/brand.generated.ts
 
 # Python
 __pycache__/

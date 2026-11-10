@@ -179,6 +179,10 @@
       "path": "apps/pseudolearn_web/src/shared/ui/brand-mark/symbol-path.generated.ts",
       "mode": "write"
     },
+    "typescript_store_media": {
+      "path": "packages/pseudolearn_store_media/src/compose/brand.generated.ts",
+      "mode": "write"
+    },
     "dart_brand_metrics": {
       "path": "apps/pseudolearn_app/lib/presentation/theme/tokens/brand_metrics.dart",
       "mode": "verify"
