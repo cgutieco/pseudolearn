@@ -80,6 +80,16 @@ Heredados de un README anterior, sin confirmar:
 - Los íconos de iOS y macOS se generan localmente desde la geometría Dart y se validan con `xcrun actool`; no se ejecutó esa validación al reescribir el README.
 - Las medidas de la marca existen en Python y en Dart (la app las redibuja); `BRAND-DART-DRIFT` solo vigila las constantes declaradas como `static const` en `brand_metrics.dart`.
 
+## pseudolearn_store_media
+
+Confirmados contra el código:
+
+- Los perfiles de recorte del encabezado y la búsqueda por dispositivo (`ViewportProfile`) existen como mecanismo, pero
+  todavía no hay datos medidos: se miden en Preview de App Store Connect durante F4.
+- El locale de español neutro de Microsoft Store está fijado provisionalmente en `es-MX`; falta confirmarlo contra el
+  Centro de partners.
+- La voz sonora (`CALIBRATION_VOICE`) es de calibración; la definitiva se decide con la persona.
+
 ## pseudolearn_backend
 
 Confirmados contra el código:

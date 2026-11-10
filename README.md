@@ -75,6 +75,7 @@ flowchart BT
     subgraph SOPORTE["Soporte"]
         BACK["apps/pseudolearn_backend<br/>Supabase y Deno"]
         BRAND["packages/pseudolearn_brand<br/>identidad visual paramétrica"]
+        MEDIA["packages/pseudolearn_store_media<br/>assets de tienda"]
         BENCH["packages/pseudolearn_benchmarks<br/>rendimiento"]
         CHK["packages/pseudolearn_rust_checks<br/>reglas mecánicas Rust"]
     end
@@ -92,6 +93,8 @@ flowchart BT
     BRAND -.->|artefactos| APP
     BRAND -.->|artefactos| WEB
     BRAND -.->|artefactos| VSC
+    BRAND -.->|artefactos| MEDIA
+    APP -.->|placas de UI| MEDIA
     CLI -.-> BENCH
     APP -->|capturas| WEB
 ```
@@ -139,6 +142,7 @@ persona. La clasificación depende de la responsabilidad y no del lenguaje.
 | `packages/pseudolearn_reference`   | Compilador y verificadores de la especificación ilustrada; genera los paquetes que leen la app y la web | Cargo y rustup                 |
 | `packages/pseudolearn_benchmarks`  | Recolectores, estadísticas y evidencia de rendimiento                                                   | Dart; experimento Rust anidado |
 | `packages/pseudolearn_brand`       | Generación paramétrica de identidad visual                                                              | Python y fonttools             |
+| `packages/pseudolearn_store_media` | Assets de tienda: capturas, vídeos y banda sonora deterministas, con auditoría por ranura               | Node y pnpm; FFmpeg            |
 | `apps/pseudolearn_app`             | Cliente Flutter con puente Rust generado                                                                | Flutter, Dart y Cargo          |
 | `apps/pseudolearn_cli`             | Órdenes de usuario y adaptadores de conformidad                                                         | Cargo y rustup                 |
 | `apps/pseudolearn_backend`         | Backend Supabase                                                                                        | Deno y CLI de Supabase         |
