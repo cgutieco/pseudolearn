@@ -1,7 +1,7 @@
 use super::{ExecutionResource, usage};
 use crate::ApiError;
 use crate::debug_model::DebugSession;
-use pseudolearn_vm::machine_event_count;
+use pseudolearn_vm::{RunExit, machine_event_count};
 use serde_json::{Value, json};
 
 #[path = "debug_state.rs"]
@@ -41,6 +41,7 @@ impl ExecutionResource {
         let configured = DebugSession::new(entry, &breakpoints)?;
         if let Some(debug) = &mut self.debug {
             debug.breakpoints = configured.breakpoints;
+            debug.entry = configured.entry && debug.cursor.is_none();
         } else {
             self.debug = Some(configured);
         }
@@ -55,21 +56,23 @@ impl ExecutionResource {
             .and_then(Value::as_str)
             .ok_or_else(|| usage("missing debug command"))?;
         let task = arguments.get("task_id").and_then(Value::as_u64);
+        let current = self
+            .debug
+            .as_ref()
+            .ok_or_else(|| usage("debugging not configured"))?;
+        if let Some(generation) = arguments.get("stop_generation").and_then(Value::as_u64)
+            && generation != current.generation
+        {
+            return Err(usage("obsolete debug stop"));
+        }
         let selected = task.unwrap_or_else(|| self.default_task());
-        let event = self.debug.as_ref().and_then(|debug| debug.cursor);
-        let machine = self.debug_machine(event, selected)?;
-        let depth = u32::try_from(machine.active_frames_count())
-            .map_err(|_| usage("frame depth overflow"))?;
-        drop(machine);
+        let event = current.cursor;
+        let depth = self.frame_depth_at(event, selected)?;
+        let finished = self.terminal.as_ref().is_some_and(is_final_exit);
         let debug = self
             .debug
             .as_mut()
             .ok_or_else(|| usage("debugging not configured"))?;
-        if let Some(generation) = arguments.get("stop_generation").and_then(Value::as_u64)
-            && generation != debug.generation
-        {
-            return Err(usage("obsolete debug stop"));
-        }
         if command == "pause" {
             debug.history_direction = None;
             debug.stop("pause", task.unwrap_or(debug.task));
@@ -83,8 +86,14 @@ impl ExecutionResource {
                 ),
             )?;
             debug.depth = depth;
+            debug.control_active &= !finished;
         }
         self.debug_state(arguments)
+    }
+
+    fn frame_depth_at(&self, event: Option<usize>, task: u64) -> Result<u32, ApiError> {
+        let machine = self.debug_machine(event, task)?;
+        u32::try_from(machine.active_frames_count()).map_err(|_| usage("frame depth overflow"))
     }
 
     fn default_task(&self) -> u64 {
@@ -130,6 +139,10 @@ impl ExecutionResource {
         }
         debug.stopped
     }
+}
+
+pub(crate) fn is_final_exit(exit: &RunExit) -> bool {
+    !matches!(exit, RunExit::AwaitingInput | RunExit::AwaitingEffect(_))
 }
 
 fn configure_control(

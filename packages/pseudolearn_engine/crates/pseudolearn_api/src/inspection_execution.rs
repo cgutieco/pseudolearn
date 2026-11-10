@@ -54,7 +54,7 @@ pub(super) fn run(
     *machine.heap_mut() = heap;
     for _ in 0..65536 {
         match machine.step_instruction() {
-            None | Some(RunExit::Service(_)) => (),
+            None => (),
             Some(RunExit::Completed(None)) if prepared.aggregate.is_some() => {
                 return render_aggregate(&machine, prepared.aggregate.as_deref().unwrap_or(&[]));
             }

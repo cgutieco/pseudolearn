@@ -1,7 +1,7 @@
 use super::inspection_types::{class_environment, semantic_type};
 use crate::ApiError;
 use crate::execution_resource::usage;
-use pseudolearn_bytecode::{RegisterClass, ValueType};
+use pseudolearn_bytecode::{Register, RegisterClass, ValueType};
 use pseudolearn_semantic::inspection_expression::InspectionEnvironment;
 use pseudolearn_timeline::VariableValue;
 use pseudolearn_vm::{Machine, RuntimeValue};
@@ -27,11 +27,11 @@ pub(super) fn capture(machine: &Machine<'_>, frame: usize) -> Result<InspectionC
         values: Vec::new(),
         texts: Vec::new(),
     };
-    for variable in view.variables {
+    for (register, variable) in inspection.names.keys().zip(view.variables) {
         if matches!(variable.value, VariableValue::Undefined) {
             continue;
         }
-        let kind = variable_type(&inspection, &variable.name)?;
+        let kind = register_type(&inspection, *register)?;
         let type_id = semantic_type(kind, &mut captures.environment.module)?;
         let value = capture_value(variable.value, &mut captures)?;
         captures.environment.bindings.push((variable.name, type_id));
@@ -79,17 +79,13 @@ pub(super) fn result_type(kind: &ValueType) -> &'static str {
     }
 }
 
-fn variable_type<'program>(
+fn register_type<'program>(
     inspection: &'program pseudolearn_vm::ActiveFrameInspection<'_>,
-    name: &str,
+    register: Register,
 ) -> Result<&'program ValueType, ApiError> {
-    inspection
-        .names
-        .iter()
-        .find(|entry| entry.1 == name)
-        .and_then(|(register, _)| match register.class {
-            RegisterClass::Scalar => inspection.scalar_types.get(usize::from(register.index)),
-            RegisterClass::Reference => inspection.reference_types.get(usize::from(register.index)),
-        })
-        .ok_or_else(|| usage("missing inspection variable type"))
+    match register.class {
+        RegisterClass::Scalar => inspection.scalar_types.get(usize::from(register.index)),
+        RegisterClass::Reference => inspection.reference_types.get(usize::from(register.index)),
+    }
+    .ok_or_else(|| usage("missing inspection variable type"))
 }

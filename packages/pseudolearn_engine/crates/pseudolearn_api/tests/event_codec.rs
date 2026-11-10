@@ -214,3 +214,25 @@ fn legacy_binary_writer_rejects_source_identity() {
     );
     assert_eq!(response.pointer("/failure/family"), Some(&json!("usage")));
 }
+
+fn empty_batch_with_pool(pool: &[u8]) -> Value {
+    let mut bytes = vec![80_u8, 76, 69, 86, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    bytes.extend_from_slice(&u32::try_from(pool.len()).unwrap_or(0).to_le_bytes());
+    bytes.extend_from_slice(pool);
+    json!(bytes)
+}
+
+#[test]
+fn an_empty_binary_batch_decodes_but_rejects_a_pool_without_events() {
+    let mut session = ApiSession::default();
+    let empty = session.call(
+        "decode_events",
+        &json!({"encoded":empty_batch_with_pool(b""),"encoding":"binary"}),
+    );
+    assert_eq!(empty, json!({"value":[]}));
+    let padded = session.call(
+        "decode_events",
+        &json!({"encoded":empty_batch_with_pool(b"{}"),"encoding":"binary"}),
+    );
+    assert_eq!(padded.pointer("/failure/family"), Some(&json!("usage")));
+}

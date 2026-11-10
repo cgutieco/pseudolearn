@@ -77,7 +77,7 @@ fn initialize_machine(
         request,
         &prepared.effects,
     );
-    let (initial_state, store) = crate::execution_prepare::initial_checkpoint(&machine)?;
+    let (initial_state, store) = crate::execution_prepare::initial_checkpoint(&machine, &options)?;
     Ok(InitializedMachine {
         program,
         machine,

@@ -70,6 +70,9 @@ pub(super) fn decode_binary(bytes: &[u8]) -> Result<Vec<Value>, ApiError> {
     let layout = WireLayout::new(event_count)?;
     let pool_length = usize::try_from(read_u32_at(bytes, layout.pool_length_start)?)
         .map_err(|_| usage("event pool is too large"))?;
+    if event_count == 0 && pool_length != 0 {
+        return Err(usage("event pool without events"));
+    }
     let expected_length = layout
         .pool_start
         .checked_add(pool_length)

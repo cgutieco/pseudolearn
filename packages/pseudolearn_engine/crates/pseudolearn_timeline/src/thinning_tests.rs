@@ -1,4 +1,4 @@
-use super::{CheckpointStore, event_distance, is_better_victim};
+use super::{CheckpointStore, event_distance};
 use crate::checkpoint::Checkpoint;
 use pseudolearn_bytecode::compile_text;
 use pseudolearn_vm::{Fuel, RunOptions, create_machine, load};
@@ -37,10 +37,32 @@ fn equal_density_candidates_use_composed_slots_then_keep_the_first_exact_tie() -
 }
 
 #[test]
-fn density_ties_prefer_fewer_composed_slots_and_keep_stable_order() {
-    assert!(is_better_victim((2, 6, 4), (3, 4, 5)));
-    assert!(!is_better_victim((2, 6, 5), (3, 4, 4)));
-    assert!(!is_better_victim((2, 6, 4), (3, 4, 4)));
+fn lower_density_score_wins_without_composing_deltas() -> Result<(), String> {
+    let mut store = checkpoints_with_different_deltas()?;
+    let event_positions = [0, 1, 2, 3, 10, 11, 12];
+    for (checkpoint, event_index) in store.checkpoints.iter_mut().zip(event_positions) {
+        checkpoint.event_index = event_index;
+    }
+    let newest = 12;
+    let scores: Vec<u64> = (1..6)
+        .filter_map(|position| store.removal_score(position, newest))
+        .collect();
+    let lowest = scores.iter().copied().min();
+    let chosen = store
+        .sparsest_interior_position()
+        .and_then(|position| store.removal_score(position, newest));
+    assert_eq!(chosen, lowest);
+    Ok(())
+}
+
+#[test]
+fn single_interior_candidate_is_chosen_and_empty_interior_has_none() -> Result<(), String> {
+    let mut store = checkpoints_with_different_deltas()?;
+    store.checkpoints.truncate(3);
+    assert_eq!(store.sparsest_interior_position(), Some(1));
+    store.checkpoints.truncate(2);
+    assert_eq!(store.sparsest_interior_position(), None);
+    Ok(())
 }
 
 #[test]

@@ -1,11 +1,26 @@
 #![forbid(unsafe_code)]
 
 use crate::{ApiDiagnostic, ApiError, ExecuteRequest};
-use pseudolearn_timeline::CheckpointStore;
-use pseudolearn_vm::{LoadedProgram, Machine, load};
+use pseudolearn_timeline::{CheckpointStore, StoreBudget};
+use pseudolearn_vm::{LoadedProgram, Machine, RunOptions, load};
 use serde_json::Value;
 
 pub(crate) const CHECKPOINT_LIMIT: usize = 128;
+const RETAINED_SLOTS_PER_MEMORY_CELL: u64 = 8;
+const MINIMUM_RETAINED_SLOTS: usize = 1 << 20;
+
+pub(crate) fn checkpoint_store(options: &RunOptions) -> CheckpointStore {
+    let slots = options
+        .memory
+        .cells
+        .saturating_mul(RETAINED_SLOTS_PER_MEMORY_CELL);
+    CheckpointStore::with_budget(StoreBudget {
+        max_checkpoints: CHECKPOINT_LIMIT,
+        max_retained_slots: usize::try_from(slots)
+            .unwrap_or(usize::MAX)
+            .max(MINIMUM_RETAINED_SLOTS),
+    })
+}
 
 pub(crate) fn usage(detail: &str) -> ApiError {
     ApiError::InvalidProtocol(detail.to_owned())
@@ -50,9 +65,10 @@ pub(crate) fn network_limits(request: &ExecuteRequest) -> pseudolearn_runtime::N
 
 pub(crate) fn initial_checkpoint(
     machine: &Machine<'_>,
+    options: &RunOptions,
 ) -> Result<(Value, CheckpointStore), ApiError> {
     let state = crate::execution_state::capture(machine);
-    let mut store = CheckpointStore::new(CHECKPOINT_LIMIT);
+    let mut store = checkpoint_store(options);
     store
         .record(machine, 0)
         .map_err(|error| ApiError::InternalFault(format!("{error:?}")))?;

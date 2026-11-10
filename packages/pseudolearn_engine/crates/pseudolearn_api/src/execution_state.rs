@@ -3,6 +3,8 @@ use pseudolearn_timeline::{VariableValue, capture_frame, format_real};
 use pseudolearn_vm::Machine;
 use serde_json::{Map, Value, json};
 
+const MAXIMUM_SLICE_LENGTH: usize = 4096;
+
 pub(crate) fn capture(machine: &Machine<'_>) -> Value {
     let frames: Vec<_> = (0..machine.active_frames_count())
         .filter_map(|position| capture_frame(machine, position).ok())
@@ -225,6 +227,11 @@ fn query_array_slice(
     reference: u64,
     (start_index, slice_length): (usize, usize),
 ) -> Result<Value, crate::ApiError> {
+    if slice_length > MAXIMUM_SLICE_LENGTH {
+        return Err(crate::execution_resource::usage(
+            "array slice exceeds limit",
+        ));
+    }
     let values = pseudolearn_timeline::capture_array_slice(
         machine,
         reference,

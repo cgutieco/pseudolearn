@@ -73,3 +73,77 @@ fn an_unknown_option_starts_the_program_arguments() {
         ])
     );
 }
+
+#[test]
+fn a_runtime_flag_used_as_a_value_is_a_missing_value() {
+    assert_eq!(
+        parse(&["--effects-in", "--effects-out", "x"]),
+        Err(ProcessOptionsError::MissingValue("--effects-in".to_owned()))
+    );
+    assert_eq!(
+        parse(&["--seed", "--semilla", "1"]),
+        Err(ProcessOptionsError::MissingValue("--seed".to_owned()))
+    );
+}
+
+#[test]
+fn duplicate_runtime_flags_are_rejected_even_across_seed_spellings() {
+    assert_eq!(
+        parse(&["--effects-out", "a", "--effects-out", "b"]),
+        Err(ProcessOptionsError::DuplicateOption(
+            "--effects-out".to_owned()
+        ))
+    );
+    assert_eq!(
+        parse(&["--effects-in", "a", "--effects-in", "b"]),
+        Err(ProcessOptionsError::DuplicateOption(
+            "--effects-in".to_owned()
+        ))
+    );
+    assert_eq!(
+        parse(&["--semilla", "1", "--seed", "2"]),
+        Err(ProcessOptionsError::DuplicateOption("--seed".to_owned()))
+    );
+    assert!(parse(&["--semilla", "1", "tail", "--semilla", "2"]).is_ok());
+}
+
+#[test]
+fn errors_render_readable_messages() {
+    assert_eq!(
+        ProcessOptionsError::DuplicateOption("--seed".to_owned()).to_string(),
+        "duplicate option --seed"
+    );
+    assert_eq!(
+        ProcessOptionsError::MissingValue("--effects-in".to_owned()).to_string(),
+        "missing value for option --effects-in"
+    );
+    assert_eq!(
+        ProcessOptionsError::InvalidSeed("doce".to_owned()).to_string(),
+        "invalid seed: doce"
+    );
+}
+
+#[test]
+fn the_requested_effects_output_survives_a_rejected_command_line() {
+    let owned = |arguments: &[&str]| -> Vec<String> {
+        arguments.iter().map(|text| (*text).to_owned()).collect()
+    };
+    assert_eq!(
+        ProcessOptions::requested_effects_out(&owned(&[
+            "--semilla",
+            "x",
+            "--effects-out",
+            "out.json"
+        ])),
+        Some("out.json".to_owned())
+    );
+    assert_eq!(
+        ProcessOptions::requested_effects_out(&owned(&["--effects-out", "--seed"])),
+        None
+    );
+    assert_eq!(
+        ProcessOptions::requested_effects_out(&owned(&["program", "--effects-out", "late"])),
+        None
+    );
+    assert_eq!(ProcessOptions::requested_effects_out(&[]), None);
+}

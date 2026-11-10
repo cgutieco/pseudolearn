@@ -1,4 +1,4 @@
-pub(crate) use crate::execution_prepare::{CHECKPOINT_LIMIT, prepare_program_and_warnings, usage};
+pub(crate) use crate::execution_prepare::{checkpoint_store, prepare_program_and_warnings, usage};
 use crate::{ApiDiagnostic, ApiError, ExecuteRequest};
 use pseudolearn_timeline::CheckpointStore;
 use pseudolearn_vm::{
@@ -256,7 +256,7 @@ impl ExecutionResource {
         let first = self.delivered.saturating_sub(self.retained_events);
         if first > self.retained_start {
             let base = self.machine_at(first)?;
-            let mut store = CheckpointStore::new(CHECKPOINT_LIMIT);
+            let mut store = checkpoint_store(&self.options);
             store
                 .record(&base, first)
                 .map_err(|error| ApiError::InternalFault(format!("{error:?}")))?;

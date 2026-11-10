@@ -65,7 +65,11 @@ impl ExecutionResource {
             self.effects.abort();
         }
         pseudolearn_runtime::HostEffectProvider::close_all(&mut self.host);
+        let finished = super::execution_debug::is_final_exit(&exit);
         self.terminal = Some(exit);
+        if let (true, Some(debug)) = (finished, self.debug.as_mut()) {
+            debug.control_active = false;
+        }
         Ok(false)
     }
 

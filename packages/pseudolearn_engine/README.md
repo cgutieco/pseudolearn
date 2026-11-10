@@ -124,8 +124,25 @@ comparten disposición de marco y de objetos.
   activar la feature `test-host`; `tool/wasm.sh build` rechaza el grafo si aparece alguno, porque la unificación de
   features de Cargo convertiría el anfitrión de memoria en el anfitrión distribuido.
 - **Profundidad del análisis**: el parser cuenta un nivel por cada lista de argumentos e índices además de los
-  paréntesis, unarios, potencias y bloques, de modo que ningún anidamiento agota la pila del anfitrión;
+  paréntesis, unarios, potencias y bloques, y un nivel por cada eslabón de una cadena (operadores binarios,
+  llamadas, índices y accesos a miembro sucesivos, y retornos de tipos función), de modo que la profundidad del
+  árbol queda acotada para todos los consumidores y ningún anidamiento agota la pila del anfitrión;
   `catch_unwind` no captura un desbordamiento de pila.
+- **Nombres en la traducción**: el lenguaje distingue `fooBar`, `foo_bar` y `FOO_BAR`, pero ambos destinos los
+  escriben igual; `transpiler` desambigua con sufijo numérico determinista (`_2`, `_3`) por ámbito de función
+  (variables) y por enumerado (miembros), y renombra por sufijo todo nombre que el preludio generado o los
+  integrados del destino ya usan. Los textos de Python se escapan con `\xNN`, `\uNNNN` o `\UNNNNNNNN` para NUL,
+  controles, separadores y marcas bidireccionales. Pendiente declarado: la desambiguación de campos y de clases.
+- **Historial y consultas de depuración**: el almacén de puntos de control tiene un presupuesto finito de ranuras
+  retenidas, derivado de las celdas de memoria de la ejecución; al superarlo se adelgaza el punto de menor densidad
+  (distancia entre vecinos por antigüedad, y solo en empate la ranura compuesta mínima) y, en último término, se
+  adelanta el horizonte declarado. `query_array_slice` rechaza longitudes mayores de 4096 como error de uso.
+- **Códec de eventos**: el cuerpo binario no admite un pool no vacío sin eventos. El codificador ignora claves de
+  nivel superior desconocidas del evento y normaliza un `source` ausente a `null`; no es un rechazo porque el corpus
+  no prohíbe campos adicionales.
+- **Argumentos del ejecutable nativo**: una opción del runtime repetida, o usada como valor de otra, es una opción
+  inválida (salida 5); si ya se leyó `--effects-out`, el documento de efectos se escribe como rechazado con el
+  código `options_invalid`. Un argumento que no es UTF-8 termina con salida 5 sin pánico.
 - **Sin capas hacia arriba**: `architecture.yaml` fija qué puede importar cada crate.
 
 ## Comandos útiles

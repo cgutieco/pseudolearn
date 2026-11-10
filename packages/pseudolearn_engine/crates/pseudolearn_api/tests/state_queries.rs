@@ -105,3 +105,17 @@ fn trimmed_history_rejects_discarded_events_and_cannot_resurrect_them() -> Resul
     );
     Ok(())
 }
+
+#[test]
+fn array_slices_above_the_page_limit_are_usage_errors() -> Result<(), String> {
+    let (mut session, resource) = execution()?;
+    session.call("advance", &json!({"resource":resource,"batch_size":4096}));
+    for length in [4097_u64, u64::MAX] {
+        let response = session.call(
+            "query_array_slice",
+            &json!({"resource":resource,"event":3,"reference":1,"start":0,"length":length}),
+        );
+        assert_eq!(response.pointer("/failure/family"), Some(&json!("usage")));
+    }
+    Ok(())
+}

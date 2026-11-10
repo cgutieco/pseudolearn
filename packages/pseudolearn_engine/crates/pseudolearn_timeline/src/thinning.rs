@@ -41,24 +41,38 @@ impl CheckpointStore {
 
     fn sparsest_interior_position(&self) -> Option<usize> {
         let newest = self.checkpoints.last()?.event_index;
-        let mut best: Option<(usize, u64, u64, usize)> = None;
+        let mut lowest: Option<(u64, Vec<usize>)> = None;
         for position in 1..self.checkpoints.len().saturating_sub(1) {
-            let before = self.checkpoints.get(position.checked_sub(1)?)?;
-            let current = self.checkpoints.get(position)?;
-            let after = self.checkpoints.get(position.checked_add(1)?)?;
-            let gap = event_distance(after, before);
-            let age = u64::try_from(newest.saturating_sub(current.event_index))
-                .unwrap_or(u64::MAX)
-                .saturating_add(1);
-            let combined_slots = self.combined_retained_slots(position);
-            let better = best.is_none_or(|(_, best_gap, best_age, best_slots)| {
-                is_better_victim((gap, age, combined_slots), (best_gap, best_age, best_slots))
-            });
-            if better {
-                best = Some((position, gap, age, combined_slots));
+            let score = self.removal_score(position, newest)?;
+            match lowest.as_mut() {
+                Some((best, _)) if score > *best => {}
+                Some((best, positions)) if score == *best => positions.push(position),
+                _ => lowest = Some((score, vec![position])),
             }
         }
-        best.map(|(position, _, _, _)| position)
+        let (_, tied) = lowest?;
+        self.fewest_combined_slots(&tied)
+    }
+
+    fn removal_score(&self, position: usize, newest: usize) -> Option<u64> {
+        let before = self.checkpoints.get(position.checked_sub(1)?)?;
+        let current = self.checkpoints.get(position)?;
+        let after = self.checkpoints.get(position.checked_add(1)?)?;
+        let age = u64::try_from(newest.saturating_sub(current.event_index))
+            .unwrap_or(u64::MAX)
+            .saturating_add(1);
+        Some(event_distance(after, before).saturating_mul(age))
+    }
+
+    fn fewest_combined_slots(&self, tied: &[usize]) -> Option<usize> {
+        let mut best: Option<(usize, usize)> = None;
+        for position in tied {
+            let slots = self.combined_retained_slots(*position);
+            if best.is_none_or(|(_, best_slots)| slots < best_slots) {
+                best = Some((*position, slots));
+            }
+        }
+        best.map(|(position, _)| position)
     }
 
     fn combined_retained_slots(&self, position: usize) -> usize {
@@ -90,12 +104,6 @@ impl CheckpointStore {
             .map_or(self.declared_horizon, |first| first.event_index);
         true
     }
-}
-
-fn is_better_victim(candidate: (u64, u64, usize), current: (u64, u64, usize)) -> bool {
-    let candidate_score = candidate.0.saturating_mul(candidate.1);
-    let current_score = current.0.saturating_mul(current.1);
-    candidate_score < current_score || (candidate_score == current_score && candidate.2 < current.2)
 }
 
 fn event_distance(later: &Checkpoint, earlier: &Checkpoint) -> u64 {

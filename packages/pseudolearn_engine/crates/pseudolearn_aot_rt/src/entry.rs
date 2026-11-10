@@ -1,6 +1,7 @@
 use crate::effect_channel::EffectChannel;
 use crate::effect_document::{EffectInput, EffectOutput};
 use crate::guard::borrow_slice;
+use crate::metadata::ExecutableMetadata;
 use crate::metadata_codec::decode_metadata;
 use crate::process::{
     EXIT_INTERNAL, EXIT_REPLAY, EntryFunction, ProcessLaunch, ProcessStreams,
@@ -8,7 +9,7 @@ use crate::process::{
 };
 use crate::process_options::ProcessOptions;
 use crate::task_state::TaskDispatcher;
-use std::io::{BufReader, BufWriter};
+use std::io::{BufReader, BufWriter, Write};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn pseudolearn_aot_main(
@@ -23,7 +24,13 @@ pub extern "C" fn pseudolearn_aot_main(
     let Some(decoded) = decode_metadata(bytes) else {
         return EXIT_INTERNAL;
     };
-    let arguments: Vec<String> = std::env::args().skip(1).collect();
+    let arguments = match process_arguments() {
+        Ok(arguments) => arguments,
+        Err(message) => {
+            report(&message);
+            return EXIT_INTERNAL;
+        }
+    };
     let (options, seed, channel) = match prepare(&arguments) {
         Ok(prepared) => prepared,
         Err(code) => return code,
@@ -33,16 +40,7 @@ pub extern "C" fn pseudolearn_aot_main(
         dispatcher,
         seed,
     };
-    let (code, channel) = run_executable_with_tasks(
-        decoded,
-        launch,
-        ProcessStreams {
-            input: Box::new(BufReader::new(std::io::stdin())),
-            output: Box::new(BufWriter::new(std::io::stdout())),
-            errors: Box::new(std::io::stderr()),
-        },
-        channel,
-    );
+    let (code, channel) = run_with_standard_streams(decoded, launch, channel);
     if !write_output(&options, &EffectOutput::from_channel(&channel)) {
         return EXIT_INTERNAL;
     }
@@ -52,6 +50,23 @@ pub extern "C" fn pseudolearn_aot_main(
     code
 }
 
+fn run_with_standard_streams(
+    metadata: ExecutableMetadata,
+    launch: ProcessLaunch,
+    channel: EffectChannel,
+) -> (i32, EffectChannel) {
+    run_executable_with_tasks(
+        metadata,
+        launch,
+        ProcessStreams {
+            input: Box::new(BufReader::new(std::io::stdin())),
+            output: Box::new(BufWriter::new(std::io::stdout())),
+            errors: Box::new(std::io::stderr()),
+        },
+        channel,
+    )
+}
+
 #[unsafe(no_mangle)]
 pub extern "C" fn pseudolearn_aot_exit(code: i32) -> ! {
     std::process::exit(code)
@@ -59,7 +74,8 @@ pub extern "C" fn pseudolearn_aot_exit(code: i32) -> ! {
 
 fn prepare(arguments: &[String]) -> Result<(ProcessOptions, i64, EffectChannel), i32> {
     let options = ProcessOptions::parse(arguments).map_err(|error| {
-        eprintln!("{error:?}");
+        report(&error.to_string());
+        reject_invalid_options(arguments);
         EXIT_INTERNAL
     })?;
     let seed = options
@@ -73,6 +89,35 @@ fn prepare(arguments: &[String]) -> Result<(ProcessOptions, i64, EffectChannel),
             Err(EXIT_REPLAY)
         }
     }
+}
+
+fn process_arguments() -> Result<Vec<String>, String> {
+    std::env::args_os()
+        .skip(1)
+        .map(|argument| {
+            argument
+                .into_string()
+                .map_err(|_| "process argument is not valid UTF-8".to_owned())
+        })
+        .collect()
+}
+
+fn report(message: &str) {
+    let _ignored = writeln!(std::io::stderr(), "{message}");
+}
+
+fn reject_invalid_options(arguments: &[String]) {
+    let Some(path) = ProcessOptions::requested_effects_out(arguments) else {
+        return;
+    };
+    let options = ProcessOptions {
+        effects_out: Some(path),
+        ..ProcessOptions::default()
+    };
+    let _written = write_output(
+        &options,
+        &EffectOutput::rejected("options_invalid".to_owned()),
+    );
 }
 
 fn open_channel(options: &ProcessOptions) -> Result<EffectChannel, String> {

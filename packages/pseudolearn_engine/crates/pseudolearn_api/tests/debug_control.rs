@@ -209,3 +209,57 @@ fn debug_state_reads_a_historical_task_without_moving_the_live_execution() -> Re
     );
     Ok(())
 }
+
+#[test]
+fn reconfiguring_an_existing_session_applies_stop_on_entry() -> Result<(), String> {
+    let mut session = ApiSession::default();
+    let resource = execution(&mut session, "Algoritmo Probe\nEscribir 1;\nFinAlgoritmo\n")?;
+    for stop_on_entry in [false, true] {
+        let configured = session.call(
+            "debug_configure",
+            &json!({"resource":resource,"stop_on_entry":stop_on_entry,"breakpoints":[]}),
+        );
+        assert!(configured.get("value").is_some(), "{configured}");
+    }
+    let first = pump(&mut session, &resource);
+    assert_eq!(first.pointer("/value/debug/reason"), Some(&json!("entry")));
+    Ok(())
+}
+
+#[test]
+fn obsolete_generation_is_rejected_and_control_after_termination_is_not_busy() -> Result<(), String>
+{
+    let mut session = ApiSession::default();
+    let resource = execution(&mut session, "Algoritmo Probe\nEscribir 1;\nFinAlgoritmo\n")?;
+    session.call(
+        "debug_configure",
+        &json!({"resource":resource,"stop_on_entry":false,"breakpoints":[]}),
+    );
+    let obsolete = session.call(
+        "debug_control",
+        &json!({"resource":resource,"command":"continue","stop_generation":99}),
+    );
+    assert_eq!(
+        obsolete.pointer("/failure/family"),
+        Some(&json!("usage")),
+        "{obsolete}"
+    );
+    session.call(
+        "debug_control",
+        &json!({"resource":resource,"command":"continue"}),
+    );
+    let finished = pump(&mut session, &resource);
+    assert_eq!(
+        finished.pointer("/value/termination/kind"),
+        Some(&json!("completed")),
+        "{finished}"
+    );
+    for _ in 0..2 {
+        let again = session.call(
+            "debug_control",
+            &json!({"resource":resource,"command":"continue"}),
+        );
+        assert!(again.pointer("/failure").is_none(), "{again}");
+    }
+    Ok(())
+}
