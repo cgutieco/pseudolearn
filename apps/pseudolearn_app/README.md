@@ -26,6 +26,12 @@ flowchart BT
   claro y oscuro, `es` y `en`. Cada escena limpia la caché de `rootBundle` porque una carga pendiente de la escena
   anterior
   deja la siguiente sin datos.
+- `pseudolearn_store_media`: `tool/generate_store_plates.dart` graba **placas**, secuencias de fotogramas de la UI
+  real con el motor nativo real, en `build/store-plates/<escena>/<idioma>/`, junto con un `timeline.json` con los
+  rectángulos de interés y los hitos (instrucción, nodo de diagrama, mensaje de Nodo, final). El motor de tienda
+  compone y codifica a partir de ellas; la app no compone nada. `PlateRecorder` avanza el reloj de prueba un
+  fotograma exacto por captura, así que la grabación es determinista y no depende de un simulador. El formato está
+  fijado por `tool/store_plates/plate_timeline_test.dart` contra el mismo archivo de contrato que prueba el motor.
 
 ## Arquitectura
 
@@ -196,6 +202,7 @@ Los toques se inyectaron con el control de simulador. Cada toque se comprobó co
 | Cobertura de formas de la vista              | `dart run tool/check_syntax_coverage.dart`                                                            |
 | Manual de usuario en `es` y `en`             | `dart run tool/check_manual.dart`                                                                     |
 | Conformidad del sujeto `app`                 | `cargo run -p see_cli --bin see -- conform --subject app` (en `packages/pseudolearn_spec`)            |
+| Grabar las placas para las tiendas           | `flutter test tool/generate_store_plates.dart` (con la biblioteca nativa en release)                  |
 | Compilar                                     | `flutter build macos --release`, `flutter build ipa --no-codesign`, `flutter build windows --release` |
 
 Requisitos: Flutter 3.47.5 (fijado en `pubspec.yaml`), Dart `^3.9.0` y Rust según `native/rust-toolchain.toml` solo para
