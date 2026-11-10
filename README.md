@@ -187,7 +187,8 @@ marca declarados. El generador y su comprobación son los dueños; editar una co
 correspondencia entre fuente y producto.
 
 **Dependencias y locks.** Las aplicaciones conservan sus locks. Las bibliotecas Dart no los versionan. Cada workspace
-Rust conserva su grafo y verifica licencias, fuentes y dependencias con cargo-deny.
+Rust versiona su `Cargo.lock`, porque sus builds con `--locked` producen artefactos distribuidos (el Wasm de la
+extensión sale del workspace del motor), y verifica licencias, fuentes y dependencias con cargo-deny.
 
 **Comportamiento didáctico en el corpus.** Los perfiles de sintaxis y el idioma de interfaz son ejes independientes.
 Las superficies de la app se sincronizan mediante identidades del programa, no mediante números de línea.

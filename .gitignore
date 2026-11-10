@@ -37,7 +37,6 @@ __pycache__/
 
 # Rust
 target/
-packages/*/Cargo.lock
 
 # Local measurements and generated contract export
 **/results/
