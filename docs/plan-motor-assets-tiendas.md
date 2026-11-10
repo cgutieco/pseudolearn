@@ -5,7 +5,7 @@
 - Fecha: 2026-11-10. HEAD al redactar: `2e543b2afbfccd083439dca00446760e2f761f56`. Rama:
   `feature/agregar-ruta-de-especificacion` (`GIT-SINGLE-BRANCH`). Árbol limpio.
 - Petición: un motor que genere de forma **automatizada y determinista** (sin imágenes ni vídeos generados por IA)
-  todos los assets de las tiendas donde PseudoLearn está publicada hoy: capturas, vistas previas en vídeo, vídeos de
+  todos los assets de las tiendas donde PseudoLearn está publicada hoy: capturas, vídeos de
   encabezado y de resultados de búsqueda, imagen universal y arte de Microsoft Store, en `es` y `en`. El trabajo es
   **asistido**: cada fase implementa primero su arquitectura y después abre un diálogo de narrativa y estilo con la
   persona; solo con su aprobación se escribe el código que produce el resultado final.
@@ -46,7 +46,6 @@ catálogo de la API (`GET /v1/appAssetLibraryRefData`), que es la autoridad oper
 | [Apple · Asset best practices](https://developer.apple.com/app-store/asset-best-practices/) | Superficies, narrativa, UI real, bucle, silencio, portada, zona segura de las plantillas, prohibiciones de contenido |
 | [Apple · Creative assets](https://developer.apple.com/help/app-store-connect/reference/app-information/creative-assets-specifications/) | Medidas, fps, duración y formatos de encabezado, búsqueda y eventos |
 | [Apple · Screenshots](https://developer.apple.com/help/app-store-connect/reference/screenshot-specifications) | Clases de iPhone (incluido Duo), iPad y Mac |
-| [Apple · App previews](https://developer.apple.com/help/app-store-connect/reference/app-information/app-preview-specifications) | Resoluciones aceptadas, códec, bitrate, audio, portada |
 | [Microsoft · Screenshots, images and trailers (MSIX)](https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/msix/screenshots-and-images) | Capturas de escritorio, logotipos, *super hero art*, tráileres |
 | [Microsoft · Store listing info (MSIX)](https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/msix/add-and-edit-store-listing-info) | Límites de texto del listado |
 
@@ -56,7 +55,7 @@ Lo que dicen las buenas prácticas de Apple y condiciona la arquitectura:
   vistazo y se muestra la experiencia real (UI).
 - Vídeo: la portada funciona sola; empezar fuerte; nada de cortes rápidos (también por accesibilidad); **bucle sin
   saltos**; autoplay **silenciado**, así que la pieza funciona sin sonido y el audio, si lo hay, es textura de marca.
-- Capturas y previews: UI real, ordenadas como **una historia** de uso; las previews con principio, nudo y final.
+- Capturas: UI real, ordenadas como **una historia** de uso.
 - Prohibido: precios, URL, ©, premios no verificables, logotipos o referencias a **otras plataformas o tiendas**,
   reconocimientos de Apple. Contenido apto 4+.
 - Cohesión: misma paleta, iconografía, tipografía, mensaje y tono en todas las piezas. Todo texto localizado.
@@ -85,8 +84,6 @@ iPhone») y Microsoft Store (MSIX, familia Escritorio). Idiomas: `es` y `en`.
 | Captura | **iPhone Duo, pantalla interior** | 2007 × 2853 / 2853 × 2007 | idem; da la insignia «hecha para iPhone Duo»; obligatoria desde abril de 2027 con SDK iOS 27.1+ | **Falta** | F2 |
 | Captura | **iPhone Duo, pantalla exterior** | 1398 × 2034 / 2034 × 1398 | idem | **Falta** | F2 |
 | Captura | iPad 13" — obligatoria | 2064 × 2752 (o 2048 × 2732), y apaisadas | idem | Existe | F2 |
-| App preview | iPhone (todas las clases, Duo incluido) | 886 × 1920 / 1920 × 886 | 15–30 s, ≤ 30 fps, H.264 High ≤ 4.0 10–12 Mbps, AAC estéreo 256 kbps 44,1/48 kHz, ≤ 500 MB, hasta 3 por tamaño e idioma, portada elegible | **Falta** | F3 |
-| App preview | iPad | 1200 × 1600 / 1600 × 1200 | idem | **Falta** | F3 |
 | Creative asset | **Vídeo de encabezado** | 3840 × 1646 (21:9) | .mov/.m4v/.mp4, 30 o 60 fps, 5–30 s, bucle, silenciado por defecto | **Falta** | F4 |
 | Creative asset | **Vídeo de búsqueda** | 3:2, mín. 1920 × 1280, máx. 3840 × 2560 | idem; silenciado y sin opción de activar sonido | **Falta** | F4 |
 | Creative asset | Imagen universal | 5244 × 2950 (16:9) | PNG sin alfa | **Falta** | F4 |
@@ -98,7 +95,6 @@ iPhone») y Microsoft Store (MSIX, familia Escritorio). Idiomas: `es` y `en`.
 | Asset | Medida | Reglas | Estado | Fase |
 |---|---|---|---|---|
 | Captura Mac — obligatoria | 2880 × 1800 (16:10; también 2560 × 1600, 1440 × 900, 1280 × 800) | PNG/JPEG sin alfa, 1–10 | Existe | F2 |
-| App preview Mac | 1920 × 1080, solo horizontal | Mismo perfil de vídeo que iOS | **Falta** | F3 |
 | Encabezado y búsqueda | — | Apple los describe para iOS 27 y iPadOS 27; para macOS **no consta**. F0 lo confirma con el catálogo de la API | Por confirmar | F4 |
 
 ### 2.3 Microsoft Store — Escritorio (MSIX)
@@ -114,7 +110,7 @@ iPhone») y Microsoft Store (MSIX, familia Escritorio). Idiomas: `es` y `en`.
 
 ### 2.4 Inventario de producción por idioma
 
-Sin contar variantes apaisadas opcionales: 5 clases de captura Apple × hasta 10 + 3 clases de preview × hasta 3 +
+Sin contar variantes apaisadas opcionales: 5 clases de captura Apple × hasta 10 +
 2 vídeos de creative + 1 imagen universal + hasta 10 capturas de Windows + super hero art + tráiler. Todo × 2 idiomas.
 El catálogo de §3 hace que cada pieza sea una fila de datos, no código.
 
@@ -222,8 +218,7 @@ Cuando una pieza esté aprobada, se publica en la tienda desde `build/`; la tien
   bruscos y con un bucle limpio (la cola de la partitura resuelve en su inicio). Se normaliza a −16 LUFS integrados,
   con pico verdadero ≤ −1 dBTP (decisión propia: Microsoft solo recomienda −16 LUFS y nadie fija un pico). Formato:
   AAC-LC estéreo, 48 kHz, 256 kbps en Apple y 320 kbps en Microsoft (pide 384; ver resultados de F5).
-- Lleva audio: app previews (Apple lo exige), vídeo de encabezado (en la página de producto se puede activar el
-  sonido) y tráiler de Microsoft. El vídeo de búsqueda **no** lleva pista: allí no se puede activar el sonido y el
+- Lleva audio: vídeo de encabezado (en la página de producto se puede activar el sonido) y tráiler de Microsoft. El vídeo de búsqueda **no** lleva pista: allí no se puede activar el sonido y el
   catálogo no la exige.
 - La auditoría mide sonoridad, pico, duración igual a la del vídeo y continuidad del bucle (energía de los primeros y
   los últimos 50 ms).
@@ -238,7 +233,7 @@ No es una decisión: es el punto de partida de las conversaciones de F2–F5.
 - **Lo que hay que contar.** PseudoLearn ya no es una app de ejercicios: es un **lenguaje de programación real**
   escrito como pseudocódigo en español o inglés, con motor propio que lo analiza, lo ejecuta paso a paso, lo dibuja y
   lo traduce; y **Nodo · IA**, que explica y escribe código que el propio motor verifica antes de mostrarlo.
-- **Arco candidato** (las capturas como capítulos, la preview como el relato completo):
+- **Arco candidato** (las capturas como capítulos):
   1. *Una idea en palabras* — escribes lo que piensas, casi como una frase.
   2. *Cobra vida* — se ejecuta instrucción por instrucción y el diagrama late con ella.
   3. *Lo ves pensar* — la tabla de prueba de escritorio muestra cada variable cambiar.
@@ -291,7 +286,7 @@ Sin diálogo: es infraestructura.
   dependencias npm tienen al menos 14 días (`minimumReleaseAge`).
 - La previa del CLI es `calibrate --guides`: escribe el proyecto HyperFrames y dibuja la zona segura. En vez de un
   comando `preview` propio, se puede abrir ese proyecto con `pnpm exec hyperframes preview`.
-- Calibraciones reales aceptadas por la auditoría: app preview de iPhone (886 × 1920, 15 s, AAC −16,1 LUFS), vídeo de
+- Calibraciones reales aceptadas por la auditoría: vídeo de
   encabezado (3840 × 1646, 10 s) y vídeo de búsqueda (3840 × 2560, sin pista). La primera pasada del encabezado se
   rechazó por sonoridad (−17,6 LUFS, limitada por el pico): la auditoría funcionó y se reequilibró la voz.
 - Errores que encontraron los tests: un color ilegible daba NaN y pasaba la auditoría de contraste, y la escala de dos
@@ -334,44 +329,6 @@ Sin diálogo: es infraestructura.
 - **Pendientes.** La isla dinámica y las áreas seguras reales del dispositivo no se dibujan: las placas se graban sin
   insets y el marco no lleva isla para no tapar la barra de título. El eje del pliegue del Duo es un supuesto. La
   subida a App Store Connect es de F6.
-
-### F3 — App previews (iPhone/Duo 886 × 1920, iPad 1200 × 1600, Mac 1920 × 1080)
-
-- A: placas animadas (fotograma a fotograma con `pump`), plantilla de relato de 15–30 s, partitura sincronizada con los hitos,
-  selección de portada, auditoría de códec y bitrate.
-- B: diálogo — arco de principio, nudo y final; ritmo sin cortes rápidos; papel de Nodo; ¿una preview o tres?
-- D: producción y verificación de portada a tamaño reducido.
-
-**Resultados de F3 (2026-11-10).**
-
-- **Fuentes.** Se releyeron la página de app previews, la de especificaciones, la sección 2.3 de las guías y el
-  catálogo `appAssetLibraryRefData` (solo `GET`). Sin contradicciones nuevas: la única es la ya conocida de F0
-  (`PT5S`–`PT30S` frente a `t15~30` y 15 s de la página), resuelta en 15–30 s. La tabla «qué dice cada fuente → qué
-  hace el motor» vive en el README del motor.
-- **Hallazgo.** La calibración aceptada en F2 salía a 0,71 Mbps, bajo los 10–12 Mbps de Apple, y ninguna auditoría lo
-  veía. El perfil de previews codifica ahora en CBR a 11 Mbps y `MEDIA-BITRATE` lo comprueba.
-- **Diálogo.** Tres conceptos con placas animadas reales: rótulos sobre la UI, franja editorial y tarjeta de marca
-  sobre UI. La persona eligió la **tarjeta de marca** (camino b de 2.3.4, como superposición sobre UI real), tres
-  previews por tamaño e idioma, anotaciones con punto solo en escenas quietas, banda sonora calmada con una nota por
-  hito y áreas seguras reales.
-- **Producción.** 18 previews aceptadas: «Resumen» (20,7 s), «Ejecutar y entender» (16,2 s) y «Nodo, ruta y código»
-  (18,3 s) × iPhone 886 × 1920, iPad 1200 × 1600 y Mac 1920 × 1080 × `es`/`en`, H.264 High 4.0 a 10,93–10,95 Mbps,
-  AAC 256 kbps a 48 kHz, −16 LUFS, con portada en el segundo 5 a tamaño completo y a 600 px, en
-  `packages/pseudolearn_store_media/build/previews/`, fuera de git. Las que muestran Nodo cierran con «Nodo requiere
-  sesión y suscripción».
-- **Placas.** 36 placas animadas (6 escenas × 3 dispositivos × 2 idiomas, 139 MB gracias a no repetir fotogramas),
-  grabadas en vivo con el motor real, los toques reales y las áreas seguras del dispositivo.
-- **Auditoría nueva.** UI visible en cada fotograma, placa a medida nativa, disolución y ritmo, tiempo de lectura,
-  portada, aviso obligatorio, léxico de fechas y temporada, y entrega del archivo (nivel, progresivo, bitrate, pistas
-  habilitadas, contenedor y bitrate AAC). Durante la producción detectó un recorte que pedía más placa de la grabada y
-  una anotación que apuntaba a una pieza que aún no existía.
-- **Verificación.** Motor: `pnpm check` y 319 tests. App: `flutter analyze`, `check_limits`, `check_design_system`,
-  tests de `tool/store_plates/` y la suite completa. `git check-ignore` confirma que previews, manifiestos, portadas,
-  proyectos, fotogramas, bandas sonoras y placas animadas están ignorados; `stories/app-store-previews.json` se
-  versiona.
-- **Pendientes.** El catálogo de conocimiento no se asienta a 1280 × 720 pt (en el README de la app). El desbordamiento
-  de la barra de `ExecutionStepper` a 600 y 960 pt que destapó F3 quedó corregido en la app. La subida a App Store
-  Connect es de F6.
 
 ### F4 — Creative assets (encabezado 21:9, búsqueda 3:2, universal 16:9)
 
@@ -441,12 +398,16 @@ Sin diálogo: es infraestructura.
 - **Verificación.** Motor: `pnpm check` y la suite completa. App: `flutter analyze`, `check_limits`,
   `check_design_system` y la suite completa. `git check-ignore` confirma que `build/screenshots/`, `build/hero/`,
   `build/trailer/` y `build/drafts/` están ignorados; las historias `microsoft-store-*.json` se versionan.
+- **Retirada de las app previews.** Por decisión de la persona se borró todo lo que las generaba: ranuras, dispositivos
+  y perfil de códec del catálogo, historia, composición, auditorías propias (transiciones, UI visible, portada, aviso y
+  tiempo de lectura), comando, escenas animadas de la app y márgenes de seguridad de dispositivo. La cola de UI del
+  tráiler pasó a un grabador propio (`tool/generate_trailer_plates.dart`, escena `trailer-run` en `windows-trailer`).
 - **Pendientes.** La comprobación visual en el Centro de partners y la subida son de F6. El perfil del tráiler de
   Microsoft solo se codifica en macOS (`aac_at`).
 
 ### F6 — Publicación asistida
 
-- App Store Connect: subida y colocación de creative assets (biblioteca de assets) y de capturas y previews por API,
+- App Store Connect: subida y colocación de creative assets (biblioteca de assets) y de capturas por API,
   con las reglas de §3.4. Cada ejecución real, con aprobación en el chat.
 - Microsoft Store: lista de comprobación manual con rutas de archivos y leyendas por idioma; la automatización por la
   API de envíos solo si la persona la pide (`SCOPE-YAGNI`).
@@ -490,10 +451,10 @@ descargar los PSD.
 
 Estado de la ficha:
 
-| Plataforma | Versión | Locales | Capturas ocupadas | Previews |
-|---|---|---|---|---|
-| iOS | 1.1.1 `READY_FOR_SALE` | `es-MX` (principal) y `en-US` | `APP_IPHONE_67` = 5 (clase Dynamic Island large) e `APP_IPAD_PRO_3GEN_129` = 5 | Ninguna |
-| macOS | 1.1.1 `READY_FOR_SALE` | `es-MX` y `en-US` | `APP_DESKTOP` = 5 | Ninguna |
+| Plataforma | Versión | Locales | Capturas ocupadas |
+|---|---|---|---|
+| iOS | 1.1.1 `READY_FOR_SALE` | `es-MX` (principal) y `en-US` | `APP_IPHONE_67` = 5 (clase Dynamic Island large) e `APP_IPAD_PRO_3GEN_129` = 5 |
+| macOS | 1.1.1 `READY_FOR_SALE` | `es-MX` y `en-US` | `APP_DESKTOP` = 5 |
 
 Catálogo `appAssetLibraryRefData`. Corrige o precisa §2 donde difiere de las páginas de ayuda:
 
@@ -501,9 +462,6 @@ Catálogo `appAssetLibraryRefData`. Corrige o precisa §2 donde difiere de las p
 |---|---|---|
 | Encabezado | `DEFAULT_PROFILE`, plataforma `ANY`, 1 por idioma | Imagen 3840 × 1646 **solo PNG** (la ayuda admite JPEG); vídeo 3840 × 1646 a 30 o 60 fps, duración 5–30 s pero `shortName` `t10~30`, sin audio obligatorio; universal 5244 × 2950 PNG |
 | Búsqueda | `DEFAULT_PROFILE`, `ANY`, 1 por idioma | Imagen 3:2 (1920–3840 × 1280–2560); vídeo 3:2 a 30 o 60 fps, 5–30 s, sin audio obligatorio; universal |
-| App preview iPhone (DI large, DI medium, Duo) | `IPHONE_APP_STORE`, hasta 3 | 886 × 1920 / 1920 × 886, **23–30 fps**, duración 5–30 s pero `shortName` `t15~30`, **audio obligatorio** |
-| App preview iPad 13" | `IPAD_APP_STORE`, hasta 3 | 1200 × 1600 / 1600 × 1200, mismas reglas |
-| App preview Mac | `MAC_APP_STORE`, hasta 3 | 1920 × 1080, mismas reglas |
 | Capturas Duo | `IPHONE_DUO_PROFILE`, hasta 10 | 2853 × 2007, 2007 × 2853, 2034 × 1398, 1398 × 2034, sin alfa |
 | Capturas Mac | `MAC_APP_STORE`, hasta 10 | 2880 × 1800 y demás; el catálogo admite alfa y rotula 16:9 lo que es 16:10 |
 
@@ -512,10 +470,10 @@ Consecuencias para el plan:
 1. **Encabezado y búsqueda no van por plataforma:** su grupo es `ANY`, con una pieza por idioma para toda la app. La
    pregunta de si macOS «admite» encabezado se reduce a si la Mac App Store los muestra. Se comprueba en Preview
    (F4); el motor no produce piezas distintas para Mac.
-2. **Duraciones:** el vídeo de encabezado dura entre 10 y 30 s y las app previews entre 15 y 30 s, para cumplir a la
+2. **Duraciones:** el vídeo de encabezado dura entre 10 y 30 s y el de búsqueda entre 15 y 30 s, para cumplir a la
    vez el campo `duration` y el `shortName`, como hizo traceiron.
-3. **Audio:** las app previews **exigen** pista de audio. Llevan la banda sintetizada de §3.7. El vídeo de
-   encabezado la lleva también, aunque no es obligatoria (decisión de §8); el de búsqueda no lleva pista.
+3. **Audio:** el vídeo de encabezado lleva la banda sintetizada de §3.7, aunque no es obligatoria (decisión de §8); el
+   de búsqueda no lleva pista.
 4. **Imágenes estáticas en PNG** siempre, y opacas también en Mac, aunque allí el catálogo admita alfa.
 5. **Dynamic Island (medium):** la ayuda la declara obligatoria, pero la 1.1.1 se publicó solo con la clase large. F2
    produce la clase large en 1320 × 2868 y añade la medium (1206 × 2622) solo si App Store Connect la exige al enviar.
@@ -525,9 +483,7 @@ Consecuencias para el plan:
 
 1. Microsoft llama «Arte de póster 9:16» en el Centro de partners a una medida de 720 × 1080, que es 2:3, como dice
    su documentación. F5 genera las medidas de la documentación (720 × 1080 y 1440 × 2160).
-2. Las especificaciones de app preview de Apple detallan el audio, pero no dicen si la pista es obligatoria. El
-   catálogo de la API sí lo dice (`audioRequired: true`), y las previews llevan la banda de §3.7.
-3. La página de creative assets de Apple no rotula sus filas de 16:9. La plantilla confirma que la pieza de
+2. La página de creative assets de Apple no rotula sus filas de 16:9. La plantilla confirma que la pieza de
    5244 × 2950 es la **universal**.
 
 ## 6. Verificación por fase (`PHASE-GREEN`)
@@ -535,14 +491,14 @@ Consecuencias para el plan:
 - `pseudolearn_store_media`: tests, verificador de límites, test de arquitectura, `audit` sobre todo lo producido.
 - `pseudolearn_brand`: `build`, `check`, `check_limits.py`, tests.
 - `pseudolearn_app`: `flutter analyze`, `flutter test`, `check_limits.dart`, `check_design_system.dart`.
-- Revisión visual humana: láminas de zona segura, portadas a 600 px, dos bucles seguidos, Preview de ASC.
+- Revisión visual humana: láminas de zona segura, dos bucles seguidos, Preview de ASC.
 
 ## 7. Riesgos
 
 | Riesgo | Mitigación |
 |---|---|
 | Las plantillas oficiales cambian la zona segura | El catálogo guarda la zona como dato y su origen; la comprobación por fotograma falla si cambia |
-| Apple trata las placas rasterizadas como no representativas | Son la UI real con el motor real; si hay rechazo, F2/F3 añaden grabación de simulador como adaptador alternativo de `render` |
+| Apple trata las placas rasterizadas como no representativas | Son la UI real con el motor real; si hay rechazo, F2 añade grabación de simulador como adaptador alternativo de `render` |
 | Chromium y FFmpeg varían entre máquinas | Versiones fijadas en el README; auditoría por archivo, no por igualdad binaria |
 | Respuestas de Nodo inventadas | Guion validado por el analizador y revisado en el diálogo |
 | Ranura obligatoria Dynamic Island (medium) sin cubrir | F0 la verifica; F2 la produce explícitamente |
@@ -557,6 +513,7 @@ Resueltas el 2026-11-10:
 | Póster y caja de Microsoft Store | Se generan |
 | Tráiler de Microsoft Store | La sección existe para la app; se produce en F5 |
 | Audio | Banda sintetizada de forma determinista y anclada a los hitos de cada vídeo; el vídeo de búsqueda va sin pista (§3.7). Sustituye a la decisión inicial de silencio |
+| App previews de App Store | No se producen (2026-11-10, durante F5): repetían lo que cuentan las capturas que tienen al lado y Apple solo admite en ellas metraje de la app. Se retiró todo el código que las generaba, en el motor y en la app |
 | Localizaciones | Español neutro y inglés de EE. UU. (§3.7) |
 | Herramienta | Se aprueba D-01: placas de UI real desde la app, composición con HyperFrames y codificación con FFmpeg; la dependencia del sistema se registra en `AGENTS.md` en F0 |
 
