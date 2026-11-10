@@ -49,8 +49,7 @@ pub(crate) fn check(
     };
     for observe in modes {
         let response = subject.exchange(&json!({"kind":"execute","program":program,
-            "profile":"es","inputs":[],"seed":0,"observe":observe,
-            "limits":{"micro_steps":100_000}}))?;
+            "profile":"es","inputs":[],"seed":0,"observe":observe}))?;
         let actual = observable(&response);
         if actual != expected {
             return Ok(Some((expected, actual)));

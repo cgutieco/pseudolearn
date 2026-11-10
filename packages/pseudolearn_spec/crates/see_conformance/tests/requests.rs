@@ -36,7 +36,7 @@ fn builds_observed_execution_with_limits_cancellation_and_state_query() -> Resul
     assert!(built.get("strictness").is_none());
     assert_eq!(
         built.get("limits"),
-        Some(&json!({"micro_steps": 100_000, "depth": 3, "cells": 9}))
+        Some(&json!({"depth": 3, "cells": 9}))
     );
     assert_eq!(built.get("cancel_at_statement"), Some(&json!(4)));
     assert_eq!(built.get("state_at"), Some(&json!(2)));
@@ -212,7 +212,7 @@ fn maps_task_and_channel_capacity_limits_to_the_wire_names() -> Result<(), Strin
     )?;
     assert_eq!(
         built.get("limits"),
-        Some(&json!({"micro_steps": 100_000, "depth": 1000, "tasks": 3, "channel_capacity": 8}))
+        Some(&json!({"depth": 1000, "tasks": 3, "channel_capacity": 8}))
     );
     Ok(())
 }
@@ -237,7 +237,6 @@ fn maps_json_and_network_limits_to_the_execution_request() -> Result<(), String>
     assert_eq!(
         built.get("limits"),
         Some(&json!({
-            "micro_steps": 100_000,
             "depth": 1000,
             "max_json_depth": 12,
             "max_http_body_bytes": 1024,

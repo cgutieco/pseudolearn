@@ -42,7 +42,7 @@ impl Temporary {
 
 fn execute(program: &str, inputs: &[&str]) -> Value {
     json!({"kind":"execute","program":program,"profile":"es",
-        "inputs":inputs,"seed":42,"observe":"none","limits":{"micro_steps":100_000}})
+        "inputs":inputs,"seed":42,"observe":"none"})
 }
 
 fn converse(temporary: &Temporary, requests: &[Value], close: bool) -> std::io::Result<Vec<Value>> {

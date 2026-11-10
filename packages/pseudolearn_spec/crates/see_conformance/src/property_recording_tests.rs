@@ -14,10 +14,7 @@ impl PropertySubject for Subject {
 
 #[test]
 fn complete_recordings_preserve_all_existing_limits() -> Result<(), String> {
-    for limits in [
-        json!({}),
-        json!({"statements":1,"depth":2,"cells":3,"micro_steps":4}),
-    ] {
+    for limits in [json!({}), json!({"statements":1,"depth":2,"cells":3})] {
         let scenario = Scenario {
             request: json!({"limits":limits}),
             expected: None,

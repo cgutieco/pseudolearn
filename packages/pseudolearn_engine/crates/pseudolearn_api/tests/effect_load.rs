@@ -42,7 +42,7 @@ fn file_load(count: usize, size: usize) -> Load {
 
 fn record(load: &Load) -> (Value, u128) {
     let request = json!({"kind":"execute","program":load.program,"profile":"es",
-        "inputs":[],"seed":42,"observe":"none","limits":{"micro_steps":2_000_000_000u64},"host":load.host});
+        "inputs":[],"seed":42,"observe":"none","host":load.host});
     let start = Instant::now();
     let response = ApiSession::default().call(
         "record",

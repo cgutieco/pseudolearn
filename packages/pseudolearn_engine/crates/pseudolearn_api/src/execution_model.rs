@@ -6,7 +6,6 @@ pub struct ExecutionLimits {
     pub depth: Option<usize>,
     pub statements: Option<u64>,
     pub cells: Option<u64>,
-    pub micro_steps: Option<u64>,
     pub tasks: Option<u64>,
     pub channel_capacity: Option<u64>,
     pub max_json_depth: Option<usize>,

@@ -52,7 +52,7 @@ fn sorting_one_hundred_thousand_elements_preserves_the_permutation() {
     let request = ExecuteRequest {
         program: "algorithm P\ndefine values as vector<integer> <- vector();\nfor index <- 1 to 100000 step 1 do\nvalues.append(100001 - index);\nendFor\nvalues.sort();\nfor index <- 0 to 99999 step 1 do\nif values[index] <> index + 1 then\nwrite -1;\nendIf\nendFor\nwrite values[0], \":\", values[99999];\nendAlgorithm\n".to_owned(),
         profile: "en".to_owned(),
-        limits: ExecutionLimits { cells: Some(1_000_000), statements: Some(2_000_000), micro_steps: Some(500_000_000), ..Default::default() },
+        limits: ExecutionLimits { cells: Some(1_000_000), statements: Some(2_000_000), ..Default::default() },
         ..Default::default()
     };
     assert!(compile_source_to_module(&request.program, "en").is_ok());

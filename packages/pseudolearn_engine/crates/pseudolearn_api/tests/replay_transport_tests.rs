@@ -129,7 +129,6 @@ fn unlimited_budgets_are_absent_from_the_tape_identity() -> Result<(), String> {
         .and_then(Value::as_object)
         .ok_or_else(|| format!("missing limits: {tape}"))?;
     assert!(!limits.contains_key("statements"), "{limits:?}");
-    assert!(!limits.contains_key("micro_steps"), "{limits:?}");
     assert!(limits.contains_key("depth") && limits.contains_key("cells"));
     Ok(())
 }

@@ -95,7 +95,7 @@ pub(crate) fn generated(
         request: json!({
             "kind":"execute", "program":program.source, "profile":profile,
             "inputs":[program.input], "seed":seed.seed,
-            "observe":"events", "limits":{"micro_steps":100_000},
+            "observe":"events",
         }),
         expected: Some(generated_expectation(&program)?),
         traced: true,

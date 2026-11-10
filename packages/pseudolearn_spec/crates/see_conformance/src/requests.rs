@@ -198,7 +198,6 @@ fn observation_options(case: &Block, selection: &Selection<'_>, fields: &mut Map
 
 fn limits(case: &Block) -> Value {
     let mut limits = Map::from_iter([
-        ("micro_steps".to_owned(), json!(100_000)),
         ("depth".to_owned(), json!(1000)),
     ]);
     let declared = case.fields.get("limites").and_then(Value::as_object);

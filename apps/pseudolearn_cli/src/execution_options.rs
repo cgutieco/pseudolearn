@@ -121,7 +121,6 @@ impl ExecutionArguments {
             depth: self.depth,
             statements: self.statements,
             cells: self.cells,
-            micro_steps: None,
             tasks: self.tasks,
             channel_capacity: None,
             max_json_depth: Some(MAX_JSON_DEPTH),

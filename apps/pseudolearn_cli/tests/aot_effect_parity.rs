@@ -14,7 +14,7 @@ fn host() -> Value {
 
 fn request(extra: &Value) -> Result<Value, String> {
     let mut base = json!({"kind":"execute","program":INPUT_PROGRAM,"profile":"es",
-        "inputs":["100"],"seed":42,"observe":"none","limits":{"micro_steps":100_000},"host":host()});
+        "inputs":["100"],"seed":42,"observe":"none","host":host()});
     let fields = base.as_object_mut().ok_or("request is not an object")?;
     for (key, value) in extra.as_object().ok_or("extra is not an object")? {
         fields.insert(key.clone(), value.clone());
@@ -167,7 +167,7 @@ fn native_tape_is_inspected_with_seek_by_the_engine() -> Result<(), String> {
         "start",
         &json!({"analysis":analysis.pointer("/value/resource"),"program":INPUT_PROGRAM,
             "profile":"es","inputs":["100"],"seed":42,
-            "limits":{"micro_steps":100_000},"observe":"events",
+            "observe":"events",
             "execution_mode":"history_seek","effect_tape":tape_of(&native)?,"host":host()}),
     );
     let resource = started

@@ -114,17 +114,28 @@ fn effective_value_never_exceeds_request_or_grant() -> Result<(), String> {
         let requested = next(1000).saturating_add(1);
         let granted = next(1000).saturating_add(1);
         let configuration = resolve(
-            &manifest(&[("micro_steps", requested)]),
-            &grants(&[(LimitName::MicroSteps, granted)]),
+            &manifest(&[("statements", requested)]),
+            &grants(&[(LimitName::Statements, granted)]),
         )
         .map_err(|codes| format!("{codes:?}"))?;
         let authority = configuration
             .limits
-            .get(&LimitName::MicroSteps)
+            .get(&LimitName::Statements)
             .ok_or("none")?;
         let effective = authority.effective.ok_or("no effective value")?;
         assert!(effective <= requested && effective <= granted);
         assert_eq!(effective, requested.min(granted));
     }
     Ok(())
+}
+
+#[test]
+fn undefined_micro_steps_limit_is_an_unknown_field() {
+    let codes = resolve(
+        &manifest(&[("micro_steps", 5)]),
+        &grants(&[(LimitName::Statements, 5)]),
+    )
+    .err()
+    .unwrap_or_default();
+    assert_eq!(codes, vec![ManifestErrorCode::UnknownField]);
 }

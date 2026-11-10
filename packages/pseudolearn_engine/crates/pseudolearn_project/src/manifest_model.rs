@@ -57,18 +57,16 @@ pub struct ManifestDependency {
 pub enum LimitName {
     Cells,
     Depth,
-    MicroSteps,
     Statements,
 }
 
 impl LimitName {
-    pub const ALL: [Self; 4] = [Self::Cells, Self::Depth, Self::MicroSteps, Self::Statements];
+    pub const ALL: [Self; 3] = [Self::Cells, Self::Depth, Self::Statements];
 
     pub fn as_str(self) -> &'static str {
         match self {
             Self::Cells => "cells",
             Self::Depth => "depth",
-            Self::MicroSteps => "micro_steps",
             Self::Statements => "statements",
         }
     }

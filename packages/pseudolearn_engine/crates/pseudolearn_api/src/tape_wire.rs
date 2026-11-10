@@ -54,12 +54,6 @@ fn identity_limits(request: &ExecuteRequest) -> BTreeMap<String, u64> {
     limits.extend(
         request
             .limits
-            .micro_steps
-            .map(|steps| ("micro_steps".to_owned(), steps)),
-    );
-    limits.extend(
-        request
-            .limits
             .tasks
             .map(|tasks| ("tasks".to_owned(), tasks)),
     );

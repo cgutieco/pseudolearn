@@ -49,7 +49,6 @@ fn explicit_limits_are_accepted() -> Check {
         depth: Some(5),
         statements: Some(100),
         cells: Some(10),
-        micro_steps: None,
         tasks: None,
         channel_capacity: None,
         max_json_depth: None,
