@@ -17,6 +17,7 @@ void main() {
       'iphone-duo-outer-landscape',
       'ipad-13',
       'mac',
+      'windows-desktop',
     ]);
   });
 
@@ -46,6 +47,7 @@ void main() {
     expect(sizes['iphone-duo-outer-portrait'], const Size(1398, 2034));
     expect(sizes['ipad-13'], const Size(2064, 2752));
     expect(sizes['mac'], const Size(2880, 1800));
+    expect(sizes['windows-desktop'], const Size(3840, 2160));
   });
 
   test('names every chapter plate once', () {

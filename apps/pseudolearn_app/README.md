@@ -46,6 +46,12 @@ flowchart BT
   exportación a Rust, porque la de Python abre con funciones auxiliares de lectura que no cuentan nada. Antes de grabar,
   el generador comprueba con el analizador real que el código que la historia de capturas muestra
   (`packages/pseudolearn_store_media/stories/app-store-screenshots.json`) es un programa válido en `es` y en `en`.
+  En el dispositivo `windows-desktop` (capturas de Microsoft Store) se graban además tres escenas de escritorio
+  (`tool/store_plates/desktop_scenes.dart`): `desk-run`, `desk-trace` y `desk-code` abren la demo guiada con el modo
+  «Acompañar» activado, de modo que el editor queda al lado del ordinograma, de la prueba de escritorio o del código
+  equivalente, y se detienen en el paso 5. Es UI que solo existe en la clase expandida; en pasos posteriores la tabla
+  se desplaza y la fila en curso baja al tercio inferior, que Microsoft reserva para superposiciones. Solo se graban en
+  ese dispositivo porque en un teléfono «Acompañar» apila los paneles y no aporta nada a las capturas de Apple.
 - `pseudolearn_store_media` (app previews): `tool/generate_store_previews.dart` graba **placas animadas**: cada escena
   (`preview-program`, `preview-run`, `preview-trace`, `preview-nodo`, `preview-code`, `preview-route`, en
   `tool/store_plates/preview_scenes.dart`) prepara la app sin grabar y después actúa como una persona, tocando sin

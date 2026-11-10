@@ -19,6 +19,7 @@ import 'product/product_documents.dart';
 import 'product/scene_actions.dart';
 import 'product/scene_stage.dart';
 import 'store_plates/chapter_scenes.dart';
+import 'store_plates/desktop_scenes.dart';
 import 'store_plates/plate_devices.dart';
 import 'store_plates/plate_recorder.dart';
 import 'store_plates/plate_stage.dart';
@@ -95,7 +96,7 @@ void main() {
   }
 
   for (final device in _selected(readPlateDevices(), _deviceFilter, (d) => d.id)) {
-    for (final chapter in _selected(chapterScenes, _chapterFilter, (c) => c.plate)) {
+    for (final chapter in _selected(_scenesFor(device), _chapterFilter, (c) => c.plate)) {
       for (final theme in _selected(_themes.keys.toList(), _themeFilter, (t) => t)) {
         for (final language in _localeTags.keys) {
           testWidgets('${chapter.plate} is recorded on ${device.id} in $theme '
@@ -111,6 +112,11 @@ void main() {
     }
   }
 }
+
+List<ChapterScene> _scenesFor(PlateDevice device) => <ChapterScene>[
+      ...chapterScenes,
+      if (device.id == desktopPlateDevice) ...desktopScenes,
+    ];
 
 List<T> _selected<T>(List<T> all, String filter, String Function(T) name) =>
     selectedByName(all, filter, name);
