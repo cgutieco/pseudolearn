@@ -220,8 +220,8 @@ Cuando una pieza esté aprobada, se publica en la tienda desde `build/`; la tien
   Así el sonido sigue al programa que avanza, en lugar de ser una música ajena pegada encima.
 - Siguiendo a Apple, es textura de marca y no transmite información: la pieza se entiende en silencio, sin golpes
   bruscos y con un bucle limpio (la cola de la partitura resuelve en su inicio). Se normaliza a −16 LUFS integrados,
-  con pico verdadero ≤ −1 dBTP (es el nivel que pide Microsoft; Apple no fija ninguno). Formato: AAC-LC estéreo,
-  48 kHz, 256 kbps en Apple y 384 kbps en Microsoft.
+  con pico verdadero ≤ −1 dBTP (decisión propia: Microsoft solo recomienda −16 LUFS y nadie fija un pico). Formato:
+  AAC-LC estéreo, 48 kHz, 256 kbps en Apple y 320 kbps en Microsoft (pide 384; ver resultados de F5).
 - Lleva audio: app previews (Apple lo exige), vídeo de encabezado (en la página de producto se puede activar el
   sonido) y tráiler de Microsoft. El vídeo de búsqueda **no** lleva pista: allí no se puede activar el sonido y el
   catálogo no la exige.
@@ -414,6 +414,35 @@ Sin diálogo: es infraestructura.
   1920 × 1080 con perfil de Microsoft (50 Mbps, GOP cerrado, AAC 48 kHz), miniatura, icono de tile.
 - B: diálogo — si las capturas cuentan la misma historia que Apple con UI de Windows, leyendas, estilo del hero.
 - D: producción y comprobación en el Centro de partners.
+
+**Resultados de F5 (2026-11-10).**
+
+- **Fuentes.** Se releyeron las páginas de capturas e imágenes, de información del listado y las políticas v7.20 de
+  Microsoft. Discrepancias reportadas y resueltas por la persona: el −1 dBTP no viene de Microsoft (queda como decisión
+  propia); los locales de la tienda son los del paquete MSIX (`es-ES`, `en-US`, no `es-MX`); el *super hero art* se pide
+  para juegos con tráiler, pero se produce igual y además con lo importante al centro; la política 11.16 obliga a declarar
+  la IA generativa en los metadatos. El icono de tile no se genera: la tienda usa el del paquete. La tabla «fuente → qué
+  hace el motor» vive en el README del motor.
+- **Arquitectura.** Auditoría de la estructura del flujo leída del archivo real (fotogramas clave cada medio segundo, GOP
+  cerrado, rachas de B, `moov` antes de `mdat`, sin listas de edición); reglas de contenido aplicadas de verdad, con
+  texto visible buscado en el HTML; leyendas y títulos como datos con su límite; bucle como regla de ranura (los
+  tráileres no hacen bucle); dispositivo `windows-desktop` de 1280 × 720 pt × 3 y tres escenas de escritorio con el modo
+  «Acompañar» en la app. **Hallazgos:** el AAC nativo de FFmpeg no llega a 384 kbps (240–300) y AudioToolbox se queda en
+  320; la fila en curso de la prueba de escritorio bajaba al tercio inferior a partir del paso 6 y las escenas se
+  detienen en el paso 5.
+- **Diálogo.** Tres conceptos por familia, renderizados y auditados con el motor. La persona eligió la **ventana sobre el
+  campo** para las capturas (cuarto concepto, propuesto al preguntar por qué no eran como las de iOS: Microsoft prohíbe
+  titulares y logotipos añadidos), la **lente muda** para el héroe y **el termostato** para el tráiler, con una cola de
+  UI real por la política 10.1 y AAC de AudioToolbox a 320 kbps.
+- **Producción.** En `packages/pseudolearn_store_media/build/`, fuera de git: 10 capturas de 3840 × 2160 (5 × `es`/`en`)
+  con `captions.json`; héroe 3840 × 2160, póster 1440 × 2160 y caja 2160 × 2160 en `es` y `en`; tráiler de 30 s a
+  1920 × 1080 (49,8 Mbps, GOP cerrado, AAC 320 kbps, −16 LUFS, −3,4 dBTP) con miniatura PNG y `trailer.json` con el
+  título, en `es` y `en`. Todas las piezas, aceptadas por la auditoría.
+- **Verificación.** Motor: `pnpm check` y la suite completa. App: `flutter analyze`, `check_limits`,
+  `check_design_system` y la suite completa. `git check-ignore` confirma que `build/screenshots/`, `build/hero/`,
+  `build/trailer/` y `build/drafts/` están ignorados; las historias `microsoft-store-*.json` se versionan.
+- **Pendientes.** La comprobación visual en el Centro de partners y la subida son de F6. El perfil del tráiler de
+  Microsoft solo se codifica en macOS (`aac_at`).
 
 ### F6 — Publicación asistida
 
