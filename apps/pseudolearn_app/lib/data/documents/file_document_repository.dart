@@ -75,18 +75,26 @@ String serializeDocumentFile(Document doc) {
   final buffer = StringBuffer();
   buffer.writeln('---');
   buffer.writeln('id: ${doc.id}');
-  buffer.writeln('title: ${doc.title}');
+  buffer.writeln('title: ${_headerValue(doc.title)}');
   buffer.writeln('profile: ${doc.profileId.name}');
   buffer.writeln('revision: ${doc.revision}');
   buffer.writeln('execution_arguments: ${jsonEncode(doc.executionArguments)}');
   buffer.writeln('created_at: ${doc.createdAt.toIso8601String()}');
   buffer.writeln('updated_at: ${doc.updatedAt.toIso8601String()}');
   if (doc.exerciseId != null) {
-    buffer.writeln('exercise_id: ${doc.exerciseId}');
+    buffer.writeln('exercise_id: ${_headerValue(doc.exerciseId!)}');
   }
   buffer.writeln('---');
   buffer.write(doc.content);
   return buffer.toString();
+}
+
+String _headerValue(String value) {
+  var single = value.replaceAll(RegExp(r'[\r\n]+'), ' ');
+  while (single.contains('---')) {
+    single = single.replaceAll('---', '--');
+  }
+  return single;
 }
 
 final class FileDocumentRepository implements DocumentRepository {

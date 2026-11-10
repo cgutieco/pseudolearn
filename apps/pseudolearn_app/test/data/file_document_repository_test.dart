@@ -33,6 +33,59 @@ void main() {
       }
     });
 
+    test('a title with line breaks cannot rewrite the header', () async {
+      final now = DateTime(2026, 11, 10);
+      final document = Document(
+        id: 'safe-id',
+        title: 'Tarea\nid: ../escape\r\nprofile: english',
+        content: 'Algoritmo A\nFinAlgoritmo',
+        profileId: SyntaxProfileId.classicSpanish,
+        revision: 1,
+        createdAt: now,
+        updatedAt: now,
+        exerciseId: 'ex-1\nid: ../other',
+      );
+      await repo.saveDocument(document);
+      final loaded = await repo.loadDocument('safe-id');
+      expect(loaded?.id, 'safe-id');
+      expect(loaded?.profileId, SyntaxProfileId.classicSpanish);
+      expect(loaded?.title, 'Tarea id: ../escape profile: english');
+      expect(loaded?.exerciseId, 'ex-1 id: ../other');
+      expect(loaded?.content, 'Algoritmo A\nFinAlgoritmo');
+    });
+
+    test('a title with a header separator keeps the body intact', () async {
+      final now = DateTime(2026, 11, 10);
+      final document = Document(
+        id: 'separator-id',
+        title: 'Parte----final',
+        content: 'Algoritmo B\nFinAlgoritmo',
+        profileId: SyntaxProfileId.classicSpanish,
+        revision: 1,
+        createdAt: now,
+        updatedAt: now,
+      );
+      await repo.saveDocument(document);
+      final loaded = await repo.loadDocument('separator-id');
+      expect(loaded?.title, 'Parte--final');
+      expect(loaded?.content, 'Algoritmo B\nFinAlgoritmo');
+    });
+
+    test('an empty title is written as is', () async {
+      final now = DateTime(2026, 11, 10);
+      final document = Document(
+        id: 'empty-title',
+        title: '',
+        content: '',
+        profileId: SyntaxProfileId.classicSpanish,
+        revision: 1,
+        createdAt: now,
+        updatedAt: now,
+      );
+      await repo.saveDocument(document);
+      expect((await repo.loadDocument('empty-title'))?.title, '');
+    });
+
     test('persists arguments including empty Unicode values', () async {
       final now = DateTime(2026, 11, 3);
       final document = Document(

@@ -146,12 +146,19 @@ Decisiones que salen de una auditoría de seguridad del 2026-11-10.
   el programa lo ve como un error tipado. Se descartó `autoResolveEffects: false`, porque la consola también es un
   efecto del host y el programa se habría detenido en su primer `Escribir`. La ejecución interactiva del editor no
   cambia: la persona ejecuta su propio programa.
+- **El encabezado de un `.pseudo` no se puede reescribir desde un título.** `serializeDocumentFile` cambia los saltos de
+  línea del título y de `exercise_id` por espacios y reduce `---` a `--`. Antes, un título sincronizado con
+  `\nid: …` cambiaba el id, y con él la ruta del archivo, en la siguiente lectura.
 
 **Pendientes declarados**
 
 - Los evaluadores de ejercicios y de ruta (`exerciseChecker`, `routeEvaluators`) siguen ejecutando con efectos reales.
   Las lecciones de la Parte «exterior» usan archivos y red, así que contenerlos exige decidir antes qué efectos simula
   cada caso. Queda para una auditoría propia.
+- La cola de sincronización y su cursor no guardan a qué usuario pertenecen. Cambiar de cuenta empuja las ediciones
+  pendientes de la cuenta anterior a la nueva.
+- `NSAllowsArbitraryLoads` en iOS existe para que los programas lleguen a servicios locales; conviene acotarlo a
+  `NSAllowsLocalNetworking`.
 
 ## iPhone Duo y ventanas que cambian de tamaño
 
