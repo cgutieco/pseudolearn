@@ -37,7 +37,7 @@ pub(super) fn capture(execution: &ExecutionResource, arguments: &Value) -> Resul
     Ok(
         json!({"stop_generation":debug.generation,"event":event,"live_event":execution.delivered.checked_sub(1),
         "reason":debug.reason,"stopped":debug.stopped,"task_id":task,"threads":threads(&machine),"frames":frames,
-        "total_frames":total,"sources":execution.sources.snapshot(),"source":source,
+        "total_frames":total,"sources":execution.sources.identities(),"source":source,
         "termination":execution.terminal.as_ref().map(crate::execution_wire::termination).unwrap_or(json!({"kind":"running"})),
         "output":machine_output(&execution.machine)}),
     )

@@ -610,7 +610,12 @@ tramo coincide exactamente con la línea y columna pedidas; nunca se desliza a o
 `debug_state` proyecta tareas, fuentes inmutables y ventanas de marcos (`start_frame`, `frame_count`,
 máximo 4096), con identidad y generación de parada. Los consumidores asignan sus handles de
 transporte; el núcleo conserva identidades lógicas. Las fuentes de proyecto tienen vistas por
-source_id y revisión, se analizan como módulos y conservan su texto inicial. El arranque de proyecto
+source_id y revisión, se analizan como módulos y conservan su texto inicial. Cada entrada de `sources` lleva
+`source_id`, `path` y `revision`, pero no el texto: el estado se devuelve en cada parada y en cada `advance` con
+depuración, de modo que repetir el texto costaba el tamaño del programa por paso, y el adaptador DAP ya tiene el
+texto del snapshot que lanzó (`TOOL.DAP` lo entrega desde ahí). La salida acumulada y la cinta completa de cada
+`advance` se conservan porque el corpus las fija (`API.PROJECT#R4` y los casos de `ENG.EXEC.MODEL`).
+`tests/debug_state_sources.rs` comprueba que una parada no crece con el texto del programa. El arranque de proyecto
 propaga semilla, entradas, observación, anfitrión, modo, cinta y límites efectivos; el manifiesto
 solo puede reducir límites del pedido. La identidad de la cinta usa una representación JSON
 canónica de todos los archivos del proyecto, no un programa concatenado para compilar.

@@ -137,7 +137,8 @@ comparten disposición de marco y de objetos.
 - **Historial y consultas de depuración**: el almacén de puntos de control tiene un presupuesto finito de ranuras
   retenidas, derivado de las celdas de memoria de la ejecución; al superarlo se adelgaza el punto de menor densidad
   (distancia entre vecinos por antigüedad, y solo en empate la ranura compuesta mínima) y, en último término, se
-  adelanta el horizonte declarado. `query_array_slice` rechaza longitudes mayores de 4096 como error de uso.
+  adelanta el horizonte declarado. `query_array_slice` rechaza longitudes mayores de 4096 como error de uso. El estado
+  de depuración identifica sus fuentes sin repetir su texto en cada parada.
 - **Consultas de texto**: `Contiene`, `PosicionDe`, `EmpiezaCon`, `TerminaCon` y `Subcadena` leen los textos prestados
   del montón en la VM y en el ejecutable nativo, sin copiarlos por llamada. El presupuesto de sentencias sigue contando
   una unidad por entrada a sentencia, como fija el corpus; la guarda de tiempo acota el trabajo lineal de `Contiene` y

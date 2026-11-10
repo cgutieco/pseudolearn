@@ -60,12 +60,12 @@ impl ExecutionSources {
         crate::execution_wire::event_with_source(event, self.views.get(&source))
     }
 
-    pub(crate) fn snapshot(&self) -> Value {
+    pub(crate) fn identities(&self) -> Value {
         json!(
             self.texts
                 .iter()
-                .map(|(identifier, (path, text))| {
-                    json!({"source_id":identifier,"path":path,"text":text,
+                .map(|(identifier, (path, _))| {
+                    json!({"source_id":identifier,"path":path,
                 "revision":self.views.get(identifier).map(ProgramView::revision)})
                 })
                 .collect::<Vec<_>>()
