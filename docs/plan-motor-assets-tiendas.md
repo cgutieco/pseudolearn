@@ -342,6 +342,37 @@ Sin diálogo: es infraestructura.
 - B: diálogo — arco de principio, nudo y final; ritmo sin cortes rápidos; papel de Nodo; ¿una preview o tres?
 - D: producción y verificación de portada a tamaño reducido.
 
+**Resultados de F3 (2026-11-10).**
+
+- **Fuentes.** Se releyeron la página de app previews, la de especificaciones, la sección 2.3 de las guías y el
+  catálogo `appAssetLibraryRefData` (solo `GET`). Sin contradicciones nuevas: la única es la ya conocida de F0
+  (`PT5S`–`PT30S` frente a `t15~30` y 15 s de la página), resuelta en 15–30 s. La tabla «qué dice cada fuente → qué
+  hace el motor» vive en el README del motor.
+- **Hallazgo.** La calibración aceptada en F2 salía a 0,71 Mbps, bajo los 10–12 Mbps de Apple, y ninguna auditoría lo
+  veía. El perfil de previews codifica ahora en CBR a 11 Mbps y `MEDIA-BITRATE` lo comprueba.
+- **Diálogo.** Tres conceptos con placas animadas reales: rótulos sobre la UI, franja editorial y tarjeta de marca
+  sobre UI. La persona eligió la **tarjeta de marca** (camino b de 2.3.4, como superposición sobre UI real), tres
+  previews por tamaño e idioma, anotaciones con punto solo en escenas quietas, banda sonora calmada con una nota por
+  hito y áreas seguras reales.
+- **Producción.** 18 previews aceptadas: «Resumen» (20,7 s), «Ejecutar y entender» (16,2 s) y «Nodo, ruta y código»
+  (18,3 s) × iPhone 886 × 1920, iPad 1200 × 1600 y Mac 1920 × 1080 × `es`/`en`, H.264 High 4.0 a 10,93–10,95 Mbps,
+  AAC 256 kbps a 48 kHz, −16 LUFS, con portada en el segundo 5 a tamaño completo y a 600 px, en
+  `packages/pseudolearn_store_media/build/previews/`, fuera de git. Las que muestran Nodo cierran con «Nodo requiere
+  sesión y suscripción».
+- **Placas.** 36 placas animadas (6 escenas × 3 dispositivos × 2 idiomas, 139 MB gracias a no repetir fotogramas),
+  grabadas en vivo con el motor real, los toques reales y las áreas seguras del dispositivo.
+- **Auditoría nueva.** UI visible en cada fotograma, placa a medida nativa, disolución y ritmo, tiempo de lectura,
+  portada, aviso obligatorio, léxico de fechas y temporada, y entrega del archivo (nivel, progresivo, bitrate, pistas
+  habilitadas, contenedor y bitrate AAC). Durante la producción detectó un recorte que pedía más placa de la grabada y
+  una anotación que apuntaba a una pieza que aún no existía.
+- **Verificación.** Motor: `pnpm check` y 319 tests. App: `flutter analyze`, `check_limits`, `check_design_system`,
+  tests de `tool/store_plates/` y la suite completa. `git check-ignore` confirma que previews, manifiestos, portadas,
+  proyectos, fotogramas, bandas sonoras y placas animadas están ignorados; `stories/app-store-previews.json` se
+  versiona.
+- **Pendientes.** La fila de `ExecutionStepper` se desborda a 600 y 960 pt (por eso los tamaños de iPad y Mac de las
+  previews son otros); el catálogo de conocimiento no se asienta a 1280 × 720 pt. Ambos, en el README de la app. La
+  subida a App Store Connect es de F6.
+
 ### F4 — Creative assets (encabezado 21:9, búsqueda 3:2, universal 16:9)
 
 - A: modelo de zona segura con perfiles, comprobación por fotograma, lámina de revisión, bucle perfecto.
