@@ -138,6 +138,20 @@ Decisiones que salen de una auditoría de seguridad del 2026-11-10.
   sincronización subía los documentos locales a esa cuenta. `SupabaseAuthGateway.completeSignInFromLink` rechaza ahora,
   antes de llamar a gotrue, cualquier callback que lleve `access_token` o `refresh_token` en la query o en el fragmento
   (`carriesSessionTokens` en `data/auth/auth_callback_link.dart`). Un código sin verificador local ya se rechazaba.
+- **Lo que ejecuta Nodo no toca archivos, red ni entorno.** `run_program` es una herramienta de lectura que no pide
+  confirmación y que promete al modelo que no tiene efectos, pero su ejecutor resolvía cada efecto contra el host
+  físico con autoridad completa: el directorio actual, rutas absolutas, red y variables de entorno. Ahora el ejecutor del
+  agente usa `RustEffectPolicy.contained()` (`engine/rust/rust_effect_policy.dart`). La compuerta solo envía al host la
+  consola, los argumentos, el reloj y las esperas. Cualquier otro efecto recibe `permiso_denegado` sin abrir el host, y
+  el programa lo ve como un error tipado. Se descartó `autoResolveEffects: false`, porque la consola también es un
+  efecto del host y el programa se habría detenido en su primer `Escribir`. La ejecución interactiva del editor no
+  cambia: la persona ejecuta su propio programa.
+
+**Pendientes declarados**
+
+- Los evaluadores de ejercicios y de ruta (`exerciseChecker`, `routeEvaluators`) siguen ejecutando con efectos reales.
+  Las lecciones de la Parte «exterior» usan archivos y red, así que contenerlos exige decidir antes qué efectos simula
+  cada caso. Queda para una auditoría propia.
 
 ## iPhone Duo y ventanas que cambian de tamaño
 

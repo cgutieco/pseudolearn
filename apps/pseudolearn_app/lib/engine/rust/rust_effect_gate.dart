@@ -1,6 +1,7 @@
 import '../../domain/model/execution/effect_wait.dart';
 import '../../domain/model/execution/execution_configuration.dart';
 import '../../domain/ports/execution_environment.dart';
+import 'rust_effect_policy.dart';
 import 'rust_execution_api.dart';
 import 'rust_transport.dart';
 import 'rust_wire_models.dart';
@@ -11,12 +12,18 @@ final class RustEffectGate {
   final RustExecutionApi _execution;
   final ExecutionEnvironment? _environment;
   final bool _autoResolve;
+  final RustEffectPolicy _policy;
   ExecutionConfiguration _configuration = const ExecutionConfiguration();
   int? _resource;
   bool _replaying = false;
 
-  RustEffectGate(this._transport, this._environment, this._autoResolve)
-    : _execution = RustExecutionApi(_transport);
+  RustEffectGate(
+    this._transport,
+    this._environment,
+    this._autoResolve, {
+    RustEffectPolicy policy = const RustEffectPolicy.unrestricted(),
+  }) : _policy = policy,
+       _execution = RustExecutionApi(_transport);
 
   void reset(ExecutionConfiguration configuration, {required bool replaying}) {
     close();
@@ -54,16 +61,43 @@ final class RustEffectGate {
 
   bool answer(int execution, RustBatch batch) {
     if (_replaying) return false;
-    if (_resource == null) {
-      final directory = _environment?.directoryFor(_configuration.documentId);
-      _transport.call('host_open', {
-        'resource': execution,
-        'directory': ?directory,
-        'args': _configuration.arguments,
-      });
-      _resource = execution;
+    final refused = _refuse(execution, batch.pendingRequests);
+    final admitted = [
+      for (final effect in batch.pendingRequests)
+        if (_policy.admits(effect)) effect,
+    ];
+    if (admitted.isEmpty) return refused;
+    return _resolve(execution, admitted) || refused;
+  }
+
+  bool _refuse(int execution, List<Map<String, Object?>> effects) {
+    var refused = false;
+    for (final effect in effects) {
+      if (_policy.admits(effect)) continue;
+      _execution.provideEffectResult(
+        execution,
+        (effect['effect_seq'] as num).toInt(),
+        RustEffectPolicy.refusal,
+      );
+      refused = true;
     }
-    for (final effect in batch.pendingRequests) {
+    return refused;
+  }
+
+  void _open(int execution) {
+    if (_resource != null) return;
+    final directory = _environment?.directoryFor(_configuration.documentId);
+    _transport.call('host_open', {
+      'resource': execution,
+      'directory': ?directory,
+      'args': _configuration.arguments,
+    });
+    _resource = execution;
+  }
+
+  bool _resolve(int execution, List<Map<String, Object?>> admitted) {
+    _open(execution);
+    for (final effect in admitted) {
       _transport.call('host_submit', {'resource': execution, 'effect': effect});
     }
     final replies =

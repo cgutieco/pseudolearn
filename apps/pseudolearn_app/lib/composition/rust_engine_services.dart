@@ -27,6 +27,7 @@ import '../engine/rust/rust_source_editor.dart';
 import '../engine/rust/rust_exercise_checker.dart';
 import '../engine/rust/rust_program_construct_reader.dart';
 import '../engine/rust/rust_program_analyzer.dart';
+import '../engine/rust/rust_effect_policy.dart';
 import '../engine/rust/rust_program_execution.dart';
 import '../engine/rust/rust_program_execution_observer.dart';
 import '../engine/rust/rust_execution_resource.dart';
@@ -154,7 +155,10 @@ ProgramExecutionSession _observableSession(
 ProgramTools _programTools(RustTransport transport, ProgramAnalyzer analyzer) =>
     ProgramTools(
       runner: EngineProgramBatchRunner(
-        createExecution: () => RustProgramExecution(transport),
+        createExecution: () => RustProgramExecution(
+          transport,
+          effectPolicy: const RustEffectPolicy.contained(),
+        ),
         analyzer: analyzer,
       ),
       translator: RustProgramTranslator(transport),

@@ -14,6 +14,7 @@ import '../../domain/ports/execution_reproduction.dart';
 import '../../domain/ports/program_execution.dart';
 import 'rust_analysis_api.dart';
 import 'rust_effect_gate.dart';
+import 'rust_effect_policy.dart';
 import 'rust_execution_api.dart';
 import 'rust_execution_event_consumer.dart';
 import 'rust_execution_effect_settlement.dart';
@@ -54,11 +55,17 @@ final class RustProgramExecution
     RustTransport transport, {
     ExecutionEnvironment? environment,
     bool autoResolveEffects = true,
+    RustEffectPolicy effectPolicy = const RustEffectPolicy.unrestricted(),
     RustExecutionResource? observationResource,
   }) : _analysis = RustAnalysisApi(transport),
        _execution = RustExecutionApi(transport, resource: observationResource),
        _events = RustExecutionEventConsumer(transport),
-       _gate = RustEffectGate(transport, environment, autoResolveEffects);
+       _gate = RustEffectGate(
+         transport,
+         environment,
+         autoResolveEffects,
+         policy: effectPolicy,
+       );
 
   @override
   List<OutputLine> get outputLines => _events.outputLines;
