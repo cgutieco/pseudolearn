@@ -12,7 +12,7 @@ import { FakeLedger, FakeUsers } from "../../../support/agent_fakes.ts";
 
 const claim = {
   store: "app_store",
-  productId: "pseudolearn.plus.monthly",
+  productId: "pseudolearn.nodo.monthly",
   transactionId: "t",
   evidence: "jws",
 };

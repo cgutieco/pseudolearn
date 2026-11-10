@@ -64,6 +64,8 @@ pub enum RuleId {
     RouteBundleStale,
     #[serde(rename = "REF-WEB-BUNDLE-STALE")]
     WebBundleStale,
+    #[serde(rename = "RUTA-WEB-BUNDLE-STALE")]
+    WebRouteBundleStale,
 }
 
 impl RuleId {
@@ -100,6 +102,7 @@ impl RuleId {
             Self::RouteParity => "RUTA-PARITY",
             Self::RouteBundleStale => "RUTA-BUNDLE-STALE",
             Self::WebBundleStale => "REF-WEB-BUNDLE-STALE",
+            Self::WebRouteBundleStale => "RUTA-WEB-BUNDLE-STALE",
         }
     }
 }

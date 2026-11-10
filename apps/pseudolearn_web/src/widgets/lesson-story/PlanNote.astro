@@ -1,0 +1,60 @@
+---
+import type { Locale } from '@shared/i18n/locales';
+import type { RouteRuns } from '@entities/learning-route/model/route';
+import { routeRunsHtml } from './route-html';
+
+export interface Props {
+  locale: Locale;
+  steps: readonly RouteRuns[];
+}
+
+const { locale, steps } = Astro.props;
+---
+
+<ol class="plan">
+  {steps.map((runs, index) => (
+    <li class="plan__step">
+      <span class="plan__number pl-mono" aria-hidden="true">
+        {index + 1}
+      </span>
+      <span set:html={routeRunsHtml(runs, locale)} />
+    </li>
+  ))}
+</ol>
+
+<style>
+  .plan {
+    display: grid;
+    padding: var(--pl-space-sm) var(--pl-space-lg);
+    border-radius: var(--pl-radius-card);
+    background: var(--pl-brand-faint);
+    box-shadow: var(--pl-shadow-2);
+  }
+
+  .plan__step {
+    display: flex;
+    align-items: center;
+    gap: var(--pl-space-sm);
+    padding: var(--pl-space-sm) 0;
+    font-size: 17px;
+    line-height: 1.45;
+  }
+
+  .plan__step + .plan__step {
+    border-top: 1px solid var(--pl-brand-tint);
+  }
+
+  .plan__number {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--pl-radius-pill);
+    background: var(--pl-brand);
+    color: var(--pl-btn-fg);
+    font-size: 13px;
+    font-weight: 700;
+  }
+</style>

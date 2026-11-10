@@ -1,0 +1,188 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { partStories } from '@entities/learning-route/model/route-showcase';
+import { routeLessons } from '@entities/learning-route/model/route-contents';
+import { hoursOf } from '@entities/learning-route/model/route-metrics';
+import SectionHeading from '@widgets/section-heading/SectionHeading.astro';
+import PartLessons from './PartLessons.astro';
+import JourneyGoal from './JourneyGoal.astro';
+import { FlagMark } from '@shared/ui/brand-mark';
+
+export interface Props {
+  locale: Locale;
+  id?: string;
+  overline?: string;
+  title?: string;
+  lead?: string;
+  detailed?: boolean;
+}
+
+const { locale, id, detailed = false } = Astro.props;
+const { t, plural } = useTranslations(locale);
+const stories = await partStories(locale);
+const goal = routeLessons(locale).at(-1);
+---
+
+<section class="journey" id={id}>
+  <div class="pl-container">
+    <SectionHeading
+      overline={Astro.props.overline ?? t('home.stairs.overline')}
+      title={Astro.props.title ?? t('home.stairs.title', { parts: stories.length })}
+      lead={Astro.props.lead ?? t('home.stairs.lead')}
+    />
+    <ol class="journey__path">
+      {stories.map(({ part, question }) => (
+        <li class="journey__stop">
+          <span class="journey__node pl-mono" aria-hidden="true">
+            {part.number}
+          </span>
+          <article
+            class="journey__card"
+            aria-label={`${t('paradigms.part', { number: part.number })}: ${part.title}`}
+          >
+            <h3 class="journey__title">{part.title}</h3>
+            {part.motto !== '' && <p class="journey__motto">{part.motto}</p>}
+            <p class="journey__question">{question !== '' ? question : part.summary}</p>
+            <p class="journey__meta pl-mono">
+              {plural('learn.route.lessonCount', part.lessons.length)} ·{' '}
+              {t('learn.route.hours', { hours: hoursOf(part.lessons) })}
+            </p>
+            {detailed && <PartLessons lessons={part.lessons} label={t('learn.route.showLessons')} />}
+          </article>
+        </li>
+      ))}
+      {goal && (
+        <li class="journey__stop">
+          <span class="journey__node journey__node--goal" aria-hidden="true">
+            <FlagMark size={22} />
+          </span>
+          <JourneyGoal locale={locale} goal={goal} />
+        </li>
+      )}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .journey {
+    scroll-margin-top: 56px;
+    padding-top: 72px;
+    padding-bottom: 72px;
+
+    --pl-node: 44px;
+  }
+
+  .journey__path {
+    margin-top: var(--pl-space-2xl);
+  }
+
+  .journey__stop {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--pl-node) minmax(0, 1fr);
+    gap: var(--pl-space-md);
+    padding-bottom: var(--pl-space-lg);
+  }
+
+  .journey__stop::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--pl-node) / 2 - 3px);
+    width: 6px;
+    background: var(--pl-brand);
+  }
+
+  .journey__stop:first-child::before {
+    top: calc(var(--pl-node) / 2);
+  }
+
+  .journey__stop:last-child::before {
+    bottom: calc(100% - var(--pl-node) / 2);
+  }
+
+  .journey__node {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--pl-node);
+    height: var(--pl-node);
+    border: 4px solid var(--pl-canvas);
+    border-radius: var(--pl-radius-pill);
+    background: var(--pl-field);
+    color: var(--pl-on-field);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .journey__node--goal {
+    background: var(--pl-brand);
+  }
+
+  .journey__card {
+    display: grid;
+    gap: 6px;
+    padding: var(--pl-space-lg);
+    border: 1px solid var(--pl-line);
+    border-radius: var(--pl-radius-card);
+    background: var(--pl-surface);
+    box-shadow: var(--pl-shadow-2);
+  }
+
+  .journey__title {
+    margin: 0;
+    font-size: 22px;
+    letter-spacing: -0.015em;
+  }
+
+  .journey__motto {
+    color: var(--pl-brand);
+    font-weight: 600;
+  }
+
+  .journey__question {
+    margin-top: var(--pl-space-xs);
+    font-size: 17px;
+    line-height: 1.55;
+  }
+
+  .journey__meta {
+    margin-top: var(--pl-space-xs);
+    font-size: 12px;
+    color: var(--pl-ink-3);
+  }
+
+  @media (min-width: 900px) {
+    .journey {
+      padding-top: 128px;
+      padding-bottom: 128px;
+    }
+
+    .journey__stop {
+      grid-template-columns: minmax(0, 1fr) var(--pl-node) minmax(0, 1fr);
+      gap: var(--pl-space-xl);
+      padding-bottom: var(--pl-space-sm);
+    }
+
+    .journey__stop::before {
+      left: calc(50% - 3px);
+    }
+
+    .journey__node {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .journey__stop > :global(article) {
+      grid-row: 1;
+      grid-column: 3;
+    }
+
+    .journey__stop:nth-child(even) > :global(article) {
+      grid-column: 1;
+    }
+  }
+</style>

@@ -704,9 +704,9 @@
   "@tabExport": {
     "description": "Pestaña de exportación"
   },
-  "exportComingSoon": "Disponible cuando el motor de exportación esté listo",
-  "@exportComingSoon": {
-    "description": "Aviso de exportación pendiente en Fase 0"
+  "exportUnavailableFallback": "No hay código equivalente para este programa en este momento.",
+  "@exportUnavailableFallback": {
+    "description": "Aviso cuando la exportación no devuelve código ni motivo"
   },
   "outputPanelTitle": "Salida del programa",
   "@outputPanelTitle": {

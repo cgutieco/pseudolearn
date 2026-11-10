@@ -42,7 +42,7 @@ function setup(checkouts: CheckoutGateway | null = new FakeCheckouts()) {
 Deno.test("a top-up checkout opens while the plan is active", async () => {
   const { dependencies, checkouts } = setup();
   assertEquals(
-    await startCheckout("t", "pseudolearn.plus.topup150", dependencies),
+    await startCheckout("t", "pseudolearn.nodo.topup150", dependencies),
     "https://pay.test/top_up",
   );
   assertEquals((checkouts as FakeCheckouts).opened, [["user-1", "top_up"]]);
@@ -52,7 +52,7 @@ Deno.test("a first plan checkout carries the trial", async () => {
   const { ledger, dependencies } = setup();
   ledger.currentBalance = emptyBalance;
   assertEquals(
-    await startCheckout("t", "pseudolearn.plus.monthly", dependencies),
+    await startCheckout("t", "pseudolearn.nodo.monthly", dependencies),
     "https://pay.test/monthly_trial",
   );
 });
@@ -62,12 +62,12 @@ Deno.test("checkouts refuse unknown products, a second plan and a missing gatewa
   const unknown = await assertRejects(() => startCheckout("t", "x", dependencies), AgentError);
   assertEquals(unknown.code, "invalid_request");
   const twice = await assertRejects(
-    () => startCheckout("t", "pseudolearn.plus.monthly", dependencies),
+    () => startCheckout("t", "pseudolearn.nodo.monthly", dependencies),
     AgentError,
   );
   assertEquals(twice.code, "already_subscribed");
   const disabled = await assertRejects(
-    () => startCheckout("t", "pseudolearn.plus.monthly", setup(null).dependencies),
+    () => startCheckout("t", "pseudolearn.nodo.monthly", setup(null).dependencies),
     AgentError,
   );
   assertEquals(disabled.code, "purchases_disabled");

@@ -704,9 +704,9 @@
   "@tabExport": {
     "description": "Tab label for export"
   },
-  "exportComingSoon": "Available when the export engine is ready",
-  "@exportComingSoon": {
-    "description": "Notice for export tab in Phase 0"
+  "exportUnavailableFallback": "There is no equivalent code for this program right now.",
+  "@exportUnavailableFallback": {
+    "description": "Notice when export returns neither code nor a reason"
   },
   "outputPanelTitle": "Program output",
   "@outputPanelTitle": {

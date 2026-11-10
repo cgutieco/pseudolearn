@@ -1,7 +1,6 @@
 ---
 import { useTranslations } from '@shared/i18n/translator';
 import type { Locale } from '@shared/i18n/locales';
-import { Icon } from '@shared/ui/icon';
 import { RichText } from '@shared/ui/rich-text';
 import type { InstallGuideModel } from './download-cards';
 
@@ -14,86 +13,53 @@ const { locale, guide } = Astro.props;
 const { t } = useTranslations(locale);
 ---
 
-<aside class="install-guide">
-  <h4 class="install-guide__title">
-    <Icon name="info" size={18} strokeWidth={1.8} class="install-guide__icon" />
-    <span>{t(guide.titleKey)}</span>
-  </h4>
-  <RichText as="p" class="install-guide__lead" text={t(guide.leadKey)} />
-  <ol class="install-guide__steps">
-    {guide.stepKeys.map((stepKey, index) => (
-      <li class="pl-numbered install-guide__step">
-        <span class="pl-numbered__index">{String(index + 1).padStart(2, '0')}</span>
-        <RichText as="p" class="pl-numbered__text install-guide__step-text" text={t(stepKey)} />
-      </li>
-    ))}
-  </ol>
-  <p class="install-guide__note">{t(guide.noteKey)}</p>
-</aside>
+<details class="install-guide">
+  <summary class="install-guide__summary">{t(guide.summaryKey)}</summary>
+  <div class="install-guide__body">
+    <RichText as="p" class="install-guide__lead" text={t(guide.leadKey)} />
+    <ol class="install-guide__steps">
+      {guide.stepKeys.map((stepKey) => (
+        <RichText as="li" class="install-guide__step" text={t(stepKey)} />
+      ))}
+    </ol>
+    <p class="install-guide__note">{t(guide.noteKey)}</p>
+  </div>
+</details>
 
 <style>
   .install-guide {
-    padding: var(--pl-space-md);
-    border: 1px solid var(--pl-brand-tint);
-    border-left: 4px solid var(--pl-brand);
-    border-radius: var(--pl-radius-card);
-    background: var(--pl-brand-faint);
-  }
-
-  .install-guide__title {
-    display: flex;
-    align-items: center;
-    gap: var(--pl-space-xs);
-    margin: 0;
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.3;
-    color: var(--pl-ink);
-  }
-
-  .install-guide :global(.install-guide__icon) {
-    color: var(--pl-brand);
-  }
-
-  .install-guide :global(.install-guide__lead) {
-    margin-top: var(--pl-space-xs);
+    margin-top: var(--pl-space-sm);
     font-size: 14px;
-    line-height: 1.6;
     color: var(--pl-ink-2);
   }
 
+  .install-guide__summary {
+    cursor: pointer;
+    color: var(--pl-ink-2);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .install-guide__body {
+    display: grid;
+    gap: var(--pl-space-xs);
+    margin-top: var(--pl-space-sm);
+    line-height: 1.6;
+  }
+
   .install-guide__steps {
-    display: flex;
-    flex-direction: column;
-    gap: var(--pl-space-sm);
-    margin-top: var(--pl-space-md);
+    display: grid;
+    gap: 4px;
+    padding-left: 20px;
+    list-style: decimal;
   }
 
-  .install-guide__step {
-    gap: var(--pl-space-sm);
-  }
-
-  .install-guide :global(.install-guide__step-text) {
-    font-size: 14px;
-  }
-
-  .install-guide :global(.install-guide__step-text strong) {
-    font-weight: 600;
+  .install-guide :global(strong) {
     color: var(--pl-ink);
   }
 
   .install-guide__note {
-    margin-top: var(--pl-space-md);
-    padding-top: var(--pl-space-sm);
-    border-top: 1px solid var(--pl-brand-tint);
     font-size: 13px;
-    line-height: 1.5;
-    color: var(--pl-ink-2);
-  }
-
-  @media (min-width: 900px) {
-    .install-guide {
-      padding: 20px var(--pl-space-lg);
-    }
+    color: var(--pl-ink-3);
   }
 </style>

@@ -2,6 +2,10 @@ import { LOCALE_PREFIX, LOCALES, type Locale } from './locales';
 
 export const ROUTES = {
   home: '/',
+  language: '/language',
+  learn: '/learn',
+  nodo: '/nodo',
+  download: '/download',
   contact: '/contact',
   versions: '/versions',
   privacy: '/privacy',
@@ -28,8 +32,4 @@ export function localizePath(path: string, locale: Locale): string {
 
 export function alternatesFor(path: string): LocalizedAlternate[] {
   return LOCALES.map((locale) => ({ locale, path: localizePath(path, locale) }));
-}
-
-export function anchorOnHome(anchor: string, locale: Locale): string {
-  return `${localizePath(ROUTES.home, locale)}#${anchor}`;
 }

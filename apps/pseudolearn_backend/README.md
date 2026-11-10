@@ -66,6 +66,9 @@ Si el modelo falla, responde 429 o no trae `usage`, no hay débito.
 
 ## Reglas que conviene saber
 
+- Lo único que se vende es Nodo, así que los productos se llaman `pseudolearn.nodo.trial`, `pseudolearn.nodo.monthly` y
+  `pseudolearn.nodo.topup150` en la app, en `agent-credits/domain/purchase.ts`, en App Store Connect y en Paddle. Un
+  identificador distinto en una tienda deja la compra sin canjear.
 - Las capas solo importan lo que `architecture.json` les permite; `domain`, `application` y `http` no usan `Deno`,
   `fetch`, `crypto` ni `console`, e `infrastructure` no usa `Deno`, `fetch` ni `console`.
 - El código de `supabase/functions/` no admite imports `npm:`, `jsr:`, `node:`, `http:` ni `https:`: solo la API web de

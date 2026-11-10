@@ -64,6 +64,8 @@ flowchart LR
   `pseudolearn_brand/`.
 - Imports prohibidos: `subprocess`, `socket`, `urllib`, `requests` y `shutil`.
 - Una variante nueva es una entrada en `brand.json`; el catálogo rechaza claves desconocidas.
+- El módulo TypeScript de la web exporta, además del trazado completo, la ruta y el banderín por separado, la línea
+  central de la escalera y el grosor del trazo: la web anima el símbolo recorriendo la escalera sin copiar geometría.
 - Los archivos generados no se editan a mano. `check` falla con `BRAND-COPY-STALE`, `BRAND-TS-STALE`,
   `BRAND-DART-DRIFT`, `BRAND-FONT-DRIFT` o `BRAND-TEMPLATE-GEOMETRY` cuando un consumidor diverge.
 

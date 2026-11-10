@@ -34,11 +34,25 @@ test.describe('language switch', () => {
     await context.close();
   });
 
-  test('renders the localized product preview per language', async ({ page }) => {
+  test('tells the home story in the language of the page', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('.product-preview__file')).toHaveText('DemostracionGuiada.pseudo');
+    await expect(page.locator('.plan__step').first()).toContainText('Multiplica');
+    await expect(page.locator('.journey__question').nth(1)).toContainText('¿Y si');
+    await expect(page.locator('.tour img').last()).toHaveAttribute('alt', /La pestaña Tareas/);
     await page.goto('/en');
-    await expect(page.locator('.product-preview__file')).toHaveText('GuidedDemo.pseudo');
+    await expect(page.locator('.plan__step').first()).toContainText('Multiply');
+    await expect(page.locator('.journey__question').nth(1)).toContainText('What if');
+    await expect(page.locator('.tour img').last()).toHaveAttribute('alt', /The Tasks tab/);
+  });
+
+  test('serves the phone screenshot on narrow screens', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/en');
+    const shot = page.locator('.tour img').last();
+    await shot.scrollIntoViewIfNeeded();
+    await expect
+      .poll(() => shot.evaluate((image: HTMLImageElement) => image.naturalHeight > image.naturalWidth))
+      .toBe(true);
   });
 });
 

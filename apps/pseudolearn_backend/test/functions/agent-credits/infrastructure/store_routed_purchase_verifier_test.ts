@@ -9,7 +9,7 @@ const routed = new StoreRoutedPurchaseVerifier(
 Deno.test("a claim goes to the verifier of its store", async () => {
   const claim = {
     store: "simulated",
-    productId: "pseudolearn.plus.monthly",
+    productId: "pseudolearn.nodo.monthly",
     transactionId: "t",
     evidence: "",
   };
@@ -19,7 +19,7 @@ Deno.test("a claim goes to the verifier of its store", async () => {
 Deno.test("a store without a verifier verifies nothing", async () => {
   const claim = {
     store: "app_store",
-    productId: "pseudolearn.plus.monthly",
+    productId: "pseudolearn.nodo.monthly",
     transactionId: "t",
     evidence: "x",
   };

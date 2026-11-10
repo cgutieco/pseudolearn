@@ -1,9 +1,19 @@
 import { describe, expect, it } from 'vitest';
-import { REPORTABLE_PLATFORMS, availablePlatforms, isReportablePlatform, plannedPlatforms } from './platform';
+import {
+  REPORTABLE_PLATFORMS,
+  availablePlatforms,
+  comingSoonPlatforms,
+  isReportablePlatform,
+  plannedPlatforms,
+} from './platform';
 
 describe('platform', () => {
   it('announces Windows once among the available platforms', () => {
     expect(availablePlatforms().map((platform) => platform.id)).toEqual(['macos', 'ios', 'windows']);
+  });
+
+  it('announces the editor extension and the command line as coming soon', () => {
+    expect(comingSoonPlatforms().map((platform) => platform.id)).toEqual(['vscode', 'cli']);
   });
 
   it('lists the planned platforms without the catch-all option', () => {

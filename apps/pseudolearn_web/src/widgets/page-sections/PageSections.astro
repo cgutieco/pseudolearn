@@ -1,0 +1,95 @@
+---
+export interface SectionLink {
+  readonly id: string;
+  readonly label: string;
+}
+
+export interface Props {
+  label: string;
+  sections: readonly SectionLink[];
+}
+
+const { label, sections } = Astro.props;
+---
+
+<nav class="page-sections" aria-label={label}>
+  <div class="pl-container page-sections__row">
+    <span class="pl-overline page-sections__label">{label}</span>
+    <ul class="page-sections__list">
+      {sections.map((section) => (
+        <li>
+          <a class="page-sections__chip" href={`#${section.id}`}>
+            <span class="page-sections__hash" aria-hidden="true">
+              #
+            </span>
+            {section.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<style>
+  .page-sections {
+    overflow: hidden;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--pl-line);
+    background: color-mix(in srgb, var(--pl-canvas) 92%, transparent);
+    backdrop-filter: blur(8px);
+  }
+
+  .page-sections__row {
+    display: flex;
+    align-items: center;
+    gap: var(--pl-space-md);
+    min-height: 56px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .page-sections__label {
+    flex: none;
+    display: none;
+  }
+
+  .page-sections__list {
+    display: flex;
+    flex: none;
+    gap: var(--pl-space-xs);
+  }
+
+  .page-sections__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 34px;
+    padding: 0 12px;
+    border: 1px solid var(--pl-line);
+    border-radius: var(--pl-radius-pill);
+    background: var(--pl-surface);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--pl-ink-2);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .page-sections__chip:hover {
+    border-color: var(--pl-brand);
+    color: var(--pl-brand);
+  }
+
+  .page-sections__hash {
+    font-family: var(--pl-font-code);
+    color: var(--pl-brand);
+  }
+
+  @media (min-width: 900px) {
+    .page-sections__label {
+      display: inline;
+    }
+  }
+</style>

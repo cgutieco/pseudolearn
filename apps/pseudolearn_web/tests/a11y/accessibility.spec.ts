@@ -3,6 +3,12 @@ import { expect, test } from '@playwright/test';
 
 const ROUTES = [
   '/',
+  '/language',
+  '/learn',
+  '/nodo',
+  '/download',
+  '/en/learn',
+  '/en/nodo',
   '/contact',
   '/versions',
   '/privacy',
@@ -25,7 +31,7 @@ const THEMES = ['light', 'dark'] as const;
 for (const route of ROUTES) {
   for (const theme of THEMES) {
     test(`${route} has no serious accessibility violations in ${theme} mode`, async ({ page }) => {
-      await page.emulateMedia({ colorScheme: theme });
+      await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' });
       await page.goto(route);
       const results = await new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])

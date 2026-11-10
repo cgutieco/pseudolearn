@@ -13,3 +13,4 @@ design/
 coverage/
 src/shared/agent-sheet/generated/
 src/entities/specification/generated/
+src/entities/learning-route/generated/

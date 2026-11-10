@@ -46,7 +46,7 @@ Deno.test("foreign or incomplete transactions are rejected", () => {
   const rejected = [
     subscriptionTransaction({ bundleId: "com.other.app" }),
     subscriptionTransaction({ environment: "Xcode" }),
-    subscriptionTransaction({ productId: "pseudolearn.plus.trial" }),
+    subscriptionTransaction({ productId: "pseudolearn.nodo.trial" }),
     subscriptionTransaction({ productId: "com.other.product" }),
     subscriptionTransaction({ expiresDate: undefined }),
     subscriptionTransaction({ transactionId: "" }),

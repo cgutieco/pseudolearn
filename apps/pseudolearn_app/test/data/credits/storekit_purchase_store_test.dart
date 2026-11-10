@@ -14,7 +14,7 @@ void main() {
   late StoreKitPurchaseStore store;
 
   setUp(() {
-    client = FakeStoreKitClient(catalog: {'pseudolearn.plus.monthly': r'$4.99', 'pseudolearn.plus.topup150': r'$2.99'});
+    client = FakeStoreKitClient(catalog: {'pseudolearn.nodo.monthly': r'$4.99', 'pseudolearn.nodo.topup150': r'$2.99'});
     launcher = RecordingUrlLauncher();
     store = StoreKitPurchaseStore(
       client: client,
@@ -27,13 +27,13 @@ void main() {
   test('the plan is bought as a subscription and the top-up as a consumable, tagged with the account', () async {
     final plan = store.purchase(AgentProduct.monthly);
     await Future<void>.delayed(Duration.zero);
-    client.stream.add([storeTransaction('pseudolearn.plus.monthly', StoreTransactionStatus.purchased)]);
+    client.stream.add([storeTransaction('pseudolearn.nodo.monthly', StoreTransactionStatus.purchased)]);
     expect(await plan, isA<PurchaseConfirmed>());
     final topUp = store.purchase(AgentProduct.topUp);
     await Future<void>.delayed(Duration.zero);
-    client.stream.add([storeTransaction('pseudolearn.plus.topup150', StoreTransactionStatus.purchased, transactionId: '2')]);
+    client.stream.add([storeTransaction('pseudolearn.nodo.topup150', StoreTransactionStatus.purchased, transactionId: '2')]);
     await topUp;
-    expect(client.bought, ['pseudolearn.plus.monthly:subscription', 'pseudolearn.plus.topup150:consumable']);
+    expect(client.bought, ['pseudolearn.nodo.monthly:subscription', 'pseudolearn.nodo.topup150:consumable']);
     expect(client.tokens, ['user-uuid', 'user-uuid']);
   });
 

@@ -63,7 +63,7 @@ String _unavailableDescription(AppLocalizations l10n, ExportState state) {
   }
   return state.unavailableReason.isNotEmpty
       ? state.unavailableReason
-      : l10n.exportComingSoon;
+      : l10n.exportUnavailableFallback;
 }
 
 final class _ExportContent extends StatelessWidget {

@@ -271,7 +271,7 @@ tokens de sesión.
 | Prueba | 7 días, 40 créditos, una vez por cuenta |
 | Recarga | 150 créditos, no caducan, se gastan después del plan |
 | Tope | 15 créditos por petición del usuario; salida ≤ 4 000 tokens; 60 llamadas por minuto |
-| Productos | `pseudolearn.plus.monthly`, `pseudolearn.plus.topup150` (ids provisionales) |
+| Productos | `pseudolearn.nodo.monthly`, `pseudolearn.nodo.topup150` (ids provisionales) |
 
 ## 8. Puesta en producción (lo que hace el propietario después del plan)
 

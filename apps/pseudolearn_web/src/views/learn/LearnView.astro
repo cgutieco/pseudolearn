@@ -1,0 +1,116 @@
+---
+import BaseLayout from '@app/layouts/BaseLayout.astro';
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { ROUTES } from '@shared/i18n/routes';
+import { Icon } from '@shared/ui/icon';
+import { StairMark } from '@shared/ui/brand-mark';
+import { routeParts } from '@entities/learning-route/model/route-contents';
+import { routeMetrics } from '@entities/learning-route/model/route-metrics';
+import StoryHero from '@widgets/story-hero/StoryHero.astro';
+import MetricBand from '@widgets/metric-band/MetricBand.astro';
+import PageSections from '@widgets/page-sections/PageSections.astro';
+import PageSection from '@widgets/page-section/PageSection.astro';
+import RouteStairs from '@widgets/route-stairs/RouteStairs.astro';
+import MethodShowcase from '@widgets/method-showcase/MethodShowcase.astro';
+import ExerciseKinds from '@widgets/exercise-kinds/ExerciseKinds.astro';
+import ProgressPromise from '@widgets/progress-promise/ProgressPromise.astro';
+import ProductShot from '@widgets/product-preview/ProductShot.astro';
+import ClosingCta from '@widgets/closing-cta/ClosingCta.astro';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t, formatNumber } = useTranslations(locale);
+const metrics = routeMetrics(routeParts(locale));
+const counts = {
+  parts: metrics.parts,
+  lessons: metrics.lessons,
+  exercises: metrics.exercises,
+  hours: metrics.hours,
+};
+const SECTIONS = ['route', 'method', 'exercises', 'progress'] as const;
+const sections = SECTIONS.map((id) => ({ id, label: t(`learn.sections.${id}`) }));
+const figures = [
+  { value: formatNumber(metrics.parts), label: t('learn.figures.parts') },
+  { value: formatNumber(metrics.lessons), label: t('learn.figures.lessons') },
+  { value: formatNumber(metrics.exercises), label: t('learn.figures.exercises') },
+  { value: `~${formatNumber(metrics.hours)} h`, label: t('learn.figures.hours') },
+];
+---
+
+<BaseLayout
+  locale={locale}
+  path={ROUTES.learn}
+  title={t('learn.seoTitle')}
+  description={t('learn.seoDescription', counts)}
+>
+  <StoryHero
+    overline={t('learn.hero.overline')}
+    title={t('learn.hero.title')}
+    lead={t('learn.hero.lead', counts)}
+    ceremony
+  >
+    <StairMark slot="visual" id="learn" motion="ceremony" class="learn-mark" />
+    <Fragment slot="actions">
+      <a class="pl-btn pl-btn--on-field" href="#route">
+        <span>{t('learn.hero.cta')}</span>
+        <Icon name="chevronDown" size={17} />
+      </a>
+    </Fragment>
+    <MetricBand items={figures} />
+  </StoryHero>
+  <PageSections label={t('pageSections.label')} sections={sections} />
+
+  <RouteStairs
+    locale={locale}
+    id="route"
+    overline={t('learn.sections.route')}
+    title={t('learn.route.title', { parts: metrics.parts })}
+    lead={t('learn.route.lead', { projects: metrics.projects })}
+    detailed
+  />
+
+  <PageSection
+    id="method"
+    tone="field"
+    overline={t('learn.sections.method')}
+    title={t('learn.method.title')}
+    lead={t('learn.method.lead')}
+  >
+    <MethodShowcase locale={locale} alt={t('learn.method.alt')} caption={t('learn.method.caption')} />
+  </PageSection>
+
+  <PageSection
+    id="exercises"
+    overline={t('learn.sections.exercises')}
+    title={t('learn.exercises.title', { kinds: metrics.kinds.size })}
+    lead={t('learn.exercises.lead')}
+  >
+    <ExerciseKinds locale={locale} metrics={metrics} />
+  </PageSection>
+
+  <PageSection
+    id="progress"
+    tone="surface"
+    overline={t('learn.sections.progress')}
+    title={t('learn.progress.title')}
+    lead={t('learn.progress.lead')}
+  >
+    <ProductShot locale={locale} scene="route" alt={t('learn.route.alt')} />
+    <ProgressPromise locale={locale} />
+  </PageSection>
+
+  <ClosingCta locale={locale} />
+</BaseLayout>
+
+<style>
+  :global(.learn-mark) {
+    width: clamp(96px, 24vw, 140px);
+    height: auto;
+
+    --pl-stair-flag: var(--pl-on-field);
+  }
+</style>

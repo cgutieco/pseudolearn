@@ -1,0 +1,90 @@
+---
+import type { VocabularyPair } from '@entities/specification/model/vocabulary';
+
+export interface Props {
+  pairs: readonly VocabularyPair[];
+  spanishLabel: string;
+  englishLabel: string;
+  more: string;
+}
+
+const { pairs, spanishLabel, englishLabel, more } = Astro.props;
+---
+
+<div class="vocabulary">
+  <p class="vocabulary__legend pl-mono">
+    <span>{spanishLabel}</span>
+    <span aria-hidden="true">⇄</span>
+    <span>{englishLabel}</span>
+  </p>
+  <ul class="vocabulary__grid">
+    {pairs.map((pair) => (
+      <li class:list={['vocabulary__pair', `vocabulary__pair--${pair.tone}`]}>
+        <span>{pair.spanish}</span>
+        <span class="vocabulary__arrow" aria-hidden="true">
+          ⇄
+        </span>
+        <span>{pair.english}</span>
+      </li>
+    ))}
+  </ul>
+  <p class="vocabulary__more">{more}</p>
+</div>
+
+<style>
+  .vocabulary {
+    display: grid;
+    gap: var(--pl-space-md);
+  }
+
+  .vocabulary__legend {
+    display: flex;
+    gap: var(--pl-space-sm);
+    font-size: 12px;
+    color: var(--pl-ink-3);
+  }
+
+  .vocabulary__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr));
+    gap: var(--pl-space-xs);
+  }
+
+  .vocabulary__pair {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    gap: var(--pl-space-xs);
+    padding: 10px var(--pl-space-md);
+    border: 1px solid var(--pl-line);
+    border-radius: var(--pl-radius-control);
+    background: var(--pl-canvas);
+    font-family: var(--pl-font-code);
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .vocabulary__pair--structured {
+    color: var(--pl-syn-struct);
+  }
+
+  .vocabulary__pair--procedural {
+    color: var(--pl-syn-proc);
+  }
+
+  .vocabulary__pair--object {
+    color: var(--pl-syn-oop);
+  }
+
+  .vocabulary__arrow {
+    color: var(--pl-ink-3);
+    font-weight: 400;
+  }
+
+  .vocabulary__more {
+    font-size: 14px;
+    color: var(--pl-ink-3);
+  }
+</style>

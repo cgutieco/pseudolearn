@@ -15,7 +15,7 @@ export interface DownloadSpec {
 }
 
 export interface InstallGuideModel {
-  readonly titleKey: TranslationKey;
+  readonly summaryKey: TranslationKey;
   readonly leadKey: TranslationKey;
   readonly stepKeys: readonly TranslationKey[];
   readonly noteKey: TranslationKey;
@@ -23,6 +23,8 @@ export interface InstallGuideModel {
 
 export interface DownloadCardModel {
   readonly icon: IconName;
+  readonly available: boolean;
+  readonly textKey?: TranslationKey;
   readonly titleKey: TranslationKey;
   readonly actions: readonly DownloadAction[];
   readonly specs: readonly DownloadSpec[];
@@ -30,77 +32,96 @@ export interface DownloadCardModel {
 }
 
 export const UNSIGNED_WINDOWS_INSTALL_GUIDE: InstallGuideModel = {
-  titleKey: 'home.downloads.windowsGuide.title',
-  leadKey: 'home.downloads.windowsGuide.lead',
+  summaryKey: 'download.windowsGuide.summary',
+  leadKey: 'download.windowsGuide.lead',
   stepKeys: [
-    'home.downloads.windowsGuide.stepBrowser',
-    'home.downloads.windowsGuide.stepMoreInfo',
-    'home.downloads.windowsGuide.stepRunAnyway',
-    'home.downloads.windowsGuide.stepInstall',
+    'download.windowsGuide.stepBrowser',
+    'download.windowsGuide.stepMoreInfo',
+    'download.windowsGuide.stepRunAnyway',
+    'download.windowsGuide.stepInstall',
   ],
-  noteKey: 'home.downloads.windowsGuide.note',
+  noteKey: 'download.windowsGuide.note',
 };
 
 export const DOWNLOAD_CARDS: readonly DownloadCardModel[] = [
   {
     icon: 'laptop',
-    titleKey: 'home.downloads.macTitle',
+    available: true,
+    titleKey: 'download.macTitle',
     actions: [
       {
-        labelKey: 'home.downloads.macPrimary',
+        labelKey: 'download.macPrimary',
         variant: 'pl-btn--primary',
         href: SITE.macAppStoreUrl,
         external: true,
       },
     ],
     specs: [
-      { labelKey: 'home.downloads.specRequirements', valueKey: 'home.downloads.macRequirements' },
-      { labelKey: 'home.downloads.specArchitecture', valueKey: 'home.downloads.macArchitecture' },
-      { labelKey: 'home.downloads.specVersion', valueKey: 'home.downloads.versionValue' },
-      { labelKey: 'home.downloads.specPrice', valueKey: 'home.downloads.priceValue' },
+      { labelKey: 'download.specRequirements', valueKey: 'download.macRequirements' },
+      { labelKey: 'download.specArchitecture', valueKey: 'download.macArchitecture' },
+      { labelKey: 'download.specVersion', valueKey: 'download.versionValue' },
+      { labelKey: 'download.specPrice', valueKey: 'download.priceValue' },
     ],
   },
   {
     icon: 'phone',
-    titleKey: 'home.downloads.mobileTitle',
+    available: true,
+    titleKey: 'download.mobileTitle',
     actions: [
       {
-        labelKey: 'home.downloads.mobilePrimary',
+        labelKey: 'download.mobilePrimary',
         variant: 'pl-btn--primary',
         href: SITE.iosAppStoreUrl,
         external: true,
       },
     ],
     specs: [
-      { labelKey: 'home.downloads.specRequirements', valueKey: 'home.downloads.mobileRequirements' },
-      { labelKey: 'home.downloads.specInput', valueKey: 'home.downloads.mobileInput' },
-      { labelKey: 'home.downloads.specVersion', valueKey: 'home.downloads.versionValue' },
-      { labelKey: 'home.downloads.specPrice', valueKey: 'home.downloads.priceValue' },
+      { labelKey: 'download.specRequirements', valueKey: 'download.mobileRequirements' },
+      { labelKey: 'download.specInput', valueKey: 'download.mobileInput' },
+      { labelKey: 'download.specVersion', valueKey: 'download.versionValue' },
+      { labelKey: 'download.specPrice', valueKey: 'download.priceValue' },
     ],
   },
   {
     icon: 'monitor',
-    titleKey: 'home.downloads.windowsTitle',
+    available: true,
+    titleKey: 'download.windowsTitle',
     actions: [
       {
-        labelKey: 'home.downloads.windowsPrimary',
+        labelKey: 'download.windowsPrimary',
         variant: 'pl-btn--primary',
         href: SITE.microsoftStoreUrl,
         external: true,
       },
       {
-        labelKey: 'home.downloads.windowsSecondary',
+        labelKey: 'download.windowsSecondary',
         variant: 'pl-btn--ghost',
         href: SITE.windowsInstallerUrl,
       },
     ],
     specs: [
-      { labelKey: 'home.downloads.specRequirements', valueKey: 'home.downloads.windowsRequirements' },
-      { labelKey: 'home.downloads.specDistribution', valueKey: 'home.downloads.windowsDistribution' },
-      { labelKey: 'home.downloads.specInstallation', valueKey: 'home.downloads.windowsInstallation' },
-      { labelKey: 'home.downloads.specVersion', valueKey: 'home.downloads.versionValue' },
-      { labelKey: 'home.downloads.specPrice', valueKey: 'home.downloads.priceValue' },
+      { labelKey: 'download.specRequirements', valueKey: 'download.windowsRequirements' },
+      { labelKey: 'download.specDistribution', valueKey: 'download.windowsDistribution' },
+      { labelKey: 'download.specInstallation', valueKey: 'download.windowsInstallation' },
+      { labelKey: 'download.specVersion', valueKey: 'download.versionValue' },
+      { labelKey: 'download.specPrice', valueKey: 'download.priceValue' },
     ],
     guide: UNSIGNED_WINDOWS_INSTALL_GUIDE,
+  },
+  {
+    icon: 'code',
+    available: false,
+    titleKey: 'download.vscodeTitle',
+    textKey: 'download.vscodeText',
+    actions: [],
+    specs: [{ labelKey: 'download.specRequirements', valueKey: 'download.vscodeRequirements' }],
+  },
+  {
+    icon: 'terminal',
+    available: false,
+    titleKey: 'download.cliTitle',
+    textKey: 'download.cliText',
+    actions: [],
+    specs: [],
   },
 ];

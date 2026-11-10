@@ -1,0 +1,118 @@
+---
+import {
+  BRAND_SYMBOL_CENTERLINE,
+  BRAND_SYMBOL_FLAG_PATH,
+  BRAND_SYMBOL_ROUTE_PATH,
+  BRAND_SYMBOL_VIEW_BOX,
+} from './symbol-path.generated';
+import { STAIR_NODE_RADIUS, STAIR_WALK_WIDTH, stairStart } from './stair-geometry';
+
+export interface Props {
+  id: string;
+  motion?: 'ceremony' | 'story' | 'still';
+  class?: string;
+}
+
+const { id, motion = 'still', class: className } = Astro.props;
+const start = stairStart();
+const maskId = `stair-walk-${id}`;
+---
+
+<svg
+  class:list={['stair', `stair--${motion}`, className]}
+  viewBox={BRAND_SYMBOL_VIEW_BOX}
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs>
+    <mask id={maskId} maskUnits="userSpaceOnUse">
+      <circle cx={start.x} cy={start.y} r={STAIR_NODE_RADIUS} fill="#fff"></circle>
+      <path
+        class="stair__walk"
+        d={BRAND_SYMBOL_CENTERLINE}
+        pathLength="1"
+        fill="none"
+        stroke="#fff"
+        stroke-width={STAIR_WALK_WIDTH}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></path>
+    </mask>
+  </defs>
+  <path class="stair__track" d={BRAND_SYMBOL_ROUTE_PATH}></path>
+  <path class="stair__route" d={BRAND_SYMBOL_ROUTE_PATH} mask={`url(#${maskId})`}></path>
+  <path class="stair__flag" d={BRAND_SYMBOL_FLAG_PATH}></path>
+</svg>
+
+<style>
+  .stair {
+    display: block;
+    overflow: visible;
+  }
+
+  .stair__track {
+    fill: currentcolor;
+    opacity: 0.16;
+  }
+
+  .stair__route {
+    fill: currentcolor;
+  }
+
+  .stair__flag {
+    fill: var(--pl-stair-flag, currentcolor);
+    transform-box: fill-box;
+    transform-origin: 100% 100%;
+  }
+
+  .stair__walk {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .stair--ceremony .stair__walk {
+      animation: stair-walk 1.6s cubic-bezier(0.65, 0, 0.35, 1) 0.25s both;
+    }
+
+    .stair--ceremony .stair__flag {
+      animation: stair-raise 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.75s both;
+    }
+
+    @supports (animation-timeline: view()) {
+      .stair--story .stair__walk {
+        animation: stair-walk linear both;
+        animation-timeline: --pl-story;
+        animation-range: cover 15% cover 78%;
+      }
+
+      .stair--story .stair__flag {
+        animation: stair-raise linear both;
+        animation-timeline: --pl-story;
+        animation-range: cover 76% cover 84%;
+      }
+    }
+  }
+
+  @keyframes stair-walk {
+    from {
+      stroke-dashoffset: 1;
+    }
+
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes stair-raise {
+    from {
+      opacity: 0;
+      transform: scale(0.2) rotate(-25deg);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

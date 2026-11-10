@@ -1,0 +1,42 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import type { RouteRuns } from '@entities/learning-route/model/route';
+import { routeRunsHtml } from './route-html';
+
+export interface Props {
+  locale: Locale;
+  paragraphs: readonly RouteRuns[];
+}
+
+const { locale, paragraphs } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+<div class="problem">
+  <p class="pl-overline problem__label">{t('home.lesson.problemLabel')}</p>
+  {paragraphs.map((runs) => (
+    <p class="problem__text" set:html={routeRunsHtml(runs, locale)} />
+  ))}
+</div>
+
+<style>
+  .problem {
+    display: grid;
+    gap: var(--pl-space-sm);
+    padding: var(--pl-space-lg);
+    border-left: 5px solid var(--pl-syn-oop);
+    border-radius: var(--pl-radius-card);
+    background: var(--pl-surface);
+    box-shadow: var(--pl-shadow-2);
+  }
+
+  .problem__label {
+    color: var(--pl-syn-oop);
+  }
+
+  .problem__text {
+    font-size: 18px;
+    line-height: 1.55;
+  }
+</style>

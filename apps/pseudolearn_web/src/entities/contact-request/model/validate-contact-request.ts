@@ -1,6 +1,6 @@
 import { SITE } from '@shared/config/site';
 import { isReportablePlatform } from '@entities/platform/model/platform';
-import { APP_AREA_IDS, isKnownSubject } from '@entities/learning-module/model/curriculum';
+import { isAppArea, isKnownSubject } from './contact-subject';
 import {
   isContactReason,
   isFrequency,
@@ -72,7 +72,7 @@ function validateLengths(raw: RawFields): FieldErrors {
 function validateOptionFields(raw: RawFields): FieldErrors {
   const checks: readonly [string, string | undefined, (value: string) => boolean][] = [
     ['platform', raw.platform, isReportablePlatform],
-    ['appArea', raw.appArea, (value) => (APP_AREA_IDS as readonly string[]).includes(value)],
+    ['appArea', raw.appArea, isAppArea],
     ['subject', raw.subject, isKnownSubject],
     ['frequency', raw.frequency, isFrequency],
   ];

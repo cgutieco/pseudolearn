@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 
 from . import typography
-from .geometry import flag_path, route_path, symbol_path
+from .geometry import centerline_path, flag_path, route_path, symbol_path
 
 
 @dataclass(frozen=True)
@@ -51,6 +51,8 @@ class Composition:
             return route_path(geometry)
         if layer == "flag":
             return flag_path(geometry)
+        if layer == "centerline":
+            return centerline_path(geometry)
         return symbol_path(geometry)
 
     def scale_for(self, side):

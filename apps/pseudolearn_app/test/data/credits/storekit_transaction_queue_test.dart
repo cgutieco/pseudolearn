@@ -6,8 +6,8 @@ import 'package:pseudolearn_app/domain/model/credits/credit_failure.dart';
 import 'package:pseudolearn_app/domain/model/credits/purchase_attempt.dart';
 import '../../fakes/fake_purchase_ports.dart';
 
-const _monthly = 'pseudolearn.plus.monthly';
-const _topUp = 'pseudolearn.plus.topup150';
+const _monthly = 'pseudolearn.nodo.monthly';
+const _topUp = 'pseudolearn.nodo.topup150';
 
 Future<void> _settle() => Future<void>.delayed(Duration.zero);
 

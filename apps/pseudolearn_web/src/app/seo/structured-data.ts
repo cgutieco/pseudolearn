@@ -16,7 +16,7 @@ export function buildSoftwareApplication(input: StructuredDataInput): Record<str
     applicationCategory: 'EducationalApplication',
     operatingSystem: 'macOS 13+, Windows 10+, iOS 16+',
     inLanguage: input.locale,
-    offers: { '@type': 'Offer', category: 'paid' },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', category: 'free' },
     author: { '@type': 'Person', name: 'Cesar Antonio Gutierrez Contreras', url: SITE.authorUrl },
   };
 }

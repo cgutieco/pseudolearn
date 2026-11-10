@@ -5,7 +5,8 @@ import { BrandMark } from '@shared/ui/brand-mark';
 import ThemeSwitch from '@features/theme-switch/ThemeSwitch.astro';
 import LanguageSwitch from '@features/language-switch/LanguageSwitch.astro';
 import MobileMenu from './MobileMenu.astro';
-import { buildNavigation } from './navigation';
+import { ROUTES, localizePath } from '@shared/i18n/routes';
+import { buildNavigation, downloadLink, isCurrentSection } from './navigation';
 
 export interface Props {
   locale: Locale;
@@ -15,19 +16,23 @@ export interface Props {
 const { locale, path } = Astro.props;
 const { t } = useTranslations(locale);
 const links = buildNavigation(locale);
-const downloadsHref = links.at(-3)?.href ?? '/';
+const download = downloadLink(locale);
 ---
 
 <header class="site-header pl-field">
   <div class="pl-container site-header__row">
-    <a class="site-header__brand" href={links[0]?.homeHref}>
+    <a class="site-header__brand" href={localizePath(ROUTES.home, locale)}>
       <BrandMark size={26} class="site-header__symbol" />
       <span class="site-header__name">{t('common.brandName')}</span>
     </a>
 
     <nav class="site-header__nav" aria-label={t('nav.ariaLabel')}>
       {links.map((link) => (
-        <a class="site-header__link" href={link.href} aria-current={path === link.path ? 'page' : undefined}>
+        <a
+          class="site-header__link"
+          href={link.href}
+          aria-current={isCurrentSection(path, link.path) ? 'page' : undefined}
+        >
           {t(link.labelKey)}
         </a>
       ))}
@@ -36,12 +41,16 @@ const downloadsHref = links.at(-3)?.href ?? '/';
     <div class="site-header__actions">
       <ThemeSwitch locale={locale} />
       <LanguageSwitch locale={locale} path={path} />
-      <a class="site-header__cta" href={downloadsHref}>
-        {t('header.cta')}
+      <a
+        class="site-header__cta"
+        href={download.href}
+        aria-current={isCurrentSection(path, download.path) ? 'page' : undefined}
+      >
+        {t(download.labelKey)}
       </a>
     </div>
 
-    <MobileMenu locale={locale} path={path} links={links} />
+    <MobileMenu locale={locale} path={path} links={[...links, download]} />
   </div>
 </header>
 
@@ -92,11 +101,23 @@ const downloadsHref = links.at(-3)?.href ?? '/';
     flex-shrink: 0;
     padding: 4px 6px;
     border-radius: var(--pl-radius-sm);
+    position: relative;
   }
 
   .site-header__link:hover,
   .site-header__link[aria-current='page'] {
     color: var(--pl-on-field);
+  }
+
+  .site-header__link[aria-current='page']::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    bottom: -6px;
+    height: 2px;
+    border-radius: var(--pl-radius-pill);
+    background: var(--pl-on-field-3);
   }
 
   .site-header__actions {

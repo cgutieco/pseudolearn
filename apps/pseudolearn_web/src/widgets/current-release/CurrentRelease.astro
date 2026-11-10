@@ -3,7 +3,7 @@ import { useTranslations } from '@shared/i18n/translator';
 import type { Locale } from '@shared/i18n/locales';
 import { Icon } from '@shared/ui/icon';
 import { ANCHORS } from '@shared/config/site';
-import { anchorOnHome } from '@shared/i18n/routes';
+import { ROUTES, localizePath } from '@shared/i18n/routes';
 import { latestRelease } from '@entities/release/model/release-catalog';
 
 export interface Props {
@@ -13,7 +13,7 @@ export interface Props {
 const { locale } = Astro.props;
 const { t, formatDate } = useTranslations(locale);
 const release = latestRelease();
-const downloadsHref = anchorOnHome(ANCHORS.downloads, locale);
+const downloadsHref = localizePath(ROUTES.download, locale);
 ---
 
 <section class="current-release">

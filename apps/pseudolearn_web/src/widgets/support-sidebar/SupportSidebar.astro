@@ -3,7 +3,6 @@ import { useTranslations } from '@shared/i18n/translator';
 import type { Locale } from '@shared/i18n/locales';
 import { Icon } from '@shared/ui/icon';
 import { RichText } from '@shared/ui/rich-text';
-import SupportPromises from './SupportPromises.astro';
 import { SITE } from '@shared/config/site';
 import { ROUTES, localizePath } from '@shared/i18n/routes';
 
@@ -24,8 +23,6 @@ const specificationHref = localizePath(ROUTES.specification, locale);
 ---
 
 <aside class="sidebar">
-  <SupportPromises locale={locale} />
-
   <div class="pl-card sidebar__block">
     <p class="pl-overline pl-overline--brand sidebar__label">{t('contact.sidebar.tipsLabel')}</p>
     <ol class="sidebar__tips">

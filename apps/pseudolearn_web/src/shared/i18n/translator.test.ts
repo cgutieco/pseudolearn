@@ -35,13 +35,13 @@ describe('createTranslator', () => {
   });
 
   it('selects the singular plural form', () => {
-    expect(createTranslator('es').plural('home.track.moduleCount', 1)).toBe('1 módulo');
+    expect(createTranslator('es').plural('learn.route.lessonCount', 1)).toBe('1 lección');
   });
 
   it('selects the plural form for zero and for many', () => {
     const translator = createTranslator('es');
-    expect(translator.plural('home.track.moduleCount', 0)).toBe('0 módulos');
-    expect(translator.plural('home.track.moduleCount', 8)).toBe('8 módulos');
+    expect(translator.plural('learn.route.lessonCount', 0)).toBe('0 lecciones');
+    expect(translator.plural('learn.route.lessonCount', 8)).toBe('8 lecciones');
   });
 
   it('formats numbers with the locale conventions', () => {

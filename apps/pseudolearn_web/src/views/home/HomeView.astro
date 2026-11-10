@@ -3,38 +3,35 @@ import BaseLayout from '@app/layouts/BaseLayout.astro';
 import { useTranslations } from '@shared/i18n/translator';
 import type { Locale } from '@shared/i18n/locales';
 import { ROUTES } from '@shared/i18n/routes';
-import ProductPreviewPreload from '@widgets/product-preview/ProductPreviewPreload.astro';
+import { routeParts } from '@entities/learning-route/model/route-contents';
+import { routeMetrics } from '@entities/learning-route/model/route-metrics';
 import HomeHero from '@widgets/home-hero/HomeHero.astro';
-import PlatformAvailability from '@widgets/platform-availability/PlatformAvailability.astro';
-import SynchronizedSurfaces from '@widgets/synchronized-surfaces/SynchronizedSurfaces.astro';
-import LearningTrack from '@widgets/learning-track/LearningTrack.astro';
-import FeatureGrid from '@widgets/feature-grid/FeatureGrid.astro';
-import DownloadPanel from '@widgets/download-panel/DownloadPanel.astro';
+import LessonStory from '@widgets/lesson-story/LessonStory.astro';
+import ProductTour from '@widgets/product-tour/ProductTour.astro';
+import RouteStairs from '@widgets/route-stairs/RouteStairs.astro';
+import NodoTeaser from '@widgets/nodo-teaser/NodoTeaser.astro';
 import ClosingCta from '@widgets/closing-cta/ClosingCta.astro';
 
 export interface Props {
   locale: Locale;
 }
 
+const STORY_ID = 'story';
 const { locale } = Astro.props;
 const { t } = useTranslations(locale);
+const metrics = routeMetrics(routeParts(locale));
 ---
 
 <BaseLayout
   locale={locale}
   path={ROUTES.home}
   title={t('home.seoTitle')}
-  description={t('home.seoDescription')}
+  description={t('home.seoDescription', { lessons: metrics.lessons, exercises: metrics.exercises })}
 >
-  <Fragment slot="head">
-    <ProductPreviewPreload locale={locale} />
-  </Fragment>
-
-  <HomeHero locale={locale} />
-  <PlatformAvailability locale={locale} />
-  <SynchronizedSurfaces locale={locale} />
-  <LearningTrack locale={locale} />
-  <FeatureGrid locale={locale} />
-  <DownloadPanel locale={locale} />
+  <HomeHero locale={locale} storyId={STORY_ID} />
+  <LessonStory locale={locale} id={STORY_ID} />
+  <ProductTour locale={locale} />
+  <RouteStairs locale={locale} />
+  <NodoTeaser locale={locale} />
   <ClosingCta locale={locale} />
 </BaseLayout>

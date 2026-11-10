@@ -14,7 +14,7 @@ flowchart BT
     spec["packages/pseudolearn_spec<br/>export.json del corpus"] --> ref["packages/pseudolearn_reference"]
     engine["packages/pseudolearn_engine<br/>pseudolearn_api"] --> ref
     ref --> app["apps/pseudolearn_app<br/>assets/reference y assets/route"]
-    ref --> web["apps/pseudolearn_web<br/>entities/specification/generated"]
+    ref --> web["apps/pseudolearn_web<br/>entities/specification/generated<br/>entities/learning-route/generated"]
 ```
 
 ## Arquitectura
@@ -75,10 +75,12 @@ flowchart LR
     run --> verify[Verificar]
     verify --> write[Escribir paquetes]
     write --> app["app: reference y route"]
-    write --> web["web: Especificación es y en"]
+    write --> web["web: Especificación y ruta, es y en"]
 ```
 
-La edición web contiene solo `es/es` y `en/en`, y solo `toc.json` y las secciones. Los esquemas de los paquetes están en
+Las ediciones web contienen solo `es/es` y `en/en`. La de la Especificación lleva `toc.json` y las secciones; la de la
+ruta lleva `toc.json`, las lecciones y los ejercicios, porque la web muestra lecciones y ejercicios reales en vez de
+describirlos. `reference check` informa la segunda como `RUTA-WEB-BUNDLE-STALE`. Los esquemas de los paquetes están en
 `schemas/`.
 
 ## Reglas que conviene saber
@@ -96,11 +98,11 @@ La edición web contiene solo `es/es` y `en/en`, y solo `toc.json` y las seccion
 | Para qué                                      | Comando                                                                                  |
 |-----------------------------------------------|------------------------------------------------------------------------------------------|
 | Exportar el corpus (previo a compilar)        | `(cd ../pseudolearn_spec && cargo run --locked -p see_cli --bin see -- export --root .)` |
-| Compilar y escribir los tres paquetes         | `cargo run -p reference_cli -- build`                                                    |
+| Compilar y escribir los cuatro paquetes       | `cargo run -p reference_cli -- build`                                                    |
 | Verificar todo y detectar paquetes obsoletos  | `cargo run -p reference_cli -- check`                                                    |
 | Informe de cobertura de ambos libros          | `cargo run -p reference_cli -- coverage`                                                 |
 | Registrar las huellas de las anclas revisadas | `cargo run -p reference_cli -- lock`                                                     |
 | Verificación completa del miembro             | `cargo xtask verify`                                                                     |
 
-Opciones: `--root`, `--out`, `--out-ruta`, `--out-web` y `--borrador` (escribe aunque haya violaciones; solo para
+Opciones: `--root`, `--out`, `--out-ruta`, `--out-web`, `--out-web-ruta` y `--borrador` (escribe aunque haya violaciones; solo para
 redactar). Requisitos: `cargo` y `rustup` con la versión de `rust-toolchain.toml`, y `cargo-deny`.

@@ -1,0 +1,126 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import type { RouteMetrics } from '@entities/learning-route/model/route-metrics';
+
+export interface Props {
+  locale: Locale;
+  metrics: RouteMetrics;
+}
+
+const { locale, metrics } = Astro.props;
+const { t, formatNumber } = useTranslations(locale);
+const LEVELS = ['semilla', 'brote', 'arbol'] as const;
+---
+
+<div class="kinds">
+  <ul class="kinds__grid">
+    {[...metrics.kinds.entries()].map(([kind, count]) => (
+      <li class="kinds__item">
+        <span class="kinds__count pl-mono">{formatNumber(count)}</span>
+        <span class="kinds__name">{t(`route.kind.${kind}`)}</span>
+        <span class="kinds__text">{t(`route.kindText.${kind}`)}</span>
+      </li>
+    ))}
+  </ul>
+  <div class="kinds__levels">
+    <p class="pl-overline pl-overline--brand">{t('learn.exercises.levelsTitle')}</p>
+    <ol class="kinds__stairs">
+      {LEVELS.map((level, index) => (
+        <li class="kinds__level" style={`--pl-level: ${index + 1}`}>
+          <span class="kinds__level-count pl-mono">{formatNumber(metrics.levels.get(level) ?? 0)}</span>
+          <span class="kinds__step" aria-hidden="true"></span>
+          <span class="kinds__name">{t(`route.level.${level}`)}</span>
+          <span class="kinds__text">{t(`route.levelText.${level}`)}</span>
+        </li>
+      ))}
+    </ol>
+    <p class="kinds__text">
+      {t('learn.exercises.requiredNote', { required: metrics.required, exercises: metrics.exercises })}
+    </p>
+  </div>
+</div>
+
+<style>
+  .kinds {
+    display: grid;
+    gap: var(--pl-space-2xl);
+  }
+
+  .kinds__grid {
+    display: grid;
+    gap: var(--pl-space-lg) var(--pl-space-xl);
+  }
+
+  .kinds__item {
+    display: grid;
+    gap: 2px;
+    padding-left: var(--pl-space-md);
+    border-left: 3px solid var(--pl-brand-tint);
+  }
+
+  .kinds__count {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--pl-brand);
+  }
+
+  .kinds__name {
+    font-weight: 700;
+  }
+
+  .kinds__text {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--pl-ink-2);
+  }
+
+  .kinds__levels {
+    display: grid;
+    gap: var(--pl-space-lg);
+  }
+
+  .kinds__stairs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: end;
+    gap: var(--pl-space-sm);
+  }
+
+  .kinds__level {
+    display: grid;
+    gap: 6px;
+    align-content: end;
+  }
+
+  .kinds__level-count {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--pl-brand);
+  }
+
+  .kinds__step {
+    display: block;
+    height: calc(var(--pl-level) * 36px);
+    border-radius: var(--pl-radius-control) var(--pl-radius-control) 0 0;
+    background: var(--pl-brand);
+    opacity: calc(0.45 + var(--pl-level) * 0.18);
+  }
+
+  @media (min-width: 700px) {
+    .kinds__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .kinds__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .kinds__step {
+      height: calc(var(--pl-level) * 56px);
+    }
+  }
+</style>

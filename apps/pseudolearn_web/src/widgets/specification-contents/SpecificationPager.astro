@@ -48,15 +48,24 @@ const neighbours = [
   .pager__link {
     display: grid;
     gap: var(--pl-space-2xs);
-    padding: var(--pl-space-sm) var(--pl-space-md);
+    padding: var(--pl-space-md) var(--pl-space-lg);
     border: 1px solid var(--pl-line);
-    border-radius: var(--pl-radius-control);
+    border-radius: var(--pl-radius-card);
+    background: var(--pl-surface);
     color: var(--pl-ink);
     text-decoration: none;
+    box-shadow: var(--pl-shadow-2);
   }
 
   .pager__link--next {
+    border-color: transparent;
+    background: var(--pl-field);
+    color: var(--pl-on-field);
     text-align: right;
+  }
+
+  .pager__link--next .pager__label {
+    color: var(--pl-on-field-3);
   }
 
   .pager__link:hover {

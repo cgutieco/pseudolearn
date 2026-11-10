@@ -1,4 +1,5 @@
 import type { LegalDocumentMeta, LegalSection } from './legal-document';
+import { PRIVACY_NODO_SECTION } from './privacy-nodo-section';
 
 export const PRIVACY_META: LegalDocumentMeta = {
   lastUpdatedKey: 'privacy.meta.lastUpdated',
@@ -92,9 +93,10 @@ export const PRIVACY_SECTIONS: readonly LegalSection[] = [
       },
     ],
   },
+  PRIVACY_NODO_SECTION,
   {
     id: 'eliminacion',
-    number: '04',
+    number: '05',
     titleKey: 'privacy.section.deletion.title',
     leadKey: 'privacy.section.deletion.lead',
     cards: [
@@ -114,19 +116,20 @@ export const PRIVACY_SECTIONS: readonly LegalSection[] = [
   },
   {
     id: 'plazos',
-    number: '05',
+    number: '06',
     titleKey: 'privacy.section.retention.title',
     leadKey: 'privacy.section.retention.lead',
     items: [
       'privacy.section.retention.itemDevice',
       'privacy.section.retention.itemSync',
+      'privacy.section.retention.itemNodo',
       'privacy.section.retention.itemSupport',
       'privacy.section.retention.itemInactivity',
     ],
   },
   {
     id: 'derechos',
-    number: '06',
+    number: '07',
     titleKey: 'privacy.section.rights.title',
     leadKey: 'privacy.section.rights.lead',
     bodyKeys: [
@@ -137,7 +140,7 @@ export const PRIVACY_SECTIONS: readonly LegalSection[] = [
   },
   {
     id: 'contacto',
-    number: '07',
+    number: '08',
     titleKey: 'privacy.section.contact.title',
     leadKey: 'privacy.section.contact.lead',
     bodyKeys: ['privacy.section.contact.text1', 'privacy.section.contact.text2'],

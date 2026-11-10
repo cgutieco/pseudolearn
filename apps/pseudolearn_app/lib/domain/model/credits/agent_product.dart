@@ -1,7 +1,7 @@
 enum AgentProduct {
-  trial('pseudolearn.plus.trial'),
-  monthly('pseudolearn.plus.monthly'),
-  topUp('pseudolearn.plus.topup150');
+  trial('pseudolearn.nodo.trial'),
+  monthly('pseudolearn.nodo.monthly'),
+  topUp('pseudolearn.nodo.topup150');
 
   final String storeId;
 

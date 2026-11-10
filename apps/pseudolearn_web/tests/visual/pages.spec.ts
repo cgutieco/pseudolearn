@@ -2,6 +2,10 @@ import { expect, test } from '@playwright/test';
 
 const ROUTES = [
   { path: '/', name: 'home' },
+  { path: '/language', name: 'language' },
+  { path: '/learn', name: 'learn' },
+  { path: '/nodo', name: 'nodo' },
+  { path: '/download', name: 'download' },
   { path: '/contact', name: 'contact' },
   { path: '/versions', name: 'versions' },
   { path: '/spec', name: 'specification' },

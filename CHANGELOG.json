@@ -1,6 +1,117 @@
 {
   "releases": [
     {
+      "version": "2.0.0",
+      "date": "2026-11-09",
+      "core": "1.0.0",
+      "headline": {
+        "es": "PseudoLearn 2.0: un lenguaje completo para aprender a pensar como programador",
+        "en": "PseudoLearn 2.0: a complete language to learn to think like a programmer"
+      },
+      "summary": {
+        "es": "PseudoLearn deja de ser un lugar para ejecutar algoritmos sueltos: ahora es un lenguaje de programación completo, con módulos, objetos, funciones, tareas y biblioteca. La ruta de aprendizaje se reescribe alrededor de problemas, el progreso se ve de un vistazo y llega Nodo, un asistente de IA opcional.",
+        "en": "PseudoLearn is no longer just a place to run single algorithms: it is now a complete programming language, with modules, objects, functions, tasks and a library. The learning path is rewritten around problems, progress is visible at a glance and Nodo arrives, an optional AI assistant."
+      },
+      "changes": [
+        {
+          "id": "language",
+          "kind": "feature",
+          "title": {
+            "es": "Un lenguaje completo",
+            "en": "A complete language"
+          },
+          "description": {
+            "es": "Tipos compuestos, módulos, clases e interfaces, funciones que reciben funciones, valores opcionales y resultados, tareas concurrentes con canales, y una biblioteca para archivos, JSON e internet. El mismo programa se escribe en español o en inglés con las mismas reglas.",
+            "en": "Compound types, modules, classes and interfaces, functions that take functions, optional values and results, concurrent tasks with channels, and a library for files, JSON and the internet. The same program is written in Spanish or English with the same rules."
+          }
+        },
+        {
+          "id": "learning-path",
+          "kind": "feature",
+          "title": {
+            "es": "Nueva ruta de aprendizaje",
+            "en": "New learning path"
+          },
+          "description": {
+            "es": "Siete partes, una por forma de pensar, con 41 lecciones y 224 ejercicios de 11 tipos. Cada lección parte de un problema concreto y lo recorre en cinco fases: entender, planear, escribir, probar y mejorar.",
+            "en": "Seven parts, one per way of thinking, with 41 lessons and 224 exercises of 11 kinds. Each lesson starts from a concrete problem and works through it in five phases: understand, plan, write, test and improve."
+          }
+        },
+        {
+          "id": "tasks-tab",
+          "kind": "feature",
+          "title": {
+            "es": "Pestaña Tareas",
+            "en": "Tasks tab"
+          },
+          "description": {
+            "es": "Cuando un programa lanza tareas, la pestaña Tareas muestra su cronología evento por evento, el estado de cada tarea y sus variables.",
+            "en": "When a program spawns tasks, the Tasks tab shows their timeline event by event, the state of each task and its variables."
+          }
+        },
+        {
+          "id": "arguments",
+          "kind": "feature",
+          "title": {
+            "es": "Argumentos de ejecución",
+            "en": "Run arguments"
+          },
+          "description": {
+            "es": "Un programa puede recibir argumentos: se escriben en las opciones de ejecución antes de ejecutarlo.",
+            "en": "A program can receive arguments: you type them in the run options before running it."
+          }
+        },
+        {
+          "id": "progress",
+          "kind": "feature",
+          "title": {
+            "es": "Mi progreso, rediseñado",
+            "en": "My progress, redesigned"
+          },
+          "description": {
+            "es": "El panel resume la ruta, los ejercicios por nivel y por tipo, los conceptos que ya usas, la cobertura de la especificación y el siguiente paso.",
+            "en": "The panel sums up the path, exercises by level and kind, the concepts you already use, specification coverage and the next step."
+          }
+        },
+        {
+          "id": "specification",
+          "kind": "feature",
+          "title": {
+            "es": "Especificación ilustrada",
+            "en": "Illustrated specification"
+          },
+          "description": {
+            "es": "La especificación del lenguaje, con ejemplos ejecutados por el motor, viene dentro de la app y también está publicada en pseudolearn.app/spec.",
+            "en": "The language specification, with examples run by the engine, ships inside the app and is also published at pseudolearn.app/spec."
+          }
+        },
+        {
+          "id": "user-exercises",
+          "kind": "feature",
+          "title": {
+            "es": "Ejercicios propios",
+            "en": "Your own exercises"
+          },
+          "description": {
+            "es": "Puedes crear tus propios ejercicios con casos de prueba; solo se publican si la solución de referencia los pasa todos.",
+            "en": "You can create your own exercises with test cases; they are only published if the reference solution passes all of them."
+          }
+        },
+        {
+          "id": "nodo",
+          "kind": "feature",
+          "title": {
+            "es": "Nodo · IA",
+            "en": "Nodo · AI"
+          },
+          "description": {
+            "es": "Un asistente de IA que explica errores, comprueba cada programa con el motor y guía los ejercicios sin dar la respuesta. Es opcional, requiere iniciar sesión y funciona con una suscripción mensual con 7 días de prueba gratis. El resto de la app sigue siendo gratis.",
+            "en": "An AI assistant that explains errors, checks every program with the engine and guides exercises without giving away the answer. It is optional, requires signing in and runs on a monthly subscription with a 7-day free trial. The rest of the app stays free."
+          }
+        }
+      ]
+    },
+    {
       "version": "1.1.1",
       "date": "2026-10-02",
       "core": "0.1.0",

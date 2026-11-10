@@ -5,6 +5,7 @@ export const SITE = {
   iosAppStoreUrl: 'https://apps.apple.com/app/pseudolearn/id6810296577',
   windowsInstallerUrl: 'https://downloads.pseudolearn.app/windows/PseudoLearn-Setup.exe',
   microsoftStoreUrl: 'https://apps.microsoft.com/store/detail/9MXZB1XDWP9J?cid=DevShareMCLPCS',
+  agentSheetPath: '/llms.txt',
   supportEmail: 'support@pseudolearn.com',
   authorHandle: '@cgutieco',
   authorUrl: 'https://www.linkedin.com/in/cgutieco',
@@ -13,8 +14,5 @@ export const SITE = {
 } as const;
 
 export const ANCHORS = {
-  editor: 'editor',
-  track: 'track',
-  downloads: 'downloads',
   releaseHistory: 'release-history',
 } as const;

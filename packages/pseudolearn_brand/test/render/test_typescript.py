@@ -17,6 +17,14 @@ class ModuleTest(unittest.TestCase):
     def test_the_exported_path_is_the_geometry_and_not_a_copy_of_it(self):
         self.assertIn(self.composition.path_for(""), self.module)
 
+    def test_it_exports_the_route_and_the_flag_as_separate_layers(self):
+        self.assertIn(self.composition.path_for("route"), self.module)
+        self.assertIn(self.composition.path_for("flag"), self.module)
+
+    def test_it_exports_the_centerline_and_the_stroke_that_draw_the_route(self):
+        self.assertIn("export const BRAND_SYMBOL_CENTERLINE = 'M 10,86 L 36,86 L 36,60", self.module)
+        self.assertIn("export const BRAND_SYMBOL_STROKE = 14;", self.module)
+
     def test_it_carries_no_comment_the_web_verifier_would_reject(self):
         self.assertNotIn("//", self.module)
         self.assertNotIn("/*", self.module)

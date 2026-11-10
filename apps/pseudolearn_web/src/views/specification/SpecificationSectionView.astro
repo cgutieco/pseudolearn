@@ -7,6 +7,7 @@ import { useTranslations } from '@shared/i18n/translator';
 import SpecificationArticle from '@widgets/specification-reader/SpecificationArticle.astro';
 import SpecificationPager from '@widgets/specification-contents/SpecificationPager.astro';
 import SpecificationSidebar from '@widgets/specification-contents/SpecificationSidebar.astro';
+import SpecSectionHero from '@widgets/spec-section-hero/SpecSectionHero.astro';
 import { sectionContext, sectionMarkdownPath } from './specification-pages';
 
 export interface Props {
@@ -28,10 +29,11 @@ const title = t('specification.sectionSeoTitle', { number: section.number, title
   description={runsText(section.phrase)}
 >
   <link slot="head" rel="alternate" type="text/markdown" href={markdownPath} />
+  <SpecSectionHero section={section} part={part} locale={locale} markdownHref={markdownPath} />
   <div class="pl-container reader">
     <SpecificationSidebar part={part} currentId={sectionId} locale={locale} />
     <div class="reader__main">
-      <SpecificationArticle section={section} locale={locale} markdownHref={markdownPath} />
+      <SpecificationArticle section={section} locale={locale} />
       <SpecificationPager previous={previous} next={next} locale={locale} />
     </div>
   </div>

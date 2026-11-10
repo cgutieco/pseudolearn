@@ -3,7 +3,10 @@ import { useTranslations } from '@shared/i18n/translator';
 import type { Locale } from '@shared/i18n/locales';
 import { Icon } from '@shared/ui/icon';
 import { SelectField } from '@shared/ui/select-field';
-import { LEARNING_MODULES, SPECIFICATION_IDS } from '@entities/learning-module/model/curriculum';
+import { routeParts } from '@entities/learning-route/model/route-contents';
+import { plainRouteText } from '@entities/learning-route/model/route-runs';
+import { specificationParts, specificationSubject } from '@entities/specification/model/specification-parts';
+import { GENERAL_SUBJECT } from '@entities/contact-request/model/contact-subject';
 
 export interface Props {
   locale: Locale;
@@ -11,6 +14,8 @@ export interface Props {
 
 const { locale } = Astro.props;
 const { t } = useTranslations(locale);
+const parts = routeParts(locale);
+const specification = specificationParts(locale);
 ---
 
 <div class="pl-branch pl-branch--question">
@@ -20,18 +25,20 @@ const { t } = useTranslations(locale);
       {t('contact.branch.question.subjectLabel')}
     </label>
     <SelectField id="subject-select" name="subject">
-      <optgroup label={t('contact.branch.question.groupModules')}>
-        {LEARNING_MODULES.map((module) => (
-          <option value={module.id}>{t(`module.${module.id}`)}</option>
-        ))}
-      </optgroup>
+      {parts.map((part) => (
+        <optgroup label={`${part.number} · ${part.title}`}>
+          {part.lessons.map((lesson) => (
+            <option value={lesson.id}>{`${lesson.number} · ${plainRouteText(lesson.title)}`}</option>
+          ))}
+        </optgroup>
+      ))}
       <optgroup label={t('contact.branch.question.groupSpecs')}>
-        {SPECIFICATION_IDS.map((specId) => (
-          <option value={`spec-${specId}`}>{t(`spec.${specId}`)}</option>
+        {specification.map((part) => (
+          <option value={specificationSubject(part)}>{`${part.number} · ${part.title}`}</option>
         ))}
       </optgroup>
       <optgroup label={t('contact.branch.question.groupGeneral')}>
-        <option value="general-question">{t('contact.branch.question.generalOption')}</option>
+        <option value={GENERAL_SUBJECT}>{t('contact.branch.question.generalOption')}</option>
       </optgroup>
     </SelectField>
     <span class="pl-form-field__help">{t('contact.branch.question.subjectHelp')}</span>

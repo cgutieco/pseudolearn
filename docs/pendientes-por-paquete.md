@@ -101,6 +101,16 @@ Heredados de un README anterior, sin confirmar:
 
 - El instalador de Windows de descarga directa no lleva firma Authenticode; la guía de SmartScreen de la descarga directa depende de ello.
 
+Confirmados con la versión 2.0.0:
+
+- VS Code y la terminal se anuncian como «Próximamente» sin enlace de descarga; al publicar la extensión o binarios de `pseudo`, sus tarjetas pasan a disponibles con su acción.
+- No hay captura de VS Code: el generador de la app no la produce y no se versiona ninguna a mano.
+- `entities/nodo-plan` repite las constantes de créditos y días del backend; no hay un artefacto generado que las comparta.
+- `NodoGlyph` repite la geometría del glifo de la app; debería pasar al motor de marca junto al símbolo.
+- La fecha de 2.0.0 en `CHANGELOG.json` es provisional (2026-11-09) hasta el día real de publicación en las tiendas.
+- Los programas de la ruta en la edición inglesa conservan identificadores y textos en español (el código se escribe una vez y solo se traduce el vocabulario). La web ya no los muestra; afecta a la app en inglés; corregirlo es trabajo de contenido en `packages/pseudolearn_reference/route/en`.
+- Los productos de App Store Connect y Paddle deben existir con los identificadores `pseudolearn.nodo.*` antes de publicar.
+
 ## pseudolearn_vscode
 
 Confirmados contra el código:

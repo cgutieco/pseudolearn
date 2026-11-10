@@ -4,7 +4,7 @@ import type { Locale } from '@shared/i18n/locales';
 import { Icon } from '@shared/ui/icon';
 import ThemeSwitch from '@features/theme-switch/ThemeSwitch.astro';
 import LanguageSwitch from '@features/language-switch/LanguageSwitch.astro';
-import type { NavigationLink } from './navigation';
+import { isCurrentSection, type NavigationLink } from './navigation';
 
 export interface Props {
   locale: Locale;
@@ -22,7 +22,11 @@ const { t } = useTranslations(locale);
   </summary>
   <div class="mobile-menu__panel">
     {links.map((link) => (
-      <a class="mobile-menu__link" href={link.href}>
+      <a
+        class="mobile-menu__link"
+        href={link.href}
+        aria-current={isCurrentSection(path, link.path) ? 'page' : undefined}
+      >
         {t(link.labelKey)}
       </a>
     ))}
@@ -80,6 +84,11 @@ const { t } = useTranslations(locale);
     font-size: 15px;
     color: var(--pl-on-field);
     text-decoration: none;
+  }
+
+  .mobile-menu__link[aria-current='page'] {
+    background: var(--pl-on-field-hover);
+    font-weight: 600;
   }
 
   .mobile-menu__link:hover {

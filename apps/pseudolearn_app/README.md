@@ -21,7 +21,10 @@ flowchart BT
 - `pseudolearn_engine`: el crate `native/` depende de `pseudolearn_host` y `pseudolearn_api` por ruta.
 - `pseudolearn_spec`: `tool/prepare_generated.sh` ejecuta `see export` para generar los activos del corpus.
 - `pseudolearn_backend`: la app llama a `delete-account`, `agent-responses` y `agent-credits` en tiempo de ejecución.
-- `pseudolearn_web`: `tool/generate_product_shot.dart` escribe las capturas en `../pseudolearn_web/src/assets/product`.
+- `pseudolearn_web`: `tool/generate_product_shot.dart` escribe las capturas en `../pseudolearn_web/src/assets/product`:
+  editor con diagramas, Tareas (con `tool/product/tasks_demo_*.pseudo` y sesión observable), primera lección y ruta, en
+  claro y oscuro, `es` y `en`. Cada escena limpia la caché de `rootBundle` porque una carga pendiente de la escena anterior
+  deja la siguiente sin datos.
 
 ## Arquitectura
 

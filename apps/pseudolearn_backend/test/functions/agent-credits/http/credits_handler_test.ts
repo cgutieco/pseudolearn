@@ -44,7 +44,7 @@ Deno.test("GET returns the balance in headers", async () => {
 
 Deno.test("purchases are refused when the adapter is disabled", async () => {
   const { handle, ledger } = setup(null);
-  const response = await handle(purchase("pseudolearn.plus.topup150"));
+  const response = await handle(purchase("pseudolearn.nodo.topup150"));
   assertEquals(response.status, 403);
   assertEquals((await response.json()).error.code, "purchases_disabled");
   assertEquals(ledger.grants.length, 0);
@@ -52,7 +52,7 @@ Deno.test("purchases are refused when the adapter is disabled", async () => {
 
 Deno.test("a simulated purchase grants the catalog terms", async () => {
   const { handle, ledger } = setup(new SimulatedPurchaseVerifier());
-  assertEquals((await handle(purchase("pseudolearn.plus.monthly"))).status, 200);
+  assertEquals((await handle(purchase("pseudolearn.nodo.monthly"))).status, 200);
   assertEquals(ledger.grants[0].product, "monthly");
   const grant = ledger.grants[0];
   const days = (grant.endsAt.getTime() - grant.startsAt.getTime()) / 86_400_000;
@@ -61,8 +61,8 @@ Deno.test("a simulated purchase grants the catalog terms", async () => {
 
 Deno.test("a repeated purchase is idempotent", async () => {
   const { handle, ledger } = setup(new SimulatedPurchaseVerifier());
-  await handle(purchase("pseudolearn.plus.topup150"));
-  const second = await handle(purchase("pseudolearn.plus.topup150"));
+  await handle(purchase("pseudolearn.nodo.topup150"));
+  const second = await handle(purchase("pseudolearn.nodo.topup150"));
   assertEquals((await second.json()).repeated, true);
   assertEquals(ledger.transactions.size, 1);
 });
@@ -70,17 +70,17 @@ Deno.test("a repeated purchase is idempotent", async () => {
 Deno.test("the trial is keyed by account and a second trial is refused", async () => {
   const ledger = new FakeLedger();
   const { handle } = setup(new SimulatedPurchaseVerifier(), ledger);
-  await handle(purchase("pseudolearn.plus.trial", "a"));
+  await handle(purchase("pseudolearn.nodo.trial", "a"));
   assertEquals(ledger.grants[0].transactionId, "trial:user-1");
   ledger.grantRefusal = "trial_used";
-  assertEquals((await handle(purchase("pseudolearn.plus.trial", "b"))).status, 409);
+  assertEquals((await handle(purchase("pseudolearn.nodo.trial", "b"))).status, 409);
 });
 
 Deno.test("a top-up without an active plan answers subscription required", async () => {
   const ledger = new FakeLedger();
   const { handle } = setup(new SimulatedPurchaseVerifier(), ledger);
   ledger.grantRefusal = "subscription_required";
-  const response = await handle(purchase("pseudolearn.plus.topup150"));
+  const response = await handle(purchase("pseudolearn.nodo.topup150"));
   assertEquals(response.status, 402);
   assertEquals((await response.json()).error.code, "subscription_required");
   assertEquals(ledger.grants[0].product, "top_up");
@@ -114,12 +114,12 @@ Deno.test("an allowlisted account redeems while others get purchases disabled", 
     new Set(["user-1"]),
   );
   const { handle, ledger } = setup(allowlisted);
-  assertEquals((await handle(purchase("pseudolearn.plus.topup150"))).status, 200);
+  assertEquals((await handle(purchase("pseudolearn.nodo.topup150"))).status, 200);
   assertEquals(ledger.grants.length, 1);
   const { handle: refuse, ledger: untouched } = setup(
     new AllowlistedPurchaseVerifier(new SimulatedPurchaseVerifier(), new Set(["someone-else"])),
   );
-  const refused = await refuse(purchase("pseudolearn.plus.topup150"));
+  const refused = await refuse(purchase("pseudolearn.nodo.topup150"));
   assertEquals(refused.status, 403);
   assertEquals((await refused.json()).error.code, "purchases_disabled");
   assertEquals(untouched.grants.length, 0);
@@ -158,7 +158,7 @@ Deno.test("checkout and portal answer with a link, and other methods are refused
         body: JSON.stringify(body),
       }),
     );
-  const checkout = await post("checkouts", { product_id: "pseudolearn.plus.topup150" });
+  const checkout = await post("checkouts", { product_id: "pseudolearn.nodo.topup150" });
   assertEquals(await checkout.json(), { url: "https://pay.test/x" });
   assertEquals(await (await post("portal")).json(), { url: "https://portal.test" });
   const unknown = await post("checkouts", { product_id: 7 });

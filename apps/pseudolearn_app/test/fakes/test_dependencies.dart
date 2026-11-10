@@ -23,6 +23,7 @@ import 'package:pseudolearn_app/domain/ports/sync_coordinator.dart';
 import 'package:pseudolearn_app/domain/ports/sync_queue.dart';
 import 'package:pseudolearn_app/domain/ports/syntax_help_source.dart';
 import 'package:pseudolearn_app/composition/engine_services.dart';
+import 'package:pseudolearn_app/composition/program_execution_session.dart';
 import 'fake_account_deletion_gateway.dart';
 import 'fake_auth_gateway.dart';
 import 'fake_clock.dart';
@@ -78,6 +79,7 @@ AppDependencies buildTestDependencies({
   FakeTextEntryModality? textEntryModality,
   FakeAppVersionSource? appVersionSource,
   EngineServices? engine,
+  ProgramExecutionSession Function()? createObservableExecutionSession,
   UserExerciseRepository? userExerciseRepository,
   AgentServices? agent,
 }) {
@@ -137,6 +139,7 @@ AppDependencies buildTestDependencies({
     exerciseChecker:
         exerciseChecker ?? engine?.exerciseChecker ?? FakeExerciseChecker(),
     programTools: engine?.programTools ?? nativeTestEngine.programTools,
+    createObservableExecutionSession: createObservableExecutionSession,
     userExerciseRepository:
         userExerciseRepository ?? InMemoryUserExerciseRepository(),
     agent: agent ?? buildFakeAgentServices(),

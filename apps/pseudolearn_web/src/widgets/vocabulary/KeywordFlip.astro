@@ -1,0 +1,122 @@
+---
+import type { VocabularyPair } from '@entities/specification/model/vocabulary';
+
+export interface Props {
+  pairs: readonly VocabularyPair[];
+  label: string;
+}
+
+const { pairs, label } = Astro.props;
+---
+
+<div class="flip" role="img" aria-label={label}>
+  {pairs.map((pair, index) => (
+    <p class:list={['flip__line', `flip__line--${pair.tone}`]} style={`--pl-flip-delay: ${index * 0.6}s`}>
+      <span class="flip__word flip__word--spanish">{pair.spanish}</span>
+      <span class="flip__word flip__word--english">{pair.english}</span>
+    </p>
+  ))}
+</div>
+
+<style>
+  .flip {
+    display: grid;
+    gap: var(--pl-space-xs);
+    padding: var(--pl-space-lg) var(--pl-space-xl);
+    border: 1px solid var(--pl-on-field-line-strong);
+    border-radius: 20px;
+    background: rgb(7 45 47 / 55%);
+    font-family: var(--pl-font-code);
+    font-size: clamp(22px, 6vw, 34px);
+    font-weight: 700;
+    text-align: left;
+  }
+
+  .flip__line {
+    display: grid;
+    color: var(--pl-on-field-2);
+  }
+
+  .flip__line--structured {
+    color: var(--pl-dark-syn-struct);
+  }
+
+  .flip__line--procedural {
+    color: var(--pl-dark-syn-proc);
+  }
+
+  .flip__line--object {
+    color: var(--pl-dark-syn-oop);
+  }
+
+  .flip__word {
+    grid-area: 1 / 1;
+  }
+
+  .flip__word--english {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .flip__word--spanish {
+      animation: flip-out 6s ease-in-out var(--pl-flip-delay) infinite;
+    }
+
+    .flip__word--english {
+      animation: flip-in 6s ease-in-out var(--pl-flip-delay) infinite;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flip__line {
+      grid-template-columns: auto auto;
+      gap: var(--pl-space-sm);
+    }
+
+    .flip__word {
+      grid-area: auto;
+    }
+
+    .flip__word--english {
+      opacity: 0.7;
+    }
+  }
+
+  @keyframes flip-out {
+    0%,
+    40% {
+      opacity: 1;
+      transform: none;
+    }
+
+    50%,
+    90% {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes flip-in {
+    0%,
+    40% {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    50%,
+    90% {
+      opacity: 1;
+      transform: none;
+    }
+
+    100% {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+</style>

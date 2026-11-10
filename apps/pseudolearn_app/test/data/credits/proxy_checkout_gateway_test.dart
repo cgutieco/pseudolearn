@@ -34,7 +34,7 @@ void main() {
     );
     final link = await gateway.checkout(AgentProduct.topUp) as CheckoutLinkReady;
     expect(link.url.queryParameters['_ptxn'], 'txn_1');
-    expect(requests.single, 'POST https://p/functions/v1/agent-credits/checkouts Bearer jwt {product_id: pseudolearn.plus.topup150}');
+    expect(requests.single, 'POST https://p/functions/v1/agent-credits/checkouts Bearer jwt {product_id: pseudolearn.nodo.topup150}');
   });
 
   test('the portal posts to its own endpoint', () async {

@@ -1,33 +1,17 @@
 ---
 import type { SpecificationSection } from '@entities/specification/model/specification';
 import type { Locale } from '@shared/i18n/locales';
-import { useTranslations } from '@shared/i18n/translator';
 import SpecBlocks from './SpecBlocks.astro';
-import SpecRuns from './SpecRuns.astro';
 
 export interface Props {
   section: SpecificationSection;
   locale: Locale;
-  markdownHref: string;
 }
 
-const { section, locale, markdownHref } = Astro.props;
-const { t } = useTranslations(locale);
+const { section, locale } = Astro.props;
 ---
 
 <article class="article">
-  <header class="article__header">
-    <p class="article__number pl-overline pl-overline--brand">{section.number}</p>
-    <h1 class="article__title">
-      <SpecRuns runs={section.title} locale={locale} />
-    </h1>
-    <p class="article__phrase">
-      <SpecRuns runs={section.phrase} locale={locale} />
-    </p>
-    <a class="article__markdown pl-mono" href={markdownHref} type="text/markdown">
-      {t('specification.section.markdown')}
-    </a>
-  </header>
   <SpecBlocks blocks={section.blocks} locale={locale} />
 </article>
 
@@ -37,25 +21,6 @@ const { t } = useTranslations(locale);
     max-width: 760px;
     color: var(--pl-ink);
     font-size: 1.0625rem;
-  }
-
-  .article__header {
-    padding-bottom: var(--pl-space-lg);
-    border-bottom: 1px solid var(--pl-line);
-  }
-
-  .article__title {
-    margin-top: var(--pl-space-xs);
-    font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
-    line-height: 1.15;
-    letter-spacing: -0.01em;
-  }
-
-  .article__phrase {
-    margin-top: var(--pl-space-sm);
-    color: var(--pl-ink-2);
-    font-size: 1.1875rem;
-    line-height: 1.55;
   }
 
   .article :global(.runs__code),
@@ -118,12 +83,5 @@ const { t } = useTranslations(locale);
 
   .article :global(.code__token--muted) {
     color: var(--pl-ink-3);
-  }
-
-  .article__markdown {
-    display: inline-block;
-    margin-top: var(--pl-space-md);
-    color: var(--pl-brand);
-    font-size: 0.875rem;
   }
 </style>

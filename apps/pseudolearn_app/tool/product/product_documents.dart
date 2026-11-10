@@ -4,6 +4,7 @@ import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 const String guidedDemoId = 'guided-demo';
 const String aliasDemoId = 'alias-demo';
 const String functionDemoId = 'function-demo';
+const String tasksDemoId = 'tasks-demo';
 
 final class ProductDocumentSpec {
   final String id;
@@ -41,6 +42,11 @@ const Map<UiLanguageId, List<ProductDocumentSpec>> productDocuments =
       title: 'Máximo de dos números',
       sourcePath: 'assets/demo/b6_funcion_es.pseudo',
     ),
+    ProductDocumentSpec(
+      id: tasksDemoId,
+      title: 'Mostrador del kiosco',
+      sourcePath: 'tool/product/tasks_demo_es.pseudo',
+    ),
   ],
   UiLanguageId.english: <ProductDocumentSpec>[
     ProductDocumentSpec(
@@ -57,6 +63,11 @@ const Map<UiLanguageId, List<ProductDocumentSpec>> productDocuments =
       id: functionDemoId,
       title: 'Maximum of two numbers',
       sourcePath: 'assets/demo/b6_funcion_en.pseudo',
+    ),
+    ProductDocumentSpec(
+      id: tasksDemoId,
+      title: 'Kiosk counter',
+      sourcePath: 'tool/product/tasks_demo_en.pseudo',
     ),
   ],
 };

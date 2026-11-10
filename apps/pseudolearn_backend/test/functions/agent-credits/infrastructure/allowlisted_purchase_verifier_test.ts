@@ -6,7 +6,7 @@ import { simulatedPurchase } from "../../../../supabase/functions/agent-credits/
 
 const claim = {
   store: "simulated",
-  productId: "pseudolearn.plus.topup150",
+  productId: "pseudolearn.nodo.topup150",
   transactionId: "tx-1",
   evidence: "",
 };

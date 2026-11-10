@@ -2,8 +2,13 @@
 import BaseLayout from '@app/layouts/BaseLayout.astro';
 import { useTranslations } from '@shared/i18n/translator';
 import type { Locale } from '@shared/i18n/locales';
+import { SITE } from '@shared/config/site';
 import { ROUTES, localizePath } from '@shared/i18n/routes';
-import PageHero from '@widgets/page-hero/PageHero.astro';
+import { Icon } from '@shared/ui/icon';
+import StoryHero from '@widgets/story-hero/StoryHero.astro';
+import SupportMark from '@widgets/support-mark/SupportMark.astro';
+import PageSection from '@widgets/page-section/PageSection.astro';
+import SupportPromises from '@widgets/support-promises/SupportPromises.astro';
 import SupportSidebar from '@widgets/support-sidebar/SupportSidebar.astro';
 import ContactForm from '@features/contact-form/ContactForm.astro';
 
@@ -13,9 +18,9 @@ export interface Props {
 
 const { locale } = Astro.props;
 const { t } = useTranslations(locale);
-const home = localizePath(ROUTES.home, locale);
-const privacyHref = `${home === '/' ? '' : home}/privacy`;
+const privacyHref = localizePath(ROUTES.privacy, locale);
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
+const responseNote = `${t('contact.sidebar.responseTime')} ${t('contact.sidebar.responseTimeValue')}. ${t('contact.sidebar.responseTimeNote')}`;
 ---
 
 <BaseLayout
@@ -24,25 +29,53 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
   title={t('contact.seoTitle')}
   description={t('contact.seoDescription')}
 >
-  <PageHero
+  <StoryHero
     overline={t('contact.hero.overline')}
     title={t('contact.hero.title')}
     lead={t('contact.hero.lead')}
-  />
+    note={responseNote}
+    compact
+  >
+    <SupportMark slot="visual" />
+    <Fragment slot="actions">
+      <a class="pl-btn pl-btn--on-field" href="#form">
+        <span>{t('contact.hero.cta')}</span>
+        <Icon name="chevronDown" size={17} />
+      </a>
+      <a class="pl-btn pl-btn--outline-field" href={`mailto:${SITE.supportEmail}`}>
+        {SITE.supportEmail}
+      </a>
+    </Fragment>
+  </StoryHero>
 
-  <div class="pl-container contact-layout">
-    <ContactForm locale={locale} privacyHref={privacyHref} turnstileSiteKey={turnstileSiteKey} />
-    <SupportSidebar locale={locale} />
-  </div>
+  <PageSection
+    id="promises"
+    tone="surface"
+    overline={t('contact.sidebar.promisesLabel')}
+    title={t('contact.promises.title')}
+  >
+    <SupportPromises locale={locale} />
+  </PageSection>
+
+  <section class="contact-layout-section" id="form">
+    <div class="pl-container contact-layout">
+      <ContactForm locale={locale} privacyHref={privacyHref} turnstileSiteKey={turnstileSiteKey} />
+      <SupportSidebar locale={locale} />
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
+  .contact-layout-section {
+    scroll-margin-top: 16px;
+  }
+
   .contact-layout {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding-top: 36px;
-    padding-bottom: 56px;
+    padding-top: 56px;
+    padding-bottom: 72px;
   }
 
   @media (min-width: 900px) {
@@ -50,8 +83,8 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
       flex-direction: row;
       align-items: flex-start;
       gap: var(--pl-space-2xl);
-      padding-top: 72px;
-      padding-bottom: var(--pl-space-4xl);
+      padding-top: 104px;
+      padding-bottom: 104px;
     }
   }
 </style>

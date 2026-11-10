@@ -23,9 +23,9 @@ export const productCatalog: Readonly<Record<Product, ProductTerms>> = {
 };
 
 export const storeProductIds: Readonly<Record<string, Product>> = {
-  "pseudolearn.plus.trial": "trial",
-  "pseudolearn.plus.monthly": "monthly",
-  "pseudolearn.plus.topup150": "top_up",
+  "pseudolearn.nodo.trial": "trial",
+  "pseudolearn.nodo.monthly": "monthly",
+  "pseudolearn.nodo.topup150": "top_up",
 };
 
 export interface PurchaseClaim {

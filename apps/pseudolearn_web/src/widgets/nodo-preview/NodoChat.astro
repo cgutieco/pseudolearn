@@ -1,0 +1,125 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { Icon } from '@shared/ui/icon';
+import NodoGlyph from './NodoGlyph.astro';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t } = useTranslations(locale);
+const STEPS = ['nodo.chat.stepScreen', 'nodo.chat.stepSearch', 'nodo.chat.stepCheck'] as const;
+---
+
+<figure class="nodo-chat" aria-label={t('nodo.chat.label')}>
+  <div class="nodo-chat__header">
+    <NodoGlyph size={22} />
+    <span class="nodo-chat__name">{t('nodo.name')}</span>
+    <span class="pl-tag">{t('nodo.badge')}</span>
+  </div>
+  <div class="nodo-chat__body">
+    <p class="nodo-chat__bubble nodo-chat__bubble--student">{t('nodo.chat.question')}</p>
+    <ol class="nodo-chat__steps">
+      {STEPS.map((step) => (
+        <li>
+          <Icon name="check" size={14} />
+          <span>{t(step)}</span>
+        </li>
+      ))}
+    </ol>
+    <div class="nodo-chat__bubble nodo-chat__bubble--nodo">
+      <p>{t('nodo.chat.answer')}</p>
+      <p class="nodo-chat__verified">
+        <Icon name="check" size={14} />
+        <span>{t('nodo.chat.verified')}</span>
+      </p>
+      <p>{t('nodo.chat.followUp')}</p>
+    </div>
+    <slot />
+  </div>
+  <figcaption class="nodo-chat__caption">{t('nodo.chat.disclaimer')}</figcaption>
+</figure>
+
+<style>
+  .nodo-chat {
+    margin: 0;
+    border: 1px solid var(--pl-line);
+    border-radius: 18px;
+    background: var(--pl-surface);
+    color: var(--pl-ink);
+    box-shadow: var(--pl-shadow-3);
+    overflow: hidden;
+  }
+
+  .nodo-chat__header {
+    display: flex;
+    align-items: center;
+    gap: var(--pl-space-xs);
+    padding: var(--pl-space-sm) var(--pl-space-md);
+    border-bottom: 1px solid var(--pl-line-soft);
+    color: var(--pl-brand);
+  }
+
+  .nodo-chat__name {
+    font-weight: 700;
+    color: var(--pl-ink);
+  }
+
+  .nodo-chat__body {
+    display: grid;
+    gap: var(--pl-space-sm);
+    padding: var(--pl-space-md);
+  }
+
+  .nodo-chat__bubble {
+    max-width: 92%;
+    padding: var(--pl-space-sm) var(--pl-space-md);
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .nodo-chat__bubble--student {
+    justify-self: end;
+    background: var(--pl-btn-bg);
+    color: var(--pl-btn-fg);
+  }
+
+  .nodo-chat__bubble--nodo {
+    display: grid;
+    gap: var(--pl-space-xs);
+    background: var(--pl-sunken);
+  }
+
+  .nodo-chat__steps {
+    display: grid;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--pl-ink-3);
+  }
+
+  .nodo-chat__steps li,
+  .nodo-chat__verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nodo-chat__verified {
+    width: fit-content;
+    padding: 2px 8px;
+    border-radius: var(--pl-radius-pill);
+    background: var(--pl-brand-tint);
+    color: var(--pl-brand-deep);
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .nodo-chat__caption {
+    padding: var(--pl-space-xs) var(--pl-space-md) var(--pl-space-sm);
+    font-size: 12px;
+    color: var(--pl-ink-3);
+  }
+</style>

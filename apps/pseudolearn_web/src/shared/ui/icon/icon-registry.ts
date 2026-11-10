@@ -35,6 +35,12 @@ export const ICONS = {
   check: { paths: ['M5 12.5l4.5 4.5L19 7.5'], linejoin: true },
   cross: { paths: ['M7 7l10 10M17 7L7 17'] },
   send: { paths: ['M20 4L3.5 10.5l6.5 2.6L12.6 20Z'], linejoin: true },
+  terminal: {
+    paths: ['M7 9.5l3 2.5-3 2.5', 'M12.5 15h4.5'],
+    rects: [{ x: 3, y: 4.5, width: 18, height: 15, rx: 1.6 }],
+    linejoin: true,
+  },
+  code: { paths: ['M9 7l-5 5 5 5', 'M15 7l5 5-5 5', 'M13.5 5l-3 14'], linejoin: true },
 } as const satisfies Record<string, IconDefinition>;
 
 export type IconName = keyof typeof ICONS;

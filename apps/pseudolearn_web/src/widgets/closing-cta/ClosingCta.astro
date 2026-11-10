@@ -2,24 +2,37 @@
 import { useTranslations } from '@shared/i18n/translator';
 import type { Locale } from '@shared/i18n/locales';
 import { Icon } from '@shared/ui/icon';
-import { ANCHORS } from '@shared/config/site';
+import { StairMark } from '@shared/ui/brand-mark';
+import { ROUTES, localizePath } from '@shared/i18n/routes';
+import { routeParts } from '@entities/learning-route/model/route-contents';
+import { hoursOf } from '@entities/learning-route/model/route-metrics';
 
 export interface Props {
   locale: Locale;
 }
 
 const { locale } = Astro.props;
-const { t } = useTranslations(locale);
+const { t, plural } = useTranslations(locale);
+const opening = routeParts(locale)[0]?.lessons ?? [];
 ---
 
-<section class="closing pl-field">
+<section class="closing pl-field--deep">
   <div class="pl-container closing__row">
+    <StairMark id="closing" class="closing__mark" />
     <div class="closing__text">
-      <h2 class="pl-section-title closing__title">{t('home.closing.title')}</h2>
+      <h2 class="pl-section-title closing__title">
+        {t('home.closing.title', {
+          lessons: opening.length,
+          duration: plural('common.hours', hoursOf(opening)),
+        })}
+      </h2>
       <p class="pl-lede pl-lede--field closing__lead">{t('home.closing.lead')}</p>
     </div>
     <div class="closing__action">
-      <a class="pl-btn pl-btn--on-field pl-btn--lg pl-btn--block" href={`#${ANCHORS.downloads}`}>
+      <a
+        class="pl-btn pl-btn--on-field pl-btn--lg pl-btn--block"
+        href={localizePath(ROUTES.download, locale)}
+      >
         <Icon name="download" size={20} />
         <span>{t('home.hero.ctaPrimary')}</span>
       </a>
@@ -29,10 +42,6 @@ const { t } = useTranslations(locale);
 </section>
 
 <style>
-  .closing {
-    margin-top: 64px;
-  }
-
   .closing__row {
     padding-top: 56px;
     padding-bottom: 56px;
@@ -40,6 +49,15 @@ const { t } = useTranslations(locale);
 
   .closing__title {
     color: var(--pl-on-field);
+  }
+
+  .closing :global(.closing__mark) {
+    width: 88px;
+    height: auto;
+    margin-bottom: var(--pl-space-lg);
+    color: var(--pl-on-field-3);
+
+    --pl-stair-flag: var(--pl-on-field);
   }
 
   .closing__lead {
@@ -58,10 +76,6 @@ const { t } = useTranslations(locale);
   }
 
   @media (min-width: 900px) {
-    .closing {
-      margin-top: 104px;
-    }
-
     .closing__row {
       display: flex;
       align-items: center;
@@ -72,6 +86,11 @@ const { t } = useTranslations(locale);
 
     .closing__text {
       flex: 1;
+    }
+
+    .closing :global(.closing__mark) {
+      width: 140px;
+      margin-bottom: 0;
     }
 
     .closing__title {

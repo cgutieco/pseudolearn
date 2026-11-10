@@ -39,6 +39,7 @@ AppDependencies buildProductDependencies({
       assetLoader: rootBundle.loadString,
     ),
     engine: engine,
+    createObservableExecutionSession: engine.createObservableExecutionSession,
   );
 }
 

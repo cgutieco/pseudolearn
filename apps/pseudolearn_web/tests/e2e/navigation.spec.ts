@@ -2,6 +2,14 @@ import { expect, test } from '@playwright/test';
 
 const ROUTES = [
   '/',
+  '/language',
+  '/learn',
+  '/nodo',
+  '/download',
+  '/en/language',
+  '/en/learn',
+  '/en/nodo',
+  '/en/download',
   '/contact',
   '/versions',
   '/privacy',
@@ -21,6 +29,23 @@ test.describe('routing', () => {
       await expect(page.locator('h1')).toHaveCount(1);
     });
   }
+
+  test('keeps the primary navigation on pages, never on anchors', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/learn');
+    const hrefs = await page
+      .locator('.site-header__nav a')
+      .evaluateAll((links) => links.map((link) => link.getAttribute('href')));
+    expect(hrefs).toEqual(['/language', '/learn', '/nodo', '/spec']);
+    await expect(page.locator('.site-header__nav a[aria-current="page"]')).toHaveText('Aprender');
+  });
+
+  test('jumps to a section from the in-page index', async ({ page }) => {
+    await page.goto('/nodo');
+    await page.locator('.page-sections a[href="#plans"]').click();
+    await expect(page).toHaveURL(/#plans$/);
+    await expect(page.locator('#plans')).toBeInViewport();
+  });
 
   test('redirects the legacy spanish paths', async ({ page }) => {
     await page.goto('/contacto');

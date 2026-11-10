@@ -1,0 +1,75 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { NODO_PLANS } from '@entities/nodo-plan/model/nodo-plans';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t } = useTranslations(locale);
+const PLANS = [
+  { id: 'trial', values: { days: NODO_PLANS.trial.days, credits: NODO_PLANS.trial.credits } },
+  { id: 'monthly', values: { credits: NODO_PLANS.monthly.credits } },
+  { id: 'topup', values: { credits: NODO_PLANS.topUp.credits } },
+] as const;
+---
+
+<div class="plans">
+  <ul class="plans__grid">
+    {PLANS.map((plan) => (
+      <li class:list={['pl-card', 'plans__card', { 'plans__card--featured': plan.id === 'monthly' }]}>
+        <p class="pl-overline pl-overline--brand">{t(`nodo.plans.${plan.id}.title`)}</p>
+        <p class="plans__value">{t(`nodo.plans.${plan.id}.value`, plan.values)}</p>
+        <p class="plans__text">{t(`nodo.plans.${plan.id}.text`, plan.values)}</p>
+      </li>
+    ))}
+  </ul>
+  <p class="plans__note">{t('nodo.plans.price')}</p>
+  <p class="plans__note">{t('nodo.plans.account')}</p>
+</div>
+
+<style>
+  .plans {
+    display: grid;
+    gap: var(--pl-space-sm);
+  }
+
+  .plans__grid {
+    display: grid;
+    gap: var(--pl-space-md);
+    margin-bottom: var(--pl-space-sm);
+  }
+
+  .plans__card {
+    display: grid;
+    gap: var(--pl-space-xs);
+    align-content: start;
+    padding: var(--pl-space-lg);
+  }
+
+  .plans__card--featured {
+    border: 2px solid var(--pl-brand);
+  }
+
+  .plans__value {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .plans__text,
+  .plans__note {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--pl-ink-2);
+  }
+
+  @media (min-width: 900px) {
+    .plans__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--pl-space-lg);
+    }
+  }
+</style>

@@ -1,4 +1,5 @@
 import type { LegalDocumentMeta, LegalSection } from './legal-document';
+import { TERMS_NODO_SECTION } from './terms-nodo-section';
 
 export const TERMS_META: LegalDocumentMeta = {
   lastUpdatedKey: 'terms.meta.lastUpdated',
@@ -114,25 +115,26 @@ export const TERMS_SECTIONS: readonly LegalSection[] = [
     number: '07',
     titleKey: 'terms.section.pricing.title',
     leadKey: 'terms.section.pricing.lead',
-    bodyKeys: ['terms.section.pricing.text1', 'terms.section.pricing.text2'],
+    bodyKeys: ['terms.section.pricing.text1', 'terms.section.pricing.text2', 'terms.section.pricing.text3'],
   },
+  TERMS_NODO_SECTION,
   {
     id: 'disponibilidad',
-    number: '08',
+    number: '09',
     titleKey: 'terms.section.availability.title',
     leadKey: 'terms.section.availability.lead',
     bodyKeys: ['terms.section.availability.text1', 'terms.section.availability.text2'],
   },
   {
     id: 'garantias',
-    number: '09',
+    number: '10',
     titleKey: 'terms.section.warranties.title',
     leadKey: 'terms.section.warranties.lead',
     bodyKeys: ['terms.section.warranties.text1', 'terms.section.warranties.text2'],
   },
   {
     id: 'privacidad',
-    number: '10',
+    number: '11',
     titleKey: 'terms.section.privacy.title',
     leadKey: 'terms.section.privacy.lead',
     bodyKeys: ['terms.section.privacy.text'],
@@ -143,7 +145,7 @@ export const TERMS_SECTIONS: readonly LegalSection[] = [
   },
   {
     id: 'ley-aplicable',
-    number: '11',
+    number: '12',
     titleKey: 'terms.section.governing.title',
     leadKey: 'terms.section.governing.lead',
     bodyKeys: ['terms.section.governing.text1', 'terms.section.governing.text2'],

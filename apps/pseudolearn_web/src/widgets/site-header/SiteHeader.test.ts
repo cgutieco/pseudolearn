@@ -14,22 +14,23 @@ beforeAll(async () => {
 describe('SiteHeader', () => {
   it('renders spanish navigation at the unprefixed root', async () => {
     const html = await container.renderToString(SiteHeader, { props: { locale: 'es', path: ROUTES.home } });
-    expect(html).toContain('Ruta de aprendizaje');
-    expect(html).toContain('href="/contact"');
-    expect(html).not.toContain('Learning path');
+    expect(html).toContain('Aprender');
+    expect(html).toContain('href="/learn"');
+    expect(html).toContain('href="/download"');
+    expect(html).not.toMatch(/href="[^"]*#/);
   });
 
   it('renders english navigation under the locale prefix', async () => {
     const html = await container.renderToString(SiteHeader, { props: { locale: 'en', path: ROUTES.home } });
-    expect(html).toContain('Learning path');
-    expect(html).toContain('href="/en/contact"');
+    expect(html).toContain('Learn');
+    expect(html).toContain('href="/en/learn"');
   });
 
   it('marks the active route for assistive technology', async () => {
     const html = await container.renderToString(SiteHeader, {
-      props: { locale: 'es', path: ROUTES.contact },
+      props: { locale: 'es', path: ROUTES.nodo },
     });
-    expect(html).toContain('aria-current="page"');
+    expect(html.match(/aria-current="page"/g)).toHaveLength(2);
   });
 
   it('offers both languages pointing at the same page', async () => {
