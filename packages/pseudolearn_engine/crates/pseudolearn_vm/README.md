@@ -15,8 +15,8 @@ No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
 Usa la versión exacta de `rust-toolchain.toml` del miembro. El crate está activo en el workspace y
 ejecuta las familias escalares y de referencia de `IR.INSTRUCTIONS`, texto, arreglos, celdas, objetos,
 llamadas recursivas y virtuales, copia superficial, salida formateada y azar sembrado. Incorpora
-soporte completo para el gemelo rápido y sondeado (`TwinMode`), eventos estructurados de traza, formato
-binario columnar `PLEV`, operaciones de paso (`step_into`, `step_over`, `step_out`, `step_to_line`),
+soporte completo para el gemelo rápido y sondeado (`TwinMode`), eventos estructurados de traza,
+operaciones de paso (`step_into`, `step_over`, `step_out`, `step_to_line`),
 servicio de combustible y límites de anfitrión con retroceso exacto (`statement_limit`), cancelación
 cooperativa y por bandera atómica, y flujo de entrada con suspensión y reintento. Comprobación:
 `cargo xtask verify` del motor, que incluye tests, Clippy y `rust-checks all`.
@@ -49,7 +49,6 @@ Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones c
 |---|---|
 | `dispatch.rs` | Incluye el código generado: familias de opcode, `enum Op`, selección de forma y paso |
 | `events.rs` | Clases de traza, eventos estructurados, búfer de cambios y cargas útiles de eventos |
-| `wire/` | Codificación y decodificación columnar binaria del formato de transporte PLEV |
 | `step.rs` | Controlador de navegación y avance de pasos sobre trazas de ejecución |
 | `load/` | Traduce los gemelos rápido y sondeado a la forma de despacho de cada función |
 | `load/definedness.rs` | Decide qué registros enteros necesitan bit de definición en ejecución |
@@ -114,7 +113,9 @@ Problema: decodificar los argumentos de una consulta de texto copia el texto ent
 
 Problema: el runtime admite mínimos de recolección configurables para consumidores distintos. Elección: la VM conserva 4096 celdas como mínimo automático. Se descarta adoptar el calendario diferido de AOT.
 
-La carga textual de PLEV usa JSON canónico: los controles se codifican con escapes y se decodifican sin alterar Unicode ni enteros de 64 bits. Se descartan caracteres de control sin escapar y secuencias incompletas; los errores se devuelven como valores. El tramo interno de un evento conserva el ID de fuente del bytecode; la API lo combina con identidad de proyecto y revisión al construir su ubicación pública.
+El tramo interno de un evento conserva el ID de fuente del bytecode; la API lo combina con identidad de proyecto y revisión al construir su ubicación pública.
+
+Problema: la VM exportaba un códec PLEV 1 propio (`encode_plev`, `decode_plev`) que solo usaban sus tests; no hacía ida y vuelta con los eventos de tareas y canales, perdía `span` y `source`, saturaba tamaños con `u32::MAX` o `0` y aceptaba cargas no canónicas (`+5`, `007`, comillas opcionales). Ningún miembro del monorepo lo consumía: el formato de transporte vive en `pseudolearn_api` (`event_binary`), que escribe PLEV 2 y decodifica PLEV 1. Elección: se elimina el códec de la VM. Se descarta corregirlo: mantendría dos implementaciones del mismo formato que ya divergían.
 
 `LoadedProgram` comparte sus datos inmutables mediante `Arc`; cada `Machine` posee una referencia compartida al programa y conserva sus funciones activas también mediante `Arc`. Una API de recurso puede mantener la máquina viva entre lotes sin copias de programa ni referencias autorreferenciales. Las imágenes siguen siendo valores independientes para restauración y reproducción. Incluyen gemelo, combustible, entradas, salida, eventos, diagnósticos y montón. `snapshot_machine_lean` omite la historia de eventos y conserva solo su cuenta (`events_dropped`); sus bancos se limitan a las ventanas activas de marcos. `MachineDelta` es la diferencia inversa entre dos imágenes: `advance_image` lleva la imagen de la punta al estado vivo y devuelve el segmento que la devuelve atrás, `revert_image` lo aplica y `compose_machine_deltas` fusiona dos segmentos contiguos. Los marcos guardados solo se comparan desde el primer índice modificado; el cursor y el marco activo pertenecen al registro de control.
 
@@ -153,9 +154,6 @@ primer registro modificado desde el punto anterior para que `MachineDelta` omita
   `LimitReached` por presupuesto de sentencias/tiempo). Ante una terminación por el anfitrión, la máquina
   se detiene de inmediato, la tabla de capacidades del anfitrión se libera forzosamente y no se ejecutan
   nuevos efectos de usuario dentro de `Diferir`.
-- **Formato binario columnar PLEV:** La serialización de eventos de traza organiza columnas contiguas de
-  ancho fijo (`clase: u8`, `linea: u32`, `profundidad: u32`, `offset: u32`) seguidas de un depósito de texto
-  UTF-8 con cadenas deduplicadas. Permite acceso aleatorio en O(1) a cualquier evento sin coste de varints.
 - **Modelo de gemelos simétricos y retroceso exacto de combustible:** El gemelo rápido ejecuta sin
   marcadores de observación; el sondeado registra eventos de traza y mutaciones en el búfer de cambios.
   Cuando el límite de sentencias del anfitrión se aproxima al remanente de un bloque, la VM cae en O(1) al
@@ -207,8 +205,7 @@ Las suites añadidas en B5 verifican exhaustivamente el comportamiento observabl
 `limits_tests` (presupuesto exacto de sentencias con retroceso al gemelo sondeado, límite de profundidad),
 `step_tests` (navegación de paso a nivel de sentencia, salto de llamadas y salida de marcos),
 `trace_tests` (emisión de eventos estructurados en modo sondeado y pureza en modo rápido),
-`twin_switching_tests` (conmutación en O(1) entre gemelos rápido y sondeado y equivalencia estricta),
-y `wire_format_tests` (codificación y decodificación columnar binaria PLEV y casos negativos).
+y `twin_switching_tests` (conmutación en O(1) entre gemelos rápido y sondeado y equivalencia estricta).
 La trazadora de `pseudolearn_vm_tracer` mide la aceleración frente a `reference`. No se cierran pendientes
 hasta tener `cargo xtask verify` y conformidad en verde.
 

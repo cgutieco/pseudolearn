@@ -10,7 +10,6 @@ mod options;
 mod step;
 mod trap;
 mod vocabulary;
-mod wire;
 
 pub use events::{ChangeBuffer, EventField, EventPayload, TraceClass, TraceEvent};
 pub use load::{LoadedProgram, load};
@@ -33,7 +32,6 @@ pub use options::{RunOptions, TwinMode};
 pub use step::{StepAction, advance_step, step_into, step_next, step_out, step_over, step_to_line};
 pub use trap::VmTrap;
 pub use vocabulary::boolean_words;
-pub use wire::{decode_plev, encode_plev};
 
 pub(crate) use trap::Fault;
 
