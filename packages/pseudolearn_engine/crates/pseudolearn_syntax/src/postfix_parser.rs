@@ -39,18 +39,26 @@ pub(crate) fn parse_postfix(state: &mut ParserState<'_>, mut target: usize) -> R
 pub(crate) fn arguments(state: &mut ParserState<'_>) -> Result<usize, ()> {
     let start = state.token();
     let marker = state.nodes.len();
+    state.enter()?;
+    let listed = parenthesized_arguments(state);
+    state.leave();
+    listed?;
+    Ok(state.finish(NodeKind::Arguments, start, marker))
+}
+
+fn parenthesized_arguments(state: &mut ParserState<'_>) -> Result<(), ()> {
     state.require(
         TokenKind::LeftParenthesis,
         DiagnosticCode::ExpectedExpression,
     )?;
-    if !state.eat(TokenKind::RightParenthesis) {
-        expression_list(state)?;
-        state.require(
-            TokenKind::RightParenthesis,
-            DiagnosticCode::UnclosedParenthesis,
-        )?;
+    if state.eat(TokenKind::RightParenthesis) {
+        return Ok(());
     }
-    Ok(state.finish(NodeKind::Arguments, start, marker))
+    expression_list(state)?;
+    state.require(
+        TokenKind::RightParenthesis,
+        DiagnosticCode::UnclosedParenthesis,
+    )
 }
 
 pub(crate) fn expression_list(state: &mut ParserState<'_>) -> Result<(), ()> {
@@ -69,6 +77,15 @@ fn index(state: &mut ParserState<'_>, indexed: bool) -> Result<(), ()> {
     }
     let start = state.token();
     let marker = state.nodes.len();
+    state.enter()?;
+    let listed = bracketed_indices(state);
+    state.leave();
+    listed?;
+    state.finish(NodeKind::Expressions, start, marker);
+    Ok(())
+}
+
+fn bracketed_indices(state: &mut ParserState<'_>) -> Result<(), ()> {
     state.advance();
     if state.kind() == TokenKind::RightBracket {
         let span = state.span();
@@ -76,9 +93,7 @@ fn index(state: &mut ParserState<'_>, indexed: bool) -> Result<(), ()> {
         return Err(());
     }
     expression_list(state)?;
-    state.require(TokenKind::RightBracket, DiagnosticCode::UnclosedBracket)?;
-    state.finish(NodeKind::Expressions, start, marker);
-    Ok(())
+    state.require(TokenKind::RightBracket, DiagnosticCode::UnclosedBracket)
 }
 
 fn member(state: &mut ParserState<'_>) -> Result<(), ()> {

@@ -123,6 +123,9 @@ comparten disposición de marco y de objetos.
 - **Aislamiento**: `api` y `wasm` compilados para `wasm32` no pueden traer red nativa, `codegen` ni `aot_rt`, ni
   activar la feature `test-host`; `tool/wasm.sh build` rechaza el grafo si aparece alguno, porque la unificación de
   features de Cargo convertiría el anfitrión de memoria en el anfitrión distribuido.
+- **Profundidad del análisis**: el parser cuenta un nivel por cada lista de argumentos e índices además de los
+  paréntesis, unarios, potencias y bloques, de modo que ningún anidamiento agota la pila del anfitrión;
+  `catch_unwind` no captura un desbordamiento de pila.
 - **Sin capas hacia arriba**: `architecture.yaml` fija qué puede importar cada crate.
 
 ## Comandos útiles
