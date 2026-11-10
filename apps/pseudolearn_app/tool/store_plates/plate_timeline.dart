@@ -5,7 +5,8 @@ enum PlateEventKind {
   statement('statement'),
   diagramNode('diagram-node'),
   agentMessage('agent-message'),
-  completion('completion');
+  completion('completion'),
+  tap('tap');
 
   final String wireName;
 
@@ -48,12 +49,15 @@ final class PlateFrame {
 final class PlateEvent {
   final int frame;
   final PlateEventKind kind;
+  final Offset? point;
 
-  const PlateEvent({required this.frame, required this.kind});
+  const PlateEvent({required this.frame, required this.kind, this.point});
 
   Map<String, Object> toJson() => <String, Object>{
         'frame': frame,
         'kind': kind.wireName,
+        if (point case final Offset touch) 'x': touch.dx,
+        if (point case final Offset touch) 'y': touch.dy,
       };
 }
 

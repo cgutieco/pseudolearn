@@ -14,16 +14,14 @@ import '../test/fakes/native_test_engine.dart';
 import 'package:pseudolearn_app/presentation/document/components/tab_selector.dart';
 
 import '../test/fakes/load_bundled_fonts.dart';
-import 'product/app_stage.dart';
 import 'product/bundled_font_probe.dart';
-import 'product/product_dependencies.dart';
 import 'product/product_documents.dart';
 import 'product/scene_actions.dart';
 import 'product/scene_stage.dart';
 import 'store_plates/chapter_scenes.dart';
-import 'store_plates/plate_agent.dart';
 import 'store_plates/plate_devices.dart';
 import 'store_plates/plate_recorder.dart';
+import 'store_plates/plate_stage.dart';
 import 'store_plates/plate_timeline.dart';
 import 'store_plates/story_code.dart';
 
@@ -43,17 +41,9 @@ const Map<UiLanguageId, SyntaxProfileId> _storyProfiles =
   UiLanguageId.english: SyntaxProfileId.english,
 };
 
-const Map<String, AppThemeMode> _themes = <String, AppThemeMode>{
-  'light': AppThemeMode.light,
-  'dark': AppThemeMode.dark,
-};
-
-const Map<UiLanguageId, String> _localeTags = <UiLanguageId, String>{
-  UiLanguageId.spanish: 'es',
-  UiLanguageId.english: 'en',
-};
-
-final GlobalKey _boundaryKey = GlobalKey();
+const Map<String, AppThemeMode> _themes = plateThemes;
+const Map<UiLanguageId, String> _localeTags = plateLocaleTags;
+final GlobalKey _boundaryKey = plateBoundaryKey;
 
 void main() {
   setUpAll(() async {
@@ -122,12 +112,8 @@ void main() {
   }
 }
 
-List<T> _selected<T>(List<T> all, String filter, String Function(T) name) {
-  final wanted = filter.split(',').where((entry) => entry.isNotEmpty).toSet();
-  return wanted.isEmpty
-      ? all
-      : all.where((entry) => wanted.contains(name(entry))).toList();
-}
+List<T> _selected<T>(List<T> all, String filter, String Function(T) name) =>
+    selectedByName(all, filter, name);
 
 final class _ChapterTake {
   final PlateDevice device;
@@ -226,27 +212,11 @@ final class _StageSetup {
   });
 }
 
-Future<void> _pumpStage(WidgetTester tester, _StageSetup setup) async {
-  tester.view.physicalSize = setup.logicalSize;
-  tester.view.devicePixelRatio = 1.0;
-  tester.platformDispatcher.localesTestValue = <Locale>[
-    Locale(_localeTags[setup.language]!),
-  ];
-  addTearDown(tester.view.reset);
-  addTearDown(tester.platformDispatcher.clearLocalesTestValue);
-  await tester.pumpWidget(
-    RepaintBoundary(
-      key: _boundaryKey,
-      child: AppStage(
+Future<void> _pumpStage(WidgetTester tester, _StageSetup setup) => pumpPlateStage(
+      tester,
+      PlateStageSetup(
+        language: setup.language,
+        themeMode: setup.themeMode,
         logicalSize: setup.logicalSize,
-        dependencies: buildProductDependencies(
-          language: setup.language,
-          themeMode: setup.themeMode,
-          agent: scriptedNodo(setup.language),
-          authGateway: signedInGateway(),
-        ),
       ),
-    ),
-  );
-  await tester.pumpAndSettle();
-}
+    );

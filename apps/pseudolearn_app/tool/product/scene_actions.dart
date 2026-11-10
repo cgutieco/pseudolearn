@@ -24,7 +24,7 @@ SceneAction openDocument(String documentId) {
   };
 }
 
-SceneAction openKnowledgeCatalogue() {
+SceneAction openKnowledgeCatalogue({Duration? settleFor}) {
   return (stage) async {
     final settled = _knowledgeSectionsSettled(stage);
     GoRouter.of(stage.appContext).go(knowledgeRoute);
@@ -33,8 +33,24 @@ SceneAction openKnowledgeCatalogue() {
       await stage.tester.runAsync(() => Future<void>.delayed(_bundleReadSlice));
       if (settled()) break;
     }
-    await stage.tester.pumpAndSettle();
+    if (settleFor == null) {
+      await stage.tester.pumpAndSettle();
+    } else {
+      await _settleWithin(stage, settleFor);
+    }
   };
+}
+
+Future<void> _settleWithin(SceneStage stage, Duration limit) async {
+  try {
+    await stage.tester.pumpAndSettle(
+      const Duration(milliseconds: 100),
+      EnginePhase.sendSemanticsUpdate,
+      limit,
+    );
+  } on FlutterError {
+    return;
+  }
 }
 
 SceneAction beginStepping() {

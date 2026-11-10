@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -20,6 +21,8 @@ final class PlateRecorder {
   final FocusProbe focus;
   final List<PlateFrame> _frames = <PlateFrame>[];
   final List<PlateEvent> _events = <PlateEvent>[];
+  Uint8List? _previousPixels;
+  String? _previousFile;
 
   PlateRecorder({
     required this.tester,
@@ -42,6 +45,16 @@ final class PlateRecorder {
 
   void mark(PlateEventKind kind) {
     _events.add(PlateEvent(frame: _frames.length, kind: kind));
+  }
+
+  void markTap(Finder target) {
+    final origin = tester.getTopLeft(find.byKey(boundaryKey));
+    final center = tester.getCenter(target.first) - origin;
+    _events.add(PlateEvent(
+      frame: _frames.length,
+      kind: PlateEventKind.tap,
+      point: center * pixelRatio,
+    ));
   }
 
   Future<PlateTimeline> finish({
@@ -68,27 +81,37 @@ final class PlateRecorder {
     final index = _frames.length;
     final name = 'frame_${(index + 1).toString().padLeft(6, '0')}.png';
     final boundary = _boundary();
-    await tester.runAsync(() async {
+    final file = await tester.runAsync(() async {
       final image = await boundary.toImage(pixelRatio: pixelRatio);
       final data = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
-      File(p.join(directory.path, name)).writeAsBytesSync(
-        encodeOpaquePng(RasterizedFrame(
-          widthInPixels: image.width,
-          heightInPixels: image.height,
-          rgbaBytes: data!.buffer.asUint8List(),
-        )),
-      );
+      final pixels = data!.buffer.asUint8List();
+      final repeated = _previousFile != null && listEquals(pixels, _previousPixels);
+      if (!repeated) {
+        File(p.join(directory.path, name)).writeAsBytesSync(
+          encodeOpaquePng(RasterizedFrame(
+            widthInPixels: image.width,
+            heightInPixels: image.height,
+            rgbaBytes: pixels,
+          )),
+        );
+        _previousPixels = pixels;
+        _previousFile = name;
+      }
       image.dispose();
+      return _previousFile!;
     });
-    _frames.add(PlateFrame(index: index, file: name, focus: _focusRects()));
+    _frames.add(PlateFrame(index: index, file: file!, focus: _focusRects()));
   }
 
   List<PlateFocus> _focusRects() {
     final origin = tester.getTopLeft(find.byKey(boundaryKey));
+    final plate = Offset.zero & (_boundary().size * pixelRatio);
     return <PlateFocus>[
       for (final entry in focus.entries)
-        if (entry.value.evaluate().isNotEmpty)
-          PlateFocus(key: entry.key, pixelRect: _pixelRect(entry.value, origin)),
+        if (_present(entry.value))
+          if (_pixelRect(entry.value, origin).intersect(plate) case final rect
+              when rect.width > 0 && rect.height > 0)
+            PlateFocus(key: entry.key, pixelRect: rect),
     ];
   }
 
@@ -100,6 +123,14 @@ final class PlateRecorder {
       logical.width * pixelRatio,
       logical.height * pixelRatio,
     );
+  }
+
+  bool _present(Finder finder) {
+    try {
+      return finder.evaluate().isNotEmpty;
+    } on StateError {
+      return false;
+    }
   }
 
   RenderRepaintBoundary _boundary() =>
