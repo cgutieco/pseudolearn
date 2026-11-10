@@ -37,6 +37,12 @@ build_package() {
     printf 'The Wasm dependency graph contains the native backend\n' >&2
     exit 1
   fi
+  local feature_tree
+  feature_tree="$(cargo tree --manifest-path "${engine_directory}/Cargo.toml" -e features -p pseudolearn_wasm --target wasm32-unknown-unknown)"
+  if printf '%s\n' "$feature_tree" | grep -q 'feature "test-host"'; then
+    printf 'The Wasm dependency graph enables the test-host feature\n' >&2
+    exit 1
+  fi
   RUSTFLAGS="-C link-arg=--max-memory=268435456" cargo build \
     --manifest-path "${engine_directory}/Cargo.toml" \
     --locked \

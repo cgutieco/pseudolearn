@@ -120,7 +120,9 @@ comparten disposición de marco y de objetos.
 
 - **Determinismo**: una ejecución queda fijada por programa, configuración, semilla y entradas.
 - **`unsafe`** solo en `pseudolearn_wasm`, `pseudolearn_aot_rt` y `pseudolearn_native_probe`.
-- **Aislamiento**: `api` y `wasm` compilados para `wasm32` no pueden traer red nativa, `codegen` ni `aot_rt`.
+- **Aislamiento**: `api` y `wasm` compilados para `wasm32` no pueden traer red nativa, `codegen` ni `aot_rt`, ni
+  activar la feature `test-host`; `tool/wasm.sh build` rechaza el grafo si aparece alguno, porque la unificación de
+  features de Cargo convertiría el anfitrión de memoria en el anfitrión distribuido.
 - **Sin capas hacia arriba**: `architecture.yaml` fija qué puede importar cada crate.
 
 ## Comandos útiles
