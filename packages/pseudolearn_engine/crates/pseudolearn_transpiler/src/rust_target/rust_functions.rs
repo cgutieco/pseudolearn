@@ -1,6 +1,6 @@
 use super::{FunctionScope, RustEmitter};
 use crate::code_lines::CodeLines;
-use crate::identifier_spelling::rust_value_name;
+use crate::identifier_spelling::{rust_value_name, unique_spelling};
 use pseudolearn_semantic::hir::{FunctionKind, HirFunction};
 use pseudolearn_semantic::{FunctionId, LocalId, Passing, Type};
 
@@ -70,7 +70,11 @@ impl RustEmitter<'_, '_> {
     }
 
     pub(crate) fn local_name(&self, identifier: LocalId) -> String {
-        rust_value_name(&self.view.local_name(identifier).replace('$', ""))
+        unique_spelling(
+            rust_value_name,
+            self.view.scope_local_names(identifier).into_iter(),
+            &self.view.local_name(identifier).replace('$', ""),
+        )
     }
 
     pub(crate) fn is_reference_parameter(&self, identifier: LocalId) -> bool {

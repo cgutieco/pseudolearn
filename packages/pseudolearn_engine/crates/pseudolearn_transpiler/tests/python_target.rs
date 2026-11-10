@@ -73,3 +73,35 @@ fn selection_waits_on_every_channel() -> Result<(), String> {
     assert!(text.contains("selected, selected_value = await select_receive([stream, other])"));
     Ok(())
 }
+
+#[test]
+fn nul_is_written_as_a_hex_escape_so_digits_stay_literal() -> Result<(), String> {
+    let program = "Algoritmo P\nEscribir \"\u{0}1\";\nFinAlgoritmo\n";
+    let text = code(program, TargetLanguage::Python)?;
+    assert!(text.contains("\"\\x001\""));
+    Ok(())
+}
+
+#[test]
+fn bidirectional_and_separator_characters_are_escaped() -> Result<(), String> {
+    let program = "Algoritmo P\nEscribir \"a\u{202E}b\u{2028}c\u{FEFF}\u{E0001}\";\nFinAlgoritmo\n";
+    let text = code(program, TargetLanguage::Python)?;
+    assert!(text.contains("\"a\\u202eb\\u2028c\\ufeff\\U000e0001\""));
+    Ok(())
+}
+
+#[test]
+fn printable_text_is_kept_verbatim() -> Result<(), String> {
+    let program = "Algoritmo P\nEscribir \"ñ café\";\nFinAlgoritmo\n";
+    let text = code(program, TargetLanguage::Python)?;
+    assert!(text.contains("\"ñ café\""));
+    Ok(())
+}
+
+#[test]
+fn boolean_text_literals_use_python_escapes() -> Result<(), String> {
+    let program = "Algoritmo P\nEscribir 1 = 1;\nFinAlgoritmo\n";
+    let text = code(program, TargetLanguage::Python)?;
+    assert!(text.contains("return \"Verdadero\" if value else \"Falso\""));
+    Ok(())
+}

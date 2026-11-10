@@ -1,5 +1,5 @@
 use super::RustEmitter;
-use crate::identifier_spelling::type_name;
+use crate::identifier_spelling::rust_type_name;
 use crate::module_view::RecordRole;
 use pseudolearn_semantic::function_model::FunctionSignature;
 use pseudolearn_semantic::variant_model::{HirVariant, VariantFamily};
@@ -41,7 +41,7 @@ impl RustEmitter<'_, '_> {
             .and_then(|index| self.view.module.enums.get(index))
             .map_or_else(
                 || format!("Enumeration{identifier}"),
-                |entry| type_name(&entry.name),
+                |entry| rust_type_name(&entry.name),
             )
     }
 
@@ -73,7 +73,7 @@ impl RustEmitter<'_, '_> {
     pub(crate) fn class_name(&self, class: ClassId) -> String {
         self.view.class(class).map_or_else(
             || format!("Class{}", class.0),
-            |entry| type_name(&entry.name),
+            |entry| rust_type_name(&entry.name),
         )
     }
 
@@ -146,7 +146,7 @@ impl RustEmitter<'_, '_> {
     }
 
     pub(crate) fn unique_record_name(&self, record: RecordId, name: &str) -> String {
-        let spelled = type_name(name);
+        let spelled = rust_type_name(name);
         let mut same = self
             .view
             .module
@@ -161,7 +161,7 @@ impl RustEmitter<'_, '_> {
                     .user_variants
                     .get(&identifier)
                     .map_or(entry.name.as_str(), |variant| variant.name.as_str());
-                type_name(shown) == spelled
+                rust_type_name(shown) == spelled
                     && (self.is_plain_record(identifier)
                         || self.view.module.user_variants.contains_key(&identifier))
             })

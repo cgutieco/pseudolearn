@@ -1,6 +1,6 @@
 use super::RustEmitter;
 use crate::code_lines::CodeLines;
-use crate::identifier_spelling::{rust_value_name, type_name};
+use crate::identifier_spelling::{rust_type_name, rust_value_name, unique_spelling};
 use crate::module_view::RecordRole;
 use pseudolearn_semantic::hir::HirRecord;
 use pseudolearn_semantic::variant_model::HirUserVariant;
@@ -47,7 +47,7 @@ impl RustEmitter<'_, '_> {
     }
 
     pub(crate) fn enumeration(&mut self, name: &str, members: &[String], lines: &mut CodeLines) {
-        let enum_name = type_name(name);
+        let enum_name = rust_type_name(name);
         if members.is_empty() {
             lines.line("#[derive(Clone, Copy, PartialEq, Eq)]");
         } else {
@@ -58,7 +58,10 @@ impl RustEmitter<'_, '_> {
             if position == 0 {
                 lines.line("#[default]");
             }
-            lines.line(&format!("{},", type_name(member)));
+            lines.line(&format!(
+                "{},",
+                unique_spelling(rust_type_name, members.iter().cloned(), member)
+            ));
         }
         lines.close("}");
         lines.blank();
@@ -68,7 +71,7 @@ impl RustEmitter<'_, '_> {
         for member in members {
             lines.line(&format!(
                 "{enum_name}::{} => {member:?},",
-                type_name(member)
+                unique_spelling(rust_type_name, members.iter().cloned(), member)
             ));
         }
         lines.close("};");
@@ -92,7 +95,7 @@ impl RustEmitter<'_, '_> {
                 .payload
                 .and_then(|payload| self.view.record(payload))
                 .map(|payload| self.field_list(payload, Span::default()));
-            let label = type_name(&alternative.spelling);
+            let label = rust_type_name(&alternative.spelling);
             match fields {
                 Some(fields) => lines.line(&format!("{label} {{ {} }},", fields.join(", "))),
                 None => lines.line(&format!("{label},")),

@@ -5,6 +5,8 @@ mod identifier_spelling;
 mod module_view;
 mod outcome;
 mod python_target;
+mod reserved_names;
+mod reserved_type_names;
 mod rust_target;
 mod support_requests;
 mod target;

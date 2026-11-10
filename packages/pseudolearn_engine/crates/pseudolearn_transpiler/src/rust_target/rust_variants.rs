@@ -1,6 +1,6 @@
 use super::RustEmitter;
 use crate::code_lines::CodeLines;
-use crate::identifier_spelling::{rust_value_name, type_name};
+use crate::identifier_spelling::{rust_type_name, rust_value_name};
 use pseudolearn_semantic::variant_model::{HirVariantMatch, VariantFamily};
 use pseudolearn_semantic::{
     ExpressionId, HirCase, HirExpression, HirPlace, HirStatement, Literal, LocalId, RecordId,
@@ -43,7 +43,7 @@ impl RustEmitter<'_, '_> {
         let Some(entry) = self.user_alternative(record, alternative) else {
             return self.block("variant_construction", span);
         };
-        let label = type_name(&entry.spelling);
+        let label = rust_type_name(&entry.spelling);
         let Some(payload) = payload else {
             return format!("{enum_name}::{label}");
         };
@@ -225,7 +225,7 @@ impl RustEmitter<'_, '_> {
         let Some(entry) = self.user_alternative(record, alternative) else {
             return "_".to_owned();
         };
-        let label = type_name(&entry.spelling);
+        let label = rust_type_name(&entry.spelling);
         let Some(payload) = entry.payload.and_then(|payload| self.view.record(payload)) else {
             return format!("{enum_name}::{label}");
         };

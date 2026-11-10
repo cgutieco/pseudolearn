@@ -1,196 +1,5 @@
-const RUST_RESERVED: &[&str] = &[
-    "as",
-    "async",
-    "await",
-    "break",
-    "const",
-    "continue",
-    "crate",
-    "dyn",
-    "else",
-    "enum",
-    "extern",
-    "false",
-    "fn",
-    "for",
-    "if",
-    "impl",
-    "in",
-    "let",
-    "loop",
-    "match",
-    "mod",
-    "move",
-    "mut",
-    "pub",
-    "ref",
-    "return",
-    "static",
-    "struct",
-    "super",
-    "trait",
-    "true",
-    "type",
-    "unsafe",
-    "use",
-    "where",
-    "while",
-    "abstract",
-    "become",
-    "box",
-    "do",
-    "final",
-    "macro",
-    "override",
-    "priv",
-    "typeof",
-    "unsized",
-    "virtual",
-    "yield",
-    "try",
-    "gen",
-    "main",
-    "std",
-    "core",
-    "alloc",
-    "real_text",
-    "boolean_text",
-    "collection_text",
-    "divide",
-    "integer_power",
-    "real_power",
-    "counted_range",
-    "read_line",
-    "read_integer",
-    "read_real",
-    "read_text",
-    "read_character",
-    "read_boolean",
-    "round_half_away",
-    "truncate",
-    "character_at",
-    "character_from_code",
-    "substring",
-    "text_position",
-    "text_to_integer",
-    "text_to_real",
-    "random",
-    "random_between",
-    "random_unit",
-    "random_seed",
-    "finite",
-    "replace_all",
-    "split_text",
-    "snapshot",
-    "schedule",
-    "run_tasks",
-    "record_task_failure",
-    "algorithm",
-    "this",
-];
-
-const PYTHON_RESERVED: &[&str] = &[
-    "False",
-    "None",
-    "True",
-    "and",
-    "as",
-    "assert",
-    "async",
-    "await",
-    "break",
-    "class",
-    "continue",
-    "def",
-    "del",
-    "elif",
-    "else",
-    "except",
-    "finally",
-    "for",
-    "from",
-    "global",
-    "if",
-    "import",
-    "in",
-    "is",
-    "lambda",
-    "nonlocal",
-    "not",
-    "or",
-    "pass",
-    "raise",
-    "return",
-    "try",
-    "while",
-    "with",
-    "yield",
-    "match",
-    "case",
-    "type",
-    "main",
-    "print",
-    "input",
-    "len",
-    "str",
-    "int",
-    "float",
-    "bool",
-    "list",
-    "dict",
-    "self",
-    "object",
-    "math",
-    "sys",
-    "asyncio",
-    "copy",
-    "re",
-    "time",
-    "decimal",
-    "functools",
-    "collections",
-    "dataclass",
-    "field",
-    "Enum",
-    "propagate",
-    "real_text",
-    "boolean_text",
-    "collection_text",
-    "finite",
-    "int_divide",
-    "int_modulo",
-    "int_power",
-    "real_power",
-    "counted_range",
-    "index",
-    "read_line",
-    "read_integer",
-    "read_real",
-    "read_text",
-    "read_character",
-    "read_boolean",
-    "round_half_away",
-    "truncate",
-    "floor",
-    "ceiling",
-    "random",
-    "random_between",
-    "random_unit",
-    "character_at",
-    "character_from_code",
-    "substring",
-    "text_position",
-    "replace_all",
-    "split_text",
-    "text_to_integer",
-    "text_to_real",
-    "dictionary_find",
-    "dictionary_remove",
-    "vector_index_of",
-    "wake_one",
-    "as_task",
-    "shown",
-];
+use crate::reserved_names::{PYTHON_RESERVED, RUST_RESERVED};
+use crate::reserved_type_names::{PYTHON_TYPES, RUST_TYPES};
 
 fn words(name: &str) -> Vec<String> {
     let mut words: Vec<String> = Vec::new();
@@ -268,13 +77,50 @@ pub(crate) fn python_value_name(name: &str) -> String {
     }
 }
 
-pub(crate) fn type_name(name: &str) -> String {
-    let spelled = pascal(name);
-    match spelled.as_str() {
-        "Self" | "Option" | "Result" | "Some" | "None" | "Ok" | "Err" | "Vec" | "String"
-        | "Box" | "Rc" | "RefCell" | "Channel" | "Task" | "Dictionary" | "Nothing" | "Fault" => {
-            format!("{spelled}Type")
-        }
-        _ => spelled,
+fn guarded_type(spelled: String, reserved: &[&str]) -> String {
+    if reserved.contains(&spelled.as_str()) {
+        format!("{spelled}Type")
+    } else {
+        spelled
     }
+}
+
+pub(crate) fn rust_type_name(name: &str) -> String {
+    guarded_type(pascal(name), RUST_TYPES)
+}
+
+pub(crate) fn python_type_name(name: &str) -> String {
+    guarded_type(pascal(name), PYTHON_TYPES)
+}
+
+pub(crate) fn unique_spellings(
+    spell: fn(&str) -> String,
+    names: impl Iterator<Item = String>,
+) -> Vec<(String, String)> {
+    let mut assigned: Vec<(String, String)> = Vec::new();
+    for name in names {
+        if assigned.iter().any(|(raw, _)| *raw == name) {
+            continue;
+        }
+        let base = spell(&name);
+        let mut candidate = base.clone();
+        let mut suffix = 2_u32;
+        while assigned.iter().any(|(_, taken)| *taken == candidate) {
+            candidate = format!("{base}_{suffix}");
+            suffix = suffix.saturating_add(1);
+        }
+        assigned.push((name, candidate));
+    }
+    assigned
+}
+
+pub(crate) fn unique_spelling(
+    spell: fn(&str) -> String,
+    names: impl Iterator<Item = String>,
+    wanted: &str,
+) -> String {
+    unique_spellings(spell, names)
+        .into_iter()
+        .find(|(raw, _)| raw == wanted)
+        .map_or_else(|| spell(wanted), |(_, spelled)| spelled)
 }

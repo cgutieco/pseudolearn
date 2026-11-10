@@ -112,11 +112,15 @@ impl RustEmitter<'_, '_> {
                 usize::try_from(ordinal)
                     .ok()
                     .and_then(|position| entry.members.get(position))
+                    .map(|member| {
+                        crate::identifier_spelling::unique_spelling(
+                            crate::identifier_spelling::rust_type_name,
+                            entry.members.iter().cloned(),
+                            member,
+                        )
+                    })
             })
-            .map_or_else(
-                || format!("Member{ordinal}"),
-                |member| crate::identifier_spelling::type_name(member),
-            );
+            .unwrap_or_else(|| format!("Member{ordinal}"));
         format!("{name}::{member}")
     }
 

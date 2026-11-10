@@ -125,6 +125,18 @@ impl<'module> ModuleView<'module> {
         )
     }
 
+    pub(crate) fn scope_local_names(&self, identifier: LocalId) -> Vec<String> {
+        let Some(scope) = self.local(identifier).map(|local| local.scope) else {
+            return Vec::new();
+        };
+        self.module
+            .locals
+            .iter()
+            .filter(|local| local.scope == scope)
+            .map(|local| local.name.replace('$', ""))
+            .collect()
+    }
+
     pub(crate) fn expression_type_id_of_function_value(
         &self,
         function: FunctionId,

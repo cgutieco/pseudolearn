@@ -1,6 +1,7 @@
 use super::PythonEmitter;
+use super::python_expressions::python_string;
 use crate::code_lines::CodeLines;
-use crate::identifier_spelling::{python_value_name, type_name};
+use crate::identifier_spelling::{python_type_name, python_value_name, unique_spelling};
 use crate::module_view::RecordRole;
 use pseudolearn_semantic::hir::HirRecord;
 use pseudolearn_semantic::variant_model::HirUserVariant;
@@ -50,7 +51,7 @@ impl PythonEmitter<'_, '_> {
             .and_then(|index| self.view.module.enums.get(index))
             .map_or_else(
                 || format!("Enumeration{identifier}"),
-                |entry| type_name(&entry.name),
+                |entry| python_type_name(&entry.name),
             )
     }
 
@@ -63,7 +64,7 @@ impl PythonEmitter<'_, '_> {
             .map(|variant| variant.name.clone())
             .or_else(|| self.view.record(record).map(|entry| entry.name.clone()))
             .unwrap_or_default();
-        let spelled = type_name(&name);
+        let spelled = python_type_name(&name);
         let first = self
             .view
             .module
@@ -78,7 +79,7 @@ impl PythonEmitter<'_, '_> {
                     .user_variants
                     .get(&identifier)
                     .map_or(entry.name.as_str(), |variant| variant.name.as_str());
-                type_name(shown) == spelled
+                python_type_name(shown) == spelled
                     && (self.is_plain_record(identifier)
                         || self.view.module.user_variants.contains_key(&identifier))
             });
@@ -92,12 +93,13 @@ impl PythonEmitter<'_, '_> {
 
     pub(crate) fn enumeration(&mut self, name: &str, members: &[String], lines: &mut CodeLines) {
         self.require("enum");
-        lines.open(&format!("class {}(Enum):", type_name(name)));
+        lines.open(&format!("class {}(Enum):", python_type_name(name)));
         if members.is_empty() {
             lines.line("pass");
         }
         for member in members {
-            lines.line(&format!("{} = {member:?}", type_name(member)));
+            let spelled = unique_spelling(python_type_name, members.iter().cloned(), member);
+            lines.line(&format!("{spelled} = {}", python_string(member)));
         }
         lines.blank();
         lines.open("def __str__(self):");
@@ -117,7 +119,10 @@ impl PythonEmitter<'_, '_> {
         lines.open(&format!("class {}:", self.record_name(identifier)));
         for alternative in &variant.alternatives {
             lines.line("@dataclass");
-            lines.open(&format!("class {}:", type_name(&alternative.spelling)));
+            lines.open(&format!(
+                "class {}:",
+                python_type_name(&alternative.spelling)
+            ));
             let fields = alternative
                 .payload
                 .and_then(|payload| self.view.record(payload))
@@ -198,11 +203,13 @@ impl PythonEmitter<'_, '_> {
                 let first = usize::try_from(identifier.0)
                     .ok()
                     .and_then(|index| self.view.module.enums.get(index))
-                    .and_then(|entry| entry.members.first().cloned());
+                    .and_then(|entry| {
+                        entry.members.first().map(|member| {
+                            unique_spelling(python_type_name, entry.members.iter().cloned(), member)
+                        })
+                    });
                 match first {
-                    Some(member) => {
-                        format!("{}.{}", self.enum_name(identifier.0), type_name(&member))
-                    }
+                    Some(member) => format!("{}.{member}", self.enum_name(identifier.0)),
                     None => "None".to_owned(),
                 }
             }

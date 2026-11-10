@@ -1,6 +1,6 @@
 use super::PythonEmitter;
 use crate::code_lines::CodeLines;
-use crate::identifier_spelling::type_name;
+use crate::identifier_spelling::python_type_name;
 use pseudolearn_semantic::variant_model::{HirVariantMatch, VariantFamily};
 use pseudolearn_semantic::{
     ExpressionId, HirExpression, HirPlace, HirStatement, LocalId, RecordId, StatementId, Type,
@@ -121,7 +121,7 @@ impl PythonEmitter<'_, '_> {
         let path = format!(
             "{}.{}",
             self.record_name(record),
-            type_name(&entry.spelling)
+            python_type_name(&entry.spelling)
         );
         let fields = entry
             .payload

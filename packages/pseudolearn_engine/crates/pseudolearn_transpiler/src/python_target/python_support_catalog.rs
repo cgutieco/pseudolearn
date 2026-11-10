@@ -1,3 +1,4 @@
+use super::python_expressions::python_string;
 use super::python_support_text::text_source;
 use crate::target::TranspileRequest;
 
@@ -221,10 +222,16 @@ pub(crate) fn source(name: &str, request: &TranspileRequest) -> String {
     let (truth, falsity) = (request.truth, request.falsity);
     match name {
         "boolean_text" => {
-            format!("def boolean_text(value):\n    return {truth:?} if value else {falsity:?}")
+            format!(
+                "def boolean_text(value):\n    return {} if value else {}",
+                python_string(truth),
+                python_string(falsity)
+            )
         }
         "read_boolean" => format!(
-            "def read_boolean():\n    while True:\n        text = read_line().strip()\n        if text == {truth:?}:\n            return True\n        if text == {falsity:?}:\n            return False"
+            "def read_boolean():\n    while True:\n        text = read_line().strip()\n        if text == {}:\n            return True\n        if text == {}:\n            return False",
+            python_string(truth),
+            python_string(falsity)
         ),
         "random" => {
             let seed = request

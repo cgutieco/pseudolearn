@@ -1,6 +1,6 @@
 use super::PythonEmitter;
 use crate::code_lines::CodeLines;
-use crate::identifier_spelling::{python_value_name, type_name};
+use crate::identifier_spelling::{python_type_name, python_value_name};
 use pseudolearn_semantic::ClassId;
 use pseudolearn_semantic::hir::{FunctionKind, HirClass, HirField};
 
@@ -8,7 +8,7 @@ impl<'module> PythonEmitter<'_, 'module> {
     pub(crate) fn class_name(&self, class: ClassId) -> String {
         self.view.class(class).map_or_else(
             || format!("Class{}", class.0),
-            |entry| type_name(&entry.name),
+            |entry| python_type_name(&entry.name),
         )
     }
 

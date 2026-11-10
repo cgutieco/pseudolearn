@@ -1,6 +1,6 @@
 use super::PythonEmitter;
 use crate::code_lines::CodeLines;
-use crate::identifier_spelling::{python_value_name, type_name};
+use crate::identifier_spelling::{python_type_name, python_value_name};
 use pseudolearn_semantic::variant_model::VariantFamily;
 use pseudolearn_semantic::{ExpressionId, FunctionId, HirExpression, RecordId};
 use pseudolearn_source::Span;
@@ -203,7 +203,7 @@ impl PythonEmitter<'_, '_> {
                             .ok()
                             .and_then(|index| variant.alternatives.get(index))
                     })
-                    .map(|entry| type_name(&entry.spelling))
+                    .map(|entry| python_type_name(&entry.spelling))
                     .unwrap_or_default();
                 let fields = match payload.map(|value| self.view.expression(value)) {
                     Some(HirExpression::RecordNew { fields, .. }) => fields

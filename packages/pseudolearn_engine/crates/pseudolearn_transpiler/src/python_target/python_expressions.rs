@@ -1,5 +1,5 @@
 use super::PythonEmitter;
-use crate::identifier_spelling::type_name;
+use crate::identifier_spelling::{python_type_name, unique_spelling};
 use pseudolearn_semantic::{
     BinaryOperator, ExpressionId, HirExpression, Literal, Type, UnaryOperator,
 };
@@ -131,8 +131,10 @@ impl PythonEmitter<'_, '_> {
                     usize::try_from(*ordinal)
                         .ok()
                         .and_then(|position| entry.members.get(position))
+                        .map(|member| {
+                            unique_spelling(python_type_name, entry.members.iter().cloned(), member)
+                        })
                 })
-                .map(|member| type_name(member))
                 .unwrap_or_default();
             return format!("{}.{member}", self.enum_name(enumeration.0));
         }
@@ -234,6 +236,28 @@ impl PythonEmitter<'_, '_> {
     }
 }
 
+fn needs_escape(character: char) -> bool {
+    character.is_control()
+        || (character.is_whitespace() && character != ' ')
+        || matches!(
+            u32::from(character),
+            0xAD | 0x61C | 0x180E | 0x200B..=0x200F | 0x202A..=0x202E | 0x2060..=0x206F
+                | 0xFEFF | 0xFFF9..=0xFFFB | 0xE000..=0xF8FF | 0xE0000..=0xE007F
+                | 0xF0000..=0x10FFFF
+        )
+}
+
+fn numeric_escape(character: char) -> String {
+    let code = u32::from(character);
+    if code <= 0xFF {
+        format!("\\x{code:02x}")
+    } else if code <= 0xFFFF {
+        format!("\\u{code:04x}")
+    } else {
+        format!("\\U{code:08x}")
+    }
+}
+
 pub(crate) fn python_string(text: &str) -> String {
     let mut quoted = String::from("\"");
     for character in text.chars() {
@@ -243,8 +267,7 @@ pub(crate) fn python_string(text: &str) -> String {
             '\n' => quoted.push_str("\\n"),
             '\r' => quoted.push_str("\\r"),
             '\t' => quoted.push_str("\\t"),
-            '\0' => quoted.push_str("\\0"),
-            other if other.is_control() => quoted.push_str(&format!("\\u{:04x}", u32::from(other))),
+            other if needs_escape(other) => quoted.push_str(&numeric_escape(other)),
             other => quoted.push(other),
         }
     }

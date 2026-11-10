@@ -1,6 +1,6 @@
 use super::{PythonEmitter, PythonScope};
 use crate::code_lines::CodeLines;
-use crate::identifier_spelling::python_value_name;
+use crate::identifier_spelling::{python_value_name, unique_spelling};
 use pseudolearn_semantic::hir::{FunctionKind, HirFunction};
 use pseudolearn_semantic::{FunctionId, HirExpression, HirStatement, LocalId, Passing, Type};
 
@@ -87,7 +87,11 @@ impl<'module> PythonEmitter<'_, 'module> {
             .get(&identifier)
             .copied()
             .unwrap_or(identifier);
-        python_value_name(&self.view.local_name(resolved).replace('$', ""))
+        unique_spelling(
+            python_value_name,
+            self.view.scope_local_names(resolved).into_iter(),
+            &self.view.local_name(resolved).replace('$', ""),
+        )
     }
 
     pub(crate) fn write_backs(&self, function: FunctionId) -> Vec<LocalId> {
