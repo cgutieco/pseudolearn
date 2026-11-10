@@ -231,7 +231,11 @@ para decisiones, llamadas y retornos y de sentencia para el resto; si no hay coi
 interno que lo contiene. Se descarta resolver por línea, que confunde sentencias de una misma línea. `state_pages`
 añade `query_page` (`array_cells`, `frame_variables`, `object_fields`) con cursores de la forma «huella.desplazamiento»
 cuya huella cubre sesión, ejecución, revisión, consulta, destino, evento y tamaño de página; cualquier discrepancia es
-un error de uso que no altera la ejecución. Las páginas de arreglo incluyen las dimensiones, las consultas de marco
+un error de uso que no altera la ejecución. `query_state`, `seek` y el estado inicial siguen devolviendo el estado
+completo, con todas las celdas de cada arreglo vivo y todos los marcos: `ENG.STATE.SNAPSHOT#R1` y `#R3` fijan esa
+forma, y las variantes acotadas (`query_frame`, `query_variables`, `query_page`, `query_array_slice`) son las que
+`API.STATE.QUERY#R1` ofrece para no materializarlo; acotar la captura completa contradiría el corpus. Su tamaño crece
+con el estado vivo, que el límite de celdas ya acota. Las páginas de arreglo incluyen las dimensiones, las consultas de marco
 etiquetan los valores escalares con su tipo (`entero`, `real`, `booleano`, `caracter`, `texto`) sin alterar el estado
 capturado por la conformidad, y `create_analysis` acepta un `locale` que renderiza los mensajes de diagnóstico y de
 ejecución con independencia del perfil sintáctico.

@@ -137,8 +137,12 @@ comparten disposición de marco y de objetos.
 - **Historial y consultas de depuración**: el almacén de puntos de control tiene un presupuesto finito de ranuras
   retenidas, derivado de las celdas de memoria de la ejecución; al superarlo se adelgaza el punto de menor densidad
   (distancia entre vecinos por antigüedad, y solo en empate la ranura compuesta mínima) y, en último término, se
-  adelanta el horizonte declarado. `query_array_slice` rechaza longitudes mayores de 4096 como error de uso. El estado
-  de depuración identifica sus fuentes sin repetir su texto en cada parada.
+  adelanta el horizonte declarado. El presupuesto es de 8 ranuras por celda de memoria configurada, con un mínimo de
+  2^20: deja que cada celda aparezca en varios segmentos de deshacer antes de adelgazar, y con las 2^22 celdas por
+  omisión acota lo retenido a 2^25 ranuras. El corpus no fija la cifra: `API.STATE.QUERY#R3` solo exige declarar el
+  horizonte y que toda consulta dentro de él sea exacta, lo que se cumple con cualquier presupuesto, de modo que es un
+  parámetro de recurso del motor como los topes de 4096. `query_array_slice` rechaza longitudes mayores de 4096 como
+  error de uso. El estado de depuración identifica sus fuentes sin repetir su texto en cada parada.
 - **Consultas de texto**: `Contiene`, `PosicionDe`, `EmpiezaCon`, `TerminaCon` y `Subcadena` leen los textos prestados
   del montón en la VM y en el ejecutable nativo, sin copiarlos por llamada. El presupuesto de sentencias sigue contando
   una unidad por entrada a sentencia, como fija el corpus; la guarda de tiempo acota el trabajo lineal de `Contiene` y
@@ -172,6 +176,11 @@ comparten disposición de marco y de objetos.
 | Conformidad desde `pseudolearn_spec`                                  | `cargo run -p see_cli --bin see -- conform --subject engine --operation analyze`         |
 | Conformidad del backend nativo                                        | `cargo run -p see_cli --bin see -- conform --subject aot`                                |
 | Medir rendimiento nativo                                              | `cargo run --release -p pseudolearn_bench_worker -- paired <directorio-nuevo>`           |
+
+La conformidad compara con evidencia local de `../pseudolearn_spec/results/`, que no se versiona. Tras editar una
+especificación, la evidencia de propiedades anterior (`results/properties-engine.json`) queda con otro hash y la
+conformidad termina con `SEE-STALE`; se regenera con `see conform --subject engine --operation properties` antes de la
+de análisis. No indica un defecto del motor.
 
 Requisitos: toolchain fijada en `rust-toolchain.toml`; para Wasm, el target `wasm32-unknown-unknown` y
 `wasm-bindgen-cli` 0.2.129, y además `pnpm` para `tool/wasm.sh test`.

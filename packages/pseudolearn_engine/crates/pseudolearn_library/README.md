@@ -66,6 +66,16 @@ argumento o uno) se resuelven antes. La potencia sí puede ser exacta o caer en 
 las potencias enteras de hasta 34 de una base impar y las raíces perfectas `2^k`-ésimas con `k ≤ 5`, y
 demuestra que fuera de esos casos el resultado no es representable ni punto medio.
 
+Coste de una llamada: la escalada de Ziv sube de 128 a 16 384 bits y la reducción trigonométrica suma los bits del
+exponente del argumento, así que una sola sentencia puede costar mucho más que otra. Se midió en compilación optimizada:
+`Sen`, `Cos` y `Tan` de `1e308` y de `f64::MAX` tardan entre 0,6 y 1,5 ms, la potencia con exponente `±1e300`
+alrededor de 0,7 ms y el peor de 2000 senos de argumentos enormes aleatorios 0,34 ms; forzar la escalada entera hasta
+16 384 bits para `Sen(f64::MAX)` cuesta 152 ms, que es el techo fijo de una llamada. Se descarta cobrar combustible
+por bits o recortar la escalada: `LIB.CORE.MATH#R1` y `#R2` exigen el binario64 más cercano, y el techo no crece con
+ninguna entrada; la guarda de tiempo del anfitrión acota el total. La potencia no se forzó por separado: su intento
+privado no es accesible desde una prueba y su estructura (logaritmo y exponencial a la misma precisión ampliada por
+el exponente) es la del seno.
+
 No se agrega una dependencia matemática externa. `Copiar` está implementado como copia superficial con
 nueva identidad: comparte las referencias, conserva ciclos y valores ausentes y no vuelve a ejecutar el
 constructor. El runtime suministra los descriptores que determinan el contenido copiable.
