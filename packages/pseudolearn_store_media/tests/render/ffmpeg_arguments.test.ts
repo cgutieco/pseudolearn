@@ -7,16 +7,15 @@ function valueAfter(args: readonly string[], flag: string): string | undefined {
   return index < 0 ? undefined : args[index + 1];
 }
 
-const previewProfile = slot("apple.iphone.app-preview").video!.codecProfile;
 const trailerProfile = slot("microsoft.trailer").video!.codecProfile;
 const headerProfile = slot("apple.header.video").video!.codecProfile;
 
 describe("encoderArguments", () => {
-  it("encodes an Apple preview as H.264 High 4.0 with AAC 256 kbps", () => {
-    const args = encoderArguments({ framePattern: "f/frame_%06d.png", startNumber: 1, fps: 30, audioPath: "a.wav", profile: previewProfile, outputPath: "o.mp4" });
+  it("encodes an App Store header as H.264 High with AAC 256 kbps", () => {
+    const args = encoderArguments({ framePattern: "f/frame_%06d.png", startNumber: 1, fps: 30, audioPath: "a.wav", profile: headerProfile, outputPath: "o.mp4" });
     expect(valueAfter(args, "-profile:v")).toBe("high");
-    expect(valueAfter(args, "-level:v")).toBe("4.0");
-    expect(valueAfter(args, "-b:v")).toBe("11M");
+    expect(args).not.toContain("-level:v");
+    expect(valueAfter(args, "-b:v")).toBe("40M");
     expect(valueAfter(args, "-b:a")).toBe("256k");
     expect(valueAfter(args, "-c:a")).toBe("aac");
     expect(valueAfter(args, "-start_number")).toBe("1");
@@ -34,7 +33,7 @@ describe("encoderArguments", () => {
   });
 
   it("drops the audio stream when there is no soundtrack", () => {
-    const args = encoderArguments({ framePattern: "p", startNumber: 0, fps: 30, audioPath: null, profile: previewProfile, outputPath: "s.mp4" });
+    const args = encoderArguments({ framePattern: "p", startNumber: 0, fps: 30, audioPath: null, profile: headerProfile, outputPath: "s.mp4" });
     expect(args).toContain("-an");
     expect(args).not.toContain("-c:a");
     expect(args.filter((value) => value === "-i")).toHaveLength(1);
@@ -61,10 +60,10 @@ describe("helper arguments", () => {
   });
 });
 
-describe("constant rate for app previews", () => {
-  it("pads H.264 to a constant 11 Mbps with HRD filler so a still interface still meets 10–12 Mbps", () => {
-    const args = encoderArguments({ framePattern: "p", startNumber: 1, fps: 30, audioPath: "a.wav", profile: previewProfile, outputPath: "o.mp4" });
-    expect([valueAfter(args, "-minrate"), valueAfter(args, "-maxrate"), valueAfter(args, "-bufsize")]).toEqual(["11M", "11M", "11M"]);
+describe("constant and variable rate", () => {
+  it("pads the trailer to a constant 50 Mbps with HRD filler so a still interface still meets 45–55 Mbps", () => {
+    const args = encoderArguments({ framePattern: "p", startNumber: 1, fps: 30, audioPath: "a.wav", profile: trailerProfile, outputPath: "o.mp4" });
+    expect([valueAfter(args, "-minrate"), valueAfter(args, "-maxrate"), valueAfter(args, "-bufsize")]).toEqual(["50M", "50M", "50M"]);
     expect(valueAfter(args, "-x264-params")).toBe("nal-hrd=cbr:force-cfr=1:colorprim=bt709:transfer=bt709:colormatrix=bt709:range=tv");
     expect(args.filter((value) => value === "-x264-params")).toHaveLength(1);
   });

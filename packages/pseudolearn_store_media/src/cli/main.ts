@@ -11,7 +11,6 @@ import { runDesktopScreenshots } from "./desktop_screenshots_command.ts";
 import { runHero } from "./hero_command.ts";
 import { runTrailer } from "./trailer_command.ts";
 import { runPlan } from "./plan_command.ts";
-import { runPreviews } from "./previews_command.ts";
 import { runScreenshots } from "./screenshots_command.ts";
 
 const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -33,7 +32,6 @@ const COMMANDS: Readonly<Record<string, (context: CommandContext) => Promise<num
   calibrate: runCalibrate,
   "audit-image": runAuditImage,
   screenshots: runScreenshots,
-  previews: runPreviews,
   creative: runCreative,
   "desktop-screenshots": runDesktopScreenshots,
   hero: runHero,

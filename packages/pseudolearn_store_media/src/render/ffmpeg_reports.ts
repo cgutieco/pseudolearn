@@ -13,7 +13,6 @@ type Stream = {
   readonly r_frame_rate?: string;
   readonly sample_rate?: string;
   readonly channels?: number;
-  readonly level?: number;
   readonly field_order?: string;
   readonly bit_rate?: string;
   readonly disposition?: { readonly default?: number };
@@ -60,7 +59,6 @@ export function parseProbe(text: string): Outcome<VideoProbe> {
 function deliveryOf(document: ProbeDocument, video: Stream): DeliveryProbe {
   const filename = document.format?.filename ?? "";
   return {
-    level: video.level ?? 0,
     fieldOrder: video.field_order ?? "",
     videoBitrateBps: Number(video.bit_rate ?? 0),
     formatName: document.format?.format_name ?? "",

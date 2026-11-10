@@ -6,7 +6,7 @@ const catalog = realCatalog();
 
 describe("planJobs", () => {
   it("plans every slot in every language when nothing is selected", () => {
-    expect(planJobs({ catalog, slotIds: [], languages: ["es", "en"] }).jobs).toHaveLength(38);
+    expect(planJobs({ catalog, slotIds: [], languages: ["es", "en"] }).jobs).toHaveLength(32);
   });
 
   it("maps each language to the store locales and a stable directory", () => {

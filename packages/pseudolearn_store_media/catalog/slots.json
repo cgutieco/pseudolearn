@@ -5,20 +5,14 @@
   },
   "loudness": { "integratedLufs": -16, "toleranceLu": 1, "truePeakDb": -1 },
   "codecProfiles": {
-    "apple-preview": {
-      "profile": "high", "level": "4.0", "rateControl": "cbr", "minBitrateMbps": 10, "bitrateMbps": 11, "maxBitrateMbps": 12,
-      "containers": ["mp4", "m4v", "mov"],
-      "closedGopSeconds": null, "bFrames": null, "editLists": "allowed",
-      "audio": { "codec": "aac", "encoder": "native", "bitrateKbps": 256, "sampleRate": 48000, "channels": 2 }
-    },
     "apple-creative": {
-      "profile": "high", "level": null, "rateControl": "vbr", "minBitrateMbps": null, "bitrateMbps": 40, "maxBitrateMbps": 50,
+      "profile": "high", "rateControl": "vbr", "minBitrateMbps": null, "bitrateMbps": 40, "maxBitrateMbps": 50,
       "containers": ["mp4", "m4v", "mov"],
       "closedGopSeconds": null, "bFrames": null, "editLists": "allowed",
       "audio": { "codec": "aac", "encoder": "native", "bitrateKbps": 256, "sampleRate": 48000, "channels": 2 }
     },
     "microsoft-trailer": {
-      "profile": "high", "level": null, "rateControl": "cbr", "minBitrateMbps": 45, "bitrateMbps": 50, "maxBitrateMbps": 55,
+      "profile": "high", "rateControl": "cbr", "minBitrateMbps": 45, "bitrateMbps": 50, "maxBitrateMbps": 55,
       "containers": ["mp4", "mov"],
       "closedGopSeconds": 0.5, "bFrames": 2, "editLists": "forbidden",
       "audio": { "codec": "aac", "encoder": "audiotoolbox", "bitrateKbps": 320, "sampleRate": 48000, "channels": 2 }
@@ -32,12 +26,8 @@
     { "id": "iphone-duo-outer-landscape", "logicalWidth": 678, "logicalHeight": 466, "plateScale": 3, "cornerRadius": 48, "frame": "phone", "fold": "none" },
     { "id": "ipad-13", "logicalWidth": 1032, "logicalHeight": 1376, "plateScale": 2, "cornerRadius": 18, "frame": "tablet", "fold": "none" },
     { "id": "mac", "logicalWidth": 1152, "logicalHeight": 720, "plateScale": 2.5, "cornerRadius": 10, "frame": "window", "fold": "none" },
-    { "id": "iphone-preview", "logicalWidth": 443, "logicalHeight": 960, "plateScale": 2, "cornerRadius": 0, "frame": "none", "fold": "none",
-      "insets": { "top": 62, "right": 0, "bottom": 34, "left": 0 } },
-    { "id": "ipad-preview", "logicalWidth": 1032, "logicalHeight": 1376, "plateScale": 1.1627906976744187, "cornerRadius": 0, "frame": "none", "fold": "none",
-      "insets": { "top": 24, "right": 0, "bottom": 20, "left": 0 } },
-    { "id": "mac-preview", "logicalWidth": 1280, "logicalHeight": 720, "plateScale": 1.5, "cornerRadius": 0, "frame": "none", "fold": "none" },
-    { "id": "windows-desktop", "logicalWidth": 1280, "logicalHeight": 720, "plateScale": 3, "cornerRadius": 0, "frame": "none", "fold": "none" }
+    { "id": "windows-desktop", "logicalWidth": 1280, "logicalHeight": 720, "plateScale": 3, "cornerRadius": 0, "frame": "none", "fold": "none" },
+    { "id": "windows-trailer", "logicalWidth": 1280, "logicalHeight": 720, "plateScale": 1.5, "cornerRadius": 0, "frame": "none", "fold": "none" }
   ],
   "slots": [
     { "id": "apple.iphone.screenshot", "store": "app-store", "surface": "iphone-dynamic-island-large", "kind": "screenshot", "width": 1320, "height": 2868, "maxCount": 10,
@@ -54,12 +44,6 @@
       "device": "ipad-13", "safeArea": { "x": 0.04, "y": 0.03, "width": 0.92, "height": 0.94 }, "rules": ["text-inside-margin"] },
     { "id": "apple.mac.screenshot", "store": "app-store", "surface": "mac", "kind": "screenshot", "width": 2880, "height": 1800, "maxCount": 10,
       "device": "mac", "safeArea": { "x": 0.04, "y": 0.03, "width": 0.92, "height": 0.94 }, "rules": ["text-inside-margin"] },
-    { "id": "apple.iphone.app-preview", "store": "app-store", "surface": "iphone", "kind": "app-preview", "width": 886, "height": 1920, "maxCount": 3, "device": "iphone-preview",
-      "video": { "fps": 30, "acceptedFps": [30], "duration": { "min": 15, "max": 30 }, "codecProfile": "apple-preview", "audio": "required" } },
-    { "id": "apple.ipad.app-preview", "store": "app-store", "surface": "ipad-13", "kind": "app-preview", "width": 1200, "height": 1600, "maxCount": 3, "device": "ipad-preview",
-      "video": { "fps": 30, "acceptedFps": [30], "duration": { "min": 15, "max": 30 }, "codecProfile": "apple-preview", "audio": "required" } },
-    { "id": "apple.mac.app-preview", "store": "app-store", "surface": "mac", "kind": "app-preview", "width": 1920, "height": 1080, "maxCount": 3, "device": "mac-preview",
-      "video": { "fps": 30, "acceptedFps": [30], "duration": { "min": 15, "max": 30 }, "codecProfile": "apple-preview", "audio": "required" } },
     { "id": "apple.header.video", "store": "app-store", "surface": "any", "kind": "header-video", "width": 3840, "height": 1646, "maxCount": 1,
       "safeArea": { "x": 0.285677, "y": 0.299514, "width": 0.428646, "height": 0.401580 }, "rules": ["key-info-centered", "seamless-loop"],
       "viewportProfiles": [
@@ -87,7 +71,7 @@
       "safeArea": { "x": 0, "y": 0, "width": 1, "height": 0.666667 }, "rules": ["critical-top-two-thirds", "no-added-text"] },
     { "id": "microsoft.hero-art", "store": "microsoft-store", "surface": "desktop", "kind": "hero-art", "width": 3840, "height": 2160, "maxCount": 1, "maxBytes": 52428800,
       "safeArea": { "x": 0.1, "y": 0.1, "width": 0.8, "height": 0.566667 }, "rules": ["critical-top-two-thirds", "key-info-centered", "no-text", "no-interface"] },
-    { "id": "microsoft.trailer", "store": "microsoft-store", "surface": "desktop", "kind": "trailer", "width": 1920, "height": 1080, "maxCount": 15, "maxBytes": 2147483648, "labelLimits": { "title": 255 },
+    { "id": "microsoft.trailer", "store": "microsoft-store", "surface": "desktop", "kind": "trailer", "width": 1920, "height": 1080, "maxCount": 15, "maxBytes": 2147483648, "labelLimits": { "title": 255 }, "device": "windows-trailer",
       "safeArea": { "x": 0, "y": 0.1, "width": 1, "height": 0.8 }, "rules": ["key-info-centered"],
       "video": { "fps": 30, "acceptedFps": [30], "duration": { "min": 15, "max": 60 }, "codecProfile": "microsoft-trailer", "audio": "required" } },
     { "id": "microsoft.trailer-thumbnail", "store": "microsoft-store", "surface": "desktop", "kind": "trailer-thumbnail", "width": 1920, "height": 1080, "maxCount": 15, "maxBytes": 52428800 },

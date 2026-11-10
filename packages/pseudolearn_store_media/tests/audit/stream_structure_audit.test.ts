@@ -5,7 +5,7 @@ import { slot } from "../support/catalog.ts";
 import { closedGopStructure } from "../support/probe.ts";
 
 const trailer = slot("microsoft.trailer").video!.codecProfile;
-const preview = slot("apple.iphone.app-preview").video!.codecProfile;
+const header = slot("apple.header.video").video!.codecProfile;
 const good = closedGopStructure(2);
 
 function messages(structure: Partial<StreamStructure>, profile = trailer): readonly string[] {
@@ -25,7 +25,7 @@ describe("auditStreamStructure", () => {
 
   it("rejects edit lists only where the profile forbids them", () => {
     expect(messages({ editLists: 2 })).toEqual(["MEDIA-CONTAINER: 2 edit lists where the store forbids them"]);
-    expect(messages({ editLists: 2, pictureTypes: "IBBP", keyFrames: [0] }, preview)).toEqual([]);
+    expect(messages({ editLists: 2, pictureTypes: "IBBP", keyFrames: [0] }, header)).toEqual([]);
   });
 
   it("rejects key frames that do not fall every half second", () => {
@@ -45,6 +45,6 @@ describe("auditStreamStructure", () => {
   });
 
   it("skips GOP and B-frame checks for profiles that do not set them", () => {
-    expect(messages({ pictureTypes: "IBBBBP", keyFrames: [0] }, preview)).toEqual([]);
+    expect(messages({ pictureTypes: "IBBBBP", keyFrames: [0] }, header)).toEqual([]);
   });
 });

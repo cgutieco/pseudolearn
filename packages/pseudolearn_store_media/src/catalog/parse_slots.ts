@@ -20,8 +20,8 @@ const SLOT_KEYS = ["id", "store", "surface", "kind", "width", "height", "maxCoun
 const VIDEO_KEYS = ["fps", "acceptedFps", "duration", "codecProfile", "audio"];
 const APPLE_MAX_BYTES = 524_288_000;
 const FULL_CANVAS: NormalizedRect = { x: 0, y: 0, width: 1, height: 1 };
-const VIDEO_KINDS = new Set(["app-preview", "header-video", "search-video", "trailer"]);
-const DEVICE_KINDS = new Set(["screenshot", "app-preview"]);
+const VIDEO_KINDS = new Set(["header-video", "search-video", "trailer"]);
+const DEVICE_KINDS = new Set(["screenshot", "trailer"]);
 const LABEL_RANGE = { min: 1, max: 10_000 };
 const TWO_THIRDS = 2 / 3;
 const RECT_TOLERANCE = 1e-4;
@@ -72,7 +72,7 @@ function parseSlot(context: SlotContext, entry: JsonObject, path: string): Slot 
     video,
     device: parseDeviceReference(context, entry, { path, kind }),
   };
-  verifyPreviewPlate(reader, slot, path);
+  verifyNativePlate(reader, slot, path);
   verifyTopTwoThirds(reader, slot, path);
   return slot;
 }
@@ -99,13 +99,13 @@ function verifyTopTwoThirds(reader: JsonReader, slot: Slot, path: string): void 
   }
 }
 
-function verifyPreviewPlate(reader: JsonReader, slot: Slot, path: string): void {
-  if (slot.kind !== "app-preview") {
+function verifyNativePlate(reader: JsonReader, slot: Slot, path: string): void {
+  if (slot.kind !== "trailer") {
     return;
   }
   const device = slot.device;
   if (!device) {
-    reader.fail(`${path}.device`, "an app-preview slot records its plates on a device");
+    reader.fail(`${path}.device`, "a trailer slot records its interface plate on a device");
     return;
   }
   if (device.logicalWidth * device.plateScale !== slot.width || device.logicalHeight * device.plateScale !== slot.height) {

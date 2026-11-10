@@ -57,5 +57,5 @@
     { "line": 3, "values": [24, 2], "output": null, "condition": true },
     { "line": 8, "values": [24, 2], "output": 2, "condition": false }
   ],
-  "interface": { "plate": "preview-run", "device": "mac-preview", "appTheme": "light", "startSeconds": 21.4, "seconds": 5, "mediaStart": 2.5 }
+  "interface": { "plate": "trailer-run", "appTheme": "light", "startSeconds": 21.4, "seconds": 5, "mediaStart": 2.5 }
 }

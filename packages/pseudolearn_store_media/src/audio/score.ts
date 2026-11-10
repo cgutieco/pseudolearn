@@ -29,7 +29,7 @@ export const CALIBRATION_VOICE: Voice = {
   stereoWidth: 0.6,
 };
 
-export const PREVIEW_VOICE: Voice = {
+export const MILESTONE_VOICE: Voice = {
   rootHz: 130.81,
   scale: [0, 2, 4, 7, 9, 12, 14, 16, 19, 21],
   padDegrees: [0, 4, 7],

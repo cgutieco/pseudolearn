@@ -1,5 +1,5 @@
 import type { Catalog } from "../catalog/catalog_types.ts";
-import { PREVIEW_VOICE } from "../audio/score.ts";
+import { MILESTONE_VOICE } from "../audio/score.ts";
 import { finding, type Finding } from "../audit/finding.ts";
 import { auditImage } from "../audit/image_audit.ts";
 import { auditLabels } from "../audit/label_audit.ts";
@@ -57,7 +57,7 @@ export async function produceTrailer(request: TrailerJob): Promise<Outcome<Trail
   const limit = story.trace.at(-1)?.values[0] ?? 0;
   const composition = buildThermostatTrailer({ id, slot: job.slot, story, program, layout, limit });
   const assets = [{ name: SANS_FONT_FILE, bytes: fonts.sans.bytes }, { name: MONO_FONT_FILE, bytes: fonts.mono.bytes }, ...(tail.value.asset ? [tail.value.asset] : [])];
-  const video = await produceVideo({ toolbox, catalog: request.catalog, job, composition, storyboard: thermostatStoryboard(story), voice: PREVIEW_VOICE, assets, findings, outputRoot: request.outputRoot });
+  const video = await produceVideo({ toolbox, catalog: request.catalog, job, composition, storyboard: thermostatStoryboard(story), voice: MILESTONE_VOICE, assets, findings, outputRoot: request.outputRoot });
   if (!video.ok) {
     return video;
   }

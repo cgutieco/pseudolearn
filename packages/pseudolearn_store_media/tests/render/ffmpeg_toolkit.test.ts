@@ -12,7 +12,8 @@ import { runProcess } from "../../src/render/process_runner.ts";
 import { slot } from "../support/catalog.ts";
 
 const toolkit = ffmpegToolkit();
-const profile = slot("apple.iphone.app-preview").video!.codecProfile;
+const profile = slot("apple.header.video").video!.codecProfile;
+const constantProfile = slot("microsoft.trailer").video!.codecProfile;
 let directory = "";
 
 beforeAll(async () => {
@@ -53,7 +54,7 @@ describe("ffmpeg toolkit against the real binaries", () => {
 });
 
 describe("ffmpeg toolkit delivery against the real binaries", () => {
-  it("delivers a preview between 10 and 12 Mbps even when the picture never changes", async () => {
+  it("delivers the trailer between 45 and 55 Mbps even when the picture never changes", async () => {
     const still = join(directory, "still");
     await runProcess("mkdir", [still]);
     await runProcess("ffmpeg", ["-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i", "color=c=0x195C5F:s=64x128:r=30:d=5",
@@ -61,11 +62,11 @@ describe("ffmpeg toolkit delivery against the real binaries", () => {
     const output = join(directory, "constant.mp4");
     writeFileSync(join(still, "track.wav"), encodeWav(synthesize({ sampleRate: 48000, durationSeconds: 5, voice: CALIBRATION_VOICE, beats: [] })));
     await toolkit.encode({ framePattern: join(still, "frame_%06d.png"), startNumber: 1, fps: 30,
-      audioPath: join(still, "track.wav"), profile, outputPath: output });
+      audioPath: join(still, "track.wav"), profile: constantProfile, outputPath: output });
     const probe = await toolkit.probe(output);
-    expect(probe.ok && probe.value.delivery.videoBitrateBps).toBeGreaterThanOrEqual(10_000_000);
-    expect(probe.ok && probe.value.delivery.videoBitrateBps).toBeLessThanOrEqual(12_000_000);
-    expect(probe.ok && [probe.value.delivery.level, probe.value.delivery.fieldOrder, probe.value.delivery.extension]).toEqual([40, "progressive", "mp4"]);
+    expect(probe.ok && probe.value.delivery.videoBitrateBps).toBeGreaterThanOrEqual(45_000_000);
+    expect(probe.ok && probe.value.delivery.videoBitrateBps).toBeLessThanOrEqual(55_000_000);
+    expect(probe.ok && [probe.value.delivery.fieldOrder, probe.value.delivery.extension]).toEqual(["progressive", "mp4"]);
     expect(probe.ok && probe.value.delivery.structure.boxOrder.indexOf("moov")).toBeLessThan(probe.ok ? probe.value.delivery.structure.boxOrder.indexOf("mdat") : 0);
   });
 

@@ -20,7 +20,6 @@ export type StreamStructure = {
 export const UNREAD_STRUCTURE: StreamStructure = { pictureTypes: "", keyFrames: [], boxOrder: [], editLists: 0 };
 
 export type DeliveryProbe = {
-  readonly level: number;
   readonly fieldOrder: string;
   readonly videoBitrateBps: number;
   readonly formatName: string;

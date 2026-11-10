@@ -1,5 +1,5 @@
 import type { Catalog } from "../catalog/catalog_types.ts";
-import { PREVIEW_VOICE } from "../audio/score.ts";
+import { MILESTONE_VOICE } from "../audio/score.ts";
 import type { Finding } from "../audit/finding.ts";
 import { auditLensLabels, auditLensRows } from "../audit/lens_audit.ts";
 import { auditContrast } from "../audit/text_audit.ts";
@@ -38,7 +38,7 @@ export function produceCreative(request: CreativeJob): Promise<Outcome<Manifest>
   }
   const kinds = story.statements[job.language].map((statement) => statement.kind);
   return produceVideo({ toolbox: request.toolbox, catalog: request.catalog, job, composition: piece.composition,
-    storyboard: lensStoryboard(piece.layout, story, kinds), voice: PREVIEW_VOICE, assets, outputRoot: request.outputRoot });
+    storyboard: lensStoryboard(piece.layout, story, kinds), voice: MILESTONE_VOICE, assets, outputRoot: request.outputRoot });
 }
 
 function designFindings(request: CreativeJob, piece: LensPiece): readonly Finding[] {

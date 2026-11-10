@@ -26,7 +26,7 @@ function errorsOf(slots: unknown, lexicon: unknown = lexiconDocument()): readonl
 describe("parseCatalog", () => {
   it("accepts the catalog the package ships", () => {
     const catalog = realCatalog();
-    expect(catalog.slots).toHaveLength(19);
+    expect(catalog.slots).toHaveLength(16);
     expect(catalog.localesByLanguage["app-store"].es).toEqual(["es-MX"]);
     expect(catalog.localesByLanguage["microsoft-store"].es).toEqual(["es-ES"]);
     expect(catalog.loudness.integratedLufs).toBe(-16);
@@ -78,19 +78,19 @@ describe("parseCatalog rejections", () => {
 
 describe("parseCatalog video traits", () => {
   it("rejects an fps outside the accepted list and an inverted duration", () => {
-    const errors = errorsOf(withVideoSlot("apple.iphone.app-preview", (video) => {
+    const errors = errorsOf(withVideoSlot("microsoft.trailer", (video) => {
       video["fps"] = 24;
       video["duration"] = { min: 30, max: 15 };
     }));
-    expect(errors).toContain("slots[7].video.fps: must be one of acceptedFps");
-    expect(errors).toContain("slots[7].video.duration: min must not exceed max");
+    expect(errors).toContain("slots[12].video.fps: must be one of acceptedFps");
+    expect(errors).toContain("slots[12].video.duration: min must not exceed max");
   });
 
   it("rejects a reference to a codec profile that does not exist", () => {
-    const errors = errorsOf(withVideoSlot("apple.iphone.app-preview", (video) => {
+    const errors = errorsOf(withVideoSlot("microsoft.trailer", (video) => {
       video["codecProfile"] = "vhs";
     }));
-    expect(errors).toContain("slots[7].video.codecProfile: unknown codec profile vhs");
+    expect(errors).toContain("slots[12].video.codecProfile: unknown codec profile vhs");
   });
 
 });

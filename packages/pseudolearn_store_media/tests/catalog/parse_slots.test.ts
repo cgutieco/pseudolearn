@@ -66,7 +66,7 @@ describe("the Windows desktop screenshot", () => {
 describe("seamless-loop", () => {
   it("asks only the App Store header and search videos to loop", () => {
     const looping = ["apple.header.video", "apple.search.video"];
-    for (const id of [...looping, "microsoft.trailer", "apple.mac.app-preview"]) {
+    for (const id of [...looping, "microsoft.trailer", "microsoft.hero-art"]) {
       expect(slot(id).rules.includes("seamless-loop")).toBe(looping.includes(id));
     }
   });

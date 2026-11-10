@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { beatsFromTimeline, parsePlateTimeline } from "../../src/story/plate_timeline.ts";
+import { parsePlateTimeline } from "../../src/story/plate_timeline.ts";
 
 function timeline(overrides: Record<string, unknown> = {}): Record<string, unknown> {
   return {
@@ -56,26 +56,5 @@ describe("parsePlateTimeline", () => {
 
   it("accepts a timeline with no events", () => {
     expect(parsePlateTimeline(timeline({ events: [] })).ok).toBe(true);
-  });
-});
-
-describe("beatsFromTimeline", () => {
-  it("turns each event into a beat at its frame time", () => {
-    const parsed = parsePlateTimeline(timeline());
-    if (!parsed.ok) {
-      throw new Error("fixture must parse");
-    }
-    expect(beatsFromTimeline(parsed.value, [4, 7])).toEqual([
-      { atSeconds: 0, kind: "step", degree: 4, weight: 0.6 },
-      { atSeconds: 2 / 30, kind: "resolve", degree: 7, weight: 1 },
-    ]);
-  });
-
-  it("falls back to the root degree when no melody is given", () => {
-    const parsed = parsePlateTimeline(timeline());
-    if (!parsed.ok) {
-      throw new Error("fixture must parse");
-    }
-    expect(beatsFromTimeline(parsed.value, []).map((beat) => beat.degree)).toEqual([0, 0]);
   });
 });

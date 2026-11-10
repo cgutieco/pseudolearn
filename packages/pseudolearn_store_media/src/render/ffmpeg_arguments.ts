@@ -16,7 +16,6 @@ export function encoderArguments(request: EncodeRequest): readonly string[] {
   const mapping = request.audioPath ? ["-map", "0:v:0", "-map", "1:a:0"] : ["-map", "0:v:0"];
   const video = [
     "-c:v", "libx264", "-profile:v", profile.profile,
-    ...(profile.level ? ["-level:v", profile.level] : []),
     "-preset", "slow",
     "-vf", "scale=out_color_matrix=bt709:out_range=tv,format=yuv420p",
     ...rateArguments(request),

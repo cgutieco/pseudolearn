@@ -11,11 +11,11 @@ import { shippedThermostat } from "../support/thermostat.ts";
 
 const catalog = realCatalog();
 const fonts = { sans: brandFont("IBMPlexSans-Bold.ttf"), mono: brandFont("IBMPlexMono-Medium.ttf") };
-const PLATE = "plates/preview-run/mac-preview/light/es";
+const PLATE = "plates/trailer-run/windows-trailer/light/es";
 const thirty = { ok: true as const, value: { framePattern: "f/frame_%06d.png", startNumber: 1, frameCount: 900 } };
 
 function record(toolbox: FakeToolbox, size = { width: 1920, height: 1080 }, frames = 264): void {
-  const timeline = { scene: "preview-run", language: "es", fps: 30, pixelWidth: size.width, pixelHeight: size.height,
+  const timeline = { scene: "trailer-run", language: "es", fps: 30, pixelWidth: size.width, pixelHeight: size.height,
     frames: Array.from({ length: frames }, (_unused, index) => ({ index, file: "frame_000001.png", focus: [] })), events: [] };
   toolbox.written.set(`${PLATE}/timeline.json`, new TextEncoder().encode(JSON.stringify(timeline)));
 }

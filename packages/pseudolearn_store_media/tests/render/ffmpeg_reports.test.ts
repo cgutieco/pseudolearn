@@ -35,10 +35,10 @@ describe("parseProbe", () => {
     }
   });
 
-  it("reads what delivery is audited on: level, scan, bitrate, container and enabled tracks", () => {
+  it("reads what delivery is audited on: scan, bitrate, container and enabled tracks", () => {
     const outcome = parseProbe(probeJson);
     expect(outcome.ok && outcome.value.delivery).toEqual({
-      level: 40, fieldOrder: "progressive", videoBitrateBps: 10927551, formatName: "mov,mp4,m4a,3gp,3g2,mj2", extension: "mp4",
+      fieldOrder: "progressive", videoBitrateBps: 10927551, formatName: "mov,mp4,m4a,3gp,3g2,mj2", extension: "mp4",
       tracks: [{ kind: "video", enabled: true }, { kind: "audio", enabled: false }], structure: UNREAD_STRUCTURE,
     });
   });
@@ -51,7 +51,7 @@ describe("parseProbe", () => {
   it("returns no audio for a silent file", () => {
     const outcome = parseProbe(JSON.stringify({ streams: [{ codec_type: "video", r_frame_rate: "30/1" }], format: {} }));
     expect(outcome.ok && outcome.value.audio).toBeNull();
-    expect(outcome.ok && [outcome.value.delivery.extension, outcome.value.delivery.fieldOrder, outcome.value.delivery.level]).toEqual(["", "", 0]);
+    expect(outcome.ok && [outcome.value.delivery.extension, outcome.value.delivery.fieldOrder]).toEqual(["", ""]);
   });
 });
 

@@ -9,7 +9,6 @@ export type TrailerProgram = { readonly lines: readonly string[]; readonly varia
 
 export type InterfaceTail = {
   readonly plate: string;
-  readonly device: string;
   readonly appTheme: AppTheme;
   readonly startSeconds: number;
   readonly seconds: number;

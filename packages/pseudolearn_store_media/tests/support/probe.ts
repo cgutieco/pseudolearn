@@ -31,7 +31,6 @@ export function goodProbe(size: { readonly width: number; readonly height: numbe
     sizeBytes: 2_000_000,
     audio: { codec: "aac", sampleRate: 48000, channels: 2, bitrateBps: 250_000 },
     delivery: {
-      level: 40,
       fieldOrder: "progressive",
       videoBitrateBps: 10_900_000,
       formatName: "mov,mp4,m4a,3gp,3g2,mj2",

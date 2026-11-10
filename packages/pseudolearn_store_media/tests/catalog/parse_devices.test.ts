@@ -77,35 +77,30 @@ describe("device catalog rejections", () => {
 
 });
 
-describe("app preview devices", () => {
-  it("records every app preview natively at the exact size of its slot", () => {
-    const previews = realCatalog().slots.filter((slot) => slot.kind === "app-preview");
-    expect(previews.map((slot) => slot.device?.id)).toEqual(["iphone-preview", "ipad-preview", "mac-preview"]);
-    for (const slot of previews) {
-      expect((slot.device?.logicalWidth ?? 0) * (slot.device?.plateScale ?? 0), slot.id).toBe(slot.width);
-      expect((slot.device?.logicalHeight ?? 0) * (slot.device?.plateScale ?? 0), slot.id).toBe(slot.height);
-      expect(slot.device?.frame).toBe("none");
-    }
+describe("the trailer device", () => {
+  it("records the trailer interface plate natively at the exact size of its slot", () => {
+    const trailer = realCatalog().slots.find((slot) => slot.id === "microsoft.trailer");
+    expect(trailer?.device?.id).toBe("windows-trailer");
+    expect((trailer?.device?.logicalWidth ?? 0) * (trailer?.device?.plateScale ?? 0)).toBe(1920);
+    expect((trailer?.device?.logicalHeight ?? 0) * (trailer?.device?.plateScale ?? 0)).toBe(1080);
   });
 
-  it("rejects an app preview without a device or with a device that would scale the interface", () => {
-    const errors = errorsAfter((document) => {
-      delete slotNamed(document, "apple.ipad.app-preview")["device"];
-      slotNamed(document, "apple.mac.app-preview")["device"] = "mac";
+  it("rejects a trailer without a device or with a device that would scale the interface", () => {
+    const missing = errorsAfter((document) => {
+      delete slotNamed(document, "microsoft.trailer")["device"];
     });
-    expect(errors).toContain("slots[8].device: an app-preview slot records its plates on a device");
-    expect(errors).toContain("slots[9].device: mac records 2880×1800 px, not the native 1920×1080");
+    expect(missing.some((error) => error.endsWith(".device: a trailer slot records its interface plate on a device"))).toBe(true);
+    const scaled = errorsAfter((document) => {
+      slotNamed(document, "microsoft.trailer")["device"] = "mac";
+    });
+    expect(scaled.some((error) => error.endsWith(".device: mac records 2880×1800 px, not the native 1920×1080"))).toBe(true);
   });
 
-  it("reads safe-area insets, defaults them to zero and rejects unknown or negative sides", () => {
-    const catalog = realCatalog();
-    expect(catalog.devices.find((device) => device.id === "iphone-preview")?.insets).toEqual({ top: 62, right: 0, bottom: 34, left: 0 });
-    expect(catalog.devices.find((device) => device.id === "mac")?.insets).toEqual({ top: 0, right: 0, bottom: 0, left: 0 });
+  it("rejects device keys the catalog does not know, such as safe-area insets", () => {
     const errors = errorsAfter((document) => {
-      (devices(document)[0] as Mutable)["insets"] = { top: -1, right: 0, bottom: 0, left: 0, notch: 3 };
+      (devices(document)[0] as Mutable)["insets"] = { top: 62 };
     });
-    expect(errors).toContain("devices[0].insets.notch: unknown key");
-    expect(errors.some((error) => error.startsWith("devices[0].insets.top:"))).toBe(true);
+    expect(errors).toContain("devices[0].insets: unknown key");
   });
 
   it("rejects a missing device list", () => {

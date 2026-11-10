@@ -44,7 +44,7 @@ describe("viewport profile rejections", () => {
   it("rejects an obstacle that leaves the viewport", () => {
     expect(errorsAfter((header) => {
       (firstProfile(header)["occlusions"] as Mutable[])[0] = { x: 300, y: 8, width: 106, height: 31 };
-    })).toEqual(["slots[10].viewportProfiles[0].occlusions[0]: must be a non-empty rectangle inside the viewport"]);
+    })).toEqual(["slots[7].viewportProfiles[0].occlusions[0]: must be a non-empty rectangle inside the viewport"]);
   });
 
   it("rejects an empty obstacle and an unknown key", () => {
@@ -53,8 +53,8 @@ describe("viewport profile rejections", () => {
       (profile["occlusions"] as Mutable[])[1] = { x: 0, y: 0, width: 0, height: 4 };
       profile["notch"] = true;
     })).toEqual([
-      "slots[10].viewportProfiles[0].notch: unknown key",
-      "slots[10].viewportProfiles[0].occlusions[1]: must be a non-empty rectangle inside the viewport",
+      "slots[7].viewportProfiles[0].notch: unknown key",
+      "slots[7].viewportProfiles[0].occlusions[1]: must be a non-empty rectangle inside the viewport",
     ]);
   });
 
@@ -63,12 +63,12 @@ describe("viewport profile rejections", () => {
       const profile = firstProfile(header);
       profile["viewport"] = { width: 0, height: 207 };
       profile["occlusions"] = [];
-    })).toEqual(["slots[10].viewportProfiles[0].viewport.width: expected a number between 1 and 4096"]);
+    })).toEqual(["slots[7].viewportProfiles[0].viewport.width: expected a number between 1 and 4096"]);
   });
 
   it("rejects profiles that are not a list", () => {
     expect(errorsAfter((header) => {
       header["viewportProfiles"] = { name: "phone" };
-    })).toEqual(["slots[10].viewportProfiles: expected an array"]);
+    })).toEqual(["slots[7].viewportProfiles: expected an array"]);
   });
 });

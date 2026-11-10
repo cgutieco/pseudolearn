@@ -33,8 +33,8 @@ describe("produceScreenshotSet", () => {
 
 describe("produceScreenshotSet rejections", () => {
   it("refuses video slots and an empty plan", async () => {
-    expect(await produceScreenshotSet(request(["apple.mac.app-preview"])))
-      .toEqual({ ok: false, error: "screenshots need screenshot slots; not one: apple.mac.app-preview" });
+    expect(await produceScreenshotSet(request(["apple.header.video"])))
+      .toEqual({ ok: false, error: "screenshots need screenshot slots; not one: apple.header.video" });
     expect(await produceScreenshotSet(request([], { jobs: [] }))).toEqual({ ok: false, error: "screenshots need screenshot slots" });
   });
 

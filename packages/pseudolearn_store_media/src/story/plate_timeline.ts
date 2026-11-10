@@ -1,6 +1,5 @@
 import type { Parsed } from "../catalog/catalog_types.ts";
 import { JsonReader, type JsonObject } from "../catalog/json_reader.ts";
-import type { Beat, BeatKind } from "./storyboard.ts";
 
 export const PLATE_EVENT_KINDS = ["statement", "diagram-node", "agent-message", "completion", "tap"] as const;
 export type PlateEventKind = (typeof PLATE_EVENT_KINDS)[number];
@@ -23,14 +22,6 @@ export type PlateTimeline = {
   readonly events: readonly PlateEvent[];
 };
 
-const BEAT_FOR_EVENT: Readonly<Record<PlateEventKind, BeatKind>> = {
-  statement: "step",
-  "diagram-node": "accent",
-  "agent-message": "reveal",
-  completion: "resolve",
-  tap: "step",
-};
-
 export function parsePlateTimeline(document: unknown): Parsed<PlateTimeline> {
   const reader = new JsonReader();
   const root = reader.object(document, "$");
@@ -46,15 +37,6 @@ export function parsePlateTimeline(document: unknown): Parsed<PlateTimeline> {
   };
   verifyOrder(reader, timeline);
   return reader.errors.length === 0 ? { ok: true, value: timeline } : { ok: false, errors: reader.errors };
-}
-
-export function beatsFromTimeline(timeline: PlateTimeline, degrees: readonly number[]): readonly Beat[] {
-  return timeline.events.map((event, index) => ({
-    atSeconds: event.frame / timeline.fps,
-    kind: BEAT_FOR_EVENT[event.kind],
-    degree: degrees[index % Math.max(degrees.length, 1)] ?? 0,
-    weight: event.kind === "statement" || event.kind === "tap" ? 0.6 : 1,
-  }));
 }
 
 function parseFrame(reader: JsonReader, value: unknown, index: number): PlateFrame {

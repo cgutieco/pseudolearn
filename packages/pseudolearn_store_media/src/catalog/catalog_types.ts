@@ -3,7 +3,6 @@ export type StoreId = (typeof STORES)[number];
 
 export const ASSET_KINDS = [
   "screenshot",
-  "app-preview",
   "header-video",
   "search-video",
   "universal-image",
@@ -52,13 +51,6 @@ export type DeviceFrame = (typeof DEVICE_FRAMES)[number];
 export const FOLD_AXES = ["none", "vertical", "horizontal"] as const;
 export type FoldAxis = (typeof FOLD_AXES)[number];
 
-export type Insets = {
-  readonly top: number;
-  readonly right: number;
-  readonly bottom: number;
-  readonly left: number;
-};
-
 export type Device = {
   readonly id: string;
   readonly logicalWidth: number;
@@ -67,7 +59,6 @@ export type Device = {
   readonly cornerRadius: number;
   readonly frame: DeviceFrame;
   readonly fold: FoldAxis;
-  readonly insets: Insets;
 };
 
 export type ViewportRect = { readonly x: number; readonly y: number; readonly width: number; readonly height: number };
@@ -97,7 +88,6 @@ export type RateControl = (typeof RATE_CONTROLS)[number];
 export type CodecProfile = {
   readonly id: string;
   readonly profile: "high";
-  readonly level: string | null;
   readonly rateControl: RateControl;
   readonly minBitrateMbps: number | null;
   readonly bitrateMbps: number;

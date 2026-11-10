@@ -5,7 +5,7 @@ import type { InterfaceTail, TraceStep, TrailerProgram } from "./thermostat_stor
 
 const PROGRAM_KEYS = ["lines", "variables", "outputs"];
 const STEP_KEYS = ["line", "values", "output", "condition"];
-const TAIL_KEYS = ["plate", "device", "appTheme", "startSeconds", "seconds", "mediaStart"];
+const TAIL_KEYS = ["plate", "appTheme", "startSeconds", "seconds", "mediaStart"];
 
 export function parseProgram(reader: JsonReader, entry: JsonObject): Record<Language, TrailerProgram> {
   reader.keys(entry, "program", LANGUAGES);
@@ -47,7 +47,6 @@ export function parseInterface(reader: JsonReader, value: unknown): InterfaceTai
   reader.keys(entry, "interface", TAIL_KEYS);
   return {
     plate: reader.text(entry["plate"], "interface.plate"),
-    device: reader.text(entry["device"], "interface.device"),
     appTheme: reader.member(entry["appTheme"], "interface.appTheme", APP_THEMES),
     startSeconds: reader.number(entry["startSeconds"], "interface.startSeconds", { min: 0, max: 60 }),
     seconds: reader.number(entry["seconds"], "interface.seconds", { min: 2, max: 20 }),

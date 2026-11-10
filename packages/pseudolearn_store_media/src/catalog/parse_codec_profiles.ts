@@ -1,7 +1,7 @@
 import { AUDIO_ENCODERS, EDIT_LIST_POLICIES, RATE_CONTROLS, type AudioProfile, type CodecProfile } from "./catalog_types.ts";
 import type { JsonObject, JsonReader } from "./json_reader.ts";
 
-const PROFILE_KEYS = ["profile", "level", "rateControl", "minBitrateMbps", "bitrateMbps", "maxBitrateMbps", "containers",
+const PROFILE_KEYS = ["profile", "rateControl", "minBitrateMbps", "bitrateMbps", "maxBitrateMbps", "containers",
   "closedGopSeconds", "bFrames", "editLists", "audio"];
 const BITRATE_RANGE = { min: 1, max: 200 };
 const AUDIO_KEYS = ["codec", "encoder", "bitrateKbps", "sampleRate", "channels"];
@@ -27,7 +27,6 @@ function parseProfile(reader: JsonReader, id: string, entry: JsonObject): CodecP
   return {
     id,
     profile: reader.member(entry["profile"], `${path}.profile`, ["high"] as const),
-    level: entry["level"] === null ? null : reader.text(entry["level"], `${path}.level`),
     rateControl: reader.member(entry["rateControl"], `${path}.rateControl`, RATE_CONTROLS),
     minBitrateMbps,
     bitrateMbps,

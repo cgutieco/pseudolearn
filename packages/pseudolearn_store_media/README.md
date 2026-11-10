@@ -1,13 +1,14 @@
 # pseudolearn_store_media
 
 Motor que produce de forma automática y determinista los assets de las tiendas donde se publica PseudoLearn: capturas,
-app previews, vídeos de encabezado y de búsqueda, imagen universal y arte de Microsoft Store. Compone en HTML con
+vídeos de encabezado y de búsqueda, imagen universal y, en Microsoft Store, capturas, arte y tráiler. Compone en HTML con
 HyperFrames, sintetiza la banda sonora, codifica con FFmpeg y audita cada pieza contra el catálogo de su ranura antes
 de darla por buena.
 
 **No hace:** generar imágenes, vídeo ni audio con IA, inventar interfaz (la UI real llega como placas exportadas por
 la app), subir nada a App Store Connect ni al Centro de partners, ni decidir la narrativa: los guiones se aprueban con
-la persona antes de escribirse.
+la persona antes de escribirse. Tampoco produce **app previews** de App Store: la persona decidió no publicarlas porque
+repetían lo que cuentan las capturas que tienen al lado, y Apple no admite en ellas más que metraje de la app.
 
 ## Dónde encaja
 
@@ -40,14 +41,14 @@ Se omiten las aristas hacia `catalog`, que todas las capas pueden importar, y la
 | Capa       | Qué hace                                                                                         |
 |:-----------|:-------------------------------------------------------------------------------------------------|
 | `catalog`  | Lee y valida `catalog/slots.json` y `catalog/lexicon.json`: ranuras, dispositivos, códecs, sonoridad, léxico, límites de leyendas y títulos |
-| `story`    | Guiones con hitos (`Beat`), historias de capturas (App Store y escritorio), de previews, de la lente y del tráiler, plan temporal de escenas y lectura de las placas de la app |
-| `layout`   | Zonas seguras, recorte por dispositivo, muestreo de todos los fotogramas, lámina de revisión, métricas de fuentes, ajuste de textos, geometría editorial, rótulos de preview, anclaje de anotaciones, ventana de escritorio, río de barras y lente muda |
+| `story`    | Guiones con hitos (`Beat`), historias de capturas (App Store y escritorio), de la lente y del tráiler, y lectura de las placas de la app |
+| `layout`   | Zonas seguras, recorte por dispositivo, muestreo de todos los fotogramas, lámina de revisión, métricas de fuentes, ajuste de textos, geometría editorial, anclaje de anotaciones, ventana de escritorio, río de barras y lente muda |
 | `audio`    | Partitura, síntesis en bucle exacto, ganancia y codificación WAV, sin dependencias              |
-| `audit`    | Hallazgos con regla estable: medidas, alfa, códec, fps, duración, audio, bucle, placa, léxico, contraste, ajuste, entrega (GOP, fotogramas B, *Fast Start*, listas de edición), transiciones, UI visible, portada, tiempo de lectura, contenido añadido y longitud de leyendas |
-| `compose`  | Composiciones HyperFrames en HTML: calibración, captura editorial, preview con placas animadas, lámina de zona segura, ventana de escritorio, lente muda y tráiler del termostato |
-| `pipeline` | Plan objetivo × idioma, producción de capturas, vídeo y previews, banda sonora y manifiesto, contra puertos |
+| `audit`    | Hallazgos con regla estable: medidas, alfa, códec, fps, duración, audio, bucle, placa, léxico, contraste, ajuste, entrega (GOP, fotogramas B, *Fast Start*, listas de edición), contenido añadido y longitud de leyendas |
+| `compose`  | Composiciones HyperFrames en HTML: calibración, captura editorial, lámina de zona segura, ventana de escritorio, lente muda y tráiler del termostato |
+| `pipeline` | Plan objetivo × idioma, producción de capturas, imágenes fijas y vídeo, banda sonora y manifiesto, contra puertos |
 | `render`   | Adaptadores: productor de HyperFrames, FFmpeg y ffprobe, ensamblado de placas, archivos y catálogo |
-| `cli`      | `plan`, `calibrate`, `screenshots`, `previews`, `creative`, `desktop-screenshots`, `hero`, `trailer` y `audit-image` |
+| `cli`      | `plan`, `calibrate`, `screenshots`, `creative`, `desktop-screenshots`, `hero`, `trailer` y `audit-image` |
 
 ## Flujo principal
 
@@ -83,49 +84,6 @@ flowchart LR
 Cada imagen tiene su manifiesto `<nn>-<capítulo>.audit.json` con un hallazgo por regla incumplida. Si falla una regla
 previa (placa ausente o de otra medida, texto fuera del margen, léxico, contraste o titular que no cabe), la imagen no
 se renderiza.
-
-Flujo de una app preview:
-
-```mermaid
-flowchart LR
-    story["historia de previews: escenas,<br/>recortes, disoluciones y rótulos"] --> plan["plan temporal<br/>y hitos de la app"]
-    plates["placas animadas<br/>y timeline.json"] --> plan
-    plan --> checks{"duración, placa nativa, transiciones,<br/>lectura, UI visible, portada, léxico, contraste, ajuste"}
-    checks --> assemble["placa → vídeo sin pérdida<br/>(RGB, CRF 0)"]
-    assemble --> frames["HyperFrames<br/>placa a 1:1 + rótulos"]
-    plan --> score["partitura en los hitos<br/>y −16 LUFS"]
-    frames & score --> encode["FFmpeg H.264 High 4.0 CBR 11 Mbps<br/>+ AAC 256 kbps"]
-    encode --> delivery{"entrega: medidas, fps, duración, nivel,<br/>progresivo, bitrate, pistas, contenedor, audio"}
-    delivery --> poster["portada a tamaño completo<br/>y a 600 px"] --> manifest["manifiesto por preview"]
-```
-
-Cada preview tiene su manifiesto `<nn>-<preview>.audit.json`, su portada a tamaño completo y su portada con el lado
-largo a 600 px para revisarla como se verá con la reproducción automática apagada. Si falla una regla previa, la
-preview no se renderiza.
-
-## Fuentes de Apple para las app previews
-
-Leídas el 2026-11-10. Cada regla del motor que viene de Apple sale de esta tabla; lo que no aparece aquí es una
-**decisión propia** y figura como tal en «Decisiones y su porqué».
-
-| Fuente | Qué dice | Qué hace el motor |
-|:--|:--|:--|
-| [App previews](https://developer.apple.com/app-store/app-previews/) | Metraje capturado de la app; solo contenido de la propia app, sin personas, manos ni planos del dispositivo | Las escenas son placas grabadas de la UI real con el motor real; `MEDIA-APP-UI` exige UI en todos los fotogramas |
-| ↑ | Hasta tres previews por idioma y hasta 30 s; cada una enseña algo nuevo | La historia admite de 1 a 3 previews; el reparto se decide en el diálogo |
-| ↑ | Se permiten gráficos como puntos de toque; se recomienda la resolución nativa de la UI en vez de ampliar | Los toques salen de los eventos `tap` que graba la app; `MEDIA-PLATE` rechaza una placa que no mida exactamente la ranura |
-| ↑ | Transiciones sencillas, como disoluciones y fundidos, que no sugieran funciones inexistentes | Entre escenas solo hay disolución (`MEDIA-TRANSITION`); los rótulos entran y salen con fundido |
-| ↑ | Suena en silencio por defecto: texto legible y en pantalla el tiempo necesario; sin precios, fechas ni referencias de temporada | `TEXT-READ-TIME`, `TEXT-FIT`, `TEXT-CONTRAST` y el léxico (`price`, `timely`) |
-| ↑ | Si hay compras, suscripción o inicio de sesión, se indica en el metraje o en el fotograma final | Rótulo de rol `disclosure` |
-| ↑ | Una sola banda sonora para dar continuidad; efectos de la UI y narración opcionales | Una partitura sintetizada por preview, anclada a los hitos de la app |
-| ↑ | Portada que transmita la esencia; cambiarla en una preview aprobada exige una versión nueva | `posterSeconds` en la historia, `MEDIA-POSTER` y portada a 600 px |
-| [Especificaciones](https://developer.apple.com/help/app-store-connect/reference/app-information/app-preview-specifications) | De 15 a 30 s, 500 MB, hasta tres por tamaño de dispositivo e idioma | `MEDIA-DURATION`, `MEDIA-SIZE` y la historia |
-| ↑ | H.264 progresivo hasta High 4.0, 10–12 Mbps, 30 fps como máximo, en .mov, .m4v o .mp4 | Perfil `apple-preview` en CBR a 11 Mbps; `MEDIA-CODEC`, `MEDIA-BITRATE`, `MEDIA-FPS`, `MEDIA-CONTAINER` |
-| ↑ | Audio estéreo AAC de 256 kbps a 44,1 o 48 kHz; todas las pistas habilitadas | AAC 256 kbps a 48 kHz; `MEDIA-AUDIO` y `MEDIA-TRACKS` |
-| ↑ | iPhone 886 × 1920 (también Duo y Dynamic Island), iPad 13" 1200 × 1600, Mac 1920 × 1080 solo horizontal | Una ranura por medida, con su dispositivo de grabación |
-| ↑ | Portada por defecto en el segundo 5; la preview va antes que las capturas y, si su proporción difiere, en «A Closer Look» | La portada se fija en la historia; las previews se graban en vertical en iPhone, como las capturas |
-| [Guías de revisión 2.3](https://developer.apple.com/app-store/review/guidelines/) | 2.3.4: solo capturas de vídeo de la app, con narración y superposiciones de vídeo o texto para explicar | Igual que la fila de metraje: placas de la app y superposiciones |
-| ↑ | 2.3.2 y 2.3.7: indicar compras; sin precios ni términos. 2.3.8: apto 4+. 2.3.9: derechos y datos de cuenta ficticios. 2.3.10: sin otras plataformas | Rótulo `disclosure`, léxico (`price`, `other-platform`) y la cuenta ficticia de las placas |
-| [Catálogo de la API](https://developer.apple.com/documentation/appstoreconnectapi) `GET /v1/appAssetLibraryRefData` | `audioRequired: true`, 23–30 fps, 500 MB, tres por grupo; duración `PT5S`–`PT30S` con `shortName` `t15~30` | Audio obligatorio, 30 fps y 15–30 s (lo más estricto de las dos fuentes) |
 
 ## Fuentes de Apple para los creative assets
 
@@ -179,7 +137,7 @@ Leídas el 2026-11-10. Lo que no aparece aquí es **decisión propia** y figura 
   Sketch de Apple (2026-08-28). Las de Microsoft salen de su documentación: lo crítico en los dos tercios superiores
   de capturas y arte, y un 10 % de margen arriba y abajo en tráileres, porque Microsoft solo dice que algunas
   disposiciones recortan «ligeramente».
-- **Duraciones conservadoras.** Encabezado de 10 a 30 s y previews de 15 a 30 s: cumplen a la vez el campo
+- **Duraciones conservadoras.** Encabezado de 10 a 30 s y búsqueda de 15 a 30 s: cumplen a la vez el campo
   `duration` y el `shortName` del catálogo de la API de App Store Connect, que no coinciden.
 - **El catálogo es dato.** Añadir una ranura es una entrada en `slots.json`; el parser rechaza claves desconocidas,
   perfiles de códec inexistentes y zonas fuera del lienzo.
@@ -220,41 +178,16 @@ Leídas el 2026-11-10. Lo que no aparece aquí es **decisión propia** y figura 
   muestra el manifiesto lo verifica la app con el analizador real antes de grabar placas.
 - **Léxico heredado.** Las reglas de titular de la composición antigua de la app que el catálogo no tenía (versiones
   previas y llamadas a la acción) pasaron a `lexicon.json` como `pre-release` y `call-to-action`.
-- **Previews: placas animadas, a la medida exacta de la ranura.** La app graba cada escena en vivo, fotograma a
-  fotograma, con su motor real y su tamaño lógico; el motor la dibuja a 1:1, sin ampliar ni reducir. Por eso las
-  previews no llevan marcos de dispositivo. Los tamaños son decisión propia: iPhone 443 × 960 pt × 2 (clase compacta),
-  iPad el tamaño real del iPad de 13", 1032 × 1376 pt × 1200/1032 (en doble precisión da exactamente 1200 × 1600), y
-  Mac 1280 × 720 pt × 1,5 (clase expandida). Se descartaron 600 × 800 pt y 960 × 540 pt: el iPad graba así el
-  tamaño de un iPad real, y en esos anchos, justo en el borde de clase, la app aún desbordaba su barra de ejecución.
-- **Áreas seguras reales en las previews.** iPhone graba con 62 pt arriba y 34 abajo, e iPad con 24 y 20, como un
-  dispositivo real; el Mac, sin márgenes. La barra de estado no se dibuja: no es UI de la app.
+- **Placa animada del tráiler, a la medida exacta.** La app graba la escena `trailer-run` en vivo, fotograma a
+  fotograma, con su motor real en `windows-trailer` (1280 × 720 pt × 1,5 = 1920 × 1080, clase expandida); el motor la
+  dibuja a 1:1, sin ampliar ni reducir. El parser exige que el dispositivo de una ranura de tráiler grabe su medida
+  nativa.
 - **Fotogramas repetidos.** La app escribe un PNG solo cuando la imagen cambia y repite el nombre en `timeline.json`.
   El motor enlaza los fotogramas en orden y los ensambla en un vídeo RGB sin pérdida (`libx264rgb`, CRF 0) que
   HyperFrames reproduce con `data-media-start` y extracción en PNG.
-- **CBR con relleno.** Una UI quieta comprime a menos de 1 Mbps, por debajo de los 10–12 Mbps de Apple; la
-  calibración de F2 salía a 0,71 Mbps. El perfil `apple-preview` usa `nal-hrd=cbr` a 11 Mbps, así que el archivo queda
-  en 10,9 Mbps aunque la imagen no cambie.
-- **Umbrales de preview (decisiones propias).** Disolución entre 0,4 y 1,5 s; cada escena se ve sola al menos 2 s,
-  para evitar cortes rápidos; un rótulo dura al menos 1 s más un tercio de segundo por palabra, nunca menos de 2 s; en
-  cada fotograma se ve al menos el 50 % de la UI; el texto visible en la portada mide al menos 11 px con el lado largo
-  a 600 px; los rótulos entran y salen en 0,3 s y un toque se ve 0,6 s. Las pistas habilitadas se leen de la
-  disposición `default` que ffprobe deriva de la marca `enabled` de cada pista.
-- **Concepto de las previews (aprobado por la persona en F3): tarjeta de marca sobre UI real.** Cada preview abre con
-  el logotipo en una tarjeta breve (2,3 s) sobre la app ya en marcha y cierra con otra tarjeta (3,3 s) abajo; la UI
-  sigue viéndose a su alrededor, como superposición que admite la guía 2.3.4. Entre medias, la UI a pantalla completa
-  con el titular con marcador de F2 en la paleta del capítulo, puntos de toque y, solo en escenas quietas, una
-  anotación con punto. Si una preview muestra una escena que exige sesión o compra (`disclosure.plates`, hoy
-  `preview-nodo`), la tarjeta de cierre lleva el aviso; si no lo lleva ni hay rótulo `disclosure`,
-  `MEDIA-DISCLOSURE` la rechaza. Se descartaron los rótulos solos (A) y una franja editorial de color fija (B), que
-  tapaba la cabecera del documento. Tres previews por tamaño e idioma: «Resumen» (programa, diagrama y Nodo),
-  «Ejecutar y entender» (diagrama y prueba de escritorio) y «Nodo, ruta y código»; portada en el segundo 5.
-- **Banda sonora de las previews.** `PREVIEW_VOICE`: colchón suave en do y una nota breve por cada hito real de la
-  app (toque, paso, mensaje de Nodo), elegida por la persona frente a una versión rítmica.
-- **Rótulos que no tapan lo que importa.** Cada rol tiene su borde por defecto (titular arriba; nota y aviso abajo) y
-  la historia puede moverlo con `anchor` cuando taparía una pieza que la escena necesita, como la etiqueta «Nodo · IA»
-  del panel. Una anotación con punto se ancla al rectángulo de su pieza en el fotograma en que aparece; si la UI se
-  desplaza debajo (el diagrama sigue la ejecución), el punto se queda donde estaba, así que solo conviene en escenas
-  quietas.
+- **CBR con relleno.** Una UI quieta comprime muy por debajo de los 50 Mbps del tráiler; el perfil de Microsoft usa
+  `nal-hrd=cbr`, así que el archivo queda en torno a 50 Mbps aunque la imagen no cambie. Las pistas habilitadas se leen
+  de la disposición `default` que ffprobe deriva de la marca `enabled` de cada pista.
 - **Recortes por dispositivo del encabezado (estimados, no oficiales).** Apple no publica cómo recorta el encabezado en
   cada dispositivo. `slots.json` declara seis perfiles (`viewportProfiles`: iPhone vertical en dos medidas, iPhone Duo
   vertical y horizontal, iPad horizontal y vertical) con el tamaño visible y los obstáculos (botones y pestañas) que
@@ -298,7 +231,9 @@ Leídas el 2026-11-10. Lo que no aparece aquí es **decisión propia** y figura 
 - **Bucle exacto por construcción.** Cada fila avanza exactamente un mosaico (su suma de instrucciones) por vuelta, así
   el último fotograma enlaza con el primero. Las filas empiezan desfasadas (`phaseStride`) y cada una gira el programa
   `statementStride` instrucciones, para que no se lean iguales.
-- **Sonido en los cruces.** Cada nodo de una fila de la lente que pasa por el centro es una nota de `PREVIEW_VOICE`: la
+- **Voz de hitos.** `MILESTONE_VOICE`: colchón suave en do y una nota breve por cada hito (un nodo que cruza la lente, un
+  paso del programa); la usan el encabezado y el tráiler.
+- **Sonido en los cruces.** Cada nodo de una fila de la lente que pasa por el centro es una nota de `MILESTONE_VOICE`: la
   condición del bucle es un acento y el resto, notas suaves. La altura depende del tipo de instrucción y de la fila (tres registros que se repiten si hay más filas). El
   vídeo de búsqueda no lleva pista.
 - **La imagen universal es un instante del bucle.** Se congela en el primer cruce de la fila central a partir de
@@ -349,13 +284,12 @@ Leídas el 2026-11-10. Lo que no aparece aquí es **decisión propia** y figura 
   de marca (B) y la constelación del ordinograma (C).
 - **Concepto del tráiler (aprobado en F5): el termostato.** El tráiler es el programa de demostración ejecutándose: el
   código con la línea en curso, la temperatura en cifras grandes que baja de 30 a 27 y a 24 (en naranja al alcanzar el
-  límite), las lecturas y la salida que se escribe; una nota de `PREVIEW_VOICE` por paso, con acento en la condición del
+  límite), las lecturas y la salida que se escribe; una nota de `MILESTONE_VOICE` por paso, con acento en la condición del
   bucle. Cierra con la frase final del programa, 5 s de UI real y el logotipo. La traza es un dato de la historia y un test
   la compara con una simulación independiente del programa; sus líneas son las del programa que distribuye la app. Se
-  descartaron la lente que se abre (A) y las tres previews encadenadas (B).
+  descartaron la lente que se abre (A) y un montaje de escenas de la app con tarjetas de marca (B).
 - **Cola de UI del tráiler.** Microsoft exige que el tráiler refleje la app (política 10.1). La cola usa la placa animada
-  `preview-run` grabada para la preview de Mac (1920 × 1080, la medida del tráiler); la UI de Flutter es la misma en
-  Windows y la placa no dibuja ventana del sistema. Si la placa falta, mide otra cosa o dura menos de lo necesario,
+  `trailer-run`: la demo guiada avanzando paso a paso por el ordinograma; la placa no dibuja ventana del sistema. Si la placa falta, mide otra cosa o dura menos de lo necesario,
   `MEDIA-PLATE` impide el render.
 - **Datos para la publicación.** `desktop-screenshots` deja un `captions.json` por idioma con el locale, el orden, el
   archivo y la leyenda; `trailer` deja `trailer.json` con el título, el vídeo y la miniatura (fotograma del segundo 13,2,
@@ -385,7 +319,6 @@ Leídas el 2026-11-10. Lo que no aparece aquí es **decisión propia** y figura 
 | Auditar una imagen                          | `pnpm media audit-image --slot apple.mac.screenshot --file x.png` |
 | Producir todas las capturas de App Store    | `pnpm media screenshots` (o `--lang es`, `--story otra.json`)  |
 | Capturas de una ranura con el margen visible | `pnpm media screenshots --slot apple.mac.screenshot --guides`  |
-| Producir las app previews                   | `pnpm media previews` (o `--slot`, `--lang`, `--story`, `--plates`) |
 | Producir encabezado, búsqueda y universal   | `pnpm media creative` (o `--slot`, `--lang`, `--story`)        |
 | Capturas de escritorio de Microsoft         | `pnpm media desktop-screenshots` (o `--lang`, `--story`, `--plates`) |
 | Héroe, póster y caja de Microsoft           | `pnpm media hero` (o `--slot`, `--lang`)                        |
@@ -393,12 +326,11 @@ Leídas el 2026-11-10. Lo que no aparece aquí es **decisión propia** y figura 
 
 `creative` escribe en `build/creative/<historia>/` el vídeo, el manifiesto y la lámina de cada ranura, o la imagen y su
 manifiesto en la universal; no necesita placas.
-`previews` lee las placas animadas de `../../apps/pseudolearn_app/build/store-previews` y escribe en
-`build/previews/<historia>/`. `screenshots` lee las placas de `../../apps/pseudolearn_app/build/store-plates` (o de `--plates`) y escribe en
+`screenshots` lee las placas de `../../apps/pseudolearn_app/build/store-plates` (o de `--plates`) y escribe en
 `build/screenshots/<historia>/`. Sin `--slot`, produce todas las ranuras que declaran dispositivo.
 
 `desktop-screenshots` lee las placas de `windows-desktop`; `trailer` lee la placa animada de
-`../../apps/pseudolearn_app/build/store-previews`. Salen en `build/screenshots/`, `build/hero/` y `build/trailer/`.
+`../../apps/pseudolearn_app/build/trailer-plates`. Salen en `build/screenshots/`, `build/hero/` y `build/trailer/`.
 
 Requisitos: Node 22.23.3 y pnpm 12.8.1, FFmpeg y ffprobe en el `PATH` (probado con 9.0.2) con `aac_at` (macOS) para el
 tráiler de Microsoft, Python 3 con `fonttools` para generar la marca. Las salidas quedan en `build/`, fuera de git.

@@ -11,7 +11,7 @@ import { nodeFileStore } from "../render/node_file_store.ts";
 import type { CommandContext } from "./main.ts";
 
 const DEFAULT_STORY = "stories/microsoft-store-trailer.json";
-const DEFAULT_PLATES = "../../apps/pseudolearn_app/build/store-previews";
+const DEFAULT_PLATES = "../../apps/pseudolearn_app/build/trailer-plates";
 const FONTS = {
   sans: "../pseudolearn_brand/assets/fonts/IBMPlexSans-Bold.ttf",
   mono: "../pseudolearn_brand/assets/fonts/IBMPlexMono-Medium.ttf",

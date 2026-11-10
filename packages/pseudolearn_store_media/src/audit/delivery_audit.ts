@@ -18,16 +18,9 @@ export function auditDelivery(request: DeliveryRequest): readonly Finding[] {
     ...auditStreamStructure({ profile, target, framesPerSecond: probe.framesPerSecond, structure: probe.delivery.structure })];
 }
 
-export function levelNumber(level: string): number {
-  return Math.round(Number(level) * 10);
-}
-
 function streamFindings(request: DeliveryRequest): readonly Finding[] {
   const { profile, target, probe } = request;
   const findings: Finding[] = [];
-  if (profile.level !== null && !(probe.delivery.level > 0 && probe.delivery.level <= levelNumber(profile.level))) {
-    findings.push(finding("MEDIA-CODEC", target, `level ${probe.delivery.level / 10} is not within High ${profile.level}`));
-  }
   if (probe.delivery.fieldOrder !== "progressive") {
     findings.push(finding("MEDIA-CODEC", target, `field order ${probe.delivery.fieldOrder || "unknown"} is not progressive`));
   }

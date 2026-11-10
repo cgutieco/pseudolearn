@@ -12,11 +12,14 @@ export type TailPlate = { readonly asset: ProjectAsset | null; readonly findings
 export async function assembleTailPlate(toolbox: Toolbox, place: { root: string; tail: InterfaceTail; language: Language; slot: Slot; output: string; name: string }): Promise<Outcome<TailPlate>> {
   const { files, media } = toolbox;
   const { tail } = place;
-  const directory = files.join(place.root, tail.plate, tail.device, tail.appTheme, place.language);
+  if (!place.slot.device) {
+    return { ok: false, error: `${place.slot.id} declares no device to record its interface plate on` };
+  }
+  const directory = files.join(place.root, tail.plate, place.slot.device.id, tail.appTheme, place.language);
   const bytes = await files.readBytesIfPresent(files.join(directory, PLATE_TIMELINE));
   const parsed = bytes ? safeParse(bytes) : null;
   if (!parsed) {
-    return { ok: true, value: { asset: null, findings: [finding("MEDIA-PLATE", place.name, `${directory} holds no readable ${PLATE_TIMELINE}; record the app previews first`)] } };
+    return { ok: true, value: { asset: null, findings: [finding("MEDIA-PLATE", place.name, `${directory} holds no readable ${PLATE_TIMELINE}; record the trailer plates first`)] } };
   }
   if (parsed.pixelWidth !== place.slot.width || parsed.pixelHeight !== place.slot.height) {
     return { ok: true, value: { asset: null, findings: [finding("MEDIA-PLATE", place.name, `${parsed.pixelWidth}×${parsed.pixelHeight} instead of ${place.slot.width}×${place.slot.height}`)] } };

@@ -7,10 +7,10 @@ import { goodProbe } from "../support/probe.ts";
 const frames = { framePattern: "out/frames/frame_%06d.png", startNumber: 1, frameCount: 300 };
 
 describe("safe-area review", () => {
-  it("is drawn for the Apple header and search videos, not for previews or trailers", () => {
+  it("is drawn for the Apple header and search videos, not for the trailer or stills", () => {
     expect(needsSafeAreaReview(slot("apple.header.video"))).toBe(true);
     expect(needsSafeAreaReview(slot("apple.search.video"))).toBe(true);
-    expect(needsSafeAreaReview(slot("apple.iphone.app-preview"))).toBe(false);
+    expect(needsSafeAreaReview(slot("microsoft.hero-art"))).toBe(false);
     expect(needsSafeAreaReview(slot("microsoft.trailer"))).toBe(false);
   });
 
