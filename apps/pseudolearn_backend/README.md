@@ -81,6 +81,39 @@ Si el modelo falla, responde 429 o no trae `usage`, no hay débito.
 - `deno fmt` no formatea este README: lo excluye `deno.json` porque los README del monorepo usan 120 columnas y
   `deno fmt` las reflujaría a 100.
 
+## Integridad del libro de créditos
+
+`20261110000001_agent_ledger_integrity.sql` reescribe `agent_authorize`, `agent_debit` y `agent_apply_purchase`. Las
+decisiones salen de una auditoría de seguridad del 2026-11-10.
+
+- **Un `x-request-id` solo autoriza una llamada.** El cliente elige el id y el libro lo usaba como clave de idempotencia:
+  repetirlo volvía a autorizar y el segundo débito chocaba con el primero y no cobraba. Ahora `agent_authorize` responde
+  `invalid_request` si el id ya tiene cualquier evento. La app genera un id nuevo en cada llamada, así que no le afecta.
+- **Reserva mientras hay llamadas en vuelo.** Una autorización sin débito de los últimos 150 s (el modelo corta a los
+  120 s) cuenta como en vuelo. Con llamadas en vuelo, se exige que el saldo supere `en vuelo × tope por llamada`; si no,
+  `rate_limited`, que la app reintenta. Así el exceso sin cobrar se limita a una llamada, porque el coste real solo se
+  conoce después. Se descartó cobrar 0 en los fallos del modelo para liberar la reserva antes: cambiaba la regla «sin
+  `usage` no hay débito» y la reserva caduca sola.
+- **Bloqueo por usuario.** `agent_authorize`, `agent_debit` y `agent_apply_purchase` toman
+  `pg_advisory_xact_lock(hashtext('agent_ledger:' || usuario))`, y `agent_apply_purchase` también uno por
+  `tienda:transacción`, para que las comprobaciones y los inserts no se crucen entre peticiones concurrentes.
+- **Una recarga acredita una sola cuenta.** Las recargas no tienen `original_transaction_id`, así que no pasan por
+  `agent_store_links`; si la misma `tienda + transacción` ya pertenece a otro usuario, se responde
+  `purchase_owned_elsewhere`. No se añadió un índice único porque fallaría al desplegar si producción ya tuviera filas
+  duplicadas.
+- **Una sola prueba gratuita por cuenta, venga de donde venga.** La guarda `trial_used` se aplica cuando
+  `p_product = 'trial'` o `p_trial`. Antes, las pruebas de Paddle (`trialing`) y las ofertas introductorias de App Store
+  llegaban como `monthly` con `p_trial` y la saltaban.
+
+**Pendientes declarados**
+
+- Las notificaciones de App Store sin vínculo previo se atribuyen al `appAccountToken` que elige el comprador
+  (`store_events_service.ts`). Explotarlo exige conocer el UUID de otra cuenta y un build que fije un token arbitrario;
+  se registra como pista por validar, no se cambia el flujo de compra.
+- Endurecimiento sin impacto demostrado: limitar el cuerpo de `delete-account` antes de leerlo, comprobar las extensiones
+  X.509 de Apple analizándolas en vez de buscar bytes, deduplicar `notificationUUID` y el id de evento de Paddle, dejar
+  constancia de las revocaciones que llegan antes que la compra, y aplicar la migración diferida que retira
+  `delete_account()`.
 
 ## Comandos útiles
 

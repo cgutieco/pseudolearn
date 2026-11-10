@@ -137,6 +137,89 @@ begin
 end;
 $$;
 
+insert into auth.users (id) values
+  ('00000000-0000-0000-0000-00000000000d'),
+  ('00000000-0000-0000-0000-00000000000e');
+
+do $$
+declare
+  v_reply jsonb;
+  v_d text := '00000000-0000-0000-0000-00000000000d';
+begin
+  v_reply := agent_apply_purchase(v_d::uuid, 'simulated', 'monthly', 'simulated:d1', null,
+    300000, '2026-11-01', '2026-12-01', false, null, '2026-11-01');
+  v_reply := agent_authorize(v_d::uuid, 'replayed', 'turn-d', '2026-11-10 00:00', 15000, 60);
+  assert v_reply->>'error' is null, 'a fresh request is authorized';
+  v_reply := agent_debit(v_d::uuid, 'replayed', 'turn-d', 2000, '2026-11-10 00:00:05');
+  v_reply := agent_authorize(v_d::uuid, 'replayed', 'turn-d', '2026-11-10 00:01', 15000, 60);
+  assert v_reply->>'error' = 'invalid_request', 'a request id that was already used is refused';
+  v_reply := agent_authorize(v_d::uuid, 'pending', 'turn-p', '2026-11-10 00:02', 15000, 60);
+  v_reply := agent_authorize(v_d::uuid, 'pending', 'turn-p', '2026-11-10 00:02:01', 15000, 60);
+  assert v_reply->>'error' = 'invalid_request', 'an authorized request cannot be authorized again';
+  v_reply := agent_debit(v_d::uuid, 'pending', 'turn-p', 0, '2026-11-10 00:02:02');
+  assert (select spent_milli from agent_ledger_periods where transaction_id = 'simulated:d1') = 2000,
+    'only the first call of a request id is charged';
+  assert (select count(*) from agent_ledger_events where user_id = v_d::uuid and kind = 'authorize') = 2,
+    'every authorized call leaves its own event';
+
+  update agent_ledger_periods set spent_milli = allowance_milli - 1000 where transaction_id = 'simulated:d1';
+  v_reply := agent_authorize(v_d::uuid, 'low-1', 'turn-l1', '2026-11-10 00:10', 15000, 60);
+  assert v_reply->>'error' is null, 'a low balance still authorizes one call';
+  v_reply := agent_authorize(v_d::uuid, 'low-2', 'turn-l2', '2026-11-10 00:10:01', 15000, 60);
+  assert v_reply->>'error' = 'rate_limited', 'a low balance does not cover a second call in flight';
+  v_reply := agent_debit(v_d::uuid, 'low-1', 'turn-l1', 500, '2026-11-10 00:10:02');
+  v_reply := agent_authorize(v_d::uuid, 'low-3', 'turn-l3', '2026-11-10 00:10:03', 15000, 60);
+  assert v_reply->>'error' is null, 'the settled call frees the reservation';
+  v_reply := agent_authorize(v_d::uuid, 'low-4', 'turn-l4', '2026-11-10 00:13:10', 15000, 60);
+  assert v_reply->>'error' is null, 'an abandoned reservation expires';
+
+  update agent_ledger_periods set spent_milli = 0 where transaction_id = 'simulated:d1';
+  v_reply := agent_authorize(v_d::uuid, 'wide-1', 'turn-w1', '2026-11-10 00:20', 15000, 60);
+  v_reply := agent_authorize(v_d::uuid, 'wide-2', 'turn-w2', '2026-11-10 00:20:01', 15000, 60);
+  assert v_reply->>'error' is null, 'a large balance covers several calls in flight';
+end;
+$$;
+
+do $$
+declare
+  v_reply jsonb;
+  v_d text := '00000000-0000-0000-0000-00000000000d';
+  v_e text := '00000000-0000-0000-0000-00000000000e';
+begin
+  v_reply := agent_apply_purchase(v_e::uuid, 'simulated', 'monthly', 'simulated:e1', null,
+    300000, '2026-11-01', '2026-12-01', false, null, '2026-11-01');
+  v_reply := agent_apply_purchase(v_d::uuid, 'app_store', 'top_up', 'app_store:7000', null,
+    150000, '2026-11-11', '2026-11-11', false, null, '2026-11-11');
+  assert (v_reply->>'repeated')::boolean = false, 'the buyer redeems the top-up';
+  v_reply := agent_apply_purchase(v_e::uuid, 'app_store', 'top_up', 'app_store:7000', null,
+    150000, '2026-11-11', '2026-11-11', false, null, '2026-11-11');
+  assert v_reply->>'error' = 'purchase_owned_elsewhere', 'a top-up credits a single account';
+  assert (select count(*) from agent_ledger_top_ups where transaction_id = 'app_store:7000') = 1,
+    'the refused top-up records nothing';
+  v_reply := agent_apply_purchase(v_d::uuid, 'app_store', 'top_up', 'app_store:7000', null,
+    150000, '2026-11-11', '2026-11-11', false, null, '2026-11-12');
+  assert (v_reply->>'repeated')::boolean, 'the buyer repeating the top-up stays idempotent';
+  v_reply := agent_apply_purchase(v_e::uuid, 'simulated', 'top_up', 'app_store:7000', null,
+    150000, '2026-11-11', '2026-11-11', false, null, '2026-11-11');
+  assert (v_reply->>'repeated')::boolean = false, 'the same id in another store is another purchase';
+
+  v_reply := agent_apply_purchase(v_e::uuid, 'paddle', 'monthly', 'paddle:sub_t1:2026-11-12', 'sub_t1',
+    40000, '2026-11-12', '2026-11-19 06:00', true, 'ctm_e', '2026-11-12');
+  assert v_reply->>'error' is null, 'the first store trial opens';
+  v_reply := agent_apply_purchase(v_e::uuid, 'paddle', 'monthly', 'paddle:sub_t2:2026-11-13', 'sub_t2',
+    40000, '2026-11-13', '2026-11-20 06:00', true, 'ctm_e', '2026-11-13');
+  assert v_reply->>'error' = 'trial_used', 'a second store trial is refused';
+  assert (select count(*) from agent_ledger_periods where user_id = v_e::uuid and kind = 'trial') = 1,
+    'one trial period per account';
+  v_reply := agent_apply_purchase(v_e::uuid, 'paddle', 'monthly', 'paddle:sub_t1:2026-11-12', 'sub_t1',
+    40000, '2026-11-12', '2026-11-19 06:00', true, 'ctm_e', '2026-11-14');
+  assert (v_reply->>'repeated')::boolean, 'the same trial delivered again is a repetition';
+  v_reply := agent_apply_purchase(v_e::uuid, 'paddle', 'monthly', 'paddle:sub_t1:2026-11-19', 'sub_t1',
+    300000, '2026-11-19', '2026-12-19 06:00', false, 'ctm_e', '2026-11-19');
+  assert v_reply->>'error' is null, 'the paid renewal after the trial is granted';
+end;
+$$;
+
 do $$
 begin
   assert not has_function_privilege('authenticated',
