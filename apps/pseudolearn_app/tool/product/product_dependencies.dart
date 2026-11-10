@@ -2,6 +2,7 @@ import '../../test/fakes/native_test_engine.dart';
 import 'dart:io';
 
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:pseudolearn_app/composition/agent_services.dart';
 import 'package:pseudolearn_app/composition/app_dependencies.dart';
 import 'package:pseudolearn_app/data/demo/bundled_demo_program_source.dart';
 import 'package:pseudolearn_app/data/reference/bundled_reference_repository.dart';
@@ -10,6 +11,7 @@ import 'package:pseudolearn_app/domain/model/documents/document.dart';
 import 'package:pseudolearn_app/domain/model/settings/app_preferences.dart';
 import 'package:pseudolearn_app/domain/model/settings/app_theme_mode.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
+import 'package:pseudolearn_app/domain/ports/auth_gateway.dart';
 
 import '../../test/fakes/in_memory_document_repository.dart';
 import '../../test/fakes/in_memory_preferences_store.dart';
@@ -21,6 +23,8 @@ final DateTime productClockInstant = DateTime(2026, 8, 15, 12, 0);
 AppDependencies buildProductDependencies({
   required UiLanguageId language,
   required AppThemeMode themeMode,
+  AgentServices? agent,
+  AuthGateway? authGateway,
 }) {
   final engine = nativeTestEngine;
   return buildTestDependencies(
@@ -40,6 +44,8 @@ AppDependencies buildProductDependencies({
     ),
     engine: engine,
     createObservableExecutionSession: engine.createObservableExecutionSession,
+    agent: agent,
+    authGateway: authGateway,
   );
 }
 

@@ -32,6 +32,20 @@ flowchart BT
   compone y codifica a partir de ellas; la app no compone nada. `PlateRecorder` avanza el reloj de prueba un
   fotograma exacto por captura, así que la grabación es determinista y no depende de un simulador. El formato está
   fijado por `tool/store_plates/plate_timeline_test.dart` contra el mismo archivo de contrato que prueba el motor.
+  Además de la calibración, graba una placa fija por **capítulo** de las capturas (`chapter-idea`, `chapter-run`,
+  `chapter-trace`, `chapter-nodo`, `chapter-code`, `chapter-route`), por dispositivo, tema e idioma, en
+  `build/store-plates/<capítulo>/<dispositivo>/<tema>/<idioma>/`. Los dispositivos (tamaño lógico y escala) se leen de
+  `packages/pseudolearn_store_media/catalog/slots.json`, que es su única fuente. Cada escena comprueba lo que muestra
+  antes de grabar: programa en pausa a mitad de ejecución, tabla con filas, código equivalente no vacío, ruta cargada
+  y, en `chapter-nodo`, la etiqueta «IA» de Nodo y el código de su respuesta **verificado por el analizador real**. La
+  respuesta de Nodo sale de `FakeAgentModelGateway` con un guion (`tool/store_plates/nodo_script.dart`), con sesión,
+  créditos y consentimiento simulados; el resto de la UI y el análisis son los reales. `--dart-define` con
+  `STORE_PLATE_DEVICES`, `STORE_PLATE_CHAPTERS` y `STORE_PLATE_THEMES` (listas separadas por comas) acota la grabación.
+  Cada placa de capítulo guarda en su `timeline.json` los rectángulos de las piezas que el motor resalta (`editor`,
+  `diagram`, `output`, `trace`, `question`, `answer`, `verified-code`, `export`, `lesson`). `chapter-code` muestra la
+  exportación a Rust, porque la de Python abre con funciones auxiliares de lectura que no cuentan nada. Antes de grabar,
+  el generador comprueba con el analizador real que el código que la historia de capturas muestra
+  (`packages/pseudolearn_store_media/stories/app-store-screenshots.json`) es un programa válido en `es` y en `en`.
 
 ## Arquitectura
 
@@ -180,8 +194,8 @@ Los toques se inyectaron con el control de simulador. Cada toque se comprobó co
 - [ ] Capturas de iPhone Duo en App Store Connect según
   [las especificaciones](https://developer.apple.com/help/app-store-connect/reference/screenshot-specifications)
   (interior 2853 × 2007 y 2007 × 2853; exterior 2034 × 1398 y 1398 × 2034; hasta 10 por tamaño; PNG o JPEG sin
-  transparencia). Según la noticia de Apple, serán obligatorias desde abril de 2027. `tool/generate_store_material.dart`
-  todavía no genera esos tamaños.
+  transparencia). Según la noticia de Apple, serán obligatorias desde abril de 2027. La app graba las placas de las
+  cuatro poses y `pseudolearn_store_media` ya produce esas capturas en `es` y `en`; falta subirlas.
 - [ ] Revisar el producto con la nueva herramienta de preview de App Store Connect.
 - [ ] Nominación de featuring: en «Helpful Details», indicar que la app está optimizada para iPhone Duo con todas las
   poses.
@@ -203,6 +217,7 @@ Los toques se inyectaron con el control de simulador. Cada toque se comprobó co
 | Manual de usuario en `es` y `en`             | `dart run tool/check_manual.dart`                                                                     |
 | Conformidad del sujeto `app`                 | `cargo run -p see_cli --bin see -- conform --subject app` (en `packages/pseudolearn_spec`)            |
 | Grabar las placas para las tiendas           | `flutter test tool/generate_store_plates.dart` (con la biblioteca nativa en release)                  |
+| Grabar solo algunas placas                   | `flutter test tool/generate_store_plates.dart --dart-define=STORE_PLATE_DEVICES=mac`                  |
 | Compilar                                     | `flutter build macos --release`, `flutter build ipa --no-codesign`, `flutter build windows --release` |
 
 Requisitos: Flutter 3.47.5 (fijado en `pubspec.yaml`), Dart `^3.9.0` y Rust según `native/rust-toolchain.toml` solo para
