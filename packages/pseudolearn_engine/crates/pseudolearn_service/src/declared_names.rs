@@ -1,5 +1,5 @@
 use pseudolearn_semantic::hir::FunctionKind;
-use pseudolearn_semantic::{ServiceAnalysis, ServiceSymbolTarget};
+use pseudolearn_semantic::{ClassId, FunctionId, ServiceAnalysis, ServiceSymbolTarget};
 use pseudolearn_source::{IdentifierNormalizer, SourceId};
 use std::collections::BTreeSet;
 
@@ -71,6 +71,34 @@ fn top_level_names(
     source: SourceId,
     except: ServiceSymbolTarget,
 ) -> Vec<String> {
+    let locals = analysis
+        .module
+        .locals
+        .iter()
+        .filter(|local| local.span.source_id == source)
+        .map(|local| local.name.clone());
+    declaration_names(analysis, source, except)
+        .into_iter()
+        .chain(locals)
+        .collect()
+}
+
+pub(crate) fn declaration_collides(
+    analysis: &ServiceAnalysis,
+    source: SourceId,
+    except: ServiceSymbolTarget,
+    new_name: &str,
+) -> bool {
+    declaration_names(analysis, source, except)
+        .iter()
+        .any(|name| spelled_like(name, new_name))
+}
+
+fn declaration_names(
+    analysis: &ServiceAnalysis,
+    source: SourceId,
+    except: ServiceSymbolTarget,
+) -> Vec<String> {
     let module = &analysis.module;
     let declared = module
         .name_declarations
@@ -81,24 +109,27 @@ fn top_level_names(
     let classes = module
         .classes
         .iter()
-        .filter(|class| class.span.source_id == source)
-        .map(|class| class.name.clone());
+        .enumerate()
+        .filter(|(index, class)| {
+            class.span.source_id == source
+                && ServiceSymbolTarget::Class(ClassId(u32::try_from(*index).unwrap_or(u32::MAX)))
+                    != except
+        })
+        .map(|(_, class)| class.name.clone());
     let functions = module
         .functions
         .iter()
-        .filter(|function| function.span.source_id == source)
-        .filter(|function| function.owner.is_none() && function.kind != FunctionKind::Main)
-        .map(|function| function.name.clone());
-    let locals = module
-        .locals
-        .iter()
-        .filter(|local| local.span.source_id == source)
-        .map(|local| local.name.clone());
-    declared
-        .chain(classes)
-        .chain(functions)
-        .chain(locals)
-        .collect()
+        .enumerate()
+        .filter(|(index, function)| {
+            function.span.source_id == source
+                && function.owner.is_none()
+                && function.kind != FunctionKind::Main
+                && ServiceSymbolTarget::Function(FunctionId(
+                    u32::try_from(*index).unwrap_or(u32::MAX),
+                )) != except
+        })
+        .map(|(_, function)| function.name.clone());
+    declared.chain(classes).chain(functions).collect()
 }
 
 fn sibling_parameter_collides(

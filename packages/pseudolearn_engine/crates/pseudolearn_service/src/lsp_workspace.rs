@@ -3,7 +3,7 @@ use crate::workspace_session::WorkspaceSession;
 use pseudolearn_lexicon::Profile;
 use pseudolearn_project::{FileInput, PackageInput, PackageKind, ProjectInput};
 use serde_json::Value;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 pub(crate) fn install_snapshot(
     server: &mut crate::lsp_session::LspServer,
@@ -12,6 +12,7 @@ pub(crate) fn install_snapshot(
     let snapshot = parse_snapshot(request_parameters, server.profile)?;
     let uris = parse_uris(request_parameters)?;
     let session = WorkspaceSession::new(snapshot).map_err(|error| format!("{error:?}"))?;
+    drop_departed_documents(server, &uris);
     server.workspace_session = Some(session);
     server.workspace_paths = uris
         .iter()
@@ -19,6 +20,23 @@ pub(crate) fn install_snapshot(
         .collect();
     server.workspace_uris = uris;
     Ok(())
+}
+
+fn drop_departed_documents(
+    server: &mut crate::lsp_session::LspServer,
+    uris: &BTreeMap<String, String>,
+) {
+    let retained: BTreeSet<&String> = uris.values().collect();
+    let departed: Vec<String> = server
+        .workspace_paths
+        .keys()
+        .filter(|uri| !retained.contains(uri))
+        .cloned()
+        .collect();
+    for uri in departed {
+        server.service.close_document(&uri);
+        server.versions.remove(&uri);
+    }
 }
 
 fn parse_snapshot(
@@ -144,7 +162,7 @@ fn option_contents(options: &Value) -> (BTreeMap<String, Profile>, Option<String
 }
 
 fn parse_uris(request_parameters: &Value) -> Result<BTreeMap<String, String>, String> {
-    request_parameters
+    let uris: BTreeMap<String, String> = request_parameters
         .get("uris")
         .and_then(Value::as_object)
         .ok_or("missing uris")?
@@ -154,7 +172,12 @@ fn parse_uris(request_parameters: &Value) -> Result<BTreeMap<String, String>, St
                 .map(|uri| (path.clone(), uri.to_owned()))
                 .ok_or_else(|| "invalid document uri".to_owned())
         })
-        .collect()
+        .collect::<Result<_, _>>()?;
+    let distinct: BTreeSet<&String> = uris.values().collect();
+    if distinct.len() != uris.len() {
+        return Err("duplicate document uri".to_owned());
+    }
+    Ok(uris)
 }
 
 fn string(value: &Value, field: &str) -> Result<String, String> {

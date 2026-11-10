@@ -11,6 +11,14 @@ impl LspServer {
         let Some((text, version)) = opened_document(message) else {
             return Vec::new();
         };
+        if version < 0
+            || self
+                .versions
+                .get(&uri)
+                .is_some_and(|previous| version <= *previous)
+        {
+            return Vec::new();
+        }
         if let Some(path) = self.path_for_uri(&uri) {
             return self.open_workspace_document(OpenDocumentRequest {
                 uri: &uri,
@@ -38,7 +46,9 @@ impl LspServer {
         {
             return Vec::new();
         }
-        let updated = apply_content_changes(&current, request.changes);
+        let Some(updated) = apply_content_changes(&current, request.changes) else {
+            return Vec::new();
+        };
         self.commit_document_change(request, updated)
     }
 

@@ -3,6 +3,10 @@ use pseudolearn_source::LineIndex;
 
 pub fn offset_at(text: &str, position: Position) -> usize {
     let index = LineIndex::build(text);
+    offset_at_with_index(text, position, &index)
+}
+
+pub fn offset_at_with_index(text: &str, position: Position, index: &LineIndex) -> usize {
     let line_slot = usize::try_from(position.line.saturating_sub(1)).unwrap_or(0);
     let Some(line_start) = index.line_start(line_slot) else {
         return text.len();
@@ -21,6 +25,15 @@ pub fn position_at(text: &str, offset: usize) -> Position {
 
 pub fn offset_from_lsp(text: &str, line: u32, character: u32) -> usize {
     let index = LineIndex::build(text);
+    offset_from_lsp_with_index(text, line, character, &index)
+}
+
+pub fn offset_from_lsp_with_index(
+    text: &str,
+    line: u32,
+    character: u32,
+    index: &LineIndex,
+) -> usize {
     let slot = usize::try_from(line).unwrap_or(0);
     let Some(line_start) = index.line_start(slot) else {
         return text.len();

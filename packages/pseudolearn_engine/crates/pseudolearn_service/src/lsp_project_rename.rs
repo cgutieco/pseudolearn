@@ -1,4 +1,7 @@
-use crate::lsp_project_selection::{SelectedSymbol, identifier_range, lsp_range, to_index};
+use crate::lsp_line_indexes::LineIndexCache;
+use crate::lsp_project_selection::{
+    SelectedSymbol, identifier_range, lsp_range, to_index, whole_identifier,
+};
 use crate::lsp_protocol::failure;
 use crate::lsp_session::LspServer;
 use crate::workspace_session::WorkspaceSession;
@@ -6,6 +9,7 @@ use pseudolearn_lexicon::{Profile, is_reserved};
 use pseudolearn_semantic::{ServiceAnalysis, ServiceSymbolTarget};
 use pseudolearn_source::IdentifierNormalizer;
 use serde_json::{Value, json};
+use std::collections::BTreeSet;
 
 struct ProjectRenameContext<'request> {
     server: &'request LspServer,
@@ -127,30 +131,68 @@ impl LspServer {
     }
 }
 
+#[derive(Default)]
+struct EditCollector {
+    changes: Vec<Value>,
+    seen: BTreeSet<(u32, usize, usize)>,
+    indexes: LineIndexCache,
+}
+
 fn collect_document_changes(
     context: &ProjectRenameContext<'_>,
     analysis: &ServiceAnalysis,
 ) -> Result<Vec<Value>, Value> {
-    let mut changes = Vec::new();
+    let mut collector = EditCollector::default();
     for reference in analysis.references_for_target(context.selected.target) {
         if context.server.request_cancelled() {
             return Err(failure(context.message, -32800, "request cancelled"));
         }
-        append_versioned_edit(context, &reference, &mut changes)?;
+        append_versioned_edit(context, &reference, &mut collector)?;
     }
-    Ok(changes)
+    Ok(collector.changes)
 }
 
 fn append_versioned_edit(
     context: &ProjectRenameContext<'_>,
     reference: &pseudolearn_semantic::ServiceReference,
-    changes: &mut Vec<Value>,
+    collector: &mut EditCollector,
 ) -> Result<(), Value> {
-    let Some((path, text)) = context
-        .workspace
-        .file_by_source_id(reference.span.source_id.value())
-    else {
+    let source_id = reference.span.source_id.value();
+    let (text, document_uri, version) = affected_document(context, source_id)?;
+    let edit_range = reference_edit_range(text, reference, context.selected).map_err(|()| {
+        request_failed(
+            context.message,
+            "a reference span does not hold an identifier",
+        )
+    })?;
+    let Some((start, ending)) = edit_range else {
         return Ok(());
+    };
+    if !collector.seen.insert((source_id, start, ending)) {
+        return Ok(());
+    }
+    let range = collector.indexes.range(source_id, text, (start, ending));
+    add_versioned_edit(
+        &mut collector.changes,
+        VersionedRenameEdit {
+            document_uri,
+            version,
+            range,
+            new_name: context.new_name,
+        },
+    );
+    Ok(())
+}
+
+fn affected_document<'context>(
+    context: &ProjectRenameContext<'context>,
+    source_id: u32,
+) -> Result<(&'context str, &'context str, i64), Value> {
+    let Some((path, text)) = context.workspace.file_by_source_id(source_id) else {
+        return Err(request_failed(
+            context.message,
+            "workspace snapshot has no source for an affected reference",
+        ));
     };
     let Some(document_uri) = context.server.uri_for_path(path) else {
         return Err(request_failed(
@@ -164,36 +206,26 @@ fn append_versioned_edit(
             "all affected documents must be synchronized and open",
         ));
     };
-    let Some(edit_range) = reference_edit_range(text, reference, context.selected) else {
-        return Ok(());
-    };
-    add_versioned_edit(
-        changes,
-        VersionedRenameEdit {
-            document_uri,
-            version,
-            range: edit_range,
-            new_name: context.new_name,
-        },
-    );
-    Ok(())
+    Ok((text, document_uri, version))
 }
 
 fn reference_edit_range(
     text: &str,
     reference: &pseudolearn_semantic::ServiceReference,
     selected: &SelectedSymbol,
-) -> Option<Value> {
-    let (start, ending) = identifier_range(
-        text,
-        (
-            to_index(reference.span.start),
-            to_index(reference.span.ending),
-        ),
-        &selected.name,
-        !reference.is_declaration,
-    )?;
-    Some(lsp_range(text, start, ending))
+) -> Result<Option<(usize, usize)>, ()> {
+    let span = (
+        to_index(reference.span.start),
+        to_index(reference.span.ending),
+    );
+    let exact = identifier_range(text, span, &selected.name, !reference.is_declaration);
+    if exact.is_some() {
+        return Ok(exact);
+    }
+    if whole_identifier(text, span).is_some() {
+        return Ok(None);
+    }
+    Err(())
 }
 
 fn add_versioned_edit(changes: &mut Vec<Value>, request: VersionedRenameEdit<'_>) {

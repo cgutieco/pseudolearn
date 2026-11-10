@@ -118,3 +118,58 @@ fn rename_at(server: &mut LspServer, id: u64, line: u64, character: u64, name: &
         "params":{"textDocument":{"uri":APP_URI},"position":{"line":line,"character":character},"newName":name}
     }))
 }
+
+fn prepare_at(server: &mut LspServer, id: u64, line: u64, character: u64) -> Vec<Value> {
+    server.handle_message(&json!({
+        "jsonrpc":"2.0","id":id,"method":"textDocument/prepareRename",
+        "params":{"textDocument":{"uri":APP_URI},"position":{"line":line,"character":character}}
+    }))
+}
+
+#[test]
+fn prepare_rename_returns_null_inside_a_workspace_when_no_project_symbol_is_selected() {
+    let mut server = initialized_server(rename_capabilities());
+    server.handle_message(&workspace_message(MAIN, LIBRARY));
+    open_document(&mut server, APP_URI, 2, MAIN);
+    open_document(&mut server, LIBRARY_URI, 5, LIBRARY);
+    let whitespace = prepare_at(&mut server, 5, 3, 0);
+    assert_eq!(
+        whitespace.first().and_then(|answer| answer.get("result")),
+        Some(&Value::Null)
+    );
+    assert!(!has_error(&whitespace));
+}
+
+#[test]
+fn rename_inside_a_workspace_never_falls_back_to_a_single_document_edit() {
+    let aliased =
+        "Importar geo.vector.Double Como D;\nAlgoritmo Main\nEscribir D(2);\nFinAlgoritmo\n";
+    let mut server = initialized_server(rename_capabilities());
+    server.handle_message(&workspace_message(aliased, LIBRARY));
+    open_document(&mut server, APP_URI, 2, aliased);
+    open_document(&mut server, LIBRARY_URI, 5, LIBRARY);
+    let aliased_use = rename_at(&mut server, 6, 2, 9, "Twice");
+    assert!(has_error(&aliased_use), "{aliased_use:?}");
+    let blank = rename_at(&mut server, 7, 3, 0, "Twice");
+    assert!(has_error(&blank), "{blank:?}");
+    let prepared = prepare_at(&mut server, 8, 2, 9);
+    assert!(!has_error(&prepared));
+}
+
+#[test]
+fn rename_of_a_document_outside_the_workspace_still_uses_the_single_document_path() {
+    let mut server = initialized_server(rename_capabilities());
+    server.handle_message(&workspace_message(MAIN, LIBRARY));
+    let loose = "file:///loose/main.pseudo";
+    let text = "Algoritmo Main\nDefinir total Como Entero <- 0;\nEscribir total;\nFinAlgoritmo\n";
+    open_document(&mut server, loose, 1, text);
+    let response = server.handle_message(&json!({
+        "jsonrpc":"2.0","id":9,"method":"textDocument/rename",
+        "params":{"textDocument":{"uri":loose},"position":{"line":1,"character":9},"newName":"fresh"}
+    }));
+    let edits = response
+        .first()
+        .and_then(|answer| answer.pointer("/result/documentChanges/0/edits"))
+        .and_then(Value::as_array);
+    assert_eq!(edits.map(Vec::len), Some(2));
+}

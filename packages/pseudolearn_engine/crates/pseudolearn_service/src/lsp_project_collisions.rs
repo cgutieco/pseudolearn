@@ -1,3 +1,4 @@
+use crate::declared_names::declaration_collides;
 use crate::lsp_project_selection::to_index;
 use pseudolearn_semantic::{
     ClassId, FieldId, FunctionId, LocalId, ServiceAnalysis, ServiceSymbolTarget,
@@ -31,6 +32,14 @@ fn local_collision(analysis: &ServiceAnalysis, local: LocalId, new_name: &str) -
     let Some(current) = analysis.module.locals.get(position) else {
         return true;
     };
+    if declaration_collides(
+        analysis,
+        current.span.source_id,
+        ServiceSymbolTarget::Local(local),
+        new_name,
+    ) {
+        return true;
+    }
     analysis
         .module
         .locals
@@ -48,6 +57,16 @@ fn function_collision(analysis: &ServiceAnalysis, function: FunctionId, new_name
     let Some(current) = analysis.module.functions.get(position) else {
         return true;
     };
+    if current.owner.is_none()
+        && declaration_collides(
+            analysis,
+            current.span.source_id,
+            ServiceSymbolTarget::Function(function),
+            new_name,
+        )
+    {
+        return true;
+    }
     let unit = analysis.module.units.function_unit(function);
     analysis
         .module
@@ -68,6 +87,17 @@ fn function_collision(analysis: &ServiceAnalysis, function: FunctionId, new_name
 
 fn class_collision(analysis: &ServiceAnalysis, class: ClassId, new_name: &str) -> bool {
     let position = to_index(class.0);
+    let Some(current) = analysis.module.classes.get(position) else {
+        return true;
+    };
+    if declaration_collides(
+        analysis,
+        current.span.source_id,
+        ServiceSymbolTarget::Class(class),
+        new_name,
+    ) {
+        return true;
+    }
     let unit = analysis.module.units.class_unit(class);
     analysis
         .module

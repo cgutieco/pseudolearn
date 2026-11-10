@@ -3,13 +3,14 @@ use crate::document_session::DocumentSession;
 use crate::formatter::{FormatOptions, format_checked};
 use crate::insertion::build_insertion;
 use crate::lsp_protocol::{
-    completion_kind_code, lsp_range, lsp_range_from_offsets, position_from_request, success,
-    text_document_uri,
+    completion_kind_code, lsp_range, lsp_range_from_offsets, lsp_range_from_offsets_with_index,
+    lsp_range_with_index, position_from_request, success, text_document_uri,
 };
 use crate::lsp_session::LspServer;
 use crate::navigation::{HighlightKind, SymbolCategory};
 use crate::on_type::on_type;
 use crate::positions::offset_at;
+use pseudolearn_source::LineIndex;
 use serde_json::{Value, json};
 
 struct CompletionPresentation {
@@ -60,13 +61,14 @@ impl LspServer {
                 let cursor = offset_at(session.text(), position);
                 let outcome = on_type(session, cursor, typed);
                 let text = session.text();
+                let index = LineIndex::build(text);
                 Some(
                     outcome
                         .edits
                         .iter()
                         .map(|change| {
                             json!({
-                                "range": lsp_range_from_offsets(text, change.start_utf8, change.end_utf8),
+                                "range": lsp_range_from_offsets_with_index(text, change.start_utf8, change.end_utf8, &index),
                                 "newText": change.text
                             })
                         })
@@ -130,12 +132,15 @@ impl LspServer {
             .map(|session| {
                 let position = position_from_request(session.text(), message);
                 let declaration = session.queries().definition(position);
+                let index = LineIndex::build(session.text());
                 session
                     .queries()
                     .references(position)
                     .into_iter()
                     .filter(|range| include_declaration || Some(*range) != declaration)
-                    .map(|range| json!({ "uri": uri, "range": lsp_range(session.text(), range) }))
+                    .map(|range| {
+                        json!({ "uri": uri, "range": lsp_range_with_index(session.text(), range, &index) })
+                    })
                     .collect()
             })
             .unwrap_or_default();
@@ -148,6 +153,7 @@ impl LspServer {
             .session(text_document_uri(message))
             .map(|session| {
                 let position = position_from_request(session.text(), message);
+                let index = LineIndex::build(session.text());
                 session
                     .queries()
                     .highlights(position)
@@ -157,7 +163,7 @@ impl LspServer {
                             HighlightKind::Read => 2,
                             HighlightKind::Write => 3,
                         };
-                        json!({ "range": lsp_range(session.text(), entry.range), "kind": kind })
+                        json!({ "range": lsp_range_with_index(session.text(), entry.range, &index), "kind": kind })
                     })
                     .collect()
             })
@@ -171,6 +177,7 @@ impl LspServer {
             .service
             .session(uri)
             .map(|session| {
+                let index = LineIndex::build(session.text());
                 session
                     .queries()
                     .symbols()
@@ -187,7 +194,7 @@ impl LspServer {
                             "name": entry.name,
                             "kind": kind,
                             "containerName": entry.container,
-                            "location": { "uri": uri, "range": lsp_range(session.text(), entry.range) }
+                            "location": { "uri": uri, "range": lsp_range_with_index(session.text(), entry.range, &index) }
                         })
                     })
                     .collect()

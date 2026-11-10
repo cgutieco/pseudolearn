@@ -1,14 +1,17 @@
 use crate::document_session::DocumentSession;
+use crate::lsp_document_collisions::document_collision;
 use crate::lsp_protocol::{
-    failure, lsp_range_from_offsets, position_from_request, success, text_document_uri,
+    failure, lsp_range_from_offsets, lsp_range_from_offsets_with_index, position_from_request,
+    success, text_document_uri,
 };
 use crate::lsp_session::LspServer;
 use crate::positions::offset_at;
 use crate::symbol_index::NamedOccurrence;
 use pseudolearn_lexicon::is_reserved;
 use pseudolearn_semantic::ServiceSymbolTarget;
-use pseudolearn_source::IdentifierNormalizer;
+use pseudolearn_source::{IdentifierNormalizer, LineIndex};
 use serde_json::{Value, json};
+use std::collections::BTreeSet;
 
 impl LspServer {
     pub(crate) fn handle_prepare_rename(&self, message: &Value) -> Value {
@@ -20,10 +23,10 @@ impl LspServer {
             );
         }
         let uri = text_document_uri(message);
-        if self.workspace_session.is_some()
-            && let Some(response) = self.prepare_project_rename(uri, message)
-        {
-            return response;
+        if self.workspace_session.is_some() && self.path_for_uri(uri).is_some() {
+            return self
+                .prepare_project_rename(uri, message)
+                .unwrap_or_else(|| success(message, Value::Null));
         }
         let result = self.service.session(uri).and_then(|session| {
             let position = position_from_request(session.text(), message);
@@ -52,10 +55,14 @@ impl LspServer {
             );
         }
         let uri = text_document_uri(message);
-        if self.workspace_session.is_some()
-            && let Some(response) = self.rename_project_symbol(uri, message)
-        {
-            return response;
+        if self.workspace_session.is_some() && self.path_for_uri(uri).is_some() {
+            return self.rename_project_symbol(uri, message).unwrap_or_else(|| {
+                failure(
+                    message,
+                    -32602,
+                    "no renamable symbol or new name at the position",
+                )
+            });
         }
         let result = self.service.session(uri).and_then(|session| {
             let version = self.versions.get(uri).copied()?;
@@ -108,16 +115,20 @@ fn document_edits(
     occurrence: &NamedOccurrence,
     new_name: &str,
 ) -> Vec<Value> {
+    let index = LineIndex::build(session.text());
+    let mut seen = BTreeSet::new();
     session
         .index
         .occurrences_of(occurrence.target)
         .into_iter()
+        .filter(|candidate| seen.insert((candidate.span.start, candidate.span.ending)))
         .map(|candidate| {
             json!({
-                "range":lsp_range_from_offsets(
+                "range":lsp_range_from_offsets_with_index(
                     session.text(),
                     usize::try_from(candidate.span.start).unwrap_or(0),
-                    usize::try_from(candidate.span.ending).unwrap_or(0)
+                    usize::try_from(candidate.span.ending).unwrap_or(0),
+                    &index
                 ),
                 "newText":new_name
             })
@@ -163,101 +174,4 @@ fn symbol_name(session: &DocumentSession, target: ServiceSymbolTarget) -> Option
         }
         ServiceSymbolTarget::Builtin(_) => None,
     }
-}
-
-fn document_collision(
-    session: &DocumentSession,
-    occurrence: &NamedOccurrence,
-    new_name: &str,
-) -> bool {
-    match occurrence.target {
-        ServiceSymbolTarget::Local(identifier) => local_collision(session, identifier, new_name),
-        ServiceSymbolTarget::Function(identifier) => {
-            function_collision(session, identifier, new_name)
-        }
-        ServiceSymbolTarget::Class(identifier) => class_collision(session, identifier, new_name),
-        ServiceSymbolTarget::Field(identifier) => field_collision(session, identifier, new_name),
-        ServiceSymbolTarget::Record(_)
-        | ServiceSymbolTarget::Enum(_)
-        | ServiceSymbolTarget::Interface(_)
-        | ServiceSymbolTarget::Constant(_)
-        | ServiceSymbolTarget::Template(_)
-        | ServiceSymbolTarget::TypeParameter(_, _) => {
-            crate::declared_names::name_collides(&session.analysis, occurrence.target, new_name)
-        }
-        ServiceSymbolTarget::Builtin(_) => true,
-    }
-}
-
-fn local_collision(
-    session: &DocumentSession,
-    identifier: pseudolearn_semantic::LocalId,
-    new_name: &str,
-) -> bool {
-    let position = usize::try_from(identifier.0).unwrap_or(usize::MAX);
-    let Some(current) = session.analysis.module.locals.get(position) else {
-        return true;
-    };
-    session
-        .analysis
-        .module
-        .locals
-        .iter()
-        .enumerate()
-        .any(|(index, candidate)| {
-            index != position
-                && candidate.scope == current.scope
-                && IdentifierNormalizer::equals(&candidate.name, new_name)
-        })
-}
-
-fn function_collision(
-    session: &DocumentSession,
-    identifier: pseudolearn_semantic::FunctionId,
-    new_name: &str,
-) -> bool {
-    let position = usize::try_from(identifier.0).unwrap_or(usize::MAX);
-    let Some(current) = session.analysis.module.functions.get(position) else {
-        return true;
-    };
-    session
-        .analysis
-        .module
-        .functions
-        .iter()
-        .enumerate()
-        .any(|(index, candidate)| {
-            index != position
-                && candidate.owner == current.owner
-                && IdentifierNormalizer::equals(&candidate.name, new_name)
-        })
-}
-
-fn class_collision(
-    session: &DocumentSession,
-    identifier: pseudolearn_semantic::ClassId,
-    new_name: &str,
-) -> bool {
-    let position = usize::try_from(identifier.0).unwrap_or(usize::MAX);
-    session
-        .analysis
-        .module
-        .classes
-        .iter()
-        .enumerate()
-        .any(|(index, candidate)| {
-            index != position && IdentifierNormalizer::equals(&candidate.name, new_name)
-        })
-}
-
-fn field_collision(
-    session: &DocumentSession,
-    identifier: pseudolearn_semantic::FieldId,
-    new_name: &str,
-) -> bool {
-    session.analysis.module.classes.iter().any(|class| {
-        class.fields.iter().any(|candidate| {
-            candidate.id != identifier && IdentifierNormalizer::equals(&candidate.name, new_name)
-        })
-    })
 }

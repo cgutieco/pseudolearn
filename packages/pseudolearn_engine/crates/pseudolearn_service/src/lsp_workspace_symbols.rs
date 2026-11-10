@@ -3,7 +3,7 @@ use crate::lsp_protocol::{failure, lsp_range_from_offsets_with_index};
 use crate::lsp_session::LspServer;
 use pseudolearn_lexicon::KeywordKind;
 use pseudolearn_semantic::{ServiceSymbol, ServiceSymbolCategory, ServiceSymbolTarget};
-use pseudolearn_source::LineIndex;
+use pseudolearn_source::{IdentifierNormalizer, LineIndex};
 use serde_json::{Value, json};
 use std::collections::BTreeMap;
 
@@ -15,7 +15,8 @@ impl LspServer {
         let query = message
             .pointer("/params/query")
             .and_then(Value::as_str)
-            .unwrap_or("");
+            .map(IdentifierNormalizer::normalize)
+            .unwrap_or_default();
         let mut line_indexes = BTreeMap::new();
         let symbols = self
             .workspace_session
@@ -25,7 +26,7 @@ impl LspServer {
                 analysis
                     .symbols
                     .iter()
-                    .filter_map(|symbol| self.workspace_symbol(symbol, query, &mut line_indexes))
+                    .filter_map(|symbol| self.workspace_symbol(symbol, &query, &mut line_indexes))
                     .collect::<Vec<_>>()
             })
             .unwrap_or_default();
@@ -94,7 +95,7 @@ fn global_symbol_matches(symbol: &ServiceSymbol, query: &str) -> bool {
     matches!(
         symbol.category,
         ServiceSymbolCategory::Function | ServiceSymbolCategory::Class
-    ) && symbol.name.contains(query)
+    ) && IdentifierNormalizer::normalize(&symbol.name).contains(query)
 }
 
 fn symbol_target(symbol: &ServiceSymbol) -> Option<ServiceSymbolTarget> {

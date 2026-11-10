@@ -1,4 +1,4 @@
-use crate::lsp_protocol::METHOD_NOT_FOUND;
+use crate::lsp_protocol::{INVALID_PARAMS, METHOD_NOT_FOUND, has_valid_position};
 use crate::lsp_session::{LspServer, refuse};
 use serde_json::Value;
 
@@ -9,6 +9,9 @@ impl LspServer {
         message: &Value,
         is_request: bool,
     ) -> Vec<Value> {
+        if requires_position(method) && !has_valid_position(message) {
+            return refuse(message, is_request, INVALID_PARAMS, "invalid position");
+        }
         if method.starts_with("textDocument/") && !self.request_cancelled() {
             self.ensure_workspace_document(message);
         }
@@ -31,4 +34,19 @@ impl LspServer {
         };
         vec![response]
     }
+}
+
+fn requires_position(method: &str) -> bool {
+    matches!(
+        method,
+        "textDocument/completion"
+            | "textDocument/hover"
+            | "textDocument/signatureHelp"
+            | "textDocument/definition"
+            | "textDocument/references"
+            | "textDocument/documentHighlight"
+            | "textDocument/prepareRename"
+            | "textDocument/rename"
+            | "textDocument/onTypeFormatting"
+    )
 }

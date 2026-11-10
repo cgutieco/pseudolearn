@@ -1,3 +1,4 @@
+use crate::lsp_line_indexes::LineIndexCache;
 use crate::lsp_project_selection::{
     SelectedSymbol, identifier_range, lsp_range, to_index, to_u32, whole_identifier,
 };
@@ -67,6 +68,7 @@ impl LspServer {
 fn collect_project_references(context: &ProjectReferenceContext<'_>) -> Option<Vec<Value>> {
     let definition = context.analysis.definition_span(context.selected.target);
     let mut locations = Vec::new();
+    let mut indexes = LineIndexCache::default();
     for reference in context
         .analysis
         .references_for_target(context.selected.target)
@@ -74,7 +76,9 @@ fn collect_project_references(context: &ProjectReferenceContext<'_>) -> Option<V
         if context.server.request_cancelled() {
             return None;
         }
-        if let Some(location) = project_reference_location(context, &reference, definition) {
+        if let Some(location) =
+            project_reference_location(context, &reference, definition, &mut indexes)
+        {
             locations.push(location);
         }
     }
@@ -85,6 +89,7 @@ fn project_reference_location(
     context: &ProjectReferenceContext<'_>,
     reference: &ServiceReference,
     definition: Option<Span>,
+    indexes: &mut LineIndexCache,
 ) -> Option<Value> {
     if !context.include_declaration && reference.is_declaration {
         return None;
@@ -107,7 +112,9 @@ fn project_reference_location(
         return None;
     }
     let target_uri = context.server.uri_for_path(path)?;
-    Some(json!({"uri":target_uri,"range":lsp_range(text,start,ending)}))
+    Some(
+        json!({"uri":target_uri,"range":indexes.range(reference.span.source_id.value(),text,(start,ending))}),
+    )
 }
 
 fn definition_contains(

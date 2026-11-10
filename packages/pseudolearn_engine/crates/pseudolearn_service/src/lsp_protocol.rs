@@ -1,6 +1,8 @@
 use crate::completion::CompletionKind;
 use crate::navigation::{Position, Range};
-use crate::positions::{lsp_position_at_with_index, offset_at, offset_from_lsp, position_at};
+use crate::positions::{
+    lsp_position_at_with_index, offset_at_with_index, offset_from_lsp, position_at,
+};
 use pseudolearn_source::LineIndex;
 use serde_json::{Value, json};
 
@@ -31,6 +33,15 @@ pub fn text_document_uri(message: &Value) -> &str {
         .pointer("/params/textDocument/uri")
         .and_then(Value::as_str)
         .unwrap_or("")
+}
+
+pub fn has_valid_position(message: &Value) -> bool {
+    ["line", "character"].iter().all(|field| {
+        message
+            .pointer(&format!("/params/position/{field}"))
+            .and_then(Value::as_u64)
+            .is_some()
+    })
 }
 
 pub fn position_from_request(text: &str, message: &Value) -> Position {
@@ -70,10 +81,16 @@ pub(crate) fn lsp_range_from_offsets_with_index(
 }
 
 pub fn lsp_range(text: &str, range: Range) -> Value {
-    lsp_range_from_offsets(
+    let index = LineIndex::build(text);
+    lsp_range_with_index(text, range, &index)
+}
+
+pub(crate) fn lsp_range_with_index(text: &str, range: Range, index: &LineIndex) -> Value {
+    lsp_range_from_offsets_with_index(
         text,
-        offset_at(text, range.start),
-        offset_at(text, range.end),
+        offset_at_with_index(text, range.start, index),
+        offset_at_with_index(text, range.end, index),
+        index,
     )
 }
 
