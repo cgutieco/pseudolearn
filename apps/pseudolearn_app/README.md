@@ -128,6 +128,17 @@ flowchart LR
 - Límites: 250 líneas por archivo, 40 por función, 30 por `build`, 3 parámetros posicionales, anidación 3 y 5 métodos
   públicos por clase. Sin comentarios en el código.
 
+## Seguridad
+
+Decisiones que salen de una auditoría de seguridad del 2026-11-10.
+
+- **El callback de inicio de sesión solo completa un PKCE.** gotrue 2.27.3, incluso en modo PKCE, instala la sesión que
+  llegue en `#access_token=…` tras validarla con `GET /user`. Cualquier página u otra app podía abrir
+  `pseudolearn://auth-callback` con los tokens de su propia cuenta: la app cambiaba de cuenta sin avisar y la siguiente
+  sincronización subía los documentos locales a esa cuenta. `SupabaseAuthGateway.completeSignInFromLink` rechaza ahora,
+  antes de llamar a gotrue, cualquier callback que lleve `access_token` o `refresh_token` en la query o en el fragmento
+  (`carriesSessionTokens` en `data/auth/auth_callback_link.dart`). Un código sin verificador local ya se rechazaba.
+
 ## iPhone Duo y ventanas que cambian de tamaño
 
 Con el SDK de iOS 27.1 la app ocupa toda la pantalla de iPhone Duo y su tamaño cambia en caliente al plegar, desplegar o

@@ -342,6 +342,30 @@ void main() {
       expect(server.requests, isEmpty);
     });
 
+    test('completeSignInFromLink rejects a callback that carries implicit session tokens', () async {
+      final outcome = await gateway.completeSignInFromLink(
+        Uri.parse('pseudolearn://auth-callback#access_token=attacker-access'
+            '&expires_in=3600&refresh_token=attacker-refresh&token_type=bearer'),
+      );
+
+      expect(outcome, isA<Rejected>());
+      expect(server.requests, isEmpty);
+      expect(client.auth.currentSession, isNull);
+    });
+
+    test('completeSignInFromLink rejects session tokens even next to a code', () async {
+      await gateway.signIn(AuthMethod.magicLink, email: 'ada@example.com');
+      server.requests.clear();
+
+      final outcome = await gateway.completeSignInFromLink(
+        Uri.parse('pseudolearn://auth-callback?code=authorization-code'
+            '#access_token=attacker-access&refresh_token=attacker-refresh'),
+      );
+
+      expect(outcome, isA<Rejected>());
+      expect(server.requests, isEmpty);
+    });
+
     test('completeSignInFromLink rejects a code with no verifier stored on this device', () async {
       final outcome = await gateway.completeSignInFromLink(
         Uri.parse('pseudolearn://auth-callback?code=authorization-code'),
