@@ -148,3 +148,37 @@ fn canonicalizes_ipv6_and_rejects_malformed_dns_labels() -> Result<(), String> {
     }
     Ok(())
 }
+
+#[test]
+fn strips_every_credential_named_header_on_origin_change() -> Result<(), String> {
+    let mut original = request(HttpMethod::Get);
+    original.headers = [
+        "Proxy-Authorization",
+        "Cookie",
+        "Set-Cookie",
+        "api_key",
+        "APIKEY",
+        "access_token",
+        "X-Auth-Token",
+        "X-Client-Credential",
+        "X-Password",
+        "X-Session-Id",
+        "client-secret",
+    ]
+    .iter()
+    .map(|name| ((*name).to_owned(), "value".to_owned()))
+    .chain([("Accept".to_owned(), "text/plain".to_owned())])
+    .collect();
+    let other_origin = response(302, "https://fake.test/start", Some("https://other.test/"));
+    let removed =
+        crate::redirect_request(&original, &other_origin).map_err(|error| format!("{error:?}"))?;
+    assert_eq!(
+        removed.headers,
+        vec![("Accept".to_owned(), "text/plain".to_owned())]
+    );
+    let same_origin = response(302, "https://fake.test/start", Some("/next"));
+    let retained =
+        crate::redirect_request(&original, &same_origin).map_err(|error| format!("{error:?}"))?;
+    assert_eq!(retained.headers, original.headers);
+    Ok(())
+}

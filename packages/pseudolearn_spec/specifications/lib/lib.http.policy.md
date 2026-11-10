@@ -174,7 +174,7 @@
   "id": "R3",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Redirigida acepta solo 301, 302, 303, 307 y 308, y exactamente una cabecera location. Resuelve location contra RespuestaHttp.Url y elimina el fragmento. Rechaza la falta o repetición de location con RedireccionDenegada y permite descender de https a http. Un 303, o un 301/302 sobre POST, produce GET sin cuerpo; 307/308 conservan método y cuerpo. Al cambiar el origen retira authorization, proxy-authorization, cookie, set-cookie y nombres token, key, secret o terminados en -token, -key o -secret sin distinguir mayúsculas ASCII. No envía; Enviar comprueba únicamente la atenuación voluntaria de la capacidad.",
+  "texto": "Redirigida acepta solo 301, 302, 303, 307 y 308, y exactamente una cabecera location. Resuelve location contra RespuestaHttp.Url y elimina el fragmento. Rechaza la falta o repetición de location con RedireccionDenegada y permite descender de https a http. Un 303, o un 301/302 sobre POST, produce GET sin cuerpo; 307/308 conservan método y cuerpo. Al cambiar el origen retira toda cabecera cuyo nombre, sin distinguir mayúsculas ASCII, contiene auth, cookie, credential, key, passw, secret, session o token; así se retiran authorization, proxy-authorization, cookie, set-cookie, x-api-key, api_key, apikey y access_token, y la retirada falla cerrada ante nombres de credencial no previstos. No envía; Enviar comprueba únicamente la atenuación voluntaria de la capacidad.",
   "verificacion": [
     "C2",
     "C3",

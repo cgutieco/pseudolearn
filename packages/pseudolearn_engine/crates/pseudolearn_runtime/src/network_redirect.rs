@@ -147,20 +147,22 @@ fn changes_to_get(status: u16, method: HttpMethod) -> bool {
     status == 303 || (matches!(status, 301 | 302) && method == HttpMethod::Post)
 }
 
+const CREDENTIAL_MARKERS: [&str; 8] = [
+    "auth",
+    "cookie",
+    "credential",
+    "key",
+    "passw",
+    "secret",
+    "session",
+    "token",
+];
+
 fn credential_header(name: &str) -> bool {
     let normalized = name.to_ascii_lowercase();
-    matches!(
-        normalized.as_str(),
-        "authorization"
-            | "proxy-authorization"
-            | "cookie"
-            | "set-cookie"
-            | "token"
-            | "key"
-            | "secret"
-    ) || ["-token", "-key", "-secret"]
+    CREDENTIAL_MARKERS
         .iter()
-        .any(|suffix| normalized.ends_with(suffix))
+        .any(|marker| normalized.contains(marker))
 }
 
 fn redirect_denied() -> IoError {

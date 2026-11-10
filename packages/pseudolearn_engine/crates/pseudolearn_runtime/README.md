@@ -208,7 +208,10 @@ cuerpo vacío.
 `Redirigida` acepta solo 301, 302, 303, 307 y 308 con una sola cabecera `location`, resuelve la
 referencia contra la URL final y quita el fragmento. No envía ni sigue la petición. Convierte 303 y
 301/302 sobre `POST` en `GET` sin cuerpo; 307/308 conservan método y cuerpo. Cambiar el origen retira
-cabeceras de credenciales, y `Enviar` comprueba únicamente la atenuación voluntaria de la capacidad. Las URL validan
+toda cabecera cuyo nombre contiene un marcador de credencial (`auth`, `cookie`, `credential`, `key`, `passw`,
+`secret`, `session`, `token`). Se compara por subcadena y no por nombres exactos o sufijos con guion porque las
+credenciales reales usan formas como `api_key`, `apikey` o `access_token`; retirar de más una cabecera inocua solo
+pierde un dato hacia otro origen, mientras que retirar de menos filtra un secreto. `Enviar` comprueba únicamente la atenuación voluntaria de la capacidad. Las URL validan
 hosts ASCII y normalizan el origen por esquema, host y puerto efectivo; IPv6 se compara en su forma
 canónica y se rechazan las formas numéricas alternativas de IPv4.
 
