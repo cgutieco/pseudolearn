@@ -109,9 +109,18 @@ fn compare_parts(entry: &Entry<'_>, left: TextPart, right: TextPart) -> Result<O
 
 fn text_literal(entry: &mut Entry<'_>, content: Option<&[u8]>) -> Result<u64, Trap> {
     let bytes = content.ok_or_else(|| Trap::named("internalFault"))?;
+    if let Some(handle) = entry.engine.literal_texts.get(bytes) {
+        return Ok(u64::from(handle.0));
+    }
     let text = std::str::from_utf8(bytes).map_err(|_| Trap::named("internalFault"))?;
     let roots = entry.roots()?;
     let handle = new_text(&mut entry.engine.heap, text, true, &roots)?;
+    entry
+        .engine
+        .literal_texts
+        .try_reserve(1)
+        .map_err(|_| pseudolearn_runtime::MemoryError::Resource)?;
+    entry.engine.literal_texts.insert(Box::from(bytes), handle);
     Ok(u64::from(handle.0))
 }
 

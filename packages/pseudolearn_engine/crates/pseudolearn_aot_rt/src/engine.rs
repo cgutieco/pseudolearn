@@ -24,6 +24,7 @@ pub struct AotEngine {
     pub(crate) effects: crate::effect_channel::EffectChannel,
     pub(crate) tasks: Option<Box<crate::task_state::AotTasks>>,
     pub(crate) console_line: Vec<u8>,
+    pub(crate) literal_texts: std::collections::HashMap<Box<[u8]>, pseudolearn_abi::Handle>,
     fault: Option<FaultRecord>,
     notices: Vec<FaultRecord>,
 }
@@ -55,6 +56,7 @@ impl AotEngine {
             effects: crate::effect_channel::EffectChannel::standalone(),
             tasks: None,
             console_line: Vec::new(),
+            literal_texts: std::collections::HashMap::new(),
             fault: None,
             notices: Vec::new(),
         }

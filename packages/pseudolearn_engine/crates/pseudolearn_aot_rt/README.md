@@ -156,6 +156,14 @@ Problema: un receptor ausente no tiene clase real desde la que recuperar el nomb
 
 Problema: la recolección periódica y las raíces temporales penalizan asignaciones sin presión. Elección: AOT fija `collection_minimum` en 262144 celdas y construye raíces de arreglos solo cuando el costo lógico exacto requiere recorrido. La presión de límite y el modo forzado mantienen raíces completas. Se descarta alterar la política de la VM.
 
+Problema: el código generado llama a `rt_aot_text_literal` cada vez que evalúa `const.str`, y cada llamada creaba un
+bloque de texto literal nuevo. Los literales no ocupan celdas (`ENG.LIMITS`) y la recolección nunca los libera, así que
+un bucle que evalúa un literal crecía sin límite: 300 000 vueltas llegaban a 41 MB de memoria residente y 3 000 000 a
+268 MB, sin que el límite de celdas lo detectara. Elección: `AotEngine::literal_texts` asocia los bytes de cada literal
+con su asa y las evaluaciones siguientes devuelven la misma asa, igual que la VM, que materializa los literales una sola
+vez al cargar. Con el cambio, ambos tamaños se quedan en 6,4 MB. Los bytes UTF-8 inválidos siguen siendo
+`internalFault` y no se guardan. Se descarta cobrar celdas a los literales: el corpus los excluye del conteo.
+
 Problema: construir raíces por cada objeto asigna y recorre celdas aunque no haya recolección. Elección: las asignaciones y copias de objeto consultan el costo lógico exacto que publica el runtime y materializan raíces solo si `needs_collection` puede activar recorrido o presión de límite. La recolección forzada y la presión de celdas mantienen el camino completo. Se descarta conservar un vector paralelo de raíces que pueda quedar obsoleto.
 
 Problema: las celdas de funciones terminadas no deben conservar objetos ni crecer durante toda la sesión. Elección: solo una función que crea celdas toma una marca de la tabla al entrar y libera su sufijo al retornar; las celdas del llamador mantienen sus identificadores. Una celda de elemento o campo enraíza también su propietario. Se descarta conservar referencias locales de marcos terminados o depender de un uso SSA posterior del propietario.
@@ -366,7 +374,10 @@ vacío y la unión de un ámbito inexistente; los identificadores de ámbito y t
 escribirla sin `unsafe`. `tests/task_roots_tests.rs`, con recolección forzada, prueba que sobreviven un texto que solo
 sostienen los argumentos de una tarea pendiente y un mensaje que espera en un canal lleno, que la ejecución sigue tras
 recolectar con una tarea terminada, y como caso infeliz que un texto que nadie sostiene sí se reclama (los literales son
-inmortales, así que los textos de prueba se crean por concatenación). `entry_result` expone, sin `unsafe` nuevo (usa
+inmortales, así que los textos de prueba se crean por concatenación). `tests/text_literal_tests.rs` prueba que diez mil
+evaluaciones de un literal comparten una asa sin hacer crecer la arena, que literales distintos y el vacío conservan
+asas distintas, que el literal compartido sobrevive a una recolección y que los bytes inválidos fallan en cada
+evaluación. `entry_result` expone, sin `unsafe` nuevo (usa
 `with_entry`), la palabra de resultado de la última entrada para que estos tests lean asas de canales y textos.
 `src/task_effects_tests.rs` prueba la entrega de efectos concurrentes: permutación declarada, orden por secuencia sin
 permutación, secuencias fuera de la permutación al final, ninguna entrega mientras otra tarea puede correr, marca de

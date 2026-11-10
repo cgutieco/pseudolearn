@@ -141,6 +141,10 @@ comparten disposición de marco y de objetos.
   del montón en la VM y en el ejecutable nativo, sin copiarlos por llamada. El presupuesto de sentencias sigue contando
   una unidad por entrada a sentencia, como fija el corpus; la guarda de tiempo acota el trabajo lineal de `Contiene` y
   `PosicionDe`.
+- **Memoria de texto**: una cadena creada en ejecución cuesta ⌈puntos/8⌉ + 1 celdas, como fija `ENG.LIMITS`; como un
+  punto ocupa hasta 4 bytes, la arena retiene a lo sumo 32 bytes por celda contada antes de que la recolección, que se
+  dispara por celdas, la compacte. Los literales no cuentan celdas y por eso se materializan una sola vez por contenido,
+  también en el ejecutable nativo.
 - **Códec de eventos**: el cuerpo binario no admite un pool no vacío sin eventos. El codificador ignora claves de
   nivel superior desconocidas del evento y normaliza un `source` ausente a `null`; no es un rechazo porque el corpus
   no prohíbe campos adicionales.
