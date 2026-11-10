@@ -11,7 +11,7 @@ class PlanTest(unittest.TestCase):
         self.plan = artefacts.plan()
 
     def test_it_plans_one_master_per_declared_variant(self):
-        self.assertEqual(len(self.plan.masters), 12)
+        self.assertEqual(len(self.plan.masters), 13)
 
     def test_every_master_lands_in_the_ignored_output_directory(self):
         for artefact in self.plan.masters:
@@ -20,7 +20,8 @@ class PlanTest(unittest.TestCase):
 
     def test_it_plans_local_consumer_outputs_and_the_guidelines(self):
         outputs = {artefact.path.name for artefact in self.plan.tracked}
-        self.assertEqual(outputs, {"favicon.svg", "symbol-path.generated.ts", "guidelines.html"})
+        self.assertEqual(outputs, {"favicon.svg", "social-card.svg", "symbol-path.generated.ts",
+                                   "guidelines.html"})
 
 
 class CheckTest(unittest.TestCase):

@@ -75,8 +75,9 @@ flowchart LR
 - El presupuesto del build es 10 KiB de JavaScript por ruta, 24 KiB en total y 50 KiB de CSS por ruta
   (`pnpm check:budget`).
 - Los artefactos generados (`shared/agent-sheet/generated/`, `entities/specification/generated/`,
-  `entities/learning-route/generated/`, el símbolo de marca y las capturas de `src/assets/product/`) no se editan a mano
-  (`GEN-NO-HAND-COPY`); sin comentarios en el código.
+  `entities/learning-route/generated/`, el símbolo de marca, `src/assets/brand/social-card.svg`, `public/og-image.png` y
+  las
+  capturas de `src/assets/product/`) no se editan a mano (`GEN-NO-HAND-COPY`); sin comentarios en el código.
 
 ## Decisiones de la versión 2.0.0
 
@@ -85,10 +86,13 @@ flowchart LR
   marca `#`, para que nunca se confundan con un cambio de página.
 - **La portada cuenta una historia, móvil primero.** El símbolo es el protagonista: en el héroe se dibuja recorriendo la
   escalera (`StairMark` con ceremonia) y en «Una lección por dentro» queda fijo como testigo y sube un peldaño por fase
-  con una animación ligada al scroll (`view-timeline`, 0 KB de JS; sin soporte o con movimiento reducido queda completo).
-  Los cinco golpes usan la primera lección real: el problema y su respuesta, el plan, el editor en un teléfono, el primer
+  con una animación ligada al scroll (`view-timeline`, 0 KB de JS; sin soporte o con movimiento reducido queda
+  completo).
+  Los cinco golpes usan la primera lección real: el problema y su respuesta, el plan, el editor en un teléfono, el
+  primer
   ejercicio «encontrar el error» y lo que te llevas. Luego vienen el recorrido del producto, la ruta como un camino
-  continuo (un nodo numerado por parte, la pregunta que abre cada paradigma y la meta marcada con el banderín del símbolo
+  continuo (un nodo numerado por parte, la pregunta que abre cada paradigma y la meta marcada con el banderín del
+  símbolo
   junto al proyecto final), Nodo y el cierre con el símbolo completo. Las apariciones ligadas al scroll solo desplazan,
   nunca cambian la opacidad: si el navegador detiene la animación a medias, el contenido sigue visible.
 - **La misma fórmula en todas las páginas de producto.** `StoryHero` abre cada página con un protagonista visual (el
@@ -102,21 +106,35 @@ flowchart LR
   barra lateral marca la sección actual sobre el riel.
 - **Accesibilidad sin animaciones a medias.** Todas las animaciones viven bajo `prefers-reduced-motion: no-preference`;
   la prueba de axe emula movimiento reducido para medir el estado final y no un fundido a medio camino.
-- **Sin código de la ruta en las páginas que cambian de idioma.** Los programas de la ruta se escriben una vez en español
+- **Sin código de la ruta en las páginas que cambian de idioma.** Los programas de la ruta se escriben una vez en
+  español
   y la edición inglesa solo traduce el vocabulario, así que sus identificadores y textos quedan en español. Las
-  páginas muestran texto de la ruta (problemas, planes, preguntas) y capturas generadas por idioma; `/language` enseña los
-  dos perfiles con los pares de palabras clave del apéndice de la especificación (`entities/specification/model/vocabulary`).
+  páginas muestran texto de la ruta (problemas, planes, preguntas) y capturas generadas por idioma; `/language` enseña
+  los
+  dos perfiles con los pares de palabras clave del apéndice de la especificación
+  (`entities/specification/model/vocabulary`).
 - **Ninguna cifra a mano.** Partes, lecciones, ejercicios, tipos, horas y secciones salen de los paquetes generados; los
   temas del formulario de contacto son las lecciones de la ruta y las partes de la especificación.
-- **VS Code y la terminal aparecen como «Próximamente».** La extensión aún se instala solo desde un VSIX privado y la CLI
+- **VS Code y la terminal aparecen como «Próximamente».** La extensión aún se instala solo desde un VSIX privado y la
+  CLI
   solo se compila desde el código; no se ofrece descarga hasta que se publiquen.
 - **La guía de SmartScreen va plegada** dentro de la tarjeta de Windows: Microsoft Store es la vía principal.
-- **Nodo sin precio fijo.** La web muestra créditos y días y remite al precio en tu moneda de cada tienda. Los valores de
+- **Nodo sin precio fijo.** La web muestra créditos y días y remite al precio en tu moneda de cada tienda. Los valores
+  de
   `entities/nodo-plan` repiten las constantes de créditos del backend (`agent-responses/domain/credits.ts`).
 - **Glifo de Nodo.** `NodoGlyph` reproduce en SVG la geometría de `agent_glyph_painter.dart` de la app; si el glifo
   cambia allí, se cambia aquí en el mismo cambio.
+- **Imagen de previsualización generada.** Las etiquetas `og:image` y `twitter:image` de `SeoHead` apuntan a
+  `/og-image.png` (1200×630). La tarjeta (`social-card.svg`) la dibuja el motor de marca;
+  `scripts/generate-og-image.mjs` la
+  rasteriza a PNG con `sharp`, porque LinkedIn y X no aceptan SVG, y falla si el SVG no mide lo que declaran las
+  etiquetas.
+  El PNG no se versiona y `pnpm build` lo regenera, así que el despliegue necesita haber corrido antes
+  `python3 -m pseudolearn_brand build`, igual que para el favicon. LinkedIn guarda en caché la previsualización de cada
+  URL: tras desplegar, hay que volver a inspeccionarla en el Post Inspector.
 - **Capturas por escena y dispositivo.** `tool/generate_product_shot.dart` de la app escribe editor, Tareas, lección y
-  ruta, en móvil y escritorio, claro y oscuro, español e inglés. `ProductShot` sirve la captura móvil por debajo de 900 px
+  ruta, en móvil y escritorio, claro y oscuro, español e inglés. `ProductShot` sirve la captura móvil por debajo de 900
+  px
   y la de escritorio por encima (`responsive`), o solo la móvil dentro de un marco de teléfono (`phone`).
 
 ## Comandos útiles
@@ -135,6 +153,7 @@ flowchart LR
 | Presupuesto de JavaScript y CSS             | `pnpm check:budget`                                                         |
 | Todo lo anterior, en orden                  | `pnpm check:all`                                                            |
 | Regenerar la ruta y la especificación       | `cargo run -p reference_cli -- build` (en `packages/pseudolearn_reference`) |
+| Regenerar la imagen de previsualización     | `pnpm generate:og-image` (tras `python3 -m pseudolearn_brand build`)        |
 | Regenerar las capturas de producto          | `flutter test tool/generate_product_shot.dart` (en `apps/pseudolearn_app`)  |
 
 Requisitos: Node `>=22.23.3` (`.nvmrc`) y pnpm; Wrangler con cuenta de Cloudflare solo para desplegar. Las variables de

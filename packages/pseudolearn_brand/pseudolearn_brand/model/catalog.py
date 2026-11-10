@@ -1,15 +1,15 @@
 """Typed reading of the brand catalog, with the invariants a variant must satisfy."""
 import json
-import math
 from dataclasses import dataclass, field
 from pathlib import Path
 
 from .geometry import SymbolGeometry
+from .placement import Card, LockupRatios, Lockups, Placement
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 CATALOG_FILE = PACKAGE_ROOT / "brand.json"
 
-COMPOSITIONS = ("symbol", "wordmark", "lockup", "icon", "layer", "ground", "mark")
+COMPOSITIONS = ("symbol", "wordmark", "lockup", "icon", "layer", "ground", "mark", "card")
 LAYERS = ("route", "flag")
 ORIENTATIONS = ("horizontal", "vertical")
 
@@ -44,34 +44,6 @@ class Palette:
 
 
 @dataclass(frozen=True)
-class Placement:
-    max_width: float
-    max_height: float
-    maskable_safe_circle: float
-    squircle: float
-
-    @property
-    def maskable_ceiling(self):
-        return self.maskable_safe_circle / math.sqrt(2)
-
-
-@dataclass(frozen=True)
-class LockupRatios:
-    plate: float
-    gap: float
-
-
-@dataclass(frozen=True)
-class Lockups:
-    horizontal: LockupRatios
-    vertical: LockupRatios
-    clear_space: float
-
-    def by_orientation(self, orientation):
-        return self.horizontal if orientation == "horizontal" else self.vertical
-
-
-@dataclass(frozen=True)
 class Variant:
     name: str
     composition: str
@@ -83,6 +55,7 @@ class Variant:
     orientation: str = ""
     layer: str = ""
     canvas: float = 0.0
+    canvas_height: float = 0.0
     visible: float = 0.0
     rounded: bool = False
     copies: tuple = ()
@@ -103,6 +76,7 @@ class Catalog:
     palette: Palette
     placement: Placement
     lockups: Lockups
+    card: Card
     variants: tuple
     emitters: dict = field(default_factory=dict)
 
@@ -118,6 +92,7 @@ def load(catalog_file=CATALOG_FILE):
             horizontal=LockupRatios(**document["lockups"]["horizontal"]),
             vertical=LockupRatios(**document["lockups"]["vertical"]),
             clear_space=document["lockups"]["clear_space"]),
+        card=Card(**document["card"]),
         variants=tuple(_variant(entry) for entry in document["variants"]),
         emitters={name: Emitter(name=name, **entry)
                   for name, entry in document["emitters"].items()})
@@ -155,9 +130,11 @@ def _validate_variant(variant):
         raise CatalogError(f"lockup '{variant.name}' needs an orientation of {ORIENTATIONS}")
     if variant.composition == "layer" and variant.layer not in LAYERS:
         raise CatalogError(f"layer '{variant.name}' needs a layer of {LAYERS}")
-    if variant.composition in ("icon", "layer", "ground", "mark") and not variant.canvas:
+    if variant.composition == "card" and not variant.canvas_height:
+        raise CatalogError(f"card '{variant.name}' needs a canvas height")
+    if variant.composition in ("icon", "layer", "ground", "mark", "card") and not variant.canvas:
         raise CatalogError(f"variant '{variant.name}' needs a canvas")
     if variant.composition in ("icon", "layer", "mark") and not variant.visible:
         raise CatalogError(f"variant '{variant.name}' needs a visible side")
-    if variant.composition in ("lockup", "icon", "ground") and not variant.gradient_id:
+    if variant.composition in ("lockup", "icon", "ground", "card") and not variant.gradient_id:
         raise CatalogError(f"variant '{variant.name}' needs a gradient id")

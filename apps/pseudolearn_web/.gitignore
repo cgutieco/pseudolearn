@@ -35,6 +35,8 @@ coverage/
 # Generated brand and product assets
 public/favicon.svg
 src/shared/ui/brand-mark/symbol-path.generated.ts
+src/assets/brand/social-card.svg
+public/og-image.png
 src/assets/product/**/*.png
 
 # cloudflare

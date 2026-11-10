@@ -20,7 +20,7 @@ def valid_document():
 class LoadTest(unittest.TestCase):
     def test_the_shipped_catalog_loads(self):
         loaded = catalog.load()
-        self.assertEqual(len(loaded.variants), 12)
+        self.assertEqual(len(loaded.variants), 13)
         self.assertEqual(loaded.typography.cap_height, 69.8)
 
     def test_every_declared_variant_has_a_master_path(self):
@@ -32,6 +32,19 @@ class LoadTest(unittest.TestCase):
 
 
 class RejectionTest(unittest.TestCase):
+    def test_a_card_without_a_canvas_height_is_rejected(self):
+        document = valid_document()
+        card = next(entry for entry in document["variants"] if entry["composition"] == "card")
+        del card["canvas_height"]
+        with self.assertRaises(catalog.CatalogError):
+            catalog.load(written(document))
+
+    def test_a_card_section_with_an_unknown_key_is_rejected(self):
+        document = valid_document()
+        document["card"]["glow"] = 1.0
+        with self.assertRaises(TypeError):
+            catalog.load(written(document))
+
     def test_an_inscribed_height_past_the_safe_circle_is_rejected(self):
         document = valid_document()
         document["placement"]["max_height"] = 0.9
