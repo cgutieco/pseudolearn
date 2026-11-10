@@ -109,6 +109,7 @@ pub use resources::ApiSession;
 
 mod event_binary;
 mod event_codec;
+mod event_shape;
 mod event_task_codec;
 
 #[cfg(feature = "native")]

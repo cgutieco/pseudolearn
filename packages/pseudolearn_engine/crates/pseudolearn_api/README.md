@@ -191,7 +191,11 @@ Problema: la codificación binaria debe conservar la misma referencia de fuente 
 añadir identidad de documento al modelo de eventos de la VM. Elección: el codec de la API pone `data` y
 `source` en el registro JSON canónico de cada evento PLEV; el decodificador valida ambos y reconstruye la
 respuesta completa. El codec JSON valida y conserva los objetos recibidos. Los eventos sintéticos llevan
-`source: null`. Se descarta resolver la fuente después de decodificar, porque la revisión y el nodo no se
+`source: null`. `event_shape` concentra la forma estricta: rechaza claves de evento desconocidas, claves de datos
+ajenas a la clase, ramas fuera del alfabeto e `indice` no entero, y un registro del pool que no coincide byte a byte
+con su forma canónica (espacios, otro orden, claves repetidas o extra). Se descarta conservar claves desconocidas: el
+pool binario solo tiene `data` y `source`, y la ida y vuelta dejaría de ser la identidad que pide
+`API.WIRE-FORMAT#R2`. `tests/event_codec_strictness.rs` cubre los rechazos y la ida y vuelta de eventos reales. Se descarta resolver la fuente después de decodificar, porque la revisión y el nodo no se
 pueden recuperar solo desde el tramo.
 
 La versión PLEV 2 añade identidad compuesta al registro `source`; PLEV 1 sigue decodificándose y solo puede escribirse

@@ -197,7 +197,7 @@ fn read_pool_record(
     let record = pool
         .get(offset..end)
         .ok_or_else(|| usage("invalid event pool boundary"))?;
-    serde_json::from_str(record).map_err(|error| usage(&error.to_string()))
+    crate::event_shape::canonical_record(record)
 }
 
 fn event_from_record(input: EventRecord) -> Result<Value, ApiError> {

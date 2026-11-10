@@ -145,9 +145,13 @@ comparten disposición de marco y de objetos.
   punto ocupa hasta 4 bytes, la arena retiene a lo sumo 32 bytes por celda contada antes de que la recolección, que se
   dispara por celdas, la compacte. Los literales no cuentan celdas y por eso se materializan una sola vez por contenido,
   también en el ejecutable nativo.
-- **Códec de eventos**: el cuerpo binario no admite un pool no vacío sin eventos. El codificador ignora claves de
-  nivel superior desconocidas del evento y normaliza un `source` ausente a `null`; no es un rechazo porque el corpus
-  no prohíbe campos adicionales.
+- **Códec de eventos**: el cuerpo binario no admite un pool no vacío sin eventos. Como `API.WIRE-FORMAT` exige que
+  codificar y decodificar devuelva el valor original, un evento con claves fuera de `class`, `line`, `depth`, `data`
+  y `source` es un error de uso en vez de perderlas, cada clase ordinaria admite solo las claves de datos de
+  `ENG.TRACE.EVENTS` (`rama` entre sus cinco valores e `indice` entero no negativo) y el decodificador binario exige
+  que cada registro del pool sea el JSON canónico exacto con `data` y `source`. Conflicto declarado: D1 hace `source`
+  opcional y D2 lo escribe siempre en el pool, así que un evento sin `source`, como los que emite `execute_program`,
+  vuelve del binario con `source: null`; se mantiene así hasta que el corpus decida.
 - **Argumentos del ejecutable nativo**: una opción del runtime repetida, o usada como valor de otra, es una opción
   inválida (salida 5); si ya se leyó `--effects-out`, el documento de efectos se escribe como rechazado con el
   código `options_invalid`. Un argumento que no es UTF-8 termina con salida 5 sin pánico.

@@ -126,6 +126,7 @@ fn decimal_identifier(value: &Value) -> Option<u64> {
 }
 
 pub(super) fn decode_event(value: &Value) -> Result<TraceEvent, ApiError> {
+    crate::event_shape::require_event_keys(value)?;
     let class = value
         .get("class")
         .and_then(Value::as_str)
@@ -168,13 +169,6 @@ fn ordinary_payload(
     ) {
         return text_payload(class, value);
     }
-    let text = |name| {
-        value
-            .and_then(|value| value.get(name))
-            .and_then(Value::as_str)
-            .map(str::to_owned)
-            .ok_or_else(|| usage("invalid event payload"))
-    };
     Ok(match class {
         TraceClass::StatementEntered | TraceClass::StatementExited | TraceClass::InputRequested => {
             if value.is_some() {
@@ -182,12 +176,10 @@ fn ordinary_payload(
             }
             None
         }
-        TraceClass::Decision => Some(EventPayload::Decision {
-            rama: text("rama")?,
-            indice: value
-                .and_then(|value| value.get("indice"))
-                .and_then(Value::as_u64),
-        }),
+        TraceClass::Decision => {
+            let (rama, indice) = crate::event_shape::decision(value)?;
+            Some(EventPayload::Decision { rama, indice })
+        }
         _ => None,
     })
 }
@@ -202,11 +194,7 @@ fn text_payload(
         TraceClass::Failure => "codigo",
         _ => return Ok(None),
     };
-    let text = value
-        .and_then(|value| value.get(field))
-        .and_then(Value::as_str)
-        .map(str::to_owned)
-        .ok_or_else(|| usage("invalid event payload"))?;
+    let text = crate::event_shape::single_text(value, field)?;
     let payload = match class {
         TraceClass::Call => EventPayload::Call { nombre: text },
         TraceClass::Return => EventPayload::Return { nombre: text },
