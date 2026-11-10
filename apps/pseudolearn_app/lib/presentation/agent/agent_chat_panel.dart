@@ -7,39 +7,12 @@ import '../../application/agent/agent_session_cubit.dart';
 import '../../application/agent/agent_session_state.dart';
 import '../../application/credits/credits_cubit.dart';
 import '../../application/credits/credits_state.dart';
-import '../shell/design_canvas.dart';
-import '../shell/device_class.dart';
 import '../theme/app_theme.dart';
 import '../theme/tokens/radii.dart';
 import 'agent_consent_view.dart';
 import 'agent_conversation.dart';
 import 'agent_offer_view.dart';
 import 'agent_panel_header.dart';
-
-void openAgentChat(BuildContext context) {
-  final compact = DesignCanvasScope.of(context).deviceClass == DeviceClass.compact;
-  if (compact) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      builder: (sheetContext) => Padding(
-        padding: EdgeInsets.only(bottom: DesignCanvasScope.of(sheetContext).keyboardInset),
-        child: const FractionallySizedBox(heightFactor: 0.92, child: AgentChatPanel()),
-      ),
-    );
-    return;
-  }
-  showGeneralDialog<void>(
-    context: context,
-    barrierDismissible: true,
-    barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    pageBuilder: (_, _, _) => const Align(
-      alignment: Alignment.centerRight,
-      child: FractionallySizedBox(heightFactor: 1, widthFactor: 0.36, child: AgentChatPanel()),
-    ),
-  );
-}
 
 final class AgentChatPanel extends StatelessWidget {
   const AgentChatPanel({super.key});

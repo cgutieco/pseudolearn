@@ -10,7 +10,7 @@ import '../shell/device_class.dart';
 import '../theme/app_theme.dart';
 import '../theme/tokens/radii.dart';
 import '../theme/tokens/spacing.dart';
-import 'agent_chat_panel.dart';
+import 'agent_chat_presentation.dart';
 import 'agent_glyph.dart';
 import 'agent_glyph_painter.dart';
 

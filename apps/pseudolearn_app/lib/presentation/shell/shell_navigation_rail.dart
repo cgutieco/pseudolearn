@@ -18,7 +18,7 @@ final class ShellNavigationRail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: ComponentMetricsTokens.navRailWidth,
+      width: ComponentMetricsTokens.navRailWidth + MediaQuery.paddingOf(context).left,
       child: Column(
         children: [
           const _RailBrand(),
@@ -58,8 +58,9 @@ final class _RailDestinations extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return SizedBox(
-      width: ComponentMetricsTokens.navRailWidth,
+      width: double.infinity,
       child: NavigationRail(
+        scrollable: true,
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: (index) => goToShellBranch(navigationShell, index),
         labelType: NavigationRailLabelType.all,

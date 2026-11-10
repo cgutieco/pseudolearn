@@ -33,7 +33,7 @@ final class _CompactShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [navigationShell, const AgentLauncher()]),
+      body: Stack(children: [navigationShell, const _LauncherLayer()]),
       bottomNavigationBar: ShellBottomBar(navigationShell: navigationShell),
     );
   }
@@ -56,9 +56,20 @@ final class _RailShell extends StatelessWidget {
             thickness: BorderMetricsTokens.widthHairline,
             color: theme.colors.borders.subtle,
           ),
-          Expanded(child: Stack(children: [navigationShell, const AgentLauncher()])),
+          Expanded(child: Stack(children: [navigationShell, const _LauncherLayer()])),
         ],
       ),
+    );
+  }
+}
+
+final class _LauncherLayer extends StatelessWidget {
+  const _LauncherLayer();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Positioned.fill(
+      child: SafeArea(child: Stack(children: [AgentLauncher()])),
     );
   }
 }
