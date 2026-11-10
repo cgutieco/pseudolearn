@@ -307,6 +307,34 @@ Sin diálogo: es infraestructura.
   pliegue del Duo (interior como dos paneles, exterior compacto).
 - D: hasta 10 por clase y por idioma; retirada de la composición antigua.
 
+**Resultados de F2 (2026-11-10).**
+
+- **Diálogo.** La persona rechazó la primera ronda (tres variantes de fondo liso con la captura al centro) por falta
+  de creatividad. Se prototiparon tres conceptos con UI real: panorama oscuro continuo, editorial y escenario negro
+  con 3D. La persona aprobó el **editorial**: color por capítulo, titular grande con marcador, pseudocódigo gigante
+  como textura, dispositivo que sangra por el borde y anotaciones que señalan la pieza real de la UI. Primera
+  captura: manifiesto «Esto ya es un lenguaje de programación».
+- **Producción.** 84 capturas aceptadas por la auditoría: 6 capítulos × 7 ranuras × `es`/`en` (iPhone 1320 × 2868,
+  Duo interior 2007 × 2853 y 2853 × 2007, Duo exterior 1398 × 2034 y 2034 × 1398, iPad 2064 × 2752 y Mac
+  2880 × 1800), en `packages/pseudolearn_store_media/build/screenshots/`, fuera de git. El Duo interior se muestra
+  abierto como libro, con las dos mitades giradas 10°.
+- **Auditoría por imagen y por regla.** Placa y foco grabados, zona de margen, léxico, contraste de cada rol de texto
+  en cada paleta, ajuste de cada texto con las métricas de IBM Plex y, tras renderizar, medida, alfa, profundidad y
+  tamaño. Durante la producción rechazó dos subtítulos en inglés que no cabían en el Duo apaisado (se reequilibraron
+  los saltos de línea sin cambiar el texto aprobado) y destapó un error del ajuste con tamaños mínimos fraccionarios.
+- **Placas.** La app graba 168 placas fijas (7 dispositivos × 6 capítulos × 2 temas × 2 idiomas) con los rectángulos
+  de las piezas que se resaltan. Nodo responde desde `FakeAgentModelGateway` con un guion; la escena solo se graba si
+  su código lleva la insignia «Verificado» del analizador real y el panel muestra «Nodo · IA». El código del
+  manifiesto también pasa el analizador real.
+- **Retiradas.** Los objetivos de Google Play y la composición antigua en Flutter (`generate_store_material.dart` y
+  sus piezas de `tool/product/`); sus reglas de titular que faltaban pasaron al léxico del motor.
+- **Verificación.** Motor: `pnpm check` y 224 tests. App: `flutter analyze`, `check_limits`, `check_design_system` y
+  2672 tests. `git check-ignore` confirma que capturas, manifiestos, proyectos HTML, fotogramas y placas están
+  ignorados; `stories/app-store-screenshots.json` sí se versiona.
+- **Pendientes.** La isla dinámica y las áreas seguras reales del dispositivo no se dibujan: las placas se graban sin
+  insets y el marco no lleva isla para no tapar la barra de título. El eje del pliegue del Duo es un supuesto. La
+  subida a App Store Connect es de F6.
+
 ### F3 — App previews (iPhone/Duo 886 × 1920, iPad 1200 × 1600, Mac 1920 × 1080)
 
 - A: placas animadas (fotograma a fotograma con `pump`), plantilla de relato de 15–30 s, partitura sincronizada con los hitos,
