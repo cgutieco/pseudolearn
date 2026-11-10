@@ -21,7 +21,10 @@ pub(crate) fn function_type(state: &mut ParserState<'_>) -> Result<usize, ()> {
         )?;
     }
     if state.keyword(KeywordKind::TypeConnector) {
-        parse_type(state)?;
+        state.enter()?;
+        let parsed = parse_type(state);
+        state.leave();
+        parsed?;
     }
     Ok(state.finish(NodeKind::Type, start, marker))
 }

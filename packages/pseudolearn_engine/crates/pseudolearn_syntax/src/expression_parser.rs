@@ -5,6 +5,19 @@ use pseudolearn_diagnostics::DiagnosticCode;
 use pseudolearn_lexicon::KeywordKind;
 
 pub(crate) fn parse_expression(state: &mut ParserState<'_>, minimum: u8) -> Result<usize, ()> {
+    let mut held_levels = 0_u32;
+    let result = binary_chain(state, minimum, &mut held_levels);
+    for _ in 0..held_levels {
+        state.leave();
+    }
+    result
+}
+
+fn binary_chain(
+    state: &mut ParserState<'_>,
+    minimum: u8,
+    held_levels: &mut u32,
+) -> Result<usize, ()> {
     let mut left = prefix(state)?;
     while let Some((binding, right_binding, kind)) = binding(state.kind()) {
         if binding < minimum {
@@ -19,6 +32,9 @@ pub(crate) fn parse_expression(state: &mut ParserState<'_>, minimum: u8) -> Resu
         let recursive_power = kind == NodeKind::PowerExpression;
         if recursive_power {
             state.enter()?;
+        } else {
+            state.enter()?;
+            *held_levels = held_levels.saturating_add(1);
         }
         state.advance();
         let right = parse_expression(state, right_binding);
