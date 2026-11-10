@@ -369,9 +369,9 @@ Sin diálogo: es infraestructura.
   tests de `tool/store_plates/` y la suite completa. `git check-ignore` confirma que previews, manifiestos, portadas,
   proyectos, fotogramas, bandas sonoras y placas animadas están ignorados; `stories/app-store-previews.json` se
   versiona.
-- **Pendientes.** La fila de `ExecutionStepper` se desborda a 600 y 960 pt (por eso los tamaños de iPad y Mac de las
-  previews son otros); el catálogo de conocimiento no se asienta a 1280 × 720 pt. Ambos, en el README de la app. La
-  subida a App Store Connect es de F6.
+- **Pendientes.** El catálogo de conocimiento no se asienta a 1280 × 720 pt (en el README de la app). El desbordamiento
+  de la barra de `ExecutionStepper` a 600 y 960 pt que destapó F3 quedó corregido en la app. La subida a App Store
+  Connect es de F6.
 
 ### F4 — Creative assets (encabezado 21:9, búsqueda 3:2, universal 16:9)
 

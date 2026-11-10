@@ -59,6 +59,34 @@ final class _StepperRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
     children: [
+      Expanded(
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: _CommandCluster(stepper: stepper),
+          ),
+        ),
+      ),
+      const SizedBox(width: SpacingTokens.space2),
+      RunOptionsButton(
+        hasArguments: stepper.hasArguments,
+        onPressed: stepper.onOpenOptions,
+      ),
+    ],
+  );
+}
+
+final class _CommandCluster extends StatelessWidget {
+  final ExecutionStepper stepper;
+
+  const _CommandCluster({required this.stepper});
+
+  @override
+  Widget build(BuildContext context) => Row(
+    mainAxisSize: MainAxisSize.min,
+    children: [
       _PaceControls(
         state: stepper.state,
         isExecutable: stepper.isExecutable,
@@ -67,11 +95,6 @@ final class _StepperRow extends StatelessWidget {
       ),
       const SizedBox(width: SpacingTokens.space2),
       _StopControl(isActive: stepper.state.isInFlight, onStop: stepper.onStop),
-      const Spacer(),
-      RunOptionsButton(
-        hasArguments: stepper.hasArguments,
-        onPressed: stepper.onOpenOptions,
-      ),
     ],
   );
 }

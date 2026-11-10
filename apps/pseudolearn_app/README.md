@@ -140,6 +140,12 @@ Son las métricas medidas en el simulador de Xcode 27.2.
   Device Hub entregaba los clics girados 180°: un clic sobre el rail llegaba a la columna de la barra de estado y uno
   sobre el botón de Nodo, a la esquina superior izquierda. Por eso parecían botones muertos. Al declarar las
   apaisadas, la correspondencia es exacta. La vertical invertida no se declara en iPhone.
+- **Los comandos de ejecución encogen antes que desbordarse.** La clase de dispositivo sale del ancho de la ventana,
+  pero la barra de `ExecutionStepper` mide menos (el rail y el panel de Nodo le quitan espacio). En el borde inferior
+  de cada clase sus comandos no cabían: 11 px de más en una ventana de 600 pt y 35 px en una de 960 pt. Ahora el grupo
+  de comandos ocupa el espacio que deja el botón de opciones y, solo si no cabe, se reduce lo justo (`FittedBox` con
+  `BoxFit.scaleDown`), nunca se amplía; a 960 pt la reducción es del 4 % y donde caben conserva su tamaño. Se
+  descartó cambiar etiquetas por iconos según un ancho umbral, porque el umbral depende de la longitud de cada idioma.
 - **El botón de Nodo vive dentro del área segura.** `AdaptiveShell` lo coloca en una capa con `SafeArea`; antes caía
   bajo
   la columna de la barra de estado en apaisado y sobre el indicador de inicio.
@@ -206,9 +212,6 @@ Los toques se inyectaron con el control de simulador. Cada toque se comprobó co
   vertical y en iPad se ve bien, y en los tests está centrado. Sin diagnosticar.
 - Pose exterior apaisada (678 × 466): está cubierta por tests de widget; en el simulador el exterior siempre se mostró
   vertical.
-- La fila de `ExecutionStepper` se desborda 11 px a 600 pt de ancho (clase media) y 35 px a 960 pt (clase expandida)
-  mientras se ejecuta paso a paso: en el borde inferior de cada clase sus botones no caben. Lo destapó la grabación de
-  previews, que por eso usa otros tamaños. Sin corregir.
 - En la placa animada `preview-route` a 1280 × 720 pt, la carga del catálogo de conocimiento no se asienta
   (`pumpAndSettle` agota el tiempo); a 443 × 960 y 1032 × 1376 pt sí. La escena espera como mucho 8 s y sigue grabando;
   la causa de la animación que no termina está sin diagnosticar.

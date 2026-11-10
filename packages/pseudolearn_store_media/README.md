@@ -191,8 +191,8 @@ Leídas el 2026-11-10. Cada regla del motor que viene de Apple sale de esta tabl
   fotograma, con su motor real y su tamaño lógico; el motor la dibuja a 1:1, sin ampliar ni reducir. Por eso las
   previews no llevan marcos de dispositivo. Los tamaños son decisión propia: iPhone 443 × 960 pt × 2 (clase compacta),
   iPad el tamaño real del iPad de 13", 1032 × 1376 pt × 1200/1032 (en doble precisión da exactamente 1200 × 1600), y
-  Mac 1280 × 720 pt × 1,5 (clase expandida). Se descartaron 600 × 800 pt y 960 × 540 pt: en esos anchos, justo en el
-  borde de clase, la fila del `ExecutionStepper` de la app se desborda 11 y 35 px.
+  Mac 1280 × 720 pt × 1,5 (clase expandida). Se descartaron 600 × 800 pt y 960 × 540 pt: el iPad graba así el
+  tamaño de un iPad real, y en esos anchos, justo en el borde de clase, la app aún desbordaba su barra de ejecución.
 - **Áreas seguras reales en las previews.** iPhone graba con 62 pt arriba y 34 abajo, e iPad con 24 y 20, como un
   dispositivo real; el Mac, sin márgenes. La barra de estado no se dibuja: no es UI de la app.
 - **Fotogramas repetidos.** La app escribe un PNG solo cuando la imagen cambia y repite el nombre en `timeline.json`.
