@@ -150,6 +150,8 @@ literales y los efectos del programa se preservan; idioma de interfaz y vocabula
 
 `json_parse_tests.rs`, `json_local_views_tests.rs`, `json_query_tests.rs` y `json_text_tests.rs` cubren
 casos válidos e inválidos, profundidad, orden de claves, vistas compartidas y valores no representables.
+`text_queries_tests.rs` comprueba que cada consulta prestada responde lo mismo que el camino que copia, los textos y
+rangos vacíos, la caída al camino que copia de una `Subcadena` fuera de rango y los argumentos mal formados.
 Oráculo racional de SEE en un millón de argumentos por función (aleatorios, bordes, subnormales, cercanía
 a múltiplos de π/2 y a uno, potencias exactas y puntos medios). Tests internos de naturales, enteros,
 intervalos, redondeo binario64 (empates, subnormales, desbordamiento, cero con signo) y potencias exactas;
@@ -229,3 +231,18 @@ solo el caso de fin de texto: la columna en bytes también contradecía `LANG.SO
 si es negativo o mayor que la longitud, y `hasta` en otro caso. La VM y el runtime nativo comparten la función; antes
 ambos sumaban `desde + hasta`, como si el tercer argumento fuera una longitud, y citaban una posición que no era ninguno
 de los argumentos (`Subcadena("hola", 2, 9)` informaba 11).
+
+## Consultas de texto sin copia
+
+Problema: `Contiene`, `PosicionDe`, `EmpiezaCon`, `TerminaCon` y `Subcadena` decodificaban sus argumentos con
+`decode_host_value`, que copia el texto entero del montón en cada llamada. Así `EmpiezaCon` sobre un texto de 8 millones
+de puntos costaba una copia de 8 MB por sentencia aunque solo mirara el prefijo, y el presupuesto de sentencias cuenta
+una unidad por entrada a sentencia (`ENG.LIMITS`), no por trabajo. Elección: `local_text_query` recibe las palabras de
+los argumentos y lee los textos prestados del montón con `text_content`; la VM y el runtime nativo la consultan antes
+del camino que copia. `text_substring` recorre solo hasta el último punto pedido en vez de contar el texto entero. Una
+`Subcadena` fuera de rango devuelve `None` y cae al camino que copia, que ya construye el fallo con su posición, de modo
+que el diagnóstico no cambia. Medido en compilación de depuración sobre 8 millones de puntos y 2000 llamadas, el coste
+por llamada pasó de 0,21 ms a 0,07 ms en `EmpiezaCon` y de 0,48 ms a 0,05 ms en `Subcadena(t, 0, 0)`, ya sin depender
+del tamaño del texto; `Contiene` sigue siendo lineal por naturaleza (0,53 ms a 0,41 ms). Se descarta cobrar
+combustible proporcional al tamaño: cambiaría el significado del presupuesto de sentencias que fija el corpus, y la
+guarda de tiempo es la que acota el trabajo real.

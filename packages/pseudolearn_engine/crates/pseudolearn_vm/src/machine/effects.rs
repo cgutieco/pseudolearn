@@ -19,6 +19,11 @@ impl Machine<'_> {
             self.complete_local_view(&site, value)?;
             return Ok(Flow::Continue);
         }
+        if let Some(value) = self.try_local_text_query(&site, operation)? {
+            let reply = pseudolearn_runtime::HostReply::Committed(value);
+            self.complete_effect(&site, operation, &reply)?;
+            return Ok(Flow::Continue);
+        }
         let arguments = self.effect_arguments(&site, operation)?;
         if !operation.effect {
             return self.complete_local_effect(&site, operation, &arguments);
@@ -97,6 +102,16 @@ impl Machine<'_> {
         }
         let call = pseudolearn_library::LocalJsonViewCall::new(receiver, operation, &words, &roots);
         pseudolearn_library::local_json_view(&mut self.heap, call)
+            .map_err(super::memory::memory_fault)
+    }
+
+    fn try_local_text_query(
+        &self,
+        site: &EffectSite,
+        operation: &EffectOperation,
+    ) -> Result<Option<HostValue>, Fault> {
+        let words = self.effect_argument_words(site, operation)?;
+        pseudolearn_library::local_text_query(&self.heap, operation, &words)
             .map_err(super::memory::memory_fault)
     }
 

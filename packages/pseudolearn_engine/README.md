@@ -137,6 +137,10 @@ comparten disposición de marco y de objetos.
   retenidas, derivado de las celdas de memoria de la ejecución; al superarlo se adelgaza el punto de menor densidad
   (distancia entre vecinos por antigüedad, y solo en empate la ranura compuesta mínima) y, en último término, se
   adelanta el horizonte declarado. `query_array_slice` rechaza longitudes mayores de 4096 como error de uso.
+- **Consultas de texto**: `Contiene`, `PosicionDe`, `EmpiezaCon`, `TerminaCon` y `Subcadena` leen los textos prestados
+  del montón en la VM y en el ejecutable nativo, sin copiarlos por llamada. El presupuesto de sentencias sigue contando
+  una unidad por entrada a sentencia, como fija el corpus; la guarda de tiempo acota el trabajo lineal de `Contiene` y
+  `PosicionDe`.
 - **Códec de eventos**: el cuerpo binario no admite un pool no vacío sin eventos. El codificador ignora claves de
   nivel superior desconocidas del evento y normaliza un `source` ausente a `null`; no es un rechazo porque el corpus
   no prohíbe campos adicionales.

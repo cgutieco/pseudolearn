@@ -8,14 +8,25 @@ pub fn text_substring(text: &str, first: i64, last: i64) -> Result<String, Memor
         .checked_add(1)
         .and_then(|end| usize::try_from(end).ok())
         .ok_or(MemoryError::StringPositionOutOfRange)?;
-    if end < start || end > text.chars().count() {
-        return Err(MemoryError::StringPositionOutOfRange);
-    }
-    Ok(text
-        .chars()
-        .skip(start)
-        .take(end.saturating_sub(start))
-        .collect())
+    let width = end
+        .checked_sub(start)
+        .ok_or(MemoryError::StringPositionOutOfRange)?;
+    let mut boundaries = text
+        .char_indices()
+        .map(|(offset, _)| offset)
+        .chain(std::iter::once(text.len()));
+    let start_byte = boundaries
+        .nth(start)
+        .ok_or(MemoryError::StringPositionOutOfRange)?;
+    let end_byte = match width.checked_sub(1) {
+        Some(remaining) => boundaries
+            .nth(remaining)
+            .ok_or(MemoryError::StringPositionOutOfRange)?,
+        None => start_byte,
+    };
+    text.get(start_byte..end_byte)
+        .map(str::to_owned)
+        .ok_or(MemoryError::StringPositionOutOfRange)
 }
 
 pub fn substring_fault_position(length: u64, first: i64, last: Option<i64>) -> i64 {

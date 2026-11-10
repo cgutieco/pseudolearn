@@ -84,28 +84,8 @@ pub(crate) fn perform_effect(
     operation: &EffectOperation,
     frame: &EffectFrame<'_>,
 ) -> Result<u64, Trap> {
-    if !operation.effect {
-        let receiver = Handle(u32::try_from(frame.capability).map_err(|_| internal())?);
-        let mut roots = entry.roots()?;
-        roots
-            .try_reserve(frame.arguments.len().saturating_add(1))
-            .map_err(|_| pseudolearn_runtime::MemoryError::Resource)?;
-        roots.push(receiver);
-        for (word, kind) in frame.arguments.iter().zip(operation.parameters) {
-            if !EffectOperation::is_scalar(*kind) {
-                roots.push(Handle(u32::try_from(*word).map_err(|_| internal())?));
-            }
-        }
-        let call = pseudolearn_library::LocalJsonViewCall::new(
-            receiver,
-            operation,
-            frame.arguments,
-            &roots,
-        );
-        if let Some(value) = pseudolearn_library::local_json_view(&mut entry.engine.heap, call)? {
-            store_local_view(entry, frame, value)?;
-            return Ok(0);
-        }
+    if !operation.effect && answer_locally(entry, operation, frame)? {
+        return Ok(0);
     }
     let arguments = decode_arguments(entry, operation, frame.arguments)?;
     let reply = request_reply(entry, operation, frame, arguments)?;
@@ -113,6 +93,37 @@ pub(crate) fn perform_effect(
     crate::effect_console::remember_exit_code(entry, operation, &reply);
     crate::effect_console::echo_console(entry, operation, &reply, frame.arguments)?;
     Ok(0)
+}
+
+fn answer_locally(
+    entry: &mut Entry<'_>,
+    operation: &EffectOperation,
+    frame: &EffectFrame<'_>,
+) -> Result<bool, Trap> {
+    if let Some(value) =
+        pseudolearn_library::local_text_query(&entry.engine.heap, operation, frame.arguments)?
+    {
+        store_reply(entry, operation, frame, &HostReply::Committed(value))?;
+        return Ok(true);
+    }
+    let receiver = Handle(u32::try_from(frame.capability).map_err(|_| internal())?);
+    let mut roots = entry.roots()?;
+    roots
+        .try_reserve(frame.arguments.len().saturating_add(1))
+        .map_err(|_| pseudolearn_runtime::MemoryError::Resource)?;
+    roots.push(receiver);
+    for (word, kind) in frame.arguments.iter().zip(operation.parameters) {
+        if !EffectOperation::is_scalar(*kind) {
+            roots.push(Handle(u32::try_from(*word).map_err(|_| internal())?));
+        }
+    }
+    let call =
+        pseudolearn_library::LocalJsonViewCall::new(receiver, operation, frame.arguments, &roots);
+    let Some(value) = pseudolearn_library::local_json_view(&mut entry.engine.heap, call)? else {
+        return Ok(false);
+    };
+    store_local_view(entry, frame, value)?;
+    Ok(true)
 }
 
 fn store_local_view(

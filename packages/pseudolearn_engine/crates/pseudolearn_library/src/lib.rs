@@ -32,6 +32,7 @@ mod rounding;
 mod text_case;
 mod text_format_operations;
 mod text_padding;
+mod text_queries;
 mod text_replace;
 mod text_search;
 mod text_split;
@@ -49,6 +50,7 @@ pub use math::{absolute, square_root};
 pub use rounding::{ceiling_real, floor_real, round_real, truncate_real};
 pub use text_case::{to_lower_text, to_upper_text};
 pub use text_padding::{MAXIMUM_PADDING_WIDTH, pad_left, pad_right};
+pub use text_queries::local_text_query;
 pub use text_replace::{replace_all, trim_text};
 pub use text_search::{
     substring_fault_position, text_contains, text_ends_with, text_position, text_starts_with,
@@ -80,6 +82,8 @@ mod json_text_tests;
 mod text_case_tests;
 #[cfg(test)]
 mod text_padding_tests;
+#[cfg(test)]
+mod text_queries_tests;
 #[cfg(test)]
 mod text_replace_tests;
 #[cfg(test)]

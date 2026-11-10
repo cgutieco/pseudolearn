@@ -256,7 +256,9 @@ reproducirla no sería determinista. `tests/process_tests.rs` comprueba los cuat
 Las operaciones puras de texto, bytes y JSON se resuelven localmente en `pseudolearn_library`. Para
 `json_element` y `json_field`, AOT entrega las palabras de los argumentos a `local_json_view` y escribe
 directamente la asa de la vista devuelta en la celda opcional. VM usa la misma función; ambos conservan
-el bloque y el índice del nodo sin crear otro documento.
+el bloque y el índice del nodo sin crear otro documento. Antes, `local_text_query` responde `Contiene`,
+`PosicionDe`, `EmpiezaCon`, `TerminaCon` y `Subcadena` leyendo los textos prestados del montón, sin la copia que hace
+`decode_arguments`; una `Subcadena` fuera de rango sigue por `decode_arguments` para conservar la posición del fallo.
 
 ### Reproducción autónoma de `Leer` y observación del anfitrión
 
