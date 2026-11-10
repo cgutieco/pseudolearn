@@ -5,6 +5,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { CALIBRATION_VOICE } from "../../src/audio/score.ts";
 import { synthesize } from "../../src/audio/synthesizer.ts";
 import { encodeWav } from "../../src/audio/wav_encoder.ts";
+import { auditDelivery } from "../../src/audit/delivery_audit.ts";
 import { ffmpegToolkit } from "../../src/render/ffmpeg_toolkit.ts";
 import { framesIn } from "../../src/render/hyperframes_renderer.ts";
 import { runProcess } from "../../src/render/process_runner.ts";
@@ -65,8 +66,32 @@ describe("ffmpeg toolkit delivery against the real binaries", () => {
     expect(probe.ok && probe.value.delivery.videoBitrateBps).toBeGreaterThanOrEqual(10_000_000);
     expect(probe.ok && probe.value.delivery.videoBitrateBps).toBeLessThanOrEqual(12_000_000);
     expect(probe.ok && [probe.value.delivery.level, probe.value.delivery.fieldOrder, probe.value.delivery.extension]).toEqual([40, "progressive", "mp4"]);
+    expect(probe.ok && probe.value.delivery.structure.boxOrder.indexOf("moov")).toBeLessThan(probe.ok ? probe.value.delivery.structure.boxOrder.indexOf("mdat") : 0);
   });
 
+});
+
+describe("ffmpeg toolkit Microsoft delivery against the real binaries", () => {
+  it("delivers a Microsoft trailer with a closed GOP, two B frames, fast start and no edit lists", async () => {
+    const moving = join(directory, "moving");
+    await runProcess("mkdir", [moving]);
+    await runProcess("ffmpeg", ["-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i", "testsrc2=s=160x90:r=30:d=3",
+      "-start_number", "1", join(moving, "frame_%06d.png")]);
+    await runProcess("ffmpeg", ["-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i", "anoisesrc=d=3:a=0.3:r=48000", "-ac", "2",
+      join(moving, "track.wav")]);
+    const trailer = slot("microsoft.trailer").video!.codecProfile;
+    const output = join(directory, "trailer.mp4");
+    await toolkit.encode({ framePattern: join(moving, "frame_%06d.png"), startNumber: 1, fps: 30, audioPath: join(moving, "track.wav"), profile: trailer, outputPath: output });
+    const probe = await toolkit.probe(output);
+    expect(probe.ok && probe.value.delivery.structure.keyFrames).toEqual([0, 15, 30, 45, 60, 75]);
+    expect(probe.ok && probe.value.delivery.structure.editLists).toBe(0);
+    const findings = probe.ok ? auditDelivery({ profile: trailer, target: "trailer.mp4", probe: probe.value }) : [];
+    expect(findings).toEqual([]);
+  });
+
+});
+
+describe("ffmpeg toolkit stills against the real binaries", () => {
   it("extracts a poster frame as a PNG", async () => {
     const output = join(directory, "piece.mp4");
     const still = await toolkit.extractStill({ videoPath: output, frameIndex: 5, longSide: 600, outputPath: join(directory, "poster.png") });

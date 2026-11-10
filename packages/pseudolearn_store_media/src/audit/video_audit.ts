@@ -10,6 +10,15 @@ export type AudioStreamProbe = {
 
 export type TrackProbe = { readonly kind: string; readonly enabled: boolean };
 
+export type StreamStructure = {
+  readonly pictureTypes: string;
+  readonly keyFrames: readonly number[];
+  readonly boxOrder: readonly string[];
+  readonly editLists: number;
+};
+
+export const UNREAD_STRUCTURE: StreamStructure = { pictureTypes: "", keyFrames: [], boxOrder: [], editLists: 0 };
+
 export type DeliveryProbe = {
   readonly level: number;
   readonly fieldOrder: string;
@@ -17,6 +26,7 @@ export type DeliveryProbe = {
   readonly formatName: string;
   readonly extension: string;
   readonly tracks: readonly TrackProbe[];
+  readonly structure: StreamStructure;
 };
 
 export type VideoProbe = {

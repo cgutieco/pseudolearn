@@ -1,5 +1,5 @@
 import type { LoudnessMeasure } from "../audit/loop_audit.ts";
-import type { AudioStreamProbe, DeliveryProbe, VideoProbe } from "../audit/video_audit.ts";
+import { UNREAD_STRUCTURE, type AudioStreamProbe, type DeliveryProbe, type VideoProbe } from "../audit/video_audit.ts";
 import type { Outcome } from "../pipeline/ports.ts";
 
 type Stream = {
@@ -66,6 +66,7 @@ function deliveryOf(document: ProbeDocument, video: Stream): DeliveryProbe {
     formatName: document.format?.format_name ?? "",
     extension: filename.includes(".") ? filename.slice(filename.lastIndexOf(".") + 1) : "",
     tracks: (document.streams ?? []).map((stream) => ({ kind: stream.codec_type ?? "unknown", enabled: stream.disposition?.default === 1 })),
+    structure: UNREAD_STRUCTURE,
   };
 }
 
@@ -77,6 +78,20 @@ function audioOf(stream: Stream): AudioStreamProbe {
 function rate(fraction: string): number {
   const [numerator, denominator] = fraction.split("/").map(Number);
   return denominator ? (numerator ?? 0) / denominator : 0;
+}
+
+export type FrameTypes = { readonly pictureTypes: string; readonly keyFrames: readonly number[] };
+
+export function parseFrameTypes(text: string): FrameTypes {
+  const frames = text.split("\n").map((line) => line.split(",").map((field) => field.trim())).filter((fields) => fields.some(isPictureType));
+  return {
+    pictureTypes: frames.map((fields) => fields.find(isPictureType) ?? "?").join(""),
+    keyFrames: frames.flatMap((fields, index) => (fields[0] === "1" ? [index] : [])),
+  };
+}
+
+function isPictureType(field: string): boolean {
+  return /^[IPBS?]$/u.test(field);
 }
 
 export function parseLoudness(stderr: string): Outcome<LoudnessMeasure> {

@@ -1,10 +1,10 @@
-import { RATE_CONTROLS, type AudioProfile, type CodecProfile } from "./catalog_types.ts";
+import { AUDIO_ENCODERS, EDIT_LIST_POLICIES, RATE_CONTROLS, type AudioProfile, type CodecProfile } from "./catalog_types.ts";
 import type { JsonObject, JsonReader } from "./json_reader.ts";
 
 const PROFILE_KEYS = ["profile", "level", "rateControl", "minBitrateMbps", "bitrateMbps", "maxBitrateMbps", "containers",
-  "closedGopSeconds", "bFrames", "audio"];
+  "closedGopSeconds", "bFrames", "editLists", "audio"];
 const BITRATE_RANGE = { min: 1, max: 200 };
-const AUDIO_KEYS = ["codec", "bitrateKbps", "sampleRate", "channels"];
+const AUDIO_KEYS = ["codec", "encoder", "bitrateKbps", "sampleRate", "channels"];
 
 export function parseCodecProfiles(reader: JsonReader, document: JsonObject): ReadonlyMap<string, CodecProfile> {
   const profiles = new Map<string, CodecProfile>();
@@ -36,6 +36,7 @@ function parseProfile(reader: JsonReader, id: string, entry: JsonObject): CodecP
       .map((value, index) => reader.member(value, `${path}.containers[${index}]`, ["mp4", "m4v", "mov"] as const)),
     closedGopSeconds: nullableNumber(reader, entry["closedGopSeconds"], `${path}.closedGopSeconds`),
     bFrames: nullableNumber(reader, entry["bFrames"], `${path}.bFrames`),
+    editLists: reader.member(entry["editLists"], `${path}.editLists`, EDIT_LIST_POLICIES),
     audio: parseAudio(reader, reader.object(entry["audio"], `${path}.audio`), `${path}.audio`),
   };
 }
@@ -48,6 +49,7 @@ function parseAudio(reader: JsonReader, entry: JsonObject, path: string): AudioP
   }
   return {
     codec: reader.member(entry["codec"], `${path}.codec`, ["aac"] as const),
+    encoder: reader.member(entry["encoder"], `${path}.encoder`, AUDIO_ENCODERS),
     bitrateKbps: reader.number(entry["bitrateKbps"], `${path}.bitrateKbps`, { min: 64, max: 512 }),
     sampleRate,
     channels: reader.number(entry["channels"], `${path}.channels`, { min: 2, max: 2 }),

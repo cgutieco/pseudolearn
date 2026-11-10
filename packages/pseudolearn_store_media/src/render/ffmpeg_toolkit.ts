@@ -1,8 +1,9 @@
 import type { LoudnessMeasure } from "../audit/loop_audit.ts";
 import type { VideoProbe } from "../audit/video_audit.ts";
 import type { EncodeRequest, MediaToolkit, Outcome, StillRequest } from "../pipeline/ports.ts";
-import { encoderArguments, flattenArguments, frameSampleArguments, loudnessArguments, probeArguments, stillArguments } from "./ffmpeg_arguments.ts";
-import { parseLoudness, parseProbe } from "./ffmpeg_reports.ts";
+import { encoderArguments, flattenArguments, frameSampleArguments, frameTypeArguments, loudnessArguments, probeArguments, stillArguments } from "./ffmpeg_arguments.ts";
+import { parseFrameTypes, parseLoudness, parseProbe } from "./ffmpeg_reports.ts";
+import { readMp4Layout } from "./mp4_layout.ts";
 import { assemblePlate } from "./plate_assembly.ts";
 import { failureOf, runProcess } from "./process_runner.ts";
 
@@ -19,7 +20,20 @@ async function encode(request: EncodeRequest): Promise<Outcome<string>> {
 
 async function probe(path: string): Promise<Outcome<VideoProbe>> {
   const result = await runProcess("ffprobe", probeArguments(path));
-  return result.code === 0 ? parseProbe(result.stdout.toString("utf8")) : { ok: false, error: failureOf("ffprobe", result) };
+  const parsed = result.code === 0 ? parseProbe(result.stdout.toString("utf8")) : { ok: false as const, error: failureOf("ffprobe", result) };
+  if (!parsed.ok) {
+    return parsed;
+  }
+  const frames = await runProcess("ffprobe", frameTypeArguments(path));
+  if (frames.code !== 0) {
+    return { ok: false, error: failureOf("ffprobe", frames) };
+  }
+  const layout = await readMp4Layout(path);
+  if (!layout.ok) {
+    return layout;
+  }
+  const structure = { ...parseFrameTypes(frames.stdout.toString("utf8")), ...layout.value };
+  return { ok: true, value: { ...parsed.value, delivery: { ...parsed.value.delivery, structure } } };
 }
 
 async function measureLoudness(path: string): Promise<Outcome<LoudnessMeasure>> {

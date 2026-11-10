@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { parseLoudness, parseProbe } from "../../src/render/ffmpeg_reports.ts";
+import { UNREAD_STRUCTURE } from "../../src/audit/video_audit.ts";
+import { parseFrameTypes, parseLoudness, parseProbe } from "../../src/render/ffmpeg_reports.ts";
 
 const probeJson = JSON.stringify({
   streams: [
@@ -9,6 +10,17 @@ const probeJson = JSON.stringify({
     { codec_type: "audio", codec_name: "aac", sample_rate: "48000", channels: 2, bit_rate: "248207", disposition: { default: 0 } },
   ],
   format: { duration: "15.000000", size: "1813681", filename: "out/preview.mp4", format_name: "mov,mp4,m4a,3gp,3g2,mj2" },
+});
+
+describe("parseFrameTypes", () => {
+  it("reads picture types in display order and the indices of the key frames", () => {
+    expect(parseFrameTypes("1,I,\n0,B\n0,B\n0,P\n1,I\n")).toEqual({ pictureTypes: "IBBPI", keyFrames: [0, 4] });
+  });
+
+  it("returns nothing for empty output and skips lines without a picture type", () => {
+    expect(parseFrameTypes("")).toEqual({ pictureTypes: "", keyFrames: [] });
+    expect(parseFrameTypes("garbage\n1,X\n0,P")).toEqual({ pictureTypes: "P", keyFrames: [] });
+  });
 });
 
 describe("parseProbe", () => {
@@ -27,7 +39,7 @@ describe("parseProbe", () => {
     const outcome = parseProbe(probeJson);
     expect(outcome.ok && outcome.value.delivery).toEqual({
       level: 40, fieldOrder: "progressive", videoBitrateBps: 10927551, formatName: "mov,mp4,m4a,3gp,3g2,mj2", extension: "mp4",
-      tracks: [{ kind: "video", enabled: true }, { kind: "audio", enabled: false }],
+      tracks: [{ kind: "video", enabled: true }, { kind: "audio", enabled: false }], structure: UNREAD_STRUCTURE,
     });
   });
 

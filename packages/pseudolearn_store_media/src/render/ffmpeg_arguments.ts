@@ -1,7 +1,12 @@
+import type { AudioEncoder } from "../catalog/catalog_types.ts";
 import type { EncodeRequest, StillRequest } from "../pipeline/ports.ts";
 
 const COLOR_PARAMETERS = "colorprim=bt709:transfer=bt709:colormatrix=bt709:range=tv";
 const CONSTANT_RATE_PARAMETERS = "nal-hrd=cbr:force-cfr=1";
+const AUDIO_ENCODER_ARGUMENTS: Readonly<Record<AudioEncoder, readonly string[]>> = {
+  native: ["-c:a", "aac"],
+  audiotoolbox: ["-c:a", "aac_at", "-aac_at_mode", "cbr"],
+};
 const COLOR_TAGS = ["-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709", "-color_range", "tv"];
 
 export function encoderArguments(request: EncodeRequest): readonly string[] {
@@ -21,10 +26,10 @@ export function encoderArguments(request: EncodeRequest): readonly string[] {
     "-r", String(fps),
   ];
   const audio = request.audioPath
-    ? ["-c:a", "aac", "-b:a", `${profile.audio.bitrateKbps}k`, "-ar", String(profile.audio.sampleRate), "-ac", String(profile.audio.channels)]
+    ? [...AUDIO_ENCODER_ARGUMENTS[profile.audio.encoder], "-b:a", `${profile.audio.bitrateKbps}k`, "-ar", String(profile.audio.sampleRate), "-ac", String(profile.audio.channels)]
     : ["-an"];
   return ["-y", "-hide_banner", "-loglevel", "error", ...inputs, ...audioInput, ...mapping, ...video, ...audio,
-    "-shortest", "-movflags", "+faststart", request.outputPath];
+    "-shortest", ...(profile.editLists === "forbidden" ? ["-use_editlist", "0"] : []), "-movflags", "+faststart", request.outputPath];
 }
 
 function rateArguments(request: EncodeRequest): readonly string[] {
@@ -53,6 +58,10 @@ export function frameSampleArguments(path: string, frameIndex: number, width: nu
 
 export function loudnessArguments(path: string): readonly string[] {
   return ["-hide_banner", "-nostats", "-i", path, "-filter_complex", "ebur128=peak=true", "-f", "null", "-"];
+}
+
+export function frameTypeArguments(path: string): readonly string[] {
+  return ["-v", "error", "-select_streams", "v:0", "-show_entries", "frame=key_frame,pict_type", "-of", "csv=p=0", path];
 }
 
 export function probeArguments(path: string): readonly string[] {

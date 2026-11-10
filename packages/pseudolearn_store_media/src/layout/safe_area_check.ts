@@ -2,10 +2,14 @@ import type { Slot } from "../catalog/catalog_types.ts";
 import { isClearIn, type ViewportProfile } from "./crop_projection.ts";
 import { contains, toPixels, type PixelRect } from "./pixel_rect.ts";
 
+export const CONTENT_KINDS = ["app-interface", "added-text", "added-mark", "artwork"] as const;
+export type ContentKind = (typeof CONTENT_KINDS)[number];
+
 export type PlacedElement = {
   readonly name: string;
   readonly rect: PixelRect;
   readonly essential: boolean;
+  readonly content?: ContentKind;
 };
 
 export type FrameLayout = { readonly timeSeconds: number; readonly elements: readonly PlacedElement[] };

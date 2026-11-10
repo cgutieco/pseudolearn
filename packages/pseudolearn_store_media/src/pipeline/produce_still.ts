@@ -1,5 +1,6 @@
 import type { Catalog } from "../catalog/catalog_types.ts";
 import type { Finding } from "../audit/finding.ts";
+import { auditContentRules } from "../audit/content_rules_audit.ts";
 import { auditImage } from "../audit/image_audit.ts";
 import { auditSafeArea } from "../audit/safe_area_audit.ts";
 import { auditLexicon } from "../audit/text_audit.ts";
@@ -9,7 +10,7 @@ import type { Outcome, Toolbox } from "./ports.ts";
 import type { ProjectAsset } from "./produce_video.ts";
 import type { Job } from "./render_plan.ts";
 
-export type LensStillJob = {
+export type StillJob = {
   readonly toolbox: Toolbox;
   readonly catalog: Catalog;
   readonly job: Job;
@@ -19,7 +20,7 @@ export type LensStillJob = {
   readonly outputRoot: string;
 };
 
-export async function produceLensStill(request: LensStillJob): Promise<Outcome<Manifest>> {
+export async function produceStill(request: StillJob): Promise<Outcome<Manifest>> {
   const { toolbox, job, composition, catalog } = request;
   const { files } = toolbox;
   const directory = files.join(request.outputRoot, job.directory);
@@ -28,6 +29,7 @@ export async function produceLensStill(request: LensStillJob): Promise<Outcome<M
     ...request.findings,
     ...auditSafeArea(composition.id, { slot: job.slot, frames: composition.layout, profiles: job.slot.viewportProfiles }),
     ...auditLexicon(catalog, job.slot.store, composition.texts),
+    ...auditContentRules(composition.id, { slot: job.slot, frames: composition.layout, texts: composition.texts, html: composition.html }),
   ];
   if (early.length > 0 || job.slot.video) {
     return writeManifest(request, { directory, file: null, findings: early });
@@ -53,7 +55,7 @@ export async function produceLensStill(request: LensStillJob): Promise<Outcome<M
 
 type ManifestBody = { readonly directory: string; readonly file: string | null; readonly findings: readonly Finding[] };
 
-async function writeManifest(request: LensStillJob, body: ManifestBody): Promise<Outcome<Manifest>> {
+async function writeManifest(request: StillJob, body: ManifestBody): Promise<Outcome<Manifest>> {
   const { files } = request.toolbox;
   const sha256 = body.file ? await files.sha256(body.file) : null;
   const manifest = manifestOf({ piece: request.composition.id, job: request.job, sha256, file: body.file, checkedFrames: body.file ? 1 : 0, findings: body.findings });

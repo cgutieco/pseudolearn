@@ -11,6 +11,7 @@ export type FakeScript = {
   readonly flatten?: Outcome<string>;
   readonly flattened?: Uint8Array;
   readonly assemble?: Outcome<string>;
+  readonly still?: Uint8Array;
 };
 
 export type FakeToolbox = Toolbox & {
@@ -60,7 +61,7 @@ function fakeMedia(script: FakeScript, probe: VideoProbe, record: MediaRecord): 
       return script.assemble ?? { ok: true, value: request.outputPath };
     },
     extractStill: async (request) => {
-      written.set(request.outputPath, new Uint8Array([request.longSide ?? 0]));
+      written.set(request.outputPath, script.still ?? new Uint8Array([request.longSide ?? 0]));
       return { ok: true, value: request.outputPath };
     },
     flattenImage: async (_input, output) => {

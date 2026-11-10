@@ -94,8 +94,8 @@ describe("produceScreenshot failures after rendering", () => {
   });
 
   it("refuses a slot without a device", async () => {
-    const [job] = planJobs({ catalog: realCatalog(), slotIds: ["microsoft.desktop.screenshot"], languages: ["en"] }).jobs;
+    const [job] = planJobs({ catalog: realCatalog(), slotIds: ["microsoft.hero-art"], languages: ["en"] }).jobs;
     const { request } = setUp({}, job ? { job } : {});
-    expect(await produceScreenshot(request)).toEqual({ ok: false, error: "microsoft.desktop.screenshot declares no device to frame the plate in" });
+    expect(await produceScreenshot(request)).toEqual({ ok: false, error: "microsoft.hero-art declares no device to frame the plate in" });
   });
 });

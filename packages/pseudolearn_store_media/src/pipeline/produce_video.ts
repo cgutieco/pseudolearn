@@ -1,6 +1,7 @@
 import type { Catalog } from "../catalog/catalog_types.ts";
 import type { Voice } from "../audio/score.ts";
 import type { Finding } from "../audit/finding.ts";
+import { auditContentRules } from "../audit/content_rules_audit.ts";
 import { auditDelivery } from "../audit/delivery_audit.ts";
 import { auditLoopSeam, type SeamFrames } from "../audit/loop_seam_audit.ts";
 import { auditFrameCoverage, auditSafeArea } from "../audit/safe_area_audit.ts";
@@ -24,6 +25,7 @@ export type VideoRequest = {
   readonly storyboard: Storyboard;
   readonly voice: Voice;
   readonly assets?: readonly ProjectAsset[];
+  readonly findings?: readonly Finding[];
   readonly outputRoot: string;
 };
 
@@ -82,9 +84,11 @@ function preRenderFindings(request: VideoRequest): readonly Finding[] {
     ? auditFrameCoverage(composition.id, { durationSeconds: composition.durationSeconds, fps }, composition.layout)
     : [];
   return [
+    ...(request.findings ?? []),
     ...coverage,
     ...auditSafeArea(composition.id, { slot: job.slot, frames: composition.layout, profiles: job.slot.viewportProfiles }),
     ...auditLexicon(catalog, job.slot.store, composition.texts),
+    ...auditContentRules(composition.id, { slot: job.slot, frames: composition.layout, texts: composition.texts, html: composition.html }),
   ];
 }
 
@@ -103,7 +107,8 @@ async function renderFrames(request: VideoRequest, directory: string, fps: numbe
 async function postRenderFindings(request: VideoRequest, outputPath: string, frameCount: number): Promise<Outcome<readonly Finding[]>> {
   const { media } = request.toolbox;
   const probe = await media.probe(outputPath);
-  const seam = await sampleSeam(request, outputPath, frameCount);
+  const loops = request.job.slot.rules.includes("seamless-loop");
+  const seam = loops ? await sampleSeam(request, outputPath, frameCount) : { ok: true as const, value: null };
   if (!probe.ok || !seam.ok) {
     return { ok: false, error: [probe, seam].map((step) => (step.ok ? "" : step.error)).join(" ").trim() };
   }
@@ -112,7 +117,7 @@ async function postRenderFindings(request: VideoRequest, outputPath: string, fra
   return { ok: true, value: [
     ...auditVideo({ slot: request.job.slot, target, probe: probe.value }),
     ...(profile ? auditDelivery({ profile, target, probe: probe.value }) : []),
-    ...auditLoopSeam(target, seam.value),
+    ...(seam.value ? auditLoopSeam(target, seam.value) : []),
   ] };
 }
 

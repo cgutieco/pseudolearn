@@ -7,6 +7,9 @@ import { silenceTelemetry } from "../render/hyperframes_renderer.ts";
 import { runAuditImage } from "./audit_image_command.ts";
 import { runCalibrate } from "./calibrate_command.ts";
 import { runCreative } from "./creative_command.ts";
+import { runDesktopScreenshots } from "./desktop_screenshots_command.ts";
+import { runHero } from "./hero_command.ts";
+import { runTrailer } from "./trailer_command.ts";
 import { runPlan } from "./plan_command.ts";
 import { runPreviews } from "./previews_command.ts";
 import { runScreenshots } from "./screenshots_command.ts";
@@ -32,6 +35,9 @@ const COMMANDS: Readonly<Record<string, (context: CommandContext) => Promise<num
   screenshots: runScreenshots,
   previews: runPreviews,
   creative: runCreative,
+  "desktop-screenshots": runDesktopScreenshots,
+  hero: runHero,
+  trailer: runTrailer,
 };
 
 async function main(argv: readonly string[]): Promise<number> {

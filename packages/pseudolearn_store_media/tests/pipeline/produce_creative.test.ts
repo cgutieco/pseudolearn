@@ -51,3 +51,15 @@ describe("produceCreative", () => {
     expect(toolbox.renders).toEqual([]);
   });
 });
+
+describe("produceCreative content rules", () => {
+  it("refuses a lens with code and labels as Microsoft hero art before rendering", async () => {
+    const toolbox = fakeToolbox({}, goodProbe({ width: 3840, height: 2160 }));
+    const outcome = await produceCreative({ toolbox, catalog, job: jobFor("microsoft.hero-art"), story, fonts, outputRoot: "out" });
+    const content = outcome.ok ? outcome.value.findings.filter((entry) => entry.rule === "MEDIA-CONTENT").map((entry) => entry.message) : [];
+    expect(content).toContain("lens declares no content kind");
+    expect(content.some((message) => message.endsWith("which no-text forbids"))).toBe(true);
+    expect(outcome.ok && outcome.value.file).toBeNull();
+    expect(toolbox.renders).toEqual([]);
+  });
+});

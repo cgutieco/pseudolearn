@@ -11,7 +11,7 @@ import type { LensStory } from "../story/lens_story.ts";
 import { lensStoryboard } from "./lens_storyboard.ts";
 import type { Manifest } from "./manifest.ts";
 import type { Outcome, Toolbox } from "./ports.ts";
-import { produceLensStill } from "./produce_lens_still.ts";
+import { produceStill } from "./produce_still.ts";
 import type { LoadedFont } from "./produce_screenshot.ts";
 import { produceVideo, type ProjectAsset } from "./produce_video.ts";
 import type { Job } from "./render_plan.ts";
@@ -34,7 +34,7 @@ export function produceCreative(request: CreativeJob): Promise<Outcome<Manifest>
   const assets: readonly ProjectAsset[] = [{ name: SANS_FONT_FILE, bytes: fonts.sans.bytes }, { name: MONO_FONT_FILE, bytes: fonts.mono.bytes }];
   const findings = designFindings(request, piece);
   if (!job.slot.video || findings.length > 0) {
-    return produceLensStill({ ...request, composition: piece.composition, assets, findings });
+    return produceStill({ ...request, composition: piece.composition, assets, findings });
   }
   const kinds = story.statements[job.language].map((statement) => statement.kind);
   return produceVideo({ toolbox: request.toolbox, catalog: request.catalog, job, composition: piece.composition,

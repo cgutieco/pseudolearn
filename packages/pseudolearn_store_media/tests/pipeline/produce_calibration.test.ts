@@ -3,12 +3,11 @@ import type { VideoProbe } from "../../src/audit/video_audit.ts";
 import { produceCalibration } from "../../src/pipeline/produce_calibration.ts";
 import { planJobs } from "../../src/pipeline/render_plan.ts";
 import { realCatalog } from "../support/catalog.ts";
-import { goodProbe } from "../support/probe.ts";
+import { trailerProbe as microsoftTrailerProbe } from "../support/probe.ts";
 import { fakeToolbox } from "../support/fake_toolbox.ts";
 
 const catalog = realCatalog();
-const trailerProbe: VideoProbe = goodProbe({ width: 1920, height: 1080 },
-  { audio: { codec: "aac", sampleRate: 48000, channels: 2, bitrateBps: 384_000 } });
+const trailerProbe: VideoProbe = microsoftTrailerProbe();
 
 describe("produceCalibration", () => {
   it("produces the Microsoft trailer calibration with the trailer codec profile", async () => {

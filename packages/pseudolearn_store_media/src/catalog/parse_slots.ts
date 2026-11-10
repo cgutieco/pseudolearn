@@ -1,10 +1,13 @@
 import {
   ASSET_KINDS,
   AUDIO_POLICIES,
+  LABEL_KINDS,
   LAYOUT_RULES,
   STORES,
   type CodecProfile,
   type Device,
+  type LabelKind,
+  type LabelLimits,
   type NormalizedRect,
   type Slot,
   type VideoTraits,
@@ -12,12 +15,16 @@ import {
 import type { JsonObject, JsonReader } from "./json_reader.ts";
 import { parseViewportProfiles } from "./parse_viewport_profiles.ts";
 
-const SLOT_KEYS = ["id", "store", "surface", "kind", "width", "height", "maxCount", "maxBytes", "safeArea", "rules", "viewportProfiles", "video", "device"];
+const SLOT_KEYS = ["id", "store", "surface", "kind", "width", "height", "maxCount", "maxBytes", "safeArea", "rules", "labelLimits",
+  "viewportProfiles", "video", "device"];
 const VIDEO_KEYS = ["fps", "acceptedFps", "duration", "codecProfile", "audio"];
 const APPLE_MAX_BYTES = 524_288_000;
 const FULL_CANVAS: NormalizedRect = { x: 0, y: 0, width: 1, height: 1 };
 const VIDEO_KINDS = new Set(["app-preview", "header-video", "search-video", "trailer"]);
 const DEVICE_KINDS = new Set(["screenshot", "app-preview"]);
+const LABEL_RANGE = { min: 1, max: 10_000 };
+const TWO_THIRDS = 2 / 3;
+const RECT_TOLERANCE = 1e-4;
 
 export type SlotContext = {
   readonly reader: JsonReader;
@@ -60,12 +67,36 @@ function parseSlot(context: SlotContext, entry: JsonObject, path: string): Slot 
     safeArea: entry["safeArea"] === undefined ? FULL_CANVAS : parseRect(reader, entry["safeArea"], `${path}.safeArea`),
     rules: reader.array(entry["rules"] ?? [], `${path}.rules`)
       .map((rule, index) => reader.member(rule, `${path}.rules[${index}]`, LAYOUT_RULES)),
+    labelLimits: parseLabelLimits(reader, entry["labelLimits"], `${path}.labelLimits`),
     viewportProfiles: parseViewportProfiles(reader, entry["viewportProfiles"], `${path}.viewportProfiles`),
     video,
     device: parseDeviceReference(context, entry, { path, kind }),
   };
   verifyPreviewPlate(reader, slot, path);
+  verifyTopTwoThirds(reader, slot, path);
   return slot;
+}
+
+function parseLabelLimits(reader: JsonReader, value: unknown, path: string): LabelLimits {
+  if (value === undefined) {
+    return {};
+  }
+  const entry = reader.object(value, path);
+  reader.keys(entry, path, LABEL_KINDS);
+  const limits: Partial<Record<LabelKind, number>> = {};
+  for (const kind of LABEL_KINDS) {
+    if (entry[kind] !== undefined) {
+      limits[kind] = reader.number(entry[kind], `${path}.${kind}`, LABEL_RANGE);
+    }
+  }
+  return limits;
+}
+
+function verifyTopTwoThirds(reader: JsonReader, slot: Slot, path: string): void {
+  const bottom = slot.safeArea.y + slot.safeArea.height;
+  if (slot.rules.includes("critical-top-two-thirds") && bottom > TWO_THIRDS + RECT_TOLERANCE) {
+    reader.fail(`${path}.safeArea`, "a critical-top-two-thirds slot keeps its safe area inside the top two thirds");
+  }
 }
 
 function verifyPreviewPlate(reader: JsonReader, slot: Slot, path: string): void {

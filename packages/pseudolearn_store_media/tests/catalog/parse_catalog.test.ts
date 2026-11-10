@@ -26,8 +26,9 @@ function errorsOf(slots: unknown, lexicon: unknown = lexiconDocument()): readonl
 describe("parseCatalog", () => {
   it("accepts the catalog the package ships", () => {
     const catalog = realCatalog();
-    expect(catalog.slots).toHaveLength(20);
+    expect(catalog.slots).toHaveLength(19);
     expect(catalog.localesByLanguage["app-store"].es).toEqual(["es-MX"]);
+    expect(catalog.localesByLanguage["microsoft-store"].es).toEqual(["es-ES"]);
     expect(catalog.loudness.integratedLufs).toBe(-16);
   });
 

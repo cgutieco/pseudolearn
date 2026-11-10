@@ -1,5 +1,6 @@
 import type { CodecProfile } from "../catalog/catalog_types.ts";
 import { finding, type Finding } from "./finding.ts";
+import { auditStreamStructure } from "./stream_structure_audit.ts";
 import type { VideoProbe } from "./video_audit.ts";
 
 export type DeliveryRequest = {
@@ -12,7 +13,9 @@ export const AUDIO_BITRATE_TOLERANCE = 0.1;
 const MEGABIT = 1_000_000;
 
 export function auditDelivery(request: DeliveryRequest): readonly Finding[] {
-  return [...streamFindings(request), ...bitrateFindings(request), ...packagingFindings(request)];
+  const { profile, target, probe } = request;
+  return [...streamFindings(request), ...bitrateFindings(request), ...packagingFindings(request),
+    ...auditStreamStructure({ profile, target, framesPerSecond: probe.framesPerSecond, structure: probe.delivery.structure })];
 }
 
 export function levelNumber(level: string): number {

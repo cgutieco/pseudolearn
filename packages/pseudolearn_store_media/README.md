@@ -39,15 +39,15 @@ Se omiten las aristas hacia `catalog`, que todas las capas pueden importar, y la
 
 | Capa       | Qué hace                                                                                         |
 |:-----------|:-------------------------------------------------------------------------------------------------|
-| `catalog`  | Lee y valida `catalog/slots.json` y `catalog/lexicon.json`: ranuras, dispositivos, códecs, sonoridad, léxico |
-| `story`    | Guiones con hitos (`Beat`), historias de capturas, de previews y de la lente, plan temporal de escenas y lectura de las placas de la app |
-| `layout`   | Zonas seguras, recorte por dispositivo, muestreo de todos los fotogramas, lámina de revisión, métricas de fuentes, ajuste de textos, geometría editorial, rótulos de preview y anclaje de anotaciones |
+| `catalog`  | Lee y valida `catalog/slots.json` y `catalog/lexicon.json`: ranuras, dispositivos, códecs, sonoridad, léxico, límites de leyendas y títulos |
+| `story`    | Guiones con hitos (`Beat`), historias de capturas (App Store y escritorio), de previews, de la lente y del tráiler, plan temporal de escenas y lectura de las placas de la app |
+| `layout`   | Zonas seguras, recorte por dispositivo, muestreo de todos los fotogramas, lámina de revisión, métricas de fuentes, ajuste de textos, geometría editorial, rótulos de preview, anclaje de anotaciones, ventana de escritorio, río de barras y lente muda |
 | `audio`    | Partitura, síntesis en bucle exacto, ganancia y codificación WAV, sin dependencias              |
-| `audit`    | Hallazgos con regla estable: medidas, alfa, códec, fps, duración, audio, bucle, placa, léxico, contraste, ajuste, entrega, transiciones, UI visible, portada y tiempo de lectura |
-| `compose`  | Composiciones HyperFrames en HTML: calibración, captura editorial, preview con placas animadas y lámina de zona segura |
+| `audit`    | Hallazgos con regla estable: medidas, alfa, códec, fps, duración, audio, bucle, placa, léxico, contraste, ajuste, entrega (GOP, fotogramas B, *Fast Start*, listas de edición), transiciones, UI visible, portada, tiempo de lectura, contenido añadido y longitud de leyendas |
+| `compose`  | Composiciones HyperFrames en HTML: calibración, captura editorial, preview con placas animadas, lámina de zona segura, ventana de escritorio, lente muda y tráiler del termostato |
 | `pipeline` | Plan objetivo × idioma, producción de capturas, vídeo y previews, banda sonora y manifiesto, contra puertos |
 | `render`   | Adaptadores: productor de HyperFrames, FFmpeg y ffprobe, ensamblado de placas, archivos y catálogo |
-| `cli`      | `plan`, `calibrate`, `screenshots`, `previews`, `creative` y `audit-image`                         |
+| `cli`      | `plan`, `calibrate`, `screenshots`, `previews`, `creative`, `desktop-screenshots`, `hero`, `trailer` y `audit-image` |
 
 ## Flujo principal
 
@@ -141,6 +141,24 @@ Leídas el 2026-11-10, junto con el catálogo de la API (solo `GET`). Lo que no 
 | Catálogo `appAssetLibraryRefData` | Encabezado: vídeo `t10~30`, sin audio obligatorio, imagen solo PNG; búsqueda: vídeo `t15~30`, sin audio obligatorio; universal sin vídeo; 500 MB por archivo; grupo `DEFAULT_PROFILE` de plataforma `ANY` | Encabezado de 10 a 30 s y búsqueda de 15 a 30 s; `MEDIA-SIZE` a 524 288 000 bytes |
 | Plantilla Sketch de Apple (2026-08-28) | Rectángulo «Art Safe Area» de cada mesa | `safeArea` de cada ranura, en fracciones del lienzo |
 
+## Fuentes de Microsoft
+
+Leídas el 2026-11-10. Lo que no aparece aquí es **decisión propia** y figura como tal en «Decisiones y su porqué».
+
+| Fuente | Qué dice | Qué hace el motor |
+|:--|:--|:--|
+| [Screenshots, images and trailers (MSIX)](https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/msix/screenshots-and-images) | Capturas PNG de 50 MB como máximo; escritorio de 1366 × 768 o más, admite 4K; de 1 a 10, se recomiendan al menos cuatro | Ranura de 3840 × 2160 con `maxBytes` de 50 MB; el conjunto rechaza más de 10; la historia trae cinco |
+| ↑ | Sin logotipos, iconos ni mensajes de marketing añadidos; lo crítico en los dos tercios superiores; leyenda de 200 caracteres como máximo | Reglas `no-added-text` y `critical-top-two-thirds` (`MEDIA-CONTENT`, `MEDIA-SAFE-AREA`); las leyendas son datos con `TEXT-LENGTH` y van a `captions.json` |
+| ↑ | Icono de tile 1:1 de 300 × 300 recomendado; si falta, la tienda usa el del paquete | No se genera: el paquete MSIX ya lleva el icono de la marca |
+| ↑ | Póster 2:3 (720 × 1080 o 1440 × 2160) y caja 1:1 (1080 × 1080 o 2160 × 2160): para juegos, «no aplica a apps»; texto y lo clave fuera del tercio inferior | Se generan por decisión de la persona, a 1440 × 2160 y 2160 × 2160, con la regla de los dos tercios |
+| ↑ | *Super hero art* 16:9 de 1920 × 1080 o 3840 × 2160: sin título ni texto, sin UI, nada clave en el tercio inferior, lo importante al centro porque algunas disposiciones recortan | Ranura de 3840 × 2160 con `no-text`, `no-interface`, `critical-top-two-thirds` y `key-info-centered`; la auditoría también busca texto visible en el HTML |
+| ↑ | Tráiler de 1920 × 1080, 60 s o menos recomendado, hasta 15, cada uno con vídeo, miniatura PNG de 1920 × 1080 y título de 255 caracteres como máximo; algunas disposiciones recortan arriba y abajo; sin clasificaciones por edad | Ranuras `microsoft.trailer` y `microsoft.trailer-thumbnail`; título con `TEXT-LENGTH`; 10 % de margen arriba y abajo; léxico `age-rating` |
+| ↑ | MP4: H.264 High progresivo, 2 fotogramas B consecutivos, GOP cerrado de medio segundo, CABAC, 50 Mbps; AAC-LC estéreo a 48 kHz y 384 kbps; sin listas de edición; `moov` al principio | Perfil `microsoft-trailer`; la auditoría de entrega lee los tipos de fotograma y las cajas MP4 del archivo (`MEDIA-CODEC`, `MEDIA-CONTAINER`, `MEDIA-BITRATE`) |
+| ↑ | Sonoridad recomendada de −16 LUFS (solo en la sección MOV) | −16 LUFS con la tolerancia del catálogo |
+| [Store listing info (MSIX)](https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/msix/add-and-edit-store-listing-info) | Límites de texto del listado; describir suscripciones y compras | La leyenda de Nodo indica sesión y suscripción |
+| [Store Policies v7.20](https://learn.microsoft.com/en-us/windows/apps/publish/store-policies) | 10.1: capturas y tráileres reflejan fielmente la app. 11.16: declarar la IA generativa en vivo en los metadatos | Capturas de la UI real; el tráiler termina con UI real; Nodo siempre lleva «IA» en la leyenda |
+| Centro de partners | Rotula «9:16» un póster de 720 × 1080, que es 2:3 | Se siguen las medidas de la documentación |
+
 ## Decisiones y su porqué
 
 - **HyperFrames y FFmpeg, no el flujo Swift de traceiron.** Node ya es una cadena del monorepo; Swift sería una sexta.
@@ -154,8 +172,9 @@ Leídas el 2026-11-10, junto con el catálogo de la API (solo `GET`). Lo que no 
 - **Telemetría apagada.** Antes de usar HyperFrames, el CLI fija `HYPERFRAMES_NO_TELEMETRY=1` y `DO_NOT_TRACK=1`.
 - **Banda sonora sintetizada.** Sin muestras, bibliotecas de música ni IA. El colchón usa frecuencias con un número
   entero de ciclos en la duración del vídeo, y la cola de una nota tardía vuelve al principio, así el bucle no salta.
-  Se normaliza a −16 LUFS con pico verdadero ≤ −1 dBTP (nivel de Microsoft; Apple no fija ninguno). El vídeo de
-  búsqueda no lleva pista: Apple no deja activar su sonido.
+  Se normaliza a −16 LUFS con pico verdadero ≤ −1 dBTP. Los −16 LUFS son la recomendación de Microsoft para tráileres;
+  el pico de −1 dBTP es **decisión propia**: ni Microsoft ni Apple fijan uno. El vídeo de búsqueda no lleva pista:
+  Apple no deja activar su sonido.
 - **Zonas seguras oficiales.** Encabezado, búsqueda y universal usan el rectángulo «Art Safe Area» de la plantilla
   Sketch de Apple (2026-08-28). Las de Microsoft salen de su documentación: lo crítico en los dos tercios superiores
   de capturas y arte, y un 10 % de margen arriba y abajo en tráileres, porque Microsoft solo dice que algunas
@@ -288,10 +307,59 @@ Leídas el 2026-11-10, junto con el catálogo de la API (solo `GET`). Lo que no 
   eventos de GSAP, así que un `onUpdate` no se llamaría. La composición anima un objeto cuya propiedad `t` es un
   *setter* que llama a `render(t)`: GSAP la asigna al saltar aunque suprima eventos. Lo vio el primer borrador: dos
   fotogramas distintos salían iguales.
-- **Sin fotogramas en disco.** `creative` borra los fotogramas y los de la lámina tras cada pieza: son regenerables y
+- **Sin fotogramas en disco.** `creative`, `desktop-screenshots`, `hero` y `trailer` borran los fotogramas y los de la lámina tras cada pieza: son regenerables y
   un vídeo de 20 s a 4K ocupa cientos de megabytes.
 - **Calibración.** `calibrate` produce una pieza neutra (marca, ruta animada y pulsos en los hitos) por ranura de vídeo
   para probar toda la cadena sin narrativa. No es material publicable.
+
+- **Locales de Microsoft.** `es-ES` y `en-US`, los que declara el paquete MSIX de la app (`msix_config.languages`): el
+  Centro de partners abre las fichas a partir de ellos.
+- **Perfil del tráiler de Microsoft (tolerancias propias).** CBR a 50 Mbps con un margen de 45 a 55 Mbps, GOP cerrado de
+  15 fotogramas a 30 fps, dos fotogramas B y sin listas de edición (`editLists: "forbidden"`). La auditoría lee del
+  archivo real los tipos de fotograma (`ffprobe`), comprueba que los fotogramas clave caen cada medio segundo y que el
+  fotograma anterior a cada uno no es B (GOP cerrado), cuenta las rachas de B y recorre las cajas MP4 para exigir `moov`
+  antes de `mdat` en todos los perfiles.
+- **AAC a 320 kbps con AudioToolbox, no a 384 (decisión de la persona).** Microsoft pide 384 kbps, pero el AAC nativo de
+  FFmpeg se queda en 240–300 kbps y AudioToolbox (`aac_at`) en 320 kbps como máximo para estéreo a 48 kHz. Se eligió
+  `aac_at` en CBR a 320 kbps, frente a compilar FFmpeg con `libfdk_aac` o rebajar la auditoría. Consecuencia: el perfil de
+  Microsoft solo se codifica en macOS. Los perfiles de Apple siguen con el AAC nativo.
+- **El bucle es una regla de ranura.** `seamless-loop` lo llevan el encabezado y la búsqueda de Apple; un tráiler no hace
+  bucle, así que su portada y su cierre funcionan solos.
+- **Contenido declarado y comprobado.** Cada elemento de una composición con reglas de contenido declara qué es
+  (`app-interface`, `added-text`, `added-mark` o `artwork`); `MEDIA-CONTENT` rechaza lo que su ranura prohíbe, un
+  elemento sin declarar, un texto declarado o **texto visible en el HTML** donde no puede haberlo, y todo elemento
+  esencial que baje del tercio superior. El parser rechaza una ranura con la regla de los dos tercios cuya zona segura
+  los sobrepase.
+- **Zonas de Microsoft (decisión propia).** Héroe: 10 % de margen a los lados y arriba, hasta los dos tercios. Póster y
+  caja: 8 % a los lados y 6 % arriba, hasta los dos tercios.
+- **Escritorio Windows.** `windows-desktop` graba la UI real a 1280 × 720 pt × 3 = 3840 × 2160, sin marco: a 1536 × 864 la
+  interfaz quedaba pequeña y vacía en las miniaturas. Las escenas `desk-run`, `desk-trace` y `desk-code` usan el modo
+  «Acompañar» de la app (editor al lado del diagrama, de la prueba de escritorio o del código equivalente) en el paso 5 del
+  programa; en pasos posteriores la fila en curso de la prueba de escritorio bajaba al tercio inferior.
+- **Concepto de las capturas de Microsoft (aprobado por la persona en F5): la ventana sobre el campo.** La ventana real se
+  muestra al 82 % sobre el color de su capítulo (las paletas de F2) y, detrás, el río de la lente convertido en barras sin
+  letras con el ancho real de cada palabra del programa. No hay texto, logotipos ni iconos añadidos: el texto va en la
+  leyenda. La región crítica es un dato de la historia (una pieza grabada y una fracción de ella), y la auditoría la exige
+  dentro de los dos tercios. Se descartaron la captura plana con la serie de Apple (A), la mesa de trabajo sin campo (B) y
+  las leyendas en pseudocódigo (C); la persona prefirió no añadir titulares, como pide Microsoft.
+- **Concepto del *super hero art* (aprobado en F5): la lente muda.** La lente de F4 sin letras: el código es un río de
+  barras coloreadas por papel (palabra inicial, número, texto, operador, nombre) y la lente muestra los nodos del
+  ordinograma sin etiqueta; la decisión del bucle queda en el centro, iluminada. La lente ocupa el 62 % × 82 % de la zona
+  segura y caben seis filas en su alto, así que póster y caja se derivan sin números propios. Se descartaron la escalera
+  de marca (B) y la constelación del ordinograma (C).
+- **Concepto del tráiler (aprobado en F5): el termostato.** El tráiler es el programa de demostración ejecutándose: el
+  código con la línea en curso, la temperatura en cifras grandes que baja de 30 a 27 y a 24 (en naranja al alcanzar el
+  límite), las lecturas y la salida que se escribe; una nota de `PREVIEW_VOICE` por paso, con acento en la condición del
+  bucle. Cierra con la frase final del programa, 5 s de UI real y el logotipo. La traza es un dato de la historia y un test
+  la compara con una simulación independiente del programa; sus líneas son las del programa que distribuye la app. Se
+  descartaron la lente que se abre (A) y las tres previews encadenadas (B).
+- **Cola de UI del tráiler.** Microsoft exige que el tráiler refleje la app (política 10.1). La cola usa la placa animada
+  `preview-run` grabada para la preview de Mac (1920 × 1080, la medida del tráiler); la UI de Flutter es la misma en
+  Windows y la placa no dibuja ventana del sistema. Si la placa falta, mide otra cosa o dura menos de lo necesario,
+  `MEDIA-PLATE` impide el render.
+- **Datos para la publicación.** `desktop-screenshots` deja un `captions.json` por idioma con el locale, el orden, el
+  archivo y la leyenda; `trailer` deja `trailer.json` con el título, el vídeo y la miniatura (fotograma del segundo 13,2,
+  con la condición alcanzada). F6 publica desde ahí.
 
 ## Reglas que conviene saber
 
@@ -319,6 +387,9 @@ Leídas el 2026-11-10, junto con el catálogo de la API (solo `GET`). Lo que no 
 | Capturas de una ranura con el margen visible | `pnpm media screenshots --slot apple.mac.screenshot --guides`  |
 | Producir las app previews                   | `pnpm media previews` (o `--slot`, `--lang`, `--story`, `--plates`) |
 | Producir encabezado, búsqueda y universal   | `pnpm media creative` (o `--slot`, `--lang`, `--story`)        |
+| Capturas de escritorio de Microsoft         | `pnpm media desktop-screenshots` (o `--lang`, `--story`, `--plates`) |
+| Héroe, póster y caja de Microsoft           | `pnpm media hero` (o `--slot`, `--lang`)                        |
+| Tráiler de Microsoft con miniatura          | `pnpm media trailer` (o `--lang`, `--plates`)                   |
 
 `creative` escribe en `build/creative/<historia>/` el vídeo, el manifiesto y la lámina de cada ranura, o la imagen y su
 manifiesto en la universal; no necesita placas.
@@ -326,5 +397,8 @@ manifiesto en la universal; no necesita placas.
 `build/previews/<historia>/`. `screenshots` lee las placas de `../../apps/pseudolearn_app/build/store-plates` (o de `--plates`) y escribe en
 `build/screenshots/<historia>/`. Sin `--slot`, produce todas las ranuras que declaran dispositivo.
 
-Requisitos: Node 22.23.3 y pnpm 12.8.1, FFmpeg y ffprobe en el `PATH` (probado con 9.0.2), Python 3 con `fonttools`
-para generar la marca. Las salidas quedan en `build/`, fuera de git.
+`desktop-screenshots` lee las placas de `windows-desktop`; `trailer` lee la placa animada de
+`../../apps/pseudolearn_app/build/store-previews`. Salen en `build/screenshots/`, `build/hero/` y `build/trailer/`.
+
+Requisitos: Node 22.23.3 y pnpm 12.8.1, FFmpeg y ffprobe en el `PATH` (probado con 9.0.2) con `aac_at` (macOS) para el
+tráiler de Microsoft, Python 3 con `fonttools` para generar la marca. Las salidas quedan en `build/`, fuera de git.

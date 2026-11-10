@@ -10,13 +10,13 @@ const anyProbe = {} as VideoProbe;
 describe("inspectImage", () => {
   it("reads the file through the store and audits it against the slot", async () => {
     const toolbox = fakeToolbox({}, anyProbe);
-    toolbox.written.set("tile.png", pngBytes({ width: 300, height: 300, colorType: 2 }));
-    expect(await inspectImage(toolbox.files, slot("microsoft.tile-icon"), "tile.png")).toEqual([]);
+    toolbox.written.set("thumbnail.png", pngBytes({ width: 1920, height: 1080, colorType: 2 }));
+    expect(await inspectImage(toolbox.files, slot("microsoft.trailer-thumbnail"), "thumbnail.png")).toEqual([]);
   });
 
   it("reports a missing file as a format finding", async () => {
     const toolbox = fakeToolbox({}, anyProbe);
-    const findings = await inspectImage(toolbox.files, slot("microsoft.tile-icon"), "missing.png");
+    const findings = await inspectImage(toolbox.files, slot("microsoft.trailer-thumbnail"), "missing.png");
     expect(findings.map((entry) => entry.rule)).toEqual(["MEDIA-FORMAT"]);
   });
 });

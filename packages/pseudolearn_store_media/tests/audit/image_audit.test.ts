@@ -28,10 +28,10 @@ describe("auditImage", () => {
   });
 
   it("rejects a file over the slot limit", () => {
-    const tile = slot("microsoft.tile-icon");
-    const oversized = new Uint8Array(tile.maxBytes + 1);
-    oversized.set(pngBytes({ width: 300, height: 300, colorType: 2 }));
-    expect(rules(oversized, tile)).toEqual(["MEDIA-SIZE"]);
+    const thumbnail = slot("microsoft.trailer-thumbnail");
+    const oversized = new Uint8Array(thumbnail.maxBytes + 1);
+    oversized.set(pngBytes({ width: 1920, height: 1080, colorType: 2 }));
+    expect(rules(oversized, thumbnail)).toEqual(["MEDIA-SIZE"]);
   });
 
   it("rejects bytes that are not a PNG, including an empty file", () => {

@@ -63,7 +63,9 @@ export function parseScreenshotStory(document: unknown): Parsed<ScreenshotStory>
   return reader.errors.length === 0 ? { ok: true, value: story } : { ok: false, errors: reader.errors };
 }
 
-export function platePathParts(chapter: Chapter, place: { device: string; language: Language }): readonly string[] {
+export type RecordedScene = Pick<Chapter, "plate" | "appTheme">;
+
+export function platePathParts(chapter: RecordedScene, place: { device: string; language: Language }): readonly string[] {
   return [chapter.plate, place.device, chapter.appTheme, place.language];
 }
 

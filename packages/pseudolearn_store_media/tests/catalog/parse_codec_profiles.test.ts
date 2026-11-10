@@ -24,6 +24,38 @@ describe("codec profiles", () => {
     expect(profile).toMatchObject({ rateControl: "vbr", minBitrateMbps: null });
   });
 
+});
+
+describe("Microsoft and edit-list profiles", () => {
+  it("encodes the Microsoft trailer at a constant 50 Mbps with a closed half-second GOP and no edit lists", () => {
+    const profile = realCatalog().slots.find((slot) => slot.id === "microsoft.trailer")?.video?.codecProfile;
+    expect(profile).toMatchObject({ rateControl: "cbr", minBitrateMbps: 45, bitrateMbps: 50, maxBitrateMbps: 55,
+      closedGopSeconds: 0.5, bFrames: 2, editLists: "forbidden" });
+    expect(profile?.audio).toEqual({ codec: "aac", encoder: "audiotoolbox", bitrateKbps: 320, sampleRate: 48000, channels: 2 });
+  });
+
+});
+
+describe("AAC encoders", () => {
+  it("rejects an unknown AAC encoder", () => {
+    expect(errorsWithPreviewProfile((profile) => {
+      (profile["audio"] as Mutable)["encoder"] = "fdk";
+    }).some((error) => error.startsWith("codecProfiles.apple-preview.audio.encoder: expected one of"))).toBe(true);
+  });
+
+  it("lets Apple profiles keep edit lists", () => {
+    expect(realCatalog().slots.find((slot) => slot.id === "apple.iphone.app-preview")?.video?.codecProfile.editLists).toBe("allowed");
+  });
+
+  it("rejects an unknown edit-list policy and a missing one", () => {
+    expect(errorsWithPreviewProfile((profile) => {
+      profile["editLists"] = "sometimes";
+    }).some((error) => error.startsWith("codecProfiles.apple-preview.editLists: expected one of"))).toBe(true);
+    expect(errorsWithPreviewProfile((profile) => {
+      delete profile["editLists"];
+    }).some((error) => error.startsWith("codecProfiles.apple-preview.editLists:"))).toBe(true);
+  });
+
   it("rejects a ceiling below the target and a floor above it", () => {
     expect(errorsWithPreviewProfile((profile) => {
       profile["maxBitrateMbps"] = 2;

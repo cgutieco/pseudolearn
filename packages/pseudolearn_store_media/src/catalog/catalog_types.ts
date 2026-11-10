@@ -12,7 +12,6 @@ export const ASSET_KINDS = [
   "hero-art",
   "poster-art",
   "box-art",
-  "tile-icon",
 ] as const;
 export type AssetKind = (typeof ASSET_KINDS)[number];
 
@@ -23,8 +22,16 @@ export const LAYOUT_RULES = [
   "no-interface",
   "key-info-centered",
   "text-inside-margin",
+  "seamless-loop",
 ] as const;
 export type LayoutRule = (typeof LAYOUT_RULES)[number];
+
+export const LABEL_KINDS = ["caption", "title"] as const;
+export type LabelKind = (typeof LABEL_KINDS)[number];
+export type LabelLimits = Readonly<Partial<Record<LabelKind, number>>>;
+
+export const EDIT_LIST_POLICIES = ["allowed", "forbidden"] as const;
+export type EditListPolicy = (typeof EDIT_LIST_POLICIES)[number];
 
 export const AUDIO_POLICIES = ["required", "none"] as const;
 export type AudioPolicy = (typeof AUDIO_POLICIES)[number];
@@ -73,8 +80,12 @@ export type ViewportProfile = {
 
 export type SecondsRange = { readonly min: number; readonly max: number };
 
+export const AUDIO_ENCODERS = ["native", "audiotoolbox"] as const;
+export type AudioEncoder = (typeof AUDIO_ENCODERS)[number];
+
 export type AudioProfile = {
   readonly codec: "aac";
+  readonly encoder: AudioEncoder;
   readonly bitrateKbps: number;
   readonly sampleRate: number;
   readonly channels: number;
@@ -94,6 +105,7 @@ export type CodecProfile = {
   readonly containers: readonly string[];
   readonly closedGopSeconds: number | null;
   readonly bFrames: number | null;
+  readonly editLists: EditListPolicy;
   readonly audio: AudioProfile;
 };
 
@@ -116,6 +128,7 @@ export type Slot = {
   readonly maxBytes: number;
   readonly safeArea: NormalizedRect;
   readonly rules: readonly LayoutRule[];
+  readonly labelLimits: LabelLimits;
   readonly viewportProfiles: readonly ViewportProfile[];
   readonly video: VideoTraits | null;
   readonly device: Device | null;

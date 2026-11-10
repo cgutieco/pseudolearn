@@ -9,6 +9,7 @@ function valueAfter(args: readonly string[], flag: string): string | undefined {
 
 const previewProfile = slot("apple.iphone.app-preview").video!.codecProfile;
 const trailerProfile = slot("microsoft.trailer").video!.codecProfile;
+const headerProfile = slot("apple.header.video").video!.codecProfile;
 
 describe("encoderArguments", () => {
   it("encodes an Apple preview as H.264 High 4.0 with AAC 256 kbps", () => {
@@ -17,6 +18,7 @@ describe("encoderArguments", () => {
     expect(valueAfter(args, "-level:v")).toBe("4.0");
     expect(valueAfter(args, "-b:v")).toBe("11M");
     expect(valueAfter(args, "-b:a")).toBe("256k");
+    expect(valueAfter(args, "-c:a")).toBe("aac");
     expect(valueAfter(args, "-start_number")).toBe("1");
     expect(valueAfter(args, "-color_primaries")).toBe("bt709");
     expect(args.at(-1)).toBe("o.mp4");
@@ -28,7 +30,7 @@ describe("encoderArguments", () => {
     expect(valueAfter(args, "-g")).toBe("15");
     expect(valueAfter(args, "-bf")).toBe("2");
     expect(args).toContain("+cgop");
-    expect(valueAfter(args, "-b:a")).toBe("384k");
+    expect([valueAfter(args, "-c:a"), valueAfter(args, "-aac_at_mode"), valueAfter(args, "-b:a")]).toEqual(["aac_at", "cbr", "320k"]);
   });
 
   it("drops the audio stream when there is no soundtrack", () => {
@@ -67,11 +69,22 @@ describe("constant rate for app previews", () => {
     expect(args.filter((value) => value === "-x264-params")).toHaveLength(1);
   });
 
-  it("keeps variable rate with headroom for the other profiles", () => {
-    const args = encoderArguments({ framePattern: "p", startNumber: 0, fps: 30, audioPath: "a.wav", profile: trailerProfile, outputPath: "t.mp4" });
+  it("keeps variable rate with headroom for the creative profile", () => {
+    const args = encoderArguments({ framePattern: "p", startNumber: 0, fps: 30, audioPath: "a.wav", profile: headerProfile, outputPath: "t.mp4" });
     expect(args).not.toContain("-minrate");
+    expect(args).not.toContain("-use_editlist");
     expect(valueAfter(args, "-bufsize")).toBe("100M");
     expect(valueAfter(args, "-x264-params")).toBe("colorprim=bt709:transfer=bt709:colormatrix=bt709:range=tv");
+  });
+});
+
+describe("Microsoft trailer arguments", () => {
+  it("encodes a constant 50 Mbps with a closed 15-frame GOP, two B frames and no edit lists", () => {
+    const args = encoderArguments({ framePattern: "p", startNumber: 0, fps: 30, audioPath: "a.wav", profile: trailerProfile, outputPath: "t.mp4" });
+    expect([valueAfter(args, "-b:v"), valueAfter(args, "-minrate"), valueAfter(args, "-maxrate")]).toEqual(["50M", "50M", "50M"]);
+    expect([valueAfter(args, "-g"), valueAfter(args, "-keyint_min"), valueAfter(args, "-flags"), valueAfter(args, "-bf")]).toEqual(["15", "15", "+cgop", "2"]);
+    expect(valueAfter(args, "-use_editlist")).toBe("0");
+    expect([valueAfter(args, "-c:a"), valueAfter(args, "-aac_at_mode"), valueAfter(args, "-b:a")]).toEqual(["aac_at", "cbr", "320k"]);
   });
 });
 

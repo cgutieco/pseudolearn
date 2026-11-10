@@ -70,9 +70,16 @@ describe("produceVideo safe-area coverage", () => {
 });
 
 describe("produceVideo rejections", () => {
-  it("rejects the piece when the encoded loop jumps", async () => {
-    const outcome = await run("apple.iphone.app-preview", { lastFrame: new Uint8Array(600 * 400 * 3).fill(200) }).result;
+  it("rejects a looping header when the encoded loop jumps", async () => {
+    const probe = { ...previewProbe, width: 3840, height: 1646, durationSeconds: 10 };
+    const outcome = await run("apple.header.video", { lastFrame: new Uint8Array(600 * 400 * 3).fill(200),
+      frames: { ok: true, value: { framePattern: "f/frame_%06d.png", startNumber: 1, frameCount: 300 } } }, probe).result;
     expect(outcome.ok && outcome.value.findings.map((entry) => entry.rule)).toEqual(["MEDIA-LOOP"]);
+  });
+
+  it("does not ask a slot without seamless-loop to loop", async () => {
+    const outcome = await run("apple.iphone.app-preview", { lastFrame: new Uint8Array(600 * 400 * 3).fill(200) }).result;
+    expect(outcome.ok && isAccepted(outcome.value)).toBe(true);
   });
 
   it("rejects the piece when the soundtrack misses the loudness target", async () => {
