@@ -146,7 +146,7 @@ flowchart BT
 ```
 
 - `pseudolearn_brand` sigue siendo la fuente de la identidad: se le añade un emisor `store-media` (símbolo, lockups,
-  paleta y medidas en un módulo TypeScript) y su `check` gana `BRAND-STORE-MEDIA-STALE` (`GEN-NO-HAND-COPY`). No
+  paleta y medidas en un módulo TypeScript) y su `check` lo vigila con `BRAND-TS-STALE` (`GEN-NO-HAND-COPY`). No
   rasteriza ni anima: eso no es su papel.
 - `apps/pseudolearn_app/tool/store_plates/` (evoluciona `tool/product/`): escenas guionadas en Dart que conducen la
   app real y exportan, por fotograma, el PNG opaco y un `timeline.json` con los rectángulos de interés (línea en
@@ -163,7 +163,8 @@ flowchart BT
 | `layout` | Zonas seguras, proyección de recorte por perfil de dispositivo, ajuste de texto, reglas por tienda (p. ej. «dos tercios superiores») | `catalog` |
 | `compose` | Composiciones HyperFrames (HTML/CSS/SVG) parametrizadas por guion y layout | `catalog`, `story`, `layout` |
 | `render` | Adaptadores: productor de HyperFrames, FFmpeg, `ffprobe`, PNG opaco | `catalog` |
-| `audit` | Medida, fps, duración, códec, alfa, audio, bucle, contraste, léxico, zona segura, tamaño de archivo | `catalog`, `layout` |
+| `audio` | Síntesis determinista de la partitura anclada a los hitos del guion; escritura WAV | `catalog`, `story` |
+| `audit` | Medida, fps, duración, códec, alfa, audio, sonoridad, bucle, contraste, léxico, zona segura, tamaño de archivo | `catalog`, `layout` |
 | `pipeline` | Plan objetivo × idioma × asset, manifiesto con SHA-256, orquestación | todas |
 | `cli` | `plan`, `preview`, `render`, `audit`, `review-board` | `pipeline` |
 
@@ -193,9 +194,20 @@ planificará cuando se publique.
 
 ### 3.6 Audio y localizaciones
 
-- **Audio: silencio.** Ninguna pieza lleva música ni efectos. Donde la especificación pida pista de audio (app previews
-  de Apple, tráiler de Microsoft), se incluye una pista estéreo **silenciosa** con el códec exigido; F0 confirma si es
-  obligatoria. La auditoría comprueba que el nivel sea silencio digital.
+- **Audio acorde al vídeo** (decisión de la persona, 2026-11-10; sustituye a la de silencio). La banda sonora se
+  **sintetiza de forma determinista** en el propio motor: sin muestras grabadas, sin bibliotecas de música y sin IA.
+  Una partitura en datos (tempo, tonalidad, motivo y capas) se ancla a los mismos hitos del guion y de
+  `timeline.json`: cada instrucción ejecutada, cada nodo que se ilumina y cada mensaje de Nodo es una nota o un acento.
+  Así el sonido sigue al programa que avanza, en lugar de ser una música ajena pegada encima.
+- Siguiendo a Apple, es textura de marca y no transmite información: la pieza se entiende en silencio, sin golpes
+  bruscos y con un bucle limpio (la cola de la partitura resuelve en su inicio). Se normaliza a −16 LUFS integrados,
+  con pico verdadero ≤ −1 dBTP (es el nivel que pide Microsoft; Apple no fija ninguno). Formato: AAC-LC estéreo,
+  48 kHz, 256 kbps en Apple y 384 kbps en Microsoft.
+- Lleva audio: app previews (Apple lo exige), vídeo de encabezado (en la página de producto se puede activar el
+  sonido) y tráiler de Microsoft. El vídeo de búsqueda **no** lleva pista: allí no se puede activar el sonido y el
+  catálogo no la exige.
+- La auditoría mide sonoridad, pico, duración igual a la del vídeo y continuidad del bucle (energía de los primeros y
+  los últimos 50 ms).
 - **Localizaciones:** dos piezas por asset, `es` (español neutro) y `en` (inglés de EE. UU.). Locales de destino:
   App Store `es-MX` y `en-US`; Microsoft Store el español neutro que ofrezca el Centro de partners y `en-us`. F0 lee
   los locales reales de ambas fichas; si hay otros del mismo idioma, reciben la misma pieza.
@@ -252,6 +264,23 @@ Sale: catálogo inicial (`catalog/*.json`) y lista de discrepancias.
 
 Sin diálogo: es infraestructura.
 
+**Resultados de F1 (2026-11-10).**
+
+- `packages/pseudolearn_store_media`: nueve capas (`catalog`, `story`, `layout`, `audio`, `audit`, `compose`,
+  `pipeline`, `render`, `cli`), 20 ranuras en `catalog/slots.json`, léxico por tienda, 139 tests (incluidos los casos
+  negativos de los tres verificadores y una integración real con FFmpeg) y `pnpm check` en verde. Todas las
+  dependencias npm tienen al menos 14 días (`minimumReleaseAge`).
+- La previa del CLI es `calibrate --guides`: escribe el proyecto HyperFrames y dibuja la zona segura. En vez de un
+  comando `preview` propio, se puede abrir ese proyecto con `pnpm exec hyperframes preview`.
+- Calibraciones reales aceptadas por la auditoría: app preview de iPhone (886 × 1920, 15 s, AAC −16,1 LUFS), vídeo de
+  encabezado (3840 × 1646, 10 s) y vídeo de búsqueda (3840 × 2560, sin pista). La primera pasada del encabezado se
+  rechazó por sonoridad (−17,6 LUFS, limitada por el pico): la auditoría funcionó y se reequilibró la voz.
+- Errores que encontraron los tests: un color ilegible daba NaN y pasaba la auditoría de contraste, y la escala de dos
+  octavas subía solo una por vuelta. Los dos están corregidos y cubiertos.
+- `pseudolearn_brand` emite `src/compose/brand.generated.ts` (18 artefactos), vigilado con `BRAND-TS-STALE`.
+- La app graba placas con `tool/generate_store_plates.dart`: 886 × 1920 a 30 fps, motor nativo real y `timeline.json`
+  fijado por un archivo de contrato que prueban la app y el motor.
+
 ### F2 — Capturas Apple (iPhone DI, **iPhone Duo interior y exterior**, iPad 13", Mac)
 
 - A: escenas de placa por capítulo, plantilla de captura con titular, variantes vertical/apaisada, reglas de zona.
@@ -261,7 +290,7 @@ Sin diálogo: es infraestructura.
 
 ### F3 — App previews (iPhone/Duo 886 × 1920, iPad 1200 × 1600, Mac 1920 × 1080)
 
-- A: placas animadas (fotograma a fotograma con `pump`), plantilla de relato de 15–30 s, pista de audio silenciosa,
+- A: placas animadas (fotograma a fotograma con `pump`), plantilla de relato de 15–30 s, partitura sincronizada con los hitos,
   selección de portada, auditoría de códec y bitrate.
 - B: diálogo — arco de principio, nudo y final; ritmo sin cortes rápidos; papel de Nodo; ¿una preview o tres?
 - D: producción y verificación de portada a tamaño reducido.
@@ -349,7 +378,7 @@ Consecuencias para el plan:
    (F4); el motor no produce piezas distintas para Mac.
 2. **Duraciones:** el vídeo de encabezado dura entre 10 y 30 s y las app previews entre 15 y 30 s, para cumplir a la
    vez el campo `duration` y el `shortName`, como hizo traceiron.
-3. **Audio:** las app previews **exigen** pista de audio. Se incluye una pista estéreo AAC silenciosa (§3.6). Los
+3. **Audio:** las app previews **exigen** pista de audio. Llevan la banda sintetizada de §3.6. Los
    vídeos de encabezado y búsqueda no llevan pista.
 4. **Imágenes estáticas en PNG** siempre, y opacas también en Mac, aunque allí el catálogo admita alfa.
 5. **Dynamic Island (medium):** la ayuda la declara obligatoria, pero la 1.1.1 se publicó solo con la clase large. F2
@@ -360,8 +389,8 @@ Consecuencias para el plan:
 
 1. Microsoft llama «Arte de póster 9:16» en el Centro de partners a una medida de 720 × 1080, que es 2:3, como dice
    su documentación. F5 genera las medidas de la documentación (720 × 1080 y 1440 × 2160).
-2. Las especificaciones de app preview de Apple detallan el audio, pero no dicen si la pista es obligatoria. Por la
-   decisión de silencio, se incluye una pista estéreo silenciosa (§3.6), que vale en los dos casos.
+2. Las especificaciones de app preview de Apple detallan el audio, pero no dicen si la pista es obligatoria. El
+   catálogo de la API sí lo dice (`audioRequired: true`), y las previews llevan la banda de §3.6.
 3. La página de creative assets de Apple no rotula sus filas de 16:9. La plantilla confirma que la pieza de
    5244 × 2950 es la **universal**.
 
@@ -391,7 +420,7 @@ Resueltas el 2026-11-10:
 | Google Play | Se retira; se planificará cuando la app se publique allí |
 | Póster y caja de Microsoft Store | Se generan |
 | Tráiler de Microsoft Store | La sección existe para la app; se produce en F5 |
-| Audio | Silencio en todas las piezas (§3.6) |
+| Audio | Banda sintetizada de forma determinista y anclada a los hitos de cada vídeo; el vídeo de búsqueda va sin pista (§3.6). Sustituye a la decisión inicial de silencio |
 | Localizaciones | Español neutro y inglés de EE. UU. (§3.6) |
 | Herramienta | Se aprueba D-01: placas de UI real desde la app, composición con HyperFrames y codificación con FFmpeg; la dependencia del sistema se registra en `AGENTS.md` en F0 |
 
