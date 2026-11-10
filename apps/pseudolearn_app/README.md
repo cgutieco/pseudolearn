@@ -52,21 +52,17 @@ flowchart BT
   equivalente, y se detienen en el paso 5. Es UI que solo existe en la clase expandida; en pasos posteriores la tabla
   se desplaza y la fila en curso baja al tercio inferior, que Microsoft reserva para superposiciones. Solo se graban en
   ese dispositivo porque en un teléfono «Acompañar» apila los paneles y no aporta nada a las capturas de Apple.
-- `pseudolearn_store_media` (app previews): `tool/generate_store_previews.dart` graba **placas animadas**: cada escena
-  (`preview-program`, `preview-run`, `preview-trace`, `preview-nodo`, `preview-code`, `preview-route`, en
-  `tool/store_plates/preview_scenes.dart`) prepara la app sin grabar y después actúa como una persona, tocando sin
-  esperar a que la UI se asiente, mientras `PlateRecorder` captura fotograma a fotograma. Así se graban las animaciones
-  y transiciones que la app hace de verdad, y ninguna inventada. Cada toque se marca como evento `tap` con su punto en
-  píxeles, que el motor dibuja como punto de toque. Un fotograma idéntico al anterior no se vuelve a escribir: su
-  entrada de `timeline.json` repite el archivo, lo que deja todas las placas en decenas de megas. Los dispositivos de
-  preview son los que declaran las ranuras `app-preview` del catálogo del motor, con su tamaño lógico, su escala y sus
-  áreas seguras reales (`AppStage` las entrega como `padding` de `MediaQuery`). Las placas van a
-  `build/store-previews/<escena>/<dispositivo>/<tema>/<idioma>/`; `STORE_PREVIEW_DEVICES`, `STORE_PREVIEW_SCENES` y
-  `STORE_PREVIEW_LANGUAGES` acotan la grabación. La escena de Nodo comprueba la etiqueta «IA» y la insignia
-  «Verificado» del analizador real. `tool/store_plates/plate_stage.dart` reúne la preparación que comparten los dos
-  generadores. El grabador recorta cada rectángulo de interés a la placa y omite el que queda fuera (por ejemplo, una
-  lección que se desplaza por encima del borde), porque el contrato solo admite rectángulos dentro de la placa. Entre
-  escenas se limpia la caché de `rootBundle`, igual que en las placas fijas.
+- `pseudolearn_store_media` (tráiler de Microsoft Store): `tool/generate_trailer_plates.dart` graba una **placa
+  animada**, `trailer-run` (`tool/store_plates/trailer_scene.dart`): abre la demo guiada en el ordinograma y después
+  avanza paso a paso como una persona, tocando sin esperar a que la UI se asiente, mientras `PlateRecorder` captura
+  fotograma a fotograma. Así se graban las animaciones que la app hace de verdad, y ninguna inventada. Cada toque se
+  marca como evento `tap` con su punto en píxeles. Un fotograma idéntico al anterior no se vuelve a escribir: su
+  entrada de `timeline.json` repite el archivo. El dispositivo es el que declara la ranura `trailer` del catálogo del
+  motor (`windows-trailer`, 1280 × 720 pt × 1,5 = 1920 × 1080). La placa va a
+  `build/trailer-plates/trailer-run/<dispositivo>/<tema>/<idioma>/`; el motor la usa en los últimos segundos del
+  tráiler. `tool/store_plates/plate_stage.dart` reúne la preparación que comparten los dos generadores. El grabador
+  recorta cada rectángulo de interés a la placa y omite el que queda fuera, porque el contrato solo admite rectángulos
+  dentro de la placa.
 - La composición antigua de capturas en Flutter (`tool/generate_store_material.dart` y sus piezas de `tool/product/`)
   se retiró: el motor de tienda produce ahora todas las capturas de App Store, y la app solo graba placas. Con ella se
   fueron los objetivos de Google Play, donde la app no está publicada.
@@ -218,9 +214,9 @@ Los toques se inyectaron con el control de simulador. Cada toque se comprobó co
   vertical y en iPad se ve bien, y en los tests está centrado. Sin diagnosticar.
 - Pose exterior apaisada (678 × 466): está cubierta por tests de widget; en el simulador el exterior siempre se mostró
   vertical.
-- En la placa animada `preview-route` a 1280 × 720 pt, la carga del catálogo de conocimiento no se asienta
-  (`pumpAndSettle` agota el tiempo); a 443 × 960 y 1032 × 1376 pt sí. La escena espera como mucho 8 s y sigue grabando;
-  la causa de la animación que no termina está sin diagnosticar.
+- En tests de widget a 1280 × 720 pt, cuando el catálogo de conocimiento se abre mientras la app ya está en marcha, su
+  carga no se asienta (`pumpAndSettle` agota el tiempo); a 443 × 960 y 1032 × 1376 pt sí. La causa de la animación que
+  no termina está sin diagnosticar.
 
 **Lo que falta fuera del código para App Store**
 
@@ -251,7 +247,7 @@ Los toques se inyectaron con el control de simulador. Cada toque se comprobó co
 | Conformidad del sujeto `app`                 | `cargo run -p see_cli --bin see -- conform --subject app` (en `packages/pseudolearn_spec`)            |
 | Grabar las placas para las tiendas           | `flutter test tool/generate_store_plates.dart` (con la biblioteca nativa en release)                  |
 | Grabar solo algunas placas                   | `flutter test tool/generate_store_plates.dart --dart-define=STORE_PLATE_DEVICES=mac`                  |
-| Grabar las placas animadas de las previews   | `flutter test tool/generate_store_previews.dart` (con la biblioteca nativa en release)                |
+| Grabar la placa animada del tráiler          | `flutter test tool/generate_trailer_plates.dart` (con la biblioteca nativa en release)                |
 | Compilar                                     | `flutter build macos --release`, `flutter build ipa --no-codesign`, `flutter build windows --release` |
 
 Requisitos: Flutter 3.47.5 (fijado en `pubspec.yaml`), Dart `^3.9.0` y Rust según `native/rust-toolchain.toml` solo para

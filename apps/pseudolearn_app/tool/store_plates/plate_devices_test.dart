@@ -21,17 +21,10 @@ void main() {
     ]);
   });
 
-  test('reads the app preview devices with their native size and insets', () {
-    final devices = readPlateDevices(storeMediaCatalogPath, previewSlotKind);
-    expect(devices.map((device) => device.id),
-        <String>['iphone-preview', 'ipad-preview', 'mac-preview']);
-    expect(devices.map((device) => device.pixelSize), const <Size>[
-      Size(886, 1920),
-      Size(1200, 1600),
-      Size(1920, 1080),
-    ]);
-    expect(devices.first.insets, const EdgeInsets.only(top: 62, bottom: 34));
-    expect(devices.last.insets, EdgeInsets.zero);
+  test('reads the trailer device at the native size of the trailer', () {
+    final devices = readPlateDevices(storeMediaCatalogPath, trailerSlotKind);
+    expect(devices.map((device) => device.id), <String>['windows-trailer']);
+    expect(devices.single.pixelSize, const Size(1920, 1080));
   });
 
   test('reads no device for a kind no slot declares', () {

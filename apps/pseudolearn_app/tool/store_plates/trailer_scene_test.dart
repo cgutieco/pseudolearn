@@ -1,30 +1,21 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'plate_stage.dart';
-import 'preview_scenes.dart';
+import 'trailer_scene.dart';
 
 void main() {
-  test('names every animated plate once with the preview prefix', () {
-    final plates = previewScenes.map((scene) => scene.plate).toList();
-    expect(plates.toSet(), hasLength(plates.length));
-    expect(plates, everyElement(startsWith('preview-')));
+  test('records the trailer run in a theme the stage knows', () {
+    expect(plateThemes.keys, contains(trailerTheme));
+    expect(trailerPlate, startsWith('trailer-'));
   });
 
-  test('records every scene in a theme the stage knows', () {
-    expect(
-      previewScenes.map((scene) => scene.theme),
-      everyElement(isIn(plateThemes.keys)),
-    );
+  test('steps long enough to fill the five-second interface tail', () {
+    const seconds = 1 + 0.8 + trailerSteps * trailerStepSeconds + 1;
+    expect(seconds, greaterThanOrEqualTo(2.5 + 5));
   });
 
-  test('selects scenes by name and keeps all of them without a filter', () {
-    String name(PreviewScene scene) => scene.plate;
-    expect(selectedByName(previewScenes, '', name), previewScenes);
-    expect(
-      selectedByName(previewScenes, 'preview-nodo,missing', name)
-          .map(name),
-      <String>['preview-nodo'],
-    );
-    expect(selectedByName(previewScenes, 'missing', name), isEmpty);
+  test('sets up the guided demo on the flowchart before recording', () {
+    expect(trailerSetup, hasLength(2));
+    expect(trailerFocus().keys, <String>['diagram', 'output']);
   });
 }

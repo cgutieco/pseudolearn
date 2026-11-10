@@ -4,24 +4,20 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
+import 'package:pseudolearn_app/engine/rust/native_rust_transport.dart';
 
 import '../test/fakes/load_bundled_fonts.dart';
-import 'package:pseudolearn_app/engine/rust/native_rust_transport.dart';
 import 'product/bundled_font_probe.dart';
 import 'product/scene_stage.dart';
+import 'store_plates/live_take.dart';
 import 'store_plates/plate_devices.dart';
 import 'store_plates/plate_recorder.dart';
 import 'store_plates/plate_stage.dart';
 import 'store_plates/plate_timeline.dart';
-import 'store_plates/preview_scenes.dart';
-import 'store_plates/preview_take.dart';
+import 'store_plates/trailer_scene.dart';
 
-const String _outputRoot = 'build/store-previews';
+const String _outputRoot = 'build/trailer-plates';
 const int _fps = 30;
-const String _deviceFilter = String.fromEnvironment('STORE_PREVIEW_DEVICES');
-const String _sceneFilter = String.fromEnvironment('STORE_PREVIEW_SCENES');
-const String _languageFilter =
-    String.fromEnvironment('STORE_PREVIEW_LANGUAGES');
 
 void main() {
   setUpAll(() async {
@@ -36,55 +32,51 @@ void main() {
     expectBundledFontsRasterized();
   });
 
-  final devices = readPlateDevices(storeMediaCatalogPath, previewSlotKind);
-  final languages = selectedByName(
-      plateLocaleTags.keys.toList(), _languageFilter, (l) => plateLocaleTags[l]!);
-  for (final device in selectedByName(devices, _deviceFilter, (d) => d.id)) {
-    for (final scene in selectedByName(previewScenes, _sceneFilter, (s) => s.plate)) {
-      for (final language in languages) {
-        testWidgets('${scene.plate} is recorded live on ${device.id} in '
-            '${plateLocaleTags[language]}', (tester) async {
-          final timeline = await _record(tester, (device, scene, language));
-          expect(timeline.pixelSize, device.pixelSize);
-          expect(timeline.frames.length, greaterThan(_fps * 4));
-        });
-      }
+  for (final device in readPlateDevices(storeMediaCatalogPath, trailerSlotKind)) {
+    for (final language in plateLocaleTags.keys) {
+      testWidgets('$trailerPlate is recorded live on ${device.id} in '
+          '${plateLocaleTags[language]}', (tester) async {
+        final timeline = await _record(tester, device, language);
+        expect(timeline.pixelSize, device.pixelSize);
+        expect(timeline.frames.length, greaterThan(_fps * 7));
+      });
     }
   }
 }
 
 Future<PlateTimeline> _record(
   WidgetTester tester,
-  (PlateDevice, PreviewScene, UiLanguageId) take,
+  PlateDevice device,
+  UiLanguageId language,
 ) async {
-  final (device, scene, language) = take;
-  final directory = Directory(p.join(_outputRoot, scene.plate, device.id,
-      scene.theme, plateLocaleTags[language]!));
+  final directory = Directory(p.join(_outputRoot, trailerPlate, device.id,
+      trailerTheme, plateLocaleTags[language]!));
   if (directory.existsSync()) directory.deleteSync(recursive: true);
   directory.createSync(recursive: true);
   await pumpPlateStage(
     tester,
     PlateStageSetup(
       language: language,
-      themeMode: plateThemes[scene.theme]!,
+      themeMode: plateThemes[trailerTheme]!,
       logicalSize: device.logicalSize,
-      safeInsets: device.insets,
     ),
   );
   final stage = SceneStage(tester);
-  for (final action in scene.setup) {
+  for (final action in trailerSetup) {
     await action(stage);
   }
-  final recorder = PlateRecorder(
-    tester: tester,
-    boundaryKey: plateBoundaryKey,
-    pixelRatio: device.plateScale,
-    fps: _fps,
-    directory: directory,
-    focus: scene.focus(),
+  final take = LiveTake(
+    stage: stage,
+    recorder: PlateRecorder(
+      tester: tester,
+      boundaryKey: plateBoundaryKey,
+      pixelRatio: device.plateScale,
+      fps: _fps,
+      directory: directory,
+      focus: trailerFocus(),
+    ),
   );
-  final previewTake = PreviewTake(stage: stage, recorder: recorder);
-  await scene.perform(previewTake, language);
-  scene.check(previewTake);
-  return recorder.finish(scene: scene.plate, language: plateLocaleTags[language]!);
+  await performTrailerRun(take);
+  expectTrailerRunPaused(take);
+  return take.recorder.finish(scene: trailerPlate, language: plateLocaleTags[language]!);
 }

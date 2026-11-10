@@ -23,13 +23,11 @@ final class PlateStageSetup {
   final UiLanguageId language;
   final AppThemeMode themeMode;
   final Size logicalSize;
-  final EdgeInsets safeInsets;
 
   const PlateStageSetup({
     required this.language,
     required this.logicalSize,
     this.themeMode = AppThemeMode.light,
-    this.safeInsets = EdgeInsets.zero,
   });
 }
 
@@ -46,7 +44,6 @@ Future<void> pumpPlateStage(WidgetTester tester, PlateStageSetup setup) async {
       key: plateBoundaryKey,
       child: AppStage(
         logicalSize: setup.logicalSize,
-        safeInsets: setup.safeInsets,
         dependencies: buildProductDependencies(
           language: setup.language,
           themeMode: setup.themeMode,
