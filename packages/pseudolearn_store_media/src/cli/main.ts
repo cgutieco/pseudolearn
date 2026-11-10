@@ -7,6 +7,7 @@ import { silenceTelemetry } from "../render/hyperframes_renderer.ts";
 import { runAuditImage } from "./audit_image_command.ts";
 import { runCalibrate } from "./calibrate_command.ts";
 import { runPlan } from "./plan_command.ts";
+import { runScreenshots } from "./screenshots_command.ts";
 
 const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 
@@ -17,6 +18,8 @@ export type CommandContext = {
   readonly languages: readonly Language[];
   readonly file: string | undefined;
   readonly guides: boolean;
+  readonly story: string | undefined;
+  readonly plates: string | undefined;
   readonly write: (line: string) => void;
 };
 
@@ -24,6 +27,7 @@ const COMMANDS: Readonly<Record<string, (context: CommandContext) => Promise<num
   plan: runPlan,
   calibrate: runCalibrate,
   "audit-image": runAuditImage,
+  screenshots: runScreenshots,
 };
 
 async function main(argv: readonly string[]): Promise<number> {
@@ -34,12 +38,14 @@ async function main(argv: readonly string[]): Promise<number> {
       slot: { type: "string", multiple: true },
       lang: { type: "string", multiple: true },
       file: { type: "string" },
+      story: { type: "string" },
+      plates: { type: "string" },
       guides: { type: "boolean", default: false },
     },
   });
   const command = COMMANDS[positionals[0] ?? ""];
   if (!command) {
-    process.stderr.write(`usage: media <${Object.keys(COMMANDS).join("|")}> [--slot id] [--lang es|en] [--file path] [--guides]\n`);
+    process.stderr.write(`usage: media <${Object.keys(COMMANDS).join("|")}> [--slot id] [--lang es|en] [--file path] [--story path] [--plates dir] [--guides]\n`);
     return 2;
   }
   const loaded = await loadCatalog(PACKAGE_ROOT);
@@ -56,6 +62,8 @@ async function main(argv: readonly string[]): Promise<number> {
     languages,
     file: values.file,
     guides: values.guides ?? false,
+    story: values.story,
+    plates: values.plates,
     write: (line) => process.stdout.write(`${line}\n`),
   });
 }

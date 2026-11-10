@@ -22,6 +22,7 @@ export const LAYOUT_RULES = [
   "no-text",
   "no-interface",
   "key-info-centered",
+  "text-inside-margin",
 ] as const;
 export type LayoutRule = (typeof LAYOUT_RULES)[number];
 
@@ -36,6 +37,22 @@ export type NormalizedRect = {
   readonly y: number;
   readonly width: number;
   readonly height: number;
+};
+
+export const DEVICE_FRAMES = ["phone", "foldable", "tablet", "window"] as const;
+export type DeviceFrame = (typeof DEVICE_FRAMES)[number];
+
+export const FOLD_AXES = ["none", "vertical", "horizontal"] as const;
+export type FoldAxis = (typeof FOLD_AXES)[number];
+
+export type Device = {
+  readonly id: string;
+  readonly logicalWidth: number;
+  readonly logicalHeight: number;
+  readonly plateScale: number;
+  readonly cornerRadius: number;
+  readonly frame: DeviceFrame;
+  readonly fold: FoldAxis;
 };
 
 export type SecondsRange = { readonly min: number; readonly max: number };
@@ -78,6 +95,7 @@ export type Slot = {
   readonly safeArea: NormalizedRect;
   readonly rules: readonly LayoutRule[];
   readonly video: VideoTraits | null;
+  readonly device: Device | null;
 };
 
 export type LoudnessTarget = {
@@ -90,6 +108,7 @@ export type LexiconEntry = { readonly id: string; readonly pattern: RegExp };
 
 export type Catalog = {
   readonly slots: readonly Slot[];
+  readonly devices: readonly Device[];
   readonly loudness: LoudnessTarget;
   readonly lexicon: Readonly<Record<StoreId, readonly LexiconEntry[]>>;
   readonly localesByLanguage: Readonly<Record<StoreId, Readonly<Record<Language, readonly string[]>>>>;

@@ -10,17 +10,20 @@ import {
 } from "./catalog_types.ts";
 import { JsonReader, type JsonObject } from "./json_reader.ts";
 import { parseCodecProfiles } from "./parse_codec_profiles.ts";
+import { parseDevices } from "./parse_devices.ts";
 import { parseSlots } from "./parse_slots.ts";
 
-const ROOT_KEYS = ["localesByLanguage", "loudness", "codecProfiles", "slots"];
+const ROOT_KEYS = ["localesByLanguage", "loudness", "codecProfiles", "devices", "slots"];
 
 export function parseCatalog(slotsDocument: unknown, lexiconDocument: unknown): Parsed<Catalog> {
   const reader = new JsonReader();
   const document = reader.object(slotsDocument, "$");
   reader.keys(document, "$", ROOT_KEYS);
   const profiles = parseCodecProfiles(reader, document);
+  const devices = parseDevices(reader, document);
   const catalog: Catalog = {
-    slots: parseSlots({ reader, profiles }, document),
+    slots: parseSlots({ reader, profiles, devices }, document),
+    devices: [...devices.values()],
     loudness: parseLoudness(reader, reader.object(document["loudness"], "loudness")),
     lexicon: parseLexicon(reader, reader.object(lexiconDocument, "lexicon")),
     localesByLanguage: parseLocales(reader, reader.object(document["localesByLanguage"], "localesByLanguage")),

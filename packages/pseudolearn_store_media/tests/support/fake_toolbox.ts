@@ -8,6 +8,8 @@ export type FakeScript = {
   readonly probe?: Partial<VideoProbe>;
   readonly loudness?: readonly LoudnessMeasure[];
   readonly lastFrame?: Uint8Array;
+  readonly flatten?: Outcome<string>;
+  readonly flattened?: Uint8Array;
 };
 
 export type FakeToolbox = Toolbox & {
@@ -34,12 +36,15 @@ export function fakeToolbox(script: FakeScript, probe: VideoProbe): FakeToolbox 
         return script.frames ?? DEFAULT_FRAMES;
       },
     },
-    media: fakeMedia(script, probe, encodes),
+    media: fakeMedia(script, probe, { encodes, written }),
     files: fakeFiles(written),
   };
 }
 
-function fakeMedia(script: FakeScript, probe: VideoProbe, encodes: EncodeRequest[]): MediaToolkit {
+type MediaRecord = { readonly encodes: EncodeRequest[]; readonly written: Map<string, string | Uint8Array> };
+
+function fakeMedia(script: FakeScript, probe: VideoProbe, record: MediaRecord): MediaToolkit {
+  const { encodes, written } = record;
   const loudness = [...(script.loudness ?? DEFAULT_LOUDNESS)];
   return {
     encode: async (request) => {
@@ -49,6 +54,10 @@ function fakeMedia(script: FakeScript, probe: VideoProbe, encodes: EncodeRequest
     probe: async () => ({ ok: true, value: { ...probe, ...script.probe } }),
     measureLoudness: async () => ({ ok: true, value: loudness.shift() ?? { integratedLufs: -16, truePeakDb: -4 } }),
     sampleFrame: async (_path, index) => ({ ok: true, value: index === 0 ? FRAME : (script.lastFrame ?? FRAME) }),
+    flattenImage: async (_input, output) => {
+      written.set(output, script.flattened ?? new Uint8Array(0));
+      return script.flatten ?? { ok: true, value: output };
+    },
   };
 }
 
@@ -64,6 +73,10 @@ function fakeFiles(written: Map<string, string | Uint8Array>): FileStore {
     readBytes: async (path) => {
       const content = written.get(path);
       return content instanceof Uint8Array ? content : new Uint8Array(0);
+    },
+    readBytesIfPresent: async (path) => {
+      const content = written.get(path);
+      return content instanceof Uint8Array ? content : null;
     },
     copyTimelineLibrary: async (directory) => {
       written.set(`${directory}/gsap.min.js`, "library");

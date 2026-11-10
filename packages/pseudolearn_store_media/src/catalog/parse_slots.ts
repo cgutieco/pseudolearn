@@ -4,19 +4,24 @@ import {
   LAYOUT_RULES,
   STORES,
   type CodecProfile,
+  type Device,
   type NormalizedRect,
   type Slot,
   type VideoTraits,
 } from "./catalog_types.ts";
 import type { JsonObject, JsonReader } from "./json_reader.ts";
 
-const SLOT_KEYS = ["id", "store", "surface", "kind", "width", "height", "maxCount", "maxBytes", "safeArea", "rules", "video"];
+const SLOT_KEYS = ["id", "store", "surface", "kind", "width", "height", "maxCount", "maxBytes", "safeArea", "rules", "video", "device"];
 const VIDEO_KEYS = ["fps", "acceptedFps", "duration", "codecProfile", "audio"];
 const APPLE_MAX_BYTES = 524_288_000;
 const FULL_CANVAS: NormalizedRect = { x: 0, y: 0, width: 1, height: 1 };
 const VIDEO_KINDS = new Set(["app-preview", "header-video", "search-video", "trailer"]);
 
-export type SlotContext = { readonly reader: JsonReader; readonly profiles: ReadonlyMap<string, CodecProfile> };
+export type SlotContext = {
+  readonly reader: JsonReader;
+  readonly profiles: ReadonlyMap<string, CodecProfile>;
+  readonly devices: ReadonlyMap<string, Device>;
+};
 
 export function parseSlots(context: SlotContext, document: JsonObject): readonly Slot[] {
   const entries = context.reader.array(document["slots"], "slots");
@@ -54,7 +59,23 @@ function parseSlot(context: SlotContext, entry: JsonObject, path: string): Slot 
     rules: reader.array(entry["rules"] ?? [], `${path}.rules`)
       .map((rule, index) => reader.member(rule, `${path}.rules[${index}]`, LAYOUT_RULES)),
     video,
+    device: parseDeviceReference(context, entry, { path, kind }),
   };
+}
+
+function parseDeviceReference(context: SlotContext, entry: JsonObject, place: { path: string; kind: string }): Device | null {
+  if (entry["device"] === undefined) {
+    return null;
+  }
+  const id = context.reader.text(entry["device"], `${place.path}.device`);
+  const device = context.devices.get(id);
+  if (!device) {
+    context.reader.fail(`${place.path}.device`, `unknown device ${id}`);
+  }
+  if (place.kind !== "screenshot") {
+    context.reader.fail(`${place.path}.device`, `a ${place.kind} slot cannot reference a device`);
+  }
+  return device ?? null;
 }
 
 function parseVideo(context: SlotContext, entry: JsonObject, path: string): VideoTraits {

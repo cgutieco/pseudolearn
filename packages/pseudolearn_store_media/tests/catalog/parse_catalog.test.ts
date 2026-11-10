@@ -38,10 +38,11 @@ describe("parseCatalog", () => {
   });
 
   it("fills defaults for a still slot", () => {
-    const still = realCatalog().slots.find((slot) => slot.id === "apple.mac.screenshot");
+    const still = realCatalog().slots.find((slot) => slot.id === "microsoft.trailer-thumbnail");
     expect(still?.video).toBeNull();
+    expect(still?.device).toBeNull();
     expect(still?.safeArea).toEqual({ x: 0, y: 0, width: 1, height: 1 });
-    expect(still?.maxBytes).toBe(524_288_000);
+    expect(realCatalog().slots.find((slot) => slot.id === "apple.mac.screenshot")?.maxBytes).toBe(524_288_000);
   });
 
 });

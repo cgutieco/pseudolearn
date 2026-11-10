@@ -1,14 +1,14 @@
 import type { LoudnessMeasure } from "../audit/loop_audit.ts";
 import type { VideoProbe } from "../audit/video_audit.ts";
 import type { EncodeRequest, MediaToolkit, Outcome } from "../pipeline/ports.ts";
-import { encoderArguments, frameSampleArguments, loudnessArguments, probeArguments } from "./ffmpeg_arguments.ts";
+import { encoderArguments, flattenArguments, frameSampleArguments, loudnessArguments, probeArguments } from "./ffmpeg_arguments.ts";
 import { parseLoudness, parseProbe } from "./ffmpeg_reports.ts";
 import { failureOf, runProcess } from "./process_runner.ts";
 
 export const SAMPLE_WIDTH = 600;
 
 export function ffmpegToolkit(): MediaToolkit {
-  return { encode, probe, measureLoudness, sampleFrame };
+  return { encode, probe, measureLoudness, sampleFrame, flattenImage };
 }
 
 async function encode(request: EncodeRequest): Promise<Outcome<string>> {
@@ -35,4 +35,9 @@ async function sampleFrame(path: string, frameIndex: number): Promise<Outcome<Ui
     return { ok: false, error: `frame ${frameIndex} does not exist in ${path}` };
   }
   return { ok: true, value: new Uint8Array(result.stdout) };
+}
+
+async function flattenImage(inputPath: string, outputPath: string): Promise<Outcome<string>> {
+  const result = await runProcess("ffmpeg", flattenArguments(inputPath, outputPath));
+  return result.code === 0 ? { ok: true, value: outputPath } : { ok: false, error: failureOf("ffmpeg", result) };
 }

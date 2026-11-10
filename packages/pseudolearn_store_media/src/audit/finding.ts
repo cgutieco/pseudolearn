@@ -10,8 +10,10 @@ export const AUDIT_RULES = [
   "MEDIA-LOUDNESS",
   "MEDIA-LOOP",
   "MEDIA-SAFE-AREA",
+  "MEDIA-PLATE",
   "TEXT-LEXICON",
   "TEXT-CONTRAST",
+  "TEXT-FIT",
 ] as const;
 
 export type AuditRule = (typeof AUDIT_RULES)[number];

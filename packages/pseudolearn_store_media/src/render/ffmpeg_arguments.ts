@@ -49,3 +49,7 @@ export function loudnessArguments(path: string): readonly string[] {
 export function probeArguments(path: string): readonly string[] {
   return ["-v", "error", "-print_format", "json", "-show_streams", "-show_format", path];
 }
+
+export function flattenArguments(inputPath: string, outputPath: string): readonly string[] {
+  return ["-y", "-hide_banner", "-loglevel", "error", "-i", inputPath, "-frames:v", "1", "-pix_fmt", "rgb24", outputPath];
+}

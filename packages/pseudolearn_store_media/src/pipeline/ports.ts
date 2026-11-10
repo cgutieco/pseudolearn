@@ -34,6 +34,7 @@ export type MediaToolkit = {
   probe(path: string): Promise<Outcome<VideoProbe>>;
   measureLoudness(path: string): Promise<Outcome<LoudnessMeasure>>;
   sampleFrame(path: string, frameIndex: number): Promise<Outcome<Uint8Array>>;
+  flattenImage(inputPath: string, outputPath: string): Promise<Outcome<string>>;
 };
 
 export type FileStore = {
@@ -41,6 +42,7 @@ export type FileStore = {
   writeText(path: string, content: string): Promise<void>;
   writeBytes(path: string, content: Uint8Array): Promise<void>;
   readBytes(path: string): Promise<Uint8Array>;
+  readBytesIfPresent(path: string): Promise<Uint8Array | null>;
   copyTimelineLibrary(directory: string): Promise<void>;
   sha256(path: string): Promise<string>;
   join(...parts: readonly string[]): string;

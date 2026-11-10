@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
+import { access, copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import type { FileStore } from "../pipeline/ports.ts";
@@ -22,10 +22,20 @@ export function nodeFileStore(): FileStore {
       await writeFile(path, content);
     },
     readBytes: async (path) => new Uint8Array(await readFile(path)),
+    readBytesIfPresent: async (path) => (await pathExists(path)) ? new Uint8Array(await readFile(path)) : null,
     copyTimelineLibrary: async (directory) => {
       await copyFile(TIMELINE_LIBRARY_SOURCE, join(directory, TIMELINE_LIBRARY_NAME));
     },
     sha256: async (path) => createHash("sha256").update(await readFile(path)).digest("hex"),
     join: (...parts) => join(...parts),
   };
+}
+
+async function pathExists(path: string): Promise<boolean> {
+  try {
+    await access(path);
+    return true;
+  } catch {
+    return false;
+  }
 }

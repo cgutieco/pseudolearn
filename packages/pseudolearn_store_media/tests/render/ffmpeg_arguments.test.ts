@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { encoderArguments, frameSampleArguments, loudnessArguments, probeArguments } from "../../src/render/ffmpeg_arguments.ts";
+import { encoderArguments, flattenArguments, frameSampleArguments, loudnessArguments, probeArguments } from "../../src/render/ffmpeg_arguments.ts";
 import { slot } from "../support/catalog.ts";
 
 function valueAfter(args: readonly string[], flag: string): string | undefined {
@@ -49,5 +49,12 @@ describe("helper arguments", () => {
   it("measures loudness with true peak and probes as JSON", () => {
     expect(loudnessArguments("a.wav")).toContain("ebur128=peak=true");
     expect(probeArguments("v.mp4")).toContain("json");
+  });
+
+  it("flattens a rendered frame to a single opaque RGB image", () => {
+    const args = flattenArguments("frame.png", "shot.png");
+    expect(valueAfter(args, "-pix_fmt")).toBe("rgb24");
+    expect(valueAfter(args, "-frames:v")).toBe("1");
+    expect(args.at(-1)).toBe("shot.png");
   });
 });

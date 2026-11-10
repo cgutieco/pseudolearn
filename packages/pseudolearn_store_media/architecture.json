@@ -13,7 +13,7 @@
   },
   "hostLayers": ["render", "cli"],
   "hostImports": ["node:", "@hyperframes/", "hyperframes"],
-  "unlayeredDirectories": ["catalog", "scripts", "tests", "build"],
+  "unlayeredDirectories": ["catalog", "stories", "scripts", "tests", "build"],
   "forbiddenDirectories": ["src/common", "src/helpers", "src/misc", "src/utils", "src/shared"],
   "size": {
     "fileLines": 200,

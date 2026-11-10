@@ -35,6 +35,14 @@ describe("auditLexicon", () => {
     expect(lexiconIds("microsoft-store", "PEGI 3")).toEqual(["age-rating"]);
   });
 
+  it("rejects pre-release labels and calls to action carried over from the retired app copy rules", () => {
+    expect(lexiconIds("app-store", "Ya en beta")).toEqual(["pre-release"]);
+    expect(lexiconIds("app-store", "Próximamente en tu iPad")).toEqual(["pre-release"]);
+    expect(lexiconIds("app-store", "Descárgala ahora")).toEqual(["call-to-action"]);
+    expect(lexiconIds("microsoft-store", "Download now")).toEqual(["call-to-action"]);
+    expect(lexiconIds("app-store", "Ahora es un lenguaje de verdad")).toEqual([]);
+  });
+
   it("accepts an empty text list", () => {
     expect(auditLexicon(catalog, "app-store", [])).toEqual([]);
   });
