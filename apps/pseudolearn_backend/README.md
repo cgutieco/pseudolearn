@@ -78,6 +78,9 @@ Si el modelo falla, responde 429 o no trae `usage`, no hay débito.
 - El `fetch` global solo aparece en `index.ts`; el resto recibe un `Fetcher` inyectado.
 - Ningún secreto vive en el repositorio (`*.p8` y `.env*` ignorados); los logs nunca llevan tokens, códigos, correos ni
   contenido.
+- `deno fmt` no formatea este README: lo excluye `deno.json` porque los README del monorepo usan 120 columnas y
+  `deno fmt` las reflujaría a 100.
+
 
 ## Comandos útiles
 

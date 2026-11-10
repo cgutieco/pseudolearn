@@ -12,7 +12,8 @@
     "@std/assert": "jsr:@std/assert@1.0.19"
   },
   "fmt": {
-    "lineWidth": 100
+    "lineWidth": 100,
+    "exclude": ["README.md"]
   },
   "lint": {
     "rules": {
