@@ -66,13 +66,46 @@ describe("device catalog rejections", () => {
     expect(errors.some((error) => error.startsWith("devices[2].frame: expected one of"))).toBe(true);
   });
 
-  it("rejects a slot that names an unknown device or puts a device on a video slot", () => {
+  it("rejects a slot that names an unknown device or puts a device on a creative video slot", () => {
     const errors = errorsAfter((document) => {
       slotNamed(document, "apple.mac.screenshot")["device"] = "toaster";
-      slotNamed(document, "apple.mac.app-preview")["device"] = "mac";
+      slotNamed(document, "apple.header.video")["device"] = "mac";
     });
     expect(errors.some((error) => error.endsWith(".device: unknown device toaster"))).toBe(true);
-    expect(errors.some((error) => error.endsWith(".device: a app-preview slot cannot reference a device"))).toBe(true);
+    expect(errors.some((error) => error.endsWith(".device: a header-video slot cannot reference a device"))).toBe(true);
+  });
+
+});
+
+describe("app preview devices", () => {
+  it("records every app preview natively at the exact size of its slot", () => {
+    const previews = realCatalog().slots.filter((slot) => slot.kind === "app-preview");
+    expect(previews.map((slot) => slot.device?.id)).toEqual(["iphone-preview", "ipad-preview", "mac-preview"]);
+    for (const slot of previews) {
+      expect((slot.device?.logicalWidth ?? 0) * (slot.device?.plateScale ?? 0), slot.id).toBe(slot.width);
+      expect((slot.device?.logicalHeight ?? 0) * (slot.device?.plateScale ?? 0), slot.id).toBe(slot.height);
+      expect(slot.device?.frame).toBe("none");
+    }
+  });
+
+  it("rejects an app preview without a device or with a device that would scale the interface", () => {
+    const errors = errorsAfter((document) => {
+      delete slotNamed(document, "apple.ipad.app-preview")["device"];
+      slotNamed(document, "apple.mac.app-preview")["device"] = "mac";
+    });
+    expect(errors).toContain("slots[8].device: an app-preview slot records its plates on a device");
+    expect(errors).toContain("slots[9].device: mac records 2880×1800 px, not the native 1920×1080");
+  });
+
+  it("reads safe-area insets, defaults them to zero and rejects unknown or negative sides", () => {
+    const catalog = realCatalog();
+    expect(catalog.devices.find((device) => device.id === "iphone-preview")?.insets).toEqual({ top: 62, right: 0, bottom: 34, left: 0 });
+    expect(catalog.devices.find((device) => device.id === "mac")?.insets).toEqual({ top: 0, right: 0, bottom: 0, left: 0 });
+    const errors = errorsAfter((document) => {
+      (devices(document)[0] as Mutable)["insets"] = { top: -1, right: 0, bottom: 0, left: 0, notch: 3 };
+    });
+    expect(errors).toContain("devices[0].insets.notch: unknown key");
+    expect(errors.some((error) => error.startsWith("devices[0].insets.top:"))).toBe(true);
   });
 
   it("rejects a missing device list", () => {

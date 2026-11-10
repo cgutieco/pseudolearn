@@ -17,7 +17,7 @@ export function hyperframesRenderer(): FrameRenderer {
 async function renderFrames(request: FrameRenderRequest): Promise<Outcome<RenderedFrames>> {
   await rm(request.framesDirectory, { recursive: true, force: true });
   try {
-    const job = createRenderJob({ fps: request.fps, quality: "high", format: "png-sequence" });
+    const job = createRenderJob({ fps: request.fps, quality: "high", format: "png-sequence", videoFrameFormat: "png" });
     await executeRenderJob(job, request.projectDirectory, request.framesDirectory);
   } catch (error) {
     return { ok: false, error: `HyperFrames could not render ${request.projectDirectory}: ${String(error)}` };

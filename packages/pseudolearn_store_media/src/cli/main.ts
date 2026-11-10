@@ -7,6 +7,7 @@ import { silenceTelemetry } from "../render/hyperframes_renderer.ts";
 import { runAuditImage } from "./audit_image_command.ts";
 import { runCalibrate } from "./calibrate_command.ts";
 import { runPlan } from "./plan_command.ts";
+import { runPreviews } from "./previews_command.ts";
 import { runScreenshots } from "./screenshots_command.ts";
 
 const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -28,6 +29,7 @@ const COMMANDS: Readonly<Record<string, (context: CommandContext) => Promise<num
   calibrate: runCalibrate,
   "audit-image": runAuditImage,
   screenshots: runScreenshots,
+  previews: runPreviews,
 };
 
 async function main(argv: readonly string[]): Promise<number> {

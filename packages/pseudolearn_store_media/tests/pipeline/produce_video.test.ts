@@ -7,15 +7,12 @@ import { produceVideo } from "../../src/pipeline/produce_video.ts";
 import { planJobs } from "../../src/pipeline/render_plan.ts";
 import { calibrationStoryboard } from "../../src/story/calibration_storyboard.ts";
 import { realCatalog } from "../support/catalog.ts";
+import { goodProbe } from "../support/probe.ts";
 import { fakeToolbox, type FakeScript } from "../support/fake_toolbox.ts";
 
 const catalog = realCatalog();
 
-const previewProbe: VideoProbe = {
-  width: 886, height: 1920, framesPerSecond: 30, durationSeconds: 15, codec: "h264", profile: "High",
-  pixelFormat: "yuv420p", colorPrimaries: "bt709", rotation: 0, sizeBytes: 1_000_000,
-  audio: { codec: "aac", sampleRate: 48000, channels: 2 },
-};
+const previewProbe: VideoProbe = goodProbe({ width: 886, height: 1920 });
 
 function run(slotId: string, script: FakeScript = {}, probe: VideoProbe = previewProbe) {
   const [job] = planJobs({ catalog, slotIds: [slotId], languages: ["es"] }).jobs;

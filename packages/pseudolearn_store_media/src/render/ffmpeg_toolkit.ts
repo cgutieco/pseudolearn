@@ -1,14 +1,15 @@
 import type { LoudnessMeasure } from "../audit/loop_audit.ts";
 import type { VideoProbe } from "../audit/video_audit.ts";
-import type { EncodeRequest, MediaToolkit, Outcome } from "../pipeline/ports.ts";
-import { encoderArguments, flattenArguments, frameSampleArguments, loudnessArguments, probeArguments } from "./ffmpeg_arguments.ts";
+import type { EncodeRequest, MediaToolkit, Outcome, StillRequest } from "../pipeline/ports.ts";
+import { encoderArguments, flattenArguments, frameSampleArguments, loudnessArguments, probeArguments, stillArguments } from "./ffmpeg_arguments.ts";
 import { parseLoudness, parseProbe } from "./ffmpeg_reports.ts";
+import { assemblePlate } from "./plate_assembly.ts";
 import { failureOf, runProcess } from "./process_runner.ts";
 
 export const SAMPLE_WIDTH = 600;
 
 export function ffmpegToolkit(): MediaToolkit {
-  return { encode, probe, measureLoudness, sampleFrame, flattenImage };
+  return { encode, probe, measureLoudness, sampleFrame, flattenImage, assemblePlate, extractStill };
 }
 
 async function encode(request: EncodeRequest): Promise<Outcome<string>> {
@@ -40,4 +41,9 @@ async function sampleFrame(path: string, frameIndex: number): Promise<Outcome<Ui
 async function flattenImage(inputPath: string, outputPath: string): Promise<Outcome<string>> {
   const result = await runProcess("ffmpeg", flattenArguments(inputPath, outputPath));
   return result.code === 0 ? { ok: true, value: outputPath } : { ok: false, error: failureOf("ffmpeg", result) };
+}
+
+async function extractStill(request: StillRequest): Promise<Outcome<string>> {
+  const result = await runProcess("ffmpeg", stillArguments(request));
+  return result.code === 0 ? { ok: true, value: request.outputPath } : { ok: false, error: failureOf("ffmpeg", result) };
 }

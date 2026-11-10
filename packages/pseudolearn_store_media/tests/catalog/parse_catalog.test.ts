@@ -119,10 +119,4 @@ describe("parseCatalog geometry and references", () => {
     expect(errorsOf(slotsDocument(), lexicon)).toContain("lexicon.shared[0]: pattern is not a valid regular expression");
   });
 
-  it("rejects a codec profile whose ceiling is below its target bitrate", () => {
-    const document = slotsDocument();
-    const profiles = document["codecProfiles"] as Record<string, Mutable>;
-    (profiles["apple-preview"] as Mutable)["maxBitrateMbps"] = 2;
-    expect(errorsOf(document)).toContain("codecProfiles.apple-preview.maxBitrateMbps: must not be lower than bitrateMbps");
-  });
 });

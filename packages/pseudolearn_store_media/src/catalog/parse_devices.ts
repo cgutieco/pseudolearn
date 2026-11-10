@@ -1,7 +1,9 @@
-import { DEVICE_FRAMES, FOLD_AXES, type Device } from "./catalog_types.ts";
+import { DEVICE_FRAMES, FOLD_AXES, type Device, type Insets } from "./catalog_types.ts";
 import type { JsonObject, JsonReader } from "./json_reader.ts";
 
-const DEVICE_KEYS = ["id", "logicalWidth", "logicalHeight", "plateScale", "cornerRadius", "frame", "fold"];
+const DEVICE_KEYS = ["id", "logicalWidth", "logicalHeight", "plateScale", "cornerRadius", "frame", "fold", "insets"];
+const INSET_KEYS = ["top", "right", "bottom", "left"];
+const NO_INSETS: Insets = { top: 0, right: 0, bottom: 0, left: 0 };
 const LOGICAL_RANGE = { min: 100, max: 4096 };
 
 export function parseDevices(reader: JsonReader, document: JsonObject): ReadonlyMap<string, Device> {
@@ -26,9 +28,16 @@ function parseDevice(reader: JsonReader, entry: JsonObject, path: string): Devic
     cornerRadius: reader.number(entry["cornerRadius"], `${path}.cornerRadius`, { min: 0, max: 120 }),
     frame: reader.member(entry["frame"], `${path}.frame`, DEVICE_FRAMES),
     fold: reader.member(entry["fold"], `${path}.fold`, FOLD_AXES),
+    insets: entry["insets"] === undefined ? NO_INSETS : parseInsets(reader, reader.object(entry["insets"], `${path}.insets`), `${path}.insets`),
   };
   if ((device.frame === "foldable") !== (device.fold !== "none")) {
     reader.fail(`${path}.fold`, "only a foldable frame has a fold axis, and it always has one");
   }
   return device;
+}
+
+function parseInsets(reader: JsonReader, entry: JsonObject, path: string): Insets {
+  reader.keys(entry, path, INSET_KEYS);
+  const side = (key: string) => reader.number(entry[key], `${path}.${key}`, { min: 0, max: 200 });
+  return { top: side("top"), right: side("right"), bottom: side("bottom"), left: side("left") };
 }

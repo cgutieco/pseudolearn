@@ -1,23 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { auditVideo, type VideoProbe } from "../../src/audit/video_audit.ts";
 import { slot } from "../support/catalog.ts";
+import { goodProbe } from "../support/probe.ts";
 
 const preview = slot("apple.iphone.app-preview");
 const search = slot("apple.search.video");
 
-const goodPreview: VideoProbe = {
-  width: 886,
-  height: 1920,
-  framesPerSecond: 30,
-  durationSeconds: 15,
-  codec: "h264",
-  profile: "High",
-  pixelFormat: "yuv420p",
-  colorPrimaries: "bt709",
-  rotation: 0,
-  sizeBytes: 2_000_000,
-  audio: { codec: "aac", sampleRate: 48000, channels: 2 },
-};
+const goodPreview: VideoProbe = goodProbe({ width: 886, height: 1920 });
 
 function rules(probe: Partial<VideoProbe>, target = preview): readonly string[] {
   return auditVideo({ slot: target, target: "piece.mp4", probe: { ...goodPreview, ...probe } }).map((entry) => entry.rule);
@@ -44,7 +33,7 @@ describe("auditVideo", () => {
 
   it("requires the audio track a preview needs, in the right format", () => {
     expect(rules({ audio: null })).toEqual(["MEDIA-AUDIO"]);
-    expect(rules({ audio: { codec: "aac", sampleRate: 44100, channels: 2 } })).toEqual(["MEDIA-AUDIO"]);
+    expect(rules({ audio: { codec: "aac", sampleRate: 44100, channels: 2, bitrateBps: 256_000 } })).toEqual(["MEDIA-AUDIO"]);
   });
 
   it("forbids an audio track on the search video", () => {

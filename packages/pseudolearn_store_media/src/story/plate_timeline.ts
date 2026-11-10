@@ -2,14 +2,16 @@ import type { Parsed } from "../catalog/catalog_types.ts";
 import { JsonReader, type JsonObject } from "../catalog/json_reader.ts";
 import type { Beat, BeatKind } from "./storyboard.ts";
 
-export const PLATE_EVENT_KINDS = ["statement", "diagram-node", "agent-message", "completion"] as const;
+export const PLATE_EVENT_KINDS = ["statement", "diagram-node", "agent-message", "completion", "tap"] as const;
 export type PlateEventKind = (typeof PLATE_EVENT_KINDS)[number];
 
 export type FocusRect = { readonly key: string; readonly x: number; readonly y: number; readonly width: number; readonly height: number };
 
 export type PlateFrame = { readonly index: number; readonly file: string; readonly focus: readonly FocusRect[] };
 
-export type PlateEvent = { readonly frame: number; readonly kind: PlateEventKind };
+export type PlatePoint = { readonly x: number; readonly y: number };
+
+export type PlateEvent = { readonly frame: number; readonly kind: PlateEventKind; readonly point: PlatePoint | null };
 
 export type PlateTimeline = {
   readonly scene: string;
@@ -26,6 +28,7 @@ const BEAT_FOR_EVENT: Readonly<Record<PlateEventKind, BeatKind>> = {
   "diagram-node": "accent",
   "agent-message": "reveal",
   completion: "resolve",
+  tap: "step",
 };
 
 export function parsePlateTimeline(document: unknown): Parsed<PlateTimeline> {
@@ -50,7 +53,7 @@ export function beatsFromTimeline(timeline: PlateTimeline, degrees: readonly num
     atSeconds: event.frame / timeline.fps,
     kind: BEAT_FOR_EVENT[event.kind],
     degree: degrees[index % Math.max(degrees.length, 1)] ?? 0,
-    weight: event.kind === "statement" ? 0.6 : 1,
+    weight: event.kind === "statement" || event.kind === "tap" ? 0.6 : 1,
   }));
 }
 
@@ -76,10 +79,18 @@ function parseFocus(reader: JsonReader, entry: JsonObject, path: string): FocusR
 }
 
 function parseEvent(reader: JsonReader, value: unknown, index: number): PlateEvent {
-  const entry = reader.object(value, `events[${index}]`);
+  const path = `events[${index}]`;
+  const entry = reader.object(value, path);
+  const kind = reader.member(entry["kind"], `${path}.kind`, PLATE_EVENT_KINDS);
+  const hasPoint = entry["x"] !== undefined || entry["y"] !== undefined;
+  if ((kind === "tap") !== hasPoint) {
+    reader.fail(path, "a tap carries the x and y of the touch, and only a tap does");
+  }
+  const pixels = { min: 0, max: 8192 };
   return {
-    frame: reader.number(entry["frame"], `events[${index}].frame`, { min: 0, max: 100_000 }),
-    kind: reader.member(entry["kind"], `events[${index}].kind`, PLATE_EVENT_KINDS),
+    frame: reader.number(entry["frame"], `${path}.frame`, { min: 0, max: 100_000 }),
+    kind,
+    point: hasPoint ? { x: reader.number(entry["x"], `${path}.x`, pixels), y: reader.number(entry["y"], `${path}.y`, pixels) } : null,
   };
 }
 

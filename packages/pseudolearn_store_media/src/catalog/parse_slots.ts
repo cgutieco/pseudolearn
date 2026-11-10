@@ -16,6 +16,7 @@ const VIDEO_KEYS = ["fps", "acceptedFps", "duration", "codecProfile", "audio"];
 const APPLE_MAX_BYTES = 524_288_000;
 const FULL_CANVAS: NormalizedRect = { x: 0, y: 0, width: 1, height: 1 };
 const VIDEO_KINDS = new Set(["app-preview", "header-video", "search-video", "trailer"]);
+const DEVICE_KINDS = new Set(["screenshot", "app-preview"]);
 
 export type SlotContext = {
   readonly reader: JsonReader;
@@ -44,7 +45,7 @@ function parseSlot(context: SlotContext, entry: JsonObject, path: string): Slot 
   if (VIDEO_KINDS.has(kind) !== (video !== null)) {
     reader.fail(`${path}.video`, `a ${kind} slot ${VIDEO_KINDS.has(kind) ? "needs" : "cannot have"} video traits`);
   }
-  return {
+  const slot: Slot = {
     id: reader.text(entry["id"], `${path}.id`),
     store: reader.member(entry["store"], `${path}.store`, STORES),
     surface: reader.text(entry["surface"], `${path}.surface`),
@@ -61,6 +62,22 @@ function parseSlot(context: SlotContext, entry: JsonObject, path: string): Slot 
     video,
     device: parseDeviceReference(context, entry, { path, kind }),
   };
+  verifyPreviewPlate(reader, slot, path);
+  return slot;
+}
+
+function verifyPreviewPlate(reader: JsonReader, slot: Slot, path: string): void {
+  if (slot.kind !== "app-preview") {
+    return;
+  }
+  const device = slot.device;
+  if (!device) {
+    reader.fail(`${path}.device`, "an app-preview slot records its plates on a device");
+    return;
+  }
+  if (device.logicalWidth * device.plateScale !== slot.width || device.logicalHeight * device.plateScale !== slot.height) {
+    reader.fail(`${path}.device`, `${device.id} records ${device.logicalWidth * device.plateScale}×${device.logicalHeight * device.plateScale} px, not the native ${slot.width}×${slot.height}`);
+  }
 }
 
 function parseDeviceReference(context: SlotContext, entry: JsonObject, place: { path: string; kind: string }): Device | null {
@@ -72,7 +89,7 @@ function parseDeviceReference(context: SlotContext, entry: JsonObject, place: { 
   if (!device) {
     context.reader.fail(`${place.path}.device`, `unknown device ${id}`);
   }
-  if (place.kind !== "screenshot") {
+  if (!DEVICE_KINDS.has(place.kind)) {
     context.reader.fail(`${place.path}.device`, `a ${place.kind} slot cannot reference a device`);
   }
   return device ?? null;

@@ -4,10 +4,11 @@ import { parseLoudness, parseProbe } from "../../src/render/ffmpeg_reports.ts";
 const probeJson = JSON.stringify({
   streams: [
     { codec_type: "video", codec_name: "h264", profile: "High", pix_fmt: "yuv420p", color_primaries: "bt709", width: 886, height: 1920,
-      r_frame_rate: "30000/1001", side_data_list: [{ rotation: -90 }] },
-    { codec_type: "audio", codec_name: "aac", sample_rate: "48000", channels: 2 },
+      r_frame_rate: "30000/1001", side_data_list: [{ rotation: -90 }], level: 40, field_order: "progressive", bit_rate: "10927551",
+      disposition: { default: 1 } },
+    { codec_type: "audio", codec_name: "aac", sample_rate: "48000", channels: 2, bit_rate: "248207", disposition: { default: 0 } },
   ],
-  format: { duration: "15.000000", size: "1813681" },
+  format: { duration: "15.000000", size: "1813681", filename: "out/preview.mp4", format_name: "mov,mp4,m4a,3gp,3g2,mj2" },
 });
 
 describe("parseProbe", () => {
@@ -17,9 +18,17 @@ describe("parseProbe", () => {
     if (outcome.ok) {
       expect(outcome.value.framesPerSecond).toBeCloseTo(29.97, 2);
       expect(outcome.value.rotation).toBe(90);
-      expect(outcome.value.audio).toEqual({ codec: "aac", sampleRate: 48000, channels: 2 });
+      expect(outcome.value.audio).toEqual({ codec: "aac", sampleRate: 48000, channels: 2, bitrateBps: 248207 });
       expect(outcome.value.sizeBytes).toBe(1813681);
     }
+  });
+
+  it("reads what delivery is audited on: level, scan, bitrate, container and enabled tracks", () => {
+    const outcome = parseProbe(probeJson);
+    expect(outcome.ok && outcome.value.delivery).toEqual({
+      level: 40, fieldOrder: "progressive", videoBitrateBps: 10927551, formatName: "mov,mp4,m4a,3gp,3g2,mj2", extension: "mp4",
+      tracks: [{ kind: "video", enabled: true }, { kind: "audio", enabled: false }],
+    });
   });
 
   it("reports a file without video and output that is not JSON", () => {
@@ -30,6 +39,7 @@ describe("parseProbe", () => {
   it("returns no audio for a silent file", () => {
     const outcome = parseProbe(JSON.stringify({ streams: [{ codec_type: "video", r_frame_rate: "30/1" }], format: {} }));
     expect(outcome.ok && outcome.value.audio).toBeNull();
+    expect(outcome.ok && [outcome.value.delivery.extension, outcome.value.delivery.fieldOrder, outcome.value.delivery.level]).toEqual(["", "", 0]);
   });
 });
 

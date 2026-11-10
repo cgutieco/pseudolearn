@@ -1,9 +1,8 @@
-import type { EncodeRequest } from "../pipeline/ports.ts";
+import type { EncodeRequest, StillRequest } from "../pipeline/ports.ts";
 
-const COLOR_TAGS = [
-  "-x264-params", "colorprim=bt709:transfer=bt709:colormatrix=bt709:range=tv",
-  "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709", "-color_range", "tv",
-];
+const COLOR_PARAMETERS = "colorprim=bt709:transfer=bt709:colormatrix=bt709:range=tv";
+const CONSTANT_RATE_PARAMETERS = "nal-hrd=cbr:force-cfr=1";
+const COLOR_TAGS = ["-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709", "-color_range", "tv"];
 
 export function encoderArguments(request: EncodeRequest): readonly string[] {
   const { profile, fps } = request;
@@ -15,8 +14,9 @@ export function encoderArguments(request: EncodeRequest): readonly string[] {
     ...(profile.level ? ["-level:v", profile.level] : []),
     "-preset", "slow",
     "-vf", "scale=out_color_matrix=bt709:out_range=tv,format=yuv420p",
-    "-b:v", `${profile.bitrateMbps}M`, "-maxrate", `${profile.maxBitrateMbps}M`, "-bufsize", `${profile.maxBitrateMbps * 2}M`,
+    ...rateArguments(request),
     ...gopArguments(request),
+    "-x264-params", profile.rateControl === "cbr" ? `${CONSTANT_RATE_PARAMETERS}:${COLOR_PARAMETERS}` : COLOR_PARAMETERS,
     ...COLOR_TAGS,
     "-r", String(fps),
   ];
@@ -25,6 +25,15 @@ export function encoderArguments(request: EncodeRequest): readonly string[] {
     : ["-an"];
   return ["-y", "-hide_banner", "-loglevel", "error", ...inputs, ...audioInput, ...mapping, ...video, ...audio,
     "-shortest", "-movflags", "+faststart", request.outputPath];
+}
+
+function rateArguments(request: EncodeRequest): readonly string[] {
+  const { profile } = request;
+  if (profile.rateControl === "cbr") {
+    const rate = `${profile.bitrateMbps}M`;
+    return ["-b:v", rate, "-minrate", rate, "-maxrate", rate, "-bufsize", rate];
+  }
+  return ["-b:v", `${profile.bitrateMbps}M`, "-maxrate", `${profile.maxBitrateMbps}M`, "-bufsize", `${profile.maxBitrateMbps * 2}M`];
 }
 
 function gopArguments(request: EncodeRequest): readonly string[] {
@@ -52,4 +61,18 @@ export function probeArguments(path: string): readonly string[] {
 
 export function flattenArguments(inputPath: string, outputPath: string): readonly string[] {
   return ["-y", "-hide_banner", "-loglevel", "error", "-i", inputPath, "-frames:v", "1", "-pix_fmt", "rgb24", outputPath];
+}
+
+export function plateAssemblyArguments(framePattern: string, fps: number, outputPath: string): readonly string[] {
+  return ["-y", "-hide_banner", "-loglevel", "error", "-framerate", String(fps), "-start_number", "1", "-i", framePattern,
+    "-c:v", "libx264rgb", "-crf", "0", "-preset", "ultrafast", "-pix_fmt", "rgb24", outputPath];
+}
+
+export function stillArguments(request: StillRequest): readonly string[] {
+  const scale = request.longSide === null
+    ? []
+    : [`scale=w='if(gt(iw,ih),${request.longSide},-2)':h='if(gt(iw,ih),-2,${request.longSide})':flags=area`];
+  return ["-y", "-hide_banner", "-loglevel", "error", "-i", request.videoPath,
+    "-vf", [`select=eq(n\\,${request.frameIndex})`, ...scale].join(","), "-fps_mode", "passthrough",
+    "-frames:v", "1", "-pix_fmt", "rgb24", request.outputPath];
 }

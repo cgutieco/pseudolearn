@@ -15,6 +15,7 @@ const INSETS: Readonly<Record<DeviceFrame, Insets>> = {
   tablet: { side: 0.03, top: 0.03, bottom: 0.03, overhang: 0 },
   foldable: { side: 0.02, top: 0.02, bottom: 0.02, overhang: 0 },
   window: { side: 0.022, top: 0.031, bottom: 0.066, overhang: 0.06 },
+  none: { side: 0, top: 0, bottom: 0, overhang: 0 },
 };
 
 export function deviceAspect(device: Device): number {

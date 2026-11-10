@@ -43,6 +43,22 @@ describe("auditLexicon", () => {
     expect(lexiconIds("app-store", "Ahora es un lenguaje de verdad")).toEqual([]);
   });
 
+});
+
+describe("auditLexicon timely references", () => {
+  it("rejects dates and seasonal references that would age a preview", () => {
+    expect(lexiconIds("app-store", "Novedad de 2026")).toEqual(["timely"]);
+    expect(lexiconIds("app-store", "Nuevo para primavera")).toEqual(["timely"]);
+    expect(lexiconIds("app-store", "New for spring")).toEqual(["timely"]);
+    expect(lexiconIds("app-store", "Listo para Navidad")).toEqual(["timely"]);
+    expect(lexiconIds("app-store", "Since October")).toEqual(["timely"]);
+    expect(lexiconIds("app-store", "Mientras temperatura > 24 Hacer")).toEqual([]);
+    expect(lexiconIds("app-store", "You may run it again")).toEqual([]);
+  });
+
+});
+
+describe("auditLexicon edges", () => {
   it("accepts an empty text list", () => {
     expect(auditLexicon(catalog, "app-store", [])).toEqual([]);
   });

@@ -29,12 +29,28 @@ export type EncodeRequest = {
   readonly outputPath: string;
 };
 
+export type PlateAssemblyRequest = {
+  readonly directory: string;
+  readonly files: readonly string[];
+  readonly fps: number;
+  readonly outputPath: string;
+};
+
+export type StillRequest = {
+  readonly videoPath: string;
+  readonly frameIndex: number;
+  readonly longSide: number | null;
+  readonly outputPath: string;
+};
+
 export type MediaToolkit = {
   encode(request: EncodeRequest): Promise<Outcome<string>>;
   probe(path: string): Promise<Outcome<VideoProbe>>;
   measureLoudness(path: string): Promise<Outcome<LoudnessMeasure>>;
   sampleFrame(path: string, frameIndex: number): Promise<Outcome<Uint8Array>>;
   flattenImage(inputPath: string, outputPath: string): Promise<Outcome<string>>;
+  assemblePlate(request: PlateAssemblyRequest): Promise<Outcome<string>>;
+  extractStill(request: StillRequest): Promise<Outcome<string>>;
 };
 
 export type FileStore = {

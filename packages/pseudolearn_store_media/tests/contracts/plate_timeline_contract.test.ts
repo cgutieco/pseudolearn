@@ -11,7 +11,9 @@ describe("plate timeline contract with the app", () => {
     expect(parsed.ok).toBe(true);
     if (parsed.ok) {
       expect(parsed.value.frames[0]?.focus[0]).toEqual({ key: "tabs", x: 0, y: 96, width: 886, height: 88 });
-      expect(parsed.value.events.map((event) => event.kind)).toEqual(["statement", "completion"]);
+      expect(parsed.value.events.map((event) => event.kind)).toEqual(["statement", "tap", "completion"]);
+      expect(parsed.value.events[1]?.point).toEqual({ x: 443, y: 1700 });
+      expect(parsed.value.frames[1]?.file).toBe(parsed.value.frames[0]?.file);
     }
   });
 });

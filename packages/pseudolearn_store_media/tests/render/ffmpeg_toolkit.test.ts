@@ -49,6 +49,34 @@ describe("ffmpeg toolkit against the real binaries", () => {
     expect(loudness.ok && Number.isFinite(loudness.value.integratedLufs)).toBe(true);
   });
 
+});
+
+describe("ffmpeg toolkit delivery against the real binaries", () => {
+  it("delivers a preview between 10 and 12 Mbps even when the picture never changes", async () => {
+    const still = join(directory, "still");
+    await runProcess("mkdir", [still]);
+    await runProcess("ffmpeg", ["-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i", "color=c=0x195C5F:s=64x128:r=30:d=5",
+      "-start_number", "1", join(still, "frame_%06d.png")]);
+    const output = join(directory, "constant.mp4");
+    writeFileSync(join(still, "track.wav"), encodeWav(synthesize({ sampleRate: 48000, durationSeconds: 5, voice: CALIBRATION_VOICE, beats: [] })));
+    await toolkit.encode({ framePattern: join(still, "frame_%06d.png"), startNumber: 1, fps: 30,
+      audioPath: join(still, "track.wav"), profile, outputPath: output });
+    const probe = await toolkit.probe(output);
+    expect(probe.ok && probe.value.delivery.videoBitrateBps).toBeGreaterThanOrEqual(10_000_000);
+    expect(probe.ok && probe.value.delivery.videoBitrateBps).toBeLessThanOrEqual(12_000_000);
+    expect(probe.ok && [probe.value.delivery.level, probe.value.delivery.fieldOrder, probe.value.delivery.extension]).toEqual([40, "progressive", "mp4"]);
+  });
+
+  it("extracts a poster frame as a PNG", async () => {
+    const output = join(directory, "piece.mp4");
+    const still = await toolkit.extractStill({ videoPath: output, frameIndex: 5, longSide: 600, outputPath: join(directory, "poster.png") });
+    expect(still).toEqual({ ok: true, value: join(directory, "poster.png") });
+    expect((await toolkit.extractStill({ videoPath: join(directory, "missing.mp4"), frameIndex: 0, longSide: null, outputPath: join(directory, "x.png") })).ok).toBe(false);
+  });
+
+});
+
+describe("ffmpeg toolkit failures against the real binaries", () => {
   it("returns failures as values", async () => {
     expect((await toolkit.probe(join(directory, "missing.mp4"))).ok).toBe(false);
     expect((await toolkit.sampleFrame(join(directory, "missing.mp4"), 0)).ok).toBe(false);

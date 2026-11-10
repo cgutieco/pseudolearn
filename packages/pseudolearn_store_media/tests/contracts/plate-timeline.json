@@ -20,7 +20,7 @@
     },
     {
       "index": 1,
-      "file": "frame_000002.png",
+      "file": "frame_000001.png",
       "focus": []
     }
   ],
@@ -28,6 +28,12 @@
     {
       "frame": 0,
       "kind": "statement"
+    },
+    {
+      "frame": 1,
+      "kind": "tap",
+      "x": 443.0,
+      "y": 1700.0
     },
     {
       "frame": 1,

@@ -39,11 +39,18 @@ export type NormalizedRect = {
   readonly height: number;
 };
 
-export const DEVICE_FRAMES = ["phone", "foldable", "tablet", "window"] as const;
+export const DEVICE_FRAMES = ["phone", "foldable", "tablet", "window", "none"] as const;
 export type DeviceFrame = (typeof DEVICE_FRAMES)[number];
 
 export const FOLD_AXES = ["none", "vertical", "horizontal"] as const;
 export type FoldAxis = (typeof FOLD_AXES)[number];
+
+export type Insets = {
+  readonly top: number;
+  readonly right: number;
+  readonly bottom: number;
+  readonly left: number;
+};
 
 export type Device = {
   readonly id: string;
@@ -53,6 +60,7 @@ export type Device = {
   readonly cornerRadius: number;
   readonly frame: DeviceFrame;
   readonly fold: FoldAxis;
+  readonly insets: Insets;
 };
 
 export type SecondsRange = { readonly min: number; readonly max: number };
@@ -64,12 +72,18 @@ export type AudioProfile = {
   readonly channels: number;
 };
 
+export const RATE_CONTROLS = ["cbr", "vbr"] as const;
+export type RateControl = (typeof RATE_CONTROLS)[number];
+
 export type CodecProfile = {
   readonly id: string;
   readonly profile: "high";
   readonly level: string | null;
+  readonly rateControl: RateControl;
+  readonly minBitrateMbps: number | null;
   readonly bitrateMbps: number;
   readonly maxBitrateMbps: number;
+  readonly containers: readonly string[];
   readonly closedGopSeconds: number | null;
   readonly bFrames: number | null;
   readonly audio: AudioProfile;

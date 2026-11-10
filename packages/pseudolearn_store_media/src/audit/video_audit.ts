@@ -5,6 +5,18 @@ export type AudioStreamProbe = {
   readonly codec: string;
   readonly sampleRate: number;
   readonly channels: number;
+  readonly bitrateBps: number;
+};
+
+export type TrackProbe = { readonly kind: string; readonly enabled: boolean };
+
+export type DeliveryProbe = {
+  readonly level: number;
+  readonly fieldOrder: string;
+  readonly videoBitrateBps: number;
+  readonly formatName: string;
+  readonly extension: string;
+  readonly tracks: readonly TrackProbe[];
 };
 
 export type VideoProbe = {
@@ -19,6 +31,7 @@ export type VideoProbe = {
   readonly rotation: number;
   readonly sizeBytes: number;
   readonly audio: AudioStreamProbe | null;
+  readonly delivery: DeliveryProbe;
 };
 
 export type VideoAuditRequest = {

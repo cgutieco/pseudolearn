@@ -47,6 +47,13 @@ describe("parsePlateTimeline", () => {
     expect(parsed.ok).toBe(false);
   });
 
+  it("reads the point of a tap and rejects a tap without one or a point on another kind", () => {
+    const tapped = parsePlateTimeline(timeline({ events: [{ frame: 1, kind: "tap", x: 10, y: 20 }] }));
+    expect(tapped.ok && tapped.value.events[0]?.point).toEqual({ x: 10, y: 20 });
+    expect(parsePlateTimeline(timeline({ events: [{ frame: 1, kind: "tap" }] })).ok).toBe(false);
+    expect(parsePlateTimeline(timeline({ events: [{ frame: 1, kind: "statement", x: 1, y: 1 }] })).ok).toBe(false);
+  });
+
   it("accepts a timeline with no events", () => {
     expect(parsePlateTimeline(timeline({ events: [] })).ok).toBe(true);
   });

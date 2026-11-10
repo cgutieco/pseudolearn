@@ -29,6 +29,17 @@ export const CALIBRATION_VOICE: Voice = {
   stereoWidth: 0.6,
 };
 
+export const PREVIEW_VOICE: Voice = {
+  rootHz: 130.81,
+  scale: [0, 2, 4, 7, 9, 12, 14, 16, 19, 21],
+  padDegrees: [0, 4, 7],
+  padGain: 0.16,
+  cueGain: 0.11,
+  cueDecaySeconds: 0.7,
+  cueOctave: 2,
+  stereoWidth: 0.5,
+};
+
 export function scoreFor(storyboard: Storyboard, voice: Voice, sampleRate: number): Score {
   return { sampleRate, durationSeconds: storyboard.durationSeconds, voice, beats: storyboard.beats };
 }

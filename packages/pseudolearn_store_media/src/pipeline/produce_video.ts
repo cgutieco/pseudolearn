@@ -1,6 +1,7 @@
 import type { Catalog } from "../catalog/catalog_types.ts";
 import type { Voice } from "../audio/score.ts";
 import type { Finding } from "../audit/finding.ts";
+import { auditDelivery } from "../audit/delivery_audit.ts";
 import { auditLoop } from "../audit/loop_audit.ts";
 import { auditSafeArea } from "../audit/safe_area_audit.ts";
 import { auditLexicon } from "../audit/text_audit.ts";
@@ -86,8 +87,10 @@ async function postRenderFindings(request: VideoRequest, outputPath: string, fra
     return { ok: false, error: [probe, first, last].map((step) => (step.ok ? "" : step.error)).join(" ").trim() };
   }
   const target = request.composition.id;
+  const profile = request.job.slot.video?.codecProfile;
   return { ok: true, value: [
     ...auditVideo({ slot: request.job.slot, target, probe: probe.value }),
+    ...(profile ? auditDelivery({ profile, target, probe: probe.value }) : []),
     ...auditLoop(target, first.value, last.value),
   ] };
 }

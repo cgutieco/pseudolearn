@@ -1,5 +1,5 @@
 import type { LoudnessMeasure } from "../audit/loop_audit.ts";
-import type { AudioStreamProbe, VideoProbe } from "../audit/video_audit.ts";
+import type { AudioStreamProbe, DeliveryProbe, VideoProbe } from "../audit/video_audit.ts";
 import type { Outcome } from "../pipeline/ports.ts";
 
 type Stream = {
@@ -13,13 +13,17 @@ type Stream = {
   readonly r_frame_rate?: string;
   readonly sample_rate?: string;
   readonly channels?: number;
+  readonly level?: number;
+  readonly field_order?: string;
+  readonly bit_rate?: string;
+  readonly disposition?: { readonly default?: number };
   readonly tags?: Readonly<Record<string, string>>;
   readonly side_data_list?: readonly { readonly rotation?: number }[];
 };
 
 type ProbeDocument = {
   readonly streams?: readonly Stream[];
-  readonly format?: { readonly duration?: string; readonly size?: string };
+  readonly format?: { readonly duration?: string; readonly size?: string; readonly filename?: string; readonly format_name?: string };
 };
 
 export function parseProbe(text: string): Outcome<VideoProbe> {
@@ -48,12 +52,26 @@ export function parseProbe(text: string): Outcome<VideoProbe> {
       rotation: Math.abs(video.side_data_list?.find((entry) => entry.rotation !== undefined)?.rotation ?? Number(video.tags?.["rotate"] ?? 0)),
       sizeBytes: Number(document.format?.size ?? 0),
       audio: audio ? audioOf(audio) : null,
+      delivery: deliveryOf(document, video),
     },
   };
 }
 
+function deliveryOf(document: ProbeDocument, video: Stream): DeliveryProbe {
+  const filename = document.format?.filename ?? "";
+  return {
+    level: video.level ?? 0,
+    fieldOrder: video.field_order ?? "",
+    videoBitrateBps: Number(video.bit_rate ?? 0),
+    formatName: document.format?.format_name ?? "",
+    extension: filename.includes(".") ? filename.slice(filename.lastIndexOf(".") + 1) : "",
+    tracks: (document.streams ?? []).map((stream) => ({ kind: stream.codec_type ?? "unknown", enabled: stream.disposition?.default === 1 })),
+  };
+}
+
 function audioOf(stream: Stream): AudioStreamProbe {
-  return { codec: stream.codec_name ?? "", sampleRate: Number(stream.sample_rate ?? 0), channels: stream.channels ?? 0 };
+  return { codec: stream.codec_name ?? "", sampleRate: Number(stream.sample_rate ?? 0), channels: stream.channels ?? 0,
+    bitrateBps: Number(stream.bit_rate ?? 0) };
 }
 
 function rate(fraction: string): number {

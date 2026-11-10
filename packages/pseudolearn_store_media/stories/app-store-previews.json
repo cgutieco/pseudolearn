@@ -1,0 +1,224 @@
+{
+  "id": "app-store-previews",
+  "brand": {
+    "opening": 2.3,
+    "closing": 3.3
+  },
+  "disclosure": {
+    "plates": [
+      "preview-nodo"
+    ],
+    "text": {
+      "es": "Nodo requiere sesión y suscripción.",
+      "en": "Nodo needs sign-in and a subscription."
+    }
+  },
+  "previews": [
+    {
+      "id": "overview",
+      "posterSeconds": 5,
+      "scenes": [
+        {
+          "plate": "preview-program",
+          "appTheme": "light",
+          "palette": "paper",
+          "from": 0,
+          "to": 6.5,
+          "touches": true,
+          "captions": [
+            {
+              "role": "headline",
+              "text": {
+                "es": "Esto ya es un\n*lenguaje de\nprogramación.*",
+                "en": "This is now a\n*programming\nlanguage.*"
+              },
+              "from": 2.3,
+              "to": 6.2
+            }
+          ]
+        },
+        {
+          "plate": "preview-run",
+          "appTheme": "light",
+          "palette": "mint",
+          "from": 0.8,
+          "to": 8.5,
+          "touches": true,
+          "transition": {
+            "kind": "dissolve",
+            "seconds": 0.6
+          },
+          "captions": [
+            {
+              "role": "headline",
+              "text": {
+                "es": "Tu programa\n*cobra vida.*",
+                "en": "Your program\n*comes alive.*"
+              },
+              "from": 0.6,
+              "to": 7.4
+            }
+          ]
+        },
+        {
+          "plate": "preview-nodo",
+          "appTheme": "dark",
+          "palette": "deep",
+          "from": 0.3,
+          "to": 8.0,
+          "touches": true,
+          "transition": {
+            "kind": "dissolve",
+            "seconds": 0.6
+          },
+          "captions": [
+            {
+              "role": "headline",
+              "text": {
+                "es": "Nodo, tu agente\nde IA, *escribe\ncódigo que corre.*",
+                "en": "Nodo, your AI agent,\n*writes code\nthat runs.*"
+              },
+              "from": 0.3,
+              "to": 4.3,
+              "anchor": "bottom"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "run-and-understand",
+      "posterSeconds": 5,
+      "scenes": [
+        {
+          "plate": "preview-run",
+          "appTheme": "light",
+          "palette": "mint",
+          "from": 0,
+          "to": 8.8,
+          "touches": true,
+          "captions": [
+            {
+              "role": "headline",
+              "text": {
+                "es": "Ejecútalo\n*paso a paso.*",
+                "en": "Run it\n*step by step.*"
+              },
+              "from": 2.3,
+              "to": 8.0
+            }
+          ]
+        },
+        {
+          "plate": "preview-trace",
+          "appTheme": "light",
+          "palette": "sand",
+          "from": 0.8,
+          "to": 8.8,
+          "touches": true,
+          "transition": {
+            "kind": "dissolve",
+            "seconds": 0.6
+          },
+          "captions": [
+            {
+              "role": "headline",
+              "text": {
+                "es": "Mira *pensar*\na tu programa.",
+                "en": "Watch your\nprogram *think.*"
+              },
+              "from": 0.6,
+              "to": 4.6
+            }
+          ],
+          "pins": [
+            {
+              "focus": "trace",
+              "pin": {
+                "x": 0.12,
+                "y": 0.08
+              },
+              "note": {
+                "es": "Cada paso, una fila",
+                "en": "Every step, one row"
+              },
+              "from": 1.4,
+              "to": 4.6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nodo-code-route",
+      "posterSeconds": 5,
+      "scenes": [
+        {
+          "plate": "preview-nodo",
+          "appTheme": "dark",
+          "palette": "deep",
+          "from": 0.3,
+          "to": 8.0,
+          "touches": true,
+          "captions": [
+            {
+              "role": "headline",
+              "text": {
+                "es": "Nodo, tu agente\nde IA, *escribe\ncódigo que corre.*",
+                "en": "Nodo, your AI agent,\n*writes code\nthat runs.*"
+              },
+              "from": 2.3,
+              "to": 6.6,
+              "anchor": "bottom"
+            }
+          ]
+        },
+        {
+          "plate": "preview-route",
+          "appTheme": "light",
+          "palette": "mist",
+          "from": 0,
+          "to": 5.5,
+          "transition": {
+            "kind": "dissolve",
+            "seconds": 0.6
+          },
+          "captions": [
+            {
+              "role": "headline",
+              "text": {
+                "es": "Una ruta que\nte lleva *lejos.*",
+                "en": "A path that\ntakes you *far.*"
+              },
+              "from": 0.6,
+              "to": 4.9
+            }
+          ]
+        },
+        {
+          "plate": "preview-code",
+          "appTheme": "light",
+          "palette": "peach",
+          "from": 0,
+          "to": 6.3,
+          "touches": true,
+          "transition": {
+            "kind": "dissolve",
+            "seconds": 0.6
+          },
+          "captions": [
+            {
+              "role": "headline",
+              "text": {
+                "es": "El mismo programa,\nen *Python y Rust.*",
+                "en": "The same program,\nin *Python and Rust.*"
+              },
+              "from": 0.6,
+              "to": 6.3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

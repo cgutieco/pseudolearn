@@ -10,6 +10,7 @@ export type FakeScript = {
   readonly lastFrame?: Uint8Array;
   readonly flatten?: Outcome<string>;
   readonly flattened?: Uint8Array;
+  readonly assemble?: Outcome<string>;
 };
 
 export type FakeToolbox = Toolbox & {
@@ -54,6 +55,14 @@ function fakeMedia(script: FakeScript, probe: VideoProbe, record: MediaRecord): 
     probe: async () => ({ ok: true, value: { ...probe, ...script.probe } }),
     measureLoudness: async () => ({ ok: true, value: loudness.shift() ?? { integratedLufs: -16, truePeakDb: -4 } }),
     sampleFrame: async (_path, index) => ({ ok: true, value: index === 0 ? FRAME : (script.lastFrame ?? FRAME) }),
+    assemblePlate: async (request) => {
+      written.set(request.outputPath, new Uint8Array([request.files.length]));
+      return script.assemble ?? { ok: true, value: request.outputPath };
+    },
+    extractStill: async (request) => {
+      written.set(request.outputPath, new Uint8Array([request.longSide ?? 0]));
+      return { ok: true, value: request.outputPath };
+    },
     flattenImage: async (_input, output) => {
       written.set(output, script.flattened ?? new Uint8Array(0));
       return script.flatten ?? { ok: true, value: output };
