@@ -43,6 +43,12 @@ impl SemanticTokenEncoder {
         let Some(token_text) = text.get(start..ending) else {
             return;
         };
+        for (offset, segment) in line_segments(token_text) {
+            self.push(text, (start.saturating_add(offset), segment), token_type);
+        }
+    }
+
+    fn push(&mut self, text: &str, (start, segment): (usize, &str), token_type: u32) {
         let (line, character) = lsp_position_at_with_index(text, start, &self.index);
         let line_delta = line.saturating_sub(self.previous_line);
         let character_delta = if line_delta == 0 {
@@ -53,13 +59,36 @@ impl SemanticTokenEncoder {
         self.values.extend([
             line_delta,
             character_delta,
-            u32::try_from(token_text.encode_utf16().count()).unwrap_or(u32::MAX),
+            u32::try_from(segment.encode_utf16().count()).unwrap_or(u32::MAX),
             token_type,
             0,
         ]);
         self.previous_line = line;
         self.previous_character = character;
     }
+}
+
+fn line_segments(token_text: &str) -> Vec<(usize, &str)> {
+    let mut segments = Vec::new();
+    let mut segment_start = 0;
+    let mut characters = token_text.char_indices().peekable();
+    while let Some((offset, character)) = characters.next() {
+        if character != '\n' && character != '\r' {
+            continue;
+        }
+        segments.push((segment_start, token_text.get(segment_start..offset)));
+        let crlf = character == '\r' && characters.next_if(|(_, next)| *next == '\n').is_some();
+        segment_start = offset.saturating_add(if crlf { 2 } else { 1 });
+    }
+    segments.push((segment_start, token_text.get(segment_start..)));
+    segments
+        .into_iter()
+        .filter_map(|(offset, segment)| {
+            segment
+                .filter(|segment| !segment.is_empty())
+                .map(|segment| (offset, segment))
+        })
+        .collect()
 }
 
 fn encode_semantic_tokens(

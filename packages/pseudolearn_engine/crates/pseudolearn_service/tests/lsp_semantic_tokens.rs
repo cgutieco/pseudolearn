@@ -74,3 +74,66 @@ fn encoded_positions_are_relative_and_span_many_lines() {
 fn empty_documents_yield_no_tokens() {
     assert!(tokens_for("").is_empty());
 }
+
+fn comment_tokens(token_words: &[u64]) -> Vec<[u64; 3]> {
+    token_words
+        .chunks(5)
+        .filter(|chunk| chunk.get(3) == Some(&4))
+        .filter_map(|chunk| Some([*chunk.first()?, *chunk.get(1)?, *chunk.get(2)?]))
+        .collect()
+}
+
+fn lines_in_utf16(text: &str) -> Vec<u64> {
+    text.split('\n')
+        .map(|line| line.trim_end_matches('\r'))
+        .map(|line| u64::try_from(line.encode_utf16().count()).unwrap_or(u64::MAX))
+        .collect()
+}
+
+#[test]
+fn a_block_comment_is_split_into_one_token_per_line() {
+    let token_words = tokens_for("/* a\nbb\nccc */\nAlgoritmo Main\nFinAlgoritmo\n");
+    assert_eq!(
+        comment_tokens(&token_words),
+        [[0, 0, 4], [1, 0, 2], [1, 0, 6]]
+    );
+}
+
+#[test]
+fn split_comments_skip_empty_lines_and_crlf_terminators() {
+    let token_words = tokens_for("/* a\r\n\r\nb */\r\nAlgoritmo Main\r\nFinAlgoritmo\r\n");
+    assert_eq!(comment_tokens(&token_words), [[0, 0, 4], [2, 0, 4]]);
+}
+
+#[test]
+fn split_comment_lengths_count_utf16_units() {
+    let token_words = tokens_for("/* 😀\n😀 */\nAlgoritmo Main\nFinAlgoritmo\n");
+    assert_eq!(comment_tokens(&token_words), [[0, 0, 5], [1, 0, 5]]);
+}
+
+#[test]
+fn no_encoded_token_crosses_the_end_of_its_line() {
+    let text = "// header\n/* first\n   second */ Algoritmo Main\nDefinir total Como Entero <- 1; /* x\ny */\nEscribir \"a😀\", total;\nFinAlgoritmo\n";
+    let lines = lines_in_utf16(text);
+    let (mut line, mut character) = (0_u64, 0_u64);
+    for chunk in tokens_for(text).chunks(5) {
+        let [line_delta, character_delta, length, ..] = chunk else {
+            continue;
+        };
+        character = if *line_delta == 0 {
+            character + character_delta
+        } else {
+            *character_delta
+        };
+        line += line_delta;
+        let width = usize::try_from(line)
+            .ok()
+            .and_then(|index| lines.get(index))
+            .copied()
+            .unwrap_or(0);
+        assert!(
+            *length > 0 && character + length <= width,
+            "{chunk:?} at {line}"
+        );
+    }
+}
