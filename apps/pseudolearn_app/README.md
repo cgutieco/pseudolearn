@@ -46,6 +46,9 @@ flowchart BT
   exportación a Rust, porque la de Python abre con funciones auxiliares de lectura que no cuentan nada. Antes de grabar,
   el generador comprueba con el analizador real que el código que la historia de capturas muestra
   (`packages/pseudolearn_store_media/stories/app-store-screenshots.json`) es un programa válido en `es` y en `en`.
+- La composición antigua de capturas en Flutter (`tool/generate_store_material.dart` y sus piezas de `tool/product/`)
+  se retiró: el motor de tienda produce ahora todas las capturas de App Store, y la app solo graba placas. Con ella se
+  fueron los objetivos de Google Play, donde la app no está publicada.
 
 ## Arquitectura
 
