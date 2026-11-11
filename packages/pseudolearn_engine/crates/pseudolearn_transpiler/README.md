@@ -22,8 +22,11 @@ Pendientes declarados:
   propio arnés de anfitrión.
 - En Rust, una tarea cancelada por el fallo de una hermana se descarta sin ejecutar sus limpiezas de `Diferir`;
   en Python `asyncio` las ejecuta como el motor.
-- En Rust, `Instantanea` copia en profundidad primitivos, cadenas, vectores y diccionarios; sobre objetos y
-  registros no compila todavía. `Copiar` de un objeto de una jerarquía de clases en Rust se informa como
+- En Rust, `Instantanea` copia en profundidad primitivos, cadenas, enumerados, registros, variantes de usuario,
+  vectores y diccionarios (`rust_snapshots`: un `impl Snapshot` por tipo, emitido junto al auxiliar solo cuando
+  el programa lo usa y solo para tipos cuyos campos son todos copiables). Los alias internos del grafo no se
+  conservan como pide la regla del corpus. Los objetos de clase los rechaza el lenguaje
+  (`snapshotNotSupported`). `Copiar` de un objeto de una jerarquía de clases en Rust se informa como
   `builtin:shallowCopy`.
 - Métodos suspendibles dentro de una jerarquía de clases en Rust (`suspendible_method`): un `trait`
   con `async fn` no admite despacho dinámico.

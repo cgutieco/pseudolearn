@@ -88,6 +88,9 @@ impl RustEmitter<'_, '_> {
             for line in text.lines() {
                 lines.line(line);
             }
+            if *name == "snapshot" {
+                self.write_snapshot_implementations(lines);
+            }
         }
     }
 }

@@ -178,9 +178,10 @@ cuyas hijas ya terminaron. Interrumpir el cuerpo dueño abandona su efecto si lo
 
 Verificación dirigida: `cargo test -p pseudolearn_runtime --lib task_`,
 `cargo test -p pseudolearn_runtime --lib wait_queue` y
-`cargo test -p pseudolearn_runtime --test channel_storage_tests`. La persistencia completa de la agenda
-y las colas en las imágenes históricas sigue pendiente; los resultados de estas pruebas no certifican
-reconstrucción ni ejecución nativa de tareas.
+`cargo test -p pseudolearn_runtime --test channel_storage_tests`. La agenda y las colas viajan en el registro de control de
+`MachineImage` (`tasks`), por lo que las imágenes y sus deltas inversos las conservan
+(`pseudolearn_vm/tests/suspension_spill_tests.rs`); los resultados de estas pruebas no certifican
+ejecución nativa de tareas.
 
 ## Copia de grafos y cuanto cooperativo
 

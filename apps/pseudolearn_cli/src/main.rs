@@ -86,6 +86,8 @@ mod dap_session_tests;
 #[cfg(test)]
 mod dap_sources_tests;
 #[cfg(test)]
+mod dap_variables_tests;
+#[cfg(test)]
 mod editor_command_tests;
 #[cfg(test)]
 mod editor_protocol_tests;

@@ -6,7 +6,7 @@ void main() {
     'iOS includes explicit HTTP and localized local network configuration',
     () {
       final plist = File('ios/Runner/Info.plist').readAsStringSync();
-      expect(plist, contains('<key>NSAllowsArbitraryLoads</key>\n\t\t<true/>'));
+      expect(plist, contains('<key>NSAllowsLocalNetworking</key>\n\t\t<true/>'));
       expect(plist, contains('NSLocalNetworkUsageDescription'));
       for (final language in ['es', 'en']) {
         expect(

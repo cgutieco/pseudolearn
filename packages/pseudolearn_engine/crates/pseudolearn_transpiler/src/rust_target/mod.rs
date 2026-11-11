@@ -14,6 +14,7 @@ mod rust_mutation;
 mod rust_operators;
 mod rust_places;
 mod rust_statements;
+mod rust_snapshots;
 mod rust_support;
 mod rust_support_catalog;
 mod rust_support_tasks;

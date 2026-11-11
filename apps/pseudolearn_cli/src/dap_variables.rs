@@ -70,20 +70,7 @@ impl DapSession {
             })?,
             None => 0,
         };
-        let display = value.get("valor").and_then(Value::as_str).map_or_else(
-            || {
-                if value.get("nulo").and_then(Value::as_bool) == Some(true) {
-                    "nulo".to_owned()
-                } else if value.get("sin_valor").and_then(Value::as_bool) == Some(true) {
-                    "sin_valor".to_owned()
-                } else if let Some(ordinal) = ordinal {
-                    format!("referencia({ordinal})")
-                } else {
-                    value.to_string()
-                }
-            },
-            str::to_owned,
-        );
+        let display = display_value(value, ordinal);
         Ok(
             json!({"name":name,"value":display,"type":value.get("tipo"),"variablesReference":reference}),
         )
@@ -115,5 +102,38 @@ impl DapSession {
         Ok(
             json!({"result":value.get("value"),"type":value.get("type"),"variablesReference":reference}),
         )
+    }
+}
+
+pub(crate) fn display_value(value: &Value, ordinal: Option<u64>) -> String {
+    if let Some(text) = value.get("valor").and_then(Value::as_str) {
+        return text.to_owned();
+    }
+    if value.get("nulo").and_then(Value::as_bool) == Some(true) {
+        return "nulo".to_owned();
+    }
+    if value.get("sin_valor").and_then(Value::as_bool) == Some(true) {
+        return "sin_valor".to_owned();
+    }
+    if let Some(channel) = value.get("canal") {
+        return display_channel(channel);
+    }
+    match ordinal {
+        Some(ordinal) => format!("referencia({ordinal})"),
+        None => value.to_string(),
+    }
+}
+
+fn display_channel(channel: &Value) -> String {
+    let identity = channel.get("identidad").and_then(Value::as_u64);
+    let queued = channel.get("en_cola").and_then(Value::as_u64);
+    let capacity = channel.get("capacidad").and_then(Value::as_u64);
+    let open = channel.get("abierto").and_then(Value::as_bool);
+    match (identity, queued, capacity, open) {
+        (Some(identity), Some(queued), Some(capacity), Some(open)) => {
+            let state = if open { "abierto" } else { "cerrado" };
+            format!("canal({identity}) {queued}/{capacity} {state}")
+        }
+        _ => channel.to_string(),
     }
 }

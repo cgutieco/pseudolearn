@@ -162,11 +162,12 @@ Decisiones que salen de una auditoría de seguridad del 2026-11-10.
 
 **Pendientes declarados**
 
-- `NSAllowsArbitraryLoads` en iOS se conserva. Los efectos de red de los programas los resuelve `hyper` sobre sockets
-  en el anfitrión nativo (`pseudolearn_host`) y el resto de la app usa `dart:io`, ninguno `NSURLSession`; por eso App
-  Transport Security no gobierna esas conexiones y acotar la excepción a `NSAllowsLocalNetworking` no debería cambiar
-  su comportamiento. No se hizo porque la prueba `platform_host_configuration_test.dart` fija el valor como decisión
-  de la persona (D-08) y falta verificarlo en un dispositivo iOS con un servicio `http://` local y otro público.
+- **iOS acota App Transport Security a `NSAllowsLocalNetworking`** (antes `NSAllowsArbitraryLoads`, decisión D-08, que la persona
+  reemplazó tras verificarlo). Los efectos de red de los programas los resuelve `hyper` sobre sockets en el anfitrión
+  nativo (`pseudolearn_host`) y el resto de la app usa `dart:io`, ninguno `NSURLSession`, así que App Transport Security
+  no gobierna esas conexiones. Verificado en un iPhone físico con iOS 27.0.1 y un build de release: un programa pidió
+  un `http://` de la red local, un `http://` público y un `https://` público, y las tres respuestas fueron 200.
+  `platform_host_configuration_test.dart` fija el valor.
 
 **Efectos en los evaluadores.** `exerciseChecker` y `routeEvaluators` ejecutan con `RustEffectPolicy.contained()`:
 solo admiten consola, argumentos, reloj y espera; cualquier otra operación recibe `permiso_denegado` sin llegar al

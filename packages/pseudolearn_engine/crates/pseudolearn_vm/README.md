@@ -28,7 +28,7 @@ número de veces.
 
 Suspensión por efectos (`effect_call` y `AwaitingEffect`): La VM suspende su ejecución ante una instrucción de efecto devolviendo `RunExit::AwaitingEffect(PendingEffectRequest)` con la secuencia del efecto, capacidad, operación y argumentos. El anfitrión reanuda la máquina invocando `supply_effect_result` con un `HostReply` (`Committed`, `Failed` o `Uncertain`), que la instrucción reejecutada consume para llenar sus celdas de resultado. Para lotes concurrentes, `select_pending_effect` estaciona el contexto activo y selecciona la tarea cuyo resultado externo llegó primero; la agenda conserva las demás solicitudes en espera. La máquina no conoce la espera de entrada de `Leer`: `RunExit::AwaitingInput` y `RunExit::AwaitingEffect` son variantes distintas y `tests/vm_awaiting_effect_tests.rs` de `pseudolearn_api` comprueba la carga útil, la distinción y la ausencia de suspensión sin efectos.
 
-Agenda de tareas: `machine/tasks.rs` posee el estado de agenda; `machine/task_scopes.rs` crea, espera y une tareas; `machine/task_results.rs` entrega sus resultados. La raíz y cada hija tienen un contexto con función, cursor, bancos, celdas y marcos propios. La cola FIFO cambia el contexto activo al esperar una hija o unir un ámbito; el montón y la salida siguen siendo compartidos. Al recolectar, la VM recorre también los mapas de raíces de todos los contextos guardados. Una hija puede completar y devolver un resultado escalar o de referencia, y su padre puede aguardarla más de una vez. La agregación de `Resultado::Error`, la cancelación cooperativa con `Diferir`, las solicitudes concurrentes pendientes y los despertares de canales se conectan mediante los módulos de tareas; la persistencia histórica completa y la cinta concurrente aún requieren integración.
+Agenda de tareas: `machine/tasks.rs` posee el estado de agenda; `machine/task_scopes.rs` crea, espera y une tareas; `machine/task_results.rs` entrega sus resultados. La raíz y cada hija tienen un contexto con función, cursor, bancos, celdas y marcos propios. La cola FIFO cambia el contexto activo al esperar una hija o unir un ámbito; el montón y la salida siguen siendo compartidos. Al recolectar, la VM recorre también los mapas de raíces de todos los contextos guardados. Una hija puede completar y devolver un resultado escalar o de referencia, y su padre puede aguardarla más de una vez. La agregación de `Resultado::Error`, la cancelación cooperativa con `Diferir`, las solicitudes concurrentes pendientes y los despertares de canales se conectan mediante los módulos de tareas; la cinta concurrente aún requiere integración.
 
 ## 3. Arquitectura y modelo del sistema
 
@@ -258,8 +258,7 @@ identidad. Tanto el bucle continuo como `step_instruction` aplican la finalizaci
 la entrega de efectos, evitando diferencias entre ejecución directa y avance por la API.
 
 Pruebas de integración dirigidas en API: `task_failure_tests`, `task_channel_tests`,
-`task_deadlock_tests` y `task_lowering_tests`. Sigue pendiente serializar íntegramente este estado
-en imágenes históricas, integrar los desenlaces abandonados con la cinta concurrente y ejecutar
+`task_deadlock_tests` y `task_lowering_tests`. Sigue pendiente integrar los desenlaces abandonados con la cinta concurrente y ejecutar
 estas operaciones en el backend nativo; esas comprobaciones no quedan certificadas por tests VM.
 
 ## Instantáneas y persistencia de la agenda

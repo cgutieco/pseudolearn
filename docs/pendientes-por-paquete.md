@@ -6,7 +6,7 @@ Registro único de lo que sigue abierto en cada paquete y app. Cada viñeta es u
 
 Decisión pendiente:
 
-- La agenda de tareas y sus colas no se guardan en las imágenes históricas (`MachineImage`): la consulta del pasado con tareas se reconstruye por reproducción de la cinta. Se revisó contra el código actual: ningún caso de `API.STATE.QUERY` ni de `ENG.TRACE.*` exige la imagen completa (los casos con tareas pasan por reproducción, y el canal de `API.STATE.QUERY` R9 también), así que persistirla sería trabajo sin regla que lo pida (`SCOPE-YAGNI`). Si se quisiera por rendimiento, primero hay que aprobar la regla y la fase.
+- La consulta del pasado con tareas se reconstruye por reproducción de la cinta, aunque las imágenes (`MachineImage`) y sus deltas ya conservan la agenda y las colas. Ningún caso de `API.STATE.QUERY` ni de `ENG.TRACE.*` exige resolver el pasado desde la imagen sin reproducir, así que cambiarlo sería trabajo sin regla que lo pida (`SCOPE-YAGNI`). Si se quisiera por rendimiento, primero hay que aprobar la regla y la fase.
 
 ## pseudolearn_cli
 
@@ -73,8 +73,7 @@ Bloqueado por firmas, tiendas, credenciales y autorización:
 
 Decisión pendiente:
 
-- Acotar `NSAllowsArbitraryLoads` de iOS a `NSAllowsLocalNetworking`: la red de los programas va por sockets (`hyper`) y la app por `dart:io`, así que App Transport Security no debería gobernarla, pero la excepción está fijada como decisión D-08 y falta comprobarlo en un dispositivo iOS con un servicio `http://` local y otro público. Acción: decidir y verificar en dispositivo.
-- Ampliar el código equivalente: las construcciones que el transpilador deja pendientes (operaciones de capacidad y de biblioteca de efectos; red HTTPS y JSON sin equivalente en la biblioteca estándar de Rust; limpiezas de `Diferir` de tareas canceladas, `Instantanea` de objetos y métodos suspendibles de jerarquías en Rust) no tienen una regla del corpus que las exija: `API.PROGRAM.VIEW` R17 admite declararlas pendientes por destino. Acción: aprobar la regla de cada una antes de traducirla.
+- Ampliar el código equivalente: las construcciones que el transpilador deja pendientes (operaciones de capacidad y de biblioteca de efectos; red HTTPS y JSON sin equivalente en la biblioteca estándar de Rust; limpiezas de `Diferir` de tareas canceladas y métodos suspendibles de jerarquías en Rust) no tienen una regla del corpus que las exija: `API.PROGRAM.VIEW` R17 admite declararlas pendientes por destino. Acción: aprobar la regla de cada una antes de traducirla.
 
 ## pseudolearn_benchmarks
 
@@ -87,10 +86,6 @@ Bloqueado por autorización y plataformas:
 
 Trabajo que se pudo hacer y quedó sin hacer o sin verificar. Cada viñeta indica qué falta y cómo se cierra.
 
-### Punto 4 — Agenda y colas en `MachineImage` (`pseudolearn_vm`, `pseudolearn_timeline`)
-
-- Escribir en el corpus la regla mínima que exija la imagen completa (tareas y colas de espera) con sus casos, implementar la persistencia en `MachineImage` y medir `engine` y `aot`. Después actualizar el README de `pseudolearn_runtime`, que hoy declara el límite.
-
 ### Punto 7 — Verificaciones que quedaron sin repetir o sin ejecutar
 
 - Repetir `flutter test` completo y `flutter analyze` completo en `apps/pseudolearn_app`: se cambiaron cadenas del canal y se añadieron pruebas después de la última pasada completa.
@@ -100,15 +95,9 @@ Trabajo que se pudo hacer y quedó sin hacer o sin verificar. Cada viñeta indic
 - Verificar la extensión de VS Code (`apps/pseudolearn_vscode`) y `pseudolearn_store_media` con sus cadenas `pnpm`.
 - Diagnosticar el aviso de la CLI: no se construye el runtime para `x86_64-unknown-linux-musl`.
 
-### Punto 3 — Canal en la vista Variables
-
-- Comprobar qué muestran el LSP, el DAP y el MCP de la CLI ahora que la variable se llama `stream` y no `stream.identity`, y documentarlo en el README de `pseudolearn_cli` si cambia algo observable.
-- Decidir si se publican los elementos de la cola (hoy solo su cantidad): exige conocer el tipo del canal y manejar referencias.
-
 ### Punto 9 — Código equivalente (`pseudolearn_transpiler`)
 
-- Por cada construcción pendiente (operaciones de capacidad y de biblioteca de efectos, limpiezas de `Diferir` de tareas canceladas, `Instantanea` de objetos y métodos suspendibles de jerarquías en Rust): escribir su regla en el corpus con casos, implementarla y medir el barrido diferencial. HTTPS y JSON no tienen equivalente en la biblioteca estándar de Rust y se mantienen como pendientes por destino.
+- Por cada construcción pendiente (operaciones de capacidad y de biblioteca de efectos, limpiezas de `Diferir` de tareas canceladas y métodos suspendibles de jerarquías en Rust): escribir su regla en el corpus con casos, implementarla y medir el barrido diferencial. HTTPS y JSON no tienen equivalente en la biblioteca estándar de Rust y se mantienen como pendientes por destino.
 
-### Punto 10 — App
+- Un registro declarado sin valor (`Definir box Como Caja;`) y rellenado campo a campo se traduce a Rust como `let mut box_value: Caja;`, que `rustc` rechaza por uso de variable sin inicializar (E0381). Hay que inicializarlo con `Default` cuando el registro lo admita y contrastarlo con el barrido diferencial.
 
-- Verificar en un dispositivo iOS si `NSAllowsArbitraryLoads` puede acotarse a `NSAllowsLocalNetworking` (servicio `http://` local y otro público) y, si procede, cambiar `Info.plist` y la prueba `platform_host_configuration_test.dart`.

@@ -85,3 +85,34 @@ fn selection_waits_on_every_channel() -> Result<(), String> {
     assert!(text.contains("match selected {"));
     Ok(())
 }
+
+const RECORD_SNAPSHOT: &str = "Registro Caja\nDefinir items Como Vector<Entero>;\nDefinir total Como Entero;\nFinRegistro\nAlgoritmo Main\nDefinir box Como Caja;\nbox.items <- Vector();\nbox.items.Agregar(7);\nbox.total <- 1;\nDefinir frozen Como Inmutable<Caja> <- Instantanea(box);\nbox.items[0] <- 9;\nEscribir frozen.items[0];\nFinAlgoritmo\n";
+
+const UNSUPPORTED_FIELD_RECORD: &str = "Registro Pedido\nDefinir stream Como Canal<Entero>;\nFinRegistro\nAlgoritmo Main\nDefinir values Como Vector<Entero> <- Vector();\nvalues.Agregar(7);\nDefinir frozen Como Inmutable<Vector<Entero>> <- Instantanea(values);\nEscribir frozen[0];\nFinAlgoritmo\n";
+
+#[test]
+fn record_snapshots_copy_every_field_deeply() -> Result<(), String> {
+    let text = code(RECORD_SNAPSHOT, TargetLanguage::Rust)?;
+    assert!(text.contains("impl Snapshot for Caja {"));
+    assert!(text.contains("items: self.items.snapshot(),"));
+    assert!(text.contains("total: self.total.snapshot(),"));
+    Ok(())
+}
+
+#[test]
+fn snapshot_implementations_need_the_snapshot_helper() -> Result<(), String> {
+    let text = code(
+        "Registro Caja\nDefinir total Como Entero;\nFinRegistro\nAlgoritmo Main\nFinAlgoritmo\n",
+        TargetLanguage::Rust,
+    )?;
+    assert!(!text.contains("impl Snapshot for"));
+    Ok(())
+}
+
+#[test]
+fn records_with_fields_that_cannot_be_copied_get_no_snapshot_implementation() -> Result<(), String> {
+    let text = code(UNSUPPORTED_FIELD_RECORD, TargetLanguage::Rust)?;
+    assert!(text.contains("trait Snapshot"));
+    assert!(!text.contains("impl Snapshot for Pedido"));
+    Ok(())
+}
