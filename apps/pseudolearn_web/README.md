@@ -40,7 +40,7 @@ flowchart BT
 ```
 
 | Capa            | Contenido                                                                                                                     |
-|:----------------|:------------------------------------------------------------------------------------------------------------------------------|
+| :-------------- | :---------------------------------------------------------------------------------------------------------------------------- |
 | `src/pages/`    | Rutas finas (14 líneas como máximo) que montan una vista; incluye `api/contact`, `llms*.txt`, `robots.txt`, sitemap y `/spec` |
 | `src/views/`    | Una pantalla por ruta: home, lenguaje, aprender, Nodo, descargas, contacto, versiones, legales, checkout, especificación, 404 |
 | `src/widgets/`  | Bloques de página: encabezado, pie, héroes, muestras de lección y ejercicio, Tareas, paradigmas, Nodo, descargas, lector      |
@@ -142,7 +142,7 @@ flowchart LR
 ## Comandos útiles
 
 | Para qué                                    | Comando                                                                     |
-|:--------------------------------------------|:----------------------------------------------------------------------------|
+| :------------------------------------------ | :-------------------------------------------------------------------------- |
 | Servidor de desarrollo                      | `pnpm dev`                                                                  |
 | Build de producción                         | `pnpm build`                                                                |
 | Servir el build sobre el runtime de Workers | `pnpm preview`                                                              |
