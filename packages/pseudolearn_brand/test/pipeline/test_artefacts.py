@@ -21,7 +21,8 @@ class PlanTest(unittest.TestCase):
     def test_it_plans_local_consumer_outputs_and_the_guidelines(self):
         outputs = {artefact.path.name for artefact in self.plan.tracked}
         self.assertEqual(outputs, {"favicon.svg", "pseudo-file.svg", "social-card.svg",
-                                   "symbol-path.generated.ts", "brand.generated.ts", "guidelines.html"})
+                                   "symbol-path.generated.ts", "brand.generated.ts",
+                                   "nodo-glyph.generated.ts", "guidelines.html"})
 
 
 class CheckTest(unittest.TestCase):
@@ -77,6 +78,29 @@ class CheckTest(unittest.TestCase):
             self.assertEqual([violation.rule for violation in violations], ["BRAND-DART-DRIFT"])
             self.assertIn("symbolStroke", violations[0].message)
 
+    def test_a_moved_glyph_node_in_the_painter_is_reported(self):
+        with self.repository_copy() as copy:
+            painter = copy / "apps/pseudolearn_app/lib/presentation/agent/agent_glyph_painter.dart"
+            painter.write_text(
+                painter.read_text(encoding="utf-8").replace("Offset(9, 15), 5", "Offset(9, 16), 5"),
+                encoding="utf-8")
+            violations = artefacts.check(copy)
+            self.assertEqual([violation.rule for violation in violations], ["BRAND-NODO-DRIFT"])
+
+    def test_a_missing_painter_is_reported(self):
+        with self.repository_copy() as copy:
+            (copy / "apps/pseudolearn_app/lib/presentation/agent/agent_glyph_painter.dart").unlink()
+            rules = [violation.rule for violation in artefacts.check(copy)]
+            self.assertIn("BRAND-NODO-DRIFT", rules)
+
+    def test_a_glyph_module_that_drifted_is_reported(self):
+        with self.repository_copy() as copy:
+            module = copy / "apps/pseudolearn_web/src/widgets/nodo-preview/nodo-glyph.generated.ts"
+            module.parent.mkdir(parents=True, exist_ok=True)
+            module.write_text("export const NODO_GLYPH_GRID = 20;\n", encoding="utf-8")
+            rules = [violation.rule for violation in artefacts.check(copy)]
+            self.assertIn("BRAND-TS-STALE", rules)
+
     def repository_copy(self):
         return _RepositoryCopy()
 
@@ -85,7 +109,8 @@ class _RepositoryCopy:
     def __enter__(self):
         self.directory = Path(tempfile.mkdtemp())
         source = artefacts.root()
-        for relative in ("apps/pseudolearn_app/lib/presentation/theme/tokens/brand_metrics.dart",):
+        for relative in ("apps/pseudolearn_app/lib/presentation/theme/tokens/brand_metrics.dart",
+                         "apps/pseudolearn_app/lib/presentation/agent/agent_glyph_painter.dart"):
             target = self.directory / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source / relative, target)

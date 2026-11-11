@@ -5,7 +5,7 @@ from pathlib import Path
 from ..model import catalog as catalog_module
 from ..model import composition as composition_module
 from ..model.catalog import PACKAGE_ROOT
-from ..render import dart, html, store_media, svg, typescript
+from ..render import dart, html, nodo_glyph, store_media, svg, typescript
 from ..model.typography import FONT_DIRECTORY
 from .repository import root
 
@@ -53,6 +53,8 @@ def _tracked(repository, catalog, composition):
     symbol_module = catalog.emitters["typescript_symbol_path"]
     artefacts.append(Artefact(repository / symbol_module.path,
                               typescript.module(composition, catalog)))
+    glyph_module = catalog.emitters["typescript_nodo_glyph"]
+    artefacts.append(Artefact(repository / glyph_module.path, nodo_glyph.module(catalog)))
     store_module = catalog.emitters["typescript_store_media"]
     artefacts.append(Artefact(repository / store_module.path,
                               store_media.module(composition, catalog)))
@@ -84,6 +86,7 @@ def check(repository=None):
             continue
         violations.extend(_compare(resolved, artefact))
     violations.extend(_check_dart(resolved, catalog, composition))
+    violations.extend(_check_painter(resolved, catalog))
     violations.extend(_check_fonts(resolved, catalog))
     violations.extend(_check_template(catalog))
     return violations
@@ -115,6 +118,16 @@ def _check_dart(repository, catalog, composition):
     source = path.read_text(encoding="utf-8")
     return [Violation(name, "BRAND-DART-DRIFT", problem)
             for problem in dart.mismatches(composition, catalog, source)]
+
+
+def _check_painter(repository, catalog):
+    emitter = catalog.emitters["dart_nodo_glyph"]
+    path = repository / emitter.path
+    name = relative_path(repository, path)
+    if not path.exists():
+        return [Violation(name, "BRAND-NODO-DRIFT", "the painter that redraws the Nodo glyph is missing")]
+    return [Violation(name, "BRAND-NODO-DRIFT", problem)
+            for problem in nodo_glyph.mismatches(catalog, path.read_text(encoding="utf-8"))]
 
 
 def _check_fonts(repository, catalog):

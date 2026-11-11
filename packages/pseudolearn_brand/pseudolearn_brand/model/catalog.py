@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from .geometry import SymbolGeometry
+from .nodo_glyph import NodoGlyph
 from .placement import Card, LockupRatios, Lockups, Placement
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
@@ -78,6 +79,7 @@ class Catalog:
     lockups: Lockups
     card: Card
     variants: tuple
+    nodo_glyph: NodoGlyph
     emitters: dict = field(default_factory=dict)
 
 
@@ -94,6 +96,7 @@ def load(catalog_file=CATALOG_FILE):
             clear_space=document["lockups"]["clear_space"]),
         card=Card(**document["card"]),
         variants=tuple(_variant(entry) for entry in document["variants"]),
+        nodo_glyph=NodoGlyph(**document["nodo_glyph"]),
         emitters={name: Emitter(name=name, **entry)
                   for name, entry in document["emitters"].items()})
     _validate(catalog)

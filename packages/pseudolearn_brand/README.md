@@ -87,6 +87,10 @@ flowchart LR
   `BRAND-COPY-STALE`.
 - Los archivos generados no se editan a mano. `check` falla con `BRAND-COPY-STALE`, `BRAND-TS-STALE`,
   `BRAND-DART-DRIFT`, `BRAND-FONT-DRIFT` o `BRAND-TEMPLATE-GEOMETRY` cuando un consumidor diverge.
+- **El glifo de Nodo** (`nodo_glyph` en `brand.json`) lo emite el motor como módulo de TypeScript para la vista previa web y lo verifica en el pintor de la app (`BRAND-NODO-DRIFT`: el pintor debe conservar cada medida del catálogo). La app no lo genera: sus medidas están en `agent_glyph_painter.dart`.
+- **Íconos de plataforma**: no los produce este motor. Los catálogos de iOS y macOS de la app se validan con `xcrun actool --output-partial-info-plist`, que compila sin errores.
+- `BRAND-DART-DRIFT` vigila las constantes `static const` de `brand_metrics.dart`; las medidas que la app redibuja con literales (el pintor de Nodo) se vigilan con `BRAND-NODO-DRIFT`.
+- La app no tiene `android/` ni `web/`: no hay `mipmap` ni `web/icons` que producir.
 
 ## Comandos útiles
 
