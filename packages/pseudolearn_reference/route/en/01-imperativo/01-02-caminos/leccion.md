@@ -36,7 +36,7 @@ Decide by hand whether 2024, 2023, 1900 and 2000 are leap years.
 
 ::: ficha
 - entra: the year.
-- sale: «Es bisiesto» (it is a leap year) or «No es bisiesto» (it is not).
+- sale: «Leap year» or «Not a leap year».
 - relacion: the rule in the statement, with its two exceptions.
 - ejemplo: 2024 → leap year.
 - ejemplo: 2023 → not a leap year.
@@ -75,6 +75,24 @@ You can also [[def:anidar|nest]]: put a decision inside a branch of another. And
 ```
 
 ```programa id=menu titulo="The kiosk menu" ejecutar
+Algoritmo Menu
+  Definir codigo Como Entero;
+  Leer codigo;
+  Segun codigo Hacer
+    1:
+      Escribir "Juice 3";
+    2:
+      Escribir "Sandwich 5";
+    3:
+      Escribir "Cookie 2";
+    4:
+      Escribir "Water 1";
+    5:
+      Escribir "Fruit 2";
+    De Otro Modo:
+      Escribir "Does not exist";
+  FinSegun
+FinAlgoritmo
 ```
 
 ```entrada
@@ -82,7 +100,7 @@ You can also [[def:anidar|nest]]: put a decision inside a branch of another. And
 ```
 
 ```salida
-Sándwich 5
+Sandwich 5
 ```
 
 ::: especificacion
@@ -97,6 +115,23 @@ Sándwich 5
 Two solutions. The first nests three decisions in the order of the table: 400, 100, 4.
 
 ```programa id=bisiesto-anidado titulo="Leap year, with nested decisions" ejecutar
+Algoritmo LeapYear
+  Definir anio Como Entero;
+  Leer anio;
+  Si anio mod 400 = 0 Entonces
+    Escribir "Leap year";
+  Sino
+    Si anio mod 100 = 0 Entonces
+      Escribir "Not a leap year";
+    Sino
+      Si anio mod 4 = 0 Entonces
+        Escribir "Leap year";
+      Sino
+        Escribir "Not a leap year";
+      FinSi
+    FinSi
+  FinSi
+FinAlgoritmo
 ```
 
 ```entrada
@@ -104,12 +139,21 @@ Two solutions. The first nests three decisions in the order of the table: 400, 1
 ```
 
 ```salida
-No es bisiesto
+Not a leap year
 ```
 
 The second states the rule in a single compound condition:
 
 ```programa id=bisiesto-compuesto titulo="Leap year, with a compound condition" ejecutar
+Algoritmo LeapYear
+  Definir anio Como Entero;
+  Leer anio;
+  Si (anio mod 4 = 0 Y anio mod 100 <> 0) O anio mod 400 = 0 Entonces
+    Escribir "Leap year";
+  Sino
+    Escribir "Not a leap year";
+  FinSi
+FinAlgoritmo
 ```
 
 ```entrada
@@ -117,17 +161,17 @@ The second states the rule in a single compound condition:
 ```
 
 ```salida
-Es bisiesto
+Leap year
 ```
 
 ## Test {#probar fase=4}
 
 | Year | By hand | Nested | Compound |
 |---|---|---|---|
-| 2024 | yes | Es bisiesto | Es bisiesto |
-| 2023 | no | No es bisiesto | No es bisiesto |
-| 1900 | no | No es bisiesto | No es bisiesto |
-| 2000 | yes | Es bisiesto | Es bisiesto |
+| 2024 | yes | Leap year | Leap year |
+| 2023 | no | Not a leap year | Not a leap year |
+| 1900 | no | Not a leap year | Not a leap year |
+| 2000 | yes | Leap year | Leap year |
 
 The brackets in the compound version are not decoration: `And` and `Or` have an order of their own, and without brackets the condition groups something else. The rule is in [the Specification](especificacion:expresiones.precedencia).
 
@@ -145,6 +189,21 @@ Back to the cinema of [the previous lesson](ruta:imperativo.decidir): on Thursda
 If you ask the age first, the 10-year-old pays 5 on a Thursday. The order «Thursday first» wins.
 
 ```programa id=cine-jueves titulo="The cinema with Thursdays" ejecutar
+Algoritmo Cinema
+  Definir dia Como Entero;
+  Definir age Como Entero;
+  Leer dia;
+  Leer age;
+  Si dia = 4 Entonces
+    Escribir "Pays 4";
+  Sino
+    Si age < 12 Entonces
+      Escribir "Pays 5";
+    Sino
+      Escribir "Pays 8";
+    FinSi
+  FinSi
+FinAlgoritmo
 ```
 
 ```entrada
@@ -153,7 +212,7 @@ If you ask the age first, the 10-year-old pays 5 on a Thursday. The order «Thur
 ```
 
 ```salida
-Paga 4
+Pays 4
 ```
 
 ## What you learned {#aprendiste}

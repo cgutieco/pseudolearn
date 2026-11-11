@@ -36,7 +36,7 @@ Decide by hand whether 7, 9, 2 and 1 are prime.
 
 ::: ficha
 - entra: a whole number.
-- sale: «Es primo» (it is prime) or «No es primo».
+- sale: «Is prime» or «Not prime».
 - relacion: it is prime if it is greater than 1 and no number from 2 to the one before it divides it exactly.
 - ejemplo: 7 → prime.
 - ejemplo: 9 → not prime (3 divides it).
@@ -69,6 +69,11 @@ A [[def:bucle-contado|counted loop]] is used when you know how many passes there
 ```
 
 ```programa id=tabla-del-7 titulo="The 7 times table" ejecutar
+Algoritmo SevenTable
+  Para i <- 1 Hasta 3 Hacer
+    Escribir 7 * i;
+  FinPara
+FinAlgoritmo
 ```
 
 ```salida
@@ -83,6 +88,13 @@ A [[def:bucle-posterior|loop that checks at the end]] always makes at least one 
 ```
 
 ```programa id=uno-a-diez titulo="A number from 1 to 10" ejecutar
+Algoritmo OneToTen
+  Definir n Como Entero;
+  Repetir
+    Leer n;
+  Hasta Que n >= 1 Y n <= 10
+  Escribir "Accepted: ", n;
+FinAlgoritmo
 ```
 
 ```entrada
@@ -92,7 +104,7 @@ A [[def:bucle-posterior|loop that checks at the end]] always makes at least one 
 ```
 
 ```salida
-Aceptado: 7
+Accepted: 7
 ```
 
 Two questions are enough to choose among the three loops:
@@ -108,6 +120,18 @@ With counted loops another very common role appears: the [[def:mejor-hasta-ahora
 :::
 
 ```programa id=maxima titulo="The week's maximum" ejecutar
+Algoritmo Highest
+  Definir temperature Como Entero;
+  Definir highest Como Entero;
+  Leer highest;
+  Para i <- 2 Hasta 5 Hacer
+    Leer temperature;
+    Si temperature > highest Entonces
+      highest <- temperature;
+    FinSi
+  FinPara
+  Escribir "Highest: ", highest;
+FinAlgoritmo
 ```
 
 ```entrada
@@ -119,7 +143,7 @@ With counted loops another very common role appears: the [[def:mejor-hasta-ahora
 ```
 
 ```salida
-Máxima: 25
+Highest: 25
 ```
 
 Finally, sometimes you already know the answer before finishing the passes. An [[def:salida-anticipada|early exit]] with `Exit` cuts the loop at that moment:
@@ -136,6 +160,22 @@ Finally, sometimes you already know the answer before finishing the passes. An [
 ## Write {#escribir fase=3}
 
 ```programa id=primo titulo="Is it prime?" ejecutar
+Algoritmo Prime
+  Definir n Como Entero;
+  Leer n;
+  Definir isPrime Como Logico <- n >= 2;
+  Para d <- 2 Hasta n - 1 Hacer
+    Si n mod d = 0 Entonces
+      isPrime <- Falso;
+      Salir;
+    FinSi
+  FinPara
+  Si isPrime Entonces
+    Escribir "Is prime";
+  Sino
+    Escribir "Not prime";
+  FinSi
+FinAlgoritmo
 ```
 
 ```entrada
@@ -143,7 +183,7 @@ Finally, sometimes you already know the answer before finishing the passes. An [
 ```
 
 ```salida
-No es primo
+Not prime
 ```
 
 The flag starts at `n >= 2`: that way 1, 0 and the negatives already start as not prime. With 2, the loop goes from 2 to 1 and makes zero passes: the flag stays true, which is right.
@@ -152,10 +192,10 @@ The flag starts at `n >= 2`: that way 1, 0 and the negatives already start as no
 
 | Number | By hand | The program | Passes |
 |---|---|---|---|
-| 7 | prime | Es primo | 5 |
-| 9 | no | No es primo | 2 |
-| 2 | prime | Es primo | 0 |
-| 1 | no | No es primo | 0 |
+| 7 | prime | Is prime | 5 |
+| 9 | no | Not prime | 2 |
+| 2 | prime | Is prime | 0 |
+| 1 | no | Not prime | 0 |
 
 With 97, which is prime, the loop tries the 95 divisors from 2 to 96. Keep that number: in the strategies lesson you will improve it.
 

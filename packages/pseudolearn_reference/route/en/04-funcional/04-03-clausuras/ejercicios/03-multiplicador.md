@@ -12,17 +12,33 @@ Read a factor and then numbers until a 0. Show each number multiplied by the fac
 :::
 
 ::: restriccion
-A factory `CrearMultiplicador(factor)` that gives back the function that multiplies.
+A factory `MakeMultiplier(factor)` that gives back the function that multiplies.
 :::
 
 ```programa rol=referencia
+Funcion made <- MakeMultiplier(factor Como Entero)
+  Definir made Como Funcion(Entero) Como Entero <- Funcion(x Como Entero) Como Entero
+    Retornar x * factor;
+  FinFuncion;
+FinFuncion
+
+Algoritmo Multiply
+  Definir factor, number Como Entero;
+  Leer factor;
+  Definir multiply Como Funcion(Entero) Como Entero <- MakeMultiplier(factor);
+  Leer number;
+  Mientras number <> 0 Hacer
+    Escribir multiply(number);
+    Leer number;
+  FinMientras
+FinAlgoritmo
 ```
 
 ```casos
 ```
 
 ```aserciones
-- declara-subprograma | CrearMultiplicador | 1 | The factory CrearMultiplicador, which receives the factor, is missing.
+- declara-subprograma | MakeMultiplier | 1 | The factory MakeMultiplier, which receives the factor, is missing.
 ```
 
 ::: pistas

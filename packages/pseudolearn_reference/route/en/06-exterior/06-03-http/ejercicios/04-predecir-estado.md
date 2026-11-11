@@ -12,6 +12,24 @@ Without running it, write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion
+Funcion word <- HowItWent(codigo Como Entero)
+  Definir word Como Cadena;
+  Si codigo >= 200 Y codigo <= 299 Entonces
+    word <- "fine";
+  Sino
+    word <- "problem";
+  FinSi
+FinFuncion
+
+Algoritmo States
+  Escribir HowItWent(204);
+  Escribir HowItWent(301);
+FinAlgoritmo
+```
+
+```salida
+fine
+problem
 ```
 
 ::: explicacion

@@ -62,15 +62,26 @@ A [[def:tarea|task]] is a job that is launched so that it moves forward on its o
 ```
 
 ```programa id=dos-saludos titulo="Two greetings" ejecutar
+SubProceso Suspendible Greet(name Como Cadena)
+  Escribir "Hello, ", name;
+FinSubProceso
+
+Algoritmo TwoGreetings
+  Tareas
+    Lanzar Greet("Ana");
+    Lanzar Greet("Leo");
+  FinTareas
+  Escribir "all finished";
+FinAlgoritmo
 ```
 
 ```salida
-Hola, Ana
-Hola, Leo
-todas terminaron
+Hello, Ana
+Hello, Leo
+all finished
 ```
 
-The only guaranteed thing is the last line: `todas terminaron` comes after the two greetings, because `EndTasks` waits for the two tasks. That Ana greets before Leo is what the engine gives today, but the program does not promise it.
+The only guaranteed thing is the last line: `all finished` comes after the two greetings, because `EndTasks` waits for the two tasks. That Ana greets before Leo is what the engine gives today, but the program does not promise it.
 
 How do they move forward «at once» on a single computer? By turns. The [[def:agenda|schedule]] is the line of ready tasks: it gives the turn to one, and when that task waits for something, it gives the turn to the next.
 
@@ -96,14 +107,28 @@ paso: When the scope closes, no task is left alive.
 ## Write {#escribir fase=3}
 
 ```programa id=cocina titulo="The kiosk kitchen" ejecutar
+SubProceso Suspendible Cook(dish Como Cadena, price Como Entero, portions Como Entero) Como Entero
+  Escribir "Starting ", dish;
+  Retornar price * portions;
+FinSubProceso
+
+Algoritmo Kitchen
+  Tareas
+    Definir juices Como Tarea<Entero> <- Lanzar Cook("juices", 3, 3);
+    Definir sandwiches Como Tarea<Entero> <- Lanzar Cook("sandwiches", 5, 2);
+    Definir fruits Como Tarea<Entero> <- Lanzar Cook("fruit", 2, 4);
+    Escribir "Tray: ", Aguardar juices + Aguardar sandwiches + Aguardar fruits, " pesos";
+  FinTareas
+  Escribir "Tray delivered";
+FinAlgoritmo
 ```
 
 ```salida
-Empieza jugos
-Empieza sándwiches
-Empieza frutas
-Bandeja: 27 pesos
-Bandeja entregada
+Starting juices
+Starting sandwiches
+Starting fruit
+Tray: 27 pesos
+Tray delivered
 ```
 
 Each cook is a task that gives back the value of their dish. `Task<Integer>` is the way to ask for that value later: `Await` hands it over when the task has finished, and if it has not finished yet, it waits.
@@ -114,9 +139,9 @@ What is guaranteed and what is not:
 
 | Line | Guaranteed? | Why |
 |---|---|---|
-| `Bandeja: 27 pesos` after the three `Empieza` | yes | it waits for the three results |
-| `Bandeja entregada` at the end | yes | `EndTasks` waits for all of them |
-| The order among the three `Empieza` | no | the schedule decides it |
+| `Tray: 27 pesos` after the three `Starting` | yes | it waits for the three results |
+| `Tray delivered` at the end | yes | `EndTasks` waits for all of them |
+| The order among the three `Starting` | no | the schedule decides it |
 
 Edge case: a cook with 0 portions. The tray adds 0 for them and, even so, waits for the three.
 

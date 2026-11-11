@@ -12,9 +12,37 @@ This program reads an amount and a number, and should show the number plus the a
 :::
 
 ```programa rol=inicial
+Funcion made <- MakeAdder(amount Como Entero)
+  Definir base Como Entero <- amount;
+  Definir made Como Funcion(Entero) Como Entero <- Funcion(x Como Entero) Como Entero
+    Retornar x + base;
+  FinFuncion;
+  base <- 0;
+FinFuncion
+
+Algoritmo Sums
+  Definir n, x Como Entero;
+  Leer n;
+  Leer x;
+  Definir add Como Funcion(Entero) Como Entero <- MakeAdder(n);
+  Escribir add(x);
+FinAlgoritmo
 ```
 
 ```programa rol=referencia
+Funcion made <- MakeAdder(amount Como Entero)
+  Definir made Como Funcion(Entero) Como Entero <- Funcion(x Como Entero) Como Entero
+    Retornar x + amount;
+  FinFuncion;
+FinFuncion
+
+Algoritmo Sums
+  Definir n, x Como Entero;
+  Leer n;
+  Leer x;
+  Definir add Como Funcion(Entero) Como Entero <- MakeAdder(n);
+  Escribir add(x);
+FinAlgoritmo
 ```
 
 ```casos
@@ -24,11 +52,11 @@ This program reads an amount and a number, and should show the number plus the a
 1. What does the diagnostic say? Which value is the manufactured function trying to take along?
 2. Look at the backpack rule in [the lesson](ruta:funcional.clausuras).
 3. The box `base` is reassigned after creating the function. Is that box needed?
-4. Capture `cantidad` directly, which does not change, and remove the reassignment. Close with the variant.
+4. Capture `amount` directly, which does not change, and remove the reassignment. Close with the variant.
 :::
 
 ::: variante
-Write `CrearRestador(cantidad)` with the same shape.
+Write `MakeSubtractor(amount)` with the same shape.
 :::
 
 ::: explicacion

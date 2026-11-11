@@ -8,7 +8,7 @@ titulo: From record to variant
 ---
 
 ::: enunciado
-This program reads the state of a delivery as text and, if needed, one more value. With any state it does not know it shows «Pendiente», and so a typo such as «entrgado» goes unnoticed. Rewrite it so that each state is a shape with its own data, and that there is a shape for unknown states, which shows «Estado desconocido: » and the text read. For known states, what is shown does not change.
+This program reads the state of a delivery as text and, if needed, one more value. With any state it does not know it shows «Pending», and so a typo such as «delivred» goes unnoticed. Rewrite it so that each state is a shape with its own data, and that there is a shape for unknown states, which shows «Unknown state: » and the text read. For known states, what is shown does not change.
 :::
 
 ::: restriccion
@@ -16,12 +16,72 @@ The delivery is a variant with one shape per state, and each shape carries only 
 :::
 
 ```programa rol=inicial
+Registro Delivery
+  Definir estado, courier, reason Como Cadena;
+  Definir hora Como Entero;
+FinRegistro
+
+Algoritmo Deliveries
+  Definir estado Como Cadena;
+  Leer estado;
+  Definir delivery Como Delivery <- Delivery(estado, "", "", 0);
+  Si estado = "on its way" Entonces
+    Leer delivery.courier;
+    Escribir "On its way with ", delivery.courier;
+  Sino
+    Si estado = "canceled" Entonces
+      Leer delivery.reason;
+      Escribir "Canceled: ", delivery.reason;
+    Sino
+      Escribir "Pending";
+    FinSi
+  FinSi
+FinAlgoritmo
 ```
 
 ```programa rol=referencia
+Variante Delivery
+  Alternativa Pending
+  Alternativa OnItsWay(courier Como Cadena)
+  Alternativa Canceled(reason Como Cadena)
+  Alternativa Unknown(estado Como Cadena)
+FinVariante
+
+Funcion text <- Describe(delivery Como Delivery)
+  Definir text Como Cadena <- "";
+  Segun delivery Hacer
+    Delivery.Pending: text <- "Pending";
+    Delivery.OnItsWay(who): text <- "On its way with " + who;
+    Delivery.Canceled(reason): text <- "Canceled: " + reason;
+    Delivery.Unknown(estado): text <- "Unknown state: " + estado;
+  FinSegun
+FinFuncion
+
+Algoritmo Deliveries
+  Definir estado, detail Como Cadena;
+  Leer estado;
+  Definir delivery Como Delivery <- Delivery.Unknown(estado);
+  Si estado = "pending" Entonces
+    delivery <- Delivery.Pending;
+  FinSi
+  Si estado = "on its way" Entonces
+    Leer detail;
+    delivery <- Delivery.OnItsWay(detail);
+  FinSi
+  Si estado = "canceled" Entonces
+    Leer detail;
+    delivery <- Delivery.Canceled(detail);
+  FinSi
+  Escribir Describe(delivery);
+FinAlgoritmo
 ```
 
 ```casos
+visible | on its way ; Sol | On its way with Sol
+visible | delivred | Unknown state: delivred
+oculto | canceled ; rain | Canceled: rain
+oculto | pending | Pending
+oculto | nothing | Unknown state: nothing
 ```
 
 ::: pistas

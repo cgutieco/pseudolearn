@@ -12,6 +12,18 @@ Without running it, write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion
+Algoritmo EvenOdd
+  Definir x Como Entero <- 7;
+  Si x mod 2 = 0 Entonces
+    Escribir "even";
+  Sino
+    Escribir "odd";
+  FinSi
+FinAlgoritmo
+```
+
+```salida
+odd
 ```
 
 ::: explicacion

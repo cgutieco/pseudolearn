@@ -48,6 +48,127 @@ The second exercise asks you to order the steps of the plan. Separate what touch
 The third exercise is the pure core: the sales, the ticket and the final inventory in JSON, without files. The complete kiosk adds the edge: it loads the inventory, and at the end it saves it with a deferred cleanup that closes the file.
 
 ```programa id=kiosco-completo titulo="The complete kiosk, first day" ejecutar
+Registro Product
+  Definir name Como Cadena;
+  Definir price, stock Como Entero;
+FinRegistro
+
+Funcion amount <- Amount(price Como Entero, quantity Como Entero)
+  Definir amount Como Entero;
+  amount <- price * quantity;
+FinFuncion
+
+Funcion discounted <- WithDiscount(total Como Entero)
+  Definir discounted Como Entero;
+  discounted <- total - total div 10;
+FinFuncion
+
+Funcion valid <- ValidCode(codigo Como Entero)
+  Definir valid Como Logico;
+  valid <- codigo >= 1 Y codigo <= 5;
+FinFuncion
+
+Funcion text <- InventoryJson(products Como Vector<Product>)
+  Definir text Como Cadena <- "{";
+  Para Cada product En products Hacer
+    Si text <> "{" Entonces
+      text <- text + ", ";
+    FinSi
+    text <- text + '"' + product.name + '": ' + ATexto(product.stock);
+  FinPara
+  text <- text + "}";
+FinFuncion
+
+SubProceso Catalog() Como Vector<Product>
+  Definir products Como Vector<Product> <- Vector();
+  products.Agregar(Product("Juice", 3, 10));
+  products.Agregar(Product("Sandwich", 5, 5));
+  products.Agregar(Product("Biscuit", 2, 8));
+  products.Agregar(Product("Water", 1, 12));
+  products.Agregar(Product("Fruit", 2, 6));
+  Retornar products;
+FinSubProceso
+
+Funcion stock <- SavedStock(inventory Como ValorJson, product Como Product)
+  Definir stock Como Entero <- product.stock;
+  Segun inventory.Campo(product.name) Hacer
+    Algo(valor):
+      Segun valor.ComoEntero() Hacer
+        Algo(saved): stock <- saved;
+        Nada: stock <- product.stock;
+      FinSegun
+    Nada: stock <- product.stock;
+  FinSegun
+FinFuncion
+
+Funcion loaded <- ApplyInventory(products Como Vector<Product>, inventory Como ValorJson)
+  Definir loaded Como Vector<Product> <- Vector();
+  Para Cada product En products Hacer
+    loaded.Agregar(Product(product.name, product.price, SavedStock(inventory, product)));
+  FinPara
+FinFuncion
+
+SubProceso LoadInventory() Como Resultado<Cadena, ErrorES>
+  Definir folder Como DirectorioCap <- Propagar SolicitarDirectorio(".");
+  Definir file Como ArchivoCap <- Propagar folder.Abrir("inventory.json", "lectura");
+  Diferir
+    Descartar file.Cerrar();
+  FinDiferir
+  Retornar file.LeerTexto();
+FinSubProceso
+
+SubProceso SaveInventory(text Como Cadena) Como Resultado<Entero, ErrorES>
+  Definir folder Como DirectorioCap <- Propagar SolicitarDirectorio(".");
+  Definir file Como ArchivoCap <- Propagar folder.Abrir("inventory.json", "escritura");
+  Diferir
+    Descartar file.Cerrar();
+  FinDiferir
+  Retornar file.EscribirTexto(text);
+FinSubProceso
+
+Algoritmo Kiosk
+  Definir products Como Vector<Product> <- Catalog();
+  Segun LoadInventory() Hacer
+    Exito(text):
+      Segun AnalizarJson(text) Hacer
+        Exito(inventory):
+          products <- ApplyInventory(products, inventory);
+          Escribir "Inventory loaded";
+        Error(broken): Escribir "Broken inventory at column ", broken.JsonColumna, ": initial stock";
+      FinSegun
+    Error(report): Escribir "No saved inventory (", report.Codigo, "): initial stock";
+  FinSegun
+  Definir total Como Entero <- 0;
+  Definir codigo, quantity Como Entero;
+  Leer codigo;
+  Mientras codigo <> 0 Hacer
+    Leer quantity;
+    Si NO ValidCode(codigo) Entonces
+      Escribir "Code ", codigo, " does not exist";
+    Sino
+      Si quantity < 1 Entonces
+        Escribir "Quantity ", quantity, " is not valid";
+      Sino
+        Definir product Como Product <- products[codigo - 1];
+        Si quantity > product.stock Entonces
+          Escribir product.name, " x ", quantity, " rejected: remaining ", product.stock;
+        Sino
+          product.stock <- product.stock - quantity;
+          products[codigo - 1] <- product;
+          Escribir product.name, " x ", quantity, " = ", Amount(product.price, quantity);
+          total <- total + Amount(product.price, quantity);
+        FinSi
+      FinSi
+    FinSi
+    Leer codigo;
+  FinMientras
+  Escribir "Total: ", total;
+  Escribir "With discount: ", WithDiscount(total);
+  Segun SaveInventory(InventoryJson(products)) Hacer
+    Exito(bytes): Escribir "Inventory saved: ", bytes, " bytes";
+    Error(report): Escribir "Could not save: ", report.Codigo;
+  FinSegun
+FinAlgoritmo
 ```
 
 ```entrada
@@ -63,12 +184,12 @@ The third exercise is the pure core: the sales, the ticket and the final invento
 ```
 
 ```salida
-Sin inventario guardado (no_encontrado): stock inicial
-Jugo x 3 = 9
-Sándwich x 2 = 10
+No saved inventory (no_encontrado): initial stock
+Juice x 3 = 9
+Sandwich x 2 = 10
 Total: 19
-Con descuento: 18
-Inventario guardado: 65 bytes
+With discount: 18
+Inventory saved: 66 bytes
 ```
 
 ## Test {#probar fase=4}
@@ -76,6 +197,127 @@ Inventario guardado: 65 bytes
 On the second day, the file already exists with the inventory the first one saved:
 
 ```programa id=kiosco-dia-dos titulo="The complete kiosk, second day" ejecutar
+Registro Product
+  Definir name Como Cadena;
+  Definir price, stock Como Entero;
+FinRegistro
+
+Funcion amount <- Amount(price Como Entero, quantity Como Entero)
+  Definir amount Como Entero;
+  amount <- price * quantity;
+FinFuncion
+
+Funcion discounted <- WithDiscount(total Como Entero)
+  Definir discounted Como Entero;
+  discounted <- total - total div 10;
+FinFuncion
+
+Funcion valid <- ValidCode(codigo Como Entero)
+  Definir valid Como Logico;
+  valid <- codigo >= 1 Y codigo <= 5;
+FinFuncion
+
+Funcion text <- InventoryJson(products Como Vector<Product>)
+  Definir text Como Cadena <- "{";
+  Para Cada product En products Hacer
+    Si text <> "{" Entonces
+      text <- text + ", ";
+    FinSi
+    text <- text + '"' + product.name + '": ' + ATexto(product.stock);
+  FinPara
+  text <- text + "}";
+FinFuncion
+
+SubProceso Catalog() Como Vector<Product>
+  Definir products Como Vector<Product> <- Vector();
+  products.Agregar(Product("Juice", 3, 10));
+  products.Agregar(Product("Sandwich", 5, 5));
+  products.Agregar(Product("Biscuit", 2, 8));
+  products.Agregar(Product("Water", 1, 12));
+  products.Agregar(Product("Fruit", 2, 6));
+  Retornar products;
+FinSubProceso
+
+Funcion stock <- SavedStock(inventory Como ValorJson, product Como Product)
+  Definir stock Como Entero <- product.stock;
+  Segun inventory.Campo(product.name) Hacer
+    Algo(valor):
+      Segun valor.ComoEntero() Hacer
+        Algo(saved): stock <- saved;
+        Nada: stock <- product.stock;
+      FinSegun
+    Nada: stock <- product.stock;
+  FinSegun
+FinFuncion
+
+Funcion loaded <- ApplyInventory(products Como Vector<Product>, inventory Como ValorJson)
+  Definir loaded Como Vector<Product> <- Vector();
+  Para Cada product En products Hacer
+    loaded.Agregar(Product(product.name, product.price, SavedStock(inventory, product)));
+  FinPara
+FinFuncion
+
+SubProceso LoadInventory() Como Resultado<Cadena, ErrorES>
+  Definir folder Como DirectorioCap <- Propagar SolicitarDirectorio(".");
+  Definir file Como ArchivoCap <- Propagar folder.Abrir("inventory.json", "lectura");
+  Diferir
+    Descartar file.Cerrar();
+  FinDiferir
+  Retornar file.LeerTexto();
+FinSubProceso
+
+SubProceso SaveInventory(text Como Cadena) Como Resultado<Entero, ErrorES>
+  Definir folder Como DirectorioCap <- Propagar SolicitarDirectorio(".");
+  Definir file Como ArchivoCap <- Propagar folder.Abrir("inventory.json", "escritura");
+  Diferir
+    Descartar file.Cerrar();
+  FinDiferir
+  Retornar file.EscribirTexto(text);
+FinSubProceso
+
+Algoritmo Kiosk
+  Definir products Como Vector<Product> <- Catalog();
+  Segun LoadInventory() Hacer
+    Exito(text):
+      Segun AnalizarJson(text) Hacer
+        Exito(inventory):
+          products <- ApplyInventory(products, inventory);
+          Escribir "Inventory loaded";
+        Error(broken): Escribir "Broken inventory at column ", broken.JsonColumna, ": initial stock";
+      FinSegun
+    Error(report): Escribir "No saved inventory (", report.Codigo, "): initial stock";
+  FinSegun
+  Definir total Como Entero <- 0;
+  Definir codigo, quantity Como Entero;
+  Leer codigo;
+  Mientras codigo <> 0 Hacer
+    Leer quantity;
+    Si NO ValidCode(codigo) Entonces
+      Escribir "Code ", codigo, " does not exist";
+    Sino
+      Si quantity < 1 Entonces
+        Escribir "Quantity ", quantity, " is not valid";
+      Sino
+        Definir product Como Product <- products[codigo - 1];
+        Si quantity > product.stock Entonces
+          Escribir product.name, " x ", quantity, " rejected: remaining ", product.stock;
+        Sino
+          product.stock <- product.stock - quantity;
+          products[codigo - 1] <- product;
+          Escribir product.name, " x ", quantity, " = ", Amount(product.price, quantity);
+          total <- total + Amount(product.price, quantity);
+        FinSi
+      FinSi
+    FinSi
+    Leer codigo;
+  FinMientras
+  Escribir "Total: ", total;
+  Escribir "With discount: ", WithDiscount(total);
+  Segun SaveInventory(InventoryJson(products)) Hacer
+    Exito(bytes): Escribir "Inventory saved: ", bytes, " bytes";
+    Error(report): Escribir "Could not save: ", report.Codigo;
+  FinSegun
+FinAlgoritmo
 ```
 
 ```entrada
@@ -87,16 +329,16 @@ On the second day, the file already exists with the inventory the first one save
 ```
 
 ```anfitrion
-{"files": {"inventario.json": "{\"Jugo\": 7, \"Sándwich\": 3, \"Alfajor\": 8, \"Agua\": 12, \"Fruta\": 6}"}}
+{"files": {"inventory.json": "{\"Juice\": 7, \"Sandwich\": 3, \"Biscuit\": 8, \"Water\": 12, \"Fruit\": 6}"}}
 ```
 
 ```salida
-Inventario cargado
-Jugo x 3 = 9
-Sándwich x 4 rechazado: quedan 3
+Inventory loaded
+Juice x 3 = 9
+Sandwich x 4 rejected: remaining 3
 Total: 9
-Con descuento: 9
-Inventario guardado: 65 bytes
+With discount: 9
+Inventory saved: 66 bytes
 ```
 
 | Case | Why |

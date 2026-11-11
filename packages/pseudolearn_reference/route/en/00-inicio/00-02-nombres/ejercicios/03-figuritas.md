@@ -12,19 +12,35 @@ Ana has 12 stickers and Beto has 7. They want to swap their piles: Ana keeps Bet
 :::
 
 ```programa rol=inicial
+Algoritmo Stickers
+  Definir ana Como Entero <- 12;
+  Definir beto Como Entero <- 7;
+  ana <- beto;
+  beto <- ana;
+  Escribir "Ana: ", ana, " Beto: ", beto;
+FinAlgoritmo
 ```
 
 ```programa rol=referencia
+Algoritmo Stickers
+  Definir ana Como Entero <- 12;
+  Definir beto Como Entero <- 7;
+  Definir saved Como Entero <- ana;
+  ana <- beto;
+  beto <- saved;
+  Escribir "Ana: ", ana, " Beto: ", beto;
+FinAlgoritmo
 ```
 
 ```casos
+visible | — | Ana: 7 Beto: 12
 ```
 
 ::: pistas
 1. Draw both boxes and run each line by hand. What value does `ana` have right after the first assignment?
 2. When you assign, the old value is lost. Look at the swap figure in [the Specification](especificacion:declaraciones.asignacion).
 3. Before overwriting Ana's stickers, keep them in a third box.
-4. Declare `guardado` with the value of `ana`, then `ana <- beto;` and `beto <- guardado;`. Close with the variant.
+4. Declare `saved` with the value of `ana`, then `ana <- beto;` and `beto <- saved;`. Close with the variant.
 :::
 
 ::: variante

@@ -12,9 +12,26 @@ The lines of a program that shows the days hotter than the average are mixed up.
 :::
 
 ```programa rol=referencia
+Algoritmo HotDays
+  Dimension temperatures[7] Como Entero;
+  Definir sum Como Entero <- 0;
+  Para i <- 0 Hasta 6 Hacer
+    Leer temperatures[i];
+    sum <- sum + temperatures[i];
+  FinPara
+  Definir average Como Real <- sum / 7;
+  Para i <- 0 Hasta 6 Hacer
+    Si temperatures[i] > average Entonces
+      Escribir "Day ", i;
+    FinSi
+  FinPara
+FinAlgoritmo
 ```
 
 ```casos
+visible | 20 ; 23 ; 19 ; 25 ; 22 ; 18 ; 26 | Day 1 ⏎ Day 3 ⏎ Day 4 ⏎ Day 6
+oculto | 10 ; 10 ; 10 ; 10 ; 10 ; 10 ; 30 | Day 6
+oculto | 30 ; 10 ; 10 ; 10 ; 10 ; 10 ; 10 | Day 0
 ```
 
 ::: explicacion

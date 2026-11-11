@@ -12,17 +12,37 @@ Read two numbers and show them as `smaller larger`, separated by a space.
 :::
 
 ::: restriccion
-A subprogram `OrdenarDos` receives both boxes and leaves the smaller in the first and the larger in the second; the main algorithm only reads, calls and shows.
+A subprogram `SortTwo` receives both boxes and leaves the smaller in the first and the larger in the second; the main algorithm only reads, calls and shows.
 :::
 
 ```programa rol=referencia
+SubProceso SortTwo(a Como Entero Por Referencia, b Como Entero Por Referencia)
+  Si a > b Entonces
+    Definir saved Como Entero <- a;
+    a <- b;
+    b <- saved;
+  FinSi
+FinSubProceso
+
+Algoritmo Main
+  Definir primero, segundo Como Entero;
+  Leer primero;
+  Leer segundo;
+  SortTwo(primero, segundo);
+  Escribir primero, " ", segundo;
+FinAlgoritmo
 ```
 
 ```casos
+visible | 9 ; 4 | 4 9
+visible | 2 ; 7 | 2 7
+oculto | 5 ; 5 | 5 5
+oculto | -1 ; -3 | -3 -1
+oculto | 0 ; 10 | 0 10
 ```
 
 ```aserciones
-- declara-subprograma | OrdenarDos | 2 | The subprogram OrdenarDos, which receives both boxes, is missing.
+- declara-subprograma | SortTwo | 2 | The subprogram SortTwo, which receives both boxes, is missing.
 ```
 
 ::: pistas
@@ -33,7 +53,7 @@ A subprogram `OrdenarDos` receives both boxes and leaves the smaller in the firs
 :::
 
 ::: variante
-Make `OrdenarDos` also return whether it had to swap.
+Make `SortTwo` also return whether it had to swap.
 :::
 
 ::: explicacion

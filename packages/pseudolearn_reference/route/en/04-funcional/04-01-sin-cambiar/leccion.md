@@ -23,11 +23,24 @@ A kiosk customer buys **3 juices** at 3 pesos and **2 sandwiches** at 5 pesos. F
 :::
 
 ```programa id=caja-referencia titulo="The kiosk till" ejecutar
+SubProceso ApplyDiscount(total Como Entero Por Referencia)
+  total <- total - total div 10;
+FinSubProceso
+
+Algoritmo Till
+  Definir total Como Entero <- 0;
+  total <- total + 3 * 3;
+  total <- total + 5 * 2;
+  ApplyDiscount(total);
+  Escribir "Charged: ", total;
+  ApplyDiscount(total);
+  Escribir "Receipt: ", total;
+FinAlgoritmo
 ```
 
 ```salida
-Cobrado: 18
-Ticket: 17
+Charged: 18
+Receipt: 17
 ```
 
 ## Try it {#intentalo}
@@ -37,7 +50,7 @@ Find the error by reading, without running. Then answer something harder: what i
 :::
 
 ::: respuesta
-The second `AplicarDescuento` applies the discount again. Since `total` is passed by reference, each call changes the original box: 19 becomes 18 and then 17.
+The second `ApplyDiscount` applies the discount again. Since `total` is passed by reference, each call changes the original box: 19 becomes 18 and then 17.
 
 To know what `total` is worth before the last `Write` you had to read all the previous lines, in order, and count how many times it changed. That is the underlying problem: when a box changes many times, its value depends on the whole history of the program. With ten lines it can be followed; with a thousand, it cannot.
 :::
@@ -79,18 +92,34 @@ pie: Everything that can be computed goes to the centre, in pure functions. What
 ## Write {#escribir fase=3}
 
 ```programa id=caja-funcional titulo="The till, functional version" ejecutar
+Funcion amount <- Line(price Como Entero, quantity Como Entero)
+  Definir amount Como Entero;
+  amount <- price * quantity;
+FinFuncion
+
+Funcion discounted <- WithDiscount(total Como Entero)
+  Definir discounted Como Entero;
+  discounted <- total - total div 10;
+FinFuncion
+
+Algoritmo Till
+  Definir toPay Como Entero <- WithDiscount(Line(3, 3) + Line(5, 2));
+  Escribir "Charged: ", toPay;
+  Escribir "Receipt: ", toPay;
+  Escribir "Double discount: ", WithDiscount(WithDiscount(19));
+FinAlgoritmo
 ```
 
 ```salida
-Cobrado: 18
-Ticket: 18
-Doble descuento: 17
+Charged: 18
+Receipt: 18
+Double discount: 17
 ```
 
 Three things changed:
 
-- No box changes after receiving its value: `aPagar` is computed only once and nothing is ever assigned to it again. Working like this is [[def:inmutabilidad|immutability]]: instead of modifying a value, a new one is computed.
-- The discount is not applied: it is computed. `ConDescuento` receives an amount and gives back another; the one it received stays the same.
+- No box changes after receiving its value: `toPay` is computed only once and nothing is ever assigned to it again. Working like this is [[def:inmutabilidad|immutability]]: instead of modifying a value, a new one is computed.
+- The discount is not applied: it is computed. `WithDiscount` receives an amount and gives back another; the one it received stays the same.
 - If you want two discounts, it shows. The last line asks for them on purpose; in the previous version the double discount was hidden in the order of the lines.
 
 ::: especificacion
@@ -114,6 +143,14 @@ paso: The result: 18. There was no need to know what happened earlier in the pro
 That a call can be replaced by its result anywhere in the program, without anything changing, is [[def:transparencia-referencial|referential transparency]]. That is why the core is easy to test: each function is tested on its own, with a table of cases.
 
 ```programa id=casos-descuento titulo="Discount cases" ejecutar
+Funcion discounted <- WithDiscount(total Como Entero)
+  Definir discounted Como Entero;
+  discounted <- total - total div 10;
+FinFuncion
+
+Algoritmo Cases
+  Escribir WithDiscount(19), " ", WithDiscount(9), " ", WithDiscount(10), " ", WithDiscount(0);
+FinAlgoritmo
 ```
 
 ```salida
@@ -158,7 +195,7 @@ The last row is honest: some problems are better thought of as something that ch
 
 ::: profundizar titulo="Common pitfalls"
 - **«If nothing changes, it does nothing».** The program does show things: it does so from the edge. Mark in the functional till which lines are edge.
-- **Confusing immutable with a constant written by hand.** `aPagar` is computed; what it does not do is change afterwards.
+- **Confusing immutable with a constant written by hand.** `toPay` is computed; what it does not do is change afterwards.
 - **Believing you have to choose a paradigm forever.** The closing table shows that each one makes something different easy.
 :::
 

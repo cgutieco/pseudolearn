@@ -12,6 +12,15 @@ Without running it, write exactly what will appear in the output of this program
 :::
 
 ```programa rol=objeto id=prediccion
+Algoritmo Prediction
+  Escribir "10 / 4";
+  Escribir 10 / 4;
+FinAlgoritmo
+```
+
+```salida
+10 / 4
+2.5
 ```
 
 ::: explicacion

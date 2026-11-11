@@ -41,17 +41,17 @@ This problem has a lot of data, and not all of it matters equally. Before writin
 ::: recuerda termino=ficha-del-problema
 :::
 
-The format of the receipt has to be exact. The product names stay in Spanish, as the program writes them. For the example in the task:
+The format of the receipt has to be exact. The product names are written as the program writes them. For the example in the task:
 
-- `Jugo x 3 = 9`
-- `Sándwich x 2 = 10`
-- `Alfajor x 1 = 2`
-- `Jugo x 1 = 3`
+- `Juice x 3 = 9`
+- `Sandwich x 2 = 10`
+- `Cookie x 1 = 2`
+- `Juice x 1 = 3`
 - `Total: 24`
-- `Con descuento: 22`
-- `Más vendido: Jugo`
+- `With discount: 22`
+- `Best seller: Juice`
 
-If a sale brings a code that does not exist, for example 7, the line says «Código 7 no existe» and the amount is read but ignored. A day without sales shows total 0, with discount 0 and «Más vendido: Ninguno». If two products tie in units, the one with the lowest code wins.
+If a sale brings a code that does not exist, for example 7, the line says «Code 7 does not exist» and the amount is read but ignored. A day without sales shows total 0, with discount 0 and «Best seller: Nobody». If two products tie in units, the one with the lowest code wins.
 
 ## Plan {#planear fase=2}
 
@@ -71,7 +71,7 @@ Before declaring the program finished, test it with:
 | Case | Why |
 |---|---|
 | The example in the task | the normal case |
-| A 0 straight away | the day without sales: total 0 and «Ninguno» |
+| A 0 straight away | the day without sales: total 0 and «Nobody» |
 | An invalid code in the middle | it is reported and does not break the rest |
 | Two products tied | the one with the lowest code wins |
 | A single sale | the shortest receipt |

@@ -12,10 +12,10 @@ Order the kiosk files so that each one only uses those that come before it.
 :::
 
 ```pasos
-- inventario
-- ventas
-- tickets
-- principal
+- inventory
+- sales
+- receipts
+- main
 ```
 
 ::: explicacion

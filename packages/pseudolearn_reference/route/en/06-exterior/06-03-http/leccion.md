@@ -46,15 +46,29 @@ An [[def:peticion|HTTP request]] asks another program for something over the int
 ```
 
 ```programa id=clima titulo="Asking for the weather" ejecutar
+SubProceso CheckWeather() Como Resultado<Cadena, ErrorES>
+  Definir network Como RedCap <- Propagar SolicitarRed();
+  Definir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, "https://clima.test/hoy");
+  Definir response Como RespuestaHttp <- Propagar network.Enviar(request);
+  Escribir "Status: ", response.Estado();
+  Retornar response.CuerpoTexto();
+FinSubProceso
+
+Algoritmo Weather
+  Segun CheckWeather() Hacer
+    Exito(text): Escribir text;
+    Error(report): Escribir report.Codigo;
+  FinSegun
+FinAlgoritmo
 ```
 
 ```anfitrion
-{"http": {"GET https://clima.test/hoy": {"estado": 200, "cuerpo": "Soleado, 25"}}}
+{"http": {"GET https://clima.test/hoy": {"estado": 200, "cuerpo": "Sunny, 25"}}}
 ```
 
 ```salida
-Estado: 200
-Soleado, 25
+Status: 200
+Sunny, 25
 ```
 
 The service of this example is not real: the memory host answers in its place, always the same. That way the program can be tested without the internet.
@@ -67,19 +81,93 @@ The service of this example is not real: the memory host answers in its place, a
 ## Write {#escribir fase=3}
 
 ```programa id=cambio titulo="The imported fruit" ejecutar
+Funcion pesos <- PriceInPesos(dollars Como Entero, rate Como Entero)
+  Definir pesos Como Entero;
+  pesos <- dollars * rate;
+FinFuncion
+
+Funcion message <- PriceMessage(cuerpo Como Cadena)
+  Definir message Como Cadena <- "The response has no rate";
+  Segun AnalizarJson(cuerpo) Hacer
+    Exito(data):
+      Segun data.Campo("dollar") Hacer
+        Algo(dollar):
+          Segun dollar.ComoEntero() Hacer
+            Algo(rate): message <- "Imported fruit: " + ATexto(PriceInPesos(2, rate)) + " pesos";
+            Nada: message <- "The rate is not a number";
+          FinSegun
+        Nada: message <- "The response has no rate";
+      FinSegun
+    Error(report): message <- "Badly written response at column " + ATexto(report.JsonColumna);
+  FinSegun
+FinFuncion
+
+SubProceso RequestRate() Como Resultado<Cadena, ErrorES>
+  Definir network Como RedCap <- Propagar SolicitarRed();
+  Definir response Como RespuestaHttp <- Propagar network.Enviar(PeticionHttp(MetodoHttp.GET, "https://cambio.test/hoy"));
+  Si response.Estado() <> 200 Entonces
+    Retornar Exito("Service unavailable (" + ATexto(response.Estado()) + ")");
+  FinSi
+  Definir cuerpo Como Cadena <- Propagar response.CuerpoTexto();
+  Retornar Exito(PriceMessage(cuerpo));
+FinSubProceso
+
+Algoritmo ImportedFruit
+  Segun RequestRate() Hacer
+    Exito(message): Escribir message;
+    Error(report): Escribir "No network: ", report.Codigo;
+  FinSegun
+FinAlgoritmo
 ```
 
 ```anfitrion
-{"http": {"GET https://cambio.test/hoy": {"estado": 200, "cuerpo": "{\"dolar\": 20}"}}}
+{"http": {"GET https://cambio.test/hoy": {"estado": 200, "cuerpo": "{\"dollar\": 20}"}}}
 ```
 
 ```salida
-Fruta importada: 40 pesos
+Imported fruit: 40 pesos
 ```
 
-`PrecioEnPesos` and `MensajeDePrecio` are pure functions: they receive numbers or text and give back a value. `PedirCambio` is the edge: it asks for the network, sends the request and checks the status code. With the same program and a service that is down:
+`PriceInPesos` and `PriceMessage` are pure functions: they receive numbers or text and give back a value. `RequestRate` is the edge: it asks for the network, sends the request and checks the status code. With the same program and a service that is down:
 
 ```programa id=cambio-caido titulo="The service does not answer" ejecutar
+Funcion pesos <- PriceInPesos(dollars Como Entero, rate Como Entero)
+  Definir pesos Como Entero;
+  pesos <- dollars * rate;
+FinFuncion
+
+Funcion message <- PriceMessage(cuerpo Como Cadena)
+  Definir message Como Cadena <- "The response has no rate";
+  Segun AnalizarJson(cuerpo) Hacer
+    Exito(data):
+      Segun data.Campo("dollar") Hacer
+        Algo(dollar):
+          Segun dollar.ComoEntero() Hacer
+            Algo(rate): message <- "Imported fruit: " + ATexto(PriceInPesos(2, rate)) + " pesos";
+            Nada: message <- "The rate is not a number";
+          FinSegun
+        Nada: message <- "The response has no rate";
+      FinSegun
+    Error(report): message <- "Badly written response at column " + ATexto(report.JsonColumna);
+  FinSegun
+FinFuncion
+
+SubProceso RequestRate() Como Resultado<Cadena, ErrorES>
+  Definir network Como RedCap <- Propagar SolicitarRed();
+  Definir response Como RespuestaHttp <- Propagar network.Enviar(PeticionHttp(MetodoHttp.GET, "https://cambio.test/hoy"));
+  Si response.Estado() <> 200 Entonces
+    Retornar Exito("Service unavailable (" + ATexto(response.Estado()) + ")");
+  FinSi
+  Definir cuerpo Como Cadena <- Propagar response.CuerpoTexto();
+  Retornar Exito(PriceMessage(cuerpo));
+FinSubProceso
+
+Algoritmo ImportedFruit
+  Segun RequestRate() Hacer
+    Exito(message): Escribir message;
+    Error(report): Escribir "No network: ", report.Codigo;
+  FinSegun
+FinAlgoritmo
 ```
 
 ```anfitrion
@@ -87,16 +175,16 @@ Fruta importada: 40 pesos
 ```
 
 ```salida
-Servicio no disponible (503)
+Service unavailable (503)
 ```
 
 ## Test {#probar fase=4}
 
 | Case | What it shows |
 |---|---|
-| 200 with the datum | `Fruta importada: 40 pesos` |
-| 503 | `Servicio no disponible (503)` |
-| 200 with broken JSON | `Respuesta mal escrita` and the column |
+| 200 with the datum | `Imported fruit: 40 pesos` |
+| 503 | `Service unavailable (503)` |
+| 200 with broken JSON | `Badly written response` and the column |
 
 The pure function is tested on its own, with a table of cases, without a network or a host.
 
@@ -104,7 +192,7 @@ The pure function is tested on its own, with a table of cases, without a network
 
 In one sentence: «The edge asks for the rate and checks the code; the price is computed by a pure function».
 
-It is the pure core and the edge again: if tomorrow the rate comes from a file, only `PedirCambio` changes.
+It is the pure core and the edge again: if tomorrow the rate comes from a file, only `RequestRate` changes.
 
 ## What you learned {#aprendiste}
 

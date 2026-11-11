@@ -12,6 +12,23 @@ Without running it, write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion
+Algoritmo TextRows
+  Para f <- 1 Hasta 2 Hacer
+    Definir line Como Cadena <- "";
+    Para c <- 1 Hasta 3 Hacer
+      Si c > 1 Entonces
+        line <- line + " ";
+      FinSi
+      line <- line + ConvertirATexto(f * c);
+    FinPara
+    Escribir line;
+  FinPara
+FinAlgoritmo
+```
+
+```salida
+1 2 3
+2 4 6
 ```
 
 ::: explicacion

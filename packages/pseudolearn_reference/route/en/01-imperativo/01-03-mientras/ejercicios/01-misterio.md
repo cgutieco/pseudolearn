@@ -12,6 +12,19 @@ Without running it, write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion
+Algoritmo Mystery
+  Definir n Como Entero <- 0;
+  Definir total Como Entero <- 0;
+  Mientras total < 10 Hacer
+    n <- n + 1;
+    total <- total + n;
+  FinMientras
+  Escribir n, " ", total;
+FinAlgoritmo
+```
+
+```salida
+4 10
 ```
 
 ::: explicacion

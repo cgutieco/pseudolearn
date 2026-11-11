@@ -12,21 +12,88 @@ A program reads 5 numbers and then a searched number, and shows the position of 
 :::
 
 ```programa rol=referencia
+Algoritmo Buscar
+  Dimension v[5] Como Entero;
+  Para i <- 0 Hasta 4 Hacer
+    Leer v[i];
+  FinPara
+  Definir searched Como Entero;
+  Leer searched;
+  Definir position Como Entero <- -1;
+  Para i <- 0 Hasta 4 Hacer
+    Si v[i] = searched Entonces
+      position <- i;
+      Salir;
+    FinSi
+  FinPara
+  Escribir position;
+FinAlgoritmo
 ```
 
 ```programa rol=mutante id=ultima-aparicion
+Algoritmo Buscar
+  Dimension v[5] Como Entero;
+  Para i <- 0 Hasta 4 Hacer
+    Leer v[i];
+  FinPara
+  Definir searched Como Entero;
+  Leer searched;
+  Definir position Como Entero <- -1;
+  Para i <- 0 Hasta 4 Hacer
+    Si v[i] = searched Entonces
+      position <- i;
+    FinSi
+  FinPara
+  Escribir position;
+FinAlgoritmo
 ```
 
 ```programa rol=mutante id=desde-uno
+Algoritmo Buscar
+  Dimension v[5] Como Entero;
+  Para i <- 0 Hasta 4 Hacer
+    Leer v[i];
+  FinPara
+  Definir searched Como Entero;
+  Leer searched;
+  Definir position Como Entero <- -1;
+  Para i <- 1 Hasta 4 Hacer
+    Si v[i] = searched Entonces
+      position <- i;
+      Salir;
+    FinSi
+  FinPara
+  Escribir position;
+FinAlgoritmo
 ```
 
 ```programa rol=mutante id=cero-si-falta
+Algoritmo Buscar
+  Dimension v[5] Como Entero;
+  Para i <- 0 Hasta 4 Hacer
+    Leer v[i];
+  FinPara
+  Definir searched Como Entero;
+  Leer searched;
+  Definir position Como Entero <- 0;
+  Para i <- 0 Hasta 4 Hacer
+    Si v[i] = searched Entonces
+      position <- i;
+      Salir;
+    FinSi
+  FinPara
+  Escribir position;
+FinAlgoritmo
 ```
 
 ```casos
+visible | 4 ; 8 ; 15 ; 16 ; 23 ; 15 | 2
 ```
 
 ```casos-solucion minimo=3 maximo=4
+3 ; 7 ; 9 ; 7 ; 1 ; 7 | 1
+7 ; 1 ; 2 ; 3 ; 4 ; 7 | 0
+1 ; 2 ; 3 ; 4 ; 5 ; 9 | -1
 ```
 
 ::: pistas

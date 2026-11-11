@@ -12,6 +12,21 @@ Without running it, write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion
+SubProceso Suspendible Square(number Como Entero) Como Entero
+  Retornar number * number;
+FinSubProceso
+
+Algoritmo SumOfTasks
+  Tareas
+    Definir one Como Tarea<Entero> <- Lanzar Square(3);
+    Definir two Como Tarea<Entero> <- Lanzar Square(4);
+    Escribir Aguardar one + Aguardar two;
+  FinTareas
+FinAlgoritmo
+```
+
+```salida
+25
 ```
 
 ::: explicacion

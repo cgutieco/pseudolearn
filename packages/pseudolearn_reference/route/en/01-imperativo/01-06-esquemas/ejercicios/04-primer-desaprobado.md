@@ -12,9 +12,28 @@ Read 6 marks and show the position, from 0 to 5, of the first mark less than 6. 
 :::
 
 ```programa rol=referencia
+Algoritmo FirstFailed
+  Dimension marks[6] Como Entero;
+  Para i <- 0 Hasta 5 Hacer
+    Leer marks[i];
+  FinPara
+  Definir position Como Entero <- -1;
+  Para i <- 0 Hasta 5 Hacer
+    Si marks[i] < 6 Entonces
+      position <- i;
+      Salir;
+    FinSi
+  FinPara
+  Escribir position;
+FinAlgoritmo
 ```
 
 ```casos
+visible | 7 ; 8 ; 3 ; 9 ; 2 ; 6 | 2
+visible | 6 ; 7 ; 8 ; 9 ; 10 ; 6 | -1
+oculto | 5 ; 9 ; 9 ; 9 ; 9 ; 9 | 0
+oculto | 6 ; 6 ; 6 ; 6 ; 6 ; 5 | 5
+oculto | 0 ; 0 ; 0 ; 0 ; 0 ; 0 | 0
 ```
 
 ::: pistas

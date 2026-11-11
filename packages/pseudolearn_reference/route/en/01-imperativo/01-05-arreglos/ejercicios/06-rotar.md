@@ -12,9 +12,24 @@ Read 5 numbers and show them rotated one place to the right: the last becomes th
 :::
 
 ```programa rol=referencia
+Algoritmo Rotate
+  Dimension v[5] Como Entero;
+  Para i <- 0 Hasta 4 Hacer
+    Leer v[i];
+  FinPara
+  Escribir v[4];
+  Para i <- 0 Hasta 3 Hacer
+    Escribir v[i];
+  FinPara
+FinAlgoritmo
 ```
 
 ```casos
+visible | 1 ; 2 ; 3 ; 4 ; 5 | 5 ⏎ 1 ⏎ 2 ⏎ 3 ⏎ 4
+visible | 7 ; 8 ; 9 ; 10 ; 11 | 11 ⏎ 7 ⏎ 8 ⏎ 9 ⏎ 10
+oculto | 9 ; 0 ; 0 ; 0 ; 0 | 0 ⏎ 9 ⏎ 0 ⏎ 0 ⏎ 0
+oculto | 1 ; 1 ; 1 ; 1 ; 2 | 2 ⏎ 1 ⏎ 1 ⏎ 1 ⏎ 1
+oculto | 3 ; 4 ; 5 ; 6 ; 7 | 7 ⏎ 3 ⏎ 4 ⏎ 5 ⏎ 6
 ```
 
 ::: pistas

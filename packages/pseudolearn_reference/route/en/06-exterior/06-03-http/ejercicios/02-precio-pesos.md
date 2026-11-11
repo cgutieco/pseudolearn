@@ -12,17 +12,29 @@ Read a price in dollars and the exchange rate, and show the price in pesos.
 :::
 
 ::: restriccion
-The calculation is done by a pure function, `PrecioEnPesos`, which receives the dollars and the rate.
+The calculation is done by a pure function, `PriceInPesos`, which receives the dollars and the rate.
 :::
 
 ```programa rol=referencia
+Funcion pesos <- PriceInPesos(dollars Como Entero, rate Como Entero)
+  Definir pesos Como Entero;
+  pesos <- dollars * rate;
+FinFuncion
+
+Algoritmo Price
+  Definir dollars Como Entero;
+  Definir rate Como Entero;
+  Leer dollars;
+  Leer rate;
+  Escribir PriceInPesos(dollars, rate);
+FinAlgoritmo
 ```
 
 ```casos
 ```
 
 ```aserciones
-- declara-subprograma | PrecioEnPesos | 2 | The function PrecioEnPesos, which receives the dollars and the rate, is missing.
+- declara-subprograma | PriceInPesos | 2 | The function PriceInPesos, which receives the dollars and the rate, is missing.
 ```
 
 ::: pistas

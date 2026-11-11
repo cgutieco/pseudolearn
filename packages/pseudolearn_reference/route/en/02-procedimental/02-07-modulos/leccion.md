@@ -25,11 +25,11 @@ The kiosk program has the stock, the sales and the receipts mixed in a single fi
 ## Try it {#intentalo}
 
 ::: intento
-Group these names into three piles: `AgregarStock`, `QuitarStock`, `HayStock`, `Importe`, `ConDescuento`, `Vender`, `LineaDeTicket`, `CerrarTicket`, `TotalDelTicket` and `TotalDelDia`.
+Group these names into three piles: `AddStock`, `RemoveStock`, `HasStock`, `Amount`, `WithDiscount`, `Sell`, `ReceiptLine`, `CloseReceipt`, `ReceiptTotal` and `DayTotal`.
 :::
 
 ::: respuesta
-One pile for the stock (`AgregarStock`, `QuitarStock`, `HayStock`), another for the sales (`Importe`, `ConDescuento`, `Vender`, `TotalDelDia`) and another for the receipts (`LineaDeTicket`, `CerrarTicket`, `TotalDelTicket`). Each pile changes for a different reason: the stock, the prices or the format of the paper.
+One pile for the stock (`AddStock`, `RemoveStock`, `HasStock`), another for the sales (`Amount`, `WithDiscount`, `Sell`, `DayTotal`) and another for the receipts (`ReceiptLine`, `CloseReceipt`, `ReceiptTotal`). Each pile changes for a different reason: the stock, the prices or the format of the paper.
 :::
 
 ## Understand and plan {#entender-planear fase=1-2}
@@ -49,10 +49,26 @@ A [[def:modulo|module]] is a file with one responsibility. To use from one modul
 ```figura-especificacion seccion=programas.modulos figura=paquete-modulos
 ```
 
-```programa id=modulo-ventas titulo="tienda/ventas.psl"
+```programa id=modulo-ventas titulo="store/sales.psl"
+Publico SubProceso Amount(price Como Entero, quantity Como Entero) Como Entero
+  Retornar price * quantity;
+FinSubProceso
+
+Publico SubProceso WithDiscount(sum Como Entero) Como Entero
+  Retornar sum - sum div 10;
+FinSubProceso
+
+SubProceso RoundCents(sum Como Entero) Como Entero
+  Retornar sum;
+FinSubProceso
 ```
 
-```programa id=modulo-principal titulo="tienda/principal.psl"
+```programa id=modulo-principal titulo="store/main.psl"
+Importar store.sales;
+
+Algoritmo Main
+  Escribir sales.WithDiscount(sales.Amount(3, 7));
+FinAlgoritmo
 ```
 
 A project of several modules needs a file that describes it and runs as a whole, which is why these blocks have no button to run them here. How a project is put together is in [the Specification](especificacion:programas.modulos).
@@ -68,22 +84,22 @@ The kiosk ends up in four modules:
 
 | Module | Responsibility | Uses |
 |---|---|---|
-| `inventario` | how much stock there is of each product | — |
-| `ventas` | prices, discounts and the day's total | `inventario` |
-| `tickets` | the format of each line and of the closing | `ventas` |
-| `principal` | reading the sales and calling the others | `inventario`, `ventas`, `tickets` |
+| `inventory` | how much stock there is of each product | — |
+| `sales` | prices, discounts and the day's total | `inventory` |
+| `receipts` | the format of each line and of the closing | `sales` |
+| `main` | reading the sales and calling the others | `inventory`, `sales`, `receipts` |
 
-Now `ventas.TotalDelDia` and `tickets.TotalDelTicket` no longer clash: each name lives in its module, and whoever uses them calls them with the module's name in front.
+Now `sales.DayTotal` and `receipts.ReceiptTotal` no longer clash: each name lives in its module, and whoever uses them calls them with the module's name in front.
 
 ## Test {#probar fase=4}
 
-Each module is tested on its own, through what it makes public. `ventas` is tested by calling `Importe` and `ConDescuento` with a table of cases, like the pure functions of [lesson 2.3](ruta:procedimental.puras), without reading anything or looking at receipts.
+Each module is tested on its own, through what it makes public. `sales` is tested by calling `Amount` and `WithDiscount` with a table of cases, like the pure functions of [lesson 2.3](ruta:procedimental.puras), without reading anything or looking at receipts.
 
 ## Improve {#mejorar fase=5}
 
 In one sentence: «The kiosk is shared out into modules by responsibility, and each one shows only what the others need».
 
-Making a helper subprogram private, such as `RedondearCentavos`, breaks nobody: nobody else could use it. Making it public turns it into a commitment: from then on, others can depend on it.
+Making a helper subprogram private, such as `RoundCents`, breaks nobody: nobody else could use it. Making it public turns it into a commitment: from then on, others can depend on it.
 
 ## What you learned {#aprendiste}
 

@@ -12,9 +12,45 @@ This program computes in two tasks the double and the triple of a number and sho
 :::
 
 ```programa rol=defectuoso
+SubProceso Suspendible Double(number Como Entero) Como Entero
+  Retornar number * 2;
+FinSubProceso
+
+SubProceso Suspendible Triple(number Como Entero) Como Entero
+  Retornar number * 3;
+FinSubProceso
+
+Algoritmo DoubleAndTriple
+  Definir number Como Entero;
+  Leer number;
+  Tareas
+    Definir twice Como Tarea<Entero> <- Lanzar Double(number);
+    Definir thrice Como Tarea<Entero> <- Lanzar Triple(number);
+    Definir tripleShare Como Entero <- 0;
+    Escribir Aguardar twice + tripleShare;
+    tripleShare <- Aguardar thrice;
+  FinTareas
+FinAlgoritmo
 ```
 
 ```programa rol=referencia
+SubProceso Suspendible Double(number Como Entero) Como Entero
+  Retornar number * 2;
+FinSubProceso
+
+SubProceso Suspendible Triple(number Como Entero) Como Entero
+  Retornar number * 3;
+FinSubProceso
+
+Algoritmo DoubleAndTriple
+  Definir number Como Entero;
+  Leer number;
+  Tareas
+    Definir twice Como Tarea<Entero> <- Lanzar Double(number);
+    Definir thrice Como Tarea<Entero> <- Lanzar Triple(number);
+    Escribir Aguardar twice + Aguardar thrice;
+  FinTareas
+FinAlgoritmo
 ```
 
 ```casos

@@ -78,13 +78,21 @@ A [[def:bucle|loop]] is a group of instructions that repeats. Each repetition is
 ```
 
 ```programa id=cuenta-regresiva titulo="Countdown" ejecutar
+Algoritmo Countdown
+  Definir n Como Entero <- 3;
+  Mientras n > 0 Hacer
+    Escribir n;
+    n <- n - 1;
+  FinMientras
+  Escribir "Go!";
+FinAlgoritmo
 ```
 
 ```salida
 3
 2
 1
-¡Ya!
+Go!
 ```
 
 In a loop, the same instruction runs many times, each time with different values in the boxes. To follow it by hand you use a [[def:tabla-por-vuelta|pass table]]: one column per box and one row per pass, with the values at the end of that pass.
@@ -106,10 +114,21 @@ paso: When the total reaches the price, the condition is false and the loop ends
 Day 1 is already done before repeating starts: Lucía saved 2 coins. The loop takes care of the following days, and the condition is the question of the plan, «is it still not enough?»:
 
 ```programa id=alcancia titulo="Lucía's money box" ejecutar
+Algoritmo MoneyBox
+  Definir dia Como Entero <- 1;
+  Definir savedToday Como Entero <- 2;
+  Definir savings Como Entero <- 2;
+  Mientras savings < 50 Hacer
+    dia <- dia + 1;
+    savedToday <- savedToday + 1;
+    savings <- savings + savedToday;
+  FinMientras
+  Escribir "Lucía buys the ball on day ", dia, " with ", savings, " coins";
+FinAlgoritmo
 ```
 
 ```salida
-Lucía compra la pelota el día 9 con 54 monedas
+Lucía buys the ball on day 9 with 54 coins
 ```
 
 The three lines inside the loop are the three steps of the plan, in the same order. The condition is the question. If the plan is clear, the program almost writes itself.
@@ -118,7 +137,7 @@ The three lines inside the loop are the three steps of the plan, in the same ord
 
 The program says day 9 with 54 coins, the same as your worked example. To be sure it was not by chance, follow the loop with the pass table:
 
-| Pass | Go on? | dia | guardaHoy | ahorro |
+| Pass | Go on? | dia | savedToday | savings |
 |---|---|---|---|---|
 | before | — | 1 | 2 | 2 |
 | 1 | yes | 2 | 3 | 5 |
@@ -133,6 +152,19 @@ Look for something that is true at the end of every pass: «what is in the money
 To test the other examples without touching the program, the price is read at the start:
 
 ```programa id=alcancia-leida titulo="The money box for any price" ejecutar
+Algoritmo MoneyBox
+  Definir price Como Entero;
+  Leer price;
+  Definir dia Como Entero <- 1;
+  Definir savedToday Como Entero <- 2;
+  Definir savings Como Entero <- 2;
+  Mientras savings < price Hacer
+    dia <- dia + 1;
+    savedToday <- savedToday + 1;
+    savings <- savings + savedToday;
+  FinMientras
+  Escribir "Day ", dia, " with ", savings, " coins";
+FinAlgoritmo
 ```
 
 ```entrada
@@ -140,21 +172,29 @@ To test the other examples without touching the program, the price is read at th
 ```
 
 ```salida
-Día 44 con 1034 monedas
+Day 44 with 1034 coins
 ```
 
 | Price | By hand | The program |
 |---|---|---|
-| 50 | day 9, 54 | Día 9 con 54 monedas |
-| 54 (edge) | day 9, 54 | Día 9 con 54 monedas |
-| 2 (edge) | day 1, 2 | Día 1 con 2 monedas |
-| 1000 | day 44, 1034 | Día 44 con 1034 monedas |
+| 50 | day 9, 54 | Day 9 with 54 coins |
+| 54 (edge) | day 9, 54 | Day 9 with 54 coins |
+| 2 (edge) | day 1, 2 | Day 1 with 2 coins |
+| 1000 | day 44, 1034 | Day 44 with 1034 coins |
 
 With price 2 the condition is false from the start and the loop makes zero passes. It is not an error: Lucía does not need to wait.
 
 If you forget to add to the money box, the total never changes, the condition stays true forever and the loop never ends. That is an [[def:bucle-infinito|infinite loop]]. This is how the engine stops it when it runs with a limit of 10 000 statements:
 
 ```programa id=alcancia-infinita titulo="The money box that never fills" ejecutar sentencias=10000 termina=limit_reached
+Algoritmo Endless
+  Definir savings Como Entero <- 2;
+  Definir savedToday Como Entero <- 2;
+  Mientras savings < 50 Hacer
+    savedToday <- savedToday + 1;
+  FinMientras
+  Escribir savings;
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -173,6 +213,16 @@ The request changes. Lucía breaks the money box early and wants to know how muc
 2. While the value is not the signal: add it and read the next one.
 
 ```programa id=alcancia-dictada titulo="The dictated money box" ejecutar
+Algoritmo DictatedMoneyBox
+  Definir coins Como Entero;
+  Definir savings Como Entero <- 0;
+  Leer coins;
+  Mientras coins <> -1 Hacer
+    savings <- savings + coins;
+    Leer coins;
+  FinMientras
+  Escribir "Gathered ", savings, " coins";
+FinAlgoritmo
 ```
 
 ```entrada
@@ -183,10 +233,10 @@ The request changes. Lucía breaks the money box early and wants to know how muc
 ```
 
 ```salida
-Juntó 9 monedas
+Gathered 9 coins
 ```
 
-There are two `Read`, and both are needed. The first brings the first value so that the condition has something to ask. The second brings the next one at the end of each pass. If the first value is already -1, the loop makes zero passes and the program says «Juntó 0 monedas», which is right.
+There are two `Read`, and both are needed. The first brings the first value so that the condition has something to ask. The second brings the next one at the end of each pass. If the first value is already -1, the loop makes zero passes and the program says «Gathered 0 coins», which is right.
 
 ## What you learned {#aprendiste}
 

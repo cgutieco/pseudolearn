@@ -12,6 +12,17 @@ Without running it, write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion
+Algoritmo SumFive
+  Definir total Como Entero <- 0;
+  Para i <- 1 Hasta 5 Hacer
+    total <- total + i;
+  FinPara
+  Escribir total;
+FinAlgoritmo
+```
+
+```salida
+15
 ```
 
 ::: explicacion

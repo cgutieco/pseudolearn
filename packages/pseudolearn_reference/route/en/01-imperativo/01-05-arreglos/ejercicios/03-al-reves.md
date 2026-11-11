@@ -12,9 +12,23 @@ Read 5 numbers and show them in reverse order, one per line.
 :::
 
 ```programa rol=referencia
+Algoritmo Reversed
+  Dimension numbers[5] Como Entero;
+  Para i <- 0 Hasta 4 Hacer
+    Leer numbers[i];
+  FinPara
+  Para i <- 4 Hasta 0 Con Paso -1 Hacer
+    Escribir numbers[i];
+  FinPara
+FinAlgoritmo
 ```
 
 ```casos
+visible | 1 ; 2 ; 3 ; 4 ; 5 | 5 ⏎ 4 ⏎ 3 ⏎ 2 ⏎ 1
+visible | 7 ; 7 ; 7 ; 7 ; 7 | 7 ⏎ 7 ⏎ 7 ⏎ 7 ⏎ 7
+oculto | 0 ; 1 ; 0 ; 1 ; 0 | 0 ⏎ 1 ⏎ 0 ⏎ 1 ⏎ 0
+oculto | 9 ; 8 ; 7 ; 6 ; 5 | 5 ⏎ 6 ⏎ 7 ⏎ 8 ⏎ 9
+oculto | -1 ; 2 ; -3 ; 4 ; -5 | -5 ⏎ 4 ⏎ -3 ⏎ 2 ⏎ -1
 ```
 
 ::: pistas

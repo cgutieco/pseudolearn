@@ -8,13 +8,26 @@ titulo: Is it JSON?
 ---
 
 ::: enunciado
-Read a text and parse it as JSON. If it is valid, show «Válido: » and its type; otherwise, show the code of the error, « en la columna » and the column where it was detected.
+Read a text and parse it as JSON. If it is valid, show «Valid: » and its type; otherwise, show the code of the error, « at column » and the column where it was detected.
 :::
 
 ```programa rol=referencia
+Algoritmo ValidOrNot
+  Definir text Como Cadena;
+  Leer text;
+  Segun AnalizarJson(text) Hacer
+    Exito(valor): Escribir "Valid: ", valor.Tipo();
+    Error(report): Escribir report.Codigo, " at column ", report.JsonColumna;
+  FinSegun
+FinAlgoritmo
 ```
 
 ```casos
+visible | {"a": 1} | Valid: Objeto
+visible | {"a": 1,} | SintaxisInvalida at column 9
+oculto | [] | Valid: Arreglo
+oculto | { | FinInesperado at column 2
+oculto | {"a" 1} | SintaxisInvalida at column 6
 ```
 
 ```aserciones

@@ -62,12 +62,49 @@ pie: The attributes stay inside; the methods are windows that decide what goes i
 ## Write {#escribir fase=3}
 
 ```programa id=tarjeta titulo="The card that looks after itself" ejecutar
+Clase Card
+  Privado Definir balance Como Entero;
+
+  Metodo Constructor(initial Como Entero)
+    Este.balance <- 0;
+    Si initial > 0 Entonces
+      Este.balance <- initial;
+    FinSi
+  FinMetodo
+
+  Metodo Charge(amount Como Entero) Como Logico
+    Si amount <= 0 O amount > Este.balance Entonces
+      Retornar Falso;
+    FinSi
+    Este.balance <- Este.balance - amount;
+    Retornar Verdadero;
+  FinMetodo
+
+  Metodo Load(amount Como Entero) Como Logico
+    Si amount <= 0 Entonces
+      Retornar Falso;
+    FinSi
+    Este.balance <- Este.balance + amount;
+    Retornar Verdadero;
+  FinMetodo
+
+  Metodo Balance() Como Entero
+    Retornar Este.balance;
+  FinMetodo
+FinClase
+
+Algoritmo Canteen
+  Definir card Como Card <- Nuevo Card(30);
+  Escribir card.Charge(50), " ", card.Balance();
+  Escribir card.Load(-100), " ", card.Balance();
+  Escribir card.Charge(30), " ", card.Balance();
+FinAlgoritmo
 ```
 
 ```salida
-false 30
-false 30
-true 0
+Falso 30
+Falso 30
+Verdadero 0
 ```
 
 The charge of 50 is rejected and changes nothing; so is the load of -100. The charge of exactly 30 is accepted and leaves the balance at 0, which still meets the invariant.

@@ -12,9 +12,30 @@ The lines of a program that decides whether a year is a leap year are mixed up. 
 :::
 
 ```programa rol=referencia
+Algoritmo LeapYear
+  Definir anio Como Entero;
+  Leer anio;
+  Si anio mod 400 = 0 Entonces
+    Escribir "Leap year";
+  Sino
+    Si anio mod 100 = 0 Entonces
+      Escribir "Not a leap year";
+    Sino
+      Si anio mod 4 = 0 Entonces
+        Escribir "Leap year";
+      Sino
+        Escribir "Not a leap year";
+      FinSi
+    FinSi
+  FinSi
+FinAlgoritmo
 ```
 
 ```casos
+visible | 2024 | Leap year
+visible | 2023 | Not a leap year
+oculto | 1900 | Not a leap year
+oculto | 2000 | Leap year
 ```
 
 ::: explicacion

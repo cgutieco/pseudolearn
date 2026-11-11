@@ -12,6 +12,35 @@ Without running it, write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion
+Clase Counter
+  Definir valor Como Entero;
+
+  Metodo Constructor()
+    Este.valor <- 0;
+  FinMetodo
+
+  Metodo Increment()
+    Este.valor <- Este.valor + 1;
+  FinMetodo
+
+  Metodo Current() Como Entero
+    Retornar Este.valor;
+  FinMetodo
+FinClase
+
+Algoritmo Two
+  Definir a Como Counter <- Nuevo Counter();
+  Definir b Como Counter <- Nuevo Counter();
+  a.Increment();
+  a.Increment();
+  a.Increment();
+  b.Increment();
+  Escribir a.Current(), " ", b.Current();
+FinAlgoritmo
+```
+
+```salida
+3 1
 ```
 
 ::: explicacion

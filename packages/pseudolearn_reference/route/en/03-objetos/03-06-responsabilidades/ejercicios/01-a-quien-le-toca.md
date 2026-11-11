@@ -12,21 +12,21 @@ Place each kiosk job in the piece that has the information to do it.
 :::
 
 ```categorias
-- Producto
-- Inventario
-- Caja
-- Ticket
+- Product
+- Inventory
+- Till
+- Receipt
 ```
 
 ```elementos
-- Knowing the price of a product. | Producto
-- Computing the amount of a quantity. | Producto
-- Knowing how much is left of each product. | Inventario
-- Taking away from the stock if there is enough. | Inventario
-- Gathering the day's total. | Caja
-- Registering a sale. | Caja
-- Noting a line of the receipt. | Ticket
-- Printing the receipt. | Ticket
+- Knowing the price of a product. | Product
+- Computing the amount of a quantity. | Product
+- Knowing how much is left of each product. | Inventory
+- Taking away from the stock if there is enough. | Inventory
+- Gathering the day's total. | Till
+- Registering a sale. | Till
+- Noting a line of the receipt. | Receipt
+- Printing the receipt. | Receipt
 ```
 
 ::: explicacion

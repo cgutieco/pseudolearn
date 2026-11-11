@@ -36,17 +36,17 @@ The 3 juices are accepted: 7 are left. The 6 sandwiches are rejected, because th
 
 ## Understand {#entender fase=1}
 
-Fill in the problem card: it is the first exercise of the project. The format of the receipt has to be exact; the texts stay in Spanish, as the program writes them. For the example in the task:
+Fill in the problem card: it is the first exercise of the project. The format of the receipt has to be exact. For the example in the task:
 
-- `Jugo x 3 = 9`
-- `Sándwich x 6 rechazado: quedan 5`
-- `Sándwich x 5 = 25`
-- `Código 9 no existe`
+- `Juice x 3 = 9`
+- `Sandwich x 6 rejected: stock 5`
+- `Sandwich x 5 = 25`
+- `Code 9 does not exist`
 - `Total: 34`
-- `Con descuento: 31`
-- `Stock final:` and one line per product, such as `Jugo 7`
+- `With discount: 31`
+- `Final stock:` and one line per product, such as `Juice 7`
 
-An amount less than 1 is rejected with the line «Cantidad 0 no válida» (with the amount that arrived).
+An amount less than 1 is rejected with the line «Quantity 0 is not valid» (with the amount that arrived).
 
 ## Plan {#planear fase=2}
 

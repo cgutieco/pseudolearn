@@ -17,7 +17,7 @@ A program fails well when an expected error is an answer with a reason, not a cr
 ## The problem {#problema}
 
 ::: problema
-The sign-up for a workshop asks for the age, from **6 to 18 years**, written **as text**. Answers arrive such as «12», «doce» (twelve), «-3», «150» and an empty one. The program cannot stop and has to say **why** it rejects each one.
+The sign-up for a workshop asks for the age, from **6 to 18 years**, written **as text**. Answers arrive such as «12», «twelve», «-3», «150» and an empty one. The program cannot stop and has to say **why** it rejects each one.
 
 **How is it written?**
 :::
@@ -29,7 +29,7 @@ Decide what to answer to each of the five replies.
 :::
 
 ::: respuesta
-«12» is accepted. «doce» is not a number. «-3» and «150» are numbers, but they are out of range. The empty reply is not a number.
+«12» is accepted. «twelve» is not a number. «-3» and «150» are numbers, but they are out of range. The empty reply is not a number.
 :::
 
 ## Understand and plan {#entender-planear fase=1-2}
@@ -52,10 +52,23 @@ A [[def:resultado-con-error|result with error]] is a `Result`: it brings `Succes
 ```
 
 ```programa id=dividir-seguro titulo="Dividing without crashing" ejecutar
+SubProceso SafeDivide(a Como Entero, b Como Entero) Como Resultado<Entero, Cadena>
+  Si b = 0 Entonces
+    Retornar Error("Cannot divide by 0");
+  FinSi
+  Retornar Exito(a div b);
+FinSubProceso
+
+Algoritmo Division
+  Segun SafeDivide(10, 0) Hacer
+    Exito(quotient): Escribir quotient;
+    Error(reason): Escribir reason;
+  FinSegun
+FinAlgoritmo
 ```
 
 ```salida
-No se puede dividir entre 0
+Cannot divide by 0
 ```
 
 When a subprogram receives a `Result` it does not know how to handle, it can [[def:propagar|propagate]] the error: `Propagate` takes out the value if it was a success and, if it was an error, gives it straight back to whoever called. The details are in [the Specification](especificacion:tipos.opcional-resultado).
@@ -71,34 +84,68 @@ To [[def:validar|validate]] is to check an input before using it. To turn a text
 ## Write {#escribir fase=3}
 
 ```programa id=inscripcion titulo="The sign-up" ejecutar
+Funcion isValid <- IsNumber(text Como Cadena)
+  Definir desde Como Entero <- 0;
+  Si Longitud(text) > 0 Entonces
+    Si CaracterEn(text, 0) = '-' Entonces
+      desde <- 1;
+    FinSi
+  FinSi
+  Definir isValid Como Logico <- Longitud(text) > desde;
+  Para i <- desde Hasta Longitud(text) - 1 Hacer
+    Si NO Contiene("0123456789", ATexto(CaracterEn(text, i))) Entonces
+      isValid <- Falso;
+    FinSi
+  FinPara
+FinFuncion
+
+SubProceso ValidateAge(text Como Cadena) Como Resultado<Entero, Cadena>
+  Si NO IsNumber(text) Entonces
+    Retornar Error("not a number");
+  FinSi
+  Definir age Como Entero <- AEntero(text);
+  Si age < 6 O age > 18 Entonces
+    Retornar Error("out of range");
+  FinSi
+  Retornar Exito(age);
+FinSubProceso
+
+Algoritmo SignUp
+  Definir text Como Cadena;
+  Leer text;
+  Segun ValidateAge(text) Hacer
+    Exito(age): Escribir "Sign-up accepted: ", age;
+    Error(reason): Escribir "Rejected: ", reason;
+  FinSegun
+FinAlgoritmo
 ```
 
 ```entrada
-doce
+twelve
 ```
 
 ```salida
-Rechazada: no es un número
+Rejected: not a number
 ```
 
-`EsNumero` is a pure function: it walks through the text and checks that each character is a digit, with a minus sign allowed at the start. `ValidarEdad` applies the two filters in order and returns the reason of the first one that fails.
+`IsNumber` is a pure function: it walks through the text and checks that each character is a digit, with a minus sign allowed at the start. `ValidateAge` applies the two filters in order and returns the reason of the first one that fails.
 
 ## Test {#probar fase=4}
 
 | Text | Expected | Why |
 |---|---|---|
-| 12 | Inscripción aceptada: 12 | normal case |
-| doce | Rechazada: no es un número | not a number |
-| -3 | Rechazada: fuera de rango | negative number |
-| 150 | Rechazada: fuera de rango | number too large |
-| (empty) | Rechazada: no es un número | nothing to convert |
+| 12 | Sign-up accepted: 12 | normal case |
+| twelve | Rejected: not a number | not a number |
+| -3 | Rejected: out of range | negative number |
+| 150 | Rejected: out of range | number too large |
+| (empty) | Rejected: not a number | nothing to convert |
 | 6 and 18 | accepted | the edges of the range |
 
 ## Improve {#mejorar fase=5}
 
 In one sentence: «The program checks that the age is a number and that it is in range, and if not, says which of the two failed».
 
-What if the empty reply had its own reason, «empty»? A filter is added at the start of `ValidarEdad`, and the rest of the program does not change.
+What if the empty reply had its own reason, «empty»? A filter is added at the start of `ValidateAge`, and the rest of the program does not change.
 
 ## What you learned {#aprendiste}
 
@@ -120,7 +167,7 @@ What if the empty reply had its own reason, «empty»? A filter is added at the 
 :::
 
 ::: profundizar titulo="Common pitfalls"
-- **Validating too late.** Converting before checking stops the program with «doce». The order of the filters matters.
+- **Validating too late.** Converting before checking stops the program with «twelve». The order of the filters matters.
 - **A reason that says nothing.** «Error» tells nobody what to fix. Write one reason per filter.
 - **Handling the error in the wrong place.** Whoever knows what to show is the main algorithm; the validation only reports.
 :::

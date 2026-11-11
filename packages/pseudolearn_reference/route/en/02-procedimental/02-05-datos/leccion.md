@@ -44,16 +44,25 @@ pie: The same contact list kept in three ways. Each one answers a different ques
 
 ## The new tool {#herramienta}
 
-A [[def:registro|record]] groups the data of one thing; each value is a [[def:campo|field]], and it is read with a dot: `ana.telefono`.
+A [[def:registro|record]] groups the data of one thing; each value is a [[def:campo|field]], and it is read with a dot: `ana.phone`.
 
 ```figura-especificacion seccion=tipos.registros figura=registro-copia
 ```
 
 ```programa id=producto titulo="A kiosk product" ejecutar
+Registro Product
+  Definir name Como Cadena;
+  Definir price Como Entero;
+FinRegistro
+
+Algoritmo Kiosk
+  Definir juice Como Product <- Product("Juice", 3);
+  Escribir juice.name, " ", juice.price;
+FinAlgoritmo
 ```
 
 ```salida
-Jugo 3
+Juice 3
 ```
 
 An [[def:enumerado|enumeration]] is a type with a closed list of named values, like the days of the week: there is no eighth day that can be written by mistake.
@@ -75,6 +84,38 @@ A [[def:diccionario|dictionary]] keeps values that are found by a [[def:clave|ke
 ## Write {#escribir fase=3}
 
 ```programa id=agenda titulo="The contact list" ejecutar
+Registro Contact
+  Definir name, phone Como Cadena;
+  Definir mes Como Entero;
+FinRegistro
+
+Algoritmo Contacts
+  Definir contacts Como Vector<Contact> <- Vector();
+  Definir byMonth Como Diccionario<Entero, Entero> <- Diccionario();
+  Definir name, phone Como Cadena;
+  Definir mes Como Entero;
+  Para i <- 1 Hasta 4 Hacer
+    Leer name;
+    Leer phone;
+    Leer mes;
+    contacts.Agregar(Contact(name, phone, mes));
+    Segun byMonth.Buscar(mes) Hacer
+      Algo(count): byMonth[mes] <- count + 1;
+      Nada: byMonth[mes] <- 1;
+    FinSegun
+  FinPara
+  Leer name;
+  Definir found Como Cadena <- "Not found";
+  Para Cada contact En contacts Hacer
+    Si contact.name = name Y found = "Not found" Entonces
+      found <- contact.phone;
+    FinSi
+  FinPara
+  Escribir name, ": ", found;
+  Para Cada key En byMonth.Claves() Hacer
+    Escribir "Month ", key, ": ", byMonth[key];
+  FinPara
+FinAlgoritmo
 ```
 
 ```entrada
@@ -95,9 +136,9 @@ Caro
 
 ```salida
 Caro: 555-4567
-Mes 5: 2
-Mes 11: 1
-Mes 3: 1
+Month 5: 2
+Month 11: 1
+Month 3: 1
 ```
 
 The vector of records answers the search; the dictionary from month to amount answers the count.
@@ -107,7 +148,7 @@ The vector of records answers the search; the dictionary from month to amount an
 | Searched | Expected | Why |
 |---|---|---|
 | Caro | her phone | a name that is there |
-| Eva | No está | a name that is not there |
+| Eva | Not found | a name that is not there |
 | a repeated name | the first phone | the rule: the first one is returned |
 
 ## Improve {#mejorar fase=5}

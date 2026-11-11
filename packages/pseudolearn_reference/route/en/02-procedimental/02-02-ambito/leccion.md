@@ -18,7 +18,7 @@ Each call works with its own boxes, unless it is lent a box of whoever calls.
 ## The problem {#problema}
 
 ::: problema
-On students' day, the kiosk doubles the balance of each canteen card. The program calls `Duplicar(saldo)` (double the balance), which does `saldo <- saldo * 2`. With a balance of **10**, when it comes back the program still shows **10**.
+On students' day, the kiosk doubles the balance of each canteen card. The program calls `Duplicate(balance)`, which does `balance <- balance * 2`. With a balance of **10**, when it comes back the program still shows **10**.
 
 **Why did it not change, and what is the best way to fix it?**
 :::
@@ -29,11 +29,20 @@ On students' day, the kiosk doubles the balance of each canteen card. The progra
 Predict what this program shows before running it.
 
 ```programa id=duplicar-copia titulo="The balance that does not double"
+SubProceso Duplicate(balance Como Entero)
+  balance <- balance * 2;
+FinSubProceso
+
+Algoritmo Card
+  Definir balance Como Entero <- 10;
+  Duplicate(balance);
+  Escribir balance;
+FinAlgoritmo
 ```
 :::
 
 ::: respuesta
-It shows **10**. The subprogram doubled **its copy** of the balance: the `saldo` box inside is another box, with the same name, that disappears when it comes back.
+It shows **10**. The subprogram doubled **its copy** of the balance: the `balance` box inside is another box, with the same name, that disappears when it comes back.
 :::
 
 ## Understand and plan {#entender-planear fase=1-2}
@@ -57,6 +66,21 @@ With [[def:paso-por-referencia|pass by reference]], the subprogram does not rece
 ```
 
 ```programa id=valor-y-referencia titulo="By value and by reference" ejecutar
+SubProceso A(x Como Entero)
+  x <- x + 5;
+FinSubProceso
+
+SubProceso B(x Como Entero Por Referencia)
+  x <- x + 5;
+FinSubProceso
+
+Algoritmo Main
+  Definir n Como Entero <- 5;
+  A(n);
+  Escribir n;
+  B(n);
+  Escribir n;
+FinAlgoritmo
 ```
 
 ```salida
@@ -78,9 +102,18 @@ To follow a program with subprograms you picture a stack. Each call opens a [[de
 
 ## Write {#escribir fase=3}
 
-There are two fixes. The first makes `Duplicar` return the double, and whoever calls decides to keep it:
+There are two fixes. The first makes `Duplicate` return the double, and whoever calls decides to keep it:
 
 ```programa id=duplicar-retorno titulo="Doubling with a return" ejecutar
+SubProceso Duplicate(balance Como Entero) Como Entero
+  Retornar balance * 2;
+FinSubProceso
+
+Algoritmo Card
+  Definir balance Como Entero <- 10;
+  balance <- Duplicate(balance);
+  Escribir balance;
+FinAlgoritmo
 ```
 
 ```salida
@@ -90,6 +123,15 @@ There are two fixes. The first makes `Duplicar` return the double, and whoever c
 The second lends the box to the subprogram:
 
 ```programa id=duplicar-referencia titulo="Doubling with the lent box" ejecutar
+SubProceso Duplicate(balance Como Entero Por Referencia)
+  balance <- balance * 2;
+FinSubProceso
+
+Algoritmo Card
+  Definir balance Como Entero <- 10;
+  Duplicate(balance);
+  Escribir balance;
+FinAlgoritmo
 ```
 
 ```salida
@@ -102,18 +144,18 @@ Follow the stack in the version with a return:
 
 | Moment | Frames on the stack | Visible boxes |
 |---|---|---|
-| Before calling | Tarjeta | `saldo` = 10 |
-| Inside `Duplicar` | Tarjeta, Duplicar | the copy `saldo` = 10 |
-| On returning | Tarjeta | `saldo` = 10, and the value 20 comes back |
-| After assigning | Tarjeta | `saldo` = 20 |
+| Before calling | Card | `balance` = 10 |
+| Inside `Duplicate` | Card, Duplicate | the copy `balance` = 10 |
+| On returning | Card | `balance` = 10, and the value 20 comes back |
+| After assigning | Card | `balance` = 20 |
 
-While `Duplicar` runs, the outer `saldo` exists but cannot be seen from inside: the inner one hides it.
+While `Duplicate` runs, the outer `balance` exists but cannot be seen from inside: the inner one hides it.
 
 ## Improve {#mejorar fase=5}
 
 In one sentence: «A subprogram works with copies, unless it is lent the box».
 
-Compare the two solutions. With a return, whoever reads `saldo <- Duplicar(saldo);` sees that the balance changes. With the lent box, the call `Duplicar(saldo);` gives no warning: the change stays hidden. It is better to return, unless you have to give back more than one value.
+Compare the two solutions. With a return, whoever reads `balance <- Duplicate(balance);` sees that the balance changes. With the lent box, the call `Duplicate(balance);` gives no warning: the change stays hidden. It is better to return, unless you have to give back more than one value.
 
 ## What you learned {#aprendiste}
 
@@ -134,7 +176,7 @@ Compare the two solutions. With a return, whoever reads `saldo <- Duplicar(saldo
 :::
 
 ::: profundizar titulo="Common pitfalls"
-- **«They are the same box because they have the same name».** The program of the problem takes it apart: the inner `saldo` is another box.
+- **«They are the same box because they have the same name».** The program of the problem takes it apart: the inner `balance` is another box.
 - **Lending the box for everything.** It hides the changes. Read a call and say which boxes change without looking at the subprogram.
 - **«The boxes of the subprogram survive between calls».** Every call opens a new frame, with new boxes.
 :::

@@ -12,9 +12,26 @@ You plant a magic bean that already measures a few centimetres; the program read
 :::
 
 ```programa rol=referencia
+Algoritmo Bean
+  Definir height Como Entero;
+  Leer height;
+  Definir growth Como Entero <- 1;
+  Definir days Como Entero <- 0;
+  Mientras height < 100 Hacer
+    height <- height + growth;
+    growth <- growth * 2;
+    days <- days + 1;
+  FinMientras
+  Escribir days;
+FinAlgoritmo
 ```
 
 ```casos
+visible | 3 | 7
+visible | 100 | 0
+oculto | 99 | 1
+oculto | 0 | 7
+oculto | 50 | 6
 ```
 
 ::: pistas

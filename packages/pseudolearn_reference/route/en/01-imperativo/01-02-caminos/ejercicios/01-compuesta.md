@@ -12,6 +12,23 @@ Without running it, write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion
+Algoritmo Compound
+  Si 5 > 3 Y 2 > 4 Entonces
+    Escribir "A";
+  Sino
+    Escribir "B";
+  FinSi
+  Si 5 > 3 O 2 > 4 Entonces
+    Escribir "A";
+  Sino
+    Escribir "B";
+  FinSi
+FinAlgoritmo
+```
+
+```salida
+B
+A
 ```
 
 ::: explicacion

@@ -18,7 +18,7 @@ Assigning an object to another variable does not copy it: it gives the same obje
 ## The problem {#problema}
 
 ::: problema
-At the kiosk, an order keeps its list of products and knows how to add more. To put together a similar order, someone wrote `copia <- pedido` and added a biscuit to `copia`. The receipt of the original order **also** shows the biscuit.
+At the kiosk, an order keeps its list of products and knows how to add more. To put together a similar order, someone wrote `copyOrder <- order` and added a biscuit to `copyOrder`. The receipt of the original order **also** shows the biscuit.
 
 **Why did it happen, and how do you make a real copy?**
 :::
@@ -29,11 +29,44 @@ At the kiosk, an order keeps its list of products and knows how to add more. To 
 Predict what the two receipts of this program show.
 
 ```programa id=pedido-alias titulo="An order and its «copy»"
+Clase Order
+  Privado Definir products Como Vector<Cadena>;
+
+  Metodo Constructor()
+    Este.products <- Vector();
+  FinMetodo
+
+  Metodo Agregar(product Como Cadena)
+    Este.products.Agregar(product);
+  FinMetodo
+
+  Metodo Receipt() Como Cadena
+    Retornar Unir(Este.products, ", ");
+  FinMetodo
+
+  Metodo Duplicate() Como Order
+    Definir duplicate Como Order <- Nuevo Order();
+    Para Cada product En Este.products Hacer
+      duplicate.Agregar(product);
+    FinPara
+    Retornar duplicate;
+  FinMetodo
+FinClase
+
+Algoritmo Orders
+  Definir order Como Order <- Nuevo Order();
+  order.Agregar("Juice");
+  order.Agregar("Sandwich");
+  Definir copyOrder Como Order <- order;
+  copyOrder.Agregar("Alfajor");
+  Escribir "Original: ", order.Receipt();
+  Escribir "Copy: ", copyOrder.Receipt();
+FinAlgoritmo
 ```
 :::
 
 ::: respuesta
-Both receipts say «Jugo, Sándwich, Alfajor». `copia` and `pedido` are two names for the same order: what is added through one name is seen through the other.
+Both receipts say «Juice, Sandwich, Alfajor». `copyOrder` and `order` are two names for the same order: what is added through one name is seen through the other.
 :::
 
 ## Understand and plan {#entender-planear fase=1-2}
@@ -54,8 +87,8 @@ Each object has an [[def:identidad|identity]]: it is that object and not another
 
 ```figura id=ruta-flechas-pedido
 pie: Assigning copies the arrow, not the order. To have two orders you have to create the second one.
-paso: `pedido` and `copia` point at the same order.
-paso: A biscuit is added through `copia`: there is only one order, so it is also seen through `pedido`.
+paso: `order` and `copyOrder` point at the same order.
+paso: A biscuit is added through `copyOrder`: there is only one order, so it is also seen through `order`.
 paso: With a real copy there are two orders, each with its own list.
 ```
 
@@ -68,24 +101,63 @@ paso: With a real copy there are two orders, each with its own list.
 ## Write {#escribir fase=3}
 
 ```programa id=pedidos titulo="An alias, a half copy and a real copy" ejecutar
+Clase Order
+  Privado Definir products Como Vector<Cadena>;
+
+  Metodo Constructor()
+    Este.products <- Vector();
+  FinMetodo
+
+  Metodo Agregar(product Como Cadena)
+    Este.products.Agregar(product);
+  FinMetodo
+
+  Metodo Receipt() Como Cadena
+    Retornar Unir(Este.products, ", ");
+  FinMetodo
+
+  Metodo Duplicate() Como Order
+    Definir duplicate Como Order <- Nuevo Order();
+    Para Cada product En Este.products Hacer
+      duplicate.Agregar(product);
+    FinPara
+    Retornar duplicate;
+  FinMetodo
+FinClase
+
+Algoritmo Orders
+  Definir order Como Order <- Nuevo Order();
+  order.Agregar("Juice");
+  order.Agregar("Sandwich");
+  Definir copyOrder Como Order <- order;
+  copyOrder.Agregar("Alfajor");
+  Escribir "Original: ", order.Receipt();
+  Definir shallow Como Order <- Copiar(order);
+  shallow.Agregar("Fruit");
+  Escribir "Original: ", order.Receipt();
+  Definir otro Como Order <- order.Duplicate();
+  otro.Agregar("Water");
+  Escribir "Original: ", order.Receipt();
+  Escribir "Another: ", otro.Receipt();
+FinAlgoritmo
 ```
 
 ```salida
-Original: Jugo, Sándwich, Alfajor
-Original: Jugo, Sándwich, Alfajor, Fruta
-Original: Jugo, Sándwich, Alfajor, Fruta
-Otro: Jugo, Sándwich, Alfajor, Fruta, Agua
+Original: Juice, Sandwich, Alfajor
+Original: Juice, Sandwich, Alfajor, Fruit
+Original: Juice, Sandwich, Alfajor, Fruit
+Another: Juice, Sandwich, Alfajor, Fruit, Water
 ```
 
-The alias and the half copy change the original. Only `Duplicar`, which builds a new order with a new list, leaves the original alone.
+The alias and the half copy change the original. Only `Duplicate`, which builds a new order with a new list, leaves the original alone.
 
 ## Test {#probar fase=4}
 
 | How it was built | Does it share the list with the original? | Adding through the new name… |
 |---|---|---|
-| `copia <- pedido` | yes: it is the same order | changes the original |
-| `copy(pedido)` | yes: it copies only one level | changes the original |
-| `pedido.Duplicar()` | no | does not change the original |
+| `copyOrder <- order` | yes: it is the same order | changes the original |
+| `copy(order)` | yes: it copies only one level | changes the original |
+| `order.Duplicate()` | no | does not change the original |
 
 ## Improve {#mejorar fase=5}
 

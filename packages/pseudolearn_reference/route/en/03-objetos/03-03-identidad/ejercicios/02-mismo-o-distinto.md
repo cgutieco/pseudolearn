@@ -8,9 +8,32 @@ titulo: The same or different?
 ---
 
 ::: enunciado
-At the end of this program, does each pair of names point at the same `Contador` or at two different ones?
+At the end of this program, does each pair of names point at the same `Counter` or at two different ones?
 
 ```programa id=pares titulo="Four counters… or fewer"
+Clase Counter
+  Definir valor Como Entero;
+
+  Metodo Constructor()
+    Este.valor <- 0;
+  FinMetodo
+
+  Metodo Increment()
+    Este.valor <- Este.valor + 1;
+  FinMetodo
+
+  Metodo Current() Como Entero
+    Retornar Este.valor;
+  FinMetodo
+FinClase
+
+Algoritmo Pairs
+  Definir a Como Counter <- Nuevo Counter();
+  Definir b Como Counter <- a;
+  Definir c Como Counter <- Nuevo Counter();
+  Definir d Como Counter <- Copiar(c);
+  Definir e Como Counter <- b;
+FinAlgoritmo
 ```
 :::
 

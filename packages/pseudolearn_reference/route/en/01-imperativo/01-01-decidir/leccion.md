@@ -79,10 +79,18 @@ With a condition, the program takes a [[def:decision|decision]]: `If` the condit
 ```
 
 ```programa id=alcanza titulo="Is there enough money?" ejecutar
+Algoritmo Enough
+  Definir money Como Entero <- 10;
+  Si money >= 12 Entonces
+    Escribir "Enough";
+  Sino
+    Escribir "Not enough";
+  FinSi
+FinAlgoritmo
 ```
 
 ```salida
-No alcanza
+Not enough
 ```
 
 To follow a program with decisions it helps to picture a finger pointing at the [[def:instruccion-actual|current instruction]], the one being run. In a decision, the finger jumps over the path that is not taken.
@@ -93,7 +101,7 @@ paso: The finger starts at the first instruction: the age box is declared.
 paso: The age is read: 30 arrives.
 paso: The finger reaches the condition. Is 30 less than 12? False.
 paso: The finger skips the `Then` branch and enters the `Else` one.
-paso: «Paga 8» is shown and the finger leaves the decision.
+paso: «Pays 8» is shown and the finger leaves the decision.
 ```
 
 ::: especificacion
@@ -105,6 +113,15 @@ paso: «Paga 8» is shown and the finger leaves the decision.
 ## Write {#escribir fase=3}
 
 ```programa id=cine titulo="The cinema price" ejecutar
+Algoritmo Cinema
+  Definir age Como Entero;
+  Leer age;
+  Si age < 12 Entonces
+    Escribir "Pays 5";
+  Sino
+    Escribir "Pays 8";
+  FinSi
+FinAlgoritmo
 ```
 
 ```entrada
@@ -112,17 +129,17 @@ paso: «Paga 8» is shown and the finger leaves the decision.
 ```
 
 ```salida
-Paga 5
+Pays 5
 ```
 
 ## Test {#probar fase=4}
 
 | Age | Region | By hand | The program |
 |---|---|---|---|
-| 10 | pay 5 | 5 | Paga 5 |
-| 11 | edge, side of 5 | 5 | Paga 5 |
-| 12 | edge, side of 8 | 8 | Paga 8 |
-| 30 | pay 8 | 8 | Paga 8 |
+| 10 | pay 5 | 5 | Pays 5 |
+| 11 | edge, side of 5 | 5 | Pays 5 |
+| 12 | edge, side of 8 | 8 | Pays 8 |
+| 30 | pay 8 | 8 | Pays 8 |
 
 Four cases cover both regions and both sides of the edge. Testing with 40, 50 and 60 would add nothing: they are in the same region as 30.
 
@@ -133,6 +150,17 @@ In one sentence: «The program charges 5 to anyone under 12 and 8 to everyone el
 Now the tip calculator from [the previous lesson](ruta:inicio.errores) can stop crashing with 0 friends:
 
 ```programa id=propina-segura titulo="The tip, without crashing" ejecutar
+Algoritmo Tip
+  Definir bill Como Entero;
+  Definir friends Como Entero;
+  Leer bill;
+  Leer friends;
+  Si friends = 0 Entonces
+    Escribir "Nobody to pay";
+  Sino
+    Escribir "Each one pays: ", techo((bill + bill div 10) / friends);
+  FinSi
+FinAlgoritmo
 ```
 
 ```entrada
@@ -141,7 +169,7 @@ Now the tip calculator from [the previous lesson](ruta:inicio.errores) can stop 
 ```
 
 ```salida
-No hay quien pague
+Nobody to pay
 ```
 
 Before, the odd case was a crash. Now it is an answer.

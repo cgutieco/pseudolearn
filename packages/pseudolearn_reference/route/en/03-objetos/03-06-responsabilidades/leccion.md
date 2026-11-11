@@ -17,7 +17,7 @@ Each job belongs to the class that has the information to do it.
 ## The problem {#problema}
 
 ::: problema
-A single piece of the kiosk, `Kiosco`, reads the sales, computes the amounts, takes off the stock, applies the discount and writes the receipt. Every change, however small, touches that piece, and it already has **600 lines**.
+A single piece of the kiosk, `Kiosk`, reads the sales, computes the amounts, takes off the stock, applies the discount and writes the receipt. Every change, however small, touches that piece, and it already has **600 lines**.
 
 **How is the work shared out?**
 :::
@@ -25,7 +25,7 @@ A single piece of the kiosk, `Kiosco`, reads the sales, computes the amounts, ta
 ## Try it {#intentalo}
 
 ::: intento
-Make a list of the jobs of `Kiosco` and write next to each one which data it needs to be done.
+Make a list of the jobs of `Kiosk` and write next to each one which data it needs to be done.
 :::
 
 ::: respuesta
@@ -48,32 +48,119 @@ There is no new construction. There is a way of thinking. A [[def:responsabilida
 
 | Class | Its job | Works with |
 |---|---|---|
-| `Producto` | knowing its name and price; computing the amount of a quantity | — |
-| `Inventario` | knowing how much is left of each product; taking away if there is enough | — |
-| `Ticket` | noting lines and printing them | — |
-| `Caja` | registering a sale and gathering the total | `Producto`, `Inventario`, `Ticket` |
+| `Product` | knowing its name and price; computing the amount of a quantity | — |
+| `Inventory` | knowing how much is left of each product; taking away if there is enough | — |
+| `Receipt` | noting lines and printing them | — |
+| `Till` | registering a sale and gathering the total | `Product`, `Inventory`, `Receipt` |
 
 ## Write {#escribir fase=3}
 
 ```programa id=kiosco-repartido titulo="The kiosk shared out" ejecutar
+Clase Product
+  Definir name Como Cadena;
+  Definir price Como Entero;
+
+  Metodo Constructor(n Como Cadena, p Como Entero)
+    Este.name <- n;
+    Este.price <- p;
+  FinMetodo
+
+  Metodo Amount(quantity Como Entero) Como Entero
+    Retornar Este.price * quantity;
+  FinMetodo
+FinClase
+
+Clase Inventory
+  Privado Definir stock Como Diccionario<Cadena, Entero>;
+
+  Metodo Constructor()
+    Este.stock <- Diccionario();
+  FinMetodo
+
+  Metodo Load(name Como Cadena, quantity Como Entero)
+    Este.stock[name] <- quantity;
+  FinMetodo
+
+  Metodo Withdraw(name Como Cadena, quantity Como Entero) Como Logico
+    Si quantity > Este.stock[name] Entonces
+      Retornar Falso;
+    FinSi
+    Este.stock[name] <- Este.stock[name] - quantity;
+    Retornar Verdadero;
+  FinMetodo
+FinClase
+
+Clase Receipt
+  Privado Definir lines Como Vector<Cadena>;
+
+  Metodo Constructor()
+    Este.lines <- Vector();
+  FinMetodo
+
+  Metodo Note(line Como Cadena)
+    Este.lines.Agregar(line);
+  FinMetodo
+
+  Metodo Display()
+    Para Cada line En Este.lines Hacer
+      Escribir line;
+    FinPara
+  FinMetodo
+FinClase
+
+Clase Till
+  Privado Definir total Como Entero;
+
+  Metodo Constructor()
+    Este.total <- 0;
+  FinMetodo
+
+  Metodo Sell(product Como Product, quantity Como Entero, inventory Como Inventory, receipt Como Receipt)
+    Si inventory.Withdraw(product.name, quantity) Entonces
+      Este.total <- Este.total + product.Amount(quantity);
+      receipt.Note(product.name + " x " + ConvertirATexto(quantity) + " = " + ConvertirATexto(product.Amount(quantity)));
+    Sino
+      receipt.Note(product.name + " x " + ConvertirATexto(quantity) + " rejected");
+    FinSi
+  FinMetodo
+
+  Metodo Total() Como Entero
+    Retornar Este.total;
+  FinMetodo
+FinClase
+
+Algoritmo Kiosk
+  Definir juice Como Product <- Nuevo Product("Juice", 3);
+  Definir sandwich Como Product <- Nuevo Product("Sandwich", 5);
+  Definir inventory Como Inventory <- Nuevo Inventory();
+  inventory.Load("Juice", 10);
+  inventory.Load("Sandwich", 5);
+  Definir receipt Como Receipt <- Nuevo Receipt();
+  Definir till Como Till <- Nuevo Till();
+  till.Sell(juice, 3, inventory, receipt);
+  till.Sell(sandwich, 6, inventory, receipt);
+  till.Sell(sandwich, 5, inventory, receipt);
+  receipt.Display();
+  Escribir "Total: ", till.Total();
+FinAlgoritmo
 ```
 
 ```salida
-Jugo x 3 = 9
-Sándwich x 6 rechazado
-Sándwich x 5 = 25
+Juice x 3 = 9
+Sandwich x 6 rejected
+Sandwich x 5 = 25
 Total: 34
 ```
 
 ## Test {#probar fase=4}
 
-The outputs are the same that the single class gave for the same sales: the behaviour did not change, the sharing out did. And now each piece can be tested on its own: `Producto.Importe` with a table of cases, `Inventario.Quitar` with an exact stock and one that is not enough.
+The outputs are the same that the single class gave for the same sales: the behaviour did not change, the sharing out did. And now each piece can be tested on its own: `Product.Amount` with a table of cases, `Inventory.Withdraw` with an exact stock and one that is not enough.
 
 ## Improve {#mejorar fase=5}
 
 In one sentence: «Each kiosk class does what its information allows, and the till coordinates the sale by asking them for help».
 
-Changing the format of the receipt touches only `Ticket`. Adding a tax to the amount touches only `Producto`. With a single class, each of those changes touched the same file of 600 lines.
+Changing the format of the receipt touches only `Receipt`. Adding a tax to the amount touches only `Product`. With a single class, each of those changes touched the same file of 600 lines.
 
 ## What you learned {#aprendiste}
 

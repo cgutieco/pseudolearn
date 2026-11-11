@@ -8,13 +8,25 @@ titulo: Until it is in range
 ---
 
 ::: enunciado
-Ask for a number again and again until it is between 1 and 10, both included, and show `Aceptado: ` followed by the number.
+Ask for a number again and again until it is between 1 and 10, both included, and show `Accepted: ` followed by the number.
 :::
 
 ```programa rol=referencia
+Algoritmo OneToTen
+  Definir n Como Entero;
+  Repetir
+    Leer n;
+  Hasta Que n >= 1 Y n <= 10
+  Escribir "Accepted: ", n;
+FinAlgoritmo
 ```
 
 ```casos
+visible | 0 ; 15 ; 7 | Accepted: 7
+visible | 3 | Accepted: 3
+oculto | 10 | Accepted: 10
+oculto | 11 ; 1 | Accepted: 1
+oculto | -5 ; 0 ; 11 ; 5 | Accepted: 5
 ```
 
 ::: pistas

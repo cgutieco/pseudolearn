@@ -12,6 +12,17 @@ Without running it, write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion
+Algoritmo Boxes
+  Definir a Como Entero <- 5;
+  Definir b Como Entero <- 0;
+  b <- a;
+  a <- 7;
+  Escribir a, " ", b;
+FinAlgoritmo
+```
+
+```salida
+7 5
 ```
 
 ::: explicacion

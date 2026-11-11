@@ -12,12 +12,19 @@ titulo: The school trip bus
 :::
 
 ```programa rol=inicial
+Algoritmo Buses
+  Escribir "Buses: ", 95 div 40;
+FinAlgoritmo
 ```
 
 ```programa rol=referencia
+Algoritmo Buses
+  Escribir "Buses: ", techo(95 / 40);
+FinAlgoritmo
 ```
 
 ```casos
+visible | — | Buses: 3
 ```
 
 ::: pistas

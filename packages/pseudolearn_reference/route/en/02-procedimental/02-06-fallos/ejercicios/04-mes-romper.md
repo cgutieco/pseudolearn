@@ -8,26 +8,47 @@ titulo: One month too many
 ---
 
 ::: enunciado
-This program validates a month number: it shows «válido» (valid) or «inválido». It gets 5 and 13 right. Find a number it gets wrong.
+This program validates a month number: it shows «valid» or «invalid». It gets 5 and 13 right. Find a number it gets wrong.
 :::
 
 ```programa rol=defectuoso
+Algoritmo Mes
+  Definir mes Como Entero;
+  Leer mes;
+  Si mes >= 0 Y mes <= 12 Entonces
+    Escribir "valid";
+  Sino
+    Escribir "invalid";
+  FinSi
+FinAlgoritmo
 ```
 
 ```programa rol=referencia
+Algoritmo Mes
+  Definir mes Como Entero;
+  Leer mes;
+  Si mes >= 1 Y mes <= 12 Entonces
+    Escribir "valid";
+  Sino
+    Escribir "invalid";
+  FinSi
+FinAlgoritmo
 ```
 
 ```casos
+visible | 5 | valid
+visible | 13 | invalid
 ```
 
 ```rompe
+0
 ```
 
 ::: pistas
 1. Which numbers are months? Draw the partition and mark the edges.
 2. They tested a case in the middle and one outside at the top. Which edge did they not test?
 3. Test both sides of the bottom edge.
-4. With 0 the program says «válido», and there is no month 0. Close with the variant.
+4. With 0 the program says «valid», and there is no month 0. Close with the variant.
 :::
 
 ::: variante

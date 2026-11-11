@@ -12,9 +12,24 @@ Read a non-negative whole number and show the sum of its digits. The program sho
 :::
 
 ```programa rol=referencia
+Algoritmo SumDigits
+  Definir n Como Entero;
+  Definir sum Como Entero <- 0;
+  Leer n;
+  Mientras n > 0 Hacer
+    sum <- sum + n mod 10;
+    n <- n div 10;
+  FinMientras
+  Escribir sum;
+FinAlgoritmo
 ```
 
 ```casos
+visible | 1234 | 10
+visible | 9 | 9
+oculto | 0 | 0
+oculto | 1000 | 1
+oculto | 9999 | 36
 ```
 
 ::: pistas

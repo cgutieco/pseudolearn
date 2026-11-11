@@ -17,10 +17,10 @@ These are pieces of the sales file. Place each one according to whether it has t
 ```
 
 ```elementos
-- `Vender`, used by the main algorithm. | Public
-- `ConDescuento`, used by the sales and the receipts. | Public
-- `RedondearCentavos`, a helper of `ConDescuento`. | Private
-- `ValidarCodigo`, a helper of `Vender`. | Private
+- `Sell`, used by the main algorithm. | Public
+- `WithDiscount`, used by the sales and the receipts. | Public
+- `RoundCents`, a helper of `WithDiscount`. | Private
+- `ValidateCode`, a helper of `Sell`. | Private
 ```
 
 ::: explicacion

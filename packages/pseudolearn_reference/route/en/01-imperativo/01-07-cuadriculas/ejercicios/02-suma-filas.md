@@ -12,9 +12,29 @@ Read the 9 numbers of a 3 × 3 grid, row by row, and show the sum of each row, o
 :::
 
 ```programa rol=referencia
+Algoritmo RowSums
+  Dimension m[3, 3] Como Entero;
+  Para f <- 0 Hasta 2 Hacer
+    Para c <- 0 Hasta 2 Hacer
+      Leer m[f, c];
+    FinPara
+  FinPara
+  Para f <- 0 Hasta 2 Hacer
+    Definir sum Como Entero <- 0;
+    Para c <- 0 Hasta 2 Hacer
+      sum <- sum + m[f, c];
+    FinPara
+    Escribir sum;
+  FinPara
+FinAlgoritmo
 ```
 
 ```casos
+visible | 1 ; 2 ; 3 ; 4 ; 5 ; 6 ; 7 ; 8 ; 9 | 6 ⏎ 15 ⏎ 24
+visible | 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 | 0 ⏎ 0 ⏎ 0
+oculto | 1 ; 1 ; 1 ; 1 ; 1 ; 1 ; 1 ; 1 ; 1 | 3 ⏎ 3 ⏎ 3
+oculto | 9 ; 0 ; 0 ; 0 ; 9 ; 0 ; 0 ; 0 ; 9 | 9 ⏎ 9 ⏎ 9
+oculto | -1 ; 1 ; 0 ; 2 ; 2 ; 2 ; 5 ; 0 ; 0 | 0 ⏎ 6 ⏎ 5
 ```
 
 ::: pistas

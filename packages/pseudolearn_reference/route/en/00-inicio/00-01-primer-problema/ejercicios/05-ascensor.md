@@ -12,6 +12,13 @@ Choose the sentence that best explains what this program solves.
 :::
 
 ```programa rol=objeto id=misterio
+Algoritmo Mystery
+  Escribir techo(130 / 50);
+FinAlgoritmo
+```
+
+```salida
+3
 ```
 
 ```opciones

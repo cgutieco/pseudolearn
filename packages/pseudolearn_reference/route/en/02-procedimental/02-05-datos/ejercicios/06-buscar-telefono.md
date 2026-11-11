@@ -8,13 +8,42 @@ titulo: Finding a phone
 ---
 
 ::: enunciado
-Read 4 contacts, each with name, phone and birthday month, and then a name. Show that name's phone, or «No está». If the name appears more than once, show the first.
+Read 4 contacts, each with name, phone and birthday month, and then a name. Show that name's phone, or «Not found». If the name appears more than once, show the first.
 :::
 
 ```programa rol=referencia
+Registro Contact
+  Definir name, phone Como Cadena;
+  Definir mes Como Entero;
+FinRegistro
+
+Algoritmo Buscar
+  Definir contacts Como Vector<Contact> <- Vector();
+  Definir name, phone Como Cadena;
+  Definir mes Como Entero;
+  Para i <- 1 Hasta 4 Hacer
+    Leer name;
+    Leer phone;
+    Leer mes;
+    contacts.Agregar(Contact(name, phone, mes));
+  FinPara
+  Leer name;
+  Definir found Como Cadena <- "Not found";
+  Para Cada contact En contacts Hacer
+    Si contact.name = name Y found = "Not found" Entonces
+      found <- contact.phone;
+    FinSi
+  FinPara
+  Escribir found;
+FinAlgoritmo
 ```
 
 ```casos
+visible | Ana ; 111 ; 5 ; Beto ; 222 ; 11 ; Caro ; 333 ; 5 ; Dani ; 444 ; 3 ; Beto | 222
+visible | Ana ; 111 ; 5 ; Beto ; 222 ; 11 ; Caro ; 333 ; 5 ; Dani ; 444 ; 3 ; Ana | 111
+oculto | Ana ; 111 ; 5 ; Beto ; 222 ; 11 ; Caro ; 333 ; 5 ; Dani ; 444 ; 3 ; Eva | Not found
+oculto | Ana ; 111 ; 5 ; Beto ; 222 ; 11 ; Caro ; 333 ; 5 ; Dani ; 444 ; 3 ; Dani | 444
+oculto | Ana ; 111 ; 5 ; Beto ; 222 ; 11 ; Ana ; 999 ; 2 ; Dani ; 444 ; 3 ; Ana | 111
 ```
 
 ::: pistas

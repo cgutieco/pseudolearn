@@ -12,6 +12,34 @@ This program guesses by halves a secret number between 1 and 100. Without runnin
 :::
 
 ```programa rol=objeto id=prediccion
+Algoritmo Guess
+  Definir secret Como Entero;
+  Leer secret;
+  Definir low Como Entero <- 1;
+  Definir high Como Entero <- 100;
+  Definir middle Como Entero;
+  Definir attempts Como Entero <- 0;
+  Repetir
+    middle <- (low + high) div 2;
+    attempts <- attempts + 1;
+    Si middle < secret Entonces
+      low <- middle + 1;
+    Sino
+      Si middle > secret Entonces
+        high <- middle - 1;
+      FinSi
+    FinSi
+  Hasta Que middle = secret
+  Escribir "Attempts: ", attempts;
+FinAlgoritmo
+```
+
+```entrada
+100
+```
+
+```salida
+Attempts: 7
 ```
 
 ::: explicacion

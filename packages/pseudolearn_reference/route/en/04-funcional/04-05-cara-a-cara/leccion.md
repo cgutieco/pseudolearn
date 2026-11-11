@@ -53,27 +53,77 @@ paso: Functions that transform: the total comes out of an expression.
 All three versions show the same:
 
 ```programa id=kiosco-imperativo titulo="The imperative kiosk" ejecutar
+Algoritmo ImperativeKiosk
+  Definir total Como Entero <- 0;
+  total <- total + 3 * 3;
+  total <- total + 5 * 2;
+  Escribir "Total: ", total;
+  total <- total - total div 10;
+  Escribir "With discount: ", total;
+FinAlgoritmo
 ```
 
 ```salida
 Total: 19
-Con descuento: 18
+With discount: 18
 ```
 
 ```programa id=kiosco-objetos titulo="The kiosk with objects" ejecutar
+Clase Till
+  Privado Definir total Como Entero;
+
+  Metodo Constructor()
+    Este.total <- 0;
+  FinMetodo
+
+  Metodo Sell(price Como Entero, quantity Como Entero)
+    Este.total <- Este.total + price * quantity;
+  FinMetodo
+
+  Metodo Total() Como Entero
+    Retornar Este.total;
+  FinMetodo
+
+  Metodo WithDiscount() Como Entero
+    Retornar Este.total - Este.total div 10;
+  FinMetodo
+FinClase
+
+Algoritmo ObjectKiosk
+  Definir till Como Till <- Nuevo Till();
+  till.Sell(3, 3);
+  till.Sell(5, 2);
+  Escribir "Total: ", till.Total();
+  Escribir "With discount: ", till.WithDiscount();
+FinAlgoritmo
 ```
 
 ```salida
 Total: 19
-Con descuento: 18
+With discount: 18
 ```
 
 ```programa id=kiosco-funcional titulo="The functional kiosk" ejecutar
+Funcion amount <- Line(price Como Entero, quantity Como Entero)
+  Definir amount Como Entero;
+  amount <- price * quantity;
+FinFuncion
+
+Funcion discounted <- WithDiscount(total Como Entero)
+  Definir discounted Como Entero;
+  discounted <- total - total div 10;
+FinFuncion
+
+Algoritmo FunctionalKiosk
+  Definir total Como Entero <- Line(3, 3) + Line(5, 2);
+  Escribir "Total: ", total;
+  Escribir "With discount: ", WithDiscount(total);
+FinAlgoritmo
 ```
 
 ```salida
 Total: 19
-Con descuento: 18
+With discount: 18
 ```
 
 ## Test {#probar fase=4}

@@ -17,7 +17,7 @@ A closure is a function that carries with it the values it needs.
 ## The problem {#problema}
 
 ::: problema
-Each week, the kiosk launches a discount campaign whose **percentage is read at the start**: 10, 20, 25… The `Mapear` of the previous lesson needs a function that receives a single value, the price.
+Each week, the kiosk launches a discount campaign whose **percentage is read at the start**: 10, 20, 25… The `Map` of the previous lesson needs a function that receives a single value, the price.
 
 **How is that function created if the percentage is not known when the program is written?**
 :::
@@ -35,14 +35,14 @@ For 10 %: «take a tenth off the price». For 20 %: «take a fifth off the price
 ## Understand and plan {#entender-planear fase=1-2}
 
 - **What goes in and what comes out?** The percentage and the prices go in; the discounted prices come out.
-- **What does it look like?** The `Mapear` of [lesson 4.2](ruta:funcional.orden-superior), with a function that does not exist yet.
+- **What does it look like?** The `Map` of [lesson 4.2](ruta:funcional.orden-superior), with a function that does not exist yet.
 - **Which part is calculation and which part touches the world?** Asking for the percentage touches the world; making the function and applying it is calculation.
 
 The plan: a function that **makes** discount functions. It receives the percentage and gives back a one-parameter function that already has it inside.
 
 ## The new tool {#herramienta}
 
-A function can be written right where it is needed, without a name: `Function(precio As Integer) As Integer … EndFunction;`. If it uses a value from outside, it takes it along. A function that remembers values from the moment it was created is a [[def:clausura|closure]]. And a function that receives data and gives back a function prepared with it is a [[def:fabrica-de-funciones|function factory]].
+A function can be written right where it is needed, without a name: `Function(price As Integer) As Integer … EndFunction;`. If it uses a value from outside, it takes it along. A function that remembers values from the moment it was created is a [[def:clausura|closure]]. And a function that receives data and gives back a function prepared with it is a [[def:fabrica-de-funciones|function factory]].
 
 ```figura id=ruta-mochila
 pie: The factory keeps the percentage in the backpack of the function it gives back; the function uses it each time it is called.
@@ -54,6 +54,16 @@ paso: Later, the function receives a price and uses the 20 it carries in the bac
 ```
 
 ```programa id=sumador titulo="A manufactured adder" ejecutar
+Funcion made <- MakeAdder(amount Como Entero)
+  Definir made Como Funcion(Entero) Como Entero <- Funcion(x Como Entero) Como Entero
+    Retornar x + amount;
+  FinFuncion;
+FinFuncion
+
+Algoritmo Add
+  Definir plusThree Como Funcion(Entero) Como Entero <- MakeAdder(3);
+  Escribir plusThree(4);
+FinAlgoritmo
 ```
 
 ```salida
@@ -69,6 +79,29 @@ What a closure can keep in its backpack has a rule: a value that is reassigned l
 ## Write {#escribir fase=3}
 
 ```programa id=campanas titulo="This week's campaign" ejecutar
+Funcion made <- MakeDiscount(percentage Como Entero)
+  Definir made Como Funcion(Entero) Como Entero <- Funcion(price Como Entero) Como Entero
+    Retornar price - price * percentage div 100;
+  FinFuncion;
+FinFuncion
+
+Funcion mapped <- Map(v Como Vector<Entero>, f Como Funcion(Entero) Como Entero)
+  Definir mapped Como Vector<Entero> <- Vector();
+  Para Cada elemento En v Hacer
+    mapped.Agregar(f(elemento));
+  FinPara
+FinFuncion
+
+Algoritmo Campaigns
+  Definir percentage Como Entero;
+  Leer percentage;
+  Definir prices Como Vector<Entero> <- Vector();
+  prices.Agregar(50);
+  prices.Agregar(30);
+  prices.Agregar(20);
+  Definir discount Como Funcion(Entero) Como Entero <- MakeDiscount(percentage);
+  Escribir Map(prices, discount);
+FinAlgoritmo
 ```
 
 ```entrada
@@ -91,7 +124,7 @@ What a closure can keep in its backpack has a rule: a value that is reassigned l
 
 In one sentence: «The factory receives this week's percentage and gives back a discount that remembers it».
 
-Two campaigns at once are two functions from the same factory: `CrearDescuento(10)` and `CrearDescuento(25)`, each with its own backpack.
+Two campaigns at once are two functions from the same factory: `MakeDiscount(10)` and `MakeDiscount(25)`, each with its own backpack.
 
 ## What you learned {#aprendiste}
 
@@ -112,7 +145,7 @@ Two campaigns at once are two functions from the same factory: `CrearDescuento(1
 
 ::: profundizar titulo="Common pitfalls"
 - **Believing the closure sees later changes.** Here there can be none: the engine does not allow capturing something that is reassigned later.
-- **Confusing the factory with the manufactured function.** `CrearDescuento` receives a percentage; the function it gives back receives a price.
+- **Confusing the factory with the manufactured function.** `MakeDiscount` receives a percentage; the function it gives back receives a price.
 :::
 
 ::: siguiente

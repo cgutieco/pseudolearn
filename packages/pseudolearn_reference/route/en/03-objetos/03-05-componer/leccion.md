@@ -17,7 +17,7 @@ Inheriting says what something is; composing says what it has. When traits combi
 ## The problem {#problema}
 
 ::: problema
-At the kiosk there are products that **expire** (they have a date) and products **on offer** (they have a percentage). Someone created `ProductoVencible` and `ProductoEnOferta` as particular cases of `Producto`. Now a yoghurt arrives that expires **and** is on offer.
+At the kiosk there are products that **expire** (they have a date) and products **on offer** (they have a percentage). Someone created `ExpiringProduct` and `OfferProduct` as particular cases of `Product`. Now a yoghurt arrives that expires **and** is on offer.
 
 **Is a third particular case needed? And what if a third trait appears tomorrow?**
 :::
@@ -46,17 +46,45 @@ paso: A single product that has, or not, each trait: with three traits, three mo
 
 ## The new tool {#herramienta}
 
-[[def:herencia|Inheritance]] creates a class that is a particular case of another: `Class Cajero Inherits From Empleado`. The child class has everything the parent has and can [[def:sobrescribir|override]] a method, that is, declare it again with the same signature to do it its own way. With `Super` it calls the parent's version.
+[[def:herencia|Inheritance]] creates a class that is a particular case of another: `Class Cashier Inherits From Employee`. The child class has everything the parent has and can [[def:sobrescribir|override]] a method, that is, declare it again with the same signature to do it its own way. With `Super` it calls the parent's version.
 
 ```figura-especificacion seccion=objetos.herencia figura=herencia-despacho
 ```
 
 ```programa id=empleados titulo="A cashier is an employee" ejecutar
+Clase Employee
+  Definir name Como Cadena;
+
+  Metodo Constructor(n Como Cadena)
+    Este.name <- n;
+  FinMetodo
+
+  Metodo Introduce() Como Cadena
+    Retornar "Hello, I am " + Este.name;
+  FinMetodo
+FinClase
+
+Clase Cashier Hereda De Employee
+  Metodo Constructor(n Como Cadena)
+    Super.Constructor(n);
+  FinMetodo
+
+  Metodo Introduce() Como Cadena
+    Retornar Super.Introduce() + " and I work the till";
+  FinMetodo
+FinClase
+
+Algoritmo Kiosk
+  Definir ana Como Employee <- Nuevo Employee("Ana");
+  Definir beto Como Employee <- Nuevo Cashier("Beto");
+  Escribir ana.Introduce();
+  Escribir beto.Introduce();
+FinAlgoritmo
 ```
 
 ```salida
-Hola, soy Ana
-Hola, soy Beto y atiendo la caja
+Hello, I am Ana
+Hello, I am Beto and I work the till
 ```
 
 [[def:composicion|Composition]], instead, builds an object from other objects it holds inside. A product **is** not an offer: it **has** an offer, or it does not. What the language does not have, such as abstract classes, is in [the Specification](especificacion:objetos.ausentes).
@@ -69,13 +97,72 @@ Hola, soy Beto y atiendo la caja
 ## Write {#escribir fase=3}
 
 ```programa id=productos-componer titulo="A product that has traits" ejecutar
+Clase Offer
+  Definir percent Como Entero;
+  Metodo Constructor(p Como Entero)
+    Este.percent <- p;
+  FinMetodo
+  Metodo Apply(price Como Entero) Como Entero
+    Retornar price - price * Este.percent div 100;
+  FinMetodo
+FinClase
+
+Clase Expiry
+  Definir days Como Entero;
+  Metodo Constructor(d Como Entero)
+    Este.days <- d;
+  FinMetodo
+  Metodo Apply(price Como Entero) Como Entero
+    Si Este.days <= 2 Entonces
+      Retornar price div 2;
+    FinSi
+    Retornar price;
+  FinMetodo
+FinClase
+
+Clase Product
+  Definir name Como Cadena;
+  Definir price Como Entero;
+  Definir offer Como Offer;
+  Definir expiry Como Expiry;
+  Metodo Constructor(n Como Cadena, p Como Entero)
+    Este.name <- n;
+    Este.price <- p;
+    Este.offer <- Nuevo Offer(0);
+    Este.expiry <- Nuevo Expiry(365);
+  FinMetodo
+  Metodo SetOffer(newOffer Como Offer)
+    Este.offer <- newOffer;
+  FinMetodo
+  Metodo SetExpiry(date Como Expiry)
+    Este.expiry <- date;
+  FinMetodo
+  Metodo FinalPrice() Como Entero
+    Retornar Este.expiry.Apply(Este.offer.Apply(Este.price));
+  FinMetodo
+FinClase
+
+Algoritmo Kiosk
+  Definir juice Como Product <- Nuevo Product("Juice", 30);
+  Definir milk Como Product <- Nuevo Product("Milk", 40);
+  milk.SetExpiry(Nuevo Expiry(1));
+  Definir biscuits Como Product <- Nuevo Product("Biscuits", 20);
+  biscuits.SetOffer(Nuevo Offer(50));
+  Definir yoghurt Como Product <- Nuevo Product("Yoghurt", 40);
+  yoghurt.SetOffer(Nuevo Offer(25));
+  yoghurt.SetExpiry(Nuevo Expiry(1));
+  Escribir juice.name, " ", juice.FinalPrice();
+  Escribir milk.name, " ", milk.FinalPrice();
+  Escribir biscuits.name, " ", biscuits.FinalPrice();
+  Escribir yoghurt.name, " ", yoghurt.FinalPrice();
+FinAlgoritmo
 ```
 
 ```salida
-Jugo 30
-Leche 20
-Galletas 10
-Yogur 15
+Juice 30
+Milk 20
+Biscuits 10
+Yoghurt 15
 ```
 
 Every product has an offer and an expiry: if it is not on offer, its offer is 0 %, and if it does not expire soon, its date is far away. A product that expires in two days or less sells at half price. The yoghurt has both traits: first the offer lowers it from 40 to 30, and then the expiry leaves it at 15.

@@ -59,14 +59,29 @@ An open file has to be closed, even if the subprogram leaves early because of an
 ```
 
 ```programa id=puerta-luz titulo="Going in and out of the room" ejecutar
+SubProceso Visit()
+  Escribir "I open the door";
+  Diferir
+    Escribir "I close the door";
+  FinDiferir
+  Escribir "I turn on the light";
+  Diferir
+    Escribir "I turn off the light";
+  FinDiferir
+  Escribir "I read for a while";
+FinSubProceso
+
+Algoritmo Room
+  Visit();
+FinAlgoritmo
 ```
 
 ```salida
-abro la puerta
-enciendo la luz
-leo un rato
-apago la luz
-cierro la puerta
+I open the door
+I turn on the light
+I read for a while
+I turn off the light
+I close the door
 ```
 
 ::: especificacion
@@ -79,6 +94,40 @@ cierro la puerta
 ## Write {#escribir fase=3}
 
 ```programa id=inventario-archivo titulo="Saving and reading the stock" ejecutar
+Funcion line <- StockLine(name Como Cadena, stock Como Entero)
+  Definir line Como Cadena;
+  line <- name + ";" + ATexto(stock);
+FinFuncion
+
+SubProceso Save(text Como Cadena) Como Resultado<Entero, ErrorES>
+  Definir folder Como DirectorioCap <- Propagar SolicitarDirectorio(".");
+  Definir file Como ArchivoCap <- Propagar folder.Abrir("stock.txt", "escritura");
+  Diferir
+    Descartar file.Cerrar();
+  FinDiferir
+  Retornar file.EscribirTexto(text);
+FinSubProceso
+
+SubProceso Load() Como Resultado<Cadena, ErrorES>
+  Definir folder Como DirectorioCap <- Propagar SolicitarDirectorio(".");
+  Definir file Como ArchivoCap <- Propagar folder.Abrir("stock.txt", "lectura");
+  Diferir
+    Descartar file.Cerrar();
+  FinDiferir
+  Retornar file.LeerTexto();
+FinSubProceso
+
+Algoritmo Inventory
+  Definir text Como Cadena <- StockLine("juice", 10) + "\n" + StockLine("sandwich", 5) + "\n" + StockLine("biscuit", 8) + "\n" + StockLine("water", 12) + "\n" + StockLine("fruit", 6);
+  Segun Save(text) Hacer
+    Exito(bytes): Escribir "Saved: ", bytes, " bytes";
+    Error(report): Escribir "Could not save: ", report.Codigo;
+  FinSegun
+  Segun Load() Hacer
+    Exito(loaded): Escribir loaded;
+    Error(report): Escribir "No saved inventory (", report.Codigo, ")";
+  FinSegun
+FinAlgoritmo
 ```
 
 ```anfitrion
@@ -86,19 +135,34 @@ cierro la puerta
 ```
 
 ```salida
-Guardado: 44 bytes
-jugo;10
+Saved: 46 bytes
+juice;10
 sandwich;5
-alfajor;8
-agua;12
-fruta;6
+biscuit;8
+water;12
+fruit;6
 ```
 
-`LineaStock` is a pure function: it builds one line of the file. `Guardar` and `Cargar` are the edge: they ask for the capability, open the file and close it with a deferred cleanup. `Discard` makes it explicit that whether closing went well does not matter.
+`StockLine` is a pure function: it builds one line of the file. `Save` and `Load` are the edge: they ask for the capability, open the file and close it with a deferred cleanup. `Discard` makes it explicit that whether closing went well does not matter.
 
 On the first day there is no file. Reading does not stop the program: a `Failure` arrives with the code `no_encontrado`, and the program decides what to do.
 
 ```programa id=inventario-sin-archivo titulo="The first day" ejecutar
+SubProceso Load() Como Resultado<Cadena, ErrorES>
+  Definir folder Como DirectorioCap <- Propagar SolicitarDirectorio(".");
+  Definir file Como ArchivoCap <- Propagar folder.Abrir("stock.txt", "lectura");
+  Diferir
+    Descartar file.Cerrar();
+  FinDiferir
+  Retornar file.LeerTexto();
+FinSubProceso
+
+Algoritmo FirstDay
+  Segun Load() Hacer
+    Exito(loaded): Escribir loaded;
+    Error(report): Escribir "No saved inventory (", report.Codigo, ")";
+  FinSegun
+FinAlgoritmo
 ```
 
 ```anfitrion
@@ -106,18 +170,18 @@ On the first day there is no file. Reading does not stop the program: a `Failure
 ```
 
 ```salida
-No hay inventario guardado (no_encontrado)
+No saved inventory (no_encontrado)
 ```
 
 ## Test {#probar fase=4}
 
 | Case | What happens |
 |---|---|
-| First day, without a file | `No hay inventario guardado` |
+| First day, without a file | `No saved inventory` |
 | Day with a file | the five lines are read |
-| An empty line in the file | `StockDeLinea` marks it as invalid |
+| An empty line in the file | `StockFromLine` marks it as invalid |
 
-The pure part, `LineaStock` and its inverse `StockDeLinea`, is tested with cases like any function. The part with effects is tested with a memory host: a simulated folder that starts empty.
+The pure part, `StockLine` and its inverse `StockFromLine`, is tested with cases like any function. The part with effects is tested with a memory host: a simulated folder that starts empty.
 
 ## Improve {#mejorar fase=5}
 

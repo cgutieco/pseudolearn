@@ -17,7 +17,7 @@ The best error is the one that cannot be written.
 ## The problem {#problema}
 
 ::: problema
-The kiosk started making deliveries. An order is kept with four values: `estado` (a text), `repartidor`, `hora` and `motivo`. Orders appeared that were «delivered» **with no time**, «cancelled» **with a courier** and one with the state «delivred».
+The kiosk started making deliveries. An order is kept with four values: `state` (a text), `courier`, `time` and `reason`. Orders appeared that were «delivered» **with no time**, «cancelled» **with a courier** and one with the state «delivred».
 
 **How is an order represented so that those errors are impossible?**
 :::
@@ -44,7 +44,7 @@ pie: Each state carries only its data. The arrows are the possible changes; no a
 
 ## The new tool {#herramienta}
 
-A [[def:variante|variant]] is a type with several shapes, and each shape carries only the data that belongs to it. With it, an order delivered with no time cannot be written: the shape `Entregado` requires the time.
+A [[def:variante|variant]] is a type with several shapes, and each shape carries only the data that belongs to it. With it, an order delivered with no time cannot be written: the shape `Delivered` requires the time.
 
 ```figura-especificacion seccion=tipos.variantes figura=variante-formas
 ```
@@ -52,13 +52,33 @@ A [[def:variante|variant]] is a type with several shapes, and each shape carries
 To use a value of a variant you choose what to do according to its shape and read its data with a `Switch`: that is [[def:coincidencia-de-patrones|pattern matching]].
 
 ```programa id=describir titulo="Describing an order" ejecutar
+Variante Order
+  Alternativa Pending
+  Alternativa OnItsWay(courier Como Cadena)
+  Alternativa Delivered(courier Como Cadena, hora Como Entero)
+  Alternativa Canceled(reason Como Cadena)
+FinVariante
+
+Funcion text <- Describe(order Como Order)
+  Definir text Como Cadena <- "";
+  Segun order Hacer
+    Order.Pending: text <- "Pending";
+    Order.OnItsWay(who): text <- "On its way with " + who;
+    Order.Delivered(who, hora): text <- "Delivered by " + who + " at " + ConvertirATexto(hora);
+    Order.Canceled(reason): text <- "Canceled: " + reason;
+  FinSegun
+FinFuncion
+
+Algoritmo Deliveries
+  Escribir Describe(Order.OnItsWay("Sol"));
+FinAlgoritmo
 ```
 
 ```salida
-En camino con Sol
+On its way with Sol
 ```
 
-`Result` and `Optional`, which you already know, are also types of this style, and they are also [[def:generico|generic]]: they work with any type of data inside. `Result<Pedido, String>` is an order or a reason.
+`Result` and `Optional`, which you already know, are also types of this style, and they are also [[def:generico|generic]]: they work with any type of data inside. `Result<Order, String>` is an order or a reason.
 
 A good model makes [[def:estado-imposible|impossible states]] impossible to write: there is no need to check what cannot exist.
 
@@ -72,16 +92,52 @@ A good model makes [[def:estado-imposible|impossible states]] impossible to writ
 ## Write {#escribir fase=3}
 
 ```programa id=pedidos-variante titulo="Moving an order forward" ejecutar
+Variante Order
+  Alternativa Pending
+  Alternativa OnItsWay(courier Como Cadena)
+  Alternativa Delivered(courier Como Cadena, hora Como Entero)
+  Alternativa Canceled(reason Como Cadena)
+FinVariante
+
+Funcion text <- Describe(order Como Order)
+  Definir text Como Cadena <- "";
+  Segun order Hacer
+    Order.Pending: text <- "Pending";
+    Order.OnItsWay(who): text <- "On its way with " + who;
+    Order.Delivered(who, hora): text <- "Delivered by " + who + " at " + ConvertirATexto(hora);
+    Order.Canceled(reason): text <- "Canceled: " + reason;
+  FinSegun
+FinFuncion
+
+SubProceso Advance(order Como Order, courier Como Cadena, hora Como Entero) Como Resultado<Order, Cadena>
+  Segun order Hacer
+    Order.Pending: Retornar Exito(Order.OnItsWay(courier));
+    Order.OnItsWay(who): Retornar Exito(Order.Delivered(who, hora));
+    Order.Delivered(who, when): Retornar Error("already delivered by " + who + " at " + ConvertirATexto(when));
+    Order.Canceled(reason): Retornar Error("it is canceled: " + reason);
+  FinSegun
+FinSubProceso
+
+Algoritmo Deliveries
+  Definir order Como Order <- Order.Pending;
+  Para paso <- 1 Hasta 3 Hacer
+    Escribir Describe(order);
+    Segun Advance(order, "Sol", 14) Hacer
+      Exito(next): order <- next;
+      Error(reason): Escribir "Cannot: ", reason;
+    FinSegun
+  FinPara
+FinAlgoritmo
 ```
 
 ```salida
-Pendiente
-En camino con Sol
-Entregado por Sol a las 14
-No se puede: ya lo entregó Sol a las 14
+Pending
+On its way with Sol
+Delivered by Sol at 14
+Cannot: already delivered by Sol at 14
 ```
 
-`Avanzar` does not change the order it receives: it gives back a new one, or a reason. The main algorithm decides what to do with each answer.
+`Advance` does not change the order it receives: it gives back a new one, or a reason. The main algorithm decides what to do with each answer.
 
 ## Test {#probar fase=4}
 
@@ -96,7 +152,7 @@ No se puede: ya lo entregó Sol a las 14
 
 In one sentence: «Each state of the order carries only its data, and moving forward gives back the next order or the reason why it cannot».
 
-If the state `Devuelto(motivo)` (returned) is added, the engine marks every `Switch` that does not cover it and the program does not run until they are completed. That way, a new shape cannot be forgotten anywhere.
+If the state `Returned(reason)` (returned) is added, the engine marks every `Switch` that does not cover it and the program does not run until they are completed. That way, a new shape cannot be forgotten anywhere.
 
 ## What you learned {#aprendiste}
 

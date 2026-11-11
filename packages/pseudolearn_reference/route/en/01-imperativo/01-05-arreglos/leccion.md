@@ -67,6 +67,13 @@ An [[def:arreglo|array]] is a row of cells of the same type under a single name.
 ```
 
 ```programa id=tres-notas titulo="Three marks" ejecutar
+Algoritmo ThreeMarks
+  Dimension marks[3] Como Entero;
+  marks[0] <- 7;
+  marks[1] <- 9;
+  marks[2] <- 4;
+  Escribir marks[1];
+FinAlgoritmo
 ```
 
 ```salida
@@ -94,6 +101,33 @@ Using an index that does not exist, such as cell 7 of an array of 7, is an [[def
 ## Write {#escribir fase=3}
 
 ```programa id=dias-calurosos titulo="The hot days" ejecutar
+Algoritmo HotDays
+  Dimension days[7] Como Cadena;
+  Dimension temperatures[7] Como Entero;
+  days[0] <- "monday";
+  days[1] <- "tuesday";
+  days[2] <- "wednesday";
+  days[3] <- "thursday";
+  days[4] <- "friday";
+  days[5] <- "saturday";
+  days[6] <- "sunday";
+  Definir sum Como Entero <- 0;
+  Para i <- 0 Hasta 6 Hacer
+    Leer temperatures[i];
+    sum <- sum + temperatures[i];
+  FinPara
+  Definir average Como Real <- sum / 7;
+  Definir hotDays Como Entero <- 0;
+  Para i <- 0 Hasta 6 Hacer
+    Si temperatures[i] > average Entonces
+      Escribir days[i];
+      hotDays <- hotDays + 1;
+    FinSi
+  FinPara
+  Si hotDays = 0 Entonces
+    Escribir "No day";
+  FinSi
+FinAlgoritmo
 ```
 
 ```entrada
@@ -107,20 +141,20 @@ Using an index that does not exist, such as cell 7 of an array of 7, is an [[def
 ```
 
 ```salida
-martes
-jueves
-viernes
-domingo
+tuesday
+thursday
+friday
+sunday
 ```
 
-There are two arrays with the same indices: cell 3 of `dias` is the name of the day whose temperature is in cell 3 of `temperaturas`.
+There are two arrays with the same indices: cell 3 of `days` is the name of the day whose temperature is in cell 3 of `temperatures`.
 
 ## Test {#probar fase=4}
 
 | Temperatures | By hand | The program |
 |---|---|---|
-| 20, 23, 19, 25, 22, 18, 26 | Tuesday, Thursday, Friday, Sunday | martes ⏎ jueves ⏎ viernes ⏎ domingo |
-| 20 seven times | no day | Ningún día |
+| 20, 23, 19, 25, 22, 18, 26 | Tuesday, Thursday, Friday, Sunday | tuesday ⏎ thursday ⏎ friday ⏎ sunday |
+| 20 seven times | no day | No day |
 
 ## Improve {#mejorar fase=5}
 

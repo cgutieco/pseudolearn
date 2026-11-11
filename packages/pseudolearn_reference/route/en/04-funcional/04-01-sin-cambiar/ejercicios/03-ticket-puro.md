@@ -16,13 +16,47 @@ The price, the line amount and the discount are functions; the main algorithm on
 :::
 
 ```programa rol=referencia
+Funcion valor <- PriceOf(codigo Como Entero)
+  Definir valor Como Entero;
+  Segun codigo Hacer
+    1:
+      valor <- 3;
+    2:
+      valor <- 5;
+    3:
+      valor <- 2;
+    4:
+      valor <- 1;
+    De Otro Modo:
+      valor <- 2;
+  FinSegun
+FinFuncion
+
+Funcion amount <- Line(price Como Entero, quantity Como Entero)
+  Definir amount Como Entero;
+  amount <- price * quantity;
+FinFuncion
+
+Funcion discounted <- WithDiscount(total Como Entero)
+  Definir discounted Como Entero;
+  discounted <- total - total div 10;
+FinFuncion
+
+Algoritmo Receipt
+  Definir code1, quantity1, code2, quantity2 Como Entero;
+  Leer code1;
+  Leer quantity1;
+  Leer code2;
+  Leer quantity2;
+  Escribir WithDiscount(Line(PriceOf(code1), quantity1) + Line(PriceOf(code2), quantity2));
+FinAlgoritmo
 ```
 
 ```casos
 ```
 
 ```aserciones
-- declara-subprograma | ConDescuento | 1 | The function ConDescuento, which receives the total, is missing.
+- declara-subprograma | WithDiscount | 1 | The function WithDiscount, which receives the total, is missing.
 ```
 
 ::: pistas
@@ -37,5 +71,5 @@ Also show how much was saved with the discount, without computing anything twice
 :::
 
 ::: explicacion
-In «3, 5, 5, 0» there are 5 biscuits (10 pesos) and 0 fruit: total 10, with discount 9. The assertion checks that `ConDescuento` exists; that it is pure is checked by the engine when compiling it.
+In «3, 5, 5, 0» there are 5 biscuits (10 pesos) and 0 fruit: total 10, with discount 9. The assertion checks that `WithDiscount` exists; that it is pure is checked by the engine when compiling it.
 :::

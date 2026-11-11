@@ -12,8 +12,8 @@ The discount has to be tested with 50 different amounts. Which version should be
 :::
 
 ```opciones
-- [x] The one that gives back a new amount, `ConDescuento`. | It is called with each amount and the result is compared, without preparing anything.
-- [ ] The one that changes the box, `AplicarDescuento`. | A box has to be prepared before each call and checked afterwards.
+- [x] The one that gives back a new amount, `WithDiscount`. | It is called with each amount and the result is compared, without preparing anything.
+- [ ] The one that changes the box, `ApplyDiscount`. | A box has to be prepared before each call and checked afterwards.
 - [ ] Both are tested the same way. | One needs prepared state; the other does not.
 ```
 

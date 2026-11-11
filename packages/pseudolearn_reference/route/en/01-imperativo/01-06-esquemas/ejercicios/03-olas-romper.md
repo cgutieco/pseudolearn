@@ -12,15 +12,72 @@ This heat wave program gets the lesson's case right. Find 14 temperatures it get
 :::
 
 ```programa rol=defectuoso
+Algoritmo Waves
+  Dimension t[14] Como Entero;
+  Para i <- 0 Hasta 13 Hacer
+    Leer t[i];
+  FinPara
+  Definir streak Como Entero <- 0;
+  Definir waves Como Entero <- 0;
+  Definir longest Como Entero <- 0;
+  Para Cada temperature En t Hacer
+    Si temperature > 30 Entonces
+      streak <- streak + 1;
+    Sino
+      Si streak >= 3 Entonces
+        waves <- waves + 1;
+        Si streak > longest Entonces
+          longest <- streak;
+        FinSi
+      FinSi
+      streak <- 0;
+    FinSi
+  FinPara
+  Escribir "Waves: ", waves;
+  Escribir "Longest: ", longest;
+FinAlgoritmo
 ```
 
 ```programa rol=referencia
+Algoritmo Waves
+  Dimension t[14] Como Entero;
+  Para i <- 0 Hasta 13 Hacer
+    Leer t[i];
+  FinPara
+  Definir streak Como Entero <- 0;
+  Definir waves Como Entero <- 0;
+  Definir longest Como Entero <- 0;
+  Para Cada temperature En t Hacer
+    Si temperature > 30 Entonces
+      streak <- streak + 1;
+    Sino
+      Si streak >= 3 Entonces
+        waves <- waves + 1;
+        Si streak > longest Entonces
+          longest <- streak;
+        FinSi
+      FinSi
+      streak <- 0;
+    FinSi
+  FinPara
+  Si streak >= 3 Entonces
+    waves <- waves + 1;
+    Si streak > longest Entonces
+      longest <- streak;
+    FinSi
+  FinSi
+  Escribir "Waves: ", waves;
+  Escribir "Longest: ", longest;
+FinAlgoritmo
 ```
 
 ```casos
+visible | 28 ; 31 ; 32 ; 33 ; 29 ; 31 ; 30 ; 31 ; 32 ; 31 ; 35 ; 27 ; 31 ; 32 | Waves: 2 ⏎ Longest: 4
 ```
 
 ```rompe
+28 ; 29 ; 28 ; 29 ; 28 ; 29 ; 28 ; 29 ; 28 ; 29 ; 28 ; 31 ; 32 ; 33
+31 ; 31 ; 31 ; 31 ; 31 ; 31 ; 31 ; 31 ; 31 ; 31 ; 31 ; 31 ; 31 ; 31
 ```
 
 ::: pistas
@@ -31,7 +88,7 @@ This heat wave program gets the lesson's case right. Find 14 temperatures it get
 :::
 
 ::: variante
-What does this program show if all 14 days are above 30? (Olas: 0. The good one says a wave of 14.)
+What does this program show if all 14 days are above 30? (Waves: 0. The good one says a wave of 14.)
 :::
 
 ::: explicacion

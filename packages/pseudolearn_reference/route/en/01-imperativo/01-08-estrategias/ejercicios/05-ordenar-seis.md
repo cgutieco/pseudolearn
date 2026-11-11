@@ -12,9 +12,34 @@ Read 6 numbers and show them from smallest to largest, one per line.
 :::
 
 ```programa rol=referencia
+Algoritmo Selection
+  Dimension v[6] Como Entero;
+  Para i <- 0 Hasta 5 Hacer
+    Leer v[i];
+  FinPara
+  Para i <- 0 Hasta 4 Hacer
+    Definir smallest Como Entero <- i;
+    Para j <- i + 1 Hasta 5 Hacer
+      Si v[j] < v[smallest] Entonces
+        smallest <- j;
+      FinSi
+    FinPara
+    Definir saved Como Entero <- v[i];
+    v[i] <- v[smallest];
+    v[smallest] <- saved;
+  FinPara
+  Para Cada n En v Hacer
+    Escribir n;
+  FinPara
+FinAlgoritmo
 ```
 
 ```casos
+visible | 5 ; 3 ; 8 ; 1 ; 9 ; 2 | 1 ⏎ 2 ⏎ 3 ⏎ 5 ⏎ 8 ⏎ 9
+visible | 1 ; 2 ; 3 ; 4 ; 5 ; 6 | 1 ⏎ 2 ⏎ 3 ⏎ 4 ⏎ 5 ⏎ 6
+oculto | 6 ; 5 ; 4 ; 3 ; 2 ; 1 | 1 ⏎ 2 ⏎ 3 ⏎ 4 ⏎ 5 ⏎ 6
+oculto | 4 ; 4 ; 1 ; 4 ; 1 ; 1 | 1 ⏎ 1 ⏎ 1 ⏎ 4 ⏎ 4 ⏎ 4
+oculto | -2 ; 0 ; -5 ; 3 ; 3 ; -1 | -5 ⏎ -2 ⏎ -1 ⏎ 0 ⏎ 3 ⏎ 3
 ```
 
 ::: pistas

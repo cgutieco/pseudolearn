@@ -8,21 +8,42 @@ titulo: What to show
 ---
 
 ::: enunciado
-Read a status code and an exchange rate. If the code is 200, show «Precio: » and the price in pesos of a fruit of 2 dollars; otherwise, show «Servicio no disponible (» with the code and «)».
+Read a status code and an exchange rate. If the code is 200, show «Price: » and the price in pesos of a fruit of 2 dollars; otherwise, show «Service unavailable (» with the code and «)».
 :::
 
 ::: restriccion
-The message is built by a pure function, `QueMostrar`, which receives the code and the rate.
+The message is built by a pure function, `WhatToShow`, which receives the code and the rate.
 :::
 
 ```programa rol=referencia
+Funcion message <- WhatToShow(codigo Como Entero, rate Como Entero)
+  Definir message Como Cadena;
+  Si codigo = 200 Entonces
+    message <- "Price: " + ATexto(2 * rate);
+  Sino
+    message <- "Service unavailable (" + ATexto(codigo) + ")";
+  FinSi
+FinFuncion
+
+Algoritmo WhatToDo
+  Definir codigo Como Entero;
+  Definir rate Como Entero;
+  Leer codigo;
+  Leer rate;
+  Escribir WhatToShow(codigo, rate);
+FinAlgoritmo
 ```
 
 ```casos
+visible | 200 ; 20 | Price: 40
+visible | 503 ; 20 | Service unavailable (503)
+oculto | 404 ; 1 | Service unavailable (404)
+oculto | 200 ; 0 | Price: 0
+oculto | 201 ; 5 | Service unavailable (201)
 ```
 
 ```aserciones
-- declara-subprograma | QueMostrar | 2 | The function QueMostrar, which receives the code and the rate, is missing.
+- declara-subprograma | WhatToShow | 2 | The function WhatToShow, which receives the code and the rate, is missing.
 - contiene | condicional | The function decides with an If according to the code.
 ```
 

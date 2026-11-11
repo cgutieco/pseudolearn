@@ -12,15 +12,36 @@ Another school's cinema charges the same as ours: under 12, 5 pesos; everyone el
 :::
 
 ```programa rol=defectuoso
+Algoritmo Cinema
+  Definir age Como Entero;
+  Leer age;
+  Si age > 12 Entonces
+    Escribir "Pays 8";
+  Sino
+    Escribir "Pays 5";
+  FinSi
+FinAlgoritmo
 ```
 
 ```programa rol=referencia
+Algoritmo Cinema
+  Definir age Como Entero;
+  Leer age;
+  Si age < 12 Entonces
+    Escribir "Pays 5";
+  Sino
+    Escribir "Pays 8";
+  FinSi
+FinAlgoritmo
 ```
 
 ```casos
+visible | 10 | Pays 5
+visible | 30 | Pays 8
 ```
 
 ```rompe
+12
 ```
 
 ::: pistas

@@ -62,6 +62,18 @@ paso: They close from the inside out, with the result.
 ```
 
 ```programa id=factorial titulo="The factorial" ejecutar
+Funcion r <- Factorial(n Como Entero)
+  Definir r Como Entero;
+  Si n = 0 Entonces
+    r <- 1;
+  Sino
+    r <- n * Factorial(n - 1);
+  FinSi
+FinFuncion
+
+Algoritmo Main
+  Escribir Factorial(5);
+FinAlgoritmo
 ```
 
 ```salida
@@ -81,16 +93,27 @@ Each call opens its own frame on the stack, and the frames close from the top do
 ## Write {#escribir fase=3}
 
 ```programa id=hanoi titulo="The tower of Hanoi" ejecutar
+SubProceso Hanoi(n Como Entero, source Como Cadena, target Como Cadena, spare Como Cadena)
+  Si n > 0 Entonces
+    Hanoi(n - 1, source, spare, target);
+    Escribir "Move disk ", n, " from ", source, " to ", target;
+    Hanoi(n - 1, spare, target, source);
+  FinSi
+FinSubProceso
+
+Algoritmo Tower
+  Hanoi(3, "A", "C", "B");
+FinAlgoritmo
 ```
 
 ```salida
-Mover disco 1 de A a C
-Mover disco 2 de A a B
-Mover disco 1 de C a B
-Mover disco 3 de A a C
-Mover disco 1 de B a A
-Mover disco 2 de B a C
-Mover disco 1 de A a C
+Move disk 1 from A to C
+Move disk 2 from A to B
+Move disk 1 from C to B
+Move disk 3 from A to C
+Move disk 1 from B to A
+Move disk 2 from B to C
+Move disk 1 from A to C
 ```
 
 The base case is a tower of 0 discs: there is nothing to move. The recursive case moves a tower of `n - 1` discs, which gets closer to the base case with each call.

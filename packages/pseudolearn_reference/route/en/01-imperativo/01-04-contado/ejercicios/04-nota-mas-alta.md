@@ -12,9 +12,26 @@ Read 5 marks, from 0 to 10, and show the highest. The program shows only the num
 :::
 
 ```programa rol=referencia
+Algoritmo HighestMark
+  Definir mark Como Entero;
+  Definir highest Como Entero;
+  Leer highest;
+  Para i <- 2 Hasta 5 Hacer
+    Leer mark;
+    Si mark > highest Entonces
+      highest <- mark;
+    FinSi
+  FinPara
+  Escribir highest;
+FinAlgoritmo
 ```
 
 ```casos
+visible | 4 ; 9 ; 7 ; 9 ; 2 | 9
+visible | 1 ; 1 ; 1 ; 1 ; 1 | 1
+oculto | 0 ; 0 ; 0 ; 0 ; 10 | 10
+oculto | 10 ; 0 ; 0 ; 0 ; 0 | 10
+oculto | 5 ; 6 ; 7 ; 8 ; 9 | 9
 ```
 
 ::: pistas

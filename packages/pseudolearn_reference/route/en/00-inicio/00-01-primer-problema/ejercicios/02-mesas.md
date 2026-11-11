@@ -12,12 +12,18 @@ After the pizza, the 23 people at the party sit down in the canteen. Each table 
 :::
 
 ```programa rol=inicial
+Algoritmo Tables
+FinAlgoritmo
 ```
 
 ```programa rol=referencia
+Algoritmo Tables
+  Escribir techo(23 / 4);
+FinAlgoritmo
 ```
 
 ```casos
+visible | — | 6
 ```
 
 ::: pistas

@@ -29,7 +29,7 @@ Read the three versions shown further down, under «Write», before running them
 :::
 
 ::: respuesta
-The first is missing a semicolon at the end of a line. The second divides by the number of friends, and dividing by 0 has no answer. The third computes only the tip, `cuenta div 10`, and forgot to add the bill: 12 divided by 4 gives 3.
+The first is missing a semicolon at the end of a line. The second divides by the number of friends, and dividing by 0 has no answer. The third computes only the tip, `bill div 10`, and forgot to add the bill: 12 divided by 4 gives 3.
 :::
 
 ## Understand {#entender fase=1}
@@ -75,6 +75,16 @@ When the engine finds an error, it writes a [[def:diagnostico|diagnostic]]: it s
 There is no new solution: the three versions are run.
 
 ```programa id=propina-a titulo="Version A" ejecutar
+Algoritmo Tip
+  Definir bill Como Entero;
+  Definir friends Como Entero;
+  Escribir "How much is the bill?";
+  Leer bill;
+  Escribir "How many friends are paying?"
+  Leer friends;
+  Definir total Como Entero <- bill + bill div 10;
+  Escribir "Each one pays: ", techo(total / friends);
+FinAlgoritmo
 ```
 
 ```diagnosticos
@@ -84,6 +94,16 @@ missingStatementTerminator
 The diagnostic points at line 6, where the semicolon is missing, and the program never gets to ask anything.
 
 ```programa id=propina-b titulo="Version B, with 0 friends" ejecutar termina=failed
+Algoritmo Tip
+  Definir bill Como Entero;
+  Definir friends Como Entero;
+  Escribir "How much is the bill?";
+  Leer bill;
+  Escribir "How many friends are paying?";
+  Leer friends;
+  Definir total Como Entero <- bill + bill div 10;
+  Escribir "Each one pays: ", techo(total / friends);
+FinAlgoritmo
 ```
 
 ```entrada
@@ -92,8 +112,8 @@ The diagnostic points at line 6, where the semicolon is missing, and the program
 ```
 
 ```salida
-¿Cuánto es la cuenta?
-¿Cuántos amigos pagan?
+How much is the bill?
+How many friends are paying?
 ```
 
 ```diagnosticos
@@ -103,6 +123,16 @@ divisionByZero
 Version B starts well: it asks for both values. It stops at the last instruction, when dividing by 0.
 
 ```programa id=propina-c titulo="Version C" ejecutar
+Algoritmo Tip
+  Definir bill Como Entero;
+  Definir friends Como Entero;
+  Escribir "How much is the bill?";
+  Leer bill;
+  Escribir "How many friends are paying?";
+  Leer friends;
+  Definir total Como Entero <- bill div 10;
+  Escribir "Each one pays: ", techo(total / friends);
+FinAlgoritmo
 ```
 
 ```entrada
@@ -111,9 +141,9 @@ Version B starts well: it asks for both values. It stops at the last instruction
 ```
 
 ```salida
-¿Cuánto es la cuenta?
-¿Cuántos amigos pagan?
-Cada uno paga: 3
+How much is the bill?
+How many friends are paying?
+Each one pays: 3
 ```
 
 Version C finishes without complaining. If you did not have the worked example (33), you would accept the 3.

@@ -8,21 +8,40 @@ titulo: Leap year, as a function
 ---
 
 ::: enunciado
-Read a year and show «Es bisiesto» or «No es bisiesto». The rule is the one from [lesson 1.2](ruta:imperativo.caminos).
+Read a year and show «Leap year» or «Not a leap year». The rule is the one from [lesson 1.2](ruta:imperativo.caminos).
 :::
 
 ::: restriccion
-The decision goes in a `Function EsBisiesto` that receives the year and returns a boolean value.
+The decision goes in a `Function IsLeapYear` that receives the year and returns a boolean value.
 :::
 
 ```programa rol=referencia
+Funcion leap <- IsLeapYear(anio Como Entero)
+  Definir leap Como Logico;
+  leap <- (anio mod 4 = 0 Y anio mod 100 <> 0) O anio mod 400 = 0;
+FinFuncion
+
+Algoritmo Main
+  Definir anio Como Entero;
+  Leer anio;
+  Si IsLeapYear(anio) Entonces
+    Escribir "Leap year";
+  Sino
+    Escribir "Not a leap year";
+  FinSi
+FinAlgoritmo
 ```
 
 ```casos
+visible | 2024 | Leap year
+visible | 2023 | Not a leap year
+oculto | 1900 | Not a leap year
+oculto | 2000 | Leap year
+oculto | 2100 | Not a leap year
 ```
 
 ```aserciones
-- declara-subprograma | EsBisiesto | 1 | The function EsBisiesto, which receives the year, is missing.
+- declara-subprograma | IsLeapYear | 1 | The function IsLeapYear, which receives the year, is missing.
 ```
 
 ::: pistas
@@ -33,7 +52,7 @@ The decision goes in a `Function EsBisiesto` that receives the year and returns 
 :::
 
 ::: variante
-Write `DiasDelAnio(anio)`, which returns 366 or 365 using `EsBisiesto`.
+Write `DaysInYear(anio)`, which returns 366 or 365 using `IsLeapYear`.
 :::
 
 ::: explicacion

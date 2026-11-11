@@ -8,16 +8,42 @@ titulo: The function that talks
 ---
 
 ::: enunciado
-This program reads a price and should show `IVA: ` followed by 21 % of the price, rounded down. But it does not even start. Find the error and fix it.
+This program reads a price and should show `VAT: ` followed by 21 % of the price, rounded down. But it does not even start. Find the error and fix it.
 :::
 
 ```programa rol=inicial
+Funcion tax <- Vat(price Como Entero)
+  Definir tax Como Entero;
+  Escribir "Computing the VAT";
+  tax <- price * 21 div 100;
+FinFuncion
+
+Algoritmo Main
+  Definir price Como Entero;
+  Leer price;
+  Escribir "VAT: ", Vat(price);
+FinAlgoritmo
 ```
 
 ```programa rol=referencia
+Funcion tax <- Vat(price Como Entero)
+  Definir tax Como Entero;
+  tax <- price * 21 div 100;
+FinFuncion
+
+Algoritmo Main
+  Definir price Como Entero;
+  Leer price;
+  Escribir "VAT: ", Vat(price);
+FinAlgoritmo
 ```
 
 ```casos
+visible | 100 | VAT: 21
+visible | 50 | VAT: 10
+oculto | 0 | VAT: 0
+oculto | 200 | VAT: 42
+oculto | 7 | VAT: 1
 ```
 
 ::: pistas
@@ -28,7 +54,7 @@ This program reads a price and should show `IVA: ` followed by 21 % of the price
 :::
 
 ::: variante
-Add a function `ConIva` that uses `Iva` and returns the price with the tax included.
+Add a function `WithVat` that uses `Vat` and returns the price with the tax included.
 :::
 
 ::: explicacion

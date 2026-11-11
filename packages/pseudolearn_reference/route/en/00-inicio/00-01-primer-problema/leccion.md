@@ -93,15 +93,20 @@ paso: The third shows the text as it is, because it is between quotes.
 This is a complete program:
 
 ```programa id=hola titulo="My first program" ejecutar
+Algoritmo Hello
+  Escribir "Hello";
+  Escribir 2 + 3;
+  Escribir "2 + 3";
+FinAlgoritmo
 ```
 
 ```salida
-Hola
+Hello
 5
 2 + 3
 ```
 
-- `Algorithm Hola` and `EndAlgorithm` are the envelope of the program: they say where it starts, what it is called and where it ends.
+- `Algorithm Hello` and `EndAlgorithm` are the envelope of the program: they say where it starts, what it is called and where it ends.
 - `Write` shows something on the screen. What the program shows is its [[def:salida|output]].
 - What goes between quotes is shown as it is. What goes without quotes is computed first: that is why `5` appears and then `"2 + 3"` as it is.
 - Each instruction ends with a semicolon.
@@ -111,10 +116,14 @@ Asking the computer to do what the program says is to [[def:ejecutar|run]] it. I
 Sums are written almost as at school: `+`, `-`, `*` to multiply and `/` to divide. A single `Write` can show several things in a row if you separate them with commas. With that you can already write steps 1 and 2 of the plan:
 
 ```programa id=fiesta-1 titulo="Party, first attempt" ejecutar
+Algoritmo Party
+  Escribir "Slices needed: ", 23 * 3;
+  Escribir "Pizzas: ", 23 * 3 / 8;
+FinAlgoritmo
 ```
 
 ```salida
-Porciones que hacen falta: 69
+Slices needed: 69
 Pizzas: 8.625
 ```
 
@@ -123,11 +132,15 @@ The computer did exactly what you asked: divide. It does not know that pizzas ar
 PseudoLearn comes with ready-made calculations. `ceil` is a [[def:funcion-ya-hecha|built-in function]]: it receives a number between brackets and returns the whole number above it if the number has decimals, or the same number if it has none.
 
 ```programa id=fiesta-2 titulo="Party, solution" ejecutar
+Algoritmo Party
+  Escribir "Slices needed: ", 23 * 3;
+  Escribir "Pizzas to order: ", techo(23 * 3 / 8);
+FinAlgoritmo
 ```
 
 ```salida
-Porciones que hacen falta: 69
-Pizzas que hay que pedir: 9
+Slices needed: 69
+Pizzas to order: 9
 ```
 
 The first line of the body does step 1 of the plan; the second does steps 2 and 3 together. If you want to know exactly how each thing you used is written, it is in the Specification. You do not need to read it now: it is the place to look up a doubt.
@@ -144,10 +157,13 @@ The first line of the body does step 1 of the plan; the second does steps 2 and 
 A program showing a number does not mean the number is right. Testing is comparing what the computer answers with your worked examples. For the second example, change 23 to 8 and run it again:
 
 ```programa id=fiesta-8 titulo="Party with 8 people" ejecutar
+Algoritmo Party
+  Escribir "Pizzas to order: ", techo(8 * 3 / 8);
+FinAlgoritmo
 ```
 
 ```salida
-Pizzas que hay que pedir: 3
+Pizzas to order: 3
 ```
 
 | People | By hand | The program | Do they match? |
@@ -189,7 +205,7 @@ No exercise tells you what to write. It gives you a problem, and the cycle is yo
 
 ::: profundizar titulo="Common pitfalls"
 - **«The computer understands what I meant».** The first party attempt shows 8.625. Predict the output before running it: almost nobody expects decimals.
-- **Forgotten quotes.** It is easy to write `Write Hola;` without quotes. The engine message mentions things you have not seen yet: for now it is enough to know that the quotes are missing.
+- **Forgotten quotes.** It is easy to write `Write Hello;` without quotes. The engine message mentions things you have not seen yet: for now it is enough to know that the quotes are missing.
 - **Skipping step 1.** Work out the two examples by hand before opening the editor. The 8-people one is what breaks Beto's solution in the exercises.
 :::
 

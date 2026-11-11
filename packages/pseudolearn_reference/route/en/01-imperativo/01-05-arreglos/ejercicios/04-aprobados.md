@@ -12,9 +12,27 @@ Read 6 marks, from 0 to 10, and show how many are 6 or more. The program shows o
 :::
 
 ```programa rol=referencia
+Algoritmo Passed
+  Dimension marks[6] Como Entero;
+  Definir passed Como Entero <- 0;
+  Para i <- 0 Hasta 5 Hacer
+    Leer marks[i];
+  FinPara
+  Para Cada mark En marks Hacer
+    Si mark >= 6 Entonces
+      passed <- passed + 1;
+    FinSi
+  FinPara
+  Escribir passed;
+FinAlgoritmo
 ```
 
 ```casos
+visible | 6 ; 5 ; 7 ; 10 ; 2 ; 6 | 4
+visible | 5 ; 5 ; 5 ; 5 ; 5 ; 5 | 0
+oculto | 6 ; 6 ; 6 ; 6 ; 6 ; 6 | 6
+oculto | 0 ; 0 ; 0 ; 0 ; 0 ; 10 | 1
+oculto | 10 ; 10 ; 10 ; 10 ; 10 ; 10 | 6
 ```
 
 ::: pistas
@@ -25,7 +43,7 @@ Read 6 marks, from 0 to 10, and show how many are 6 or more. The program shows o
 :::
 
 ::: variante
-Also show the average of the passing marks, or «Nadie aprobó».
+Also show the average of the passing marks, or «Nobody passed».
 :::
 
 ::: explicacion

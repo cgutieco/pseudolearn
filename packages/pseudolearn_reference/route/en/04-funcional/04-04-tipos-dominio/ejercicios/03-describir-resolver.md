@@ -8,7 +8,7 @@ titulo: Building and describing an order
 ---
 
 ::: enunciado
-Read a state code and its data: 1 pending, with no data; 2 on its way, with the courier; 3 delivered, with the courier and the time; 4 cancelled, with the reason. Build the order and show its description, as in the lesson: «En camino con Sol».
+Read a state code and its data: 1 pending, with no data; 2 on its way, with the courier; 3 delivered, with the courier and the time; 4 cancelled, with the reason. Build the order and show its description, as in the lesson: «On its way with Sol».
 :::
 
 ::: restriccion
@@ -16,16 +16,60 @@ The order is a variant with one shape per state, and the description is a functi
 :::
 
 ```programa rol=referencia
+Variante Order
+  Alternativa Pending
+  Alternativa OnItsWay(courier Como Cadena)
+  Alternativa Delivered(courier Como Cadena, hora Como Entero)
+  Alternativa Canceled(reason Como Cadena)
+FinVariante
+
+Funcion text <- Describe(order Como Order)
+  Definir text Como Cadena <- "";
+  Segun order Hacer
+    Order.Pending: text <- "Pending";
+    Order.OnItsWay(who): text <- "On its way with " + who;
+    Order.Delivered(who, hora): text <- "Delivered by " + who + " at " + ConvertirATexto(hora);
+    Order.Canceled(reason): text <- "Canceled: " + reason;
+  FinSegun
+FinFuncion
+
+Algoritmo Orders
+  Definir codigo Como Entero;
+  Definir courier, reason Como Cadena;
+  Definir hora Como Entero;
+  Definir order Como Order <- Order.Pending;
+  Leer codigo;
+  Segun codigo Hacer
+    2:
+      Leer courier;
+      order <- Order.OnItsWay(courier);
+    3:
+      Leer courier;
+      Leer hora;
+      order <- Order.Delivered(courier, hora);
+    4:
+      Leer reason;
+      order <- Order.Canceled(reason);
+    De Otro Modo:
+      order <- Order.Pending;
+  FinSegun
+  Escribir Describe(order);
+FinAlgoritmo
 ```
 
 ```casos
+visible | 2 ; Sol | On its way with Sol
+visible | 1 | Pending
+oculto | 3 ; Leo ; 9 | Delivered by Leo at 9
+oculto | 4 ; rain | Canceled: rain
+oculto | 3 ; Ana ; 23 | Delivered by Ana at 23
 ```
 
 ::: pistas
 1. Which data does each state carry? How many shapes does the order have?
-2. Use the variant and `Describir` of [the lesson](ruta:funcional.tipos-dominio).
+2. Use the variant and `Describe` of [the lesson](ruta:funcional.tipos-dominio).
 3. Read the code; according to the code, read the matching data and build the shape.
-4. A `Switch codigo` that builds `Pedido.EnCamino`, `Pedido.Entregado` or `Pedido.Cancelado`, and finally `Describir`. Close with the variant.
+4. A `Switch codigo` that builds `Order.OnItsWay`, `Order.Delivered` or `Order.Canceled`, and finally `Describe`. Close with the variant.
 :::
 
 ::: variante

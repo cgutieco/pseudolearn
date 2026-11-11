@@ -12,6 +12,18 @@ The engine shows this diagnostic for version A of the tip calculator. Where is i
 :::
 
 ```programa rol=objeto id=diagnostico
+Algoritmo Tip
+  Definir bill Como Entero;
+  Definir friends Como Entero;
+  Escribir "How much is the bill?";
+  Leer bill;
+  Escribir "How many friends are paying?"
+  Leer friends;
+FinAlgoritmo
+```
+
+```diagnosticos
+missingStatementTerminator
 ```
 
 ```opciones

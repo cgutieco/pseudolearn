@@ -12,6 +12,17 @@ Without running it, write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion
+Algoritmo Votes
+  Definir d Como Diccionario<Cadena, Entero> <- Diccionario();
+  d["Ana"] <- 3;
+  d["Beto"] <- 5;
+  d["Ana"] <- d["Ana"] + 1;
+  Escribir d["Ana"];
+FinAlgoritmo
+```
+
+```salida
+4
 ```
 
 ::: explicacion

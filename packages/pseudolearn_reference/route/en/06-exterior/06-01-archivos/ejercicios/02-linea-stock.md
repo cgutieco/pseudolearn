@@ -8,21 +8,38 @@ titulo: One line of the file
 ---
 
 ::: enunciado
-Read the name of a product and its stock, and show the line that is saved in the file: the name, a semicolon and the stock, like «jugo;10».
+Read the name of a product and its stock, and show the line that is saved in the file: the name, a semicolon and the stock, like «juice;10».
 :::
 
 ::: restriccion
-The line is built by a pure function, `LineaStock`, which receives the name and the stock.
+The line is built by a pure function, `StockLine`, which receives the name and the stock.
 :::
 
 ```programa rol=referencia
+Funcion line <- StockLine(name Como Cadena, stock Como Entero)
+  Definir line Como Cadena;
+  line <- name + ";" + ATexto(stock);
+FinFuncion
+
+Algoritmo FileLine
+  Definir name Como Cadena;
+  Definir stock Como Entero;
+  Leer name;
+  Leer stock;
+  Escribir StockLine(name, stock);
+FinAlgoritmo
 ```
 
 ```casos
+visible | juice ; 10 | juice;10
+visible | water ; 0 | water;0
+oculto | fruit ; 6 | fruit;6
+oculto | biscuit ; 125 | biscuit;125
+oculto | café ; 1 | café;1
 ```
 
 ```aserciones
-- declara-subprograma | LineaStock | 2 | The function LineaStock, which receives the name and the stock, is missing.
+- declara-subprograma | StockLine | 2 | The function StockLine, which receives the name and the stock, is missing.
 ```
 
 ::: pistas
@@ -33,7 +50,7 @@ The line is built by a pure function, `LineaStock`, which receives the name and 
 :::
 
 ::: variante
-Make another function that builds the line with the price as well as the stock: «jugo;10;3».
+Make another function that builds the line with the price as well as the stock: «juice;10;3».
 :::
 
 ::: explicacion

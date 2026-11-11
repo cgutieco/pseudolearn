@@ -12,6 +12,22 @@ Without running it, write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion
+Funcion r <- Factorial(n Como Entero)
+  Definir r Como Entero;
+  Si n = 0 Entonces
+    r <- 1;
+  Sino
+    r <- n * Factorial(n - 1);
+  FinSi
+FinFuncion
+
+Algoritmo Main
+  Escribir Factorial(4);
+FinAlgoritmo
+```
+
+```salida
+24
 ```
 
 ::: explicacion

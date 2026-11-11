@@ -12,6 +12,19 @@ Without running it, write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion
+Algoritmo Positions
+  Dimension v[5] Como Entero;
+  v[0] <- 4;
+  v[1] <- 8;
+  v[2] <- 15;
+  v[3] <- 16;
+  v[4] <- 23;
+  Escribir v[1] + v[3];
+FinAlgoritmo
+```
+
+```salida
+24
 ```
 
 ::: explicacion

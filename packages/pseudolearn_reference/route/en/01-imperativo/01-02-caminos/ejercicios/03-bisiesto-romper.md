@@ -12,22 +12,44 @@ This program gets 2024 and 2023 right. Find a year it gets wrong.
 :::
 
 ```programa rol=defectuoso
+Algoritmo LeapYear
+  Definir anio Como Entero;
+  Leer anio;
+  Si anio mod 4 = 0 Entonces
+    Escribir "Leap year";
+  Sino
+    Escribir "Not a leap year";
+  FinSi
+FinAlgoritmo
 ```
 
 ```programa rol=referencia
+Algoritmo LeapYear
+  Definir anio Como Entero;
+  Leer anio;
+  Si (anio mod 4 = 0 Y anio mod 100 <> 0) O anio mod 400 = 0 Entonces
+    Escribir "Leap year";
+  Sino
+    Escribir "Not a leap year";
+  FinSi
+FinAlgoritmo
 ```
 
 ```casos
+visible | 2024 | Leap year
+visible | 2023 | Not a leap year
 ```
 
 ```rompe
+1900
+2100
 ```
 
 ::: pistas
 1. Look at the decision table in the lesson. Which columns does this program not test?
 2. The program asks a single question. Which part of the rule is missing?
 3. Look for a year that divides by 4 and also by 100, but not by 400.
-4. With 1900 it says «Es bisiesto» and it is not. Close with the variant.
+4. With 1900 it says «Leap year» and it is not. Close with the variant.
 :::
 
 ::: variante

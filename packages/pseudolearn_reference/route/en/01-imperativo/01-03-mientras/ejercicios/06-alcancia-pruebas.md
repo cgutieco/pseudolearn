@@ -12,24 +12,94 @@ Do not write code. Write four prices with the right answer for each one, so that
 :::
 
 ```programa rol=referencia
+Algoritmo MoneyBox
+  Definir price Como Entero;
+  Leer price;
+  Definir dia Como Entero <- 1;
+  Definir savedToday Como Entero <- 2;
+  Definir savings Como Entero <- 2;
+  Mientras savings < price Hacer
+    dia <- dia + 1;
+    savedToday <- savedToday + 1;
+    savings <- savings + savedToday;
+  FinMientras
+  Escribir "Day ", dia, " with ", savings, " coins";
+FinAlgoritmo
 ```
 
 ```programa rol=mutante id=menor-o-igual
+Algoritmo MoneyBox
+  Definir price Como Entero;
+  Leer price;
+  Definir dia Como Entero <- 1;
+  Definir savedToday Como Entero <- 2;
+  Definir savings Como Entero <- 2;
+  Mientras savings <= price Hacer
+    dia <- dia + 1;
+    savedToday <- savedToday + 1;
+    savings <- savings + savedToday;
+  FinMientras
+  Escribir "Day ", dia, " with ", savings, " coins";
+FinAlgoritmo
 ```
 
 ```programa rol=mutante id=ahorro-en-cero
+Algoritmo MoneyBox
+  Definir price Como Entero;
+  Leer price;
+  Definir dia Como Entero <- 1;
+  Definir savedToday Como Entero <- 2;
+  Definir savings Como Entero <- 0;
+  Mientras savings < price Hacer
+    dia <- dia + 1;
+    savedToday <- savedToday + 1;
+    savings <- savings + savedToday;
+  FinMientras
+  Escribir "Day ", dia, " with ", savings, " coins";
+FinAlgoritmo
 ```
 
 ```programa rol=mutante id=suma-antes
+Algoritmo MoneyBox
+  Definir price Como Entero;
+  Leer price;
+  Definir dia Como Entero <- 1;
+  Definir savedToday Como Entero <- 2;
+  Definir savings Como Entero <- 2;
+  Mientras savings < price Hacer
+    dia <- dia + 1;
+    savings <- savings + savedToday;
+    savedToday <- savedToday + 1;
+  FinMientras
+  Escribir "Day ", dia, " with ", savings, " coins";
+FinAlgoritmo
 ```
 
 ```programa rol=mutante id=dia-en-cero
+Algoritmo MoneyBox
+  Definir price Como Entero;
+  Leer price;
+  Definir dia Como Entero <- 0;
+  Definir savedToday Como Entero <- 2;
+  Definir savings Como Entero <- 2;
+  Mientras savings < price Hacer
+    dia <- dia + 1;
+    savedToday <- savedToday + 1;
+    savings <- savings + savedToday;
+  FinMientras
+  Escribir "Day ", dia, " with ", savings, " coins";
+FinAlgoritmo
 ```
 
 ```casos
+visible | 50 | Day 9 with 54 coins
 ```
 
 ```casos-solucion minimo=4 maximo=4
+50 | Day 9 with 54 coins
+54 | Day 9 with 54 coins
+2 | Day 1 with 2 coins
+1000 | Day 44 with 1034 coins
 ```
 
 ::: pistas

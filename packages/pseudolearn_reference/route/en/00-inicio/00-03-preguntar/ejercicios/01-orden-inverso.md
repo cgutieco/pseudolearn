@@ -12,6 +12,22 @@ This program receives 4 first and then 9. Without running it, write exactly what
 :::
 
 ```programa rol=objeto id=prediccion
+Algoritmo Reversed
+  Definir a Como Entero;
+  Definir b Como Entero;
+  Leer a;
+  Leer b;
+  Escribir b, " ", a;
+FinAlgoritmo
+```
+
+```entrada
+4
+9
+```
+
+```salida
+9 4
 ```
 
 ::: explicacion

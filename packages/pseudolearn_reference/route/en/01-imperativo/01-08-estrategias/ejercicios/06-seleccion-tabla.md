@@ -12,9 +12,36 @@ Complete the table: what each cell of `v` holds at the end of each pass of the o
 :::
 
 ```programa rol=objeto id=traza
+Algoritmo Selection
+  Dimension v[4] Como Entero;
+  v[0] <- 4;
+  v[1] <- 3;
+  v[2] <- 2;
+  v[3] <- 1;
+  Para i <- 0 Hasta 2 Hacer
+    Definir smallest Como Entero <- i;
+    Para j <- i + 1 Hasta 3 Hacer
+      Si v[j] < v[smallest] Entonces
+        smallest <- j;
+      FinSi
+    FinPara
+    Definir saved Como Entero <- v[i];
+    v[i] <- v[smallest];
+    v[smallest] <- saved;
+  FinPara
+  Escribir v[0], v[1], v[2], v[3];
+FinAlgoritmo
+```
+
+```salida
+1234
 ```
 
 ```vueltas marca=17 inicio=7 columnas=v[0],v[1],v[2],v[3]
+antes | 4 | 3 | 2 | 1
+1 | ?1 | ?3 | ?2 | ?4
+2 | ?1 | ?2 | ?3 | ?4
+3 | ?1 | ?2 | ?3 | ?4
 ```
 
 ::: explicacion

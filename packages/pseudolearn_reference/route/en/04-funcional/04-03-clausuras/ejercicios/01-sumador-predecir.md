@@ -12,6 +12,22 @@ Without running it, write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion
+Funcion made <- MakeAdder(amount Como Entero)
+  Definir made Como Funcion(Entero) Como Entero <- Funcion(x Como Entero) Como Entero
+    Retornar x + amount;
+  FinFuncion;
+FinFuncion
+
+Algoritmo Sums
+  Definir s Como Funcion(Entero) Como Entero <- MakeAdder(10);
+  Escribir s(1);
+  Escribir s(s(1));
+FinAlgoritmo
+```
+
+```salida
+11
+21
 ```
 
 ::: explicacion

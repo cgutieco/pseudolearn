@@ -50,15 +50,42 @@ paso: The South one is no longer needed: it is cut.
 ```
 
 ```programa id=primera-oferta titulo="The first offer" ejecutar
+SubProceso Suspendible Offer(offer Como Canal<Entero>, price Como Entero)
+  Definir accepted Como Logico <- Aguardar offer.Enviar(price);
+  Si No accepted Entonces
+    Escribir "The offer arrived late";
+  FinSi
+FinSubProceso
+
+Algoritmo FirstOffer
+  Definir north Como Canal<Entero> <- Canal(1);
+  Definir south Como Canal<Entero> <- Canal(1);
+  Tareas
+    Lanzar Offer(north, 12);
+    Lanzar Offer(south, 10);
+    Elegir
+      Recibir fromNorth Desde north:
+        Segun fromNorth Hacer
+          Algo(price): Escribir "North offers ", price;
+          Nada: Escribir "North does not offer";
+        FinSegun
+      Recibir fromSouth Desde south:
+        Segun fromSouth Hacer
+          Algo(price): Escribir "South offers ", price;
+          Nada: Escribir "South does not offer";
+        FinSegun
+    FinElegir
+  FinTareas
+FinAlgoritmo
 ```
 
 ```salida
-Norte ofrece 12
+North offers 12
 ```
 
 Which offer arrives first is decided by the schedule: today the engine serves the North one, but the program cannot take it for granted.
 
-[[def:cancelacion|Cancellation]] is cutting a task that is no longer needed. Inside a scope it happens by itself: if a task ends with `Failure`, the scope cancels its sisters. With `Tasks fallo`, the scope keeps what happened in `fallo`, an `Optional`: `None` if everything went well, or `Some` with a report. The report says the first error, in `First`, and how many tasks were cut, in `Cancelled`.
+[[def:cancelacion|Cancellation]] is cutting a task that is no longer needed. Inside a scope it happens by itself: if a task ends with `Failure`, the scope cancels its sisters. With `Tasks outcome`, the scope keeps what happened in `outcome`, an `Optional`: `None` if everything went well, or `Some` with a report. The report says the first error, in `First`, and how many tasks were cut, in `Cancelled`.
 
 ::: especificacion
 - tareas.canales
@@ -68,11 +95,31 @@ Which offer arrives first is decided by the schedule: today the engine serves th
 ## Write {#escribir fase=3}
 
 ```programa id=proveedores titulo="The order to three suppliers" ejecutar
+SubProceso Suspendible Query(name Como Cadena, stock Como Entero) Como Resultado<Entero, Cadena>
+  Si stock = 0 Entonces
+    Retornar Error(name + " has no stock");
+  FinSi
+  Retornar Exito(stock);
+FinSubProceso
+
+Algoritmo Order
+  Tareas outcome
+    Lanzar Query("North", 0);
+    Lanzar Query("South", 5);
+    Lanzar Query("West", 3);
+  FinTareas
+  Segun outcome Hacer
+    Algo(report):
+      Escribir "Failed: ", report.Primero;
+      Escribir "Cancelled: ", report.Canceladas;
+    Nada: Escribir "All confirmed";
+  FinSegun
+FinAlgoritmo
 ```
 
 ```salida
-Falló: Norte no tiene stock
-Canceladas: 2
+Failed: North has no stock
+Cancelled: 2
 ```
 
 Each query gives back a `Result`: `Success` with the stock or `Failure` with the reason. None of them writes anything; the algorithm decides what to show after closing the scope.
@@ -81,7 +128,7 @@ Each query gives back a `Result`: `Success` with the stock or `Failure` with the
 
 | Case | What happens |
 |---|---|
-| The three with stock | `Todos confirmaron` |
+| The three with stock | `All confirmed` |
 | Only the last one without stock | it fails all the same; the queries that did not finish are cut |
 | The three without stock | the first error rules |
 

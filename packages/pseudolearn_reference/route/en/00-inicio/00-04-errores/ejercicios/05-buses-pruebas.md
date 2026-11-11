@@ -12,21 +12,44 @@ Write between 2 and 4 test cases for the 40-seat bus program, so that any wrong 
 :::
 
 ```programa rol=referencia
+Algoritmo Buses
+  Definir pupils Como Entero;
+  Leer pupils;
+  Escribir techo(pupils / 40);
+FinAlgoritmo
 ```
 
 ```programa rol=mutante id=sin-redondeo
+Algoritmo Buses
+  Definir pupils Como Entero;
+  Leer pupils;
+  Escribir pupils div 40;
+FinAlgoritmo
 ```
 
 ```programa rol=mutante id=uno-de-mas
+Algoritmo Buses
+  Definir pupils Como Entero;
+  Leer pupils;
+  Escribir pupils div 40 + 1;
+FinAlgoritmo
 ```
 
 ```programa rol=mutante id=redondeo-cercano
+Algoritmo Buses
+  Definir pupils Como Entero;
+  Leer pupils;
+  Escribir redon(pupils / 40);
+FinAlgoritmo
 ```
 
 ```casos
+visible | 95 | 3
 ```
 
 ```casos-solucion minimo=2 maximo=4
+95 | 3
+80 | 2
 ```
 
 ::: pistas

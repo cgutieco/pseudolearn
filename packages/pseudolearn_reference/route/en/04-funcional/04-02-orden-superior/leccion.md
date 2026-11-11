@@ -29,7 +29,7 @@ Imagine the three programs side by side. Which line is different in each?
 :::
 
 ::: respuesta
-Only the one that computes the new price: `precio + 1`, `precio * 2` or `precio - 1`. Everything else, creating the new vector, walking and adding, is identical. If that line were a value, the walk would be written once.
+Only the one that computes the new price: `price + 1`, `price * 2` or `price - 1`. Everything else, creating the new vector, walking and adding, is identical. If that line were a value, the walk would be written once.
 :::
 
 ## Understand and plan {#entender-planear fase=1-2}
@@ -50,6 +50,19 @@ paso: A funnel gathers all the prices into a single value.
 In PseudoLearn, a function is one more value: it can be kept and passed to another function, by its name. That is treating a [[def:funcion-como-valor|function as a value]]. A function that receives or gives back functions is [[def:orden-superior|higher-order]]. The type of a parameter that is a function says what it receives and what it gives back: `Function(Integer) As Integer`.
 
 ```programa id=aplicar-dos-veces titulo="Applying twice" ejecutar
+Funcion next <- PlusOne(x Como Entero)
+  Definir next Como Entero;
+  next <- x + 1;
+FinFuncion
+
+Funcion applied <- ApplyTwice(f Como Funcion(Entero) Como Entero, x Como Entero)
+  Definir applied Como Entero;
+  applied <- f(f(x));
+FinFuncion
+
+Algoritmo Twice
+  Escribir ApplyTwice(PlusOne, 5);
+FinAlgoritmo
 ```
 
 ```salida
@@ -67,6 +80,55 @@ With functions as parameters, three patterns are written only once. To [[def:map
 ## Write {#escribir fase=3}
 
 ```programa id=mapear-filtrar-reducir titulo="Map, filter and reduce" ejecutar
+Funcion next <- PlusOne(x Como Entero)
+  Definir next Como Entero;
+  next <- x + 1;
+FinFuncion
+
+Funcion cheap <- IsCheap(price Como Entero)
+  Definir cheap Como Logico;
+  cheap <- price <= 2;
+FinFuncion
+
+Funcion total <- Sum(a Como Entero, b Como Entero)
+  Definir total Como Entero;
+  total <- a + b;
+FinFuncion
+
+Funcion mapped <- Map(v Como Vector<Entero>, f Como Funcion(Entero) Como Entero)
+  Definir mapped Como Vector<Entero> <- Vector();
+  Para Cada elemento En v Hacer
+    mapped.Agregar(f(elemento));
+  FinPara
+FinFuncion
+
+Funcion chosen <- Filter(v Como Vector<Entero>, condition Como Funcion(Entero) Como Logico)
+  Definir chosen Como Vector<Entero> <- Vector();
+  Para Cada elemento En v Hacer
+    Si condition(elemento) Entonces
+      chosen.Agregar(elemento);
+    FinSi
+  FinPara
+FinFuncion
+
+Funcion accumulated <- Reduce(v Como Vector<Entero>, f Como Funcion(Entero, Entero) Como Entero, initial Como Entero)
+  Definir accumulated Como Entero <- initial;
+  Para Cada elemento En v Hacer
+    accumulated <- f(accumulated, elemento);
+  FinPara
+FinFuncion
+
+Algoritmo Prices
+  Definir prices Como Vector<Entero> <- Vector();
+  prices.Agregar(3);
+  prices.Agregar(5);
+  prices.Agregar(2);
+  prices.Agregar(1);
+  prices.Agregar(2);
+  Escribir Map(prices, PlusOne);
+  Escribir Filter(prices, IsCheap);
+  Escribir Reduce(prices, Sum, 0);
+FinAlgoritmo
 ```
 
 ```salida
@@ -75,23 +137,23 @@ With functions as parameters, three patterns are written only once. To [[def:map
 13
 ```
 
-`Mapear` does not know what `MasUno` does: it only knows that it receives a number and gives back another. The same goes for `Filtrar` with `EsBarato` and `Reducir` with `Sumar`.
+`Map` does not know what `PlusOne` does: it only knows that it receives a number and gives back another. The same goes for `Filter` with `IsCheap` and `Reduce` with `Sum`.
 
 ## Test {#probar fase=4}
 
-With an empty vector, `Mapear` and `Filtrar` give an empty vector, and `Reducir` gives the initial value: it is the edge case of all three.
+With an empty vector, `Map` and `Filter` give an empty vector, and `Reduce` gives the initial value: it is the edge case of all three.
 
 | Call | With the prices | With an empty vector |
 |---|---|---|
-| `Mapear(v, MasUno)` | [4, 6, 3, 2, 3] | [] |
-| `Filtrar(v, EsBarato)` | [2, 1, 2] | [] |
-| `Reducir(v, Sumar, 0)` | 13 | 0 |
+| `Map(v, PlusOne)` | [4, 6, 3, 2, 3] | [] |
+| `Filter(v, IsCheap)` | [2, 1, 2] | [] |
+| `Reduce(v, Sum, 0)` | 13 | 0 |
 
 ## Improve {#mejorar fase=5}
 
 In one sentence: «The walk is written once, and the operation that changes is given to it as a value».
 
-The three programs of the problem become three calls to `Mapear`, with `MasUno`, `Doble` and `MenosUno`. And they can be composed: the total of the cheap prices with the rise is `Reducir(Mapear(Filtrar(precios, EsBarato), MasUno), Sumar, 0)`.
+The three programs of the problem become three calls to `Map`, with `PlusOne`, `Double` and `MinusOne`. And they can be composed: the total of the cheap prices with the rise is `Reduce(Map(Filter(prices, IsCheap), PlusOne), Sum, 0)`.
 
 ## What you learned {#aprendiste}
 
@@ -112,7 +174,7 @@ The three programs of the problem become three calls to `Mapear`, with `MasUno`,
 :::
 
 ::: profundizar titulo="Common pitfalls"
-- **Calling the function instead of passing it.** `Mapear(v, MasUno(1))` passes a number, not the function. The engine rejects it by type.
+- **Calling the function instead of passing it.** `Map(v, PlusOne(1))` passes a number, not the function. The engine rejects it by type.
 - **Reducing with the wrong initial value.** With the greatest, starting at 0 fails with negative numbers.
 - **Wanting to map when filtering is needed.** Ask yourself: does the result have the same length or can it be shorter?
 :::

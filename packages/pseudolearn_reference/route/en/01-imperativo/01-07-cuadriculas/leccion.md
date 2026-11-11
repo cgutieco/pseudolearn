@@ -36,7 +36,7 @@ X wins, by the diagonal that goes from the top left corner to the bottom right o
 
 ::: ficha
 - entra: nine numbers, row by row: 0 empty, 1 X and 2 O.
-- sale: «Gana X», «Gana O» or «Nadie» (nobody).
+- sale: «X wins», «O wins» or «Nobody».
 - relacion: whoever completes a row, a column or one of the two diagonals wins.
 - ejemplo: the board in the task → X wins, by a diagonal.
 - ejemplo: a board without three in a row → nobody.
@@ -67,6 +67,32 @@ To walk through a whole matrix you use a [[def:bucle-anidado|nested loop]]: one 
 To show a row on a single line it pays to [[def:concatenar|concatenate]]: join texts with `+` to make a new one. A number is turned into text with `toText`.
 
 ```programa id=dibujar-tablero titulo="Drawing the board" ejecutar
+Algoritmo DrawBoard
+  Dimension board[3, 3] Como Entero;
+  board[0, 0] <- 1;
+  board[0, 1] <- 2;
+  board[0, 2] <- 1;
+  board[1, 0] <- 2;
+  board[1, 1] <- 1;
+  board[1, 2] <- 2;
+  board[2, 0] <- 2;
+  board[2, 1] <- 1;
+  board[2, 2] <- 1;
+  Para f <- 0 Hasta 2 Hacer
+    Definir line Como Cadena <- "";
+    Para c <- 0 Hasta 2 Hacer
+      Segun board[f, c] Hacer
+        1:
+          line <- line + "X";
+        2:
+          line <- line + "O";
+        De Otro Modo:
+          line <- line + ".";
+      FinSegun
+    FinPara
+    Escribir line;
+  FinPara
+FinAlgoritmo
 ```
 
 ```salida
@@ -83,6 +109,37 @@ OXX
 ## Write {#escribir fase=3}
 
 ```programa id=tres-en-raya titulo="Noughts and crosses" ejecutar
+Algoritmo NoughtsAndCrosses
+  Dimension t[3, 3] Como Entero;
+  Para f <- 0 Hasta 2 Hacer
+    Para c <- 0 Hasta 2 Hacer
+      Leer t[f, c];
+    FinPara
+  FinPara
+  Definir winner Como Entero <- 0;
+  Para i <- 0 Hasta 2 Hacer
+    Si t[i, 0] <> 0 Y t[i, 0] = t[i, 1] Y t[i, 1] = t[i, 2] Entonces
+      winner <- t[i, 0];
+    FinSi
+    Si t[0, i] <> 0 Y t[0, i] = t[1, i] Y t[1, i] = t[2, i] Entonces
+      winner <- t[0, i];
+    FinSi
+  FinPara
+  Si t[1, 1] <> 0 Y t[0, 0] = t[1, 1] Y t[1, 1] = t[2, 2] Entonces
+    winner <- t[1, 1];
+  FinSi
+  Si t[1, 1] <> 0 Y t[0, 2] = t[1, 1] Y t[1, 1] = t[2, 0] Entonces
+    winner <- t[1, 1];
+  FinSi
+  Segun winner Hacer
+    1:
+      Escribir "X wins";
+    2:
+      Escribir "O wins";
+    De Otro Modo:
+      Escribir "Nobody";
+  FinSegun
+FinAlgoritmo
 ```
 
 ```entrada
@@ -98,18 +155,18 @@ OXX
 ```
 
 ```salida
-Gana X
+X wins
 ```
 
 ## Test {#probar fase=4}
 
 | Board | By hand | The program |
 |---|---|---|
-| 1, 1, 1 / 2, 2, 0 / 0, 0, 0 | X wins by a row | Gana X |
-| 2, 1, 1 / 2, 1, 0 / 2, 0, 0 | O wins by a column | Gana O |
-| 1, 2, 1 / 2, 1, 2 / 2, 1, 1 | X wins by a diagonal | Gana X |
-| 2, 0, 1 / 0, 1, 0 / 1, 0, 2 | X wins by the other diagonal | Gana X |
-| 1, 2, 1 / 1, 2, 2 / 2, 1, 1 | nobody | Nadie |
+| 1, 1, 1 / 2, 2, 0 / 0, 0, 0 | X wins by a row | X wins |
+| 2, 1, 1 / 2, 1, 0 / 2, 0, 0 | O wins by a column | O wins |
+| 1, 2, 1 / 2, 1, 2 / 2, 1, 1 | X wins by a diagonal | X wins |
+| 2, 0, 1 / 0, 1, 0 / 1, 0, 2 | X wins by the other diagonal | X wins |
+| 1, 2, 1 / 1, 2, 2 / 2, 1, 1 | nobody | Nobody |
 
 ## Improve {#mejorar fase=5}
 

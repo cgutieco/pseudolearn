@@ -56,12 +56,38 @@ paso: The kitchen leaves order 3.
 This way of sharing the work has a name: the [[def:productor-consumidor|producer and consumer]] scheme. One task produces messages and another consumes them, and the channel between the two makes each one wait only when needed.
 
 ```programa id=tuberia-mini titulo="A small pipeline" ejecutar
+SubProceso Suspendible Produce(queue Como Canal<Entero>)
+  Para valor <- 10 Hasta 30 Con Paso 10 Hacer
+    Definir accepted Como Logico <- Aguardar queue.Enviar(valor);
+    Si No accepted Entonces
+      Escribir "channel closed";
+    FinSi
+  FinPara
+  queue.Cerrar();
+FinSubProceso
+
+SubProceso Suspendible Consume(queue Como Canal<Entero>)
+  Repetir
+    Segun Aguardar queue.Recibir() Hacer
+      Algo(valor): Escribir "received ", valor;
+      Nada: Salir;
+    FinSegun
+  Hasta Que Falso
+FinSubProceso
+
+Algoritmo MiniPipeline
+  Definir queue Como Canal<Entero> <- Canal(2);
+  Tareas
+    Lanzar Produce(queue);
+    Lanzar Consume(queue);
+  FinTareas
+FinAlgoritmo
 ```
 
 ```salida
-recibido 10
-recibido 20
-recibido 30
+received 10
+received 20
+received 30
 ```
 
 `Send` gives back whether the channel accepted the message: a closed channel accepts nothing. `Receive` gives back an `Optional`: `Some` with the message, or `None` when the channel was closed and no messages are left. That is why the consumer ends with `Exit`.
@@ -73,32 +99,83 @@ recibido 30
 ## Write {#escribir fase=3}
 
 ```programa id=mostrador titulo="The kiosk window" ejecutar
+SubProceso Suspendible Cook(counter Como Canal<Entero>)
+  Para order <- 1 Hasta 3 Hacer
+    Definir accepted Como Logico <- Aguardar counter.Enviar(order);
+    Si No accepted Entonces
+      Escribir "The counter closed";
+    FinSi
+  FinPara
+  counter.Cerrar();
+FinSubProceso
+
+Algoritmo Kiosk
+  Definir counter Como Canal<Entero> <- Canal(2);
+  Tareas
+    Lanzar Cook(counter);
+    Definir delivered Como Entero <- 0;
+    Repetir
+      Segun Aguardar counter.Recibir() Hacer
+        Algo(order):
+          Escribir "I hand over order ", order;
+          delivered <- delivered + 1;
+        Nada: Salir;
+      FinSegun
+    Hasta Que Falso
+    Escribir "Delivered: ", delivered;
+  FinTareas
+FinAlgoritmo
 ```
 
 ```salida
-Entrego el pedido 1
-Entrego el pedido 2
-Entrego el pedido 3
-Entregados: 3
+I hand over order 1
+I hand over order 2
+I hand over order 3
+Delivered: 3
 ```
 
 The kitchen is a task; the window is the algorithm itself, which receives until the channel is closed. The count of deliveries is declared and changed inside the scope, next to whoever uses it.
 
 ## Test {#probar fase=4}
 
-Guaranteed: the order 1, 2, 3, because a channel delivers in the order it is sent, and `Entregados` at the end, because it is written after receiving everything.
+Guaranteed: the order 1, 2, 3, because a channel delivers in the order it is sent, and `Delivered` at the end, because it is written after receiving everything.
 
-Edge case: the kitchen closes without sending anything. The first `Receive` gives `None` and the window shows `Entregados: 0`.
+Edge case: the kitchen closes without sending anything. The first `Receive` gives `None` and the window shows `Delivered: 0`.
 
 Odd case: nobody closes the channel. The window waits forever for an order that never arrives, and the engine detects it:
 
 ```programa id=bloqueo titulo="A channel nobody closes" ejecutar
+SubProceso Suspendible Cook(counter Como Canal<Entero>)
+  Para order <- 1 Hasta 3 Hacer
+    Definir accepted Como Logico <- Aguardar counter.Enviar(order);
+    Si No accepted Entonces
+      Escribir "The counter closed";
+    FinSi
+  FinPara
+FinSubProceso
+
+Algoritmo Kiosk
+  Definir counter Como Canal<Entero> <- Canal(2);
+  Tareas
+    Lanzar Cook(counter);
+    Definir delivered Como Entero <- 0;
+    Repetir
+      Segun Aguardar counter.Recibir() Hacer
+        Algo(order):
+          Escribir "I hand over order ", order;
+          delivered <- delivered + 1;
+        Nada: Salir;
+      FinSegun
+    Hasta Que Falso
+    Escribir "Delivered: ", delivered;
+  FinTareas
+FinAlgoritmo
 ```
 
 ```salida
-Entrego el pedido 1
-Entrego el pedido 2
-Entrego el pedido 3
+I hand over order 1
+I hand over order 2
+I hand over order 3
 ```
 
 ```diagnosticos

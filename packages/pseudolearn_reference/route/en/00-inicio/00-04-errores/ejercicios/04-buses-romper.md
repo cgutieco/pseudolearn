@@ -12,15 +12,29 @@ This program computes how many 40-seat buses are needed. With 95 pupils it says 
 :::
 
 ```programa rol=defectuoso
+Algoritmo Buses
+  Definir pupils Como Entero;
+  Leer pupils;
+  Escribir pupils div 40 + 1;
+FinAlgoritmo
 ```
 
 ```programa rol=referencia
+Algoritmo Buses
+  Definir pupils Como Entero;
+  Leer pupils;
+  Escribir techo(pupils / 40);
+FinAlgoritmo
 ```
 
 ```casos
+visible | 95 | 3
 ```
 
 ```rompe
+80
+40
+120
 ```
 
 ::: pistas

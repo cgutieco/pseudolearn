@@ -68,13 +68,20 @@ A [[def:subprograma|subprogram]] is a piece of program with a name. Asking it to
 ```
 
 ```programa id=doble titulo="Double" ejecutar
+SubProceso Double(x Como Entero) Como Entero
+  Retornar x * 2;
+FinSubProceso
+
+Algoritmo Main
+  Escribir Double(21);
+FinAlgoritmo
 ```
 
 ```salida
 42
 ```
 
-The subprogram is written before the main algorithm. The call `Doble(21)` passes 21 as `x`, and what it returns takes its place.
+The subprogram is written before the main algorithm. The call `Double(21)` passes 21 as `x`, and what it returns takes its place.
 
 ::: especificacion
 - subprogramas.declaracion
@@ -86,6 +93,36 @@ The subprogram is written before the main algorithm. The call `Doble(21)` passes
 ## Write {#escribir fase=3}
 
 ```programa id=boletin titulo="The report card" ejecutar
+SubProceso Average(a Como Entero, b Como Entero, c Como Entero) Como Real
+  Retornar (a + b + c) / 3;
+FinSubProceso
+
+SubProceso Estado(average Como Real) Como Cadena
+  Si average >= 6 Entonces
+    Retornar "passed";
+  FinSi
+  Retornar "failed";
+FinSubProceso
+
+Algoritmo ReportCard
+  Definir name Como Cadena;
+  Definir m1, m2, m3 Como Entero;
+  Definir bestName Como Cadena <- "";
+  Definir bestAverage Como Real <- -1.0;
+  Para i <- 1 Hasta 4 Hacer
+    Leer name;
+    Leer m1;
+    Leer m2;
+    Leer m3;
+    Definir avg Como Real <- Average(m1, m2, m3);
+    Escribir name, ": ", avg, " ", Estado(avg);
+    Si avg > bestAverage Entonces
+      bestAverage <- avg;
+      bestName <- name;
+    FinSi
+  FinPara
+  Escribir "Best average: ", bestName;
+FinAlgoritmo
 ```
 
 ```entrada
@@ -108,11 +145,11 @@ Dani
 ```
 
 ```salida
-Ana: 9.0 aprobado
-Beto: 5.0 desaprobado
-Caro: 6.0 aprobado
-Dani: 7.0 aprobado
-Mejor promedio: Ana
+Ana: 9.0 passed
+Beto: 5.0 failed
+Caro: 6.0 passed
+Dani: 7.0 passed
+Best average: Ana
 ```
 
 The main algorithm reads almost like the tree: read, average, decide and find the best. The details of each job are in its subprogram.
@@ -122,12 +159,28 @@ The main algorithm reads almost like the tree: read, average, decide and find th
 Each subprogram can be tested on its own, before the whole report card:
 
 ```programa id=probar-partes titulo="Testing each part" ejecutar
+SubProceso Average(a Como Entero, b Como Entero, c Como Entero) Como Real
+  Retornar (a + b + c) / 3;
+FinSubProceso
+
+SubProceso Estado(average Como Real) Como Cadena
+  Si average >= 6 Entonces
+    Retornar "passed";
+  FinSi
+  Retornar "failed";
+FinSubProceso
+
+Algoritmo Tests
+  Escribir Average(6, 6, 6);
+  Escribir Estado(6.0);
+  Escribir Estado(5.9);
+FinAlgoritmo
 ```
 
 ```salida
 6.0
-aprobado
-desaprobado
+passed
+failed
 ```
 
 `Estado(6.0)` and `Estado(5.9)` are both sides of the edge. Then the whole report card with the data from the task gives the same as your worked example.
@@ -166,7 +219,7 @@ The school raises the pass mark to 7. A single line changes, inside `Estado`, an
 
 ::: profundizar titulo="Common pitfalls"
 - **A subprogram that does two things.** Describe it in one sentence without «and»; if you cannot, it is two subprograms.
-- **Names that do not say what they do.** `Calcular` or `Procesar` do not help: the name is half of the documentation.
+- **Names that do not say what they do.** `Calculate` or `Process` do not help: the name is half of the documentation.
 - **Forgetting the return.** A subprogram with a return type and no `Return` does not compile; the diagnostic says so.
 :::
 

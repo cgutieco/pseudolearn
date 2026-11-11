@@ -49,7 +49,7 @@ pie: The card is filled in before writing. If you cannot fill in a zone, you hav
 - ejemplo: 100 and 1 → total 110 → 110.
 :::
 
-The tip is computed as `cuenta div 10`, so as to always work with whole numbers.
+The tip is computed as `bill div 10`, so as to always work with whole numbers.
 
 ::: profundizar titulo="Why not multiply by 1.1?"
 Numbers with decimals are stored in the computer approximately, and `100 * 1.1` may give a value slightly different from 110. With whole numbers that does not happen. The full explanation is in [the Specification](especificacion:tipos.primitivos).
@@ -71,6 +71,12 @@ The [[def:entrada|input]] of a program is the data it receives while it runs. `R
 ```
 
 ```programa id=saludo titulo="A greeting" ejecutar
+Algoritmo Greeting
+  Definir name Como Cadena;
+  Escribir "What is your name?";
+  Leer name;
+  Escribir "Hello, ", name;
+FinAlgoritmo
 ```
 
 ```entrada
@@ -78,8 +84,8 @@ Lucía
 ```
 
 ```salida
-¿Cómo te llamas?
-Hola, Lucía
+What is your name?
+Hello, Lucía
 ```
 
 `Read` shows nothing: that is why, before each `Read`, a `Write` tells the person what to type.
@@ -91,6 +97,16 @@ Hola, Lucía
 ## Write {#escribir fase=3}
 
 ```programa id=propina titulo="Splitting the bill" ejecutar
+Algoritmo Tip
+  Definir bill Como Entero;
+  Definir friends Como Entero;
+  Escribir "How much is the bill?";
+  Leer bill;
+  Escribir "How many friends are paying?";
+  Leer friends;
+  Definir total Como Entero <- bill + bill div 10;
+  Escribir "Each one pays: ", techo(total / friends);
+FinAlgoritmo
 ```
 
 ```entrada
@@ -99,9 +115,9 @@ Hola, Lucía
 ```
 
 ```salida
-¿Cuánto es la cuenta?
-¿Cuántos amigos pagan?
-Cada uno paga: 33
+How much is the bill?
+How many friends are paying?
+Each one pays: 33
 ```
 
 ## Test {#probar fase=4}

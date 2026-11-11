@@ -12,6 +12,26 @@ Without running it, write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion
+SubProceso A(x Como Entero)
+  x <- x + 4;
+FinSubProceso
+
+SubProceso B(x Como Entero Por Referencia)
+  x <- x + 4;
+FinSubProceso
+
+Algoritmo Main
+  Definir n Como Entero <- 3;
+  A(n);
+  Escribir n;
+  B(n);
+  Escribir n;
+FinAlgoritmo
+```
+
+```salida
+3
+7
 ```
 
 ::: explicacion

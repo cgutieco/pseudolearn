@@ -62,7 +62,7 @@ paso: It finds it. With 15 numbers, you never need more than 4 steps.
 
 The plan of the binary search:
 
-1. What is possible goes from `bajo` (low) to `alto` (high): at first, from 1 to 100.
+1. What is possible goes from `low` to `high`: at first, from 1 to 100.
 2. Say the middle one.
 3. If the secret is greater, what is possible starts after the middle; if smaller, it ends before.
 4. Repeat until you get it.
@@ -89,6 +89,26 @@ paso: And 8 to fourth. The last one is already in its place.
 ## Write {#escribir fase=3}
 
 ```programa id=adivinar titulo="Guessing by halves" ejecutar
+Algoritmo Guess
+  Definir secret Como Entero;
+  Leer secret;
+  Definir low Como Entero <- 1;
+  Definir high Como Entero <- 100;
+  Definir middle Como Entero;
+  Definir attempts Como Entero <- 0;
+  Repetir
+    middle <- (low + high) div 2;
+    attempts <- attempts + 1;
+    Si middle < secret Entonces
+      low <- middle + 1;
+    Sino
+      Si middle > secret Entonces
+        high <- middle - 1;
+      FinSi
+    FinSi
+  Hasta Que middle = secret
+  Escribir "Attempts: ", attempts;
+FinAlgoritmo
 ```
 
 ```entrada
@@ -96,12 +116,38 @@ paso: And 8 to fourth. The last one is already in its place.
 ```
 
 ```salida
-Intentos: 3
+Attempts: 3
 ```
 
 The same idea works to search in a sorted array. This program searches for a number among fifteen and counts the steps:
 
 ```programa id=buscar-ordenado titulo="Binary search in an array" ejecutar
+Algoritmo SortedSearch
+  Dimension v[15] Como Entero;
+  Para i <- 0 Hasta 14 Hacer
+    v[i] <- i * 3 + 2;
+  FinPara
+  Definir searched Como Entero;
+  Leer searched;
+  Definir low Como Entero <- 0;
+  Definir high Como Entero <- 14;
+  Definir position Como Entero <- -1;
+  Definir steps Como Entero <- 0;
+  Mientras low <= high Y position = -1 Hacer
+    Definir middle Como Entero <- (low + high) div 2;
+    steps <- steps + 1;
+    Si v[middle] = searched Entonces
+      position <- middle;
+    Sino
+      Si v[middle] < searched Entonces
+        low <- middle + 1;
+      Sino
+        high <- middle - 1;
+      FinSi
+    FinSi
+  FinMientras
+  Escribir "Position: ", position, " in ", steps, " steps";
+FinAlgoritmo
 ```
 
 ```entrada
@@ -109,12 +155,32 @@ The same idea works to search in a sorted array. This program searches for a num
 ```
 
 ```salida
-Posición: 8 en 4 pasos
+Position: 8 in 4 steps
 ```
 
 And this is how five numbers are sorted with selection:
 
 ```programa id=seleccion titulo="Sorting by selection" ejecutar
+Algoritmo Selection
+  Dimension v[5] Como Entero;
+  Para i <- 0 Hasta 4 Hacer
+    Leer v[i];
+  FinPara
+  Para i <- 0 Hasta 3 Hacer
+    Definir smallest Como Entero <- i;
+    Para j <- i + 1 Hasta 4 Hacer
+      Si v[j] < v[smallest] Entonces
+        smallest <- j;
+      FinSi
+    FinPara
+    Definir saved Como Entero <- v[i];
+    v[i] <- v[smallest];
+    v[smallest] <- saved;
+  FinPara
+  Para Cada n En v Hacer
+    Escribir n;
+  FinPara
+FinAlgoritmo
 ```
 
 ```entrada
@@ -137,11 +203,11 @@ And this is how five numbers are sorted with selection:
 
 | Secret | By hand | The program |
 |---|---|---|
-| 1 | 50, 25, 12, 6, 3, 1 | Intentos: 6 |
-| 100 | 50, 75, 88, 94, 97, 99, 100 | Intentos: 7 |
-| 50 | 50 | Intentos: 1 |
+| 1 | 50, 25, 12, 6, 3, 1 | Attempts: 6 |
+| 100 | 50, 75, 88, 94, 97, 99, 100 | Attempts: 7 |
+| 50 | 50 | Attempts: 1 |
 
-The invariant of binary search is the sentence that makes it right: «if the number is there, it is between `bajo` and `alto`». Each pass shrinks that interval without leaving the secret out.
+The invariant of binary search is the sentence that makes it right: «if the number is there, it is between `low` and `high`». Each pass shrinks that interval without leaving the secret out.
 
 ## Improve {#mejorar fase=5}
 
@@ -150,6 +216,21 @@ In one sentence: «Guessing by halves never needs more than 7 attempts for 100 n
 Go back to the prime of [lesson 1.4](ruta:imperativo.contado). If a number has a divisor greater than its square root, it also has a smaller one. Trying while `d * d <= n` is enough:
 
 ```programa id=primo-rapido titulo="The prime, with fewer divisions" ejecutar
+Algoritmo FastPrime
+  Definir n Como Entero;
+  Leer n;
+  Definir isPrime Como Logico <- n >= 2;
+  Definir divisions Como Entero <- 0;
+  Definir d Como Entero <- 2;
+  Mientras d * d <= n Y isPrime Hacer
+    divisions <- divisions + 1;
+    Si n mod d = 0 Entonces
+      isPrime <- Falso;
+    FinSi
+    d <- d + 1;
+  FinMientras
+  Escribir isPrime, " with ", divisions, " divisions";
+FinAlgoritmo
 ```
 
 ```entrada
@@ -157,7 +238,7 @@ Go back to the prime of [lesson 1.4](ruta:imperativo.contado). If a number has a
 ```
 
 ```salida
-true con 8 divisiones
+Verdadero with 8 divisions
 ```
 
 With 97, from 95 divisions to 8.

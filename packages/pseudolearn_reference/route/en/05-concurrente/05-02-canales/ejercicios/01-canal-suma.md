@@ -12,6 +12,38 @@ Without running it, write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion
+SubProceso Suspendible Produce(queue Como Canal<Entero>)
+  Para valor <- 4 Hasta 6 Hacer
+    Definir accepted Como Logico <- Aguardar queue.Enviar(valor);
+    Si No accepted Entonces
+      Escribir "channel closed";
+    FinSi
+  FinPara
+  queue.Cerrar();
+FinSubProceso
+
+SubProceso Suspendible AddUp(queue Como Canal<Entero>)
+  Definir total Como Entero <- 0;
+  Repetir
+    Segun Aguardar queue.Recibir() Hacer
+      Algo(valor): total <- total + valor;
+      Nada: Salir;
+    FinSegun
+  Hasta Que Falso
+  Escribir total;
+FinSubProceso
+
+Algoritmo ChannelSum
+  Definir queue Como Canal<Entero> <- Canal(2);
+  Tareas
+    Lanzar Produce(queue);
+    Lanzar AddUp(queue);
+  FinTareas
+FinAlgoritmo
+```
+
+```salida
+15
 ```
 
 ::: explicacion

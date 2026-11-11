@@ -8,7 +8,7 @@ titulo: The tray
 ---
 
 ::: enunciado
-Read the portions of juices, of sandwiches and of fruit, and show the value of the tray with the format «Bandeja: 27 pesos». The prices are 3, 5 and 2 pesos.
+Read the portions of juices, of sandwiches and of fruit, and show the value of the tray with the format «Tray: 27 pesos». The prices are 3, 5 and 2 pesos.
 :::
 
 ::: restriccion
@@ -16,13 +16,36 @@ Each dish is computed in its own task, launched with `Spawn` inside a `Tasks` sc
 :::
 
 ```programa rol=referencia
+SubProceso Suspendible Cook(price Como Entero, portions Como Entero) Como Entero
+  Retornar price * portions;
+FinSubProceso
+
+Algoritmo Tray
+  Definir juices Como Entero;
+  Definir sandwiches Como Entero;
+  Definir fruits Como Entero;
+  Leer juices;
+  Leer sandwiches;
+  Leer fruits;
+  Tareas
+    Definir ofJuices Como Tarea<Entero> <- Lanzar Cook(3, juices);
+    Definir ofSandwiches Como Tarea<Entero> <- Lanzar Cook(5, sandwiches);
+    Definir ofFruits Como Tarea<Entero> <- Lanzar Cook(2, fruits);
+    Escribir "Tray: ", Aguardar ofJuices + Aguardar ofSandwiches + Aguardar ofFruits, " pesos";
+  FinTareas
+FinAlgoritmo
 ```
 
 ```casos
+visible | 3 ; 2 ; 4 | Tray: 27 pesos
+visible | 1 ; 1 ; 1 | Tray: 10 pesos
+oculto | 0 ; 0 ; 0 | Tray: 0 pesos
+oculto | 0 ; 2 ; 0 | Tray: 10 pesos
+oculto | 10 ; 10 ; 10 | Tray: 100 pesos
 ```
 
 ```aserciones
-- declara-subprograma | Cocinar | 2 | The subprogram Cocinar, which receives the price and the portions, is missing.
+- declara-subprograma | Cook | 2 | The subprogram Cook, which receives the price and the portions, is missing.
 ```
 
 ::: pistas

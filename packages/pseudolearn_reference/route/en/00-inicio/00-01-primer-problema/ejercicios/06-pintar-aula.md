@@ -12,12 +12,18 @@ The classroom walls add up to 54 square metres. They need two coats of paint. On
 :::
 
 ```programa rol=inicial
+Algoritmo Painting
+FinAlgoritmo
 ```
 
 ```programa rol=referencia
+Algoritmo Painting
+  Escribir techo(54 * 2 / 10 / 4);
+FinAlgoritmo
 ```
 
 ```casos
+visible | — | 3
 ```
 
 ::: pistas

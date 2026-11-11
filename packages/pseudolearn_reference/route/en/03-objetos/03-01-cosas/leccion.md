@@ -17,7 +17,7 @@ An object keeps its own state and knows how to do the operations that belong to 
 ## The problem {#problema}
 
 ::: problema
-The kiosk has **two vending machines**. Each one has its **stock** of cans, the **money** collected and the **price**, 3 pesos. The current program uses `stock1`, `dinero1`, `stock2` and `dinero2`, and repeats the selling code for each machine. Yesterday, a sale at machine 1 took a can off machine 2.
+The kiosk has **two vending machines**. Each one has its **stock** of cans, the **money** collected and the **price**, 3 pesos. The current program uses `stock1`, `money1`, `stock2` and `money2`, and repeats the selling code for each machine. Yesterday, a sale at machine 1 took a can off machine 2.
 
 **How is it written so that each machine looks after its own data?**
 :::
@@ -28,6 +28,17 @@ The kiosk has **two vending machines**. Each one has its **stock** of cans, the 
 Find in this program the line that takes off from the wrong machine.
 
 ```programa id=maquinas-sueltas titulo="Two machines with loose boxes"
+Algoritmo Machines
+  Definir stock1, money1, stock2, money2 Como Entero;
+  stock1 <- 10;
+  money1 <- 0;
+  stock2 <- 10;
+  money2 <- 0;
+  stock1 <- stock1 - 1;
+  money1 <- money1 + 3;
+  stock2 <- stock2 - 1;
+  money1 <- money1 + 3;
+FinAlgoritmo
 ```
 :::
 
@@ -71,13 +82,35 @@ The [[def:constructor|constructor]] is the method that prepares a new object wit
 ```
 
 ```programa id=contador titulo="A counter" ejecutar
+Clase Counter
+  Definir valor Como Entero;
+
+  Metodo Constructor()
+    Este.valor <- 0;
+  FinMetodo
+
+  Metodo Increment()
+    Este.valor <- Este.valor + 1;
+  FinMetodo
+
+  Metodo Current() Como Entero
+    Retornar Este.valor;
+  FinMetodo
+FinClase
+
+Algoritmo Count
+  Definir steps Como Counter <- Nuevo Counter();
+  steps.Increment();
+  steps.Increment();
+  Escribir steps.Current();
+FinAlgoritmo
 ```
 
 ```salida
 2
 ```
 
-Inside a method, `This` is the object that received the call: `pasos.Incrementar()` changes the value of `pasos` and of no other counter.
+Inside a method, `This` is the object that received the call: `steps.Increment()` changes the value of `steps` and of no other counter.
 
 ::: especificacion
 - objetos.clase
@@ -88,32 +121,85 @@ Inside a method, `This` is the object that received the call: `pasos.Incrementar
 ## Write {#escribir fase=3}
 
 ```programa id=maquinas titulo="Two machines that look after themselves" ejecutar
+Clase Machine
+  Definir stock, collected, price Como Entero;
+
+  Metodo Constructor(cans Como Entero)
+    Este.stock <- cans;
+    Este.collected <- 0;
+    Este.price <- 3;
+  FinMetodo
+
+  Metodo Sell() Como Logico
+    Si Este.stock = 0 Entonces
+      Retornar Falso;
+    FinSi
+    Este.stock <- Este.stock - 1;
+    Este.collected <- Este.collected + Este.price;
+    Retornar Verdadero;
+  FinMetodo
+
+  Metodo Estado() Como Cadena
+    Retornar ConvertirATexto(Este.stock) + " cans, " + ConvertirATexto(Este.collected) + " pesos";
+  FinMetodo
+FinClase
+
+Algoritmo Kiosk
+  Definir machineOne Como Machine <- Nuevo Machine(10);
+  Definir machineTwo Como Machine <- Nuevo Machine(10);
+  Escribir machineOne.Sell(), " ", machineOne.Sell(), " ", machineTwo.Sell();
+  Escribir "Machine 1: ", machineOne.Estado();
+  Escribir "Machine 2: ", machineTwo.Estado();
+FinAlgoritmo
 ```
 
 ```salida
-true true true
-Máquina 1: 8 latas, 6 pesos
-Máquina 2: 9 latas, 3 pesos
+Verdadero Verdadero Verdadero
+Machine 1: 8 cans, 6 pesos
+Machine 2: 9 cans, 3 pesos
 ```
 
-Each `Vender()` returns whether it could sell: all three times, yes. There is no longer a way to sell at one machine and take off at another: each sale is asked of a machine, and the machine changes only its own data.
+Each `Sell()` returns whether it could sell: all three times, yes. There is no longer a way to sell at one machine and take off at another: each sale is asked of a machine, and the machine changes only its own data.
 
 ## Test {#probar fase=4}
 
-A machine without cans does not sell: `Vender` returns false and changes nothing.
+A machine without cans does not sell: `Sell` returns false and changes nothing.
 
 ```programa id=sin-stock titulo="An empty machine" ejecutar
+Clase Machine
+  Definir stock, collected, price Como Entero;
+
+  Metodo Constructor(cans Como Entero)
+    Este.stock <- cans;
+    Este.collected <- 0;
+    Este.price <- 3;
+  FinMetodo
+
+  Metodo Sell() Como Logico
+    Si Este.stock = 0 Entonces
+      Retornar Falso;
+    FinSi
+    Este.stock <- Este.stock - 1;
+    Este.collected <- Este.collected + Este.price;
+    Retornar Verdadero;
+  FinMetodo
+FinClase
+
+Algoritmo Empty
+  Definir machine Como Machine <- Nuevo Machine(0);
+  Escribir machine.Sell(), " ", machine.stock, " ", machine.collected;
+FinAlgoritmo
 ```
 
 ```salida
-false 0 0
+Falso 0 0
 ```
 
 ## Improve {#mejorar fase=5}
 
 In one sentence: «Each machine is an object that keeps its cans and its money, and knows how to sell without touching the others».
 
-A third machine is one more line: `New Maquina(10)`.
+A third machine is one more line: `New Machine(10)`.
 
 | | Loose boxes | Objects |
 |---|---|---|

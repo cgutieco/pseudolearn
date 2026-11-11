@@ -87,6 +87,20 @@ paso: Days 13 and 14: a streak of 2 that ends with the data. It is checked after
 There is no new construction: you combine the ones you know. A follower can also remember just the previous value. For example, to count how many times a day was hotter than the one before:
 
 ```programa id=subidas titulo="How many times did it go up?" ejecutar
+Algoritmo Rises
+  Dimension t[4] Como Entero;
+  t[0] <- 20;
+  t[1] <- 22;
+  t[2] <- 21;
+  t[3] <- 25;
+  Definir rises Como Entero <- 0;
+  Para i <- 1 Hasta 3 Hacer
+    Si t[i] > t[i - 1] Entonces
+      rises <- rises + 1;
+    FinSi
+  FinPara
+  Escribir rises;
+FinAlgoritmo
 ```
 
 ```salida
@@ -96,6 +110,36 @@ There is no new construction: you combine the ones you know. A follower can also
 ## Write {#escribir fase=3}
 
 ```programa id=olas titulo="The heat waves" ejecutar
+Algoritmo Waves
+  Dimension t[14] Como Entero;
+  Para i <- 0 Hasta 13 Hacer
+    Leer t[i];
+  FinPara
+  Definir streak Como Entero <- 0;
+  Definir waves Como Entero <- 0;
+  Definir longest Como Entero <- 0;
+  Para Cada temperature En t Hacer
+    Si temperature > 30 Entonces
+      streak <- streak + 1;
+    Sino
+      Si streak >= 3 Entonces
+        waves <- waves + 1;
+        Si streak > longest Entonces
+          longest <- streak;
+        FinSi
+      FinSi
+      streak <- 0;
+    FinSi
+  FinPara
+  Si streak >= 3 Entonces
+    waves <- waves + 1;
+    Si streak > longest Entonces
+      longest <- streak;
+    FinSi
+  FinSi
+  Escribir "Waves: ", waves;
+  Escribir "Longest: ", longest;
+FinAlgoritmo
 ```
 
 ```entrada
@@ -116,8 +160,8 @@ There is no new construction: you combine the ones you know. A follower can also
 ```
 
 ```salida
-Olas: 2
-La más larga: 4
+Waves: 2
+Longest: 4
 ```
 
 Look at the `If` that comes **after** the loop: it closes the last streak, the one that had not broken yet when the data ran out.
@@ -126,16 +170,16 @@ Look at the `If` that comes **after** the loop: it closes the last streak, the o
 
 | Case | By hand | The program |
 |---|---|---|
-| The one in the task | 2 waves, the longest of 4 | Olas: 2 ⏎ La más larga: 4 |
-| The last three days above 30 | 1 wave of 3 | Olas: 1 ⏎ La más larga: 3 |
-| No day above 30 | 0 waves | Olas: 0 ⏎ La más larga: 0 |
-| A streak of exactly 3 | 1 wave of 3 | Olas: 1 ⏎ La más larga: 3 |
+| The one in the task | 2 waves, the longest of 4 | Waves: 2 ⏎ Longest: 4 |
+| The last three days above 30 | 1 wave of 3 | Waves: 1 ⏎ Longest: 3 |
+| No day above 30 | 0 waves | Waves: 0 ⏎ Longest: 0 |
+| A streak of exactly 3 | 1 wave of 3 | Waves: 1 ⏎ Longest: 3 |
 
 ## Improve {#mejorar fase=5}
 
 In one sentence: «The program follows the streak of hot days, counts the ones that reach 3 and remembers the longest».
 
-What if a wave became 4 or more days? You have to change the 3 in two places. If the 3 were in a box with a name, such as `diasDeOla`, you would change it in only one.
+What if a wave became 4 or more days? You have to change the 3 in two places. If the 3 were in a box with a name, such as `waveDays`, you would change it in only one.
 
 ## What you learned {#aprendiste}
 

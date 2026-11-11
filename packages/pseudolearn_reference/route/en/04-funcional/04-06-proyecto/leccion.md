@@ -34,14 +34,14 @@ The amounts are 9, 10, 2 and 3. The total is **24**; with discount, **22**. **2*
 
 ## Understand {#entender fase=1}
 
-The format of the report is exact; the texts stay in Spanish, as the program writes them. For the example in the task:
+The format of the report is exact; the texts are exactly those the program writes. For the example in the task:
 
 - `Total: 24`
-- `Con descuento: 22`
-- `Ventas de más de 5 pesos: 2`
-- `Producto estrella: Jugo`
+- `With discount: 22`
+- `Sales over 5 pesos: 2`
+- `Star product: Juice`
 
-A day without sales shows everything at 0 and `Producto estrella: Ninguno`. If two products tie in units, the one with the lowest code wins.
+A day without sales shows everything at 0 and `Star product: None`. If two products tie in units, the one with the lowest code wins.
 
 The first exercise asks you to separate the jobs of the core and of the edge.
 
@@ -54,7 +54,7 @@ The second exercise asks you to order the steps of the plan. Think about what is
 
 ## Write {#escribir fase=3}
 
-The third exercise is the complete program. Start with the small functions, which are tested on their own: the price, the amount and the discount. Then `Mapear`, `Filtrar` and `Reducir`. For the star product, a function factory that counts the units of a code, as in [lesson 4.3](ruta:funcional.clausuras).
+The third exercise is the complete program. Start with the small functions, which are tested on their own: the price, the amount and the discount. Then `Map`, `Filter` and `Reduce`. For the star product, a function factory that counts the units of a code, as in [lesson 4.3](ruta:funcional.clausuras).
 
 ## Test {#probar fase=4}
 

@@ -12,18 +12,18 @@ Place each piece of the kiosk in the file it belongs to.
 :::
 
 ```categorias
-- inventario
-- ventas
-- tickets
+- inventory
+- sales
+- receipts
 ```
 
 ```elementos
-- `AgregarStock` | inventario
-- `QuitarStock` | inventario
-- `Importe` | ventas
-- `ConDescuento` | ventas
-- `LineaDeTicket` | tickets
-- `CerrarTicket` | tickets
+- `AddStock` | inventory
+- `RemoveStock` | inventory
+- `Amount` | sales
+- `WithDiscount` | sales
+- `ReceiptLine` | receipts
+- `CloseReceipt` | receipts
 ```
 
 ::: explicacion

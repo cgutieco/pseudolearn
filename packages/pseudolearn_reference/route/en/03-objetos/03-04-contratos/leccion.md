@@ -49,9 +49,9 @@ pie: The till is a socket; each payment method, an appliance with the same plug.
 ```figura-especificacion seccion=objetos.interfaces figura=interfaz-promesa
 ```
 
-Using objects of different classes through the same contract is [[def:polimorfismo|polymorphism]]. When the till asks `medio.Cobrar(monto)`, the engine chooses, while running, the method of the real class of the object it received: that is [[def:despacho-dinamico|dynamic dispatch]].
+Using objects of different classes through the same contract is [[def:polimorfismo|polymorphism]]. When the till asks `payment.Charge(amount)`, the engine chooses, while running, the method of the real class of the object it received: that is [[def:despacho-dinamico|dynamic dispatch]].
 
-In PseudoLearn an interface is not used as the type of a variable: it is used as the condition on the type of a parameter. `CobrarCon<T: MedioDePago>` accepts any class that meets the contract. The details are in [the Specification](especificacion:objetos.interfaces).
+In PseudoLearn an interface is not used as the type of a variable: it is used as the condition on the type of a parameter. `ChargeWith<T: PaymentMethod>` accepts any class that meets the contract. The details are in [the Specification](especificacion:objetos.interfaces).
 
 ::: especificacion
 - objetos.interfaces
@@ -60,15 +60,55 @@ In PseudoLearn an interface is not used as the type of a variable: it is used as
 ## Write {#escribir fase=3}
 
 ```programa id=medios-de-pago titulo="The till that accepts any method" ejecutar
+Interfaz PaymentMethod
+  Metodo Charge(amount Como Entero) Como Entero;
+FinInterfaz
+
+Clase Cash Realiza PaymentMethod
+  Metodo Charge(amount Como Entero) Como Entero
+    Retornar amount;
+  FinMetodo
+FinClase
+
+Clase Card Realiza PaymentMethod
+  Metodo Charge(amount Como Entero) Como Entero
+    Retornar amount + amount * 5 div 100;
+  FinMetodo
+FinClase
+
+Clase Voucher Realiza PaymentMethod
+  Privado Definir available Como Entero;
+
+  Metodo Constructor(balance Como Entero)
+    Este.available <- balance;
+  FinMetodo
+
+  Metodo Charge(amount Como Entero) Como Entero
+    Si amount > Este.available Entonces
+      Retornar Este.available;
+    FinSi
+    Retornar amount;
+  FinMetodo
+FinClase
+
+SubProceso ChargeWith<T: PaymentMethod>(payment Como T, amount Como Entero) Como Entero
+  Retornar payment.Charge(amount);
+FinSubProceso
+
+Algoritmo Till
+  Escribir "Cash: ", ChargeWith(Nuevo Cash(), 20);
+  Escribir "Card: ", ChargeWith(Nuevo Card(), 20);
+  Escribir "Voucher: ", ChargeWith(Nuevo Voucher(15), 20);
+FinAlgoritmo
 ```
 
 ```salida
-Efectivo: 20
-Tarjeta: 21
-Vale: 15
+Cash: 20
+Card: 21
+Voucher: 15
 ```
 
-`CobrarCon` does not know which methods exist: it only knows that the one it receives meets the contract `MedioDePago`.
+`ChargeWith` does not know which methods exist: it only knows that the one it receives meets the contract `PaymentMethod`.
 
 ## Test {#probar fase=4}
 
@@ -83,7 +123,7 @@ Vale: 15
 
 In one sentence: «The till asks a payment method that meets the contract to charge, without knowing which one it is».
 
-Adding the transfer is writing a new class that implements `MedioDePago`. `CobrarCon` does not change. With the `Switch`, instead, you had to add a case in the till and anywhere else that chose by payment method.
+Adding the transfer is writing a new class that implements `PaymentMethod`. `ChargeWith` does not change. With the `Switch`, instead, you had to add a case in the till and anywhere else that chose by payment method.
 
 ## What you learned {#aprendiste}
 

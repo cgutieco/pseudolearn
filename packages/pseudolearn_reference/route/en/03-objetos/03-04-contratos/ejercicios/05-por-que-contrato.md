@@ -8,7 +8,7 @@ titulo: What does the till gain?
 ---
 
 ::: enunciado
-What does the till gain by depending on the contract `MedioDePago` instead of knowing each way of paying?
+What does the till gain by depending on the contract `PaymentMethod` instead of knowing each way of paying?
 :::
 
 ```opciones
