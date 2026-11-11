@@ -190,7 +190,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Las opciones son --ayuda (--help), --idioma (--language) con es o en, --vocabulario (--vocabulary) con es o en, --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --salida (--output, -o) y --json. Los alias se aceptan siempre. Una opción desconocida o un valor no válido es un uso incorrecto.",
+  "texto": "Las opciones son --ayuda (--help), --idioma (--language) con es o en, --vocabulario (--vocabulary) con es o en, --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --salida (--output, -o) y --json. Los alias se aceptan siempre. La ayuda lista todas las órdenes del binario con su alias, incluidas bloquear (lock), formatear (format), traducir (translate), lsp, dap y mcp, y todas las opciones, incluidas --proyecto (--project) y --entrada (--entry). Una opción desconocida o un valor no válido es un uso incorrecto.",
   "verificacion": [
     "C5",
     "C6",
@@ -211,7 +211,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 0,
-    "salida": "Uso: pseudo <orden> [opciones] <archivo>...\nÓrdenes: comprobar (check), ejecutar (run), ri (ir), preferencias (preferences)\nOpciones: --ayuda (--help), --idioma (--language), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --json\n",
+    "salida": "Uso: pseudo <orden> [opciones] <archivo>...\nÓrdenes: comprobar (check), ejecutar (run), compilar (build), formatear (format), traducir (translate), ri (ir), bloquear (lock), preferencias (preferences), lsp, dap, mcp\nOpciones: --ayuda (--help), --idioma (--language), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --salida (--output), --proyecto (--project), --entrada (--entry), --json\n",
     "salida_error": ""
   },
   "cli": {
@@ -234,7 +234,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 0,
-    "salida": "Uso: pseudo <orden> [opciones] <archivo>...\nÓrdenes: comprobar (check), ejecutar (run), ri (ir), preferencias (preferences)\nOpciones: --ayuda (--help), --idioma (--language), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --json\n",
+    "salida": "Uso: pseudo <orden> [opciones] <archivo>...\nÓrdenes: comprobar (check), ejecutar (run), compilar (build), formatear (format), traducir (translate), ri (ir), bloquear (lock), preferencias (preferences), lsp, dap, mcp\nOpciones: --ayuda (--help), --idioma (--language), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --salida (--output), --proyecto (--project), --entrada (--entry), --json\n",
     "salida_error": ""
   },
   "cli": {
@@ -606,7 +606,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 0,
-    "salida": "Usage: pseudo <command> [options] <file>...\nCommands: check (comprobar), run (ejecutar), ir (ri), preferences (preferencias)\nOptions: --help (--ayuda), --language (--idioma), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --json\n",
+    "salida": "Usage: pseudo <command> [options] <file>...\nCommands: check (comprobar), run (ejecutar), build (compilar), format (formatear), translate (traducir), ir (ri), lock (bloquear), preferences (preferencias), lsp, dap, mcp\nOptions: --help (--ayuda), --language (--idioma), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --output (--salida), --project (--proyecto), --entry (--entrada), --json\n",
     "salida_error": ""
   },
   "cli": {

@@ -50,16 +50,16 @@
     },
     "helpCommands": {
       "mensajes": {
-        "es": "Órdenes: comprobar (check), ejecutar (run), ri (ir), preferencias (preferences)",
-        "en": "Commands: check (comprobar), run (ejecutar), ir (ri), preferences (preferencias)"
+        "es": "Órdenes: comprobar (check), ejecutar (run), compilar (build), formatear (format), traducir (translate), ri (ir), bloquear (lock), preferencias (preferences), lsp, dap, mcp",
+        "en": "Commands: check (comprobar), run (ejecutar), build (compilar), format (formatear), translate (traducir), ir (ri), lock (bloquear), preferences (preferencias), lsp, dap, mcp"
       },
       "argumentos": [],
       "tipos_argumentos": {}
     },
     "helpOptions": {
       "mensajes": {
-        "es": "Opciones: --ayuda (--help), --idioma (--language), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --json",
-        "en": "Options: --help (--ayuda), --language (--idioma), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --json"
+        "es": "Opciones: --ayuda (--help), --idioma (--language), --vocabulario (--vocabulary), --traza (--trace), --semilla (--seed), --profundidad (--depth), --sentencias (--statements), --celdas (--cells), --salida (--output), --proyecto (--project), --entrada (--entry), --json",
+        "en": "Options: --help (--ayuda), --language (--idioma), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --output (--salida), --project (--proyecto), --entry (--entrada), --json"
       },
       "argumentos": [],
       "tipos_argumentos": {}
@@ -608,7 +608,7 @@
   "operacion": "cli",
   "espera": {
     "codigo_salida": 0,
-    "salida": "Usage: pseudo <command> [options] <file>...\nCommands: check (comprobar), run (ejecutar), ir (ri), preferences (preferencias)\nOptions: --help (--ayuda), --language (--idioma), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --json\n",
+    "salida": "Usage: pseudo <command> [options] <file>...\nCommands: check (comprobar), run (ejecutar), build (compilar), format (formatear), translate (traducir), ir (ri), lock (bloquear), preferences (preferencias), lsp, dap, mcp\nOptions: --help (--ayuda), --language (--idioma), --vocabulary (--vocabulario), --trace (--traza), --seed (--semilla), --depth (--profundidad), --statements (--sentencias), --cells (--celdas), --output (--salida), --project (--proyecto), --entry (--entrada), --json\n",
     "salida_error": ""
   },
   "cli": {
