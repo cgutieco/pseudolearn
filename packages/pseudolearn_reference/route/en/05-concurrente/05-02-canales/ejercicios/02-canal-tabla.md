@@ -13,8 +13,8 @@ Complete the table of the task that adds: the message received and the total, on
 
 ```programa rol=objeto id=traza
 SubProceso Suspendible Produce(queue Como Canal<Entero>)
-  Para valor <- 4 Hasta 6 Hacer
-    Definir accepted Como Logico <- Aguardar queue.Enviar(valor);
+  Para latest <- 4 Hasta 6 Hacer
+    Definir accepted Como Logico <- Aguardar queue.Enviar(latest);
     Si No accepted Entonces
       Escribir "channel closed";
     FinSi
@@ -24,12 +24,12 @@ FinSubProceso
 
 SubProceso Suspendible AddUp(queue Como Canal<Entero>)
   Definir total Como Entero <- 0;
-  Definir valor Como Entero <- 0;
+  Definir latest Como Entero <- 0;
   Repetir
     Segun Aguardar queue.Recibir() Hacer
       Algo(received):
-        valor <- received;
-        total <- total + valor;
+        latest <- received;
+        total <- total + latest;
       Nada: Salir;
     FinSegun
   Hasta Que Falso
@@ -49,7 +49,10 @@ FinAlgoritmo
 15
 ```
 
-```vueltas marca=19 columnas=valor,total
+```vueltas marca=19 columnas=latest,total
+1 | 4 | ?4
+2 | ?5 | ?9
+3 | ?6 | ?15
 ```
 
 ::: explicacion

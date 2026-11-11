@@ -57,8 +57,8 @@ This way of sharing the work has a name: the [[def:productor-consumidor|producer
 
 ```programa id=tuberia-mini titulo="A small pipeline" ejecutar
 SubProceso Suspendible Produce(queue Como Canal<Entero>)
-  Para valor <- 10 Hasta 30 Con Paso 10 Hacer
-    Definir accepted Como Logico <- Aguardar queue.Enviar(valor);
+  Para number <- 10 Hasta 30 Con Paso 10 Hacer
+    Definir accepted Como Logico <- Aguardar queue.Enviar(number);
     Si No accepted Entonces
       Escribir "channel closed";
     FinSi
@@ -69,7 +69,7 @@ FinSubProceso
 SubProceso Suspendible Consume(queue Como Canal<Entero>)
   Repetir
     Segun Aguardar queue.Recibir() Hacer
-      Algo(valor): Escribir "received ", valor;
+      Algo(number): Escribir "received ", number;
       Nada: Salir;
     FinSegun
   Hasta Que Falso

@@ -16,7 +16,7 @@ Algoritmo ValidOrNot
   Definir text Como Cadena;
   Leer text;
   Segun AnalizarJson(text) Hacer
-    Exito(valor): Escribir "Valid: ", valor.Tipo();
+    Exito(parsed): Escribir "Valid: ", parsed.Tipo();
     Error(report): Escribir report.Codigo, " at column ", report.JsonColumna;
   FinSegun
 FinAlgoritmo

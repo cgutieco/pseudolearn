@@ -92,8 +92,8 @@ FinSubProceso
 Funcion stock <- SavedStock(inventory Como ValorJson, product Como Product)
   Definir stock Como Entero <- product.stock;
   Segun inventory.Campo(product.name) Hacer
-    Algo(valor):
-      Segun valor.ComoEntero() Hacer
+    Algo(parsed):
+      Segun parsed.ComoEntero() Hacer
         Algo(saved): stock <- saved;
         Nada: stock <- product.stock;
       FinSegun
@@ -241,8 +241,8 @@ FinSubProceso
 Funcion stock <- SavedStock(inventory Como ValorJson, product Como Product)
   Definir stock Como Entero <- product.stock;
   Segun inventory.Campo(product.name) Hacer
-    Algo(valor):
-      Segun valor.ComoEntero() Hacer
+    Algo(parsed):
+      Segun parsed.ComoEntero() Hacer
         Algo(saved): stock <- saved;
         Nada: stock <- product.stock;
       FinSegun

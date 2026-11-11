@@ -120,7 +120,7 @@ FinSubProceso
 
 Algoritmo Deliveries
   Definir order Como Order <- Order.Pending;
-  Para paso <- 1 Hasta 3 Hacer
+  Para turn <- 1 Hasta 3 Hacer
     Escribir Describe(order);
     Segun Advance(order, "Sol", 14) Hacer
       Exito(next): order <- next;

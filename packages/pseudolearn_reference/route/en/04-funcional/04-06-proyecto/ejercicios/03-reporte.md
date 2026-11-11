@@ -20,19 +20,19 @@ Registro Sale
   Definir code, quantity Como Entero;
 FinRegistro
 
-Funcion valor <- PriceOf(code Como Entero)
-  Definir valor Como Entero;
+Funcion price <- PriceOf(code Como Entero)
+  Definir price Como Entero;
   Segun code Hacer
     1:
-      valor <- 3;
+      price <- 3;
     2:
-      valor <- 5;
+      price <- 5;
     3:
-      valor <- 2;
+      price <- 2;
     4:
-      valor <- 1;
+      price <- 1;
     De Otro Modo:
-      valor <- 2;
+      price <- 2;
   FinSegun
 FinFuncion
 

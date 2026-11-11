@@ -86,7 +86,7 @@ Funcion text <- InventoryJson()
   text <- "{" + JsonPair("juice", 10) + ", " + JsonPair("sandwich", 5) + ", " + JsonPair("biscuit", 8) + ", " + JsonPair("water", 12) + ", " + JsonPair("fruit", 6) + "}";
 FinFuncion
 
-Algoritmo Exportar
+Algoritmo ExportInventory
   Definir text Como Cadena <- InventoryJson();
   Escribir text;
   Segun AnalizarJson(text) Hacer

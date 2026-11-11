@@ -83,18 +83,18 @@ The [[def:constructor|constructor]] is the method that prepares a new object wit
 
 ```programa id=contador titulo="A counter" ejecutar
 Clase Counter
-  Definir valor Como Entero;
+  Definir count Como Entero;
 
   Metodo Constructor()
-    Este.valor <- 0;
+    Este.count <- 0;
   FinMetodo
 
   Metodo Increment()
-    Este.valor <- Este.valor + 1;
+    Este.count <- Este.count + 1;
   FinMetodo
 
   Metodo Current() Como Entero
-    Retornar Este.valor;
+    Retornar Este.count;
   FinMetodo
 FinClase
 

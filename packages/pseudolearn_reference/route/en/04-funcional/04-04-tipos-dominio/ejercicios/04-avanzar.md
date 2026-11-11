@@ -49,7 +49,7 @@ Algoritmo Advances
   FinSi
   Leer times;
   Definir problem Como Cadena <- "";
-  Para paso <- 1 Hasta times Hacer
+  Para turn <- 1 Hasta times Hacer
     Si problem = "" Entonces
       Segun Advance(order, "Sol", 14) Hacer
         Exito(next): order <- next;

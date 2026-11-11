@@ -38,7 +38,7 @@ Algoritmo DateCheck
   Leer day;
   Leer month;
   Segun ValidateDate(day, month) Hacer
-    Exito(valor): Escribir "valid";
+    Exito(parsed): Escribir "valid";
     Error(reason): Escribir reason;
   FinSegun
 FinAlgoritmo

@@ -135,10 +135,10 @@ Algoritmo Orders
   Definir shallow Como Order <- Copiar(order);
   shallow.Agregar("Fruit");
   Escribir "Original: ", order.Receipt();
-  Definir otro Como Order <- order.Duplicate();
-  otro.Agregar("Water");
+  Definir copy Como Order <- order.Duplicate();
+  copy.Agregar("Water");
   Escribir "Original: ", order.Receipt();
-  Escribir "Another: ", otro.Receipt();
+  Escribir "Another: ", copy.Receipt();
 FinAlgoritmo
 ```
 
