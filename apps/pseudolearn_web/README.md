@@ -78,6 +78,7 @@ flowchart LR
   `entities/learning-route/generated/`, el símbolo de marca, `src/assets/brand/social-card.svg`, `public/og-image.png` y
   las
   capturas de `src/assets/product/`) no se editan a mano (`GEN-NO-HAND-COPY`); sin comentarios en el código.
+- **`NodoGlyph` importa su geometría** de `nodo-glyph.generated.ts`, que emite `pseudolearn_brand` (`python3 -m pseudolearn_brand build`); no se versiona.
 
 ## Decisiones de la versión 2.0.0
 
@@ -121,9 +122,10 @@ flowchart LR
 - **La guía de SmartScreen va plegada** dentro de la tarjeta de Windows: Microsoft Store es la vía principal.
 - **Nodo sin precio fijo.** La web muestra créditos y días y remite al precio en tu moneda de cada tienda. Los valores
   de
-  `entities/nodo-plan` repiten las constantes de créditos del backend (`agent-responses/domain/credits.ts`).
-- **Glifo de Nodo.** `NodoGlyph` reproduce en SVG la geometría de `agent_glyph_painter.dart` de la app; si el glifo
-  cambia allí, se cambia aquí en el mismo cambio.
+  `entities/nodo-plan` repiten las constantes de créditos del backend (`agent-responses/domain/credits.ts`) y
+  `pnpm check:plan-constants` las contrasta con ellas.
+- **Glifo de Nodo.** `NodoGlyph` dibuja la geometría que emite `pseudolearn_brand`; el pintor de la app
+  (`agent_glyph_painter.dart`) la conserva y el motor de marca falla con `BRAND-NODO-DRIFT` si diverge.
 - **Imagen de previsualización generada.** Las etiquetas `og:image` y `twitter:image` de `SeoHead` apuntan a
   `/og-image.png` (1200×630). La tarjeta (`social-card.svg`) la dibuja el motor de marca;
   `scripts/generate-og-image.mjs` la

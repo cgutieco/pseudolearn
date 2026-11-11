@@ -31,10 +31,11 @@
     "check:routes": "node scripts/check-route-parity.mjs",
     "check:comments": "node scripts/check-no-comments.mjs",
     "check:brand": "node scripts/check-brand.mjs",
+    "check:plan-constants": "node scripts/check-plan-constants.mjs",
     "check:css-scope": "node scripts/check-css-scope.mjs",
     "check:size": "node scripts/check-size.mjs",
     "check:budget": "node scripts/check-budget.mjs",
-    "check:static": "pnpm check:architecture && pnpm check:i18n && pnpm check:text && pnpm check:routes && pnpm check:comments && pnpm check:brand && pnpm check:css-scope && pnpm check:size",
+    "check:static": "pnpm check:architecture && pnpm check:i18n && pnpm check:text && pnpm check:routes && pnpm check:comments && pnpm check:brand && pnpm check:plan-constants && pnpm check:css-scope && pnpm check:size",
     "check:all": "pnpm format:check && pnpm lint && pnpm lint:css && pnpm check:types && pnpm check:static && pnpm test && pnpm build && pnpm check:budget"
   },
   "dependencies": {

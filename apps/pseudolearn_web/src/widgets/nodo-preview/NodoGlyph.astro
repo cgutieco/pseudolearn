@@ -5,29 +5,51 @@ export interface Props {
   ceremony?: boolean;
 }
 
+import {
+  NODO_GLYPH_EYES,
+  NODO_GLYPH_GRID,
+  NODO_GLYPH_NODE,
+  NODO_GLYPH_SPARKLE_ORIGIN,
+  NODO_GLYPH_SPARKLE_PATH,
+  NODO_GLYPH_STROKE,
+  NODO_GLYPH_WIRE_PATH,
+} from './nodo-glyph.generated';
+
 const { size = 24, label, ceremony = false } = Astro.props;
-const SPARKLE = 'M0 -4Q.6 -.6 4 0Q.6 .6 0 4Q-.6 .6 -4 0Q-.6 -.6 0 -4Z';
 ---
 
 <svg
   class:list={['nodo-glyph', { 'nodo-glyph--ceremony': ceremony }]}
-  viewBox="0 0 24 24"
+  viewBox={`0 0 ${NODO_GLYPH_GRID} ${NODO_GLYPH_GRID}`}
   width={size}
   height={size}
   role={label ? 'img' : undefined}
   aria-label={label}
   aria-hidden={label ? undefined : 'true'}
 >
-  <g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle class="nodo-glyph__node" cx="9" cy="15" r="5" pathLength="1"></circle>
-    <path class="nodo-glyph__wire" d="M9 10V6.5h4.5" pathLength="1"></path>
+  <g
+    fill="none"
+    stroke="currentColor"
+    stroke-width={NODO_GLYPH_STROKE}
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <circle
+      class="nodo-glyph__node"
+      cx={NODO_GLYPH_NODE.cx}
+      cy={NODO_GLYPH_NODE.cy}
+      r={NODO_GLYPH_NODE.r}
+      pathLength="1"
+    ></circle>
+    <path class="nodo-glyph__wire" d={NODO_GLYPH_WIRE_PATH} pathLength="1"></path>
   </g>
   <g class="nodo-glyph__eyes">
-    <circle cx="7.25" cy="14.5" r="0.9" fill="currentColor"></circle>
-    <circle cx="10.75" cy="14.5" r="0.9" fill="currentColor"></circle>
+    {NODO_GLYPH_EYES.xs.map((x) => (
+      <circle cx={x} cy={NODO_GLYPH_EYES.y} r={NODO_GLYPH_EYES.r} fill="currentColor"></circle>
+    ))}
   </g>
-  <g transform="translate(18 6.5)">
-    <path class="nodo-glyph__sparkle" d={SPARKLE} fill="currentColor"></path>
+  <g transform={`translate(${NODO_GLYPH_SPARKLE_ORIGIN.x} ${NODO_GLYPH_SPARKLE_ORIGIN.y})`}>
+    <path class="nodo-glyph__sparkle" d={NODO_GLYPH_SPARKLE_PATH} fill="currentColor"></path>
   </g>
 </svg>
 

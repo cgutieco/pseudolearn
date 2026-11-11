@@ -9,6 +9,7 @@ import { collectCommentViolations } from './check-no-comments.mjs';
 import { collectCssScopeViolations } from './check-css-scope.mjs';
 import { collectSizeViolations } from './check-size.mjs';
 import { collectBrandViolations } from './check-brand.mjs';
+import { collectPlanConstantViolations } from './check-plan-constants.mjs';
 
 const scriptsDirectory = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(scriptsDirectory, '..');
@@ -124,5 +125,22 @@ describe('check-brand', () => {
   it('rejects brand path data pasted into a component', () => {
     const violations = collectBrandViolations(fixture('pasted-brand'));
     expect(rules(violations)).toEqual(['FE-BRAND-GENERATED']);
+  });
+});
+
+describe('check-plan-constants', () => {
+  it('passes on the real project', () => {
+    expect(collectPlanConstantViolations(projectRoot)).toEqual([]);
+  });
+
+  it('rejects a web plan that charges a different amount than the backend', () => {
+    const violations = collectPlanConstantViolations(fixture('plan-drift'), 'backend/credits.ts');
+    expect(rules(violations)).toEqual(['FE-PLAN-CONSTANTS']);
+    expect(violations[0]?.message).toContain('monthly.credits');
+  });
+
+  it('rejects a missing backend file instead of passing silently', () => {
+    const violations = collectPlanConstantViolations(fixture('plan-drift'), 'backend/missing.ts');
+    expect(rules(violations)).toEqual(['FE-PLAN-CONSTANTS']);
   });
 });
