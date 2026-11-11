@@ -64,7 +64,7 @@ impl PythonEmitter<'_, '_> {
                 function,
                 arguments,
             } => self.builtin(*function, arguments, span),
-            HirExpression::Effect { .. } => self.block("capability", span),
+            HirExpression::Effect { .. } => self.effect(identifier, span),
             HirExpression::Invalid => self.block("invalid", span),
             _ => self.compound(identifier, span),
         }

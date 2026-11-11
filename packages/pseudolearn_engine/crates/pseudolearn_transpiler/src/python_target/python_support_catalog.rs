@@ -214,7 +214,7 @@ pub(crate) fn dependencies(name: &str) -> &'static [&'static str] {
             &["variants"]
         }
         "random" => &["time"],
-        _ => &[],
+        other => super::python_effect_catalog::effect_dependencies(other),
     }
 }
 
@@ -239,7 +239,10 @@ pub(crate) fn source(name: &str, request: &TranspileRequest) -> String {
                 .map_or_else(|| "time.time_ns()".to_owned(), |seed| seed.to_string());
             text_source("random").replace("SEED", &seed)
         }
-        other => fixed(other).map_or_else(|| text_source(other), str::to_owned),
+        other => fixed(other)
+            .map(str::to_owned)
+            .or_else(|| super::python_effect_catalog::effect_source(other))
+            .unwrap_or_else(|| text_source(other)),
     }
 }
 

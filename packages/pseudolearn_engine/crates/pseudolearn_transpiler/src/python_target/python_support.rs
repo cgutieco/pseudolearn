@@ -1,4 +1,5 @@
 use super::PythonEmitter;
+use super::python_effect_catalog::EFFECT_ORDER;
 use super::python_support_catalog::{dependencies, source};
 use crate::code_lines::CodeLines;
 
@@ -49,7 +50,10 @@ const IMPORTS: &[(&str, &str)] = &[
     ("decimal", "import decimal"),
     ("functools", "import functools"),
     ("math", "import math"),
+    ("errno", "import errno"),
+    ("os", "import os"),
     ("re", "import re"),
+    ("sys", "import sys"),
     ("time", "import time"),
     ("dataclass", "from dataclasses import dataclass, field"),
     ("enum", "from enum import Enum"),
@@ -85,7 +89,7 @@ impl PythonEmitter<'_, '_> {
     }
 
     pub(crate) fn write_support(&self, lines: &mut CodeLines) {
-        for name in ORDER {
+        for name in ORDER.iter().chain(EFFECT_ORDER) {
             if !self.support.contains(name) {
                 continue;
             }

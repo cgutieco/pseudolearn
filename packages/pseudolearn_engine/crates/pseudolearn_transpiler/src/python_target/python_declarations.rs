@@ -64,6 +64,9 @@ impl PythonEmitter<'_, '_> {
             .map(|variant| variant.name.clone())
             .or_else(|| self.view.record(record).map(|entry| entry.name.clone()))
             .unwrap_or_default();
+        if name == "$IoError" {
+            return "IoError".to_owned();
+        }
         let spelled = python_type_name(&name);
         let first = self
             .view

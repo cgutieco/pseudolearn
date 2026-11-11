@@ -6,6 +6,9 @@ mod rust_closures;
 mod rust_collections;
 mod rust_control;
 mod rust_declarations;
+mod rust_effect_catalog;
+mod rust_effect_sources;
+mod rust_effects;
 mod rust_expressions;
 mod rust_functions;
 mod rust_hierarchy;
@@ -13,12 +16,18 @@ mod rust_loops;
 mod rust_mutation;
 mod rust_operators;
 mod rust_places;
-mod rust_statements;
 mod rust_snapshots;
+mod rust_statements;
 mod rust_support;
 mod rust_support_catalog;
+mod rust_support_channels;
+mod rust_support_file_contents;
+mod rust_support_files;
+mod rust_support_host;
+mod rust_support_library;
 mod rust_support_tasks;
 mod rust_support_text;
+mod rust_support_time;
 mod rust_tasks;
 mod rust_trait_impls;
 mod rust_types;
@@ -46,6 +55,8 @@ pub(crate) struct FunctionScope {
     pub(crate) owner: Option<ClassId>,
     pub(crate) generic_receiver: bool,
     pub(crate) task_scopes: Vec<String>,
+    pub(crate) asynchronous: bool,
+    pub(crate) cancellable: bool,
 }
 
 pub(crate) struct RustEmitter<'view, 'module> {

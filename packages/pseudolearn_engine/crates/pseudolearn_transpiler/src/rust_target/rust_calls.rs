@@ -16,7 +16,10 @@ impl RustEmitter<'_, '_> {
                 function,
                 arguments,
             } => self.spawn(*function, arguments, span),
-            HirExpression::AwaitTask(task) => format!("{}.clone().await", self.operand(*task, 10)),
+            HirExpression::AwaitTask(task) => {
+                let task = self.operand(*task, 10);
+                self.awaited(format!("{task}.clone()"))
+            }
             HirExpression::VirtualCall {
                 receiver,
                 function,
@@ -102,7 +105,7 @@ impl RustEmitter<'_, '_> {
             .function(function)
             .is_some_and(|entry| entry.suspendible);
         if suspendible {
-            format!("{name}({arguments}).await")
+            self.awaited(format!("{name}({arguments})"))
         } else {
             format!("{name}({arguments})")
         }
@@ -160,10 +163,10 @@ impl RustEmitter<'_, '_> {
         let Some(entry) = self.view.function(function) else {
             return self.block("super_call", span);
         };
-        let _ = entry;
         let name = self.method_function_name(function);
         let arguments = self.arguments(Some(function), arguments);
         let separator = if arguments.is_empty() { "" } else { ", " };
+        let _ = entry;
         format!("{name}(this{separator}{arguments})")
     }
 

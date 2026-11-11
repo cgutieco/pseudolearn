@@ -220,4 +220,6 @@ pub(crate) const PYTHON_RESERVED: &[&str] = &[
     "absorb",
     "guarded",
     "close_body",
+    "divmod",
+    "sorted",
 ];

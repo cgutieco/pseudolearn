@@ -83,7 +83,9 @@ impl RustEmitter<'_, '_> {
             let type_text = self.type_text(entry.type_id, entry.span);
             let name = self.local_name(*local);
             if self.starts_from_default(entry.type_id) {
-                lines.line(&format!("let mut {name}: {type_text} = Default::default();"));
+                lines.line(&format!(
+                    "let mut {name}: {type_text} = Default::default();"
+                ));
                 continue;
             }
             let mutability = if self.mutation.needs_mutable(*local, false) {

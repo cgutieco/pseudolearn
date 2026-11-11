@@ -6,11 +6,16 @@ use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
 use std::time::{Duration, Instant};
 
+#[path = "equivalent_code_sweep/host.rs"]
+mod host;
+
 struct Sample {
     identity: String,
     profile: String,
     program: String,
     output: String,
+    host: Option<Value>,
+    skipped: Option<String>,
 }
 
 fn samples(path: &Path) -> Vec<Sample> {
@@ -29,6 +34,8 @@ fn samples(path: &Path) -> Vec<Sample> {
             continue;
         }
         let identity = case.get("id").and_then(Value::as_str).unwrap_or_default();
+        let host = case.get("anfitrion").cloned();
+        let skipped = host.as_ref().and_then(host::unreproducible_reason);
         let Some(programs) = case.get("programas").and_then(Value::as_object) else {
             continue;
         };
@@ -37,6 +44,7 @@ fn samples(path: &Path) -> Vec<Sample> {
             let request = ExecuteRequest {
                 program: program.clone(),
                 profile: profile.clone(),
+                host: host.clone(),
                 ..Default::default()
             };
             let response = execute_program(&request);
@@ -53,33 +61,50 @@ fn samples(path: &Path) -> Vec<Sample> {
                 profile: profile.clone(),
                 program,
                 output: response.output,
+                host: host.clone(),
+                skipped: skipped.clone(),
             });
         }
     }
     found
 }
 
+fn run_hosted(mut command: Command, sample: &Sample, work: &Path) -> Result<String, String> {
+    let setup = host::prepare(sample.host.as_ref(), &sample.program, work)?;
+    host::configure(
+        &mut command,
+        &setup,
+        &host::working_directory(&sample.program, work),
+    );
+    let output = run_with_timeout(&mut command).ok_or_else(|| "RUN".to_owned())?;
+    Ok(if setup.masks_clock {
+        host::mask_clock(&output)
+    } else {
+        output
+    })
+}
+
 fn run_with_timeout(command: &mut Command) -> Option<String> {
+    let (mut reader, writer) = std::io::pipe().ok()?;
     let mut child = command
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
+        .stdout(writer.try_clone().ok()?)
+        .stderr(writer)
         .spawn()
         .ok()?;
+    command.stdout(Stdio::null()).stderr(Stdio::null());
+    let collector = std::thread::spawn(move || {
+        let mut text = Vec::new();
+        let _ = std::io::Read::read_to_end(&mut reader, &mut text);
+        String::from_utf8_lossy(&text).into_owned()
+    });
     let started = Instant::now();
     loop {
         if child.try_wait().ok()?.is_some() {
-            let output = child.wait_with_output().ok()?;
-            let mut text = String::from_utf8_lossy(&output.stdout).into_owned();
-            if !output.status.success() {
-                text.push_str(&format!(
-                    "\n<<failed: {}>>",
-                    String::from_utf8_lossy(&output.stderr)
-                ));
-            }
-            return Some(text);
+            return collector.join().ok();
         }
         if started.elapsed() > Duration::from_secs(20) {
             let _ = child.kill();
+            let _ = child.wait();
             return Some("<<timeout>>".to_owned());
         }
         std::thread::sleep(Duration::from_millis(5));
@@ -148,16 +173,18 @@ fn translated_output(
                         .join("\n")
                 ));
             }
-            let output =
-                run_with_timeout(&mut Command::new(&binary)).ok_or_else(|| "RUN".to_owned());
+            let work = directory.join(format!("work{index}"));
+            let output = run_hosted(Command::new(&binary), sample, &work);
             let _ = std::fs::remove_file(&binary);
             output
         }
         TargetLanguage::Python => {
             let source = directory.join(format!("case{index}.py"));
             std::fs::write(&source, code).map_err(|error| error.to_string())?;
-            run_with_timeout(Command::new("python3.11").arg("-I").arg(&source))
-                .ok_or_else(|| "RUN".to_owned())
+            let mut command = Command::new("python3.11");
+            command.arg("-I").arg("-u").arg(&source);
+            let work = directory.join(format!("work{index}"));
+            run_hosted(command, sample, &work)
         }
     }
 }
@@ -194,8 +221,17 @@ fn translations_reproduce_engine_output() {
                         .enumerate()
                         .filter(|(index, _)| index % workers == worker)
                     {
+                        if let Some(reason) = &sample.skipped {
+                            reports.push(format!("SKIP {} {reason}", sample.identity));
+                            continue;
+                        }
+                        let expected = if host::masks_clock(sample.host.as_ref(), &sample.program) {
+                            host::mask_clock(&sample.output)
+                        } else {
+                            sample.output.clone()
+                        };
                         let report = match translated_output(sample, target, directory, index) {
-                            Ok(output) if output == sample.output => {
+                            Ok(output) if output == expected => {
                                 format!("PASS {}", sample.identity)
                             }
                             Ok(output) => format!(
@@ -222,7 +258,14 @@ fn translations_reproduce_engine_output() {
         .iter()
         .filter(|report| report.starts_with("PASS"))
         .count();
-    let summary = format!("passed {passed} of {}", reports.len());
+    let skipped = reports
+        .iter()
+        .filter(|report| report.starts_with("SKIP"))
+        .count();
+    let summary = format!(
+        "passed {passed} of {}, skipped {skipped}",
+        reports.len() - skipped
+    );
     let report_path = directory.join("report.txt");
     let _ = std::fs::write(
         &report_path,

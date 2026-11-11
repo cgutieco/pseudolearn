@@ -112,8 +112,11 @@ impl RustEmitter<'_, '_> {
     }
 
     pub(crate) fn enter_function(&mut self, function: &HirFunction) {
+        let cancellable = function.suspendible && function.kind != FunctionKind::Main;
         self.scope = FunctionScope {
             owner: function.owner,
+            asynchronous: cancellable,
+            cancellable,
             ..FunctionScope::default()
         };
         self.scope
@@ -147,17 +150,26 @@ impl RustEmitter<'_, '_> {
     pub(crate) fn entry_function(&mut self, function: &HirFunction, lines: &mut CodeLines) {
         self.enter_function(function);
         let previous = lines.attributed(function.span);
+        let exit_code = self.sets_exit_code();
         if self.uses_tasks() {
             self.require("tasks");
+            self.scope.asynchronous = true;
             lines.open("fn main() {");
             lines.line("run_tasks(algorithm());");
+            if exit_code {
+                lines.line("finish_with_exit_code();");
+            }
             lines.close("}");
             lines.blank();
             lines.open("async fn algorithm() {");
+            self.statements(&function.body, lines);
         } else {
             lines.open("fn main() {");
+            self.statements(&function.body, lines);
+            if exit_code {
+                lines.line("finish_with_exit_code();");
+            }
         }
-        self.statements(&function.body, lines);
         lines.close("}");
         lines.restore(previous);
         lines.blank();

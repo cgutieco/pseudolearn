@@ -5,6 +5,19 @@ use pseudolearn_semantic::{ExpressionId, FunctionId, LocalId, StatementId};
 use pseudolearn_source::Span;
 
 impl RustEmitter<'_, '_> {
+    pub(crate) fn awaited(&mut self, future: String) -> String {
+        if !self.scope.cancellable {
+            return format!("{future}.await");
+        }
+        let Some(cleanup) = self.cleanup_text() else {
+            return format!("{future}.await");
+        };
+        self.require("cancellation");
+        format!(
+            "match until_cancelled({future}).await {{ Some(value) => value, None => {{ {cleanup} return unwound().await; }} }}"
+        )
+    }
+
     pub(crate) fn task_scope(
         &mut self,
         (failure, body): (Option<LocalId>, &[StatementId]),
@@ -33,7 +46,8 @@ impl RustEmitter<'_, '_> {
             self.statements(body, lines);
         }
         self.scope.task_scopes.pop();
-        lines.line(&format!("{name}.join().await;"));
+        let join = self.awaited(format!("{name}.join()"));
+        lines.line(&format!("{join};"));
         if let (Some(local), Some(found)) = (failure, record) {
             self.failure_report(local, (found, &name), lines);
         }
@@ -110,9 +124,11 @@ impl RustEmitter<'_, '_> {
         match (&channel.action, receiver, argument) {
             (ChannelAction::New, _, Some(capacity)) => format!("Channel::new({capacity})"),
             (ChannelAction::Send, Some(receiver), Some(value)) => {
-                format!("{receiver}.send({value}).await")
+                self.awaited(format!("{receiver}.send({value})"))
             }
-            (ChannelAction::Receive, Some(receiver), _) => format!("{receiver}.receive().await"),
+            (ChannelAction::Receive, Some(receiver), _) => {
+                self.awaited(format!("{receiver}.receive()"))
+            }
             (ChannelAction::Close, Some(receiver), _) => format!("{receiver}.close()"),
             (ChannelAction::Selected, _, _) => "selected_value.clone()".to_owned(),
             _ => self.block("channel", span),
@@ -127,9 +143,8 @@ impl RustEmitter<'_, '_> {
             .map(|channel| format!("{}.clone()", self.operand(*channel, 10)))
             .collect::<Vec<_>>()
             .join(", ");
-        lines.line(&format!(
-            "let (selected, selected_value) = select_receive(&[{channels}]).await;"
-        ));
+        let received = self.awaited(format!("select_receive(&[{channels}])"));
+        lines.line(&format!("let (selected, selected_value) = {received};"));
         lines.open("match selected {");
         for case in &selection.cases {
             let labels = case

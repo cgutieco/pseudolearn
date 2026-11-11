@@ -6,6 +6,8 @@ use pseudolearn_semantic::variant_model::{HirVariant, VariantFamily};
 use pseudolearn_semantic::{ClassId, Passing, RecordId, Type, TypeId};
 use pseudolearn_source::Span;
 
+pub(crate) const IO_ERROR_RECORD: &str = "$IoError";
+
 impl RustEmitter<'_, '_> {
     pub(crate) fn type_text(&mut self, type_id: TypeId, span: Span) -> String {
         match self.view.representation(type_id) {
@@ -58,8 +60,8 @@ impl RustEmitter<'_, '_> {
                 None => format!("Rc<RefCell<Vec<{value}>>>"),
             };
         }
-        if self.view.module.opaque_types.contains_key(&class) {
-            return self.block("capability", span);
+        if let Some(kind) = self.view.module.opaque_types.get(&class).copied() {
+            return self.opaque_type(kind, span);
         }
         self.uses.insert("rc");
         let name = self.class_name(class);
@@ -149,6 +151,9 @@ impl RustEmitter<'_, '_> {
     }
 
     pub(crate) fn unique_record_name(&self, record: RecordId, name: &str) -> String {
+        if name == IO_ERROR_RECORD {
+            return "IoError".to_owned();
+        }
         let spelled = rust_type_name(name);
         let mut same = self
             .view

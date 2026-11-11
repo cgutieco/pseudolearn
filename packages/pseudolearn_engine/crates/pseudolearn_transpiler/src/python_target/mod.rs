@@ -4,13 +4,19 @@ mod python_channels;
 mod python_classes;
 mod python_control;
 mod python_declarations;
+mod python_effect_catalog;
+mod python_effects;
 mod python_expressions;
 mod python_functions;
 mod python_places;
 mod python_statements;
 mod python_support;
 mod python_support_catalog;
+mod python_support_files;
+mod python_support_host;
+mod python_support_library;
 mod python_support_text;
+mod python_support_time;
 mod python_tasks;
 mod python_variants;
 
@@ -29,6 +35,7 @@ pub(crate) struct PythonScope {
     pub(crate) reference_parameters: Vec<LocalId>,
     pub(crate) declared: BTreeSet<LocalId>,
     pub(crate) aliases: std::collections::BTreeMap<LocalId, LocalId>,
+    pub(crate) asynchronous: bool,
 }
 
 pub(crate) struct PythonEmitter<'view, 'module> {

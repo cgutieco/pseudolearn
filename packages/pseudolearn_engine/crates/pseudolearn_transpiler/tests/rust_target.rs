@@ -110,7 +110,8 @@ fn snapshot_implementations_need_the_snapshot_helper() -> Result<(), String> {
 }
 
 #[test]
-fn records_with_fields_that_cannot_be_copied_get_no_snapshot_implementation() -> Result<(), String> {
+fn records_with_fields_that_cannot_be_copied_get_no_snapshot_implementation() -> Result<(), String>
+{
     let text = code(UNSUPPORTED_FIELD_RECORD, TargetLanguage::Rust)?;
     assert!(text.contains("trait Snapshot"));
     assert!(!text.contains("impl Snapshot for Pedido"));

@@ -26,6 +26,7 @@ impl<'module> PythonEmitter<'_, 'module> {
             let tasks = self.uses_tasks();
             let keyword = if tasks { "async def" } else { "def" };
             self.enter_function(identifier, function);
+            self.scope.asynchronous = tasks;
             let previous = lines.attributed(function.span);
             lines.open(&format!("{keyword} main():"));
             self.body(&function.body, lines);
@@ -37,6 +38,9 @@ impl<'module> PythonEmitter<'_, 'module> {
                 lines.line("asyncio.run(main())");
             } else {
                 lines.line("main()");
+            }
+            if crate::effect_functions::sets_exit_code(self.view.module) {
+                lines.line("sys.exit(EXIT_CODE[0])");
             }
         }
     }
@@ -106,6 +110,7 @@ impl<'module> PythonEmitter<'_, 'module> {
     pub(crate) fn enter_function(&mut self, identifier: FunctionId, function: &HirFunction) {
         self.scope = PythonScope {
             reference_parameters: self.write_backs(identifier),
+            asynchronous: function.suspendible && function.kind != FunctionKind::Main,
             ..PythonScope::default()
         };
         self.scope

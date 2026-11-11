@@ -1,4 +1,5 @@
 use super::RustEmitter;
+use super::rust_effect_catalog::{EFFECT_ORDER, SHARED_SUPPORT};
 use super::rust_support_catalog::{dependencies, source};
 use crate::code_lines::CodeLines;
 
@@ -39,15 +40,15 @@ const ORDER: &[&str] = &[
 impl RustEmitter<'_, '_> {
     pub(crate) fn write_uses(&mut self, lines: &mut CodeLines) {
         self.support.close_over(dependencies);
-        let mut uses = Vec::new();
         let tasks = self.support.contains("tasks") || self.support.contains("channel");
-        if tasks
+        let shared = tasks
             || self.uses.contains("rc")
-            || self.support.contains("dictionary")
-            || self.support.contains("random")
-            || self.support.contains("split_text")
-            || self.support.contains("dictionary")
-        {
+            || ["dictionary", "split_text"]
+                .iter()
+                .chain(SHARED_SUPPORT)
+                .any(|name| self.support.contains(name));
+        let mut uses = Vec::new();
+        if shared || self.support.contains("random") {
             uses.push("use std::cell::RefCell;");
         }
         if tasks {
@@ -55,12 +56,7 @@ impl RustEmitter<'_, '_> {
             uses.push("use std::future::Future;");
             uses.push("use std::pin::Pin;");
         }
-        if tasks
-            || self.uses.contains("rc")
-            || self.support.contains("dictionary")
-            || self.support.contains("split_text")
-            || self.support.contains("dictionary")
-        {
+        if shared {
             uses.push("use std::rc::Rc;");
         }
         if tasks {
@@ -79,7 +75,7 @@ impl RustEmitter<'_, '_> {
     }
 
     pub(crate) fn write_support(&self, lines: &mut CodeLines) {
-        for name in ORDER {
+        for name in ORDER.iter().chain(EFFECT_ORDER) {
             if !self.support.contains(name) {
                 continue;
             }

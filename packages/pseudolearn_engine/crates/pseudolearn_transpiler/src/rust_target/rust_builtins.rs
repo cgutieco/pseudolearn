@@ -13,33 +13,65 @@ impl RustEmitter<'_, '_> {
         let first = texts.first().cloned().unwrap_or_default();
         let second = texts.get(1).cloned().unwrap_or_default();
         let third = texts.get(2).cloned().unwrap_or_default();
+        let numeric = match arguments
+            .first()
+            .map(|argument| self.view.expression_type(*argument))
+        {
+            Some(Type::Integer) => "i64",
+            _ => "f64",
+        };
+        if let Some(text) = self.numeric_builtin(function, (&first, &second), numeric) {
+            return text;
+        }
         match function {
-            BuiltinKind::AbsoluteValue => format!("{first}.abs()"),
-            BuiltinKind::ArcCosine => self.finite(format!("{first}.acos()")),
-            BuiltinKind::ArcSine => self.finite(format!("{first}.asin()")),
-            BuiltinKind::ArcTangent => format!("{first}.atan()"),
-            BuiltinKind::ArcTangent2 => format!("{first}.atan2({second})"),
-            BuiltinKind::Cosine => format!("{first}.cos()"),
-            BuiltinKind::Sine => format!("{first}.sin()"),
-            BuiltinKind::Tangent => self.finite(format!("{first}.tan()")),
-            BuiltinKind::Exponential => self.finite(format!("{first}.exp()")),
-            BuiltinKind::NaturalLogarithm => self.finite(format!("{first}.ln()")),
-            BuiltinKind::Logarithm10 => self.finite(format!("{first}.log10()")),
-            BuiltinKind::Logarithm2 => self.finite(format!("{first}.log2()")),
-            BuiltinKind::SquareRoot => self.finite(format!("{first}.sqrt()")),
-            BuiltinKind::Ceiling => self.helper_call("truncate", &format!("{first}.ceil()")),
-            BuiltinKind::Floor => self.helper_call("truncate", &format!("{first}.floor()")),
             BuiltinKind::Round => self.helper_call("round_half_away", &first),
             BuiltinKind::Truncate => self.helper_call("truncate", &first),
-            BuiltinKind::Maximum => format!("{first}.max({second})"),
-            BuiltinKind::Minimum => format!("{first}.min({second})"),
             BuiltinKind::Random => self.helper_call("random", &first),
             BuiltinKind::RandomBetween => {
-                self.helper_call("random_between", &format!("{first}, {second}"))
+                self.require("random");
+                format!("random_between({first}, {second})")
             }
-            BuiltinKind::RandomUnit => self.helper_call("random_unit", ""),
+            BuiltinKind::RandomUnit => {
+                self.require("random");
+                "random_unit()".to_owned()
+            }
             other => self.text_builtin(other, (first, second, third), (arguments, span)),
         }
+    }
+
+    fn numeric_builtin(
+        &mut self,
+        function: BuiltinKind,
+        (first, second): (&str, &str),
+        numeric: &str,
+    ) -> Option<String> {
+        let real = |method: &str| numeric_method((first, numeric), method, "");
+        Some(match function {
+            BuiltinKind::AbsoluteValue => real("abs"),
+            BuiltinKind::ArcCosine => self.finite(real("acos")),
+            BuiltinKind::ArcSine => self.finite(real("asin")),
+            BuiltinKind::ArcTangent => real("atan"),
+            BuiltinKind::ArcTangent2 => numeric_method((first, numeric), "atan2", second),
+            BuiltinKind::Cosine => real("cos"),
+            BuiltinKind::Sine => real("sin"),
+            BuiltinKind::Tangent => self.finite(real("tan")),
+            BuiltinKind::Exponential => self.finite(real("exp")),
+            BuiltinKind::NaturalLogarithm => self.finite(real("ln")),
+            BuiltinKind::Logarithm10 => self.finite(real("log10")),
+            BuiltinKind::Logarithm2 => self.finite(real("log2")),
+            BuiltinKind::SquareRoot => self.finite(real("sqrt")),
+            BuiltinKind::Ceiling => self.helper_call("truncate", &real("ceil")),
+            BuiltinKind::Floor => self.helper_call("truncate", &real("floor")),
+            BuiltinKind::Maximum if numeric == "f64" => {
+                self.helper_call("real_maximum", &format!("{first}, {second}"))
+            }
+            BuiltinKind::Minimum if numeric == "f64" => {
+                self.helper_call("real_minimum", &format!("{first}, {second}"))
+            }
+            BuiltinKind::Maximum => numeric_method((first, numeric), "max", second),
+            BuiltinKind::Minimum => numeric_method((first, numeric), "min", second),
+            _ => return None,
+        })
     }
 
     pub(crate) fn text_builtin(
@@ -149,4 +181,40 @@ impl RustEmitter<'_, '_> {
             _ => self.block("builtin:shallowCopy", span),
         }
     }
+}
+
+fn numeric_method((receiver, numeric): (&str, &str), method: &str, rest: &str) -> String {
+    let literal = receiver.starts_with(|character: char| {
+        character.is_ascii_digit() || character == '(' || character == '-'
+    });
+    if !literal {
+        return format!("{receiver}.{method}({rest})");
+    }
+    let inner = unwrapped(receiver);
+    if rest.is_empty() {
+        format!("{numeric}::{method}({inner})")
+    } else {
+        format!("{numeric}::{method}({inner}, {rest})")
+    }
+}
+
+fn unwrapped(text: &str) -> &str {
+    let Some(inner) = text
+        .strip_prefix('(')
+        .and_then(|rest| rest.strip_suffix(')'))
+    else {
+        return text;
+    };
+    let mut depth = 0_i32;
+    for character in inner.chars() {
+        depth = depth.saturating_add(match character {
+            '(' => 1,
+            ')' => -1,
+            _ => 0,
+        });
+        if depth < 0 {
+            return text;
+        }
+    }
+    inner
 }

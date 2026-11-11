@@ -147,6 +147,27 @@ impl RustEmitter<'_, '_> {
         }
         lines.close("}");
         lines.blank();
+        if record.name == super::rust_types::IO_ERROR_RECORD {
+            self.io_error_constructor(record, lines);
+        }
+    }
+
+    fn io_error_constructor(&self, record: &HirRecord, lines: &mut CodeLines) {
+        let [code, uncertain] = record.fields.as_slice() else {
+            return;
+        };
+        let (code, uncertain) = (
+            self.names.field(&code.name),
+            self.names.field(&uncertain.name),
+        );
+        lines.open("impl IoError {");
+        lines.open("fn new(code: &str, uncertain: bool) -> Self {");
+        lines.line(&format!(
+            "IoError {{ {code}: code.to_string(), {uncertain}: uncertain }}"
+        ));
+        lines.close("}");
+        lines.close("}");
+        lines.blank();
     }
 
     pub(crate) fn has_default(&self, type_id: TypeId) -> bool {

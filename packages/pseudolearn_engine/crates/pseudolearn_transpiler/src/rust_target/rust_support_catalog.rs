@@ -1,4 +1,7 @@
-use super::rust_support_tasks::{CHANNEL, SELECT, TASKS};
+use super::rust_effect_catalog::effect_dependencies;
+use super::rust_effect_sources::effect_source;
+use super::rust_support_channels::{CHANNEL, SELECT};
+use super::rust_support_tasks::TASKS;
 use super::rust_support_text::{
     CHARACTER_AT, CHARACTER_FROM_CODE, COLLECTION_TEXT, DICTIONARY, FINITE, RANDOM, REPLACE_ALL,
     SNAPSHOT, SPLIT_TEXT, SUBSTRING, TEXT_POSITION, TEXT_TO_INTEGER, TEXT_TO_REAL,
@@ -112,7 +115,7 @@ pub(crate) fn dependencies(name: &str) -> &'static [&'static str] {
         "channel" => &["tasks"],
         "select" => &["channel"],
         "collection_text" => &["real_text", "boolean_text", "dictionary"],
-        _ => &[],
+        other => effect_dependencies(other),
     }
 }
 
@@ -129,7 +132,7 @@ pub(crate) fn source(name: &str, request: &crate::target::TranspileRequest) -> S
         "read_boolean" => format!(
             "fn read_boolean() -> bool {{\n    loop {{\n        match read_line().trim() {{\n            {truth:?} => return true,\n            {falsity:?} => return false,\n            _ => {{}}\n        }}\n    }}\n}}"
         ),
-        other => fixed_source(other).to_owned(),
+        other => effect_source(other).unwrap_or_else(|| fixed_source(other).to_owned()),
     }
 }
 

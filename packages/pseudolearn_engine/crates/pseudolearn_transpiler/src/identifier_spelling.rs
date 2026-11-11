@@ -61,7 +61,9 @@ fn pascal(name: &str) -> String {
 
 pub(crate) fn rust_value_name(name: &str) -> String {
     let spelled = snake(name);
-    if RUST_RESERVED.contains(&spelled.as_str()) {
+    if RUST_RESERVED.contains(&spelled.as_str())
+        || crate::effect_functions::is_support_name(&spelled)
+    {
         format!("{spelled}_value")
     } else {
         spelled
@@ -70,7 +72,9 @@ pub(crate) fn rust_value_name(name: &str) -> String {
 
 pub(crate) fn python_value_name(name: &str) -> String {
     let spelled = snake(name);
-    if PYTHON_RESERVED.contains(&spelled.as_str()) {
+    if PYTHON_RESERVED.contains(&spelled.as_str())
+        || crate::effect_functions::is_support_name(&spelled)
+    {
         format!("{spelled}_value")
     } else {
         spelled

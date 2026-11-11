@@ -27,7 +27,7 @@ impl RustEmitter<'_, '_> {
             } => self.builtin(*function, arguments, span),
             HirExpression::Channel(channel) => self.channel_operation(channel, span),
             HirExpression::Collection(collection) => self.collection_operation(collection),
-            HirExpression::Effect { .. } => self.block("capability", span),
+            HirExpression::Effect { .. } => self.effect(identifier, span),
             HirExpression::Invalid => self.block("invalid", span),
             _ => self.compound(identifier, span),
         }

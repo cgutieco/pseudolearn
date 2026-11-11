@@ -15,8 +15,38 @@ impl PythonEmitter<'_, '_> {
             .collect::<Vec<_>>();
         let first = texts.first().cloned().unwrap_or_default();
         let joined = texts.join(", ");
-        let math = |name: &str| format!("math.{name}({joined})");
+        if let Some(text) = self.math_builtin(function, arguments, (&first, &joined)) {
+            return text;
+        }
         match function {
+            BuiltinKind::Ceiling => self.call_helper("ceiling", &joined),
+            BuiltinKind::Floor => self.call_helper("floor", &joined),
+            BuiltinKind::Round => self.call_helper("round_half_away", &joined),
+            BuiltinKind::Truncate => self.call_helper("truncate", &joined),
+            BuiltinKind::Random => self.call_helper("random", &joined),
+            BuiltinKind::RandomBetween => {
+                self.require("random");
+                format!("random_between({joined})")
+            }
+            BuiltinKind::RandomUnit => {
+                self.require("random");
+                "random_unit()".to_owned()
+            }
+            other => self.text_builtin(other, &texts, (arguments, span)),
+        }
+    }
+
+    fn math_builtin(
+        &mut self,
+        function: BuiltinKind,
+        arguments: &[ExpressionId],
+        (first, joined): (&str, &str),
+    ) -> Option<String> {
+        let math = |name: &str| format!("math.{name}({joined})");
+        let real = arguments
+            .first()
+            .is_some_and(|argument| self.view.expression_type(*argument) == Type::Real);
+        Some(match function {
             BuiltinKind::AbsoluteValue => format!("abs({first})"),
             BuiltinKind::ArcCosine => self.checked(&math("acos")),
             BuiltinKind::ArcSine => self.checked(&math("asin")),
@@ -30,17 +60,12 @@ impl PythonEmitter<'_, '_> {
             BuiltinKind::Logarithm10 => self.checked(&math("log10")),
             BuiltinKind::Logarithm2 => self.checked(&math("log2")),
             BuiltinKind::SquareRoot => self.checked(&math("sqrt")),
-            BuiltinKind::Ceiling => self.call_helper("ceiling", &joined),
-            BuiltinKind::Floor => self.call_helper("floor", &joined),
-            BuiltinKind::Round => self.call_helper("round_half_away", &joined),
-            BuiltinKind::Truncate => self.call_helper("truncate", &joined),
+            BuiltinKind::Maximum if real => self.call_helper("real_maximum", joined),
+            BuiltinKind::Minimum if real => self.call_helper("real_minimum", joined),
             BuiltinKind::Maximum => format!("max({joined})"),
             BuiltinKind::Minimum => format!("min({joined})"),
-            BuiltinKind::Random => self.call_helper("random", &joined),
-            BuiltinKind::RandomBetween => self.call_helper("random_between", &joined),
-            BuiltinKind::RandomUnit => self.call_helper("random_unit", ""),
-            other => self.text_builtin(other, &texts, (arguments, span)),
-        }
+            _ => return None,
+        })
     }
 
     pub(crate) fn text_builtin(

@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 mod code_lines;
+mod effect_functions;
 mod identifier_spelling;
 mod member_spellings;
 mod module_view;

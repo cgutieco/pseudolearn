@@ -74,15 +74,16 @@ impl RustEmitter<'_, '_> {
                 self.is_snapshottable_plain_record(record)
                     || self.is_snapshottable_user_variant(record)
             }
-            Type::Object(class) => self
-                .view
-                .module
-                .collections
-                .get(&class)
-                .is_some_and(|collection| {
-                    collection.key.is_none_or(|key| self.is_snapshottable(key))
-                        && self.is_snapshottable(collection.value)
-                }),
+            Type::Object(class) => {
+                self.view
+                    .module
+                    .collections
+                    .get(&class)
+                    .is_some_and(|collection| {
+                        collection.key.is_none_or(|key| self.is_snapshottable(key))
+                            && self.is_snapshottable(collection.value)
+                    })
+            }
             _ => false,
         }
     }
@@ -129,17 +130,7 @@ impl RustEmitter<'_, '_> {
         lines.open("match self {");
         for alternative in &variant.alternatives {
             let label = rust_type_name(&alternative.spelling);
-            let fields = alternative
-                .payload
-                .and_then(|payload| self.view.record(payload))
-                .map(|payload| {
-                    payload
-                        .fields
-                        .iter()
-                        .map(|field| self.names.field(&field.name))
-                        .collect::<Vec<_>>()
-                })
-                .unwrap_or_default();
+            let fields = self.payload_fields(alternative.payload);
             if fields.is_empty() {
                 lines.line(&format!("{name}::{label} => {name}::{label},"));
                 continue;
@@ -157,5 +148,18 @@ impl RustEmitter<'_, '_> {
         lines.close("}");
         lines.close("}");
         lines.close("}");
+    }
+
+    fn payload_fields(&self, payload: Option<RecordId>) -> Vec<String> {
+        payload
+            .and_then(|payload| self.view.record(payload))
+            .map(|payload| {
+                payload
+                    .fields
+                    .iter()
+                    .map(|field| self.names.field(&field.name))
+                    .collect()
+            })
+            .unwrap_or_default()
     }
 }
