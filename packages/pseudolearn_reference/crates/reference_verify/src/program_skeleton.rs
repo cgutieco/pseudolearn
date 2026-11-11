@@ -1,9 +1,10 @@
-use reference_corpus::{Lexicon, fold};
+use reference_corpus::{LexemeFamily, Lexicon, fold};
 use std::collections::BTreeSet;
 
 pub fn keyword_set(lexicon: &Lexicon) -> BTreeSet<String> {
     lexicon
         .entries()
+        .filter(|entry| matches!(entry.family, LexemeFamily::Reserved | LexemeFamily::Function))
         .flat_map(|entry| {
             std::iter::once(entry.spanish.as_str())
                 .chain(entry.spanish_aliases.iter().map(String::as_str))

@@ -2,6 +2,22 @@ use reference_corpus::Corpus;
 use reference_model::{ProgramSource, RuleId, SourceBlock};
 use reference_verify::check_program_parity;
 
+fn corpus_with_contextual(contextual: &[(&str, &str, &str)]) -> Corpus {
+    let table: Vec<String> = contextual
+        .iter()
+        .map(|(identity, english, spanish)| {
+            format!(
+                r#""{identity}": {{"alias": {{"en": [], "es": []}}, "lexemas": {{"en": "{english}", "es": "{spanish}"}}}}"#
+            )
+        })
+        .collect();
+    let export = format!(
+        r#"{{"resources": {{"vocabulary": {{"writeKeyword": {{"alias": {{"en": [], "es": []}}, "lexemas": {{"en": "write", "es": "Escribir"}}}}}}, "contextualVocabulary": {{{}}}}}, "specifications": []}}"#,
+        table.join(",")
+    );
+    Corpus::from_export(&export).unwrap_or_default()
+}
+
 fn corpus() -> Corpus {
     let entries = [
         ("ifKeyword", "if", "Si"),
@@ -92,4 +108,19 @@ fn a_quote_inside_a_text_does_not_end_the_text() {
         problems(&[program("a", spanish)], &[program("a", english)]),
         0
     );
+}
+
+#[test]
+fn a_contextual_word_may_be_renamed_like_any_identifier() {
+    let corpus = corpus_with_contextual(&[("valueWord", "value", "valor")]);
+    let spanish = [program("a", "Escribir valor;\n")];
+    let english = [program("a", "Escribir amount;\n")];
+    assert!(check_program_parity(&corpus, "leccion.md", (&spanish, &english)).is_empty());
+}
+
+#[test]
+fn a_reserved_word_cannot_be_renamed() {
+    let spanish = [program("a", "Escribir 1;\n")];
+    let english = [program("a", "Display 1;\n")];
+    assert_eq!(problems(&spanish, &english), 1);
 }
