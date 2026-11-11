@@ -88,3 +88,38 @@ Bloqueado por autorización y plataformas:
 
 - El benchmark del agente (`tool/agent_benchmark.dart run`) nunca se ha ejecutado contra el proveedor real. Acción: autorizarlo.
 - Los datos de fotogramas siguen ausentes hasta su captura en plataforma, y las campañas de macOS e iOS aguardan autorización para medir.
+
+## Pendientes de la última iteración, por punto
+
+Trabajo que se pudo hacer y quedó sin hacer o sin verificar. Cada viñeta indica qué falta y cómo se cierra.
+
+### Punto 1 — Ruta en inglés con programas propios (`pseudolearn_reference`)
+
+- Migrar los unos 300 programas restantes de `route/en` (hoy solo la lección 0.2 y «Repartir caramelos»). Cada migración lleva el cuerpo del programa con identificadores y textos en inglés, la `salida` y los `casos` en inglés y la prosa que los cita. Se cierra cuando `reference check` y `cargo xtask verify` pasan sin programas vacíos que compartan nombres españoles.
+- Revisar las lecciones y ejercicios posteriores que mencionan nombres de la lección 0.2 (`edad`, `porciones`, `invitados`…) y adaptarlos a los nombres ingleses.
+
+### Punto 4 — Agenda y colas en `MachineImage` (`pseudolearn_vm`, `pseudolearn_timeline`)
+
+- Escribir en el corpus la regla mínima que exija la imagen completa (tareas y colas de espera) con sus casos, implementar la persistencia en `MachineImage` y medir `engine` y `aot`. Después actualizar el README de `pseudolearn_runtime`, que hoy declara el límite.
+
+### Punto 7 — Verificaciones que quedaron sin repetir o sin ejecutar
+
+- Repetir `flutter test` completo y `flutter analyze` completo en `apps/pseudolearn_app`: se cambiaron cadenas del canal y se añadieron pruebas después de la última pasada completa.
+- Repetir `pnpm check:all` en `apps/pseudolearn_web`: los paquetes de la ruta se regeneraron después de la última pasada.
+- Ejecutar `cargo deny check` en `packages/pseudolearn_engine` y, con más disco libre, `cargo xtask verify` completo (hoy solo se corrieron sus pasos por lotes).
+- Regenerar la evidencia y medir el sujeto `app` (`see conform --subject app --operation properties` y luego `see conform --subject app`): su evidencia quedó obsoleta al cambiar el corpus.
+- Verificar la extensión de VS Code (`apps/pseudolearn_vscode`) y `pseudolearn_store_media` con sus cadenas `pnpm`.
+- Diagnosticar el aviso de la CLI: no se construye el runtime para `x86_64-unknown-linux-musl`.
+
+### Punto 3 — Canal en la vista Variables
+
+- Comprobar qué muestran el LSP, el DAP y el MCP de la CLI ahora que la variable se llama `stream` y no `stream.identity`, y documentarlo en el README de `pseudolearn_cli` si cambia algo observable.
+- Decidir si se publican los elementos de la cola (hoy solo su cantidad): exige conocer el tipo del canal y manejar referencias.
+
+### Punto 9 — Código equivalente (`pseudolearn_transpiler`)
+
+- Por cada construcción pendiente (operaciones de capacidad y de biblioteca de efectos, limpiezas de `Diferir` de tareas canceladas, `Instantanea` de objetos y métodos suspendibles de jerarquías en Rust): escribir su regla en el corpus con casos, implementarla y medir el barrido diferencial. HTTPS y JSON no tienen equivalente en la biblioteca estándar de Rust y se mantienen como pendientes por destino.
+
+### Punto 10 — App
+
+- Verificar en un dispositivo iOS si `NSAllowsArbitraryLoads` puede acotarse a `NSAllowsLocalNetworking` (servicio `http://` local y otro público) y, si procede, cambiar `Info.plist` y la prueba `platform_host_configuration_test.dart`.
