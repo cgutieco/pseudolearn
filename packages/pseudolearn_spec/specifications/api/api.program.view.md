@@ -47,6 +47,11 @@
       "id": "LANG.CLASS.INHERITANCE",
       "version": ">=1.0.0, <2.0.0",
       "tipo": "usa"
+    },
+    {
+      "id": "LANG.CAPABILITY.MODEL",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
     }
   ],
   "titulo_en": "Public program view"
@@ -1136,7 +1141,7 @@ La vista pública incluye interface_unit, interface_signature, realization, type
   "id": "R17",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El consumidor ofrece código equivalente para un destino cuando el núcleo traduce el programa analizado completo a ese destino usando solo su biblioteca estándar, con la misma salida que el motor para las ejecuciones deterministas sin fallo. Toda construcción del lenguaje tiene traducción salvo las que el núcleo declara pendientes para ese destino, como una operación de capacidad, una construcción cuya semántica exige una biblioteca ajena a la estándar del destino o una forma aún no traducida. Si alguna construcción queda pendiente, el resultado para ese destino es no disponible: no entrega ningún programa parcial y nombra cada construcción por su identidad pública con el rango exacto de su origen. Un error de análisis sigue siendo un error de análisis. La superficie muestra un mensaje localizado con las construcciones y la línea de la primera. La disponibilidad se decide por destino y las traducciones no se compilan ni ejecutan en el producto.",
+  "texto": "El consumidor ofrece código equivalente para un destino cuando el núcleo traduce el programa analizado completo a ese destino usando solo su biblioteca estándar, con la misma salida que el motor para las ejecuciones deterministas sin fallo. Toda construcción del lenguaje tiene traducción salvo las que el núcleo declara pendientes para ese destino, como una operación de red, una construcción cuya semántica exige una biblioteca ajena a la estándar del destino o una forma aún no traducida. Si alguna construcción queda pendiente, el resultado para ese destino es no disponible: no entrega ningún programa parcial y nombra cada construcción por su identidad pública con el rango exacto de su origen. Un error de análisis sigue siendo un error de análisis. La superficie muestra un mensaje localizado con las construcciones y la línea de la primera. La disponibilidad se decide por destino y las traducciones no se compilan ni ejecutan en el producto.",
   "verificacion": [
     "C53",
     "C54",
@@ -1191,4 +1196,50 @@ La vista pública incluye interface_unit, interface_signature, realization, type
 
 ```caso
 {"id": "C60", "regla": "R17", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Proceso P\n  Escribir 3 > 2;\nFinProceso\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "ready", "constructs": [], "first_line": null, "code_visible": true, "focused_lines": 0, "ready": true}}}
+```
+
+```regla
+{
+  "id": "R19",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El código equivalente de ambos destinos traduce las operaciones de capacidad y de biblioteca cuya semántica cabe en la biblioteca estándar del destino: consola, argumentos, entorno, directorios, archivos, reloj, temporizador, bytes, texto y fecha y hora. Cada traducción conserva frente al anfitrión real del destino la autoridad plena inicial, los derechos no amplificables, el confinamiento de los directorios derivados, la invalidación por cierre y los códigos de ErrorES de LANG.CAPABILITY.MODEL, y una espera de temporizador con Aguardar suspende solo a su tarea. Una tarea cancelada por el fallo de una hermana ejecuta sus limpiezas de Diferir pendientes, después de las de sus tareas descendientes y de la más interna a la más externa, antes de terminar. Siguen pendientes en ambos destinos la red, HTTP y JSON, y en Rust la hora local, que exige la base de zonas horarias del sistema ausente de su biblioteca estándar.",
+  "verificacion": [
+    "C68",
+    "C69",
+    "C70",
+    "C71",
+    "C72",
+    "C73",
+    "C74"
+  ]
+}
+```
+
+```caso
+{"id": "C68", "regla": "R19", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n", "target": "rust", "profile": "es"}}, "espera": {"aplicacion": {"status": "ready", "constructs": [], "first_line": null, "code_visible": true, "focused_lines": 0, "ready": true}}}
+```
+
+```caso
+{"id": "C69", "regla": "R19", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "ready", "constructs": [], "first_line": null, "code_visible": true, "focused_lines": 0, "ready": true}}}
+```
+
+```caso
+{"id": "C70", "regla": "R19", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "SubProceso LeerConCierre() Como Resultado<Cadena, ErrorES>\nDefinir dir Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\nDefinir f Como ArchivoCap <- Propagar dir.Abrir(\"datos.txt\", \"lectura\");\nDiferir\nDescartar f.Cerrar();\nFinDiferir\nRetornar f.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nSegun LeerConCierre() Hacer\nExito(t): Escribir AMayusculas(t);\nError(err): Escribir err.Codigo, \":\", err.Incierto;\nFinSegun\nFinAlgoritmo\n", "target": "rust", "profile": "es"}}, "espera": {"aplicacion": {"status": "ready", "constructs": [], "first_line": null, "code_visible": true, "focused_lines": 0, "ready": true}}}
+```
+
+```caso
+{"id": "C71", "regla": "R19", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "SubProceso Suspendible Hold(stream Como Canal<Entero>)\nDiferir\nEscribir \"cleanup\";\nFinDiferir\nSegun Aguardar stream.Recibir() Hacer\nAlgo(value): Escribir value;\nNada: Escribir \"closed\";\nFinSegun\nFinSubProceso\nSubProceso Suspendible Fail() Como Resultado<Entero, Cadena>\nRetornar Error(\"failed\");\nFinSubProceso\nAlgoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nTareas problem\nLanzar Hold(stream);\nLanzar Fail();\nFinTareas\nSegun problem Hacer\nNada: Escribir \"ok\";\nAlgo(report): Escribir report.Primero;\nFinSegun\nFinAlgoritmo\n", "target": "rust", "profile": "es"}}, "espera": {"aplicacion": {"status": "ready", "constructs": [], "first_line": null, "code_visible": true, "focused_lines": 0, "ready": true}}}
+```
+
+```caso
+{"id": "C72", "regla": "R19", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Algoritmo P\nDefinir parsed Como Resultado<ValorJson, ErrorJson> <- AnalizarJson(\"{\");\nSegun parsed Hacer\nExito(document): Escribir \"ok\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n", "target": "rust", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["capability"], "first_line": 2, "code_visible": false, "focused_lines": 0, "ready": false}}}
+```
+
+```caso
+{"id": "C73", "regla": "R19", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Algoritmo Main\nSegun SolicitarReloj() Hacer\nExito(clock):\nSegun clock.AhoraLocal() Hacer\nExito(moment): Escribir moment.FormatoIso();\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n", "target": "rust", "profile": "es"}}, "espera": {"aplicacion": {"status": "unavailable", "constructs": ["capability"], "first_line": 4, "code_visible": false, "focused_lines": 0, "ready": false}}}
+```
+
+```caso
+{"id": "C74", "regla": "R19", "perfiles": ["es"], "origen": "derivado", "operacion": "app", "aplicacion": {"scenario": "export_support", "input": {"program": "Algoritmo Main\nSegun SolicitarReloj() Hacer\nExito(clock):\nSegun clock.AhoraLocal() Hacer\nExito(moment): Escribir moment.FormatoIso();\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n", "target": "python", "profile": "es"}}, "espera": {"aplicacion": {"status": "ready", "constructs": [], "first_line": null, "code_visible": true, "focused_lines": 0, "ready": true}}}
 ```

@@ -1613,6 +1613,12 @@
       "justificacion": "El reemplazo del resultado de exportación por revisión es responsabilidad del consumidor de la vista y solo lo observa el sujeto app."
     },
     {
+      "regla": "API.PROGRAM.VIEW@1.0.0#R19",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "Los casos de la regla los observa el sujeto app por el puente real; el motor la acredita con el barrido diferencial de pseudolearn_api/tests/equivalent_code_sweep.rs y las pruebas de pseudolearn_transpiler, que no son casos del corpus."
+    },
+    {
       "regla": "API.PROGRAM.VIEW@1.0.0#R16",
       "verificacion": "ejecutor",
       "estado": "exento",
