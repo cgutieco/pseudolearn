@@ -4,10 +4,10 @@ use crate::workspace::Workspace;
 use reference_model::{Profile, RuleId, SectionHeader, SectionKind, SourceDocument, Violation};
 use reference_verify::{
     LinkTargets, RouteBook, check_examples, check_exercise_mix, check_exercise_runs,
-    check_exercise_shape, check_hints, check_inline_code, check_no_recipe, check_no_spec_duplicate,
-    check_prerequisites, check_recall_sources, check_route_anatomy, check_route_format,
-    check_route_links, check_route_parity, check_scaffold, check_term_order, check_term_owners,
-    find_identifier,
+    check_exercise_shape, check_hints, check_inline_code, check_new_tool, check_no_recipe,
+    check_no_spec_duplicate, check_prerequisites, check_recall_sources, check_route_anatomy,
+    check_route_format, check_route_links, check_route_parity, check_scaffold, check_term_order,
+    check_term_owners, find_identifier,
 };
 
 pub fn verify_route(workspace: &Workspace, book: &Book) -> Vec<Violation> {
@@ -132,6 +132,7 @@ fn spanish_only(route: &RouteLanguage) -> Vec<Violation> {
             last.as_ref() == Some(&lesson.header.id),
         ));
         violations.extend(check_scaffold(lesson));
+        violations.extend(check_new_tool(lesson));
         violations.extend(check_no_spec_duplicate(lesson));
     }
     for exercise in &route.exercises {

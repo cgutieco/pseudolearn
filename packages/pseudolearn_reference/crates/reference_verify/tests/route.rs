@@ -5,11 +5,11 @@ use reference_model::{
 };
 use reference_verify::{
     RouteBook, check_exercise_mix, check_exercise_runs, check_exercise_shape, check_hints,
-    check_no_recipe, check_no_spec_duplicate, check_prerequisites, check_recall_sources,
-    check_route_anatomy, check_route_format, check_route_parity, check_scaffold, check_term_order,
-    check_term_owners, outputs_match,
+    check_new_tool, check_no_recipe, check_no_spec_duplicate, check_prerequisites,
+    check_recall_sources, check_route_anatomy, check_route_format, check_route_parity,
+    check_scaffold, check_term_order, check_term_owners, outputs_match,
 };
-use route_support::{exercise, exercises_for_valid, lesson, terms};
+use route_support::{exercise, exercises_for_valid, lesson, lesson_text, terms};
 
 fn rules(violations: &[Violation]) -> Vec<RuleId> {
     violations.iter().map(|violation| violation.rule).collect()
@@ -46,6 +46,57 @@ fn the_valid_lesson_passes_every_source_check() {
     assert!(check_scaffold(&only).is_empty());
     assert!(check_no_spec_duplicate(&only).is_empty());
     assert!(check_route_format(&only.path, &only.blocks).is_empty());
+}
+
+const STRUCTURED_HEADER: &str = "necesita: [inicio.antes]\nintroduce: [problema]";
+
+fn valid_text() -> String {
+    std::fs::read_to_string(format!(
+        "{}/../../fixtures/route/valid/leccion.md",
+        env!("CARGO_MANIFEST_DIR")
+    ))
+    .unwrap_or_default()
+}
+
+fn valid_with_header(replacement: &str) -> reference_model::LessonDocument {
+    let changed = valid_text().replacen("introduce: [problema]", replacement, 1);
+    lesson_text("valid/leccion.md", &changed)
+}
+
+#[test]
+fn a_lesson_that_builds_on_others_and_introduces_concepts_needs_the_new_tool_section() {
+    let broken = valid_with_header(STRUCTURED_HEADER);
+    assert_eq!(rules(&check_new_tool(&broken)), vec![RuleId::RouteNewTool]);
+}
+
+#[test]
+fn the_new_tool_section_satisfies_the_check() {
+    let text = valid_text()
+        .replacen("introduce: [problema]", STRUCTURED_HEADER, 1)
+        .replacen(
+            "## Entender {#entender fase=1}",
+            "## La herramienta nueva {#herramienta}\n\nUna herramienta.\n\n## Entender {#entender fase=1}",
+            1,
+        );
+    assert!(check_new_tool(&lesson_text("valid/leccion.md", &text)).is_empty());
+}
+
+#[test]
+fn a_first_lesson_or_one_without_new_concepts_is_exempt_from_the_new_tool_section() {
+    assert!(check_new_tool(&lesson("valid/leccion.md")).is_empty());
+    let without = valid_with_header("necesita: [inicio.antes]\nintroduce: []");
+    assert!(check_new_tool(&without).is_empty());
+}
+
+#[test]
+fn opening_and_project_lessons_are_exempt_from_the_new_tool_section() {
+    for kind in ["apertura", "proyecto"] {
+        let text = valid_text()
+            .replacen("introduce: [problema]", STRUCTURED_HEADER, 1)
+            .replacen("tipo: leccion", &format!("tipo: {kind}"), 1);
+        let changed = lesson_text("valid/leccion.md", &text);
+        assert!(check_new_tool(&changed).is_empty(), "{kind}");
+    }
 }
 
 #[test]

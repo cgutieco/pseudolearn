@@ -92,6 +92,11 @@ describirlos. `reference check` informa la segunda como `RUTA-WEB-BUNDLE-STALE`.
 - Los paquetes de la app y de la web se generan con `reference build`; nunca se editan a mano (`GEN-NO-HAND-COPY`).
   `reference check` falla si están obsoletos.
 - Las figuras ocupan 340 unidades de ancho y usan roles de color, no colores fijos.
+- **`categories.json` es del libro**: la categoría de resaltado de cada palabra reservada es una decisión de presentación de los lectores, no comportamiento del lenguaje, así que no sube al corpus; `reference` la exige completa y la app la compara con su tabla en `keyword_highlight_categories_test.dart`.
+- **La comilla (`quote`) está excluida de la cobertura de vocabulario** (`coverage-exclusions.json`) porque el resaltado la incluye en el literal de texto y nunca aparece como ficha suelta.
+- **Los programas se escriben una vez**: la edición inglesa traduce el vocabulario del lenguaje y la prosa, pero comparte con la española los identificadores y los textos entre comillas de cada programa, porque la salida verificada es la misma en ambas. Duplicar los programas por edición es una decisión de contenido que no está tomada.
+- `RUTA-NEW-TOOL`: una lección de tipo `leccion` que declara `necesita` e `introduce` conceptos lleva la sección «La herramienta nueva» con el ancla `herramienta`; las aperturas, los proyectos y la primera lección quedan exentos.
+- Las aserciones estructurales de los ejercicios se validan en su forma: el puerto del motor (`CodeEngine`) no publica la vista del programa, así que no se contrastan contra la solución de referencia.
 
 ## Comandos útiles
 

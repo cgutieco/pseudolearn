@@ -58,6 +58,8 @@ pub enum RuleId {
     RouteHints,
     #[serde(rename = "RUTA-SCAFFOLD")]
     RouteScaffold,
+    #[serde(rename = "RUTA-NEW-TOOL")]
+    RouteNewTool,
     #[serde(rename = "RUTA-PARITY")]
     RouteParity,
     #[serde(rename = "RUTA-BUNDLE-STALE")]
@@ -99,6 +101,7 @@ impl RuleId {
             Self::RouteStatementNoRecipe => "RUTA-STATEMENT-NO-RECIPE",
             Self::RouteHints => "RUTA-HINTS",
             Self::RouteScaffold => "RUTA-SCAFFOLD",
+            Self::RouteNewTool => "RUTA-NEW-TOOL",
             Self::RouteParity => "RUTA-PARITY",
             Self::RouteBundleStale => "RUTA-BUNDLE-STALE",
             Self::WebBundleStale => "REF-WEB-BUNDLE-STALE",

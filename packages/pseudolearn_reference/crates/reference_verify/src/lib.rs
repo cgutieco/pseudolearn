@@ -32,7 +32,8 @@ pub use internal_ids::{check_internal_ids, find_identifier};
 pub use links::check_links;
 pub use parity::check_parity;
 pub use route_anatomy::{
-    check_no_spec_duplicate, check_route_anatomy, check_route_format, check_scaffold,
+    check_new_tool, check_no_spec_duplicate, check_route_anatomy, check_route_format,
+    check_scaffold,
 };
 pub use route_book::RouteBook;
 pub use route_links::{LinkTargets, check_route_links};

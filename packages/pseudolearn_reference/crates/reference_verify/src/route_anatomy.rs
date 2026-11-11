@@ -92,6 +92,29 @@ pub fn check_scaffold(lesson: &LessonDocument) -> Vec<Violation> {
     )]
 }
 
+pub fn check_new_tool(lesson: &LessonDocument) -> Vec<Violation> {
+    let header = &lesson.header;
+    let introduces_construct = header.kind == LessonKind::Lesson
+        && !header.introduces.is_empty()
+        && !header.needs.is_empty();
+    let has_section = lesson
+        .blocks
+        .iter()
+        .any(|block| matches!(block, SourceBlock::Heading { id, .. } if id == NEW_TOOL_ANCHOR));
+    if !introduces_construct || has_section {
+        return Vec::new();
+    }
+    vec![Violation::new(
+        RuleId::RouteNewTool,
+        lesson.path.clone(),
+        format!(
+            "a lesson that introduces concepts needs a section with the anchor {NEW_TOOL_ANCHOR}"
+        ),
+    )]
+}
+
+const NEW_TOOL_ANCHOR: &str = "herramienta";
+
 fn condensed_part(lesson: &str) -> bool {
     !matches!(lesson.split('.').next(), Some("inicio" | "imperativo"))
 }
