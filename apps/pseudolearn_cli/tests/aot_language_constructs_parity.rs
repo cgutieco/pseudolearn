@@ -13,7 +13,8 @@ fn acceptance_source(name: &str) -> std::io::Result<String> {
 }
 
 fn execute_natively(program: &str) -> std::io::Result<Value> {
-    let request = json!({"kind":"execute","program":program,"profile":"es","seed":42,"observe":"none"});
+    let request =
+        json!({"kind":"execute","program":program,"profile":"es","seed":42,"observe":"none"});
     let mut child = Command::new(env!("CARGO_BIN_EXE_pseudo"))
         .args(["--see-adapter", "aot"])
         .stdin(Stdio::piped())

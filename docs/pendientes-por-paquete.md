@@ -6,17 +6,7 @@ Registro único de lo que sigue abierto en cada paquete y app. Cada viñeta es u
 
 Decisión pendiente:
 
-- La agenda de tareas y sus colas no se guardan en las imágenes históricas (`MachineImage`): la consulta del pasado con tareas se reconstruye por reproducción de la cinta. Ninguna regla del corpus exige la imagen completa, así que no se implementa; si se quisiera, primero hay que aprobar la regla y la fase.
-
-## pseudolearn_spec
-
-Bloqueado por revisión humana independiente:
-
-- Los esperados de `TOOL.FORMAT.STYLE` C5–C7 y `TOOL.TRANSLATE.ROUND-TRIP` C5 no llevan `revisado_por`. Acción: que otra persona los revise y los firme; el agente no inventa revisor.
-
-Decisión pendiente:
-
-- El caso `LIB.IO` de incertidumbre en `Renombrar` solo se cubre en una prueba de `pseudolearn_api`, porque la búsqueda por evento no soporta un efecto fallido incierto. Mover la cobertura al corpus exige extender esa búsqueda (cambio de motor y de la regla de consulta del pasado).
+- La agenda de tareas y sus colas no se guardan en las imágenes históricas (`MachineImage`): la consulta del pasado con tareas se reconstruye por reproducción de la cinta. Se revisó contra el código actual: ningún caso de `API.STATE.QUERY` ni de `ENG.TRACE.*` exige la imagen completa (los casos con tareas pasan por reproducción, y el canal de `API.STATE.QUERY` R9 también), así que persistirla sería trabajo sin regla que lo pida (`SCOPE-YAGNI`). Si se quisiera por rendimiento, primero hay que aprobar la regla y la fase.
 
 ## pseudolearn_cli
 
@@ -26,10 +16,9 @@ Bloqueado por máquinas:
 
 ## pseudolearn_reference
 
-Decisión pendiente:
+Contenido pendiente de una decisión de alcance:
 
-- Los programas de la ruta en la edición inglesa conservan identificadores y textos entre comillas en español, porque cada programa se escribe una vez. Corregirlo exige duplicar unos 400 programas por edición con su salida verificada. Acción: decidir si se autoriza ese trabajo de contenido.
-- Las aserciones estructurales de los ejercicios se validan en su forma, no contra la referencia, porque el puerto `CodeEngine` no publica la vista del programa. Acción: aprobar que el puerto exponga `API.PROGRAM.VIEW`.
+- Los programas de la ruta en la edición inglesa que no tienen versión propia siguen compartiendo identificadores y textos entre comillas con el español. El mecanismo (programa propio en `route/en`, `RUTA-PARITY` sobre su esqueleto, salida verificada por el motor en cada edición) está implementado y migró la lección 0.2 y el ejercicio «Repartir caramelos»; quedan unos 300 programas, con la prosa, la `salida` y los `casos` que los citan. Acción: autorizar el trabajo de redacción de contenido, que es mecánico pero extenso.
 
 ## pseudolearn_store_media
 
@@ -90,8 +79,8 @@ Bloqueado por firmas, tiendas, credenciales y autorización:
 
 Decisión pendiente:
 
-- Un parámetro `Canal` se muestra aplanado en la vista Variables (`stream.identity = Nulo`). Publicarlo como valor propio exige ampliar el modelo de valores de `API.MODEL` / `API.STATE.QUERY` en el corpus, el motor y la app. Acción: aprobar esa ampliación.
-- Ampliar el código equivalente según los pendientes del transpilador depende de que el transpilador cubra más construcciones.
+- Acotar `NSAllowsArbitraryLoads` de iOS a `NSAllowsLocalNetworking`: la red de los programas va por sockets (`hyper`) y la app por `dart:io`, así que App Transport Security no debería gobernarla, pero la excepción está fijada como decisión D-08 y falta comprobarlo en un dispositivo iOS con un servicio `http://` local y otro público. Acción: decidir y verificar en dispositivo.
+- Ampliar el código equivalente: las construcciones que el transpilador deja pendientes (operaciones de capacidad y de biblioteca de efectos; red HTTPS y JSON sin equivalente en la biblioteca estándar de Rust; limpiezas de `Diferir` de tareas canceladas, `Instantanea` de objetos y métodos suspendibles de jerarquías en Rust) no tienen una regla del corpus que las exija: `API.PROGRAM.VIEW` R17 admite declararlas pendientes por destino. Acción: aprobar la regla de cada una antes de traducirla.
 
 ## pseudolearn_benchmarks
 
