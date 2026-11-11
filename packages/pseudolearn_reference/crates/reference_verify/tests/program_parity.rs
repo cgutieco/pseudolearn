@@ -26,6 +26,8 @@ fn corpus() -> Corpus {
         ("writeKeyword", "write", "Escribir"),
         ("whileKeyword", "while", "Mientras"),
         ("doKeyword", "do", "Hacer"),
+        ("algorithmKeyword", "algorithm", "Algoritmo"),
+        ("byValue", "byValue", "Por Valor"),
     ];
     let vocabulary: Vec<String> = entries
         .iter()
@@ -123,4 +125,24 @@ fn a_reserved_word_cannot_be_renamed() {
     let spanish = [program("a", "Escribir 1;\n")];
     let english = [program("a", "Display 1;\n")];
     assert_eq!(problems(&spanish, &english), 1);
+}
+
+#[test]
+fn a_word_inside_a_phrase_is_free_elsewhere_and_fixed_inside_it() {
+    let spanish = [program("a", "Por Valor valor;\n")];
+    assert_eq!(
+        problems(&spanish, &[program("a", "Por Valor amount;\n")]),
+        0
+    );
+    assert_eq!(
+        problems(&spanish, &[program("a", "Por Copia amount;\n")]),
+        1
+    );
+}
+
+#[test]
+fn the_name_after_the_algorithm_keyword_is_an_identifier() {
+    let spanish = [program("a", "Algoritmo Escribir\nFinAlgoritmo\n")];
+    let english = [program("a", "Algoritmo Export\nFinAlgoritmo\n")];
+    assert_eq!(problems(&spanish, &english), 0);
 }
