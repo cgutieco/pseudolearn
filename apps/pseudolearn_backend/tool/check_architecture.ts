@@ -2,6 +2,7 @@ import {
   type ArchitectureRules,
   findCommentViolations,
   findFileLengthViolations,
+  findFunctionLengthViolations,
   findIdentifierViolations,
   findImportViolations,
   findUndeclaredLayerViolations,
@@ -14,6 +15,7 @@ export function checkSourceFile(file: SourceFile, rules: ArchitectureRules): Vio
   return [
     ...findCommentViolations(file, rules),
     ...findFileLengthViolations(file, rules),
+    ...findFunctionLengthViolations(file, rules),
     ...findImportViolations(file, rules),
     ...findIdentifierViolations(file, rules),
   ];

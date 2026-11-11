@@ -39,7 +39,8 @@
     "scanned_roots": ["supabase/functions", "test", "tool"]
   },
   "limits": {
-    "file_lines": 120
+    "file_lines": 120,
+    "function_lines": 40
   },
   "limits_exempt": ["test/", "tool/"]
 }

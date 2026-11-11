@@ -80,6 +80,8 @@ Si el modelo falla, responde 429 o no trae `usage`, no hay débito.
   contenido.
 - `deno fmt` no formatea este README: lo excluye `deno.json` porque los README del monorepo usan 120 columnas y
   `deno fmt` las reflujaría a 100.
+- **Tamaño de función**: `architecture.json` declara `function_lines` además de `file_lines`; `tool/function_spans.ts` mide cada declaración, método y flecha sobre los tokens del lexer y `tool/check_architecture.ts` reporta `SIZE-FUNCTION-LINES`. Las pruebas y las herramientas quedan exentas, como en el límite de archivo.
+- **Consumo real de créditos**: para confirmar los 300 créditos del plan hace falta datos de producción. La consulta es `select turn_id, sum(credits) from agent_ledger_events group by turn_id` sobre una ventana de uso real; no hay datos de prueba que la sustituyan.
 
 ## Integridad del libro de créditos
 
