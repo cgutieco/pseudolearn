@@ -43,6 +43,8 @@ pub struct CompletionEntry {
     #[serde(default)]
     pub inline: bool,
     #[serde(default)]
+    pub identity: Option<String>,
+    #[serde(default)]
     pub action: CompletionAction,
 }
 

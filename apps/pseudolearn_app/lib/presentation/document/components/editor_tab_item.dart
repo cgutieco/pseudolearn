@@ -53,25 +53,33 @@ final class EditorTabItem extends StatelessWidget {
   }
 
   void _requestHelp(BuildContext context, CaretRange caret) {
-    final configured = context.read<SettingsCubit>().state.language;
-    final code = configured.resolveLocaleCode(
-      Localizations.localeOf(context).languageCode,
-    );
     context.read<SyntaxHelpCubit>().request(
       sourceCode: editorState.sourceCode,
       profileId:
           editorState.document?.profileId ?? SyntaxProfileId.classicSpanish,
-      languageId: code == 'en' ? UiLanguageId.english : UiLanguageId.spanish,
+      languageId: _interfaceLanguage(context),
       cursorUtf16: caret.lower,
       revision: editorState.completionRevision,
     );
     showSyntaxHelpSheet(context);
   }
 
+  UiLanguageId _interfaceLanguage(BuildContext context) {
+    final configured = context.read<SettingsCubit>().state.language;
+    final code = configured.resolveLocaleCode(
+      Localizations.localeOf(context).languageCode,
+    );
+    return code == 'en' ? UiLanguageId.english : UiLanguageId.spanish;
+  }
+
   void _moveCaret(BuildContext context, int cursor) {
     final editor = context.read<EditorCubit>();
     editor.updateCompletionCursor(cursor);
     context.read<SyntaxHelpCubit>().caretMoved(
+      sourceCode: editor.state.sourceCode,
+      profileId:
+          editorState.document?.profileId ?? SyntaxProfileId.classicSpanish,
+      languageId: _interfaceLanguage(context),
       spans: editor.state.report.highlightSpans,
       cursorUtf16: cursor,
       revision: editor.state.completionRevision,

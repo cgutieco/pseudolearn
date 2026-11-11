@@ -16,6 +16,7 @@ pub mod completion_sources;
 pub mod completion_symbols;
 pub mod completion_templates;
 pub mod completion_types;
+pub mod completion_vocabulary;
 mod contextual_constructors;
 mod contextual_members;
 mod contextual_tokens;

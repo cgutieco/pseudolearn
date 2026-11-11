@@ -57,7 +57,8 @@ pub(crate) fn candidate_json(id: usize, entry: &CompletionEntry) -> Value {
         "detail_arguments": entry.detail_arguments,
         "insert_text": entry.insert_text,
         "bilingual_origin": entry.bilingual_origin,
-        "inline": entry.inline
+        "inline": entry.inline,
+        "identity": entry.identity
     })
 }
 

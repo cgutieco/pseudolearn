@@ -95,7 +95,8 @@ fn closer_for(context: &TypingContext<'_>, current: usize, tail_blank: bool) -> 
     if fact.closed || !tail_blank || fact.kind == KeywordKind::Repeat {
         return None;
     }
-    let word = keyword_spelling(closing_keyword(fact.kind), context.document.profile);
+    let closer = closing_keyword(fact.kind)?;
+    let word = keyword_spelling(closer, context.document.profile);
     Some(format!("{}{word}", indent_of(text, fact.line_start)))
 }
 

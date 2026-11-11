@@ -2537,7 +2537,7 @@
               },
               {
                 "identity": "endSwitch",
-                "text": "Cierra la elección."
+                "text": "Cierra la elección. Después de esta palabra el programa sigue con la instrucción siguiente."
               },
               {
                 "identity": "branchSeparator",
@@ -2606,7 +2606,7 @@
               },
               {
                 "identity": "endSwitch",
-                "text": "Closes the choice."
+                "text": "Closes the choice. After this word the program continues with the next instruction."
               },
               {
                 "identity": "branchSeparator",
@@ -4120,7 +4120,7 @@
               },
               {
                 "identity": "endSelect",
-                "text": "Cierra el bloque Elegir."
+                "text": "Cierra el bloque Elegir y termina la espera de los canales. El programa sigue con la instrucción siguiente."
               },
               {
                 "identity": "taskFailureType",
@@ -4217,7 +4217,7 @@
               },
               {
                 "identity": "endSelect",
-                "text": "Closes the select block."
+                "text": "Closes the select block and ends the wait on the channels. The program continues with the next instruction."
               },
               {
                 "identity": "taskFailureType",
@@ -6464,7 +6464,7 @@
               },
               {
                 "identity": "endMethod",
-                "text": "Cierra el constructor."
+                "text": "Cierra el constructor. Lo escrito antes se ejecuta una vez, cuando se crea cada objeto de la clase."
               }
             ],
             "slots": [
@@ -6520,7 +6520,7 @@
               },
               {
                 "identity": "endMethod",
-                "text": "Closes the constructor."
+                "text": "Closes the constructor. What is written before it runs once, when each object of the class is created."
               }
             ],
             "slots": [
@@ -11473,7 +11473,7 @@
               },
               {
                 "identity": "endInterface",
-                "text": "Cierra el contrato."
+                "text": "Cierra el contrato. Después van las clases que lo cumplen."
               },
               {
                 "identity": "implementsKeyword",
@@ -11543,7 +11543,7 @@
               },
               {
                 "identity": "endInterface",
-                "text": "Closes the contract."
+                "text": "Closes the contract. Classes that fulfill it come after."
               },
               {
                 "identity": "implementsKeyword",
@@ -36538,7 +36538,7 @@
               },
               {
                 "identity": "endInterface",
-                "text": "Cierra el contrato."
+                "text": "Cierra el contrato. Después van las clases que lo cumplen."
               },
               {
                 "identity": "implementsKeyword",
@@ -36615,7 +36615,7 @@
               },
               {
                 "identity": "endInterface",
-                "text": "Closes the contract."
+                "text": "Closes the contract. Classes that fulfill it come after."
               },
               {
                 "identity": "implementsKeyword",
@@ -37066,7 +37066,7 @@
               },
               {
                 "identity": "endVariant",
-                "text": "Cierra la variante."
+                "text": "Cierra la variante. Aquí termina la lista de formas posibles."
               },
               {
                 "identity": "alternativeKeyword",
@@ -37126,7 +37126,7 @@
               },
               {
                 "identity": "endVariant",
-                "text": "Closes the variant."
+                "text": "Closes the variant. Here the list of possible shapes ends."
               },
               {
                 "identity": "alternativeKeyword",

@@ -18,6 +18,9 @@ pub fn build_template(construction: &str, profile: Profile) -> Option<Template> 
         "subroutine" | "subproceso" => subroutine_segments(&word, &marker),
         "class" | "clase" => class_segments(&word, &marker),
         "algorithm" | "algoritmo" => algorithm_segments(&word, &marker),
+        "record" | "registro" => record_segments(&word, &marker),
+        "enum" | "enumerado" => enum_segments(&word, &marker),
+        "tasks" | "tareas" => tasks_segments(&word),
         _ => return None,
     };
     Some(Template { segments })
@@ -160,5 +163,44 @@ fn algorithm_segments(word: Word<'_>, marker: &Markers) -> Vec<Segment> {
     segments.extend(body(1));
     segments.push(Segment::Final);
     segments.extend(closing(word, KeywordKind::EndAlgorithm));
+    segments
+}
+
+fn record_segments(word: Word<'_>, marker: &Markers) -> Vec<Segment> {
+    let mut segments = vec![
+        text(format!("{} ", word(KeywordKind::RecordKeyword))),
+        stop(1, StopRole::NewIdentifier, marker.class_name),
+    ];
+    segments.extend(body(1));
+    segments.push(text(format!("{} ", word(KeywordKind::Declare))));
+    segments.push(stop(2, StopRole::NewIdentifier, marker.field));
+    segments.push(text(format!(
+        " {} {}",
+        word(KeywordKind::TypeConnector),
+        word(KeywordKind::IntegerType)
+    )));
+    segments.push(text(";"));
+    segments.extend(body(1));
+    segments.push(Segment::Final);
+    segments.extend(closing(word, KeywordKind::EndRecord));
+    segments
+}
+
+fn enum_segments(word: Word<'_>, marker: &Markers) -> Vec<Segment> {
+    let mut segments = vec![
+        text(format!("{} ", word(KeywordKind::EnumKeyword))),
+        stop(1, StopRole::NewIdentifier, marker.class_name),
+    ];
+    segments.extend(body(1));
+    segments.push(Segment::Final);
+    segments.extend(closing(word, KeywordKind::EndEnum));
+    segments
+}
+
+fn tasks_segments(word: Word<'_>) -> Vec<Segment> {
+    let mut segments = vec![text(word(KeywordKind::TasksKeyword))];
+    segments.extend(body(1));
+    segments.push(Segment::Final);
+    segments.extend(closing(word, KeywordKind::EndTasks));
     segments
 }

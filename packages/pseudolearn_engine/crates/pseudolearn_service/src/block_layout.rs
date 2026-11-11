@@ -118,6 +118,10 @@ pub fn is_opener(kind: KeywordKind) -> bool {
             | KeywordKind::ForKeyword
             | KeywordKind::Repeat
             | KeywordKind::SwitchKeyword
+            | KeywordKind::RecordKeyword
+            | KeywordKind::EnumKeyword
+            | KeywordKind::SelectKeyword
+            | KeywordKind::TasksKeyword
     )
 }
 
@@ -134,6 +138,10 @@ pub fn is_closer(kind: KeywordKind) -> bool {
             | KeywordKind::EndFor
             | KeywordKind::EndSwitch
             | KeywordKind::Until
+            | KeywordKind::EndRecord
+            | KeywordKind::EndEnum
+            | KeywordKind::EndSelect
+            | KeywordKind::EndTasks
     )
 }
 

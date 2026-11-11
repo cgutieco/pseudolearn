@@ -98,7 +98,7 @@ pub fn openers_before(tree: &SyntaxTree, limit: usize) -> Vec<usize> {
 fn truncate_matching(stack: &mut Vec<usize>, tree: &SyntaxTree, kind: KeywordKind) {
     let matching = stack.iter().rposition(|opener| {
         matches!(tree.tokens.kind(*opener), Some(TokenKind::Keyword(opening))
-            if closing_keyword(opening) == kind)
+            if closing_keyword(opening) == Some(kind))
     });
     if let Some(depth) = matching {
         stack.truncate(depth);
@@ -109,7 +109,7 @@ fn close_block(map: &mut BlockMap, stack: &mut Vec<usize>, token: usize, closer:
     let matching = stack.iter().rposition(|opener| {
         map.openers
             .get(opener)
-            .is_some_and(|fact| closing_keyword(fact.kind) == closer)
+            .is_some_and(|fact| closing_keyword(fact.kind) == Some(closer))
     });
     let Some(depth) = matching else {
         return;

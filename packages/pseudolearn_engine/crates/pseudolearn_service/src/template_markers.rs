@@ -9,6 +9,7 @@ pub struct Markers {
     pub name: &'static str,
     pub parameter: &'static str,
     pub class_name: &'static str,
+    pub field: &'static str,
 }
 
 pub fn markers(profile: Profile) -> Markers {
@@ -22,6 +23,7 @@ pub fn markers(profile: Profile) -> Markers {
             name: "nombre",
             parameter: "parametro",
             class_name: "Nombre",
+            field: "campo",
         },
         Profile::English => Markers {
             expression: "expression",
@@ -32,6 +34,7 @@ pub fn markers(profile: Profile) -> Markers {
             name: "name",
             parameter: "parameter",
             class_name: "Name",
+            field: "field",
         },
     }
 }

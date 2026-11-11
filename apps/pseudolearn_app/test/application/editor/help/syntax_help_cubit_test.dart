@@ -54,6 +54,9 @@ final List<HighlightSpan> _spans = [
 
 void _rest(SyntaxHelpCubit cubit, int cursor, {int revision = 1, List<HighlightSpan>? spans}) =>
     cubit.caretMoved(
+      sourceCode: 'x',
+      profileId: SyntaxProfileId.classicSpanish,
+      languageId: UiLanguageId.spanish,
       spans: spans ?? _spans,
       cursorUtf16: cursor,
       revision: revision,
@@ -88,10 +91,57 @@ void main() {
       expect(cubit.state.restingKeyword?.startOffset, 18);
     });
 
-    test('an identifier offers nothing to explain', () {
-      final cubit = fresh();
+    test('an identifier the engine has no help for offers nothing to explain', () {
+      final cubit = SyntaxHelpCubit(
+        source: FakeSyntaxHelpSource(),
+        highlighter: _highlighter(),
+      )..documentChanged(1);
       _rest(cubit, 3);
       _rest(cubit, 10);
+      expect(cubit.state.restingKeyword, isNull);
+    });
+
+    test('an identifier the engine can explain, like a standard function, is explainable', () {
+      final cubit = fresh();
+      _rest(cubit, 10);
+      expect(cubit.state.restingKeyword?.startOffset, 8);
+      expect(cubit.state.restingKeyword?.endOffset, 12);
+    });
+
+    test('a user symbol is not offered as an explainable word', () {
+      final cubit = SyntaxHelpCubit(
+        source: FakeSyntaxHelpSource(
+          answer: (revision) => HelpQueryResult.symbol(
+            const SyntaxHelp(headline: 'x', range: CaretRange(start: 8, end: 12)),
+            revision: revision,
+          ),
+        ),
+        highlighter: _highlighter(),
+      )..documentChanged(1);
+      _rest(cubit, 10);
+      expect(cubit.state.restingKeyword, isNull);
+    });
+
+    test('a boolean literal is explainable', () {
+      final cubit = fresh();
+      _rest(
+        cubit,
+        2,
+        spans: [_span(0, 9, HighlightCategory.literalBoolean)],
+      );
+      expect(cubit.state.restingKeyword?.endOffset, 9);
+    });
+
+    test('a boolean literal without engine help offers nothing', () {
+      final cubit = SyntaxHelpCubit(
+        source: FakeSyntaxHelpSource(),
+        highlighter: _highlighter(),
+      )..documentChanged(1);
+      _rest(
+        cubit,
+        2,
+        spans: [_span(0, 9, HighlightCategory.literalBoolean)],
+      );
       expect(cubit.state.restingKeyword, isNull);
     });
 

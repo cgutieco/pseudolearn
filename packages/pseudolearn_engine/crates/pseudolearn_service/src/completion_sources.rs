@@ -4,9 +4,14 @@ use crate::completion_keywords::{
 use crate::completion_pool::{CandidatePool, Rank, keyed_entry, plain_entry};
 use crate::completion_scope::SourceScope;
 use crate::completion_symbols::{
-    builtin_functions, class_names, enclosing_fields, local_variables, user_callables,
+    builtin_functions, class_names, constant_names, declared_type_names, enclosing_fields,
+    local_variables, user_callables,
 };
 use crate::completion_types::CompletionKind;
+use crate::completion_vocabulary::{
+    capability_requests, contextual_follow_ups, contextual_statements, library_types,
+    module_statements,
+};
 use crate::spelling::{boolean_spelling, keyword_spelling};
 use pseudolearn_lexicon::KeywordKind;
 use pseudolearn_semantic::types::Type;
@@ -16,15 +21,17 @@ pub fn closing_candidates(scope: &SourceScope<'_>, pool: &mut CandidatePool) {
     let Some(innermost) = scope.context.open_blocks.last().copied() else {
         return;
     };
-    pool.add(
-        0,
-        keyed_entry(
-            keyword_spelling(closing_keyword(innermost), scope.profile),
-            CompletionKind::Keyword,
-            ("close_block", Vec::new()),
-            Some(scope.label("Cerrar bloque", "Close block")),
-        ),
-    );
+    if let Some(closer) = closing_keyword(innermost) {
+        pool.add(
+            0,
+            keyed_entry(
+                keyword_spelling(closer, scope.profile),
+                CompletionKind::Keyword,
+                ("close_block", Vec::new()),
+                Some(scope.label("Cerrar bloque", "Close block")),
+            ),
+        );
+    }
     if innermost == KeywordKind::IfKeyword {
         pool.add(1, keyword_entry(KeywordKind::ElseKeyword, scope.profile));
     }
@@ -48,6 +55,10 @@ pub fn statement_candidates(scope: &SourceScope<'_>, pool: &mut CandidatePool) {
     if returns_allowed {
         pool.add(2, keyword_entry(KeywordKind::ReturnKeyword, scope.profile));
     }
+    if blocks.is_empty() {
+        module_statements(scope, pool);
+    }
+    contextual_statements(scope, pool);
     if !blocks.is_empty() && blocks.last() != Some(&KeywordKind::ClassKeyword) {
         local_variables(scope, pool);
         user_callables(scope, pool, false);
@@ -60,10 +71,26 @@ pub fn expression_candidates(scope: &SourceScope<'_>, pool: &mut CandidatePool) 
         return;
     }
     follow_up_keywords(scope, pool);
+    contextual_follow_ups(scope, pool);
     local_variables(scope, pool);
+    constant_names(scope, pool);
     enclosing_fields(scope, pool);
     user_callables(scope, pool, true);
     builtin_functions(scope, pool);
+    capability_requests(scope, pool);
+    boolean_candidates(scope, pool);
+    keyword_expressions(scope, pool);
+    for operator in [
+        KeywordKind::And,
+        KeywordKind::Or,
+        KeywordKind::Modulo,
+        KeywordKind::IntegerDivide,
+    ] {
+        pool.add(4, keyword_entry(operator, scope.profile));
+    }
+}
+
+fn boolean_candidates(scope: &SourceScope<'_>, pool: &mut CandidatePool) {
     for value in [true, false] {
         let rank = Rank {
             compat: scope.compatibility_of(Some(&Type::Boolean)),
@@ -79,18 +106,25 @@ pub fn expression_candidates(scope: &SourceScope<'_>, pool: &mut CandidatePool) 
             rank,
         );
     }
+}
+
+fn keyword_expressions(scope: &SourceScope<'_>, pool: &mut CandidatePool) {
     pool.add(3, keyword_entry(KeywordKind::NewInstance, scope.profile));
     pool.add(3, keyword_entry(KeywordKind::Not, scope.profile));
     if scope.inside_method() {
         pool.add(3, keyword_entry(KeywordKind::ThisObject, scope.profile));
+        pool.add(3, keyword_entry(KeywordKind::SuperClass, scope.profile));
     }
-    for operator in [
-        KeywordKind::And,
-        KeywordKind::Or,
-        KeywordKind::Modulo,
-        KeywordKind::IntegerDivide,
+    for constructor in [
+        KeywordKind::SomeVariant,
+        KeywordKind::NoneVariant,
+        KeywordKind::SuccessVariant,
+        KeywordKind::ErrorVariant,
+        KeywordKind::AwaitKeyword,
+        KeywordKind::SpawnKeyword,
+        KeywordKind::PropagateKeyword,
     ] {
-        pool.add(4, keyword_entry(operator, scope.profile));
+        pool.add(3, keyword_entry(constructor, scope.profile));
     }
 }
 
@@ -113,4 +147,6 @@ pub fn type_candidates(scope: &SourceScope<'_>, pool: &mut CandidatePool) {
         );
     }
     class_names(scope, pool, 1);
+    declared_type_names(scope, pool);
+    library_types(scope, pool);
 }

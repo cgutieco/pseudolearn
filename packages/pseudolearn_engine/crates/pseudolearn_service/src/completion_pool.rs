@@ -38,8 +38,14 @@ pub fn plain_entry(label: String, kind: CompletionKind, detail: Option<String>) 
         detail_key: None,
         detail_arguments: Vec::new(),
         inline: false,
+        identity: None,
         action: CompletionAction::Plain,
     }
+}
+
+pub fn identified(mut entry: CompletionEntry, identity: &str) -> CompletionEntry {
+    entry.identity = Some(identity.to_owned());
+    entry
 }
 
 pub fn keyed_entry(

@@ -455,7 +455,7 @@
   "id": "R11",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El detalle de un candidato se entrega como clave estable con argumentos, no como prosa: close_block, structure, bilingual_equivalent, primitive_type, class, standard_function, type_name y signature. La localización a un idioma de interfaz es responsabilidad del consumidor y no altera lexemas, firmas ni orden.",
+  "texto": "El detalle de un candidato se entrega como clave estable con argumentos, no como prosa: close_block, structure, bilingual_equivalent, primitive_type, library_type, declared_type, capability_request, constant, class, standard_function, type_name y signature. La localización a un idioma de interfaz es responsabilidad del consumidor y no altera lexemas, firmas ni orden.",
   "verificacion": [
     "C17",
     "C18"
@@ -1375,6 +1375,446 @@
     "excluye": [
       "FinAlgoritmo"
     ]
+  }
+}
+```
+
+```regla
+{
+  "id": "R14",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Los bloques de registro, enumerado, selección y tareas se emparejan como los demás: mientras estén abiertos, su propio cierre es el candidato prioritario, un bloque ya cerrado no lo vuelve a ofrecer y dentro de un registro, un enumerado o una selección no se ofrecen instrucciones de control.",
+  "verificacion": [
+    "C35",
+    "C36",
+    "C45"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R15",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "En posición de unidad de módulo se ofrecen también las declaraciones de módulo (importar, exportar, constante, registro, enumerado, interfaz y variante). En posición de tipo se ofrecen, además de los primitivos y las clases, los tipos de la biblioteca (vector, diccionario, opcional, resultado, bytes, canal, capacidades y tipos de error) y los registros, enumerados e interfaces declarados.",
+  "verificacion": [
+    "C37",
+    "C38",
+    "C43",
+    "C44"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R16",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Las palabras contextuales se ofrecen solo donde son válidas: salir dentro de un bucle, super dentro de un método, las formas de variante, aguardar, lanzar y las solicitudes de capacidad en una expresión, y cada, en, hereda de, realiza, por valor y por referencia como continuación de su cabecera. Aceptar una función estándar inserta la llamada con un marcador por parámetro.",
+  "verificacion": [
+    "C39",
+    "C40",
+    "C41",
+    "C42"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C35",
+  "regla": "R14",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "primer_candidato": "FinRegistro"
+    }
+  },
+  "servicio": {
+    "suboperacion": "completion",
+    "documento": "Registro Punto\n  \n",
+    "posicion": {
+      "line": 2,
+      "column": 3
+    },
+    "proyeccion": "primer_candidato"
+  }
+}
+```
+
+```caso
+{
+  "id": "C36",
+  "regla": "R14",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "contiene": [],
+      "excluye": [
+        "Mientras",
+        "Si",
+        "FinRegistro"
+      ]
+    }
+  },
+  "servicio": {
+    "suboperacion": "completion",
+    "documento": "Registro Punto\n  \nFinRegistro\n",
+    "posicion": {
+      "line": 2,
+      "column": 3
+    },
+    "proyeccion": "contiene",
+    "contiene": [],
+    "excluye": [
+      "Mientras",
+      "Si",
+      "FinRegistro"
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C45",
+  "regla": "R14",
+  "perfiles": [
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "primer_candidato": "EndRecord"
+    }
+  },
+  "servicio": {
+    "suboperacion": "completion",
+    "documento": "Record Point\n  \n",
+    "posicion": {
+      "line": 2,
+      "column": 3
+    },
+    "proyeccion": "primer_candidato"
+  }
+}
+```
+
+```caso
+{
+  "id": "C37",
+  "regla": "R15",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "contiene": [
+        "Importar",
+        "Exportar",
+        "Constante",
+        "Registro",
+        "Enumerado",
+        "Interfaz",
+        "Variante"
+      ],
+      "excluye": [
+        "Mientras"
+      ]
+    }
+  },
+  "servicio": {
+    "suboperacion": "completion",
+    "documento": "\n",
+    "posicion": {
+      "line": 1,
+      "column": 1
+    },
+    "proyeccion": "contiene",
+    "contiene": [
+      "Importar",
+      "Exportar",
+      "Constante",
+      "Registro",
+      "Enumerado",
+      "Interfaz",
+      "Variante"
+    ],
+    "excluye": [
+      "Mientras"
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C38",
+  "regla": "R15",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "contiene": [
+        "Punto",
+        "Vector",
+        "Diccionario",
+        "Opcional",
+        "Resultado",
+        "Bytes"
+      ],
+      "excluye": [
+        "Escribir"
+      ]
+    }
+  },
+  "servicio": {
+    "suboperacion": "completion",
+    "documento": "Registro Punto\n  Definir x Como Entero;\nFinRegistro\nAlgoritmo P\n  Definir a Como \nFinAlgoritmo\n",
+    "posicion": {
+      "line": 5,
+      "column": 18
+    },
+    "proyeccion": "contiene",
+    "contiene": [
+      "Punto",
+      "Vector",
+      "Diccionario",
+      "Opcional",
+      "Resultado",
+      "Bytes"
+    ],
+    "excluye": [
+      "Escribir"
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C43",
+  "regla": "R15",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "detalle": {
+        "etiqueta": "Vector",
+        "clave": "library_type",
+        "argumentos": []
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "completion",
+    "documento": "Algoritmo P\n  Definir a Como Vec\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 2,
+      "column": 21
+    },
+    "proyeccion": "detalle",
+    "candidato": "Vector"
+  }
+}
+```
+
+```caso
+{
+  "id": "C44",
+  "regla": "R15",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "detalle": {
+        "etiqueta": "Punto",
+        "clave": "declared_type",
+        "argumentos": [
+          "record"
+        ]
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "completion",
+    "documento": "Registro Punto\n  Definir x Como Entero;\nFinRegistro\nAlgoritmo P\n  Definir a Como Pun\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 5,
+      "column": 21
+    },
+    "proyeccion": "detalle",
+    "candidato": "Punto"
+  }
+}
+```
+
+```caso
+{
+  "id": "C40",
+  "regla": "R16",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "contiene": [
+        "Salir"
+      ],
+      "excluye": []
+    }
+  },
+  "servicio": {
+    "suboperacion": "completion",
+    "documento": "Algoritmo P\n  Mientras Verdadero Hacer\n    \n  FinMientras\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 3,
+      "column": 5
+    },
+    "proyeccion": "contiene",
+    "contiene": [
+      "Salir"
+    ],
+    "excluye": []
+  }
+}
+```
+
+```caso
+{
+  "id": "C41",
+  "regla": "R16",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "contiene": [],
+      "excluye": [
+        "Salir"
+      ]
+    }
+  },
+  "servicio": {
+    "suboperacion": "completion",
+    "documento": "Algoritmo P\n  \nFinAlgoritmo\n",
+    "posicion": {
+      "line": 2,
+      "column": 3
+    },
+    "proyeccion": "contiene",
+    "contiene": [],
+    "excluye": [
+      "Salir"
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C42",
+  "regla": "R16",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "contiene": [
+        "Algo",
+        "Nada",
+        "Exito",
+        "Aguardar",
+        "SolicitarConsola"
+      ],
+      "excluye": [
+        "Salir"
+      ]
+    }
+  },
+  "servicio": {
+    "suboperacion": "completion",
+    "documento": "Algoritmo P\n  Definir a Como Entero <- \nFinAlgoritmo\n",
+    "posicion": {
+      "line": 2,
+      "column": 28
+    },
+    "proyeccion": "contiene",
+    "contiene": [
+      "Algo",
+      "Nada",
+      "Exito",
+      "Aguardar",
+      "SolicitarConsola"
+    ],
+    "excluye": [
+      "Salir"
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C39",
+  "regla": "R16",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "texto": "Algoritmo P\n  Escribir techo(numero)\nFinAlgoritmo\n",
+      "seleccion": {
+        "inicio": {
+          "line": 2,
+          "column": 18
+        },
+        "fin": {
+          "line": 2,
+          "column": 24
+        }
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "completion_accept",
+    "documento": "Algoritmo P\n  Escribir tec\nFinAlgoritmo\n",
+    "posicion": {
+      "line": 2,
+      "column": 15
+    },
+    "candidato": "techo"
   }
 }
 ```

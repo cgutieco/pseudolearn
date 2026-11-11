@@ -127,6 +127,11 @@ flowchart LR
   `await`.
 - Límites: 250 líneas por archivo, 40 por función, 30 por `build`, 3 parámetros posicionales, anidación 3 y 5 métodos
   públicos por clase. Sin comentarios en el código.
+- El ícono de ayuda junto al cursor aparece sobre palabras clave y tipos por su categoría de resaltado. Los
+  identificadores y los booleanos no llevan categoría propia para funciones estándar (`techo`) ni para palabras
+  contextuales (`Vector`, `Salir`), así que `SyntaxHelpCubit.caretMoved` pregunta al motor por la ficha en esa
+  posición y solo ofrece el ícono si responde `help`; un símbolo del usuario (`symbol`) nunca lo muestra. La app no
+  mantiene una lista de funciones ni de palabras contextuales: el motor decide.
 
 ## Seguridad
 

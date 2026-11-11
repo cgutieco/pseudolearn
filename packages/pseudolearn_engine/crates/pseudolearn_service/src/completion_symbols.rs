@@ -1,4 +1,4 @@
-use crate::completion_pool::{CandidatePool, Rank, keyed_entry, plain_entry};
+use crate::completion_pool::{CandidatePool, Rank, identified, keyed_entry, plain_entry};
 use crate::completion_scope::SourceScope;
 use crate::completion_types::{CompletionAction, CompletionEntry, CompletionKind};
 use crate::spelling::builtin_spelling;
@@ -107,13 +107,76 @@ pub fn class_names(scope: &SourceScope<'_>, pool: &mut CandidatePool, tier: u8) 
 
 pub fn builtin_functions(scope: &SourceScope<'_>, pool: &mut CandidatePool) {
     for kind in BuiltinKind::all() {
+        let mut entry = keyed_entry(
+            builtin_spelling(*kind, scope.profile),
+            CompletionKind::Function,
+            ("standard_function", Vec::new()),
+            Some(scope.label("Funcion estandar", "Standard function")),
+        );
+        entry.action = CompletionAction::Call {
+            parameters: builtin_parameter_names(*kind, scope.profile),
+        };
+        pool.add(3, identified(entry, kind.as_str()));
+    }
+}
+
+pub fn declared_type_names(scope: &SourceScope<'_>, pool: &mut CandidatePool) {
+    let Some(analysis) = scope.analysis else {
+        return;
+    };
+    let module = &analysis.module;
+    let declared = module
+        .records
+        .iter()
+        .map(|record| (record.name.as_str(), "record"))
+        .chain(
+            module
+                .enums
+                .iter()
+                .map(|declaration| (declaration.name.as_str(), "enum")),
+        )
+        .chain(
+            module
+                .interfaces
+                .iter()
+                .map(|declaration| (declaration.name.as_str(), "interface")),
+        );
+    for (name, role) in declared {
+        if name.starts_with('$') || name.contains('<') {
+            continue;
+        }
         pool.add(
-            3,
+            1,
             keyed_entry(
-                builtin_spelling(*kind, scope.profile),
-                CompletionKind::Function,
-                ("standard_function", Vec::new()),
-                Some(scope.label("Funcion estandar", "Standard function")),
+                name.to_owned(),
+                CompletionKind::Class,
+                ("declared_type", vec![role.to_owned()]),
+                Some(declared_type_label(scope, role)),
+            ),
+        );
+    }
+}
+
+fn declared_type_label(scope: &SourceScope<'_>, role: &str) -> String {
+    match role {
+        "record" => scope.label("Registro", "Record"),
+        "enum" => scope.label("Enumerado", "Enum"),
+        _ => scope.label("Interfaz", "Interface"),
+    }
+}
+
+pub fn constant_names(scope: &SourceScope<'_>, pool: &mut CandidatePool) {
+    let Some(analysis) = scope.analysis else {
+        return;
+    };
+    for name in &analysis.module.constant_names {
+        pool.add(
+            1,
+            keyed_entry(
+                name.clone(),
+                CompletionKind::Variable,
+                ("constant", Vec::new()),
+                Some(scope.label("Constante", "Constant")),
             ),
         );
     }
@@ -151,4 +214,39 @@ fn typed_entry(label: String, kind: CompletionKind, type_name: String) -> Comple
         ("type_name", vec![type_name.clone()]),
         Some(type_name),
     )
+}
+
+fn builtin_parameter_names(kind: BuiltinKind, profile: Profile) -> Vec<String> {
+    let signature = pseudolearn_lexicon::signature_for_builtin(kind);
+    let types = signature.parameter_types;
+    types
+        .iter()
+        .enumerate()
+        .map(|(position, parameter)| {
+            let name = parameter_role_name(parameter, profile);
+            let repeated = types.iter().filter(|other| *other == parameter).count() > 1;
+            if repeated {
+                format!("{name}{}", position.saturating_add(1))
+            } else {
+                name.to_owned()
+            }
+        })
+        .collect()
+}
+
+fn parameter_role_name(parameter: &str, profile: Profile) -> &'static str {
+    let (spanish, english) = match parameter {
+        "numeric" => ("numero", "number"),
+        "string" => ("texto", "text"),
+        "integer" => ("entero", "integer"),
+        "real" => ("real", "real"),
+        "character" => ("caracter", "character"),
+        "stringVector" => ("partes", "parts"),
+        "anyClass" => ("objeto", "object"),
+        _ => ("valor", "value"),
+    };
+    match profile {
+        Profile::Spanish => spanish,
+        Profile::English => english,
+    }
 }

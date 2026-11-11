@@ -14,6 +14,9 @@ pub fn template_constructions() -> &'static [&'static str] {
         "for",
         "repeat",
         "switch",
+        "record",
+        "enum",
+        "tasks",
     ]
 }
 
@@ -25,7 +28,7 @@ pub fn get_template(construction: &str, profile: Profile) -> Option<String> {
 pub fn is_unit_construction(construction: &str) -> bool {
     matches!(
         construction,
-        "algorithm" | "subroutine" | "function" | "class"
+        "algorithm" | "subroutine" | "function" | "class" | "record" | "enum"
     )
 }
 
@@ -40,6 +43,9 @@ pub fn construction_for(kind: KeywordKind) -> Option<&'static str> {
         KeywordKind::ForKeyword => Some("for"),
         KeywordKind::Repeat => Some("repeat"),
         KeywordKind::SwitchKeyword => Some("switch"),
+        KeywordKind::RecordKeyword => Some("record"),
+        KeywordKind::EnumKeyword => Some("enum"),
+        KeywordKind::TasksKeyword => Some("tasks"),
         _ => None,
     }
 }

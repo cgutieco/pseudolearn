@@ -146,7 +146,20 @@ fn offers_nothing_inside_comments_and_string_literals() {
 fn offers_unit_templates_outside_any_unit() {
     let candidates = complete_marked("|\n", Profile::Spanish);
     let names = labels(&candidates);
-    assert_eq!(names, vec!["Algoritmo", "Clase", "Funcion", "SubProceso"]);
+    for expected in [
+        "Algoritmo",
+        "Clase",
+        "Funcion",
+        "SubProceso",
+        "Registro",
+        "Enumerado",
+    ] {
+        assert!(
+            names.contains(&expected),
+            "{expected} missing from {names:?}"
+        );
+    }
+    assert!(!names.contains(&"Mientras"));
 }
 
 #[test]

@@ -179,6 +179,21 @@
       "estado": "cumple"
     },
     {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R14",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R15",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R16",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"

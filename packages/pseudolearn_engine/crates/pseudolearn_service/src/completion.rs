@@ -128,6 +128,7 @@ fn hint_entry(native: String, foreign: &str, profile: Profile) -> CompletionEntr
         detail_key: Some("bilingual_equivalent".to_owned()),
         detail_arguments: vec![foreign.to_owned()],
         inline: false,
+        identity: None,
         action: CompletionAction::Plain,
     }
 }

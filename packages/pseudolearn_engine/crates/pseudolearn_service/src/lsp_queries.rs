@@ -1,6 +1,7 @@
 use crate::completion::{CompletionAction, CompletionEntry, CompletionTextEdit};
 use crate::document_session::DocumentSession;
 use crate::formatter::{FormatOptions, format_checked};
+use crate::help_catalog::HelpLocale;
 use crate::insertion::build_insertion;
 use crate::lsp_protocol::{
     completion_kind_code, lsp_range, lsp_range_from_offsets, lsp_range_from_offsets_with_index,
@@ -10,6 +11,7 @@ use crate::lsp_session::LspServer;
 use crate::navigation::{HighlightKind, SymbolCategory};
 use crate::on_type::on_type;
 use crate::positions::offset_at;
+use pseudolearn_lexicon::Profile;
 use pseudolearn_source::LineIndex;
 use serde_json::{Value, json};
 
@@ -250,12 +252,30 @@ fn completion_row(
             1,
         )
     };
-    json!({
+    let row = json!({
         "label": entry.label,
         "kind": completion_kind_code(entry.kind),
         "detail": entry.detail,
         "insertText": text,
         "insertTextFormat": format,
         "sortText": format!("{:05}", presentation.rank)
-    })
+    });
+    with_documentation(row, entry, session.profile)
+}
+
+fn with_documentation(mut row: Value, entry: &CompletionEntry, profile: Profile) -> Value {
+    if let (Some(documentation), Some(object)) =
+        (catalog_documentation(entry, profile), row.as_object_mut())
+    {
+        object.insert(
+            "documentation".to_owned(),
+            json!({ "kind": "plaintext", "value": documentation }),
+        );
+    }
+    row
+}
+
+fn catalog_documentation(entry: &CompletionEntry, profile: Profile) -> Option<&'static str> {
+    let identity = entry.identity.as_deref()?;
+    crate::help_catalog::token_description(identity, HelpLocale::from_profile(profile))
 }
