@@ -14,7 +14,7 @@ Which name suits the box that holds how many slices a pizza has?
 ```opciones
 - [ ] `p` | It is short, but it does not say what it holds: slices, people or pizzas?
 - [ ] `x` | It says nothing about the problem.
-- [x] `porcionesPorPizza` | It reads by itself: slices per pizza. Anyone knows what the box holds.
+- [x] `slicesPerPizza` | It reads by itself: slices per pizza. Anyone knows what the box holds.
 - [ ] `numero` | Every box in the party holds numbers.
 ```
 

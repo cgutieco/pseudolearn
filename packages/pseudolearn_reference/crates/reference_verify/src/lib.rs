@@ -9,6 +9,8 @@ mod inline_code;
 mod internal_ids;
 mod links;
 mod parity;
+mod program_parity;
+mod program_skeleton;
 mod route_anatomy;
 mod route_book;
 mod route_links;
@@ -32,6 +34,7 @@ pub use inline_code::check_inline_code;
 pub use internal_ids::{check_internal_ids, find_identifier};
 pub use links::check_links;
 pub use parity::check_parity;
+pub use program_parity::check_program_parity;
 pub use route_anatomy::{
     check_new_tool, check_no_spec_duplicate, check_route_anatomy, check_route_format,
     check_scaffold,

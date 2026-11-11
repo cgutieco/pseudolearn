@@ -63,6 +63,12 @@ Before using a box you have to [[def:declarar|declare]] it: say its name and wha
 Putting a value in a box is to [[def:asignar|assign]] it, and it is written with an arrow `<-`. The new value replaces the previous one, which is lost: each box holds a single value at a time.
 
 ```programa id=cumple titulo="One year older" ejecutar
+Algoritmo Birthday
+  Definir age Como Entero <- 10;
+  Escribir age;
+  age <- age + 1;
+  Escribir age;
+FinAlgoritmo
 ```
 
 ```salida
@@ -70,7 +76,7 @@ Putting a value in a box is to [[def:asignar|assign]] it, and it is written with
 11
 ```
 
-`edad <- edad + 1` (`edad` means age) is not an impossible equation. Read it from right to left: «compute with the old value of `edad` and store the result in `edad`». The old value, 10, is used once and disappears.
+`age <- age + 1` is not an impossible equation. Read it from right to left: «compute with the old value of `age` and store the result in `age`». The old value, 10, is used once and disappears.
 
 ```figura-especificacion seccion=declaraciones.asignacion figura=intercambio
 ```
@@ -78,6 +84,9 @@ Putting a value in a box is to [[def:asignar|assign]] it, and it is written with
 A second tool is for sharing out. `div` says how many times a whole number fits in another, without decimals; `mod` says how much is left over after sharing. Together they make [[def:division-entera|integer division and its remainder]].
 
 ```programa id=caramelos titulo="Sharing sweets" ejecutar
+Algoritmo Sweets
+  Escribir 47 div 6, " ", 47 mod 6;
+FinAlgoritmo
 ```
 
 ```salida
@@ -97,13 +106,20 @@ A second tool is for sharing out. `div` says how many times a whole number fits 
 ## Write {#escribir fase=3}
 
 ```programa id=fiesta-nombres titulo="The party with names" ejecutar
+Algoritmo Party
+  Definir guests Como Entero <- 23;
+  Definir slicesPerPerson Como Entero <- 3;
+  Definir slicesPerPizza Como Entero <- 8;
+  Definir slices Como Entero <- guests * slicesPerPerson;
+  Escribir "Pizzas to order: ", techo(slices / slicesPerPizza);
+FinAlgoritmo
 ```
 
 ```salida
-Pizzas que hay que pedir: 9
+Pizzas to order: 9
 ```
 
-The names say what each box holds. `p` would also work, but in a week nobody would remember whether `p` was slices, people or pizzas. `porcionesPorPizza`, slices per pizza, leaves no doubt.
+The names say what each box holds. `p` would also work, but in a week nobody would remember whether `p` was slices, people or pizzas. `slicesPerPizza` leaves no doubt.
 
 ## Test {#probar fase=4}
 

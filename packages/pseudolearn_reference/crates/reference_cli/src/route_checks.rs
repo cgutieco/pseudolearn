@@ -5,9 +5,9 @@ use reference_model::{Profile, RuleId, SectionHeader, SectionKind, SourceDocumen
 use reference_verify::{
     LinkTargets, RouteBook, check_examples, check_exercise_mix, check_exercise_runs,
     check_exercise_shape, check_hints, check_inline_code, check_new_tool, check_no_recipe,
-    check_no_spec_duplicate, check_prerequisites, check_recall_sources, check_route_anatomy,
-    check_route_format, check_route_links, check_route_parity, check_scaffold, check_term_order,
-    check_term_owners, find_identifier,
+    check_no_spec_duplicate, check_prerequisites, check_program_parity, check_recall_sources,
+    check_route_anatomy, check_route_format, check_route_links, check_route_parity, check_scaffold,
+    check_term_order, check_term_owners, find_identifier,
 };
 
 pub fn verify_route(workspace: &Workspace, book: &Book) -> Vec<Violation> {
@@ -23,6 +23,42 @@ pub fn verify_route(workspace: &Workspace, book: &Book) -> Vec<Violation> {
         (&spanish.lessons, &english.lessons),
         (&spanish.exercises, &english.exercises),
     ));
+    violations.extend(program_parity(workspace, spanish, english));
+    violations
+}
+
+fn program_parity(
+    workspace: &Workspace,
+    spanish: &RouteLanguage,
+    english: &RouteLanguage,
+) -> Vec<Violation> {
+    let mut violations = Vec::new();
+    for original in &spanish.lessons {
+        if let Some(written) = english
+            .lessons
+            .iter()
+            .find(|candidate| candidate.header.id == original.header.id)
+        {
+            violations.extend(check_program_parity(
+                &workspace.corpus,
+                &written.path,
+                (&original.blocks, &written.blocks),
+            ));
+        }
+    }
+    for original in &spanish.exercises {
+        if let Some(written) = english
+            .exercises
+            .iter()
+            .find(|candidate| candidate.header.id == original.header.id)
+        {
+            violations.extend(check_program_parity(
+                &workspace.corpus,
+                &written.path,
+                (&original.blocks, &written.blocks),
+            ));
+        }
+    }
     violations
 }
 
