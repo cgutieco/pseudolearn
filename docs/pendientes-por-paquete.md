@@ -14,12 +14,6 @@ Bloqueado por máquinas:
 
 - Los programas de aceptación de la biblioteca solo se ejecutaron en macOS arm64. Acción: correrlos en Linux y en Windows (`cargo test`).
 
-## pseudolearn_reference
-
-Contenido pendiente de una decisión de alcance:
-
-- Los programas de la ruta en la edición inglesa que no tienen versión propia siguen compartiendo identificadores y textos entre comillas con el español. El mecanismo (programa propio en `route/en`, `RUTA-PARITY` sobre su esqueleto, salida verificada por el motor en cada edición) está implementado y migró la lección 0.2 y el ejercicio «Repartir caramelos»; quedan unos 300 programas, con la prosa, la `salida` y los `casos` que los citan. Acción: autorizar el trabajo de redacción de contenido, que es mecánico pero extenso.
-
 ## pseudolearn_store_media
 
 Bloqueado por cuentas de tienda:
@@ -92,11 +86,6 @@ Bloqueado por autorización y plataformas:
 ## Pendientes de la última iteración, por punto
 
 Trabajo que se pudo hacer y quedó sin hacer o sin verificar. Cada viñeta indica qué falta y cómo se cierra.
-
-### Punto 1 — Ruta en inglés con programas propios (`pseudolearn_reference`)
-
-- Migrar los unos 300 programas restantes de `route/en` (hoy solo la lección 0.2 y «Repartir caramelos»). Cada migración lleva el cuerpo del programa con identificadores y textos en inglés, la `salida` y los `casos` en inglés y la prosa que los cita. Se cierra cuando `reference check` y `cargo xtask verify` pasan sin programas vacíos que compartan nombres españoles.
-- Revisar las lecciones y ejercicios posteriores que mencionan nombres de la lección 0.2 (`edad`, `porciones`, `invitados`…) y adaptarlos a los nombres ingleses.
 
 ### Punto 4 — Agenda y colas en `MachineImage` (`pseudolearn_vm`, `pseudolearn_timeline`)
 
