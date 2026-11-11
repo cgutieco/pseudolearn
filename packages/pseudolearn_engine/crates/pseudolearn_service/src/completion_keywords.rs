@@ -6,32 +6,42 @@ use crate::spelling::keyword_spelling;
 use pseudolearn_lexicon::{KeywordKind, Profile};
 use pseudolearn_syntax::TokenKind;
 
+pub fn template_entry(
+    label: String,
+    construction: &'static str,
+    profile: Profile,
+    identity: &str,
+) -> Option<CompletionEntry> {
+    let template = get_template(construction, profile)?;
+    Some(CompletionEntry {
+        label,
+        kind: CompletionKind::Snippet,
+        detail: Some(match profile {
+            Profile::Spanish => "Estructura".to_owned(),
+            Profile::English => "Structure".to_owned(),
+        }),
+        insert_text: Some(template),
+        bilingual_origin: None,
+        detail_key: Some("structure".to_owned()),
+        detail_arguments: Vec::new(),
+        inline: false,
+        identity: Some(identity.to_owned()),
+        action: CompletionAction::Template {
+            construction: construction.to_owned(),
+        },
+    })
+}
+
 pub fn keyword_entry(kind: KeywordKind, profile: Profile) -> CompletionEntry {
     let label = keyword_spelling(kind, profile);
-    let construction = construction_for(kind);
-    match construction.and_then(|name| get_template(name, profile).map(|text| (name, text))) {
-        Some((name, template)) => CompletionEntry {
-            label,
-            kind: CompletionKind::Snippet,
-            detail: Some(match profile {
-                Profile::Spanish => "Estructura".to_owned(),
-                Profile::English => "Structure".to_owned(),
-            }),
-            insert_text: Some(template),
-            bilingual_origin: None,
-            detail_key: Some("structure".to_owned()),
-            detail_arguments: Vec::new(),
-            inline: false,
-            identity: Some(kind.as_str().to_owned()),
-            action: CompletionAction::Template {
-                construction: name.to_owned(),
-            },
-        },
-        None => identified(
-            plain_entry(label, CompletionKind::Keyword, None),
-            kind.as_str(),
-        ),
-    }
+    construction_for(kind)
+        .and_then(|name| template_entry(label.clone(), name, profile, kind.as_str()))
+        .unwrap_or_else(|| {
+            identified(
+                plain_entry(label, CompletionKind::Keyword, None),
+                kind.as_str(),
+            )
+        })
 }
 
 pub fn closing_keyword(opener: KeywordKind) -> Option<KeywordKind> {

@@ -1,3 +1,4 @@
+use crate::completion_keywords::template_entry;
 use crate::completion_pool::{CandidatePool, identified, keyed_entry, plain_entry};
 use crate::completion_scope::SourceScope;
 use crate::completion_types::CompletionKind;
@@ -99,29 +100,40 @@ pub fn capability_requests(scope: &SourceScope<'_>, pool: &mut CandidatePool) {
     }
 }
 
-fn statement_word(scope: &SourceScope<'_>, identity: &str, pool: &mut CandidatePool) {
-    if let Some(label) = contextual_label(scope, identity) {
-        pool.add(
-            2,
-            identified(plain_entry(label, CompletionKind::Keyword, None), identity),
-        );
+fn statement_word(
+    scope: &SourceScope<'_>,
+    identity: &str,
+    construction: &'static str,
+    pool: &mut CandidatePool,
+) {
+    let Some(label) = contextual_label(scope, identity) else {
+        return;
+    };
+    let entry = template_entry(label.clone(), construction, scope.profile, identity)
+        .unwrap_or_else(|| plain_entry(label, CompletionKind::Keyword, None));
+    pool.add(2, identified(entry, identity));
+}
+
+fn break_word(scope: &SourceScope<'_>, pool: &mut CandidatePool) {
+    if let Some(label) = contextual_label(scope, "breakKeyword") {
+        let entry = plain_entry(label, CompletionKind::Keyword, None);
+        pool.add(2, identified(entry, "breakKeyword"));
     }
 }
 
 pub fn contextual_statements(scope: &SourceScope<'_>, pool: &mut CandidatePool) {
     let blocks = &scope.context.open_blocks;
     if blocks.iter().any(|block| LOOP_BLOCKS.contains(block)) {
-        statement_word(scope, "breakKeyword", pool);
+        break_word(scope, pool);
     }
     if blocks.iter().any(|block| SUBPROGRAM_BLOCKS.contains(block)) {
-        statement_word(scope, "deferKeyword", pool);
+        statement_word(scope, "deferKeyword", "defer", pool);
     }
 }
 
 pub fn module_statements(scope: &SourceScope<'_>, pool: &mut CandidatePool) {
-    for identity in ["interfaceKeyword", "variantKeyword"] {
-        statement_word(scope, identity, pool);
-    }
+    statement_word(scope, "interfaceKeyword", "interface", pool);
+    statement_word(scope, "variantKeyword", "variant", pool);
 }
 
 fn contextual_follow_up_identities(tokens: &[TokenKind]) -> Vec<&'static str> {

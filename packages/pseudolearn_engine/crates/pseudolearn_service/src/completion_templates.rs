@@ -17,6 +17,9 @@ pub fn template_constructions() -> &'static [&'static str] {
         "record",
         "enum",
         "tasks",
+        "interface",
+        "variant",
+        "defer",
     ]
 }
 
@@ -28,7 +31,14 @@ pub fn get_template(construction: &str, profile: Profile) -> Option<String> {
 pub fn is_unit_construction(construction: &str) -> bool {
     matches!(
         construction,
-        "algorithm" | "subroutine" | "function" | "class" | "record" | "enum"
+        "algorithm"
+            | "subroutine"
+            | "function"
+            | "class"
+            | "record"
+            | "enum"
+            | "interface"
+            | "variant"
     )
 }
 

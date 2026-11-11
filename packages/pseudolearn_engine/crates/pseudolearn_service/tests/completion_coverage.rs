@@ -208,3 +208,57 @@ fn every_named_keyword_has_a_catalog_description_in_both_locales() {
         }
     }
 }
+
+#[test]
+fn contextual_blocks_are_offered_as_navigable_templates() -> Result<(), String> {
+    let cases = [
+        (
+            "Inter|\n",
+            Profile::Spanish,
+            "Interfaz",
+            "Interfaz Nombre\n  \nFinInterfaz",
+        ),
+        (
+            "Vari|\n",
+            Profile::Spanish,
+            "Variante",
+            "Variante Nombre\n  Alternativa Forma\n  \nFinVariante",
+        ),
+        (
+            "Inter|\n",
+            Profile::English,
+            "Interface",
+            "Interface Name\n  \nEndInterface",
+        ),
+    ];
+    for (marked, profile, label, template) in cases {
+        let entries = complete_marked(marked, profile);
+        let entry = entries
+            .iter()
+            .find(|entry| entry.label == label)
+            .ok_or_else(|| format!("{label} missing from {:?}", labels(&entries)))?;
+        assert_eq!(entry.insert_text.as_deref(), Some(template));
+        assert!(matches!(entry.action, CompletionAction::Template { .. }));
+    }
+    Ok(())
+}
+
+#[test]
+fn defer_is_a_template_only_inside_subprograms() -> Result<(), String> {
+    let inside = "Funcion f(): Entero\n  Dif|\nFinFuncion\n";
+    let entries = complete_marked(inside, Profile::Spanish);
+    let entry = entries
+        .iter()
+        .find(|entry| entry.label == "Diferir")
+        .ok_or("Diferir missing")?;
+    assert_eq!(
+        entry.insert_text.as_deref(),
+        Some("Diferir\n  \nFinDiferir")
+    );
+    assert!(!offers(
+        "Algoritmo P\n  Dif|\nFinAlgoritmo\n",
+        Profile::Spanish,
+        "Diferir"
+    ));
+    Ok(())
+}

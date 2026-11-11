@@ -405,6 +405,8 @@
     "C9",
     "C10",
     "C11",
+    "C46",
+    "C47",
     "P1"
   ]
 }
@@ -1815,6 +1817,61 @@
       "column": 15
     },
     "candidato": "techo"
+  }
+}
+```
+
+```caso
+{
+  "id": "C46",
+  "regla": "R7",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "plantilla": "Interfaz Nombre\n  \nFinInterfaz"
+    }
+  },
+  "esperas": {
+    "es": {
+      "servicio": {
+        "plantilla": "Interfaz Nombre\n  \nFinInterfaz"
+      }
+    },
+    "en": {
+      "servicio": {
+        "plantilla": "Interface Name\n  \nEndInterface"
+      }
+    }
+  },
+  "servicio": {
+    "suboperacion": "completion_template",
+    "construccion": "interface"
+  }
+}
+```
+
+```caso
+{
+  "id": "C47",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "plantilla": "Variante Nombre\n  Alternativa Forma\n  \nFinVariante"
+    }
+  },
+  "servicio": {
+    "suboperacion": "completion_template",
+    "construccion": "variant"
   }
 }
 ```

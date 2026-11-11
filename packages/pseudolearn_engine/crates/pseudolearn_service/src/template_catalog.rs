@@ -1,4 +1,4 @@
-use crate::spelling::keyword_spelling;
+use crate::spelling::{canonical_word, keyword_spelling};
 use crate::template_markers::{Markers, markers};
 use crate::template_model::{Segment, StopRole, Template, stop, text};
 use pseudolearn_lexicon::{KeywordKind, Profile};
@@ -21,6 +21,9 @@ pub fn build_template(construction: &str, profile: Profile) -> Option<Template> 
         "record" | "registro" => record_segments(&word, &marker),
         "enum" | "enumerado" => enum_segments(&word, &marker),
         "tasks" | "tareas" => tasks_segments(&word),
+        "interface" | "interfaz" => interface_segments(profile, &marker),
+        "variant" | "variante" => variant_segments(profile, &marker),
+        "defer" | "diferir" => defer_segments(profile),
         _ => return None,
     };
     Some(Template { segments })
@@ -202,5 +205,51 @@ fn tasks_segments(word: Word<'_>) -> Vec<Segment> {
     segments.extend(body(1));
     segments.push(Segment::Final);
     segments.extend(closing(word, KeywordKind::EndTasks));
+    segments
+}
+
+fn contextual_word(identity: &str, profile: Profile) -> String {
+    let lexeme =
+        pseudolearn_syntax::contextual_spelling(identity, profile.as_str()).unwrap_or_default();
+    canonical_word(lexeme, profile)
+}
+
+fn contextual_closing(identity: &str, profile: Profile) -> Vec<Segment> {
+    vec![Segment::NewLine, text(contextual_word(identity, profile))]
+}
+
+fn interface_segments(profile: Profile, marker: &Markers) -> Vec<Segment> {
+    let mut segments = vec![
+        text(format!("{} ", contextual_word("interfaceKeyword", profile))),
+        stop(1, StopRole::NewIdentifier, marker.class_name),
+    ];
+    segments.extend(body(1));
+    segments.push(Segment::Final);
+    segments.extend(contextual_closing("endInterface", profile));
+    segments
+}
+
+fn variant_segments(profile: Profile, marker: &Markers) -> Vec<Segment> {
+    let mut segments = vec![
+        text(format!("{} ", contextual_word("variantKeyword", profile))),
+        stop(1, StopRole::NewIdentifier, marker.class_name),
+    ];
+    segments.extend(body(1));
+    segments.push(text(format!(
+        "{} ",
+        contextual_word("alternativeKeyword", profile)
+    )));
+    segments.push(stop(2, StopRole::NewIdentifier, marker.alternative));
+    segments.extend(body(1));
+    segments.push(Segment::Final);
+    segments.extend(contextual_closing("endVariant", profile));
+    segments
+}
+
+fn defer_segments(profile: Profile) -> Vec<Segment> {
+    let mut segments = vec![text(contextual_word("deferKeyword", profile))];
+    segments.extend(body(1));
+    segments.push(Segment::Final);
+    segments.extend(contextual_closing("endDefer", profile));
     segments
 }
