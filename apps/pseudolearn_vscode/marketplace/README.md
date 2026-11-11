@@ -47,10 +47,10 @@ la misma identidad sustituye a la anterior. Para volver atrás, desinstala con
 
    ```
    Algoritmo Saludo
-   Definir nombre Como Cadena <- "";
-   Escribir "Como te llamas?";
-   Leer nombre;
-   Escribir "Hola " + nombre;
+    Definir nombre Como Cadena;
+    Escribir "Como te llamas?";
+    Leer nombre;
+    Escribir "Hola " + nombre;
    FinAlgoritmo
    ```
 
