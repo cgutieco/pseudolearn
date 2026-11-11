@@ -28,6 +28,15 @@ describe("Browser exit code", () => {
     }
   });
 
+  it("remembers the last accepted code and keeps it after a rejected one", async () => {
+    const host = new BrowserEffectHost();
+    expect(host.exitCode).toBe(0);
+    await host.perform(effect("console_set_exit_code", [{ kind: "integer", value: "7" }]));
+    expect(host.exitCode).toBe(7);
+    await host.perform({ ...effect("console_set_exit_code", [{ kind: "integer", value: "300" }]), effect_seq: "2" });
+    expect(host.exitCode).toBe(7);
+  });
+
   it("rejects codes outside the range with a request error", async () => {
     for (const code of ["-1", "256"]) {
       const host = new BrowserEffectHost();

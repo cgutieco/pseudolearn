@@ -81,6 +81,32 @@ describe("Browser run activity context", () => {
   });
 });
 
+describe("Browser run exit code", () => {
+  const exitEffect = (code: string) => ({ effect_seq: "1", operation: "console_set_exit_code",
+    arguments: [{ kind: "integer", value: code }] });
+
+  it("reports a non-zero exit code requested by the program", async () => {
+    let delivered = false;
+    const subject = fixture(() => running());
+    subject.api.call.mockImplementation(async (operation: string) => {
+      if (operation === "create_analysis") return answer({ resource: "5" });
+      if (operation === "start") return answer({ resource: "6" });
+      if (operation === "effect_result") { delivered = true; return answer(null); }
+      if (operation === "advance") return delivered ? answer({ output: "", termination: { kind: "completed" } })
+        : answer({ output: "", termination: { kind: "awaiting_effect" }, pending_effect: exitEffect("3") });
+      return answer(null);
+    });
+    await subject.run.start({ source: "x" }, { });
+    expect(subject.output.join("")).toContain("PseudoLearn: completed (exit code 3)");
+  });
+
+  it("stays silent about the exit code when the program never sets one", async () => {
+    const subject = fixture(() => answer({ output: "", termination: { kind: "completed" } }));
+    await subject.run.start({ source: "x" }, { });
+    expect(subject.output.join("")).toContain("PseudoLearn: completed\n");
+  });
+});
+
 describe("Browser run stale effect handling", () => {
   it("does not deliver an effect result produced after the stop", async () => {
     let release: (() => void) | undefined;

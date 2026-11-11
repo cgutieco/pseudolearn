@@ -91,6 +91,17 @@ describe("VSIX contents", () => {
   });
 });
 
+describe("VSIX stray build output", () => {
+  it.each(["extension/dist/web/test/index.js", "extension/dist/web/browser_extension.js", "extension/dist/other.js"])(
+    "rejects %s in the desktop package",
+    (entry) => {
+      expect(listingViolations([...validListing, entry], contract)).toContain(
+        `VSIX contains undeclared resource ${entry.slice("extension/".length)}`,
+      );
+    },
+  );
+});
+
 describe("bundle and provenance", () => {
   it("accepts a bundle that contains the language client and requires only vscode and node builtins", () => {
     const bundle = 'var a = "vscode-languageclient"; require("vscode"); require("node:path"); require("child_process");';

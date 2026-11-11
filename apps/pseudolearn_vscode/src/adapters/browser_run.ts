@@ -86,7 +86,9 @@ export class BrowserRun {
     if (termination.kind === "awaiting_input") { await this.input(value); return true; }
     if (termination.kind === "awaiting_effect") { await this.effect(value); return true; }
     if (termination.kind === "running") return true;
-    this.output.appendLine(`PseudoLearn: ${termination.kind}`);
+    const exitCode = this.effects?.exitCode ?? 0;
+    const suffix = exitCode === 0 ? "" : ` (exit code ${exitCode})`;
+    this.output.appendLine(`PseudoLearn: ${termination.kind}${suffix}`);
     return false;
   }
 

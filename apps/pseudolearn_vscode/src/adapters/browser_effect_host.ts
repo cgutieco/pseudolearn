@@ -12,6 +12,7 @@ export class BrowserEffectHost {
   private readonly abort = new AbortController();
   private readonly files: BrowserFileHost;
   private readonly resolved = new Set<string>();
+  private requestedExitCode = 0;
 
   constructor(readonly context: BrowserHostContext = {}) {
     this.files = new BrowserFileHost(context.root);
@@ -34,8 +35,12 @@ export class BrowserEffectHost {
     if (operation === "timer_wait") return this.wait(effect);
     if (operation === "console_write") return committedEffect("integer", new TextEncoder().encode(text(object((effect.arguments as Projection[])[0]).value)).length);
     if (operation === "console_write_error") return committedEffect("integer", new TextEncoder().encode(text(object((effect.arguments as Projection[])[0]).value)).length);
-    if (operation === "console_set_exit_code") return this.exitCode(effect);
+    if (operation === "console_set_exit_code") return this.setExitCode(effect);
     return this.files.perform(effect);
+  }
+
+  get exitCode(): number {
+    return this.requestedExitCode;
   }
 
   close(): void {
@@ -44,9 +49,10 @@ export class BrowserEffectHost {
     this.resolved.clear();
   }
 
-  private exitCode(effect: Record<string, Projection>): unknown {
+  private setExitCode(effect: Record<string, Projection>): unknown {
     const code = Number(text(object((effect.arguments as Projection[])[0]).value));
     if (!Number.isInteger(code) || code < 0 || code > 255) return failedEffect("peticion_invalida");
+    this.requestedExitCode = code;
     return committedEffect("integer", code);
   }
 

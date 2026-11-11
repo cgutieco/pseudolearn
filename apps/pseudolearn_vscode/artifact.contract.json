@@ -33,11 +33,11 @@
     "media/language-configuration.json"
   ],
   "allowedPrefixes": [
-    "dist/",
     "bin/darwin-arm64/",
     "media/"
   ],
   "allowedFiles": [
+    "dist/extension.js",
     "package.json",
     "readme.md",
     "LICENSE.md",
