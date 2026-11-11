@@ -33,7 +33,7 @@ Las secciones que no apliquen se omiten; no se rellenan. Un miembro pequeño pue
 - Historia, genealogía, fuentes consultadas, resultados de mediciones pasadas.
 - Reglas del lenguaje o comportamiento observable: eso es del corpus.
 - Decisiones de diseño narradas: si importan, se reflejan en los nombres, los tipos y el archivo de reglas.
-- Pendientes: van a `docs/pendientes-por-paquete.md`, en la sección del miembro, separando «Confirmados contra el código» de «Heredados, sin confirmar».
+- Pendientes: van a la sección «Pendientes declarados» del README del miembro, solo si exigen una acción de la persona o una decisión que el corpus aún no toma; lo resuelto o decidido se escribe como regla del paquete.
 - Afirmaciones de plataformas, rendimiento o cobertura que no se hayan comprobado.
 
 ## Diagramas
@@ -46,6 +46,6 @@ Las secciones que no apliquen se omiten; no se rellenan. Un miembro pequeño pue
 ## Al terminar
 
 1. Releer el README contra el código una vez más: nodos y flechas de cada diagrama, nombres de comandos, cifras (número de crates, versiones).
-2. Pasar los pendientes a `docs/pendientes-por-paquete.md`.
+2. Dejar en «Pendientes declarados» únicamente lo que sigue abierto y contrastarlo con el código.
 3. Comprobar que ningún verificador del miembro depende de los encabezados del README (buscar en sus scripts de comprobación) y que no se pierde una tabla que un verificador exija, como la de invariantes de `unsafe` en Rust.
 4. Informar qué se verificó contra el código y qué no, sin hacer commit salvo que se pida.

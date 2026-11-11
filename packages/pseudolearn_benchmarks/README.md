@@ -70,6 +70,7 @@ procedencia antes de compilar y nunca descarta muestras.
 - Un resultado incumplido se conserva tal cual; el umbral no se ajusta desde el arnés.
 - `agent_benchmark run` gasta créditos reales: exige `--authorized`, `AGENT_PROXY_URL`, `AGENT_ACCESS_TOKEN` y
   `PSEUDO_BIN`, y sin ellos termina con código 2.
+- Los presupuestos de tamaño vigentes salen de `PERF.ARTIFACT.SIZE`: 8 MiB para la biblioteca `ios-arm64` y 900 KiB para el módulo Wasm.
 
 ## Comandos útiles
 
