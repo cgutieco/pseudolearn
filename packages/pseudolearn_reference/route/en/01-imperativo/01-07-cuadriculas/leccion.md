@@ -78,10 +78,10 @@ Algoritmo DrawBoard
   board[2, 0] <- 2;
   board[2, 1] <- 1;
   board[2, 2] <- 1;
-  Para f <- 0 Hasta 2 Hacer
+  Para r <- 0 Hasta 2 Hacer
     Definir line Como Cadena <- "";
     Para c <- 0 Hasta 2 Hacer
-      Segun board[f, c] Hacer
+      Segun board[r, c] Hacer
         1:
           line <- line + "X";
         2:
@@ -111,9 +111,9 @@ OXX
 ```programa id=tres-en-raya titulo="Noughts and crosses" ejecutar
 Algoritmo NoughtsAndCrosses
   Dimension t[3, 3] Como Entero;
-  Para f <- 0 Hasta 2 Hacer
+  Para r <- 0 Hasta 2 Hacer
     Para c <- 0 Hasta 2 Hacer
-      Leer t[f, c];
+      Leer t[r, c];
     FinPara
   FinPara
   Definir winner Como Entero <- 0;

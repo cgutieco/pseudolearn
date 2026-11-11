@@ -15,8 +15,8 @@ Without running it, write exactly what this program shows.
 Clase Employee
   Definir name Como Cadena;
 
-  Metodo Constructor(n Como Cadena)
-    Este.name <- n;
+  Metodo Constructor(employeeName Como Cadena)
+    Este.name <- employeeName;
   FinMetodo
 
   Metodo Introduce() Como Cadena
@@ -25,8 +25,8 @@ Clase Employee
 FinClase
 
 Clase Cashier Hereda De Employee
-  Metodo Constructor(n Como Cadena)
-    Super.Constructor(n);
+  Metodo Constructor(employeeName Como Cadena)
+    Super.Constructor(employeeName);
   FinMetodo
 
   Metodo Introduce() Como Cadena

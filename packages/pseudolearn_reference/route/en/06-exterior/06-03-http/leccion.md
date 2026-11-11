@@ -98,7 +98,7 @@ Funcion message <- PriceMessage(body Como Cadena)
           FinSegun
         Nada: message <- "The response has no rate";
       FinSegun
-    Error(report): message <- "Badly written response at column " + ATexto(report.JsonColumna);
+    Error(report): message <- "Malformed response at column " + ATexto(report.JsonColumna);
   FinSegun
 FinFuncion
 
@@ -148,7 +148,7 @@ Funcion message <- PriceMessage(body Como Cadena)
           FinSegun
         Nada: message <- "The response has no rate";
       FinSegun
-    Error(report): message <- "Badly written response at column " + ATexto(report.JsonColumna);
+    Error(report): message <- "Malformed response at column " + ATexto(report.JsonColumna);
   FinSegun
 FinFuncion
 
@@ -182,9 +182,9 @@ Service unavailable (503)
 
 | Case | What it shows |
 |---|---|
-| 200 with the datum | `Imported fruit: 40 pesos` |
+| 200 with the rate | `Imported fruit: 40 pesos` |
 | 503 | `Service unavailable (503)` |
-| 200 with broken JSON | `Badly written response` and the column |
+| 200 with broken JSON | `Malformed response` and the column |
 
 The pure function is tested on its own, with a table of cases, without a network or a host.
 

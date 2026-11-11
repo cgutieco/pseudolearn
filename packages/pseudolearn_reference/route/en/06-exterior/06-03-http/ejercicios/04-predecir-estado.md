@@ -21,7 +21,7 @@ Funcion word <- HowItWent(code Como Entero)
   FinSi
 FinFuncion
 
-Algoritmo States
+Algoritmo StatusCheck
   Escribir HowItWent(204);
   Escribir HowItWent(301);
 FinAlgoritmo

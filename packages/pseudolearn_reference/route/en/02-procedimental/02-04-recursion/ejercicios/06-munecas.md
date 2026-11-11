@@ -8,7 +8,7 @@ titulo: The dolls
 ---
 
 ::: enunciado
-In the dolls that open one inside another, in which one does the work of opening end?
+In the dolls that open one inside another, in which doll does the work of opening end?
 :::
 
 ```opciones

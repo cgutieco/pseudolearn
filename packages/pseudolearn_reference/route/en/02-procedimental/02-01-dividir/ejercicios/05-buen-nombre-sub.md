@@ -12,10 +12,10 @@ What should the piece of program that says whether a year is a leap year be call
 :::
 
 ```opciones
-- [ ] `Calcular` | It does not say what it computes: every piece computes something.
-- [ ] `Bisiesto` | It names the topic, but does not say what it answers.
-- [x] `EsBisiesto` | It reads like a question, «is it a leap year?»: `EsBisiesto(2024)` answers yes or no.
-- [ ] `Hacer` | It says nothing about the problem.
+- [ ] `Calculate` | It does not say what it computes: every piece computes something.
+- [ ] `LeapYear` | It names the topic, but does not say what it answers.
+- [x] `IsLeapYear` | It reads like a question, «is it a leap year?»: `IsLeapYear(2024)` answers yes or no.
+- [ ] `DoIt` | It says nothing about the problem.
 ```
 
 ::: explicacion

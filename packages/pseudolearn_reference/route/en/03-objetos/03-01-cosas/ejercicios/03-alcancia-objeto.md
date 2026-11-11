@@ -64,9 +64,9 @@ oculto | 7 ; 0 | 7
 :::
 
 ::: variante
-Add a method `Break()` that returns the total and leaves the money box at 0.
+Add a method `Empty()` that returns the total and leaves the money box at 0.
 :::
 
 ::: explicacion
-The assertion checks that `Deposit` exists and is public. Frequent mistake: adding in the main algorithm and using the class only to keep the number.
+The assertion checks that `Deposit` exists and is public. Common mistake: adding in the main algorithm and using the class only to keep the number.
 :::

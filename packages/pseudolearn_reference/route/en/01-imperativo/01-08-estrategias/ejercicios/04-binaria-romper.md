@@ -88,5 +88,5 @@ Fix the line that does not move.
 :::
 
 ::: explicacion
-With a searched number to the right of the middle, the program does `low <- middle`. When `low` and `high` end up together, the middle is `bajo` and the interval no longer changes: the loop is infinite and the engine cuts it by limit.
+With a searched number to the right of the middle, the program does `low <- middle`. When `low` and `high` end up together, the middle is `low` and the interval no longer changes: the loop is infinite and the engine cuts it by limit.
 :::

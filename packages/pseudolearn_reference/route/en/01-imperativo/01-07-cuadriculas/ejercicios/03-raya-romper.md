@@ -14,9 +14,9 @@ This noughts and crosses program gets the lesson's board right. Find a board it 
 ```programa rol=defectuoso
 Algoritmo NoughtsAndCrosses
   Dimension t[3, 3] Como Entero;
-  Para f <- 0 Hasta 2 Hacer
+  Para r <- 0 Hasta 2 Hacer
     Para c <- 0 Hasta 2 Hacer
-      Leer t[f, c];
+      Leer t[r, c];
     FinPara
   FinPara
   Definir winner Como Entero <- 0;
@@ -45,9 +45,9 @@ FinAlgoritmo
 ```programa rol=referencia
 Algoritmo NoughtsAndCrosses
   Dimension t[3, 3] Como Entero;
-  Para f <- 0 Hasta 2 Hacer
+  Para r <- 0 Hasta 2 Hacer
     Para c <- 0 Hasta 2 Hacer
-      Leer t[f, c];
+      Leer t[r, c];
     FinPara
   FinPara
   Definir winner Como Entero <- 0;

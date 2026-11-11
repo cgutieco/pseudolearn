@@ -22,9 +22,9 @@ FinInterfaz
 
 Clase Rectangle Realiza Shape
   Definir rectLength, width Como Real;
-  Metodo Constructor(l Como Real, a Como Real)
-    Este.rectLength <- l;
-    Este.width <- a;
+  Metodo Constructor(newLength Como Real, newWidth Como Real)
+    Este.rectLength <- newLength;
+    Este.width <- newWidth;
   FinMetodo
   Metodo Area() Como Real
     Retornar Este.rectLength * Este.width;
@@ -33,8 +33,8 @@ FinClase
 
 Clase Square Realiza Shape
   Definir side Como Real;
-  Metodo Constructor(l Como Real)
-    Este.side <- l;
+  Metodo Constructor(newSide Como Real)
+    Este.side <- newSide;
   FinMetodo
   Metodo Area() Como Real
     Retornar Este.side * Este.side;
@@ -43,9 +43,9 @@ FinClase
 
 Clase Triangle Realiza Shape
   Definir base, height Como Real;
-  Metodo Constructor(b Como Real, a Como Real)
-    Este.base <- b;
-    Este.height <- a;
+  Metodo Constructor(newBase Como Real, newHeight Como Real)
+    Este.base <- newBase;
+    Este.height <- newHeight;
   FinMetodo
   Metodo Area() Como Real
     Retornar Este.base * Este.height / 2;
@@ -100,5 +100,5 @@ Add the circle, with area 3.14 times the radius squared. Which pieces change?
 :::
 
 ::: explicacion
-Hidden cases: a triangle with a non-whole area, measurements of 0 and a triangle with a whole area. Frequent mistake: computing the area in the main algorithm with a decision per figure, which does not use the contract.
+Hidden cases: a triangle with a non-whole area, measurements of 0 and a triangle with a whole area. Common mistake: computing the area in the main algorithm with a decision per figure, which does not use the contract.
 :::

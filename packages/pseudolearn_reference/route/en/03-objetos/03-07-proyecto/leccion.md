@@ -34,7 +34,7 @@ The total with discount is 31, as before. By card: 31 + `31 * 5 div 100`, that i
 
 ## Understand {#entender fase=1}
 
-The format of the receipt is that of Part II, with one more line after the discount: «A pagar en efectivo: 31» or «A pagar con tarjeta: 32». The payment method is read after the 0 that closes the till, as the word `efectivo` (cash) or `tarjeta` (card).
+The format of the receipt is that of Part II, with one more line after the discount: «To pay in cash: 31» or «To pay by card: 32». The payment method is read after the 0 that closes the till, as the word `cash` or `card`.
 
 The first exercise asks you to share out the responsibilities on cards.
 

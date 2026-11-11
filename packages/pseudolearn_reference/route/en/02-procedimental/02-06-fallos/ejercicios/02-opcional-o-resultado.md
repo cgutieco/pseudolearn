@@ -20,7 +20,7 @@ Place each job according to what it has to give back: a value that may be missin
 - Look up a contact who may not be in the contact list. | May be missing
 - Find the first even number of a list. | May be missing
 - Turn a text into a number saying why it failed. | May fail with a reason
-- Divide warning if the divisor is 0. | May fail with a reason
+- Divide, with a warning if the divisor is 0. | May fail with a reason
 ```
 
 ::: explicacion

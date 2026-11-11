@@ -4,7 +4,7 @@ leccion: procedimental.datos
 tipo: clasificar
 nivel: semilla
 obligatorio: true
-titulo: Which shape suits it?
+titulo: Which shape fits it?
 ---
 
 ::: enunciado

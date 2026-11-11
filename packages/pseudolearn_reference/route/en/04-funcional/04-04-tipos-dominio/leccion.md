@@ -17,7 +17,7 @@ The best error is the one that cannot be written.
 ## The problem {#problema}
 
 ::: problema
-The kiosk started making deliveries. An order is kept with four values: `state` (a text), `courier`, `time` and `reason`. Orders appeared that were «delivered» **with no time**, «cancelled» **with a courier** and one with the state «delivred».
+The kiosk started making deliveries. An order is kept with four values: `state` (a text), `courier`, `hour` and `reason`. Orders appeared that were «delivered» **with no time**, «cancelled» **with a courier** and one with the state «delivred».
 
 **How is an order represented so that those errors are impossible?**
 :::
@@ -56,7 +56,7 @@ Variante Order
   Alternativa Pending
   Alternativa OnItsWay(courier Como Cadena)
   Alternativa Delivered(courier Como Cadena, hour Como Entero)
-  Alternativa Canceled(reason Como Cadena)
+  Alternativa Cancelled(reason Como Cadena)
 FinVariante
 
 Funcion text <- Describe(order Como Order)
@@ -65,7 +65,7 @@ Funcion text <- Describe(order Como Order)
     Order.Pending: text <- "Pending";
     Order.OnItsWay(who): text <- "On its way with " + who;
     Order.Delivered(who, hour): text <- "Delivered by " + who + " at " + ConvertirATexto(hour);
-    Order.Canceled(reason): text <- "Canceled: " + reason;
+    Order.Cancelled(reason): text <- "Cancelled: " + reason;
   FinSegun
 FinFuncion
 
@@ -96,7 +96,7 @@ Variante Order
   Alternativa Pending
   Alternativa OnItsWay(courier Como Cadena)
   Alternativa Delivered(courier Como Cadena, hour Como Entero)
-  Alternativa Canceled(reason Como Cadena)
+  Alternativa Cancelled(reason Como Cadena)
 FinVariante
 
 Funcion text <- Describe(order Como Order)
@@ -105,7 +105,7 @@ Funcion text <- Describe(order Como Order)
     Order.Pending: text <- "Pending";
     Order.OnItsWay(who): text <- "On its way with " + who;
     Order.Delivered(who, hour): text <- "Delivered by " + who + " at " + ConvertirATexto(hour);
-    Order.Canceled(reason): text <- "Canceled: " + reason;
+    Order.Cancelled(reason): text <- "Cancelled: " + reason;
   FinSegun
 FinFuncion
 
@@ -114,7 +114,7 @@ SubProceso Advance(order Como Order, courier Como Cadena, hour Como Entero) Como
     Order.Pending: Retornar Exito(Order.OnItsWay(courier));
     Order.OnItsWay(who): Retornar Exito(Order.Delivered(who, hour));
     Order.Delivered(who, when): Retornar Error("already delivered by " + who + " at " + ConvertirATexto(when));
-    Order.Canceled(reason): Retornar Error("it is canceled: " + reason);
+    Order.Cancelled(reason): Retornar Error("it is cancelled: " + reason);
   FinSegun
 FinSubProceso
 

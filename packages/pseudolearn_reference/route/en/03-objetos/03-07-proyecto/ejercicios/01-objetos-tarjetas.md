@@ -14,7 +14,7 @@ Place each kiosk responsibility in the piece whose job it is.
 ```categorias
 - Product
 - Inventory
-- MedioDePago
+- PaymentMethod
 - Till
 - Receipt
 ```
@@ -24,7 +24,7 @@ Place each kiosk responsibility in the piece whose job it is.
 - Computing the amount of a quantity. | Product
 - Knowing how much is left of each product. | Inventory
 - Taking away from the stock only if there is enough. | Inventory
-- Charging an amount with or without surcharge. | MedioDePago
+- Charging an amount with or without surcharge. | PaymentMethod
 - Gathering the total of the sales. | Till
 - Applying the discount to the total. | Till
 - Writing one line per sale. | Receipt

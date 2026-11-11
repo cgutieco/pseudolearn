@@ -19,7 +19,7 @@ Clase Order
     Este.products <- Vector();
   FinMetodo
 
-  Metodo Agregar(product Como Cadena)
+  Metodo Add(product Como Cadena)
     Este.products.Agregar(product);
   FinMetodo
 
@@ -30,7 +30,7 @@ Clase Order
   Metodo Duplicate() Como Order
     Definir duplicate Como Order <- Nuevo Order();
     Para Cada product En Este.products Hacer
-      duplicate.Agregar(product);
+      duplicate.Add(product);
     FinPara
     Retornar duplicate;
   FinMetodo
@@ -42,10 +42,10 @@ Algoritmo Orders
   Leer secondItem;
   Leer extra;
   Definir order Como Order <- Nuevo Order();
-  order.Agregar(firstItem);
-  order.Agregar(secondItem);
+  order.Add(firstItem);
+  order.Add(secondItem);
   Definir copyOrder Como Order <- order;
-  copyOrder.Agregar(extra);
+  copyOrder.Add(extra);
   Escribir "Original: ", order.Receipt();
   Escribir "Copy: ", copyOrder.Receipt();
 FinAlgoritmo
@@ -59,7 +59,7 @@ Clase Order
     Este.products <- Vector();
   FinMetodo
 
-  Metodo Agregar(product Como Cadena)
+  Metodo Add(product Como Cadena)
     Este.products.Agregar(product);
   FinMetodo
 
@@ -70,7 +70,7 @@ Clase Order
   Metodo Duplicate() Como Order
     Definir duplicate Como Order <- Nuevo Order();
     Para Cada product En Este.products Hacer
-      duplicate.Agregar(product);
+      duplicate.Add(product);
     FinPara
     Retornar duplicate;
   FinMetodo
@@ -82,10 +82,10 @@ Algoritmo Orders
   Leer secondItem;
   Leer extra;
   Definir order Como Order <- Nuevo Order();
-  order.Agregar(firstItem);
-  order.Agregar(secondItem);
+  order.Add(firstItem);
+  order.Add(secondItem);
   Definir copyOrder Como Order <- order.Duplicate();
-  copyOrder.Agregar(extra);
+  copyOrder.Add(extra);
   Escribir "Original: ", order.Receipt();
   Escribir "Copy: ", copyOrder.Receipt();
 FinAlgoritmo

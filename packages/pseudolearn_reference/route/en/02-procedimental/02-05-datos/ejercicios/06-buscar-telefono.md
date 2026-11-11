@@ -58,5 +58,5 @@ Also show how many classmates have their birthday in the same month as the searc
 :::
 
 ::: explicacion
-Hidden cases: a missing name, the last one on the list and a repeated name (the first wins). Frequent mistake: replacing the phone on each match, which returns the last one.
+Hidden cases: a missing name, the last one on the list and a repeated name (the first wins). Common mistake: replacing the phone on each match, which returns the last one.
 :::

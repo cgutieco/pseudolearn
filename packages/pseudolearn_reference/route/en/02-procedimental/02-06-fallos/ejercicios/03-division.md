@@ -58,5 +58,5 @@ Add a second reason: «The dividend is negative».
 :::
 
 ::: explicacion
-Hidden cases: 0 in the numerator (it is valid) and 0 by 0 (it is an error). Frequent mistake: checking the numerator instead of the divisor.
+Hidden cases: 0 in the numerator (it is valid) and 0 by 0 (it is an error). Common mistake: checking the numerator instead of the divisor.
 :::

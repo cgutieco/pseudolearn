@@ -62,7 +62,7 @@ oculto | 86399 ; 0 | 23 h 59 min 59 s
 ::: pistas
 1. What does the stopwatch have to remember between one call and another?
 2. The format is that of the stopwatch of [lesson 0.2](ruta:inicio.nombres); the state is kept like the counter of [the lesson](ruta:objetos.cosas).
-3. An attribute with the total of seconds; `Advance` adds; `Reading` shares out into hours, minutes and seconds.
+3. An attribute with the total of seconds; `Advance` adds; `Reading` splits the total into hours, minutes and seconds.
 4. `Reading` builds the text with `toText` and concatenation. Close with the variant.
 :::
 

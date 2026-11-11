@@ -14,9 +14,9 @@ Read 9 numbers, row by row, of a 3 × 3 grid. It is magic if all the rows, all t
 ```programa rol=referencia
 Algoritmo MagicSquare
   Dimension m[3, 3] Como Entero;
-  Para f <- 0 Hasta 2 Hacer
+  Para r <- 0 Hasta 2 Hacer
     Para c <- 0 Hasta 2 Hacer
-      Leer m[f, c];
+      Leer m[r, c];
     FinPara
   FinPara
   Definir target Como Entero <- m[0, 0] + m[0, 1] + m[0, 2];

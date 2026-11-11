@@ -60,5 +60,5 @@ Show the full result: each candidate with their votes, in the order in which the
 :::
 
 ::: explicacion
-Hidden cases: a tie (Beto and Ana with 1: Ana wins), no votes, a tie between two with more votes and a clear winner. Frequent mistake: keeping the first one walked through in a tie, which depends on the order of arrival.
+Hidden cases: a tie (Beto and Ana with 1: Ana wins), no votes, a tie between two with more votes and a clear winner. Common mistake: keeping the first one walked through in a tie, which depends on the order of arrival.
 :::

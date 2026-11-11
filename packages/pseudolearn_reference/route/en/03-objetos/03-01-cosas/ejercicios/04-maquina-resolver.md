@@ -73,7 +73,7 @@ oculto | 1 ; 2 ; 1 ; 2 ; 0 | Machine 1: 8 cans, 6 pesos ⏎ Machine 2: 8 cans, 6
 :::
 
 ::: variante
-Add a method `Load(cans)` and a code 3 that loads 5 cans into the machine with fewer.
+Add a method `Load(cans)` and a code 3 that loads 5 cans into the machine with fewer cans.
 :::
 
 ::: explicacion

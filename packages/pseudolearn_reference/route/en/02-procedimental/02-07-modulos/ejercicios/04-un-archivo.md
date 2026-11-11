@@ -4,11 +4,11 @@ leccion: procedimental.modulos
 tipo: comparar
 nivel: semilla
 obligatorio: false
-titulo: One big or several small
+titulo: One big file or several small ones
 ---
 
 ::: enunciado
-Two classmates are going to work at the same time on the kiosk program. What suits?
+Two classmates are going to work at the same time on the kiosk program. Which is better?
 :::
 
 ```opciones

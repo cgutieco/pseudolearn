@@ -19,8 +19,8 @@ The product holds its traits inside, instead of having a particular case for eac
 Clase Product
   Definir price Como Entero;
 
-  Metodo Constructor(p Como Entero)
-    Este.price <- p;
+  Metodo Constructor(productPrice Como Entero)
+    Este.price <- productPrice;
   FinMetodo
 
   Metodo FinalPrice() Como Entero
@@ -29,8 +29,8 @@ Clase Product
 FinClase
 
 Clase ExpiringProduct Hereda De Product
-  Metodo Constructor(p Como Entero)
-    Super.Constructor(p);
+  Metodo Constructor(productPrice Como Entero)
+    Super.Constructor(productPrice);
   FinMetodo
 
   Metodo FinalPrice() Como Entero
@@ -39,8 +39,8 @@ Clase ExpiringProduct Hereda De Product
 FinClase
 
 Clase OfferProduct Hereda De Product
-  Metodo Constructor(p Como Entero)
-    Super.Constructor(p);
+  Metodo Constructor(productPrice Como Entero)
+    Super.Constructor(productPrice);
   FinMetodo
 
   Metodo FinalPrice() Como Entero
@@ -49,14 +49,14 @@ Clase OfferProduct Hereda De Product
 FinClase
 
 Algoritmo Kiosk
-  Definir yogurtKind, price Como Entero;
-  Leer yogurtKind;
+  Definir productType, price Como Entero;
+  Leer productType;
   Leer price;
   Definir product Como Product <- Nuevo Product(price);
-  Si yogurtKind = 2 Entonces
+  Si productType = 2 Entonces
     product <- Nuevo ExpiringProduct(price);
   FinSi
-  Si yogurtKind = 3 Entonces
+  Si productType = 3 Entonces
     product <- Nuevo OfferProduct(price);
   FinSi
   Escribir product.FinalPrice();
@@ -66,8 +66,8 @@ FinAlgoritmo
 ```programa rol=referencia
 Clase Offer
   Definir percent Como Entero;
-  Metodo Constructor(p Como Entero)
-    Este.percent <- p;
+  Metodo Constructor(percentage Como Entero)
+    Este.percent <- percentage;
   FinMetodo
   Metodo Apply(price Como Entero) Como Entero
     Retornar price - price * Este.percent div 100;
@@ -76,8 +76,8 @@ FinClase
 
 Clase Expiry
   Definir days Como Entero;
-  Metodo Constructor(d Como Entero)
-    Este.days <- d;
+  Metodo Constructor(daysLeft Como Entero)
+    Este.days <- daysLeft;
   FinMetodo
   Metodo Apply(price Como Entero) Como Entero
     Si Este.days <= 2 Entonces
@@ -92,17 +92,17 @@ Clase Product
   Definir price Como Entero;
   Definir offer Como Offer;
   Definir expiry Como Expiry;
-  Metodo Constructor(n Como Cadena, p Como Entero)
-    Este.name <- n;
-    Este.price <- p;
+  Metodo Constructor(productName Como Cadena, productPrice Como Entero)
+    Este.name <- productName;
+    Este.price <- productPrice;
     Este.offer <- Nuevo Offer(0);
     Este.expiry <- Nuevo Expiry(365);
   FinMetodo
   Metodo SetOffer(newOffer Como Offer)
     Este.offer <- newOffer;
   FinMetodo
-  Metodo SetExpiry(date Como Expiry)
-    Este.expiry <- date;
+  Metodo SetExpiry(newExpiry Como Expiry)
+    Este.expiry <- newExpiry;
   FinMetodo
   Metodo FinalPrice() Como Entero
     Retornar Este.expiry.Apply(Este.offer.Apply(Este.price));
@@ -110,14 +110,14 @@ Clase Product
 FinClase
 
 Algoritmo Kiosk
-  Definir yogurtKind, price Como Entero;
-  Leer yogurtKind;
+  Definir productType, price Como Entero;
+  Leer productType;
   Leer price;
   Definir product Como Product <- Nuevo Product("Product", price);
-  Si yogurtKind = 3 O yogurtKind = 4 Entonces
+  Si productType = 3 O productType = 4 Entonces
     product.SetOffer(Nuevo Offer(25));
   FinSi
-  Si yogurtKind = 2 O yogurtKind = 4 Entonces
+  Si productType = 2 O productType = 4 Entonces
     product.SetExpiry(Nuevo Expiry(1));
   FinSi
   Escribir product.FinalPrice();

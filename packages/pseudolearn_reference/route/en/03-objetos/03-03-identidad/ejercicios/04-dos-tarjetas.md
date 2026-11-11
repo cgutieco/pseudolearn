@@ -77,5 +77,5 @@ Make the second card an alias of the first. What does it show now with 20?
 :::
 
 ::: explicacion
-Frequent mistake: creating one card and assigning it to both variables, which shows 15 15. Hidden cases: charging exactly the balance, a balance that is not enough and an empty one.
+Common mistake: creating one card and assigning it to both variables, which shows 15 15. Hidden cases: charging exactly the balance, a balance that is not enough and an empty one.
 :::

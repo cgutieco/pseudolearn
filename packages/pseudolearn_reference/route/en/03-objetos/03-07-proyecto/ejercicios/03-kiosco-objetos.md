@@ -40,9 +40,9 @@ Clase Product
   Definir name Como Cadena;
   Definir price Como Entero;
 
-  Metodo Constructor(n Como Cadena, p Como Entero)
-    Este.name <- n;
-    Este.price <- p;
+  Metodo Constructor(productName Como Cadena, productPrice Como Entero)
+    Este.name <- productName;
+    Este.price <- productPrice;
   FinMetodo
 
   Metodo Amount(quantity Como Entero) Como Entero
@@ -124,7 +124,7 @@ Algoritmo Kiosk
           till.AddUp(product.Amount(quantity));
           Escribir product.name, " x ", quantity, " = ", product.Amount(quantity);
         Sino
-          Escribir product.name, " x ", quantity, " rejected: stock ", inventory.Remaining(code);
+          Escribir product.name, " x ", quantity, " rejected: stock is ", inventory.Remaining(code);
         FinSi
       FinSi
     FinSi
@@ -147,26 +147,26 @@ FinAlgoritmo
 ```
 
 ```casos
-visible | 1 ; 3 ; 2 ; 6 ; 2 ; 5 ; 9 ; 1 ; 0 ; card | Juice x 3 = 9 ⏎ Sandwich x 6 rejected: stock 5 ⏎ Sandwich x 5 = 25 ⏎ Code 9 does not exist ⏎ Total: 34 ⏎ With discount: 31 ⏎ To pay by card: 32 ⏎ Final stock: ⏎ Juice 7 ⏎ Sandwich 0 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 6
-oculto | 1 ; 3 ; 2 ; 6 ; 2 ; 5 ; 9 ; 1 ; 0 ; cash | Juice x 3 = 9 ⏎ Sandwich x 6 rejected: stock 5 ⏎ Sandwich x 5 = 25 ⏎ Code 9 does not exist ⏎ Total: 34 ⏎ With discount: 31 ⏎ To pay in cash: 31 ⏎ Final stock: ⏎ Juice 7 ⏎ Sandwich 0 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 6
+visible | 1 ; 3 ; 2 ; 6 ; 2 ; 5 ; 9 ; 1 ; 0 ; card | Juice x 3 = 9 ⏎ Sandwich x 6 rejected: stock is 5 ⏎ Sandwich x 5 = 25 ⏎ Code 9 does not exist ⏎ Total: 34 ⏎ With discount: 31 ⏎ To pay by card: 32 ⏎ Final stock: ⏎ Juice 7 ⏎ Sandwich 0 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 6
+oculto | 1 ; 3 ; 2 ; 6 ; 2 ; 5 ; 9 ; 1 ; 0 ; cash | Juice x 3 = 9 ⏎ Sandwich x 6 rejected: stock is 5 ⏎ Sandwich x 5 = 25 ⏎ Code 9 does not exist ⏎ Total: 34 ⏎ With discount: 31 ⏎ To pay in cash: 31 ⏎ Final stock: ⏎ Juice 7 ⏎ Sandwich 0 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 6
 oculto | 0 ; card | Total: 0 ⏎ With discount: 0 ⏎ To pay by card: 0 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 5 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 6
 visible | 0 ; cash | Total: 0 ⏎ With discount: 0 ⏎ To pay in cash: 0 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 5 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 6
-oculto | 5 ; 6 ; 5 ; 1 ; 0 ; card | Fruit x 6 = 12 ⏎ Fruit x 1 rejected: stock 0 ⏎ Total: 12 ⏎ With discount: 11 ⏎ To pay by card: 11 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 5 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 0
-oculto | 5 ; 6 ; 5 ; 1 ; 0 ; cash | Fruit x 6 = 12 ⏎ Fruit x 1 rejected: stock 0 ⏎ Total: 12 ⏎ With discount: 11 ⏎ To pay in cash: 11 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 5 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 0
+oculto | 5 ; 6 ; 5 ; 1 ; 0 ; card | Fruit x 6 = 12 ⏎ Fruit x 1 rejected: stock is 0 ⏎ Total: 12 ⏎ With discount: 11 ⏎ To pay by card: 11 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 5 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 0
+oculto | 5 ; 6 ; 5 ; 1 ; 0 ; cash | Fruit x 6 = 12 ⏎ Fruit x 1 rejected: stock is 0 ⏎ Total: 12 ⏎ With discount: 11 ⏎ To pay in cash: 11 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 5 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 0
 oculto | 1 ; 0 ; 0 ; card | Quantity 0 is not valid ⏎ Total: 0 ⏎ With discount: 0 ⏎ To pay by card: 0 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 5 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 6
 oculto | 1 ; 0 ; 0 ; cash | Quantity 0 is not valid ⏎ Total: 0 ⏎ With discount: 0 ⏎ To pay in cash: 0 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 5 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 6
-oculto | 7 ; 1 ; 2 ; 9 ; 3 ; -2 ; 0 ; card | Code 7 does not exist ⏎ Sandwich x 9 rejected: stock 5 ⏎ Quantity -2 is not valid ⏎ Total: 0 ⏎ With discount: 0 ⏎ To pay by card: 0 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 5 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 6
-oculto | 7 ; 1 ; 2 ; 9 ; 3 ; -2 ; 0 ; cash | Code 7 does not exist ⏎ Sandwich x 9 rejected: stock 5 ⏎ Quantity -2 is not valid ⏎ Total: 0 ⏎ With discount: 0 ⏎ To pay in cash: 0 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 5 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 6
+oculto | 7 ; 1 ; 2 ; 9 ; 3 ; -2 ; 0 ; card | Code 7 does not exist ⏎ Sandwich x 9 rejected: stock is 5 ⏎ Quantity -2 is not valid ⏎ Total: 0 ⏎ With discount: 0 ⏎ To pay by card: 0 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 5 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 6
+oculto | 7 ; 1 ; 2 ; 9 ; 3 ; -2 ; 0 ; cash | Code 7 does not exist ⏎ Sandwich x 9 rejected: stock is 5 ⏎ Quantity -2 is not valid ⏎ Total: 0 ⏎ With discount: 0 ⏎ To pay in cash: 0 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 5 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 6
 oculto | 4 ; 12 ; 1 ; 10 ; 3 ; 8 ; 0 ; card | Water x 12 = 12 ⏎ Juice x 10 = 30 ⏎ Alfajor x 8 = 16 ⏎ Total: 58 ⏎ With discount: 53 ⏎ To pay by card: 55 ⏎ Final stock: ⏎ Juice 0 ⏎ Sandwich 5 ⏎ Alfajor 0 ⏎ Water 0 ⏎ Fruit 6
 oculto | 4 ; 12 ; 1 ; 10 ; 3 ; 8 ; 0 ; cash | Water x 12 = 12 ⏎ Juice x 10 = 30 ⏎ Alfajor x 8 = 16 ⏎ Total: 58 ⏎ With discount: 53 ⏎ To pay in cash: 53 ⏎ Final stock: ⏎ Juice 0 ⏎ Sandwich 5 ⏎ Alfajor 0 ⏎ Water 0 ⏎ Fruit 6
-oculto | 2 ; 2 ; 2 ; 2 ; 2 ; 2 ; 0 ; card | Sandwich x 2 = 10 ⏎ Sandwich x 2 = 10 ⏎ Sandwich x 2 rejected: stock 1 ⏎ Total: 20 ⏎ With discount: 18 ⏎ To pay by card: 18 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 1 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 6
-oculto | 2 ; 2 ; 2 ; 2 ; 2 ; 2 ; 0 ; cash | Sandwich x 2 = 10 ⏎ Sandwich x 2 = 10 ⏎ Sandwich x 2 rejected: stock 1 ⏎ Total: 20 ⏎ With discount: 18 ⏎ To pay in cash: 18 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 1 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 6
+oculto | 2 ; 2 ; 2 ; 2 ; 2 ; 2 ; 0 ; card | Sandwich x 2 = 10 ⏎ Sandwich x 2 = 10 ⏎ Sandwich x 2 rejected: stock is 1 ⏎ Total: 20 ⏎ With discount: 18 ⏎ To pay by card: 18 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 1 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 6
+oculto | 2 ; 2 ; 2 ; 2 ; 2 ; 2 ; 0 ; cash | Sandwich x 2 = 10 ⏎ Sandwich x 2 = 10 ⏎ Sandwich x 2 rejected: stock is 1 ⏎ Total: 20 ⏎ With discount: 18 ⏎ To pay in cash: 18 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 1 ⏎ Alfajor 8 ⏎ Water 12 ⏎ Fruit 6
 oculto | 3 ; 1 ; 0 ; card | Alfajor x 1 = 2 ⏎ Total: 2 ⏎ With discount: 2 ⏎ To pay by card: 2 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 5 ⏎ Alfajor 7 ⏎ Water 12 ⏎ Fruit 6
 oculto | 3 ; 1 ; 0 ; cash | Alfajor x 1 = 2 ⏎ Total: 2 ⏎ With discount: 2 ⏎ To pay in cash: 2 ⏎ Final stock: ⏎ Juice 10 ⏎ Sandwich 5 ⏎ Alfajor 7 ⏎ Water 12 ⏎ Fruit 6
 ```
 
 ```aserciones
-- contiene | interfaz | The contract MedioDePago is missing.
+- contiene | interfaz | The contract PaymentMethod is missing.
 - declara-miembro | Inventory | stock | privado | The stock of the class Inventory has to be private.
 ```
 
@@ -182,5 +182,5 @@ Add the 20-peso voucher as a third payment method, without touching the other pi
 :::
 
 ::: explicacion
-Each case of Part II appears twice, with cash and with card. The card on 0 charges 0. Frequent mistake: applying the surcharge before the discount, which gives another number.
+Each case of Part II appears twice, with cash and with card. The card on 0 charges 0. Common mistake: applying the surcharge before the discount, which gives another number.
 :::

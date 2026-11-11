@@ -39,7 +39,7 @@ The 3 juices are accepted: 7 are left. The 6 sandwiches are rejected, because th
 Fill in the problem card: it is the first exercise of the project. The format of the receipt has to be exact. For the example in the task:
 
 - `Juice x 3 = 9`
-- `Sandwich x 6 rejected: stock 5`
+- `Sandwich x 6 rejected: stock is 5`
 - `Sandwich x 5 = 25`
 - `Code 9 does not exist`
 - `Total: 34`

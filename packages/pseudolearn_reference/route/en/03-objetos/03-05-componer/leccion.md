@@ -55,8 +55,8 @@ paso: A single product that has, or not, each trait: with three traits, three mo
 Clase Employee
   Definir name Como Cadena;
 
-  Metodo Constructor(n Como Cadena)
-    Este.name <- n;
+  Metodo Constructor(employeeName Como Cadena)
+    Este.name <- employeeName;
   FinMetodo
 
   Metodo Introduce() Como Cadena
@@ -65,8 +65,8 @@ Clase Employee
 FinClase
 
 Clase Cashier Hereda De Employee
-  Metodo Constructor(n Como Cadena)
-    Super.Constructor(n);
+  Metodo Constructor(employeeName Como Cadena)
+    Super.Constructor(employeeName);
   FinMetodo
 
   Metodo Introduce() Como Cadena
@@ -99,8 +99,8 @@ Hello, I am Beto and I work the till
 ```programa id=productos-componer titulo="A product that has traits" ejecutar
 Clase Offer
   Definir percent Como Entero;
-  Metodo Constructor(p Como Entero)
-    Este.percent <- p;
+  Metodo Constructor(percentage Como Entero)
+    Este.percent <- percentage;
   FinMetodo
   Metodo Apply(price Como Entero) Como Entero
     Retornar price - price * Este.percent div 100;
@@ -109,8 +109,8 @@ FinClase
 
 Clase Expiry
   Definir days Como Entero;
-  Metodo Constructor(d Como Entero)
-    Este.days <- d;
+  Metodo Constructor(daysLeft Como Entero)
+    Este.days <- daysLeft;
   FinMetodo
   Metodo Apply(price Como Entero) Como Entero
     Si Este.days <= 2 Entonces
@@ -125,17 +125,17 @@ Clase Product
   Definir price Como Entero;
   Definir offer Como Offer;
   Definir expiry Como Expiry;
-  Metodo Constructor(n Como Cadena, p Como Entero)
-    Este.name <- n;
-    Este.price <- p;
+  Metodo Constructor(productName Como Cadena, productPrice Como Entero)
+    Este.name <- productName;
+    Este.price <- productPrice;
     Este.offer <- Nuevo Offer(0);
     Este.expiry <- Nuevo Expiry(365);
   FinMetodo
   Metodo SetOffer(newOffer Como Offer)
     Este.offer <- newOffer;
   FinMetodo
-  Metodo SetExpiry(date Como Expiry)
-    Este.expiry <- date;
+  Metodo SetExpiry(newExpiry Como Expiry)
+    Este.expiry <- newExpiry;
   FinMetodo
   Metodo FinalPrice() Como Entero
     Retornar Este.expiry.Apply(Este.offer.Apply(Este.price));

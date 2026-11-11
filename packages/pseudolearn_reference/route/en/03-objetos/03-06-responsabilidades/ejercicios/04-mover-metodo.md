@@ -20,9 +20,9 @@ Clase Product
   Definir name Como Cadena;
   Definir price Como Entero;
 
-  Metodo Constructor(n Como Cadena, p Como Entero)
-    Este.name <- n;
-    Este.price <- p;
+  Metodo Constructor(productName Como Cadena, productPrice Como Entero)
+    Este.name <- productName;
+    Este.price <- productPrice;
   FinMetodo
 FinClase
 
@@ -108,9 +108,9 @@ Clase Product
   Definir name Como Cadena;
   Definir price Como Entero;
 
-  Metodo Constructor(n Como Cadena, p Como Entero)
-    Este.name <- n;
-    Este.price <- p;
+  Metodo Constructor(productName Como Cadena, productPrice Como Entero)
+    Este.name <- productName;
+    Este.price <- productPrice;
   FinMetodo
 
   Metodo Amount(quantity Como Entero) Como Entero

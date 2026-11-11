@@ -57,5 +57,5 @@ Make `SortTwo` also return whether it had to swap.
 :::
 
 ::: explicacion
-Hidden cases: equal, negatives and already sorted. Frequent mistake: passing the boxes by value, which shows the original order.
+Hidden cases: equal, negatives and already sorted. Common mistake: passing the boxes by value, which shows the original order.
 :::

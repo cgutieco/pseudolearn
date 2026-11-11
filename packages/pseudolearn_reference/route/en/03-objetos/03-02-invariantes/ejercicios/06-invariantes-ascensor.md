@@ -24,5 +24,5 @@ Place each sentence about a lift according to whether it has to be true always, 
 ```
 
 ::: explicacion
-An invariant is a rule the object has to keep in the face of any request: the floor, the number of people and the door. The colour is a value, but no method can break it.
+An invariant is a rule the object has to keep against any request: the floor, the number of people and the door. The colour is a value, but no method can break it.
 :::

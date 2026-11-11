@@ -20,7 +20,7 @@ Variante Order
   Alternativa Pending
   Alternativa OnItsWay(courier Como Cadena)
   Alternativa Delivered(courier Como Cadena, hour Como Entero)
-  Alternativa Canceled(reason Como Cadena)
+  Alternativa Cancelled(reason Como Cadena)
 FinVariante
 
 Funcion text <- Describe(order Como Order)
@@ -29,7 +29,7 @@ Funcion text <- Describe(order Como Order)
     Order.Pending: text <- "Pending";
     Order.OnItsWay(who): text <- "On its way with " + who;
     Order.Delivered(who, hour): text <- "Delivered by " + who + " at " + ConvertirATexto(hour);
-    Order.Canceled(reason): text <- "Canceled: " + reason;
+    Order.Cancelled(reason): text <- "Cancelled: " + reason;
   FinSegun
 FinFuncion
 
@@ -49,7 +49,7 @@ Algoritmo Orders
       order <- Order.Delivered(courier, hour);
     4:
       Leer reason;
-      order <- Order.Canceled(reason);
+      order <- Order.Cancelled(reason);
     De Otro Modo:
       order <- Order.Pending;
   FinSegun
@@ -61,7 +61,7 @@ FinAlgoritmo
 visible | 2 ; Sol | On its way with Sol
 visible | 1 | Pending
 oculto | 3 ; Leo ; 9 | Delivered by Leo at 9
-oculto | 4 ; rain | Canceled: rain
+oculto | 4 ; rain | Cancelled: rain
 oculto | 3 ; Ana ; 23 | Delivered by Ana at 23
 ```
 
@@ -69,7 +69,7 @@ oculto | 3 ; Ana ; 23 | Delivered by Ana at 23
 1. Which data does each state carry? How many shapes does the order have?
 2. Use the variant and `Describe` of [the lesson](ruta:funcional.tipos-dominio).
 3. Read the code; according to the code, read the matching data and build the shape.
-4. A `Switch code` that builds `Order.OnItsWay`, `Order.Delivered` or `Order.Canceled`, and finally `Describe`. Close with the variant.
+4. A `Switch code` that builds `Order.OnItsWay`, `Order.Delivered` or `Order.Cancelled`, and finally `Describe`. Close with the variant.
 :::
 
 ::: variante

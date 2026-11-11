@@ -8,7 +8,7 @@ titulo: Moving forward with its errors
 ---
 
 ::: enunciado
-An order starts pending or cancelled: read `pending`, or `canceled` followed by the reason. Then read how many times it has to move forward, with the courier `Sol` and the time 14. Show the final description, or the first reason why it could not move forward, such as «Cannot: it is canceled: rain».
+An order starts pending or cancelled: read «pending», or «cancelled» followed by the reason. Then read how many times it has to move forward, with the courier `Sol` and the time 14. Show the final description, or the first reason why it could not move forward, such as «Cannot: it is cancelled: rain».
 :::
 
 ```programa rol=referencia
@@ -16,7 +16,7 @@ Variante Order
   Alternativa Pending
   Alternativa OnItsWay(courier Como Cadena)
   Alternativa Delivered(courier Como Cadena, hour Como Entero)
-  Alternativa Canceled(reason Como Cadena)
+  Alternativa Cancelled(reason Como Cadena)
 FinVariante
 
 Funcion text <- Describe(order Como Order)
@@ -25,7 +25,7 @@ Funcion text <- Describe(order Como Order)
     Order.Pending: text <- "Pending";
     Order.OnItsWay(who): text <- "On its way with " + who;
     Order.Delivered(who, hour): text <- "Delivered by " + who + " at " + ConvertirATexto(hour);
-    Order.Canceled(reason): text <- "Canceled: " + reason;
+    Order.Cancelled(reason): text <- "Cancelled: " + reason;
   FinSegun
 FinFuncion
 
@@ -34,7 +34,7 @@ SubProceso Advance(order Como Order, courier Como Cadena, hour Como Entero) Como
     Order.Pending: Retornar Exito(Order.OnItsWay(courier));
     Order.OnItsWay(who): Retornar Exito(Order.Delivered(who, hour));
     Order.Delivered(who, when): Retornar Error("already delivered by " + who + " at " + ConvertirATexto(when));
-    Order.Canceled(reason): Retornar Error("it is canceled: " + reason);
+    Order.Cancelled(reason): Retornar Error("it is cancelled: " + reason);
   FinSegun
 FinSubProceso
 
@@ -43,9 +43,9 @@ Algoritmo Advances
   Definir times Como Entero;
   Leer start;
   Definir order Como Order <- Order.Pending;
-  Si start = "canceled" Entonces
+  Si start = "cancelled" Entonces
     Leer reason;
-    order <- Order.Canceled(reason);
+    order <- Order.Cancelled(reason);
   FinSi
   Leer times;
   Definir problem Como Cadena <- "";
@@ -70,8 +70,8 @@ visible | pending ; 1 | On its way with Sol
 visible | pending ; 2 | Delivered by Sol at 14
 oculto | pending ; 0 | Pending
 oculto | pending ; 3 | Cannot: already delivered by Sol at 14
-oculto | canceled ; rain ; 1 | Cannot: it is canceled: rain
-oculto | canceled ; out of stock ; 0 | Canceled: out of stock
+oculto | cancelled ; rain ; 1 | Cannot: it is cancelled: rain
+oculto | cancelled ; out of stock ; 0 | Cancelled: out of stock
 ```
 
 ::: pistas

@@ -29,9 +29,9 @@ Algoritmo Deliveries
     Leer delivery.courier;
     Escribir "On its way with ", delivery.courier;
   Sino
-    Si status = "canceled" Entonces
+    Si status = "cancelled" Entonces
       Leer delivery.reason;
-      Escribir "Canceled: ", delivery.reason;
+      Escribir "Cancelled: ", delivery.reason;
     Sino
       Escribir "Pending";
     FinSi
@@ -43,7 +43,7 @@ FinAlgoritmo
 Variante Delivery
   Alternativa Pending
   Alternativa OnItsWay(courier Como Cadena)
-  Alternativa Canceled(reason Como Cadena)
+  Alternativa Cancelled(reason Como Cadena)
   Alternativa Unknown(status Como Cadena)
 FinVariante
 
@@ -52,7 +52,7 @@ Funcion text <- Describe(delivery Como Delivery)
   Segun delivery Hacer
     Delivery.Pending: text <- "Pending";
     Delivery.OnItsWay(who): text <- "On its way with " + who;
-    Delivery.Canceled(reason): text <- "Canceled: " + reason;
+    Delivery.Cancelled(reason): text <- "Cancelled: " + reason;
     Delivery.Unknown(status): text <- "Unknown state: " + status;
   FinSegun
 FinFuncion
@@ -68,9 +68,9 @@ Algoritmo Deliveries
     Leer detail;
     delivery <- Delivery.OnItsWay(detail);
   FinSi
-  Si status = "canceled" Entonces
+  Si status = "cancelled" Entonces
     Leer detail;
-    delivery <- Delivery.Canceled(detail);
+    delivery <- Delivery.Cancelled(detail);
   FinSi
   Escribir Describe(delivery);
 FinAlgoritmo
@@ -79,7 +79,7 @@ FinAlgoritmo
 ```casos
 visible | on its way ; Sol | On its way with Sol
 visible | delivred | Unknown state: delivred
-oculto | canceled ; rain | Canceled: rain
+oculto | cancelled ; rain | Cancelled: rain
 oculto | pending | Pending
 oculto | nothing | Unknown state: nothing
 ```

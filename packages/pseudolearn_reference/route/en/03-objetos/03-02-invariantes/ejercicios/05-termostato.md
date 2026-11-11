@@ -8,7 +8,7 @@ titulo: The classroom thermostat
 ---
 
 ::: enunciado
-The classroom thermostat starts at 20 degrees and can never go above 30 or below 16. Read orders, `+` to go up a degree and `-` to go down, until the word `end`, and show the final degrees.
+The classroom thermostat starts at 20 degrees and can never go above 30 or below 16. Read commands, `+` to go up a degree and `-` to go down, until the word `end`, and show the final degrees.
 :::
 
 ::: restriccion
@@ -81,5 +81,5 @@ Add `Set(degrees)`, which accepts only values inside the range.
 :::
 
 ::: explicacion
-Hidden cases: going up past 30, going down past 16, no orders and going down after touching the ceiling.
+Hidden cases: going up past 30, going down past 16, no commands and going down after touching the ceiling.
 :::

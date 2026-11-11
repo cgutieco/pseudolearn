@@ -25,5 +25,5 @@ With the model of four loose values (state, courier, time and reason), all these
 ```
 
 ::: explicacion
-With loose values, the last two can be written even though they make no sense. With a variant, they cannot: `Delivered` requires the time and `Canceled` has no place for a courier.
+With loose values, the last two can be written even though they make no sense. With a variant, they cannot: `Delivered` requires the time and `Cancelled` has no place for a courier.
 :::

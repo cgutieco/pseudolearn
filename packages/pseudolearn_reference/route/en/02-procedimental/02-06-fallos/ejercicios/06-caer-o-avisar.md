@@ -8,7 +8,7 @@ titulo: Stop or warn?
 ---
 
 ::: enunciado
-Someone writes «doce» where an age is asked for. Why is it better to answer «not a number» than to let the program stop?
+Someone writes «twelve» where an age is asked for. Why is it better to answer «not a number» than to let the program stop?
 :::
 
 ```opciones

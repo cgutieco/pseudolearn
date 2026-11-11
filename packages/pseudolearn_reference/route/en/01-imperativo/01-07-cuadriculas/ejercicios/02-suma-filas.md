@@ -14,15 +14,15 @@ Read the 9 numbers of a 3 × 3 grid, row by row, and show the sum of each row, o
 ```programa rol=referencia
 Algoritmo RowSums
   Dimension m[3, 3] Como Entero;
-  Para f <- 0 Hasta 2 Hacer
+  Para r <- 0 Hasta 2 Hacer
     Para c <- 0 Hasta 2 Hacer
-      Leer m[f, c];
+      Leer m[r, c];
     FinPara
   FinPara
-  Para f <- 0 Hasta 2 Hacer
+  Para r <- 0 Hasta 2 Hacer
     Definir sum Como Entero <- 0;
     Para c <- 0 Hasta 2 Hacer
-      sum <- sum + m[f, c];
+      sum <- sum + m[r, c];
     FinPara
     Escribir sum;
   FinPara

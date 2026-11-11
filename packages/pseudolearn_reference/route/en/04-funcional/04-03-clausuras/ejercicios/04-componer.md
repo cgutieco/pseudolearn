@@ -32,7 +32,7 @@ Funcion composed <- Compose(f Como Funcion(Entero) Como Entero, g Como Funcion(E
   FinFuncion;
 FinFuncion
 
-Algoritmo Compose
+Algoritmo Composition
   Definir x Como Entero;
   Leer x;
   Definir doublePlusOne Como Funcion(Entero) Como Entero <- Compose(PlusOne, Double);

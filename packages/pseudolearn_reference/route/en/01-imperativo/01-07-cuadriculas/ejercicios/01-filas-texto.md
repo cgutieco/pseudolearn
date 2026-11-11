@@ -13,13 +13,13 @@ Without running it, write exactly what this program shows.
 
 ```programa rol=objeto id=prediccion
 Algoritmo TextRows
-  Para f <- 1 Hasta 2 Hacer
+  Para r <- 1 Hasta 2 Hacer
     Definir line Como Cadena <- "";
     Para c <- 1 Hasta 3 Hacer
       Si c > 1 Entonces
         line <- line + " ";
       FinSi
-      line <- line + ConvertirATexto(f * c);
+      line <- line + ConvertirATexto(r * c);
     FinPara
     Escribir line;
   FinPara
@@ -32,5 +32,5 @@ FinAlgoritmo
 ```
 
 ::: explicacion
-The outer loop makes two passes, one per row; in each, the inner one makes three and builds the line with `f * c`. Row 1 multiplies by 1 and row 2 by 2.
+The outer loop makes two passes, one per row; in each, the inner one makes three and builds the line with `r * c`. Row 1 multiplies by 1 and row 2 by 2.
 :::

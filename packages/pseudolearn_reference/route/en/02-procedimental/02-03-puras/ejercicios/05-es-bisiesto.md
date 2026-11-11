@@ -56,5 +56,5 @@ Write `DaysInYear(year)`, which returns 366 or 365 using `IsLeapYear`.
 :::
 
 ::: explicacion
-Hidden cases: the two exceptions and 2100. Frequent mistake: showing the text inside the function, which the engine rejects.
+Hidden cases: the two exceptions and 2100. Common mistake: showing the text inside the function, which the engine rejects.
 :::

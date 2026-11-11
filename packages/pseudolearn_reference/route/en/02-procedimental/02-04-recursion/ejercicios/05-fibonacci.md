@@ -8,7 +8,7 @@ titulo: Term 30
 ---
 
 ::: enunciado
-In the series 0, 1, 1, 2, 3, 5, 8, … each term is the sum of the two before. You have to compute term 30. Which way suits?
+In the series 0, 1, 1, 2, 3, 5, 8, … each term is the sum of the two before. You have to compute term 30. Which approach is best?
 :::
 
 ```opciones

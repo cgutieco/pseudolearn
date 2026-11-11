@@ -8,7 +8,7 @@ titulo: Substitute
 ---
 
 ::: enunciado
-Compute step by step, replacing each call by its discounted, and write exactly what this program shows.
+Compute step by step, replacing each call by its result, and write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion

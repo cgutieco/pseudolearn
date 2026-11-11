@@ -14,15 +14,15 @@ A 4 Ã— 4 image is made of white (0) and black (1) dots. Read the 16 values, row 
 ```programa rol=referencia
 Algoritmo Negative
   Dimension image[4, 4] Como Entero;
-  Para f <- 0 Hasta 3 Hacer
+  Para r <- 0 Hasta 3 Hacer
     Para c <- 0 Hasta 3 Hacer
-      Leer image[f, c];
+      Leer image[r, c];
     FinPara
   FinPara
-  Para f <- 0 Hasta 3 Hacer
+  Para r <- 0 Hasta 3 Hacer
     Definir line Como Cadena <- "";
     Para c <- 0 Hasta 3 Hacer
-      line <- line + ConvertirATexto(1 - image[f, c]);
+      line <- line + ConvertirATexto(1 - image[r, c]);
     FinPara
     Escribir line;
   FinPara
@@ -41,7 +41,7 @@ oculto | 1 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 | 0111 â
 1. Which sum turns 0 into 1 and 1 into 0?
 2. Read the image into a matrix with a nested loop, as in [the lesson](ruta:imperativo.cuadriculas).
 3. Each row is built as a text, joining one digit per column.
-4. `1 - image[f, c]` inverts each dot; `toText` joins it to the line. Close with the variant.
+4. `1 - image[r, c]` inverts each dot; `toText` joins it to the line. Close with the variant.
 :::
 
 ::: variante

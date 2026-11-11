@@ -36,7 +36,7 @@ Clase Order
     Este.products <- Vector();
   FinMetodo
 
-  Metodo Agregar(product Como Cadena)
+  Metodo Add(product Como Cadena)
     Este.products.Agregar(product);
   FinMetodo
 
@@ -47,7 +47,7 @@ Clase Order
   Metodo Duplicate() Como Order
     Definir duplicate Como Order <- Nuevo Order();
     Para Cada product En Este.products Hacer
-      duplicate.Agregar(product);
+      duplicate.Add(product);
     FinPara
     Retornar duplicate;
   FinMetodo
@@ -55,10 +55,10 @@ FinClase
 
 Algoritmo Orders
   Definir order Como Order <- Nuevo Order();
-  order.Agregar("Juice");
-  order.Agregar("Sandwich");
+  order.Add("Juice");
+  order.Add("Sandwich");
   Definir copyOrder Como Order <- order;
-  copyOrder.Agregar("Alfajor");
+  copyOrder.Add("Alfajor");
   Escribir "Original: ", order.Receipt();
   Escribir "Copy: ", copyOrder.Receipt();
 FinAlgoritmo
@@ -108,7 +108,7 @@ Clase Order
     Este.products <- Vector();
   FinMetodo
 
-  Metodo Agregar(product Como Cadena)
+  Metodo Add(product Como Cadena)
     Este.products.Agregar(product);
   FinMetodo
 
@@ -119,7 +119,7 @@ Clase Order
   Metodo Duplicate() Como Order
     Definir duplicate Como Order <- Nuevo Order();
     Para Cada product En Este.products Hacer
-      duplicate.Agregar(product);
+      duplicate.Add(product);
     FinPara
     Retornar duplicate;
   FinMetodo
@@ -127,16 +127,16 @@ FinClase
 
 Algoritmo Orders
   Definir order Como Order <- Nuevo Order();
-  order.Agregar("Juice");
-  order.Agregar("Sandwich");
+  order.Add("Juice");
+  order.Add("Sandwich");
   Definir copyOrder Como Order <- order;
-  copyOrder.Agregar("Alfajor");
+  copyOrder.Add("Alfajor");
   Escribir "Original: ", order.Receipt();
   Definir shallow Como Order <- Copiar(order);
-  shallow.Agregar("Fruit");
+  shallow.Add("Fruit");
   Escribir "Original: ", order.Receipt();
   Definir copy Como Order <- order.Duplicate();
-  copy.Agregar("Water");
+  copy.Add("Water");
   Escribir "Original: ", order.Receipt();
   Escribir "Another: ", copy.Receipt();
 FinAlgoritmo

@@ -29,7 +29,7 @@ Work out how much is charged for 20 pesos with each method, if the voucher is fo
 :::
 
 ::: respuesta
-In cash, 20. By card, 21: 20 plus `20 * 5 div 100`. With the voucher, 15, and 5 are missing that will have to be paid another way.
+In cash, 20. By card, 21: 20 plus `20 * 5 div 100`. With the voucher, 15, and 5 remain to be paid another way.
 :::
 
 ## Understand and plan {#entender-planear fase=1-2}
@@ -51,7 +51,7 @@ pie: The till is a socket; each payment method, an appliance with the same plug.
 
 Using objects of different classes through the same contract is [[def:polimorfismo|polymorphism]]. When the till asks `payment.Charge(amount)`, the engine chooses, while running, the method of the real class of the object it received: that is [[def:despacho-dinamico|dynamic dispatch]].
 
-In PseudoLearn an interface is not used as the type of a variable: it is used as the condition on the type of a parameter. `ChargeWith<T: PaymentMethod>` accepts any class that meets the contract. The details are in [the Specification](especificacion:objetos.interfaces).
+In PseudoLearn an interface is not used as the type of a variable: it is used as a constraint on the type of a parameter. `ChargeWith<T: PaymentMethod>` accepts any class that meets the contract. The details are in [the Specification](especificacion:objetos.interfaces).
 
 ::: especificacion
 - objetos.interfaces

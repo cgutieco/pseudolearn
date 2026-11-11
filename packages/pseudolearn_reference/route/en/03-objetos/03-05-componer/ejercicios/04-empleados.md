@@ -19,8 +19,8 @@ A class `Employee` with a method `Introduce` and a class `Cashier` that inherits
 Clase Employee
   Definir name Como Cadena;
 
-  Metodo Constructor(n Como Cadena)
-    Este.name <- n;
+  Metodo Constructor(employeeName Como Cadena)
+    Este.name <- employeeName;
   FinMetodo
 
   Metodo Introduce() Como Cadena
@@ -29,8 +29,8 @@ Clase Employee
 FinClase
 
 Clase Cashier Hereda De Employee
-  Metodo Constructor(n Como Cadena)
-    Super.Constructor(n);
+  Metodo Constructor(employeeName Como Cadena)
+    Super.Constructor(employeeName);
   FinMetodo
 
   Metodo Introduce() Como Cadena
@@ -74,5 +74,5 @@ Add a `Stocker` who introduces themselves as `Hello, I am Beto and I restock the
 :::
 
 ::: explicacion
-Hidden cases: a similar but different job (`cashiers`), another cashier and another job. Frequent mistake: copying the greeting text instead of calling `Super`.
+Hidden cases: a similar but different job (`cashiers`), another cashier and another job. Common mistake: copying the greeting text instead of calling `Super`.
 :::

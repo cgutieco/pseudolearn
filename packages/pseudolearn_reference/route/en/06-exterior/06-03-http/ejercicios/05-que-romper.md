@@ -21,7 +21,7 @@ Funcion word <- HowItWent(code Como Entero)
   FinSi
 FinFuncion
 
-Algoritmo ShowStatus
+Algoritmo StatusCheck
   Definir code Como Entero;
   Leer code;
   Escribir HowItWent(code);
@@ -38,7 +38,7 @@ Funcion word <- HowItWent(code Como Entero)
   FinSi
 FinFuncion
 
-Algoritmo ShowStatus
+Algoritmo StatusCheck
   Definir code Como Entero;
   Leer code;
   Escribir HowItWent(code);
@@ -61,9 +61,9 @@ visible | 503 | problem
 :::
 
 ::: variante
-Is there any code that this program marks as fine and is not?
+Is there any code that this program marks as «fine» when it is not?
 :::
 
 ::: explicacion
-Any code between 201 and 299 breaks it. The variant has a negative answer: the program only says «fine» with 200, which is fine.
+Any code between 201 and 299 breaks it. The variant has a negative answer: the program only says «fine» with 200, and 200 really is fine.
 :::
