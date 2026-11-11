@@ -39,12 +39,17 @@ impl ReplayError {
 pub struct TapeReplayProvider {
     tape: EffectTape,
     pub(crate) cursor: usize,
+    history: bool,
 }
 
 impl TapeReplayProvider {
     pub(crate) fn history(tape: EffectTape) -> Result<Self, ReplayError> {
         crate::tape_codec::validate(&tape)?;
-        Ok(Self { tape, cursor: 0 })
+        Ok(Self {
+            tape,
+            cursor: 0,
+            history: true,
+        })
     }
 
     pub fn new(tape: EffectTape) -> Result<Self, ReplayError> {
@@ -52,7 +57,11 @@ impl TapeReplayProvider {
             return Err(ReplayError::NonReproducible);
         }
         crate::tape_codec::validate(&tape)?;
-        Ok(Self { tape, cursor: 0 })
+        Ok(Self {
+            tape,
+            cursor: 0,
+            history: false,
+        })
     }
 
     pub fn validate_identity(&self, candidate: &ExecutionIdentity) -> Result<(), ReplayError> {
@@ -73,9 +82,8 @@ impl TapeReplayProvider {
             .entries
             .get(self.cursor)
             .ok_or(ReplayError::TruncatedTape)?;
-        if entry.secret_reference.is_some()
-            || matches!(entry.outcome.as_str(), "uncertain" | "requested")
-        {
+        let uncertain = entry.outcome == "uncertain" && !self.history;
+        if entry.secret_reference.is_some() || uncertain || entry.outcome == "requested" {
             return Err(ReplayError::NonReproducible);
         }
         if entry.effect_seq != expected_sequence || entry.operation != expected_operation {

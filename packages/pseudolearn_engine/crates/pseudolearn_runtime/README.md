@@ -165,6 +165,12 @@ retira también resultados aún no recogidos. `channel_values` expone las refere
 del GC sin interpretar sus valores. `channel_storage` reserva en el montón las celdas declaradas por
 la disposición única; las colas y sus valores forman parte del estado de la agenda.
 
+El proveedor de reproducción de historia (`TapeReplayProvider::history`) acepta entradas con resultado `uncertain`: el programa ya observó ese fallo y las consultas del pasado necesitan reconstruir los eventos posteriores; el proveedor estricto (`new`) sigue rechazándolas con `replay_non_reproducible`, porque reproducir una cinta incierta como si fuera exacta ocultaría que el estado externo se desconoce. `LIB.IO` R8 C104 fija ambos lados.
+
+`TaskChannels::snapshot` entrega capacidad, estado cerrado y cantidad de elementos retenidos en el búfer sin exponer
+los valores: las consultas de estado publican esos tres datos y nunca el contenido de la cola, cuyos elementos
+pueden ser referencias que solo el dueño del GC interpreta. Los emisores bloqueados no cuentan como búfer.
+
 `task_deadlock` distingue trabajo ejecutable, efectos pendientes, finalización y bloqueo. Solo los
 efectos asociados a tareas vivas en espera impiden el bloqueo; los abandonados se excluyen. Finalizar
 una cancelación despierta las uniones dependientes, y la limpieza se selecciona primero entre tareas

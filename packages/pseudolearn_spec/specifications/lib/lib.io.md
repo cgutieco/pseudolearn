@@ -1356,7 +1356,8 @@
     "C46",
     "C47",
     "C48",
-    "C90"
+    "C90",
+    "C104"
   ]
 }
 ```
@@ -3116,6 +3117,43 @@
         97
       ]
     }
+  }
+}
+```
+
+```caso
+{
+  "id": "C104",
+  "regla": "R8",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "incierto\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "estado_cinta": "uncertain_external_state",
+      "reproduccion_fallo": "replay_non_reproducible"
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Logico, ErrorES>\n  Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(\"root\");\n  Retornar directory.Renombrar(\"a\", \"b\");\nFinSubProceso\n\nAlgoritmo Main\n  Segun Probe() Hacer\n    Exito(value): Escribir \"hecho\";\n    Error(problem): Si problem.Incierto Entonces Escribir \"incierto\"; Sino Escribir \"cierto\"; FinSi\n  FinSegun\nFinAlgoritmo\n",
+    "en": "Subroutine Probe() As Result<Boolean, IoError>\n  Define directory As DirCap <- Propagate requestDirectory(\"root\");\n  Return directory.rename(\"a\", \"b\");\nEndSubroutine\n\nAlgorithm Main\n  Switch Probe() Do\n    Success(value): Write \"hecho\";\n    Failure(problem): If problem.uncertain Then Write \"incierto\"; Else Write \"cierto\"; EndIf\n  EndSwitch\nEndAlgorithm\n"
+  },
+  "anfitrion": {
+    "files": {
+      "a": "x"
+    },
+    "faults": [
+      {
+        "operation": "directory_rename",
+        "code": "interrumpido",
+        "uncertain": true
+      }
+    ]
   }
 }
 ```
