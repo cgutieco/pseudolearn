@@ -5,7 +5,7 @@ use serde_json::{Value, json};
 fn declared_editions_and_capabilities_negotiate_without_changing_resources() -> Result<(), String> {
     let mut session = ApiSession::default();
     let declared = session.call("version", &json!({}));
-    assert_eq!(declared.pointer("/value/editions"), Some(&json!(["2026"])));
+    assert_eq!(declared.pointer("/value/editions"), Some(&json!(["2027"])));
     for name in ["editions", "capabilities"] {
         let values = declared
             .pointer(&format!("/value/{name}"))

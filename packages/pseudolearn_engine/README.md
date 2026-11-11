@@ -170,6 +170,8 @@ comparten disposición de marco y de objetos.
   de vocabulario. Sin palabra de apertura reconocible se conserva el perfil vigente, para no saltar de vocabulario
   mientras se borra la primera línea. Los documentos de un proyecto no cambian: su perfil lo fija el espacio de trabajo.
 - **Sin capas hacia arriba**: `architecture.yaml` fija qué puede importar cada crate.
+- **El sujeto `aot` no observa paso a paso**: está exento de `ENG.TRACE.*`, `ENG.STATE.*`, `ENG.INPUT#R3` e `IR.OBSERVATION-POINTS#R3` por decisión de producto; esas reglas las verifica el sujeto `engine`, que ejecuta en la VM. El nivel optimizado del backend nativo se retiró del contrato (`PERF.AOT.LEVEL#R4`) porque ningún backend lo implementa.
+- **Edición anunciada**: `negotiate` y la operación de versión declaran la edición 2027, la misma que fija el corpus; el servidor MCP de la CLI la publica como versión.
 
 ## Comandos útiles
 

@@ -23,7 +23,7 @@ impl ApiSession {
             "reference_vocabulary" => crate::reference_vocabulary::query(arguments),
             "diagnostic_template" => crate::diagnostic_template::query(arguments),
             "version" => Ok(
-                json!({"version": crate::ENGINE_VERSION, "editions": ["2026"],
+                json!({"version": crate::ENGINE_VERSION, "editions": ["2027"],
                 "capabilities": crate::supported_capabilities()}),
             ),
             "operations" => Ok(operation_names()),

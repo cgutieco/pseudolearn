@@ -20,9 +20,9 @@
   "vinculos": [
     {
       "regla": "TOOL.SERVICE.CATALOG@1.0.0#R1",
-      "verificacion": "consulta de catálogo aún no implementada",
-      "estado": "pendiente",
-      "resuelve_en": "catalogo-ayuda-operativo"
+      "verificacion": "estructural",
+      "estado": "cumple",
+      "justificacion": "see validate verifica el formato help-catalog/1, la cobertura de identidades y las exclusiones tipadas del catálogo; la conformidad conserva evidencia estructural con la huella del corpus."
     },
     {
       "regla": "LANG.PROGRAM.CLASSIC@1.0.0#R1",
@@ -43,15 +43,15 @@
     },
     {
       "regla": "TOOL.SERVICE.CATALOG@1.0.0#R2",
-      "verificacion": "consulta de catálogo aún no implementada",
-      "estado": "pendiente",
-      "resuelve_en": "catalogo-ayuda-operativo"
+      "verificacion": "estructural",
+      "estado": "cumple",
+      "justificacion": "see validate verifica el formato help-catalog/1, la cobertura de identidades y las exclusiones tipadas del catálogo; la conformidad conserva evidencia estructural con la huella del corpus."
     },
     {
       "regla": "TOOL.SERVICE.CATALOG@1.0.0#R3",
-      "verificacion": "consulta de catálogo aún no implementada",
-      "estado": "pendiente",
-      "resuelve_en": "catalogo-ayuda-operativo"
+      "verificacion": "estructural",
+      "estado": "cumple",
+      "justificacion": "see validate verifica el formato help-catalog/1, la cobertura de identidades y las exclusiones tipadas del catálogo; la conformidad conserva evidencia estructural con la huella del corpus."
     },
     {
       "regla": "TOOL.SERVICE.CATALOG@1.0.0#R4",

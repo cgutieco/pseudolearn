@@ -15,7 +15,7 @@ pub(crate) fn negotiate(arguments: &Value) -> Result<Value, ApiError> {
 
 fn validate_requested_versions(arguments: &Value) -> Result<(), ApiError> {
     for (name, values) in [
-        ("editions", vec!["2026"]),
+        ("editions", vec!["2027"]),
         ("capabilities", crate::supported_capabilities()),
     ] {
         if let Some(requested) = arguments.get(name) {

@@ -61,7 +61,7 @@ fn send(session: u64, operation: &str, arguments: Value) -> Value {
 fn session_negotiates_and_closes() {
     let session = session_identifier();
     assert_eq!(
-        send(session, "negotiate", json!({"editions":"2026"})),
+        send(session, "negotiate", json!({"editions":"2027"})),
         json!({"value":null})
     );
     assert!(close_session(session).is_ok());

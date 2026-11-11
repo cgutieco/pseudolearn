@@ -106,8 +106,7 @@ vinculos:
     estado: cumple
   - regla: API.PROGRAM.VIEW@1.0.0#R4
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: eventos-de-tarea-para-app
+    estado: cumple
   - regla: API.PROGRAM.VIEW@1.0.0#R5
     verificacion: test/engine/rust/rust_program_view_test.dart
     estado: cumple
@@ -225,12 +224,10 @@ vinculos:
     estado: cumple
   - regla: ENG.TRACE.EVENTS@1.0.0#R7
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: eventos-de-tarea-para-app
+    estado: cumple
   - regla: ENG.TRACE.EVENTS@1.0.0#R8
     verificacion: ejecutor
-    estado: pendiente
-    resuelve_en: eventos-de-tarea-para-app
+    estado: cumple
   - regla: ENG.TRACE.EVENTS@1.0.0#R6
     verificacion: ejecutor
     estado: cumple
