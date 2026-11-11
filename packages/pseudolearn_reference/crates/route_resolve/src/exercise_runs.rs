@@ -1,8 +1,9 @@
 use crate::RouteContext;
+use crate::exercise::ExerciseParts;
 use crate::laps::{instrument, observed_rows};
 use reference_model::{
     CaseSource, ExecutionReport, ExecutionRequest, LapCheck, LapTable, Profile, ProgramSource,
-    PublishedCase, RoleRuns, RunRecord,
+    PublishedCase, RoleRuns, RouteFence, RunRecord, StructureCheck,
 };
 use reference_resolve::{target_code, with_final_newline};
 
@@ -114,4 +115,27 @@ pub fn lap_check(
         observed: observed_rows(&report.output),
         termination: report.termination,
     }
+}
+
+pub fn structure_check(
+    context: &RouteContext<'_>,
+    parts: &ExerciseParts,
+) -> Option<StructureCheck> {
+    let Some(RouteFence::Assertions(assertions)) = parts.fence("aserciones") else {
+        return None;
+    };
+    if assertions.is_empty() {
+        return None;
+    }
+    let view = match parts.program("referencia") {
+        Some(reference) => context
+            .resolution
+            .engine
+            .program_view(&with_final_newline(&reference.code), Profile::Spanish),
+        None => Err("the exercise has no reference program to check the assertions".to_owned()),
+    };
+    Some(StructureCheck {
+        assertions: assertions.clone(),
+        view,
+    })
 }

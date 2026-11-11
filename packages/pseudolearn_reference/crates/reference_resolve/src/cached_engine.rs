@@ -1,4 +1,6 @@
-use reference_model::{CodeEngine, ExecutionReport, ExecutionRequest, Profile, RawToken};
+use reference_model::{
+    CodeEngine, ExecutionReport, ExecutionRequest, Profile, ProgramView, RawToken,
+};
 use std::cell::RefCell;
 use std::collections::BTreeMap;
 
@@ -68,6 +70,10 @@ impl<Engine: CodeEngine> CodeEngine for CachedEngine<Engine> {
 
     fn intermediate(&self, code: &str, profile: Profile) -> Result<String, String> {
         self.inner.intermediate(code, profile)
+    }
+
+    fn program_view(&self, code: &str, profile: Profile) -> Result<ProgramView, String> {
+        self.inner.program_view(code, profile)
     }
 
     fn fingerprint(&self) -> String {

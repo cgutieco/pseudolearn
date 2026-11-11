@@ -54,7 +54,7 @@ la de `reference_format` hacia `route_resolve`.
 | `reference_model`   | Documento fuente, bloques, secciones publicadas, violaciones y puerto `CodeEngine` |
 | `reference_format`  | Lector del Markdown con directivas                                                 |
 | `reference_corpus`  | Léxico, fichas, diagnósticos y gramática leídos de la exportación del corpus       |
-| `reference_engine`  | Adaptador del puerto sobre `pseudolearn_api` (tokenizar, traducir, ejecutar)       |
+| `reference_engine`  | Adaptador del puerto sobre `pseudolearn_api` (tokenizar, traducir, ejecutar, vista) |
 | `reference_figures` | Contrato SVG, kit de piezas y capas por paso                                       |
 | `reference_resolve` | Fuente → sección publicada de la Especificación                                    |
 | `route_resolve`     | Lección y ejercicio fuente → lección y ejercicio publicados                        |
@@ -96,7 +96,7 @@ describirlos. `reference check` informa la segunda como `RUTA-WEB-BUNDLE-STALE`.
 - **La comilla (`quote`) está excluida de la cobertura de vocabulario** (`coverage-exclusions.json`) porque el resaltado la incluye en el literal de texto y nunca aparece como ficha suelta.
 - **Los programas se escriben una vez**: la edición inglesa traduce el vocabulario del lenguaje y la prosa, pero comparte con la española los identificadores y los textos entre comillas de cada programa, porque la salida verificada es la misma en ambas. Duplicar los programas por edición es una decisión de contenido que no está tomada.
 - `RUTA-NEW-TOOL`: una lección de tipo `leccion` que declara `necesita` e `introduce` conceptos lleva la sección «La herramienta nueva» con el ancla `herramienta`; las aperturas, los proyectos y la primera lección quedan exentos.
-- Las aserciones estructurales de los ejercicios se validan en su forma: el puerto del motor (`CodeEngine`) no publica la vista del programa, así que no se contrastan contra la solución de referencia.
+- Las aserciones estructurales de los ejercicios (`aserciones`) se validan contra la solución de referencia: el puerto `CodeEngine` publica `program_view`, una proyección mínima de `API.PROGRAM.VIEW` (recuentos de construcciones por `syntax_kind`, subprogramas con su aridad y miembros de clase con su visibilidad), y `reference_verify` comprueba cada aserción sobre esa vista con `RUTA-EXERCISE-VERIFIED`. Una aserción que la referencia no cumple, o una referencia sin vista, falla; no se acepta en silencio. El mapa `syntax_kind` → construcción vive en `reference_engine` porque es una decisión del adaptador, no del verificador, que solo conoce las construcciones del catálogo cerrado.
 
 ## Comandos útiles
 

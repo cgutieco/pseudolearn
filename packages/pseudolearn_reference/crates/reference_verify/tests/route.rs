@@ -275,6 +275,7 @@ fn a_breaker_that_does_not_break_is_reported() {
         ],
         laps: None,
         structural: false,
+        structure: None,
     };
     assert_eq!(
         rules(&check_exercise_runs(&check)),
@@ -301,6 +302,7 @@ fn a_breaker_that_breaks_and_a_matching_trace_pass() {
         ],
         laps: None,
         structural: false,
+        structure: None,
     };
     assert!(check_exercise_runs(&check).is_empty());
     let traced = ExerciseCheck {
@@ -316,6 +318,7 @@ fn a_breaker_that_breaks_and_a_matching_trace_pass() {
             termination: "completed".to_owned(),
         }),
         structural: false,
+        structure: None,
     };
     assert_eq!(
         rules(&check_exercise_runs(&traced)),
@@ -337,6 +340,7 @@ fn modification(structural: bool) -> ExerciseCheck {
         ],
         laps: None,
         structural,
+        structure: None,
     }
 }
 

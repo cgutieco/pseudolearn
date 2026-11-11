@@ -1,7 +1,7 @@
 use reference_corpus::Corpus;
 use reference_model::{
-    CodeEngine, EngineDiagnostic, ExecutionReport, ExecutionRequest, Profile, RawToken,
-    SourceDocument, TraceRecord,
+    CodeEngine, EngineDiagnostic, ExecutionReport, ExecutionRequest, Profile, ProgramView,
+    RawToken, SourceDocument, TraceRecord,
 };
 use reference_resolve::{CategoryTable, LanguagePack, SectionIndex};
 use std::cell::Cell;
@@ -120,6 +120,10 @@ impl CodeEngine for FakeEngine {
             return Err("unclosed".to_owned());
         }
         Ok("module P\nfunc @main".to_owned())
+    }
+
+    fn program_view(&self, _code: &str, _profile: Profile) -> Result<ProgramView, String> {
+        Ok(ProgramView::default())
     }
 
     fn fingerprint(&self) -> String {

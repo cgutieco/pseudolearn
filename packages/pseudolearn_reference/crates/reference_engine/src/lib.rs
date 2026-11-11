@@ -3,8 +3,11 @@
 mod execution;
 mod offsets;
 mod tokens;
+mod view;
 
-use reference_model::{CodeEngine, ExecutionReport, ExecutionRequest, Profile, RawToken};
+use reference_model::{
+    CodeEngine, ExecutionReport, ExecutionRequest, Profile, ProgramView, RawToken,
+};
 
 #[derive(Clone, Copy, Debug, Default)]
 pub struct ApiEngine;
@@ -35,6 +38,10 @@ impl CodeEngine for ApiEngine {
                 .collect::<Vec<_>>()
                 .join(", ")
         })
+    }
+
+    fn program_view(&self, code: &str, profile: Profile) -> Result<ProgramView, String> {
+        view::program_view(code, profile)
     }
 
     fn fingerprint(&self) -> String {

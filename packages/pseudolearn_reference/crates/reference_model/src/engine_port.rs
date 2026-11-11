@@ -1,4 +1,4 @@
-use crate::Profile;
+use crate::{Profile, ProgramView};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct RawToken {
@@ -58,5 +58,6 @@ pub trait CodeEngine {
     fn translate(&self, code: &str, target: Profile) -> Result<String, String>;
     fn execute(&self, request: &ExecutionRequest) -> ExecutionReport;
     fn intermediate(&self, code: &str, profile: Profile) -> Result<String, String>;
+    fn program_view(&self, code: &str, profile: Profile) -> Result<ProgramView, String>;
     fn fingerprint(&self) -> String;
 }

@@ -1,5 +1,7 @@
 use reference_corpus::Corpus;
-use reference_model::{CodeEngine, ExecutionReport, ExecutionRequest, Profile, RawToken};
+use reference_model::{
+    CodeEngine, ExecutionReport, ExecutionRequest, Profile, ProgramView, RawToken,
+};
 use reference_resolve::{CategoryTable, IndexedSection, LanguagePack, SectionIndex};
 use std::collections::BTreeMap;
 
@@ -39,6 +41,10 @@ impl CodeEngine for EchoEngine {
 
     fn intermediate(&self, _code: &str, _profile: Profile) -> Result<String, String> {
         Ok(String::new())
+    }
+
+    fn program_view(&self, _code: &str, _profile: Profile) -> Result<ProgramView, String> {
+        Ok(ProgramView::default())
     }
 
     fn fingerprint(&self) -> String {

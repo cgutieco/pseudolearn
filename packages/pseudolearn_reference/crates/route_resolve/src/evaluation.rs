@@ -1,6 +1,8 @@
 use crate::RouteContext;
 use crate::exercise::ExerciseParts;
-use crate::exercise_runs::{CaseSets, execute, lap_check, published_cases, role_runs};
+use crate::exercise_runs::{
+    CaseSets, execute, lap_check, published_cases, role_runs, structure_check,
+};
 use reference_model::{
     CaseSource, ChoiceEntry, ClassifiedElement, Evaluation, ExerciseCheck, ExerciseDocument,
     ExerciseKind, LapCell, LapRow, Profile, ProgramSource, RouteFence, SourceBlock,
@@ -70,6 +72,7 @@ pub fn exercise_check(
             .collect(),
         laps,
         structural: matches!(parts.fence("aserciones"), Some(RouteFence::Assertions(found)) if !found.is_empty()),
+        structure: structure_check(context, parts),
     })
 }
 

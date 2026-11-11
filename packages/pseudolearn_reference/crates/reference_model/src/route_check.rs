@@ -1,4 +1,4 @@
-use crate::{ExerciseKind, LapSource};
+use crate::{AssertionSource, ExerciseKind, LapSource, ProgramView};
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct RunRecord {
@@ -32,12 +32,19 @@ pub struct LapCheck {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
+pub struct StructureCheck {
+    pub assertions: Vec<AssertionSource>,
+    pub view: Result<ProgramView, String>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ExerciseCheck {
     pub location: String,
     pub kind: ExerciseKind,
     pub roles: Vec<RoleRuns>,
     pub laps: Option<LapCheck>,
     pub structural: bool,
+    pub structure: Option<StructureCheck>,
 }
 
 impl ExerciseCheck {

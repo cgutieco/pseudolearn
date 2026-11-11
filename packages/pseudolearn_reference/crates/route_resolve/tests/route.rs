@@ -280,6 +280,7 @@ fn unreachable_check() -> reference_model::ExerciseCheck {
         roles: Vec::new(),
         laps: None,
         structural: false,
+        structure: None,
     }
 }
 

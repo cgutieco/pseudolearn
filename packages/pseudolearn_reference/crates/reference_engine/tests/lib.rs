@@ -110,3 +110,28 @@ fn a_recursion_within_the_depth_limit_completes() {
     assert_eq!(report.termination, "completed");
     assert_eq!(report.output, "0\n");
 }
+
+const STRUCTURED: &str = "Clase Caja\n  Privado Definir peso Como Entero;\n  Metodo ajustar(n Como Entero)\n    Si n > 0 Entonces\n      Escribir n;\n    FinSi\n  FinMetodo\nFinClase\nFuncion r <- Doble(a Como Entero, b Como Entero)\n  Definir r Como Entero;\n  r <- a * 2;\nFinFuncion\nAlgoritmo P\n  Mientras Falso Hacer\n    Escribir 1;\n  FinMientras\nFinAlgoritmo\n";
+
+#[test]
+fn publishes_the_structure_of_a_program() -> Result<(), String> {
+    let view = ApiEngine.program_view(STRUCTURED, Profile::Spanish)?;
+    assert_eq!(view.occurrences("clase"), 1);
+    assert_eq!(view.occurrences("condicional"), 1);
+    assert_eq!(view.occurrences("bucle-condicional"), 1);
+    assert_eq!(view.occurrences("interfaz"), 0);
+    let doubled = view.subprograms.iter().find(|found| found.name == "Doble");
+    assert_eq!(doubled.map(|found| found.arity), Some(2));
+    let member = view.members.iter().find(|found| found.name == "peso");
+    assert_eq!(
+        member.map(|found| found.visibility.as_str()),
+        Some("private")
+    );
+    Ok(())
+}
+
+#[test]
+fn rejects_the_view_of_a_program_with_syntax_errors() {
+    let view = ApiEngine.program_view("Algoritmo\n", Profile::Spanish);
+    assert!(view.is_err(), "{view:?}");
+}

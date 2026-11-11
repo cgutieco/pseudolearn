@@ -1,5 +1,6 @@
 use crate::route_mix::fence;
 use crate::route_normalize::{outputs_match, values_match};
+use crate::route_structure::structure_problems;
 use reference_model::{
     ExerciseCheck, ExerciseDocument, ExerciseKind, LapCheck, RoleRuns, RouteFence, RuleId,
     RunRecord, SourceBlock, Violation,
@@ -14,7 +15,7 @@ pub fn passes(record: &RunRecord) -> bool {
 }
 
 pub fn check_exercise_runs(check: &ExerciseCheck) -> Vec<Violation> {
-    let problems = match check.kind {
+    let mut problems = match check.kind {
         ExerciseKind::Solve | ExerciseKind::Order => reference_passes(check),
         ExerciseKind::FindError => with_reference(check, |check| initial_fails(check, false)),
         ExerciseKind::Modify => with_reference(check, modification_needed),
@@ -25,6 +26,7 @@ pub fn check_exercise_runs(check: &ExerciseCheck) -> Vec<Violation> {
         }),
         _ => Vec::new(),
     };
+    problems.extend(check.structure.iter().flat_map(structure_problems));
     problems
         .into_iter()
         .map(|detail| {
