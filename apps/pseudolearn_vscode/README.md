@@ -15,6 +15,7 @@ VSX; actualizarse sola ni enviar telemetría.
 ```mermaid
 flowchart BT
     spec["packages/pseudolearn_spec<br/>(export.json)"] --> ext
+    brand["packages/pseudolearn_brand<br/>(ícono)"] --> ext
     cli["apps/pseudolearn_cli<br/>(binario pseudo)"] --> ext
     engine["packages/pseudolearn_engine<br/>(Wasm, solo navegador)"] --> ext
     ext["apps/pseudolearn_vscode"] --> host["VS Code Stable / VS Code Web"]
@@ -62,6 +63,36 @@ flowchart LR
   clase.
 - La gramática TextMate y la configuración del lenguaje se generan desde `export.json` del corpus; no se editan a mano
   (`pnpm check:grammar` detecta la diferencia).
+- **Íconos.** `media/icons/pseudo-file.svg` es una copia que genera `pseudolearn_brand` (`BRAND-COPY-STALE` si diverge);
+  no se edita a mano. Sirve de ícono del lenguaje y, en `pseudolearn-icon-theme.json`, de ícono de los `.pseudo` en el
+  explorador. VS Code solo pinta un tema de íconos de archivo a la vez, así que el tema incluye también un ícono
+  genérico
+  de archivo y de carpeta (`file.svg`, `folder.svg`, `folder-open.svg`, propios del paquete): quien lo activa no deja el
+  resto de sus archivos sin ícono. La extensión no cambia el tema del usuario; se activa desde *Tema de íconos de
+  archivo*. El Marketplace exige un PNG, que `pnpm generate:icon` rasteriza con `sharp` a `media/icon.png` (256 px, no
+  se
+  versiona) antes de empaquetar.
+- **Configuración en caliente.** Cambiar `pseudolearn.profile`, `pseudolearn.interfaceLanguage` o
+  `pseudolearn.server.path` se aplica sin recargar la ventana. En escritorio, `configured_session.ts` vuelve a resolver
+  la configuración y, si `configurationDiffers` detecta un valor distinto, desecha la sesión (servidor de lenguaje,
+  comandos, depurador y proveedor MCP) y la vuelve a crear con los valores nuevos; una ejecución en curso se detiene.
+  Si la configuración nueva no es válida se muestra el error y se conserva la sesión anterior. Se recrea la sesión en
+  vez de enviar solo `workspace/didChangeConfiguration` porque el perfil y el idioma también viajan en los argumentos de
+  ejecución, depuración y traducción, que se fijan al crear la sesión. En navegador, `browser_extension.ts` sustituye
+  las opciones y reinicia el servidor de lenguaje del Worker.
+- **Menús de comandos.** Los comandos se exponen en la barra del editor sin pasar por la paleta: el botón de ejecución
+  (`editor/title/run`) agrupa ejecutar y depurar archivo o proyecto; «Stop Run» va como botón propio en
+  `editor/title` y solo se ve con la clave de contexto `pseudolearn.running`, que también oculta las acciones de
+  ejecutar mientras hay una ejecución en curso (no se admiten dos a la vez). Las acciones menos frecuentes van al menú
+  `…` y al menú contextual del texto. Todo se limita a editores `.pseudo` salvo «Stop Run».
+    - Los íconos son *codicons* (`$(play)`, `$(debug-stop)`…), no SVG propios: VS Code los pinta con el color del tema
+      activo, así que no hace falta una variante clara y otra oscura dentro del VSIX.
+    - `pseudolearn.running` la publica `vscode_run_context.ts`: en escritorio desde `VscodeRunPresenter` según
+      `isRunActive` (solo cuando cambia, para no emitir un `setContext` por cada salida), en navegador desde
+      `BrowserRun.start` al empezar y en su `finally`.
+    - El manifiesto web quita los comandos que el navegador no registra (`desktopOnlyCommands` en
+      `scripts/lib/web-manifest.mjs`: depuración e instrucciones de agente) y los menús que los nombran, para no dejar
+      botones que fallan con «comando no encontrado».
 - El VSIX contiene solo lo declarado en `artifact.contract.json`; excluye fuentes, tests, scripts, ejemplos, mapas y
   `node_modules`.
 - El README del VSIX es `marketplace/README.md` (`readme` del contrato). El `README.md` de esta carpeta no se empaqueta.
@@ -76,6 +107,7 @@ Desde esta carpeta.
 | Tipos                                 | `pnpm check:types`                                                  |
 | Arquitectura, comentarios y tamaños   | `pnpm check:architecture`, `pnpm check:comments`, `pnpm check:size` |
 | Contenido del paquete                 | `pnpm check:package`                                                |
+| PNG del Marketplace                   | `pnpm generate:icon` (lo ejecutan `package` y `build:web`)          |
 | Gramática vigente                     | `pnpm check:grammar` (regenerar: `pnpm generate:grammar`)           |
 | Tests                                 | `pnpm test`                                                         |
 | Compilar el binario `pseudo` incluido | `pnpm build:cli`                                                    |

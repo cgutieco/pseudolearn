@@ -5,6 +5,8 @@ import { buildDiagnosticReport, type DiagnosticReportProblem, type DiagnosticRep
 import { finishLabel, stateConclusionLabel, stateLabel } from "../application/run_messages";
 import type { InterfaceLanguage } from "../contracts/extension_configuration";
 import type { RunCompletion, RunEvent, RunPresenterPort, RunState } from "../contracts/editor_run";
+import { isRunActive } from "../application/run_activity";
+import { publishRunActivity } from "./vscode_run_context";
 
 const maximumSourceBytes = 1_048_576;
 
@@ -13,6 +15,7 @@ export class VscodeRunPresenter implements RunPresenterPort, vscode.Disposable {
   private readonly technical = vscode.window.createOutputChannel("PseudoLearn (technical)");
   private readonly status = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
   private readonly problems = vscode.languages.createDiagnosticCollection("PseudoLearn");
+  private active = false;
 
   showOutput(text: string): void {
     this.channel.append(text);
@@ -42,6 +45,7 @@ export class VscodeRunPresenter implements RunPresenterPort, vscode.Disposable {
       this.channel.show(true);
       this.problems.clear();
     }
+    this.publishActivity(isRunActive(state));
     this.status.text = stateLabel(state, language);
     this.status.show();
     if (state === "finished" && completion && completion.diagnosticErrorCount === 0) {
@@ -67,6 +71,13 @@ export class VscodeRunPresenter implements RunPresenterPort, vscode.Disposable {
     this.technical.appendLine(line);
   }
 
+  private publishActivity(active: boolean): void {
+    if (active !== this.active) {
+      this.active = active;
+      publishRunActivity(active);
+    }
+  }
+
   private publishProblems(problems: DiagnosticReportProblem[]): void {
     const grouped = new Map<string, vscode.Diagnostic[]>();
     for (const problem of problems) {
@@ -83,6 +94,7 @@ export class VscodeRunPresenter implements RunPresenterPort, vscode.Disposable {
   }
 
   dispose(): void {
+    publishRunActivity(false);
     this.channel.dispose();
     this.technical.dispose();
     this.status.dispose();

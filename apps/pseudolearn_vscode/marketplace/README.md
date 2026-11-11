@@ -9,6 +9,9 @@ errores mientras escribes, ayuda en el cursor, ejecución con entrada por teclad
 ## Qué incluye
 
 - **Resaltado y edición** de archivos `.pseudo`, con el vocabulario en español o en inglés.
+- **Ícono en el explorador**: elige *PseudoLearn Icons* en «Tema de íconos de archivo» (`Cmd+K Cmd+M`) para ver el
+  símbolo de PseudoLearn en los archivos `.pseudo`. Ese tema incluye íconos genéricos para el resto de archivos y
+  carpetas.
 - **Errores y advertencias** a medida que escribes, también en el panel «Problemas».
 - **Navegación y renombrado**: ir a la definición, buscar referencias, símbolos del archivo y renombrar un nombre en
   todos los módulos del proyecto.
@@ -54,14 +57,25 @@ la misma identidad sustituye a la anterior. Para volver atrás, desinstala con
    FinAlgoritmo
    ```
 
-2. Guárdalo y ejecuta `PseudoLearn: Run File` desde la paleta de comandos. Escribe tu nombre en el cuadro que aparece.
+2. Guárdalo y pulsa el botón ▷ de la esquina superior derecha del editor (o ejecuta `PseudoLearn: Run File` desde la
+   paleta de comandos). Escribe tu nombre en el cuadro que aparece.
 3. La salida aparece en el canal `PseudoLearn` de la vista «Salida».
 
 El programa debe estar guardado: con cambios sin guardar no se ejecuta, para que lo que corre sea lo que ves.
 
 ## Comandos
 
-Todos están en la paleta de comandos, bajo la categoría `PseudoLearn`.
+Todos están en la paleta de comandos, bajo la categoría `PseudoLearn`. Con un archivo `.pseudo` abierto también tienes
+estos accesos:
+
+- **Botón ▷ de la barra del editor**: ejecuta el archivo; su flecha despliega «Debug File», «Run Project» y
+  «Debug Project».
+- **Botón ■ de la barra del editor**: aparece solo mientras un programa se ejecuta y lo detiene.
+- **Menú `…` de la barra del editor**: «Select Project Entry», «Translate Vocabulary», «Restart Language Server» y
+  «Create Agent Instructions».
+- **Clic derecho en el texto**: «Explain at Cursor», «Run File» y «Translate Vocabulary».
+
+Los íconos son los del propio VS Code, así que toman el color de tu tema de color.
 
 | Comando                        | Qué hace                                                                                                                                          |
 |--------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|

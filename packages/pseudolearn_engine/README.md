@@ -161,6 +161,14 @@ comparten disposición de marco y de objetos.
 - **Argumentos del ejecutable nativo**: una opción del runtime repetida, o usada como valor de otra, es una opción
   inválida (salida 5); si ya se leyó `--effects-out`, el documento de efectos se escribe como rechazado con el
   código `options_invalid`. Un argumento que no es UTF-8 termina con salida 5 sin pánico.
+- **Perfil de los documentos sueltos en el LSP**: el perfil se deduce de la palabra de apertura al abrir y de nuevo en
+  cada `didChange`. Al abrir, el respaldo es el perfil configurado del servidor (`initializationOptions.profile` o el
+  último `workspace/didChangeConfiguration`, español por omisión) y no el idioma de interfaz: el cliente envía su
+  propio `locale`, que puede no coincidir con el vocabulario elegido, y un documento sin apertura (vacío o que empieza
+  con `Importar`) acababa analizado con el vocabulario equivocado. Si cambia, `lsp_documents` reabre la sesión del documento con el perfil nuevo en vez de editarla,
+  porque `DocumentSession::apply_edit` reutiliza el perfil con que se creó y el análisis incremental no sabe cambiar
+  de vocabulario. Sin palabra de apertura reconocible se conserva el perfil vigente, para no saltar de vocabulario
+  mientras se borra la primera línea. Los documentos de un proyecto no cambian: su perfil lo fija el espacio de trabajo.
 - **Sin capas hacia arriba**: `architecture.yaml` fija qué puede importar cada crate.
 
 ## Comandos útiles

@@ -66,9 +66,11 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Tras didOpen, didChange, didSave, cambios de workspace o resincronización, el servidor actualiza la sesión y publica diagnósticos con posiciones UTF-16 0-indexadas, versión y relatedInformation cuando fue negociado. didClose elimina el overlay y vuelve al texto del snapshot del proyecto más reciente; si el archivo pertenece al proyecto conserva su análisis y diagnósticos, y si es un documento suelto libera la sesión y publica lista vacía.",
+  "texto": "Tras didOpen, didChange, didSave, cambios de workspace o resincronización, el servidor actualiza la sesión y publica diagnósticos con posiciones UTF-16 0-indexadas, versión y relatedInformation cuando fue negociado. didClose elimina el overlay y vuelve al texto del snapshot del proyecto más reciente; si el archivo pertenece al proyecto conserva su análisis y diagnósticos, y si es un documento suelto libera la sesión y publica lista vacía. El perfil de un documento suelto se deduce de la palabra de apertura con que empieza su texto, sin contar espacios ni comentarios: al abrirlo, con el perfil configurado del servidor como respaldo, y de nuevo tras cada didChange, con el perfil vigente como respaldo; así un documento cuya apertura pasa al otro vocabulario se analiza con ese perfil sin reabrirlo. El perfil configurado es el de initializationOptions o el último recibido en workspace/didChangeConfiguration, y español si ninguno lo fija; el idioma de interfaz nunca sirve de respaldo.",
   "verificacion": [
-    "C2"
+    "C2",
+    "C17",
+    "C18"
   ]
 }
 ```
@@ -370,6 +372,113 @@
               "text": "42"
             }
           ]
+        }
+      }
+    ],
+    "proyeccion": "diagnosticos"
+  }
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "diagnosticos_iniciales": 0,
+      "diagnosticos_corregidos": 0
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "locale": "es"
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didOpen",
+        "params": {
+          "textDocument": {
+            "uri": "file:///traducido.pseudo",
+            "languageId": "pseudolearn",
+            "version": 1,
+            "text": "Algoritmo Principal\n  Definir x Como Entero <- 0;\n  Escribir x;\nFinAlgoritmo\n"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didChange",
+        "params": {
+          "textDocument": {
+            "uri": "file:///traducido.pseudo",
+            "version": 2
+          },
+          "contentChanges": [
+            {
+              "text": "Algorithm Main\n  Define x As Integer <- 0;\n  Write x;\nEndAlgorithm\n"
+            }
+          ]
+        }
+      }
+    ],
+    "proyeccion": "diagnosticos"
+  }
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "service",
+  "espera": {
+    "servicio": {
+      "diagnosticos_iniciales": 1,
+      "diagnosticos_corregidos": 1
+    }
+  },
+  "servicio": {
+    "suboperacion": "lsp",
+    "mensajes": [
+      {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "locale": "en",
+          "initializationOptions": {
+            "profile": "es"
+          }
+        }
+      },
+      {
+        "jsonrpc": "2.0",
+        "method": "textDocument/didOpen",
+        "params": {
+          "textDocument": {
+            "uri": "file:///sin-apertura.pseudo",
+            "languageId": "pseudolearn",
+            "version": 1,
+            "text": "Importar geo.Doble;\nAlgoritmo Principal\n  Escribir 1;\nFinAlgoritmo\n"
+          }
         }
       }
     ],

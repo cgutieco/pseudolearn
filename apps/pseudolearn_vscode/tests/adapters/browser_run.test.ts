@@ -1,10 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-const host = vi.hoisted(() => ({ trusted: true, input: vi.fn() }));
+const host = vi.hoisted(() => ({ trusted: true, input: vi.fn(), context: vi.fn() }));
 
 vi.mock("vscode", () => ({
   workspace: { get isTrusted() { return host.trusted; }, fs: {} },
   window: { showInputBox: host.input },
+  commands: { executeCommand: host.context },
   FileType: { File: 1, Directory: 2, SymbolicLink: 64 },
   Uri: { parse: (value: string) => ({ toString: () => value }) },
 }));
@@ -61,6 +62,22 @@ describe("Browser run batching and cancellation", () => {
     host.trusted = false;
     await expect(subject.run.start({ source: "x" }, { })).rejects.toThrow("Workspace trust is required");
     expect(subject.api.call).not.toHaveBeenCalled();
+    expect(host.context).not.toHaveBeenCalled();
+  });
+});
+
+describe("Browser run activity context", () => {
+  it("marks the run active while it executes and inactive once it concludes", async () => {
+    const subject = fixture(() => answer({ output: "", termination: { kind: "completed" } }));
+    await subject.run.start({ source: "x" }, { });
+    expect(host.context.mock.calls).toEqual([["setContext", "pseudolearn.running", true], ["setContext", "pseudolearn.running", false]]);
+  });
+
+  it("clears the active mark when the engine rejects the program", async () => {
+    const subject = fixture(() => running());
+    subject.api.call.mockImplementation(async () => answer({}));
+    await expect(subject.run.start({ source: "x" }, { })).rejects.toThrow();
+    expect(host.context.mock.calls.at(-1)).toEqual(["setContext", "pseudolearn.running", false]);
   });
 });
 

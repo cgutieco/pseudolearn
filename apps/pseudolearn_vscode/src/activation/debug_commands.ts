@@ -11,8 +11,8 @@ import { entryKey } from "./command_context";
 export function registerDebugCommands(
   extension: vscode.ExtensionContext,
   configuration: ResolvedExtensionConfiguration,
-): void {
-  extension.subscriptions.push(
+): vscode.Disposable[] {
+  return [
     vscode.debug.registerDebugConfigurationProvider("pseudolearn", {
       resolveDebugConfiguration: (folder, requested) => resolve(folder, requested, configuration),
     }),
@@ -22,7 +22,7 @@ export function registerDebugCommands(
     vscode.debug.registerDebugAdapterTrackerFactory("pseudolearn", { createDebugAdapterTracker: inputTracker }),
     vscode.commands.registerCommand("pseudolearn.debugFile", () => startFile()),
     vscode.commands.registerCommand("pseudolearn.debugProject", () => startProject(extension)),
-  );
+  ];
 }
 
 function resolve(

@@ -4,6 +4,7 @@ import type { BrowserHostContext } from "../contracts/host_capabilities";
 import { encodeArguments, numeric } from "../application/canonical_arguments";
 import { acceptAnswer, answerValue, object, text } from "../application/wire_projection";
 import { BrowserEffectHost, NETWORK_CAPABILITIES } from "./browser_effect_host";
+import { publishRunActivity } from "./vscode_run_context";
 
 interface CompletedEffect { effect: Record<string, Projection>; result: unknown }
 
@@ -22,6 +23,7 @@ export class BrowserRun {
     if (!vscode.workspace.isTrusted) throw new Error("Workspace trust is required");
     this.starting = true;
     this.stopping = false;
+    publishRunActivity(true);
     this.pendingEffects.clear();
     this.effects = new BrowserEffectHost(host);
     try {
@@ -32,6 +34,7 @@ export class BrowserRun {
       await this.release();
       this.starting = false;
       this.effects.close();
+      publishRunActivity(false);
     }
   }
 

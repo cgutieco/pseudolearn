@@ -38,7 +38,7 @@ function createController(presenter: RunPresenterPort): RunController {
 export function registerCommands(
   extension: vscode.ExtensionContext,
   configuration: ResolvedExtensionConfiguration,
-): void {
+): vscode.Disposable[] {
   const settings = toSettings(configuration);
   const presenter = new VscodeRunPresenter();
   const controller = createController(presenter);
@@ -53,7 +53,8 @@ export function registerCommands(
       profile: settings.profile,
       locale: settings.language,
     }), settings.executable);
-  extension.subscriptions.push(
+  void client.start();
+  return [
     presenter,
     { dispose: () => controller.dispose(settings) },
     { dispose: () => void client.stop() },
@@ -62,6 +63,5 @@ export function registerCommands(
     ...registerExplainCommand(client, settings.language),
     ...registerAgentIntegration(settings),
     vscode.commands.registerCommand("pseudolearn.restartServer", () => client.restart()),
-  );
-  void client.start();
+  ];
 }

@@ -10,6 +10,7 @@
     "vscode": "^1.144.0"
   },
   "packageManager": "pnpm@12.8.1",
+  "icon": "media/icon.png",
   "main": "./dist/extension.js",
   "extensionKind": [
     "workspace"
@@ -39,7 +40,18 @@
         "extensions": [
           ".pseudo"
         ],
-        "configuration": "./media/language-configuration.json"
+        "configuration": "./media/language-configuration.json",
+        "icon": {
+          "light": "./media/icons/pseudo-file.svg",
+          "dark": "./media/icons/pseudo-file.svg"
+        }
+      }
+    ],
+    "iconThemes": [
+      {
+        "id": "pseudolearn-icons",
+        "label": "PseudoLearn Icons",
+        "path": "./media/icons/pseudolearn-icon-theme.json"
       }
     ],
     "grammars": [
@@ -53,54 +65,132 @@
       {
         "command": "pseudolearn.runFile",
         "title": "Run File",
-        "category": "PseudoLearn"
+        "category": "PseudoLearn",
+        "icon": "$(play)"
       },
       {
         "command": "pseudolearn.runProject",
         "title": "Run Project",
-        "category": "PseudoLearn"
+        "category": "PseudoLearn",
+        "icon": "$(run-all)"
       },
       {
         "command": "pseudolearn.stopRun",
         "title": "Stop Run",
-        "category": "PseudoLearn"
+        "category": "PseudoLearn",
+        "icon": "$(debug-stop)"
       },
       {
         "command": "pseudolearn.selectEntry",
         "title": "Select Project Entry",
-        "category": "PseudoLearn"
+        "category": "PseudoLearn",
+        "icon": "$(target)"
       },
       {
         "command": "pseudolearn.explainAtCursor",
         "title": "Explain at Cursor",
-        "category": "PseudoLearn"
+        "category": "PseudoLearn",
+        "icon": "$(question)"
       },
       {
         "command": "pseudolearn.translate",
         "title": "Translate Vocabulary",
-        "category": "PseudoLearn"
+        "category": "PseudoLearn",
+        "icon": "$(globe)"
       },
       {
         "command": "pseudolearn.restartServer",
         "title": "Restart Language Server",
-        "category": "PseudoLearn"
+        "category": "PseudoLearn",
+        "icon": "$(debug-restart)"
       },
       {
         "command": "pseudolearn.debugFile",
         "title": "Debug File",
-        "category": "PseudoLearn"
+        "category": "PseudoLearn",
+        "icon": "$(debug-alt)"
       },
       {
         "command": "pseudolearn.debugProject",
         "title": "Debug Project",
-        "category": "PseudoLearn"
+        "category": "PseudoLearn",
+        "icon": "$(debug-alt-small)"
       },
       {
         "command": "pseudolearn.createAgentInstructions",
         "title": "Create Agent Instructions",
-        "category": "PseudoLearn"
+        "category": "PseudoLearn",
+        "icon": "$(sparkle)"
       }
     ],
+    "menus": {
+      "editor/title/run": [
+        {
+          "command": "pseudolearn.runFile",
+          "group": "navigation@1",
+          "when": "resourceLangId == pseudolearn && !pseudolearn.running"
+        },
+        {
+          "command": "pseudolearn.debugFile",
+          "group": "navigation@2",
+          "when": "resourceLangId == pseudolearn && !pseudolearn.running"
+        },
+        {
+          "command": "pseudolearn.runProject",
+          "group": "navigation@3",
+          "when": "resourceLangId == pseudolearn && workspaceFolderCount > 0 && !pseudolearn.running"
+        },
+        {
+          "command": "pseudolearn.debugProject",
+          "group": "navigation@4",
+          "when": "resourceLangId == pseudolearn && workspaceFolderCount > 0 && !pseudolearn.running"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "pseudolearn.stopRun",
+          "group": "navigation@1",
+          "when": "pseudolearn.running"
+        },
+        {
+          "command": "pseudolearn.selectEntry",
+          "group": "pseudolearn@1",
+          "when": "resourceLangId == pseudolearn && workspaceFolderCount > 0"
+        },
+        {
+          "command": "pseudolearn.translate",
+          "group": "pseudolearn@2",
+          "when": "resourceLangId == pseudolearn"
+        },
+        {
+          "command": "pseudolearn.restartServer",
+          "group": "pseudolearn@3",
+          "when": "resourceLangId == pseudolearn"
+        },
+        {
+          "command": "pseudolearn.createAgentInstructions",
+          "group": "pseudolearn@4",
+          "when": "resourceLangId == pseudolearn && workspaceFolderCount > 0"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "pseudolearn.explainAtCursor",
+          "group": "pseudolearn@1",
+          "when": "editorLangId == pseudolearn"
+        },
+        {
+          "command": "pseudolearn.runFile",
+          "group": "pseudolearn@2",
+          "when": "editorLangId == pseudolearn && !pseudolearn.running"
+        },
+        {
+          "command": "pseudolearn.translate",
+          "group": "pseudolearn@3",
+          "when": "editorLangId == pseudolearn"
+        }
+      ]
+    },
     "mcpServerDefinitionProviders": [
       {
         "id": "pseudolearn.mcp",
@@ -216,14 +306,15 @@
     "check:comments": "node scripts/check-comments.mjs",
     "check:size": "node scripts/check-size.mjs",
     "check:package": "node scripts/check-package.mjs",
+    "generate:icon": "node scripts/generate-icon.mjs",
     "generate:grammar": "node scripts/generate-grammar.mjs",
     "check:grammar": "node scripts/generate-grammar.mjs --check",
     "test": "vitest run",
     "build:cli": "node scripts/build-cli.mjs",
     "build": "pnpm check:grammar && node scripts/build.mjs",
-    "package": "pnpm build:cli && pnpm build && node scripts/package.mjs",
+    "package": "pnpm build:cli && pnpm generate:icon && pnpm build && node scripts/package.mjs",
     "build:wasm": "bash ../../packages/pseudolearn_engine/tool/wasm.sh build",
-    "build:web": "pnpm check:grammar && node scripts/build-web.mjs",
+    "build:web": "pnpm check:grammar && pnpm generate:icon && node scripts/build-web.mjs",
     "package:web": "pnpm build:wasm && pnpm build:web && node scripts/package-web.mjs",
     "check:web": "node scripts/check-web.mjs",
     "test:web": "node tests/web/run-web.mjs",
@@ -242,6 +333,7 @@
     "@types/vscode": "1.144.0",
     "@vscode/vsce": "4.0.0",
     "esbuild": "0.28.2",
+    "sharp": "0.35.5",
     "typescript": "6.0.3",
     "vscode-oniguruma": "1.7.0",
     "vscode-textmate": "9.3.2",

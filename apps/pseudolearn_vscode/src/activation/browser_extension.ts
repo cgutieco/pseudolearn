@@ -19,9 +19,7 @@ function worker(context: vscode.ExtensionContext, channel: "language" | "executi
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
   if (!vscode.workspace.isTrusted) return;
-  const configuration = vscode.workspace.getConfiguration("pseudolearn");
-  const options = { profile: configuration.get("profile", "es"),
-    locale: configuration.get("interfaceLanguage", "es") };
+  const options = configuredOptions();
   const languageApi = worker(context, "language");
   const runApi = worker(context, "execution");
   const language = new BrowserLanguageService(languageApi, options);
@@ -32,12 +30,26 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   active = { extension: context, api: languageApi, language, workspace, run, output, host: { root: vscode.workspace.workspaceFolders?.[0]?.uri.toString() }, options };
   context.subscriptions.push(output, ...browserCommands(active), { dispose: () => { run.close(); void language.close(); } },
     vscode.commands.registerCommand("pseudolearn.restartServer", () => restart(context)),
+    vscode.workspace.onDidChangeConfiguration((event) => void reconfigure(context, event)),
     vscode.workspace.onDidSaveTextDocument(() => void synchronize(active!)),
     vscode.workspace.onDidCreateFiles(() => void synchronize(active!)),
     vscode.workspace.onDidDeleteFiles(() => void synchronize(active!)),
     vscode.workspace.onDidRenameFiles(() => void synchronize(active!)));
   await language.client.start();
   await synchronize(active);
+}
+
+function configuredOptions(): BrowserCommands["options"] {
+  const configuration = vscode.workspace.getConfiguration("pseudolearn");
+  return { profile: configuration.get("profile", "es"), locale: configuration.get("interfaceLanguage", "es") };
+}
+
+async function reconfigure(context: vscode.ExtensionContext, event: vscode.ConfigurationChangeEvent): Promise<void> {
+  if (!active || !event.affectsConfiguration("pseudolearn")) return;
+  const next = configuredOptions();
+  if (next.profile === active.options.profile && next.locale === active.options.locale) return;
+  active.options = next;
+  await restart(context);
 }
 
 async function synchronize(context: BrowserCommands): Promise<void> {

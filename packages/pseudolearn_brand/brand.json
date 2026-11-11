@@ -160,7 +160,10 @@
       "rounded": true,
       "gradient_id": "ground",
       "ink": "#FFFFFF",
-      "copies": ["apps/pseudolearn_web/public/favicon.svg"]
+      "copies": [
+        "apps/pseudolearn_web/public/favicon.svg",
+        "apps/pseudolearn_vscode/media/icons/pseudo-file.svg"
+      ]
     },
     {
       "name": "social-card",

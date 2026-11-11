@@ -20,8 +20,8 @@ class PlanTest(unittest.TestCase):
 
     def test_it_plans_local_consumer_outputs_and_the_guidelines(self):
         outputs = {artefact.path.name for artefact in self.plan.tracked}
-        self.assertEqual(outputs, {"favicon.svg", "social-card.svg", "symbol-path.generated.ts",
-                                   "brand.generated.ts", "guidelines.html"})
+        self.assertEqual(outputs, {"favicon.svg", "pseudo-file.svg", "social-card.svg",
+                                   "symbol-path.generated.ts", "brand.generated.ts", "guidelines.html"})
 
 
 class CheckTest(unittest.TestCase):
@@ -35,6 +35,15 @@ class CheckTest(unittest.TestCase):
             favicon.write_text("<svg/>", encoding="utf-8")
             rules = [violation.rule for violation in artefacts.check(copy)]
             self.assertIn("BRAND-COPY-STALE", rules)
+
+    def test_a_drifted_extension_icon_is_reported(self):
+        with self.repository_copy() as copy:
+            icon = copy / "apps/pseudolearn_vscode/media/icons/pseudo-file.svg"
+            icon.parent.mkdir(parents=True, exist_ok=True)
+            icon.write_text("<svg/>", encoding="utf-8")
+            violations = artefacts.check(copy)
+            self.assertIn(("BRAND-COPY-STALE", "apps/pseudolearn_vscode/media/icons/pseudo-file.svg"),
+                          [(violation.rule, violation.target) for violation in violations])
 
     def test_missing_consumer_outputs_are_left_for_the_build_step(self):
         with self.repository_copy() as copy:

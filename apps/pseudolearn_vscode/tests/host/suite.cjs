@@ -5,6 +5,7 @@ const { activationChecks, diagnosticChecks, navigationChecks } = require("./anal
 const { formatChecks, renameChecks } = require("./editing.cjs");
 const { refusalChecks, runChecks, acceptanceChecks, lifecycleChecks } = require("./running.cjs");
 const { debugChecks } = require("./debugging.cjs");
+const { configurationChecks, vocabularyChecks } = require("./configuration.cjs");
 
 const extensionId = "pseudolearn.pseudolearn-vscode";
 
@@ -13,6 +14,9 @@ async function trustedSuite() {
   const main = await open("app/main.pseudo");
   const callPosition = () => main.positionAt(main.getText().indexOf("Doble(numero)") + 2);
   await diagnosticChecks(main);
+  await configurationChecks(main);
+  await vocabularyChecks();
+  await vscode.window.showTextDocument(main);
   await refusalChecks(main);
   await navigationChecks(main, callPosition);
   await formatChecks(main);

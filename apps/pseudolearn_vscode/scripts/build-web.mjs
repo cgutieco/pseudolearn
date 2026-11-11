@@ -3,6 +3,7 @@ import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { graphViolations, hash } from "./lib/web-artifact.mjs";
+import { browserCommandContributions, menusForCommands } from "./lib/web-manifest.mjs";
 import { run } from "./lib/run.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -26,10 +27,11 @@ function browserManifest() {
   manifest.browser = `./${contract.web.browser}`;
   manifest.extensionKind = ["workspace"];
   manifest.activationEvents = manifest.activationEvents.filter((event) => !event.startsWith("onDebug"));
-  manifest.contributes.commands = manifest.contributes.commands.filter((command) => !command.command.startsWith("pseudolearn.debug"));
+  manifest.contributes.commands = browserCommandContributions(manifest.contributes.commands);
   for (const [command, title] of [["showCapabilities", "Show Browser Capabilities"]]) {
     manifest.contributes.commands.push({ command: `pseudolearn.${command}`, title, category: "PseudoLearn" });
   }
+  manifest.contributes.menus = menusForCommands(manifest.contributes.menus, manifest.contributes.commands);
   manifest.files = ["README.md", "LICENSE.md", "NOTICE", "third-party-notices.md", "package.json", "dist/**", "media/**"];
   manifest.scripts = {};
   delete manifest.dependencies;
@@ -40,7 +42,7 @@ function browserManifest() {
 async function buildBrowser() {
   mkdirSync(stage, { recursive: true });
   copy(resolve(root, contract.readme), resolve(stage, "README.md"));
-  for (const file of ["LICENSE.md", "NOTICE", "media/pseudolearn.tmLanguage.json", "media/language-configuration.json"]) {
+  for (const file of ["LICENSE.md", "NOTICE", "media/pseudolearn.tmLanguage.json", "media/language-configuration.json", "media/icon.png", "media/icons/pseudo-file.svg", "media/icons/file.svg", "media/icons/folder.svg", "media/icons/folder-open.svg", "media/icons/pseudolearn-icon-theme.json"]) {
     copy(resolve(root, file), resolve(stage, file));
   }
   for (const file of ["pseudolearn_wasm.js", "pseudolearn_wasm_bg.wasm"]) copy(resolve(wasmRoot, file), resolve(stage, "dist/web/wasm", file));

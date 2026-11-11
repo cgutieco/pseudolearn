@@ -68,10 +68,6 @@ impl LspServer {
         vec![crate::lsp_diagnostics::publish(&uri, Vec::new())]
     }
 
-    pub(crate) fn locale_profile(&self) -> Profile {
-        Profile::from_name(&self.locale).unwrap_or(Profile::Spanish)
-    }
-
     pub(crate) fn path_for_uri(&self, uri: &str) -> Option<String> {
         self.workspace_paths.get(uri).cloned()
     }
@@ -126,14 +122,14 @@ impl LspServer {
             .workspace_session
             .as_ref()
             .and_then(|workspace| workspace.profile_for_path(&path))
-            .unwrap_or_else(|| detect_document_profile(&text, self.locale_profile()));
+            .unwrap_or_else(|| detect_document_profile(&text, self.profile));
         self.service
             .open_document(uri, text, DocumentOptions { profile });
     }
 
     fn open_standalone_document(&mut self, uri: &str, text: &str, version: i64) -> Vec<Value> {
         self.versions.insert(uri.to_owned(), version);
-        let profile = detect_document_profile(text, self.locale_profile());
+        let profile = detect_document_profile(text, self.profile);
         self.service
             .open_document(uri.to_owned(), text.to_owned(), DocumentOptions { profile });
         self.diagnostics_notification(uri).into_iter().collect()
@@ -169,11 +165,24 @@ impl LspServer {
             self.versions.insert(request.uri, request.version);
             return self.workspace_diagnostics_notifications();
         }
-        self.service.edit_document(&request.uri, updated);
+        self.edit_standalone_document(&request.uri, updated);
         self.versions.insert(request.uri.clone(), request.version);
         self.diagnostics_notification(&request.uri)
             .into_iter()
             .collect()
+    }
+
+    fn edit_standalone_document(&mut self, uri: &str, text: String) {
+        let Some(current) = self.service.session(uri).map(|session| session.profile) else {
+            return;
+        };
+        let profile = detect_document_profile(&text, current);
+        if profile == current {
+            self.service.edit_document(uri, text);
+        } else {
+            self.service
+                .open_document(uri.to_owned(), text, DocumentOptions { profile });
+        }
     }
 
     fn change_workspace_document(&mut self, path: &str, version: i64, text: &str) -> bool {
