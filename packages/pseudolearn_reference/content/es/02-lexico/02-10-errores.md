@@ -41,7 +41,7 @@ unrecognizedCharacter
 Hay un solo diagnóstico: el motor descarta la `@` y no informa errores derivados del hueco que deja, como un punto y coma que falta.
 
 ::: limite
-El análisis admite hasta 256 construcciones anidadas a la vez: paréntesis, operadores unarios, potencias encadenadas y sentencias compuestas dentro de otras. La siguiente produce `analysisNestingLimitExceeded`. El límite protege al motor; ningún programa razonable se acerca a él.
+El análisis admite hasta 256 construcciones anidadas a la vez: paréntesis, listas de argumentos e índices, operadores unarios, potencias encadenadas, cada eslabón de una cadena de llamadas o accesos y sentencias compuestas dentro de otras. La siguiente produce `analysisNestingLimitExceeded`. El límite protege al motor; ningún programa razonable se acerca a él.
 :::
 
 ::: resumen

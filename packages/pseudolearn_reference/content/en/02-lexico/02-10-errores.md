@@ -34,7 +34,7 @@ pie: The engine points at the guilty fragment and keeps reading. Semantic phases
 There is a single diagnostic: the engine discards the `@` and does not report errors caused by the gap it leaves, such as a missing semicolon.
 
 ::: limite
-Analysis accepts up to 256 constructs nested at once: parentheses, unary operators, chained powers and compound statements inside others. The next one produces `analysisNestingLimitExceeded`. The limit protects the engine; no reasonable program gets close to it.
+Analysis accepts up to 256 constructs nested at once: parentheses, argument and index lists, unary operators, chained powers, each link of a chain of calls or member accesses and compound statements inside others. The next one produces `analysisNestingLimitExceeded`. The limit protects the engine; no reasonable program gets close to it.
 :::
 
 ::: resumen
