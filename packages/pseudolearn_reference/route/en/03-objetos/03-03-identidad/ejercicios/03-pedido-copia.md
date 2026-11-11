@@ -37,13 +37,13 @@ Clase Order
 FinClase
 
 Algoritmo Orders
-  Definir primero, segundo, extra Como Cadena;
-  Leer primero;
-  Leer segundo;
+  Definir firstItem, secondItem, extra Como Cadena;
+  Leer firstItem;
+  Leer secondItem;
   Leer extra;
   Definir order Como Order <- Nuevo Order();
-  order.Agregar(primero);
-  order.Agregar(segundo);
+  order.Agregar(firstItem);
+  order.Agregar(secondItem);
   Definir copyOrder Como Order <- order;
   copyOrder.Agregar(extra);
   Escribir "Original: ", order.Receipt();
@@ -77,13 +77,13 @@ Clase Order
 FinClase
 
 Algoritmo Orders
-  Definir primero, segundo, extra Como Cadena;
-  Leer primero;
-  Leer segundo;
+  Definir firstItem, secondItem, extra Como Cadena;
+  Leer firstItem;
+  Leer secondItem;
   Leer extra;
   Definir order Como Order <- Nuevo Order();
-  order.Agregar(primero);
-  order.Agregar(segundo);
+  order.Agregar(firstItem);
+  order.Agregar(secondItem);
   Definir copyOrder Como Order <- order.Duplicate();
   copyOrder.Agregar(extra);
   Escribir "Original: ", order.Receipt();

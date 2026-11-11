@@ -12,8 +12,8 @@ Read a day and a month of a year that is not a leap year, in that order. Show «
 :::
 
 ```programa rol=referencia
-SubProceso DaysInMonth(mes Como Entero) Como Entero
-  Segun mes Hacer
+SubProceso DaysInMonth(month Como Entero) Como Entero
+  Segun month Hacer
     2:
       Retornar 28;
     4, 6, 9, 11:
@@ -23,21 +23,21 @@ SubProceso DaysInMonth(mes Como Entero) Como Entero
   FinSegun
 FinSubProceso
 
-SubProceso ValidateDate(dia Como Entero, mes Como Entero) Como Resultado<Entero, Cadena>
-  Si mes < 1 O mes > 12 Entonces
+SubProceso ValidateDate(day Como Entero, month Como Entero) Como Resultado<Entero, Cadena>
+  Si month < 1 O month > 12 Entonces
     Retornar Error("month out of range");
   FinSi
-  Si dia < 1 O dia > DaysInMonth(mes) Entonces
+  Si day < 1 O day > DaysInMonth(month) Entonces
     Retornar Error("day out of range");
   FinSi
-  Retornar Exito(dia);
+  Retornar Exito(day);
 FinSubProceso
 
-Algoritmo Fecha
-  Definir dia, mes Como Entero;
-  Leer dia;
-  Leer mes;
-  Segun ValidateDate(dia, mes) Hacer
+Algoritmo DateCheck
+  Definir day, month Como Entero;
+  Leer day;
+  Leer month;
+  Segun ValidateDate(day, month) Hacer
     Exito(valor): Escribir "valid";
     Error(reason): Escribir reason;
   FinSegun

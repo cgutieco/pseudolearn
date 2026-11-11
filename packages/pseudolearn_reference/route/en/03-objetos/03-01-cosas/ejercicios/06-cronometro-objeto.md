@@ -35,13 +35,13 @@ Clase Stopwatch
 FinClase
 
 Algoritmo Race
-  Definir reloj Como Stopwatch <- Nuevo Stopwatch();
+  Definir watch Como Stopwatch <- Nuevo Stopwatch();
   Definir seconds Como Entero;
   Leer seconds;
-  reloj.Advance(seconds);
+  watch.Advance(seconds);
   Leer seconds;
-  reloj.Advance(seconds);
-  Escribir reloj.Reading();
+  watch.Advance(seconds);
+  Escribir watch.Reading();
 FinAlgoritmo
 ```
 

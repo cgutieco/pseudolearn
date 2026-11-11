@@ -15,7 +15,7 @@ An order starts pending or cancelled: read `pending`, or `canceled` followed by 
 Variante Order
   Alternativa Pending
   Alternativa OnItsWay(courier Como Cadena)
-  Alternativa Delivered(courier Como Cadena, hora Como Entero)
+  Alternativa Delivered(courier Como Cadena, hour Como Entero)
   Alternativa Canceled(reason Como Cadena)
 FinVariante
 
@@ -24,15 +24,15 @@ Funcion text <- Describe(order Como Order)
   Segun order Hacer
     Order.Pending: text <- "Pending";
     Order.OnItsWay(who): text <- "On its way with " + who;
-    Order.Delivered(who, hora): text <- "Delivered by " + who + " at " + ConvertirATexto(hora);
+    Order.Delivered(who, hour): text <- "Delivered by " + who + " at " + ConvertirATexto(hour);
     Order.Canceled(reason): text <- "Canceled: " + reason;
   FinSegun
 FinFuncion
 
-SubProceso Advance(order Como Order, courier Como Cadena, hora Como Entero) Como Resultado<Order, Cadena>
+SubProceso Advance(order Como Order, courier Como Cadena, hour Como Entero) Como Resultado<Order, Cadena>
   Segun order Hacer
     Order.Pending: Retornar Exito(Order.OnItsWay(courier));
-    Order.OnItsWay(who): Retornar Exito(Order.Delivered(who, hora));
+    Order.OnItsWay(who): Retornar Exito(Order.Delivered(who, hour));
     Order.Delivered(who, when): Retornar Error("already delivered by " + who + " at " + ConvertirATexto(when));
     Order.Canceled(reason): Retornar Error("it is canceled: " + reason);
   FinSegun

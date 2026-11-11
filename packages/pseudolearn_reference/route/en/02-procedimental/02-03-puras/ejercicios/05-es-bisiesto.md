@@ -16,15 +16,15 @@ The decision goes in a `Function IsLeapYear` that receives the year and returns 
 :::
 
 ```programa rol=referencia
-Funcion leap <- IsLeapYear(anio Como Entero)
+Funcion leap <- IsLeapYear(year Como Entero)
   Definir leap Como Logico;
-  leap <- (anio mod 4 = 0 Y anio mod 100 <> 0) O anio mod 400 = 0;
+  leap <- (year mod 4 = 0 Y year mod 100 <> 0) O year mod 400 = 0;
 FinFuncion
 
 Algoritmo Main
-  Definir anio Como Entero;
-  Leer anio;
-  Si IsLeapYear(anio) Entonces
+  Definir year Como Entero;
+  Leer year;
+  Si IsLeapYear(year) Entonces
     Escribir "Leap year";
   Sino
     Escribir "Not a leap year";
@@ -52,7 +52,7 @@ oculto | 2100 | Not a leap year
 :::
 
 ::: variante
-Write `DaysInYear(anio)`, which returns 366 or 365 using `IsLeapYear`.
+Write `DaysInYear(year)`, which returns 366 or 365 using `IsLeapYear`.
 :::
 
 ::: explicacion

@@ -30,20 +30,20 @@ Algoritmo Till
     units[i] <- 0;
   FinPara
   Definir total Como Entero <- 0;
-  Definir codigo Como Entero;
+  Definir code Como Entero;
   Definir amount Como Entero;
-  Leer codigo;
-  Mientras codigo <> 0 Hacer
+  Leer code;
+  Mientras code <> 0 Hacer
     Leer amount;
-    Si codigo < 1 O codigo > 5 Entonces
-      Escribir "Code ", codigo, " does not exist";
+    Si code < 1 O code > 5 Entonces
+      Escribir "Code ", code, " does not exist";
     Sino
-      Definir lineTotal Como Entero <- prices[codigo - 1] * amount;
-      Escribir names[codigo - 1], " x ", amount, " = ", lineTotal;
+      Definir lineTotal Como Entero <- prices[code - 1] * amount;
+      Escribir names[code - 1], " x ", amount, " = ", lineTotal;
       total <- total + lineTotal;
-      units[codigo - 1] <- units[codigo - 1] + amount;
+      units[code - 1] <- units[code - 1] + amount;
     FinSi
-    Leer codigo;
+    Leer code;
   FinMientras
   Escribir "Total: ", total;
   Escribir "With discount: ", total - total div 10;

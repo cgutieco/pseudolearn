@@ -139,7 +139,7 @@ Clase Machine
     Retornar Verdadero;
   FinMetodo
 
-  Metodo Estado() Como Cadena
+  Metodo Status() Como Cadena
     Retornar ConvertirATexto(Este.stock) + " cans, " + ConvertirATexto(Este.collected) + " pesos";
   FinMetodo
 FinClase
@@ -148,8 +148,8 @@ Algoritmo Kiosk
   Definir machineOne Como Machine <- Nuevo Machine(10);
   Definir machineTwo Como Machine <- Nuevo Machine(10);
   Escribir machineOne.Sell(), " ", machineOne.Sell(), " ", machineTwo.Sell();
-  Escribir "Machine 1: ", machineOne.Estado();
-  Escribir "Machine 2: ", machineTwo.Estado();
+  Escribir "Machine 1: ", machineOne.Status();
+  Escribir "Machine 2: ", machineTwo.Status();
 FinAlgoritmo
 ```
 

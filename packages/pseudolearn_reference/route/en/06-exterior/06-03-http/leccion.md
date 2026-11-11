@@ -86,9 +86,9 @@ Funcion pesos <- PriceInPesos(dollars Como Entero, rate Como Entero)
   pesos <- dollars * rate;
 FinFuncion
 
-Funcion message <- PriceMessage(cuerpo Como Cadena)
+Funcion message <- PriceMessage(body Como Cadena)
   Definir message Como Cadena <- "The response has no rate";
-  Segun AnalizarJson(cuerpo) Hacer
+  Segun AnalizarJson(body) Hacer
     Exito(data):
       Segun data.Campo("dollar") Hacer
         Algo(dollar):
@@ -108,8 +108,8 @@ SubProceso RequestRate() Como Resultado<Cadena, ErrorES>
   Si response.Estado() <> 200 Entonces
     Retornar Exito("Service unavailable (" + ATexto(response.Estado()) + ")");
   FinSi
-  Definir cuerpo Como Cadena <- Propagar response.CuerpoTexto();
-  Retornar Exito(PriceMessage(cuerpo));
+  Definir body Como Cadena <- Propagar response.CuerpoTexto();
+  Retornar Exito(PriceMessage(body));
 FinSubProceso
 
 Algoritmo ImportedFruit
@@ -136,9 +136,9 @@ Funcion pesos <- PriceInPesos(dollars Como Entero, rate Como Entero)
   pesos <- dollars * rate;
 FinFuncion
 
-Funcion message <- PriceMessage(cuerpo Como Cadena)
+Funcion message <- PriceMessage(body Como Cadena)
   Definir message Como Cadena <- "The response has no rate";
-  Segun AnalizarJson(cuerpo) Hacer
+  Segun AnalizarJson(body) Hacer
     Exito(data):
       Segun data.Campo("dollar") Hacer
         Algo(dollar):
@@ -158,8 +158,8 @@ SubProceso RequestRate() Como Resultado<Cadena, ErrorES>
   Si response.Estado() <> 200 Entonces
     Retornar Exito("Service unavailable (" + ATexto(response.Estado()) + ")");
   FinSi
-  Definir cuerpo Como Cadena <- Propagar response.CuerpoTexto();
-  Retornar Exito(PriceMessage(cuerpo));
+  Definir body Como Cadena <- Propagar response.CuerpoTexto();
+  Retornar Exito(PriceMessage(body));
 FinSubProceso
 
 Algoritmo ImportedFruit

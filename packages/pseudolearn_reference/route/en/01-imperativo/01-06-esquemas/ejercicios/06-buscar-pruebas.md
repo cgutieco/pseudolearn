@@ -12,7 +12,7 @@ A program reads 5 numbers and then a searched number, and shows the position of 
 :::
 
 ```programa rol=referencia
-Algoritmo Buscar
+Algoritmo Search
   Dimension v[5] Como Entero;
   Para i <- 0 Hasta 4 Hacer
     Leer v[i];
@@ -31,7 +31,7 @@ FinAlgoritmo
 ```
 
 ```programa rol=mutante id=ultima-aparicion
-Algoritmo Buscar
+Algoritmo Search
   Dimension v[5] Como Entero;
   Para i <- 0 Hasta 4 Hacer
     Leer v[i];
@@ -49,7 +49,7 @@ FinAlgoritmo
 ```
 
 ```programa rol=mutante id=desde-uno
-Algoritmo Buscar
+Algoritmo Search
   Dimension v[5] Como Entero;
   Para i <- 0 Hasta 4 Hacer
     Leer v[i];
@@ -68,7 +68,7 @@ FinAlgoritmo
 ```
 
 ```programa rol=mutante id=cero-si-falta
-Algoritmo Buscar
+Algoritmo Search
   Dimension v[5] Como Entero;
   Para i <- 0 Hasta 4 Hacer
     Leer v[i];

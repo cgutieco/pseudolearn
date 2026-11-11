@@ -17,19 +17,19 @@ The delivery is a variant with one shape per state, and each shape carries only 
 
 ```programa rol=inicial
 Registro Delivery
-  Definir estado, courier, reason Como Cadena;
-  Definir hora Como Entero;
+  Definir status, courier, reason Como Cadena;
+  Definir hour Como Entero;
 FinRegistro
 
 Algoritmo Deliveries
-  Definir estado Como Cadena;
-  Leer estado;
-  Definir delivery Como Delivery <- Delivery(estado, "", "", 0);
-  Si estado = "on its way" Entonces
+  Definir status Como Cadena;
+  Leer status;
+  Definir delivery Como Delivery <- Delivery(status, "", "", 0);
+  Si status = "on its way" Entonces
     Leer delivery.courier;
     Escribir "On its way with ", delivery.courier;
   Sino
-    Si estado = "canceled" Entonces
+    Si status = "canceled" Entonces
       Leer delivery.reason;
       Escribir "Canceled: ", delivery.reason;
     Sino
@@ -44,7 +44,7 @@ Variante Delivery
   Alternativa Pending
   Alternativa OnItsWay(courier Como Cadena)
   Alternativa Canceled(reason Como Cadena)
-  Alternativa Unknown(estado Como Cadena)
+  Alternativa Unknown(status Como Cadena)
 FinVariante
 
 Funcion text <- Describe(delivery Como Delivery)
@@ -53,22 +53,22 @@ Funcion text <- Describe(delivery Como Delivery)
     Delivery.Pending: text <- "Pending";
     Delivery.OnItsWay(who): text <- "On its way with " + who;
     Delivery.Canceled(reason): text <- "Canceled: " + reason;
-    Delivery.Unknown(estado): text <- "Unknown state: " + estado;
+    Delivery.Unknown(status): text <- "Unknown state: " + status;
   FinSegun
 FinFuncion
 
 Algoritmo Deliveries
-  Definir estado, detail Como Cadena;
-  Leer estado;
-  Definir delivery Como Delivery <- Delivery.Unknown(estado);
-  Si estado = "pending" Entonces
+  Definir status, detail Como Cadena;
+  Leer status;
+  Definir delivery Como Delivery <- Delivery.Unknown(status);
+  Si status = "pending" Entonces
     delivery <- Delivery.Pending;
   FinSi
-  Si estado = "on its way" Entonces
+  Si status = "on its way" Entonces
     Leer detail;
     delivery <- Delivery.OnItsWay(detail);
   FinSi
-  Si estado = "canceled" Entonces
+  Si status = "canceled" Entonces
     Leer detail;
     delivery <- Delivery.Canceled(detail);
   FinSi

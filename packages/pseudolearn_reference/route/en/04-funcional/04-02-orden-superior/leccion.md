@@ -97,24 +97,24 @@ FinFuncion
 
 Funcion mapped <- Map(v Como Vector<Entero>, f Como Funcion(Entero) Como Entero)
   Definir mapped Como Vector<Entero> <- Vector();
-  Para Cada elemento En v Hacer
-    mapped.Agregar(f(elemento));
+  Para Cada item En v Hacer
+    mapped.Agregar(f(item));
   FinPara
 FinFuncion
 
 Funcion chosen <- Filter(v Como Vector<Entero>, condition Como Funcion(Entero) Como Logico)
   Definir chosen Como Vector<Entero> <- Vector();
-  Para Cada elemento En v Hacer
-    Si condition(elemento) Entonces
-      chosen.Agregar(elemento);
+  Para Cada item En v Hacer
+    Si condition(item) Entonces
+      chosen.Agregar(item);
     FinSi
   FinPara
 FinFuncion
 
 Funcion accumulated <- Reduce(v Como Vector<Entero>, f Como Funcion(Entero, Entero) Como Entero, initial Como Entero)
   Definir accumulated Como Entero <- initial;
-  Para Cada elemento En v Hacer
-    accumulated <- f(accumulated, elemento);
+  Para Cada item En v Hacer
+    accumulated <- f(accumulated, item);
   FinPara
 FinFuncion
 

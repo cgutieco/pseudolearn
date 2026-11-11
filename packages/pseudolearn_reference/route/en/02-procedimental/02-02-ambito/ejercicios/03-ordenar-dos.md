@@ -25,11 +25,11 @@ SubProceso SortTwo(a Como Entero Por Referencia, b Como Entero Por Referencia)
 FinSubProceso
 
 Algoritmo Main
-  Definir primero, segundo Como Entero;
-  Leer primero;
-  Leer segundo;
-  SortTwo(primero, segundo);
-  Escribir primero, " ", segundo;
+  Definir firstNumber, secondNumber Como Entero;
+  Leer firstNumber;
+  Leer secondNumber;
+  SortTwo(firstNumber, secondNumber);
+  Escribir firstNumber, " ", secondNumber;
 FinAlgoritmo
 ```
 

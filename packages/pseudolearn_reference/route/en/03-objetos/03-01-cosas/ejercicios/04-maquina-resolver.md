@@ -30,7 +30,7 @@ Clase Machine
     Retornar Verdadero;
   FinMetodo
 
-  Metodo Estado() Como Cadena
+  Metodo Status() Como Cadena
     Retornar ConvertirATexto(Este.stock) + " cans, " + ConvertirATexto(Este.collected) + " pesos";
   FinMetodo
 FinClase
@@ -52,8 +52,8 @@ Algoritmo Kiosk
     FinSi
     Leer number;
   FinMientras
-  Escribir "Machine 1: ", machineOne.Estado();
-  Escribir "Machine 2: ", machineTwo.Estado();
+  Escribir "Machine 1: ", machineOne.Status();
+  Escribir "Machine 2: ", machineTwo.Status();
 FinAlgoritmo
 ```
 

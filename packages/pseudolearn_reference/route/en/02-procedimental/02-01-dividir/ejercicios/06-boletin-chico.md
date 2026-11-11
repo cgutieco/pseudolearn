@@ -16,7 +16,7 @@ SubProceso Average(a Como Entero, b Como Entero) Como Real
   Retornar (a + b) / 2;
 FinSubProceso
 
-SubProceso Estado(average Como Real) Como Cadena
+SubProceso Status(average Como Real) Como Cadena
   Si average >= 6 Entonces
     Retornar "passed";
   FinSi
@@ -33,7 +33,7 @@ Algoritmo ReportCard
     Leer m1;
     Leer m2;
     Definir avg Como Real <- Average(m1, m2);
-    Escribir name, ": ", avg, " ", Estado(avg);
+    Escribir name, ": ", avg, " ", Status(avg);
     Si avg > bestAverage Entonces
       bestAverage <- avg;
       bestName <- name;

@@ -49,14 +49,14 @@ Clase OfferProduct Hereda De Product
 FinClase
 
 Algoritmo Kiosk
-  Definir tipo, price Como Entero;
-  Leer tipo;
+  Definir yogurtKind, price Como Entero;
+  Leer yogurtKind;
   Leer price;
   Definir product Como Product <- Nuevo Product(price);
-  Si tipo = 2 Entonces
+  Si yogurtKind = 2 Entonces
     product <- Nuevo ExpiringProduct(price);
   FinSi
-  Si tipo = 3 Entonces
+  Si yogurtKind = 3 Entonces
     product <- Nuevo OfferProduct(price);
   FinSi
   Escribir product.FinalPrice();
@@ -110,14 +110,14 @@ Clase Product
 FinClase
 
 Algoritmo Kiosk
-  Definir tipo, price Como Entero;
-  Leer tipo;
+  Definir yogurtKind, price Como Entero;
+  Leer yogurtKind;
   Leer price;
   Definir product Como Product <- Nuevo Product("Product", price);
-  Si tipo = 3 O tipo = 4 Entonces
+  Si yogurtKind = 3 O yogurtKind = 4 Entonces
     product.SetOffer(Nuevo Offer(25));
   FinSi
-  Si tipo = 2 O tipo = 4 Entonces
+  Si yogurtKind = 2 O yogurtKind = 4 Entonces
     product.SetExpiry(Nuevo Expiry(1));
   FinSi
   Escribir product.FinalPrice();

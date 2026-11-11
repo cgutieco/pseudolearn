@@ -12,7 +12,7 @@ Without running it, write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion
-Algoritmo Claves
+Algoritmo CountKeys
   Segun AnalizarJson('{"juice": 10, "water": 12}') Hacer
     Exito(inventory): Escribir inventory.Longitud();
     Error(report): Escribir report.Codigo;

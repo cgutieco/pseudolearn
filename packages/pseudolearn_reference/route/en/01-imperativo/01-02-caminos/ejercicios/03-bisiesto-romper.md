@@ -13,9 +13,9 @@ This program gets 2024 and 2023 right. Find a year it gets wrong.
 
 ```programa rol=defectuoso
 Algoritmo LeapYear
-  Definir anio Como Entero;
-  Leer anio;
-  Si anio mod 4 = 0 Entonces
+  Definir year Como Entero;
+  Leer year;
+  Si year mod 4 = 0 Entonces
     Escribir "Leap year";
   Sino
     Escribir "Not a leap year";
@@ -25,9 +25,9 @@ FinAlgoritmo
 
 ```programa rol=referencia
 Algoritmo LeapYear
-  Definir anio Como Entero;
-  Leer anio;
-  Si (anio mod 4 = 0 Y anio mod 100 <> 0) O anio mod 400 = 0 Entonces
+  Definir year Como Entero;
+  Leer year;
+  Si (year mod 4 = 0 Y year mod 100 <> 0) O year mod 400 = 0 Entonces
     Escribir "Leap year";
   Sino
     Escribir "Not a leap year";

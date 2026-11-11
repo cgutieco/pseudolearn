@@ -31,9 +31,9 @@ Funcion discounted <- WithDiscount(total Como Entero)
   discounted <- total - total div 10;
 FinFuncion
 
-Funcion isValid <- IsValidCode(codigo Como Entero)
+Funcion isValid <- IsValidCode(code Como Entero)
   Definir isValid Como Logico;
-  isValid <- codigo >= 1 Y codigo <= 5;
+  isValid <- code >= 1 Y code <= 5;
 FinFuncion
 
 SubProceso Catalog() Como Vector<Product>
@@ -49,28 +49,28 @@ FinSubProceso
 Algoritmo Kiosk
   Definir products Como Vector<Product> <- Catalog();
   Definir total Como Entero <- 0;
-  Definir codigo, quantity Como Entero;
-  Leer codigo;
-  Mientras codigo <> 0 Hacer
+  Definir code, quantity Como Entero;
+  Leer code;
+  Mientras code <> 0 Hacer
     Leer quantity;
-    Si NO IsValidCode(codigo) Entonces
-      Escribir "Code ", codigo, " does not exist";
+    Si NO IsValidCode(code) Entonces
+      Escribir "Code ", code, " does not exist";
     Sino
       Si quantity < 1 Entonces
         Escribir "Quantity ", quantity, " is not valid";
       Sino
-        Definir product Como Product <- products[codigo - 1];
+        Definir product Como Product <- products[code - 1];
         Si quantity > product.stock Entonces
           Escribir product.name, " x ", quantity, " rejected: stock ", product.stock;
         Sino
           product.stock <- product.stock - quantity;
-          products[codigo - 1] <- product;
+          products[code - 1] <- product;
           Escribir product.name, " x ", quantity, " = ", LineAmount(product.price, quantity);
           total <- total + LineAmount(product.price, quantity);
         FinSi
       FinSi
     FinSi
-    Leer codigo;
+    Leer code;
   FinMientras
   Escribir "Total: ", total;
   Escribir "With discount: ", WithDiscount(total);

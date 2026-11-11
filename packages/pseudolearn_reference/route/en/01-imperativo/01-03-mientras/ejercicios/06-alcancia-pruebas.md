@@ -15,15 +15,15 @@ Do not write code. Write four prices with the right answer for each one, so that
 Algoritmo MoneyBox
   Definir price Como Entero;
   Leer price;
-  Definir dia Como Entero <- 1;
+  Definir day Como Entero <- 1;
   Definir savedToday Como Entero <- 2;
   Definir savings Como Entero <- 2;
   Mientras savings < price Hacer
-    dia <- dia + 1;
+    day <- day + 1;
     savedToday <- savedToday + 1;
     savings <- savings + savedToday;
   FinMientras
-  Escribir "Day ", dia, " with ", savings, " coins";
+  Escribir "Day ", day, " with ", savings, " coins";
 FinAlgoritmo
 ```
 
@@ -31,15 +31,15 @@ FinAlgoritmo
 Algoritmo MoneyBox
   Definir price Como Entero;
   Leer price;
-  Definir dia Como Entero <- 1;
+  Definir day Como Entero <- 1;
   Definir savedToday Como Entero <- 2;
   Definir savings Como Entero <- 2;
   Mientras savings <= price Hacer
-    dia <- dia + 1;
+    day <- day + 1;
     savedToday <- savedToday + 1;
     savings <- savings + savedToday;
   FinMientras
-  Escribir "Day ", dia, " with ", savings, " coins";
+  Escribir "Day ", day, " with ", savings, " coins";
 FinAlgoritmo
 ```
 
@@ -47,15 +47,15 @@ FinAlgoritmo
 Algoritmo MoneyBox
   Definir price Como Entero;
   Leer price;
-  Definir dia Como Entero <- 1;
+  Definir day Como Entero <- 1;
   Definir savedToday Como Entero <- 2;
   Definir savings Como Entero <- 0;
   Mientras savings < price Hacer
-    dia <- dia + 1;
+    day <- day + 1;
     savedToday <- savedToday + 1;
     savings <- savings + savedToday;
   FinMientras
-  Escribir "Day ", dia, " with ", savings, " coins";
+  Escribir "Day ", day, " with ", savings, " coins";
 FinAlgoritmo
 ```
 
@@ -63,15 +63,15 @@ FinAlgoritmo
 Algoritmo MoneyBox
   Definir price Como Entero;
   Leer price;
-  Definir dia Como Entero <- 1;
+  Definir day Como Entero <- 1;
   Definir savedToday Como Entero <- 2;
   Definir savings Como Entero <- 2;
   Mientras savings < price Hacer
-    dia <- dia + 1;
+    day <- day + 1;
     savings <- savings + savedToday;
     savedToday <- savedToday + 1;
   FinMientras
-  Escribir "Day ", dia, " with ", savings, " coins";
+  Escribir "Day ", day, " with ", savings, " coins";
 FinAlgoritmo
 ```
 
@@ -79,15 +79,15 @@ FinAlgoritmo
 Algoritmo MoneyBox
   Definir price Como Entero;
   Leer price;
-  Definir dia Como Entero <- 0;
+  Definir day Como Entero <- 0;
   Definir savedToday Como Entero <- 2;
   Definir savings Como Entero <- 2;
   Mientras savings < price Hacer
-    dia <- dia + 1;
+    day <- day + 1;
     savedToday <- savedToday + 1;
     savings <- savings + savedToday;
   FinMientras
-  Escribir "Day ", dia, " with ", savings, " coins";
+  Escribir "Day ", day, " with ", savings, " coins";
 FinAlgoritmo
 ```
 

@@ -62,15 +62,15 @@ Clase Inventory
     Este.stock.Agregar(6);
   FinMetodo
 
-  Metodo Remaining(codigo Como Entero) Como Entero
-    Retornar Este.stock[codigo - 1];
+  Metodo Remaining(code Como Entero) Como Entero
+    Retornar Este.stock[code - 1];
   FinMetodo
 
-  Metodo Withdraw(codigo Como Entero, quantity Como Entero) Como Logico
-    Si quantity > Este.stock[codigo - 1] Entonces
+  Metodo Withdraw(code Como Entero, quantity Como Entero) Como Logico
+    Si quantity > Este.stock[code - 1] Entonces
       Retornar Falso;
     FinSi
-    Este.stock[codigo - 1] <- Este.stock[codigo - 1] - quantity;
+    Este.stock[code - 1] <- Este.stock[code - 1] - quantity;
     Retornar Verdadero;
   FinMetodo
 FinClase
@@ -109,26 +109,26 @@ Algoritmo Kiosk
   Definir products Como Vector<Product> <- Catalog();
   Definir inventory Como Inventory <- Nuevo Inventory();
   Definir till Como Till <- Nuevo Till();
-  Definir codigo, quantity Como Entero;
-  Leer codigo;
-  Mientras codigo <> 0 Hacer
+  Definir code, quantity Como Entero;
+  Leer code;
+  Mientras code <> 0 Hacer
     Leer quantity;
-    Si codigo < 1 O codigo > 5 Entonces
-      Escribir "Code ", codigo, " does not exist";
+    Si code < 1 O code > 5 Entonces
+      Escribir "Code ", code, " does not exist";
     Sino
-      Definir product Como Product <- products[codigo - 1];
+      Definir product Como Product <- products[code - 1];
       Si quantity < 1 Entonces
         Escribir "Quantity ", quantity, " is not valid";
       Sino
-        Si inventory.Withdraw(codigo, quantity) Entonces
+        Si inventory.Withdraw(code, quantity) Entonces
           till.AddUp(product.Amount(quantity));
           Escribir product.name, " x ", quantity, " = ", product.Amount(quantity);
         Sino
-          Escribir product.name, " x ", quantity, " rejected: stock ", inventory.Remaining(codigo);
+          Escribir product.name, " x ", quantity, " rejected: stock ", inventory.Remaining(code);
         FinSi
       FinSi
     FinSi
-    Leer codigo;
+    Leer code;
   FinMientras
   Definir payment Como Cadena;
   Leer payment;

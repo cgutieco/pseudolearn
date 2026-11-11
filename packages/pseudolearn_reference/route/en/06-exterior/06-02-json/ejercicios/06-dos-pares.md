@@ -22,15 +22,15 @@ Funcion pair <- JsonPair(name Como Cadena, stock Como Entero)
 FinFuncion
 
 Algoritmo TwoPairs
-  Definir primero Como Cadena;
+  Definir leftName Como Cadena;
   Definir firstStock Como Entero;
-  Definir segundo Como Cadena;
+  Definir rightName Como Cadena;
   Definir secondStock Como Entero;
-  Leer primero;
+  Leer leftName;
   Leer firstStock;
-  Leer segundo;
+  Leer rightName;
   Leer secondStock;
-  Escribir "{", JsonPair(primero, firstStock), ", ", JsonPair(segundo, secondStock), "}";
+  Escribir "{", JsonPair(leftName, firstStock), ", ", JsonPair(rightName, secondStock), "}";
 FinAlgoritmo
 ```
 

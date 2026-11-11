@@ -97,7 +97,7 @@ SubProceso Average(a Como Entero, b Como Entero, c Como Entero) Como Real
   Retornar (a + b + c) / 3;
 FinSubProceso
 
-SubProceso Estado(average Como Real) Como Cadena
+SubProceso Status(average Como Real) Como Cadena
   Si average >= 6 Entonces
     Retornar "passed";
   FinSi
@@ -115,7 +115,7 @@ Algoritmo ReportCard
     Leer m2;
     Leer m3;
     Definir avg Como Real <- Average(m1, m2, m3);
-    Escribir name, ": ", avg, " ", Estado(avg);
+    Escribir name, ": ", avg, " ", Status(avg);
     Si avg > bestAverage Entonces
       bestAverage <- avg;
       bestName <- name;
@@ -163,7 +163,7 @@ SubProceso Average(a Como Entero, b Como Entero, c Como Entero) Como Real
   Retornar (a + b + c) / 3;
 FinSubProceso
 
-SubProceso Estado(average Como Real) Como Cadena
+SubProceso Status(average Como Real) Como Cadena
   Si average >= 6 Entonces
     Retornar "passed";
   FinSi
@@ -172,8 +172,8 @@ FinSubProceso
 
 Algoritmo Tests
   Escribir Average(6, 6, 6);
-  Escribir Estado(6.0);
-  Escribir Estado(5.9);
+  Escribir Status(6.0);
+  Escribir Status(5.9);
 FinAlgoritmo
 ```
 
@@ -183,13 +183,13 @@ passed
 failed
 ```
 
-`Estado(6.0)` and `Estado(5.9)` are both sides of the edge. Then the whole report card with the data from the task gives the same as your worked example.
+`Status(6.0)` and `Status(5.9)` are both sides of the edge. Then the whole report card with the data from the task gives the same as your worked example.
 
 ## Improve {#mejorar fase=5}
 
 In one sentence: «The program computes each pupil's average and status with two subprograms and remembers the best».
 
-The school raises the pass mark to 7. A single line changes, inside `Estado`, and the rest of the program does not notice.
+The school raises the pass mark to 7. A single line changes, inside `Status`, and the rest of the program does not notice.
 
 | | A single list of orders | With subprograms |
 |---|---|---|

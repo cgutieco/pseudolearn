@@ -14,18 +14,18 @@ Read 4 contacts, each with name, phone and birthday month, and then a name. Show
 ```programa rol=referencia
 Registro Contact
   Definir name, phone Como Cadena;
-  Definir mes Como Entero;
+  Definir month Como Entero;
 FinRegistro
 
-Algoritmo Buscar
+Algoritmo PhoneSearch
   Definir contacts Como Vector<Contact> <- Vector();
   Definir name, phone Como Cadena;
-  Definir mes Como Entero;
+  Definir month Como Entero;
   Para i <- 1 Hasta 4 Hacer
     Leer name;
     Leer phone;
-    Leer mes;
-    contacts.Agregar(Contact(name, phone, mes));
+    Leer month;
+    contacts.Agregar(Contact(name, phone, month));
   FinPara
   Leer name;
   Definir found Como Cadena <- "Not found";

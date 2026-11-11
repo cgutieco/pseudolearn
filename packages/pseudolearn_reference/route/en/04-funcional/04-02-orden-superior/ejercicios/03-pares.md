@@ -23,9 +23,9 @@ FinFuncion
 
 Funcion chosen <- Filter(v Como Vector<Entero>, condition Como Funcion(Entero) Como Logico)
   Definir chosen Como Vector<Entero> <- Vector();
-  Para Cada elemento En v Hacer
-    Si condition(elemento) Entonces
-      chosen.Agregar(elemento);
+  Para Cada item En v Hacer
+    Si condition(item) Entonces
+      chosen.Agregar(item);
     FinSi
   FinPara
 FinFuncion

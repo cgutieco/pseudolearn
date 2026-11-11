@@ -13,15 +13,15 @@ The lines of a program that decides whether a year is a leap year are mixed up. 
 
 ```programa rol=referencia
 Algoritmo LeapYear
-  Definir anio Como Entero;
-  Leer anio;
-  Si anio mod 400 = 0 Entonces
+  Definir year Como Entero;
+  Leer year;
+  Si year mod 400 = 0 Entonces
     Escribir "Leap year";
   Sino
-    Si anio mod 100 = 0 Entonces
+    Si year mod 100 = 0 Entonces
       Escribir "Not a leap year";
     Sino
-      Si anio mod 4 = 0 Entonces
+      Si year mod 4 = 0 Entonces
         Escribir "Leap year";
       Sino
         Escribir "Not a leap year";

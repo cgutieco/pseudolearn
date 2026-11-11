@@ -15,7 +15,7 @@ Without running it, write exactly what this program shows.
 Variante Order
   Alternativa Pending
   Alternativa OnItsWay(courier Como Cadena)
-  Alternativa Delivered(courier Como Cadena, hora Como Entero)
+  Alternativa Delivered(courier Como Cadena, hour Como Entero)
   Alternativa Canceled(reason Como Cadena)
 FinVariante
 
@@ -24,7 +24,7 @@ Funcion text <- Describe(order Como Order)
   Segun order Hacer
     Order.Pending: text <- "Pending";
     Order.OnItsWay(who): text <- "On its way with " + who;
-    Order.Delivered(who, hora): text <- "Delivered by " + who + " at " + ConvertirATexto(hora);
+    Order.Delivered(who, hour): text <- "Delivered by " + who + " at " + ConvertirATexto(hour);
     Order.Canceled(reason): text <- "Canceled: " + reason;
   FinSegun
 FinFuncion

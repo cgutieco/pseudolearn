@@ -76,9 +76,9 @@ You can also [[def:anidar|nest]]: put a decision inside a branch of another. And
 
 ```programa id=menu titulo="The kiosk menu" ejecutar
 Algoritmo Menu
-  Definir codigo Como Entero;
-  Leer codigo;
-  Segun codigo Hacer
+  Definir code Como Entero;
+  Leer code;
+  Segun code Hacer
     1:
       Escribir "Juice 3";
     2:
@@ -116,15 +116,15 @@ Two solutions. The first nests three decisions in the order of the table: 400, 1
 
 ```programa id=bisiesto-anidado titulo="Leap year, with nested decisions" ejecutar
 Algoritmo LeapYear
-  Definir anio Como Entero;
-  Leer anio;
-  Si anio mod 400 = 0 Entonces
+  Definir year Como Entero;
+  Leer year;
+  Si year mod 400 = 0 Entonces
     Escribir "Leap year";
   Sino
-    Si anio mod 100 = 0 Entonces
+    Si year mod 100 = 0 Entonces
       Escribir "Not a leap year";
     Sino
-      Si anio mod 4 = 0 Entonces
+      Si year mod 4 = 0 Entonces
         Escribir "Leap year";
       Sino
         Escribir "Not a leap year";
@@ -146,9 +146,9 @@ The second states the rule in a single compound condition:
 
 ```programa id=bisiesto-compuesto titulo="Leap year, with a compound condition" ejecutar
 Algoritmo LeapYear
-  Definir anio Como Entero;
-  Leer anio;
-  Si (anio mod 4 = 0 Y anio mod 100 <> 0) O anio mod 400 = 0 Entonces
+  Definir year Como Entero;
+  Leer year;
+  Si (year mod 4 = 0 Y year mod 100 <> 0) O year mod 400 = 0 Entonces
     Escribir "Leap year";
   Sino
     Escribir "Not a leap year";
@@ -190,11 +190,11 @@ If you ask the age first, the 10-year-old pays 5 on a Thursday. The order «Thur
 
 ```programa id=cine-jueves titulo="The cinema with Thursdays" ejecutar
 Algoritmo Cinema
-  Definir dia Como Entero;
+  Definir day Como Entero;
   Definir age Como Entero;
-  Leer dia;
+  Leer day;
   Leer age;
-  Si dia = 4 Entonces
+  Si day = 4 Entonces
     Escribir "Pays 4";
   Sino
     Si age < 12 Entonces

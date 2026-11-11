@@ -17,12 +17,12 @@ The calculation uses three functions, `Map`, `Filter` and `Reduce`, that receive
 
 ```programa rol=referencia
 Registro Sale
-  Definir codigo, quantity Como Entero;
+  Definir code, quantity Como Entero;
 FinRegistro
 
-Funcion valor <- PriceOf(codigo Como Entero)
+Funcion valor <- PriceOf(code Como Entero)
   Definir valor Como Entero;
-  Segun codigo Hacer
+  Segun code Hacer
     1:
       valor <- 3;
     2:
@@ -36,9 +36,9 @@ Funcion valor <- PriceOf(codigo Como Entero)
   FinSegun
 FinFuncion
 
-Funcion name <- NameOf(codigo Como Entero)
+Funcion name <- NameOf(code Como Entero)
   Definir name Como Cadena;
-  Segun codigo Hacer
+  Segun code Hacer
     1:
       name <- "Juice";
     2:
@@ -54,7 +54,7 @@ FinFuncion
 
 Funcion amount <- Amount(sale Como Sale)
   Definir amount Como Entero;
-  amount <- PriceOf(sale.codigo) * sale.quantity;
+  amount <- PriceOf(sale.code) * sale.quantity;
 FinFuncion
 
 Funcion big <- OverFive(figure Como Entero)
@@ -95,9 +95,9 @@ Funcion accumulated <- Reduce(amounts Como Vector<Entero>, f Como Funcion(Entero
   FinPara
 FinFuncion
 
-Funcion counter <- UnitsOf(codigo Como Entero)
+Funcion counter <- UnitsOf(code Como Entero)
   Definir counter Como Funcion(Sale) Como Entero <- Funcion(sale Como Sale) Como Entero
-    Si sale.codigo = codigo Entonces
+    Si sale.code = code Entonces
       Retornar sale.quantity;
     FinSi
     Retornar 0;
@@ -107,23 +107,23 @@ FinFuncion
 Funcion star <- Star(sales Como Vector<Sale>)
   Definir star Como Cadena <- "None";
   Definir best Como Entero <- 0;
-  Para codigo <- 1 Hasta 5 Hacer
-    Definir units Como Entero <- Reduce(Map(sales, UnitsOf(codigo)), Sum, 0);
+  Para code <- 1 Hasta 5 Hacer
+    Definir units Como Entero <- Reduce(Map(sales, UnitsOf(code)), Sum, 0);
     Si units > best Entonces
       best <- units;
-      star <- NameOf(codigo);
+      star <- NameOf(code);
     FinSi
   FinPara
 FinFuncion
 
 Algoritmo Report
   Definir sales Como Vector<Sale> <- Vector();
-  Definir codigo, quantity Como Entero;
-  Leer codigo;
-  Mientras codigo <> 0 Hacer
+  Definir code, quantity Como Entero;
+  Leer code;
+  Mientras code <> 0 Hacer
     Leer quantity;
-    sales.Agregar(Sale(codigo, quantity));
-    Leer codigo;
+    sales.Agregar(Sale(code, quantity));
+    Leer code;
   FinMientras
   Definir amounts Como Vector<Entero> <- Map(sales, Amount);
   Definir total Como Entero <- Reduce(amounts, Sum, 0);

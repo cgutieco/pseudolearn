@@ -12,10 +12,10 @@ This program validates a month number: it shows «valid» or «invalid». It get
 :::
 
 ```programa rol=defectuoso
-Algoritmo Mes
-  Definir mes Como Entero;
-  Leer mes;
-  Si mes >= 0 Y mes <= 12 Entonces
+Algoritmo MonthCheck
+  Definir month Como Entero;
+  Leer month;
+  Si month >= 0 Y month <= 12 Entonces
     Escribir "valid";
   Sino
     Escribir "invalid";
@@ -24,10 +24,10 @@ FinAlgoritmo
 ```
 
 ```programa rol=referencia
-Algoritmo Mes
-  Definir mes Como Entero;
-  Leer mes;
-  Si mes >= 1 Y mes <= 12 Entonces
+Algoritmo MonthCheck
+  Definir month Como Entero;
+  Leer month;
+  Si month >= 1 Y month <= 12 Entonces
     Escribir "valid";
   Sino
     Escribir "invalid";

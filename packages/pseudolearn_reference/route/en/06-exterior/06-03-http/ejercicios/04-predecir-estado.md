@@ -12,9 +12,9 @@ Without running it, write exactly what this program shows.
 :::
 
 ```programa rol=objeto id=prediccion
-Funcion word <- HowItWent(codigo Como Entero)
+Funcion word <- HowItWent(code Como Entero)
   Definir word Como Cadena;
-  Si codigo >= 200 Y codigo <= 299 Entonces
+  Si code >= 200 Y code <= 299 Entonces
     word <- "fine";
   Sino
     word <- "problem";

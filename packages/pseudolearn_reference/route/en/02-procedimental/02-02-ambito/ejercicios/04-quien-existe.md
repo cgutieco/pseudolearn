@@ -15,8 +15,8 @@ SubProceso Double(base Como Entero) Como Entero
   Retornar base * 2;
 FinSubProceso
 
-SubProceso Triple(valor Como Entero) Como Entero
-  Definir computed Como Entero <- valor * 3;
+SubProceso Triple(number Como Entero) Como Entero
+  Definir computed Como Entero <- number * 3;
   Retornar computed;
 FinSubProceso
 
@@ -34,11 +34,11 @@ FinAlgoritmo
 
 ```elementos
 - `base` | Exists on that line
-- `valor` | Does not exist on that line
+- `number` | Does not exist on that line
 - `computed` | Does not exist on that line
 - `total` | Does not exist on that line
 ```
 
 ::: explicacion
-Inside `Double` only its parameter `base` exists. `valor` and `computed` belong to `Triple`, and `total` belongs to the main algorithm: they cannot be seen from `Double`.
+Inside `Double` only its parameter `base` exists. `number` and `computed` belong to `Triple`, and `total` belongs to the main algorithm: they cannot be seen from `Double`.
 :::

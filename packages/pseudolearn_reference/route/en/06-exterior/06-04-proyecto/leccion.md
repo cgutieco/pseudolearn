@@ -63,9 +63,9 @@ Funcion discounted <- WithDiscount(total Como Entero)
   discounted <- total - total div 10;
 FinFuncion
 
-Funcion valid <- ValidCode(codigo Como Entero)
+Funcion valid <- ValidCode(code Como Entero)
   Definir valid Como Logico;
-  valid <- codigo >= 1 Y codigo <= 5;
+  valid <- code >= 1 Y code <= 5;
 FinFuncion
 
 Funcion text <- InventoryJson(products Como Vector<Product>)
@@ -139,28 +139,28 @@ Algoritmo Kiosk
     Error(report): Escribir "No saved inventory (", report.Codigo, "): initial stock";
   FinSegun
   Definir total Como Entero <- 0;
-  Definir codigo, quantity Como Entero;
-  Leer codigo;
-  Mientras codigo <> 0 Hacer
+  Definir code, quantity Como Entero;
+  Leer code;
+  Mientras code <> 0 Hacer
     Leer quantity;
-    Si NO ValidCode(codigo) Entonces
-      Escribir "Code ", codigo, " does not exist";
+    Si NO ValidCode(code) Entonces
+      Escribir "Code ", code, " does not exist";
     Sino
       Si quantity < 1 Entonces
         Escribir "Quantity ", quantity, " is not valid";
       Sino
-        Definir product Como Product <- products[codigo - 1];
+        Definir product Como Product <- products[code - 1];
         Si quantity > product.stock Entonces
           Escribir product.name, " x ", quantity, " rejected: remaining ", product.stock;
         Sino
           product.stock <- product.stock - quantity;
-          products[codigo - 1] <- product;
+          products[code - 1] <- product;
           Escribir product.name, " x ", quantity, " = ", Amount(product.price, quantity);
           total <- total + Amount(product.price, quantity);
         FinSi
       FinSi
     FinSi
-    Leer codigo;
+    Leer code;
   FinMientras
   Escribir "Total: ", total;
   Escribir "With discount: ", WithDiscount(total);
@@ -212,9 +212,9 @@ Funcion discounted <- WithDiscount(total Como Entero)
   discounted <- total - total div 10;
 FinFuncion
 
-Funcion valid <- ValidCode(codigo Como Entero)
+Funcion valid <- ValidCode(code Como Entero)
   Definir valid Como Logico;
-  valid <- codigo >= 1 Y codigo <= 5;
+  valid <- code >= 1 Y code <= 5;
 FinFuncion
 
 Funcion text <- InventoryJson(products Como Vector<Product>)
@@ -288,28 +288,28 @@ Algoritmo Kiosk
     Error(report): Escribir "No saved inventory (", report.Codigo, "): initial stock";
   FinSegun
   Definir total Como Entero <- 0;
-  Definir codigo, quantity Como Entero;
-  Leer codigo;
-  Mientras codigo <> 0 Hacer
+  Definir code, quantity Como Entero;
+  Leer code;
+  Mientras code <> 0 Hacer
     Leer quantity;
-    Si NO ValidCode(codigo) Entonces
-      Escribir "Code ", codigo, " does not exist";
+    Si NO ValidCode(code) Entonces
+      Escribir "Code ", code, " does not exist";
     Sino
       Si quantity < 1 Entonces
         Escribir "Quantity ", quantity, " is not valid";
       Sino
-        Definir product Como Product <- products[codigo - 1];
+        Definir product Como Product <- products[code - 1];
         Si quantity > product.stock Entonces
           Escribir product.name, " x ", quantity, " rejected: remaining ", product.stock;
         Sino
           product.stock <- product.stock - quantity;
-          products[codigo - 1] <- product;
+          products[code - 1] <- product;
           Escribir product.name, " x ", quantity, " = ", Amount(product.price, quantity);
           total <- total + Amount(product.price, quantity);
         FinSi
       FinSi
     FinSi
-    Leer codigo;
+    Leer code;
   FinMientras
   Escribir "Total: ", total;
   Escribir "With discount: ", WithDiscount(total);

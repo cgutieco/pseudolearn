@@ -115,15 +115,15 @@ Day 1 is already done before repeating starts: Lucía saved 2 coins. The loop ta
 
 ```programa id=alcancia titulo="Lucía's money box" ejecutar
 Algoritmo MoneyBox
-  Definir dia Como Entero <- 1;
+  Definir day Como Entero <- 1;
   Definir savedToday Como Entero <- 2;
   Definir savings Como Entero <- 2;
   Mientras savings < 50 Hacer
-    dia <- dia + 1;
+    day <- day + 1;
     savedToday <- savedToday + 1;
     savings <- savings + savedToday;
   FinMientras
-  Escribir "Lucía buys the ball on day ", dia, " with ", savings, " coins";
+  Escribir "Lucía buys the ball on day ", day, " with ", savings, " coins";
 FinAlgoritmo
 ```
 
@@ -137,7 +137,7 @@ The three lines inside the loop are the three steps of the plan, in the same ord
 
 The program says day 9 with 54 coins, the same as your worked example. To be sure it was not by chance, follow the loop with the pass table:
 
-| Pass | Go on? | dia | savedToday | savings |
+| Pass | Go on? | day | savedToday | savings |
 |---|---|---|---|---|
 | before | — | 1 | 2 | 2 |
 | 1 | yes | 2 | 3 | 5 |
@@ -155,15 +155,15 @@ To test the other examples without touching the program, the price is read at th
 Algoritmo MoneyBox
   Definir price Como Entero;
   Leer price;
-  Definir dia Como Entero <- 1;
+  Definir day Como Entero <- 1;
   Definir savedToday Como Entero <- 2;
   Definir savings Como Entero <- 2;
   Mientras savings < price Hacer
-    dia <- dia + 1;
+    day <- day + 1;
     savedToday <- savedToday + 1;
     savings <- savings + savedToday;
   FinMientras
-  Escribir "Day ", dia, " with ", savings, " coins";
+  Escribir "Day ", day, " with ", savings, " coins";
 FinAlgoritmo
 ```
 

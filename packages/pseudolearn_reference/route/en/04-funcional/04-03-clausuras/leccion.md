@@ -87,8 +87,8 @@ FinFuncion
 
 Funcion mapped <- Map(v Como Vector<Entero>, f Como Funcion(Entero) Como Entero)
   Definir mapped Como Vector<Entero> <- Vector();
-  Para Cada elemento En v Hacer
-    mapped.Agregar(f(elemento));
+  Para Cada item En v Hacer
+    mapped.Agregar(f(item));
   FinPara
 FinFuncion
 

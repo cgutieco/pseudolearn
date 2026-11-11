@@ -85,14 +85,14 @@ To [[def:validar|validate]] is to check an input before using it. To turn a text
 
 ```programa id=inscripcion titulo="The sign-up" ejecutar
 Funcion isValid <- IsNumber(text Como Cadena)
-  Definir desde Como Entero <- 0;
+  Definir startIndex Como Entero <- 0;
   Si Longitud(text) > 0 Entonces
     Si CaracterEn(text, 0) = '-' Entonces
-      desde <- 1;
+      startIndex <- 1;
     FinSi
   FinSi
-  Definir isValid Como Logico <- Longitud(text) > desde;
-  Para i <- desde Hasta Longitud(text) - 1 Hacer
+  Definir isValid Como Logico <- Longitud(text) > startIndex;
+  Para i <- startIndex Hasta Longitud(text) - 1 Hacer
     Si NO Contiene("0123456789", ATexto(CaracterEn(text, i))) Entonces
       isValid <- Falso;
     FinSi

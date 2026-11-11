@@ -86,22 +86,22 @@ A [[def:diccionario|dictionary]] keeps values that are found by a [[def:clave|ke
 ```programa id=agenda titulo="The contact list" ejecutar
 Registro Contact
   Definir name, phone Como Cadena;
-  Definir mes Como Entero;
+  Definir month Como Entero;
 FinRegistro
 
 Algoritmo Contacts
   Definir contacts Como Vector<Contact> <- Vector();
   Definir byMonth Como Diccionario<Entero, Entero> <- Diccionario();
   Definir name, phone Como Cadena;
-  Definir mes Como Entero;
+  Definir month Como Entero;
   Para i <- 1 Hasta 4 Hacer
     Leer name;
     Leer phone;
-    Leer mes;
-    contacts.Agregar(Contact(name, phone, mes));
-    Segun byMonth.Buscar(mes) Hacer
-      Algo(count): byMonth[mes] <- count + 1;
-      Nada: byMonth[mes] <- 1;
+    Leer month;
+    contacts.Agregar(Contact(name, phone, month));
+    Segun byMonth.Buscar(month) Hacer
+      Algo(count): byMonth[month] <- count + 1;
+      Nada: byMonth[month] <- 1;
     FinSegun
   FinPara
   Leer name;

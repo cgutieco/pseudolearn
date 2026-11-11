@@ -57,16 +57,16 @@ SubProceso AreaOf<T: Shape>(shape Como T) Como Real
 FinSubProceso
 
 Algoritmo Shapes
-  Definir tipo Como Cadena;
+  Definir shapeKind Como Cadena;
   Definir sizeOne, sizeTwo Como Real;
-  Leer tipo;
-  Si tipo = "square" Entonces
+  Leer shapeKind;
+  Si shapeKind = "square" Entonces
     Leer sizeOne;
     Escribir AreaOf(Nuevo Square(sizeOne));
   Sino
     Leer sizeOne;
     Leer sizeTwo;
-    Si tipo = "rectangle" Entonces
+    Si shapeKind = "rectangle" Entonces
       Escribir AreaOf(Nuevo Rectangle(sizeOne, sizeTwo));
     Sino
       Escribir AreaOf(Nuevo Triangle(sizeOne, sizeTwo));

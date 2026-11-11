@@ -16,9 +16,9 @@ The price, the line amount and the discount are functions; the main algorithm on
 :::
 
 ```programa rol=referencia
-Funcion valor <- PriceOf(codigo Como Entero)
+Funcion valor <- PriceOf(code Como Entero)
   Definir valor Como Entero;
-  Segun codigo Hacer
+  Segun code Hacer
     1:
       valor <- 3;
     2:

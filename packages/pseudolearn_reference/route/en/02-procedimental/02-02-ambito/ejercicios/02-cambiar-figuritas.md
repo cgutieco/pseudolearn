@@ -19,11 +19,11 @@ SubProceso Swap(a Como Entero, b Como Entero)
 FinSubProceso
 
 Algoritmo Main
-  Definir primero, segundo Como Entero;
-  Leer primero;
-  Leer segundo;
-  Swap(primero, segundo);
-  Escribir primero, " ", segundo;
+  Definir firstNumber, secondNumber Como Entero;
+  Leer firstNumber;
+  Leer secondNumber;
+  Swap(firstNumber, secondNumber);
+  Escribir firstNumber, " ", secondNumber;
 FinAlgoritmo
 ```
 
@@ -35,11 +35,11 @@ SubProceso Swap(a Como Entero Por Referencia, b Como Entero Por Referencia)
 FinSubProceso
 
 Algoritmo Main
-  Definir primero, segundo Como Entero;
-  Leer primero;
-  Leer segundo;
-  Swap(primero, segundo);
-  Escribir primero, " ", segundo;
+  Definir firstNumber, secondNumber Como Entero;
+  Leer firstNumber;
+  Leer secondNumber;
+  Swap(firstNumber, secondNumber);
+  Escribir firstNumber, " ", secondNumber;
 FinAlgoritmo
 ```
 

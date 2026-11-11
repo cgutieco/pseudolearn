@@ -25,8 +25,8 @@ FinFuncion
 
 Funcion accumulated <- Reduce(v Como Vector<Entero>, f Como Funcion(Entero, Entero) Como Entero, initial Como Entero)
   Definir accumulated Como Entero <- initial;
-  Para Cada elemento En v Hacer
-    accumulated <- f(accumulated, elemento);
+  Para Cada item En v Hacer
+    accumulated <- f(accumulated, item);
   FinPara
 FinFuncion
 

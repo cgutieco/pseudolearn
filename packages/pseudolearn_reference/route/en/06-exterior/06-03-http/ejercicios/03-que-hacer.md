@@ -16,21 +16,21 @@ The message is built by a pure function, `WhatToShow`, which receives the code a
 :::
 
 ```programa rol=referencia
-Funcion message <- WhatToShow(codigo Como Entero, rate Como Entero)
+Funcion message <- WhatToShow(code Como Entero, rate Como Entero)
   Definir message Como Cadena;
-  Si codigo = 200 Entonces
+  Si code = 200 Entonces
     message <- "Price: " + ATexto(2 * rate);
   Sino
-    message <- "Service unavailable (" + ATexto(codigo) + ")";
+    message <- "Service unavailable (" + ATexto(code) + ")";
   FinSi
 FinFuncion
 
 Algoritmo WhatToDo
-  Definir codigo Como Entero;
+  Definir code Como Entero;
   Definir rate Como Entero;
-  Leer codigo;
+  Leer code;
   Leer rate;
-  Escribir WhatToShow(codigo, rate);
+  Escribir WhatToShow(code, rate);
 FinAlgoritmo
 ```
 
