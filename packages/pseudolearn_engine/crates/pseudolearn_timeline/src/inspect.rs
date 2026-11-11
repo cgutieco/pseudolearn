@@ -150,42 +150,54 @@ fn read_reference_variable(
 
 fn decode_reference_value(machine: &Machine, handle_word: u32) -> VariableValue {
     let handle = Handle(handle_word);
+    decode_collection(machine, handle)
+        .or_else(|| decode_object(machine, handle))
+        .or_else(|| decode_array(machine, handle))
+        .or_else(|| decode_channel(machine, handle))
+        .or_else(|| decode_text(machine, handle))
+        .unwrap_or(VariableValue::NullReference)
+}
+
+fn decode_collection(machine: &Machine, handle: Handle) -> Option<VariableValue> {
     let heap = machine.heap();
-    if pseudolearn_runtime::is_collection_allocation(heap, handle) {
-        return VariableValue::ObjectReference {
-            handle_word,
+    pseudolearn_runtime::is_collection_allocation(heap, handle).then(|| {
+        VariableValue::ObjectReference {
+            handle_word: handle.0,
             identity_ordinal: pseudolearn_runtime::allocation_ordinal(heap, handle).unwrap_or(0),
             class_identifier: pseudolearn_runtime::collection_layout(heap, handle)
                 .map(|layout| layout.type_identity)
                 .unwrap_or(0),
-        };
-    }
-    if pseudolearn_runtime::is_object_allocation(heap, handle) {
-        let ordinal = pseudolearn_runtime::allocation_ordinal(heap, handle).unwrap_or(0);
-        let class_identifier =
-            pseudolearn_runtime::object_class_identifier(heap, handle).unwrap_or(0);
+        }
+    })
+}
+
+fn decode_object(machine: &Machine, handle: Handle) -> Option<VariableValue> {
+    let heap = machine.heap();
+    pseudolearn_runtime::is_object_allocation(heap, handle).then(|| {
         VariableValue::ObjectReference {
-            handle_word,
-            identity_ordinal: ordinal,
-            class_identifier,
+            handle_word: handle.0,
+            identity_ordinal: pseudolearn_runtime::allocation_ordinal(heap, handle).unwrap_or(0),
+            class_identifier: pseudolearn_runtime::object_class_identifier(heap, handle)
+                .unwrap_or(0),
         }
-    } else if pseudolearn_runtime::is_array_allocation(heap, handle) {
-        let ordinal = pseudolearn_runtime::allocation_ordinal(heap, handle).unwrap_or(0);
-        let dimensions = pseudolearn_runtime::array_dimensions(heap, handle)
+    })
+}
+
+fn decode_array(machine: &Machine, handle: Handle) -> Option<VariableValue> {
+    let heap = machine.heap();
+    pseudolearn_runtime::is_array_allocation(heap, handle).then(|| VariableValue::ArrayReference {
+        handle_word: handle.0,
+        identity_ordinal: pseudolearn_runtime::allocation_ordinal(heap, handle).unwrap_or(0),
+        dimensions: pseudolearn_runtime::array_dimensions(heap, handle)
             .map(|slice| slice.to_vec())
-            .unwrap_or_default();
-        VariableValue::ArrayReference {
-            handle_word,
-            identity_ordinal: ordinal,
-            dimensions,
-        }
-    } else if let Some(channel) = decode_channel(machine, handle) {
-        channel
-    } else if let Ok(content) = pseudolearn_runtime::text_content(heap, handle) {
-        VariableValue::Text(content.to_string())
-    } else {
-        VariableValue::NullReference
-    }
+            .unwrap_or_default(),
+    })
+}
+
+fn decode_text(machine: &Machine, handle: Handle) -> Option<VariableValue> {
+    pseudolearn_runtime::text_content(machine.heap(), handle)
+        .ok()
+        .map(|content| VariableValue::Text(content.to_string()))
 }
 
 fn decode_channel(machine: &Machine, handle: Handle) -> Option<VariableValue> {
