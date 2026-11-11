@@ -1,7 +1,30 @@
-mod support;
-
+use reference_corpus::Corpus;
 use reference_model::{ProgramSource, RuleId, SourceBlock};
 use reference_verify::check_program_parity;
+
+fn corpus() -> Corpus {
+    let entries = [
+        ("ifKeyword", "if", "Si"),
+        ("thenKeyword", "then", "Entonces"),
+        ("endIf", "endIf", "FinSi"),
+        ("writeKeyword", "write", "Escribir"),
+        ("whileKeyword", "while", "Mientras"),
+        ("doKeyword", "do", "Hacer"),
+    ];
+    let vocabulary: Vec<String> = entries
+        .iter()
+        .map(|(identity, english, spanish)| {
+            format!(
+                r#""{identity}": {{"alias": {{"en": [], "es": []}}, "lexemas": {{"en": "{english}", "es": "{spanish}"}}}}"#
+            )
+        })
+        .collect();
+    let export = format!(
+        r#"{{"resources": {{"vocabulary": {{{}}}}}, "specifications": []}}"#,
+        vocabulary.join(",")
+    );
+    Corpus::from_export(&export).unwrap_or_default()
+}
 
 fn program(id: &str, code: &str) -> SourceBlock {
     SourceBlock::Program(ProgramSource {
@@ -12,7 +35,7 @@ fn program(id: &str, code: &str) -> SourceBlock {
 }
 
 fn problems(spanish: &[SourceBlock], english: &[SourceBlock]) -> usize {
-    let found = check_program_parity(&support::corpus(), "leccion.md", (spanish, english));
+    let found = check_program_parity(&corpus(), "leccion.md", (spanish, english));
     assert!(
         found
             .iter()
