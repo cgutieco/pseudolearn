@@ -97,7 +97,4 @@ Trabajo que se pudo hacer y quedó sin hacer o sin verificar. Cada viñeta indic
 
 ### Punto 9 — Código equivalente (`pseudolearn_transpiler`)
 
-- Por cada construcción pendiente (operaciones de capacidad y de biblioteca de efectos, limpiezas de `Diferir` de tareas canceladas y métodos suspendibles de jerarquías en Rust): escribir su regla en el corpus con casos, implementarla y medir el barrido diferencial. HTTPS y JSON no tienen equivalente en la biblioteca estándar de Rust y se mantienen como pendientes por destino.
-
-- Un registro declarado sin valor (`Definir box Como Caja;`) y rellenado campo a campo se traduce a Rust como `let mut box_value: Caja;`, que `rustc` rechaza por uso de variable sin inicializar (E0381). Hay que inicializarlo con `Default` cuando el registro lo admita y contrastarlo con el barrido diferencial.
-
+- Los casos del corpus que hoy fallan en Rust por estas construcciones son `lang.capability.model` C1–C13, `lang.control.cleanup` C12 y C13, `lang.task.scope` C15, C16, C19 y C20, `lang.task.suspension` C14 y `lang.profile.vocabulary` C4. Las limpiezas de `Diferir` de tareas canceladas y los temporizadores se resuelven juntos: esos casos cancelan una tarea que espera un `Esperar` y el ejecutor de Rust descarta su futuro sin ejecutar las limpiezas, que hoy se emiten en línea en cada salida. Orden recomendado: (1) capacidades `Temporizador` y `Reloj` con `ErrorES` y resultados `Resultado<_, ErrorES>`, (2) cancelación con limpiezas en el ejecutor, (3) métodos suspendibles en jerarquías (requiere sustituir `async fn` en `trait` por futuros en caja). Cada paso necesita casos de corpus y medir el barrido diferencial; HTTPS y JSON no tienen equivalente en la biblioteca estándar de Rust y se mantienen como pendientes por destino.

@@ -1,7 +1,7 @@
 use super::RustEmitter;
 use crate::code_lines::CodeLines;
 use pseudolearn_semantic::{
-    ExpressionId, HirDimension, HirPlace, HirStatement, LocalId, StatementId, Type,
+    ExpressionId, HirDimension, HirPlace, HirStatement, LocalId, StatementId, Type, TypeId,
 };
 use pseudolearn_source::Span;
 
@@ -82,6 +82,10 @@ impl RustEmitter<'_, '_> {
             };
             let type_text = self.type_text(entry.type_id, entry.span);
             let name = self.local_name(*local);
+            if self.starts_from_default(entry.type_id) {
+                lines.line(&format!("let mut {name}: {type_text} = Default::default();"));
+                continue;
+            }
             let mutability = if self.mutation.needs_mutable(*local, false) {
                 "mut "
             } else {
@@ -89,6 +93,19 @@ impl RustEmitter<'_, '_> {
             };
             lines.line(&format!("let {mutability}{name}: {type_text};"));
         }
+    }
+
+    fn starts_from_default(&self, type_id: TypeId) -> bool {
+        matches!(
+            self.view.representation(type_id),
+            Type::Integer
+                | Type::Real
+                | Type::Boolean
+                | Type::Character
+                | Type::String
+                | Type::Enum(_)
+                | Type::Record(_)
+        ) && self.has_default(type_id)
     }
 
     pub(crate) fn first_assignment(

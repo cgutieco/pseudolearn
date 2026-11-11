@@ -30,6 +30,14 @@ Pendientes declarados:
   `builtin:shallowCopy`.
 - Métodos suspendibles dentro de una jerarquía de clases en Rust (`suspendible_method`): un `trait`
   con `async fn` no admite despacho dinámico.
+- En Rust, una variable declarada sin valor y de tipo escalar, cadena, enumerado o registro con `Default` se emite
+  como `let mut x: T = Default::default();`: el análisis garantiza la asignación definida antes de cada lectura, pero
+  `rustc` no la prueba cuando se asigna en las ramas de un `match` o campo a campo (E0381). Las variables de otros
+  tipos siguen declarándose sin valor.
+- Barrido diferencial de `lang/*.md` en Rust: 738 de 812 casos; los pendientes son los que usan capacidades
+  (`capability`) y 14 que no compilan por causas ajenas a esta lista (genéricos, interfaces, funciones como valor,
+  préstamos de registros). Los registros con `Instantanea` y el registro rellenado campo a campo se comprobaron
+  de extremo a extremo con casos temporales.
 - Los resultados de las funciones trascendentes usan `f64` de Rust y `math` de Python; el motor
   garantiza redondeo correcto y estos destinos pueden diferir en el último bit.
 - Python usa enteros de precisión arbitraria: un desbordamiento de 64 bits que el motor atrapa

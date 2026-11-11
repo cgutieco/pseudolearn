@@ -116,3 +116,10 @@ fn records_with_fields_that_cannot_be_copied_get_no_snapshot_implementation() ->
     assert!(!text.contains("impl Snapshot for Pedido"));
     Ok(())
 }
+
+#[test]
+fn records_filled_field_by_field_start_from_their_default() -> Result<(), String> {
+    let text = code(RECORD_SNAPSHOT, TargetLanguage::Rust)?;
+    assert!(text.contains("let mut box_value: Caja = Default::default();"));
+    Ok(())
+}
