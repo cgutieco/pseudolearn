@@ -5,6 +5,7 @@ import '../editor/help/help_code_views.dart';
 import '../theme/app_theme.dart';
 import 'reference_code_pill.dart';
 import 'reference_link_text.dart';
+import 'reference_section_target.dart';
 
 final class ReferenceRunsText extends StatelessWidget {
   final List<ReferenceRun> runs;
@@ -97,9 +98,9 @@ InlineSpan _embedded(ReferenceRun run, ValueChanged<String> onOpenSection) {
         onTap: () => onOpenSection(sectionId),
       ),
     ),
-    ReferenceSpecLinkRun(:final sectionId, :final text) => _link(
+    ReferenceSpecLinkRun(:final sectionId, :final anchor, :final text) => _link(
       text,
-      () => onOpenSection(sectionId),
+      () => onOpenSection(sectionTarget(sectionId, anchor)),
     ),
     ReferenceLessonLinkRun(:final lessonId, :final text) => _link(
       text,

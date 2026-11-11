@@ -10,6 +10,7 @@ import '../theme/app_theme.dart';
 import 'reference_edition_resolver.dart';
 import 'reference_reader.dart';
 import 'reference_route_links.dart';
+import 'reference_section_target.dart';
 
 final class ReferenceSectionPage extends StatefulWidget {
   final String sectionId;
@@ -39,8 +40,8 @@ final class _ReferenceSectionPageState extends State<ReferenceSectionPage> {
     widget.sectionId,
   );
 
-  void _openSection(String sectionId) =>
-      context.push('/conocimiento/especificacion/$sectionId');
+  void _openSection(String target) =>
+      context.push(specificationLocation(target));
 
   @override
   Widget build(BuildContext context) {

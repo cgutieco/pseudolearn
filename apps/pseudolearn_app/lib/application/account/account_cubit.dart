@@ -6,7 +6,6 @@ import '../../domain/model/account/auth_method.dart';
 import '../../domain/model/account/auth_outcome.dart';
 import '../../domain/ports/account_deletion_gateway.dart';
 import '../../domain/ports/auth_gateway.dart';
-import '../../domain/ports/document_repository.dart';
 import '../../domain/ports/incoming_link_source.dart';
 import '../../domain/ports/local_account_data_purger.dart';
 import 'account_state.dart';
@@ -14,7 +13,6 @@ import 'account_state.dart';
 final class AccountCubit extends Cubit<AccountState> {
   final AuthGateway _authGateway;
   final IncomingLinkSource _incomingLinks;
-  final DocumentRepository? _documentRepository;
   final AccountDeletionGateway _accountDeletionGateway;
   final LocalAccountDataPurger _localAccountDataPurger;
   StreamSubscription<AccountSession?>? _sessionSubscription;
@@ -25,10 +23,8 @@ final class AccountCubit extends Cubit<AccountState> {
     required IncomingLinkSource incomingLinks,
     required AccountDeletionGateway accountDeletionGateway,
     required LocalAccountDataPurger localAccountDataPurger,
-    DocumentRepository? documentRepository,
   })  : _authGateway = authGateway,
         _incomingLinks = incomingLinks,
-        _documentRepository = documentRepository,
         _accountDeletionGateway = accountDeletionGateway,
         _localAccountDataPurger = localAccountDataPurger,
         super(const AccountUnauthenticated());
@@ -62,7 +58,7 @@ final class AccountCubit extends Cubit<AccountState> {
     try {
       await _authGateway.signOut();
       if (deleteLocalData) {
-        await _deleteLocalDocuments();
+        await _localAccountDataPurger.purgeAccountData();
       }
     } catch (error) {
       emit(AccountError(error.toString()));
@@ -114,16 +110,6 @@ final class AccountCubit extends Cubit<AccountState> {
       return;
     }
     if (!isClosed) emit(const AccountUnauthenticated());
-  }
-
-  Future<void> _deleteLocalDocuments() async {
-    final repository = _documentRepository;
-    if (repository != null) {
-      final documents = await repository.listDocuments();
-      for (final doc in documents) {
-        await repository.deleteDocument(doc.id);
-      }
-    }
   }
 
   void _onSession(AccountSession? session) {

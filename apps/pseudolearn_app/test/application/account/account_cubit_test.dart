@@ -5,20 +5,16 @@ import 'package:pseudolearn_app/domain/model/account/account_deletion_outcome.da
 import 'package:pseudolearn_app/domain/model/account/account_session.dart';
 import 'package:pseudolearn_app/domain/model/account/auth_method.dart';
 import 'package:pseudolearn_app/domain/model/account/auth_outcome.dart';
-import 'package:pseudolearn_app/domain/model/documents/document.dart';
-import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'dart:async';
 import '../../fakes/fake_account_deletion_gateway.dart';
 import '../../fakes/fake_auth_gateway.dart';
 import '../../fakes/fake_incoming_link_source.dart';
 import '../../fakes/fake_local_account_data_purger.dart';
-import '../../fakes/in_memory_document_repository.dart';
 
 void main() {
   group('AccountCubit', () {
     late FakeAuthGateway authGateway;
     late FakeIncomingLinkSource incomingLinks;
-    late InMemoryDocumentRepository documentRepository;
     late FakeAccountDeletionGateway deletionGateway;
     late FakeLocalAccountDataPurger purger;
     late AccountCubit cubit;
@@ -33,13 +29,11 @@ void main() {
     setUp(() {
       authGateway = FakeAuthGateway();
       incomingLinks = FakeIncomingLinkSource();
-      documentRepository = InMemoryDocumentRepository();
       deletionGateway = FakeAccountDeletionGateway();
       purger = FakeLocalAccountDataPurger();
       cubit = AccountCubit(
         authGateway: authGateway,
         incomingLinks: incomingLinks,
-        documentRepository: documentRepository,
         accountDeletionGateway: deletionGateway,
         localAccountDataPurger: purger,
       );
@@ -222,61 +216,44 @@ void main() {
     });
 
     group('signOut() and signOut({deleteLocalData: true}) (D7)', () {
-      test('signOut transitions to AccountUnauthenticated and preserves local documents', () async {
+      test('signOut transitions to AccountUnauthenticated', () async {
         authGateway.currentSession = testSession;
         await cubit.init();
         expect(cubit.state, isA<AccountAuthenticated>());
-
-        final doc = Document(
-          id: 'doc_1',
-          title: 'Algoritmo 1',
-          content: 'inicio fin',
-          profileId: SyntaxProfileId.classicSpanish,
-          revision: 1,
-          createdAt: DateTime(2026, 1, 1),
-          updatedAt: DateTime(2026, 1, 1),
-        );
-        await documentRepository.saveDocument(doc);
 
         await cubit.signOut();
 
         expect(cubit.state, isA<AccountUnauthenticated>());
-        final remainingDocs = await documentRepository.listDocuments();
-        expect(remainingDocs.length, 1);
-        expect(remainingDocs.first.id, 'doc_1');
       });
 
-      test('signOut(deleteLocalData: true) transitions to AccountUnauthenticated and deletes local documents', () async {
+      test('signOut(deleteLocalData: true) purges local data without queueing document tombstones', () async {
         authGateway.currentSession = testSession;
         await cubit.init();
         expect(cubit.state, isA<AccountAuthenticated>());
 
-        final doc1 = Document(
-          id: 'doc_1',
-          title: 'Algoritmo 1',
-          content: 'inicio fin',
-          profileId: SyntaxProfileId.classicSpanish,
-          revision: 1,
-          createdAt: DateTime(2026, 1, 1),
-          updatedAt: DateTime(2026, 1, 1),
-        );
-        final doc2 = Document(
-          id: 'doc_2',
-          title: 'Algoritmo 2',
-          content: 'inicio fin',
-          profileId: SyntaxProfileId.classicSpanish,
-          revision: 1,
-          createdAt: DateTime(2026, 1, 2),
-          updatedAt: DateTime(2026, 1, 2),
-        );
-        await documentRepository.saveDocument(doc1);
-        await documentRepository.saveDocument(doc2);
-
         await cubit.signOut(deleteLocalData: true);
 
         expect(cubit.state, isA<AccountUnauthenticated>());
-        final remainingDocs = await documentRepository.listDocuments();
-        expect(remainingDocs, isEmpty);
+        expect(purger.purgeCalls, 1);
+      });
+
+      test('signOut(deleteLocalData: true) emits AccountError when the purge fails', () async {
+        authGateway.currentSession = testSession;
+        await cubit.init();
+        purger.throwOnPurge = true;
+
+        await cubit.signOut(deleteLocalData: true);
+
+        expect(cubit.state, isA<AccountError>());
+      });
+
+      test('signOut without deleteLocalData never purges', () async {
+        authGateway.currentSession = testSession;
+        await cubit.init();
+
+        await cubit.signOut();
+
+        expect(purger.purgeCalls, 0);
       });
 
       test('signOut catches unexpected exception and emits AccountError (§5.5)', () async {

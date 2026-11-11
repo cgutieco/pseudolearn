@@ -19,7 +19,6 @@ List<BlocProvider> createSettingsProviders(
       create: (_) => AccountCubit(
         authGateway: dependencies.authGateway,
         incomingLinks: dependencies.incomingLinkSource,
-        documentRepository: dependencies.documentRepository,
         accountDeletionGateway: dependencies.accountDeletionGateway,
         localAccountDataPurger: dependencies.localAccountDataPurger,
       )..init(),

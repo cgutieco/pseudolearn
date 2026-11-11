@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
+import '../application/agent/reply_link_policy.dart';
 import '../application/settings/settings_cubit.dart';
 import '../application/settings/settings_state.dart';
 import '../domain/model/settings/app_theme_mode.dart';
@@ -42,9 +43,12 @@ final class CubitScope extends StatelessWidget {
     final scope = AppScope.withRouter(() => router);
     return RepositoryProvider<ScreenContextBoard>.value(
       value: scope.board,
-      child: MultiBlocProvider(
-        providers: buildAppProviders(dependencies, scope: scope),
-        child: LocalAccountDataRefresher(child: _CubitScopeApp(router: router)),
+      child: RepositoryProvider<ReplyLinkOpener>.value(
+        value: ReplyLinkOpener(dependencies.agent.externalLinks),
+        child: MultiBlocProvider(
+          providers: buildAppProviders(dependencies, scope: scope),
+          child: LocalAccountDataRefresher(child: _CubitScopeApp(router: router)),
+        ),
       ),
     );
   }

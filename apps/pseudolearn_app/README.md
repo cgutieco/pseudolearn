@@ -132,6 +132,11 @@ flowchart LR
   contextuales (`Vector`, `Salir`), así que `SyntaxHelpCubit.caretMoved` pregunta al motor por la ficha en esa
   posición y solo ofrece el ícono si responde `help`; un símbolo del usuario (`symbol`) nunca lo muestra. La app no
   mantiene una lista de funciones ni de palabras contextuales: el motor decide.
+- **«Cerrar sesión y borrar datos de este dispositivo» purga, no borra documento a documento.** `AccountCubit.signOut(deleteLocalData: true)` usa `LocalAccountDataPurger`, que vacía el índice, la bandeja de salida y el progreso y borra los archivos locales sin pasar por `SyncingDocumentRepository`. Borrar por el repositorio encolaba una lápida por documento y la siguiente sincronización los habría eliminado también de la nube.
+- **Los enlaces de las respuestas de Nodo se abren fuera de la app** solo si son `https` o `http`, tienen anfitrión y no llevan credenciales (`openableReplyLink`); cualquier otro esquema (`javascript:`, `file:`, `mailto:`, `pseudolearn:`) se muestra como texto sin acción. Los diagramas Mermaid que no son `flowchart` se muestran como código con un aviso, porque el lector solo dibuja diagramas de flujo.
+- **Un enlace de especificación conserva su ancla**: `ReferenceSpecLinkRun` viaja como `sección#ancla` hasta `specificationLocation`, que la pone en `?anchor=` y `ReferenceReader` desplaza hasta el encabezado.
+- **Plataformas**: iOS, macOS y Windows. No hay carpeta `web/` porque la app no se publica en navegador (el sitio es `apps/pseudolearn_web`), ni se distribuye un `.zip` portable de Windows: el instalador de Inno Setup registra `pseudolearn://` en `HKCU`.
+- **Pruebas de widgets con fakes**: la biblioteca nativa se carga en cada prueba (`flutter_test_config.dart`) y las pruebas de `test/engine/rust/` ejercen el puente real; los widgets se prueban con fakes de los puertos para fijar su comportamiento sin depender del motor.
 
 ## Seguridad
 
