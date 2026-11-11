@@ -14,6 +14,7 @@ import '../data/sync/supabase_document_store.dart';
 import '../data/sync/supabase_progress_store.dart';
 import '../data/sync/sync_drainer.dart';
 import '../data/sync/sync_metadata_store.dart';
+import '../data/sync/sync_owner_store.dart';
 import '../data/sync/syncing_document_repository.dart';
 import '../data/platform/connectivity_monitor_adapter.dart';
 import '../domain/ports/auth_gateway.dart';
@@ -122,6 +123,7 @@ SyncDrainer _buildSyncDrainer({
     progressSyncStore: SqliteProgressSyncStore(index.database),
     exerciseDrainer: exerciseDrainer,
     accountDataPurger: accountDataPurger,
+    ownerStore: SyncOwnerStore(index.database),
   );
 }
 

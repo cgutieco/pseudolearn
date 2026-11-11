@@ -173,7 +173,7 @@ solo admiten consola, argumentos, reloj y espera; cualquier otra operación reci
 anfitrión. Ningún ejercicio publicado necesita archivos ni red (los de la Parte «exterior» operan sobre texto, JSON y
 estados ya construidos), y un caso que espere el efecto real no pasa; `exercise_effect_containment_test.dart` lo fija.
 
-**Propietario de la sincronización.** `sync_state` guarda `owner_user_id`. Antes de cada vaciado, `SyncDrainer`
+**Propietario de la sincronización.** `SyncOwnerStore` guarda `owner_user_id` en `sync_state`. Antes de cada vaciado, `SyncDrainer`
 compara la sesión con ese propietario: la primera cuenta que sincroniza lo adopta; si la sesión es de otra cuenta se
 purga todo el estado local con `LocalAccountDataPurger` (cola, cursores, índice, ejercicios y archivos) antes de
 adoptarla, porque empujar las ediciones pendientes de la cuenta anterior a la nueva las filtraría; sin purgador

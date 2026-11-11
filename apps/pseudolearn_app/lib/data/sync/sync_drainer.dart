@@ -13,6 +13,7 @@ import '../exercises/user_exercise_sync_drainer.dart';
 import 'document_sync_drainer.dart';
 import 'progress_sync_drainer.dart';
 import 'sync_metadata_store.dart';
+import 'sync_owner_store.dart';
 
 final class SyncDrainer implements SyncCoordinator {
   final AuthGateway _authGateway;
@@ -21,6 +22,7 @@ final class SyncDrainer implements SyncCoordinator {
   final UserExerciseSyncDrainer? _exerciseDrainer;
   final SyncMetadataStore _metadataStore;
   final LocalAccountDataPurger? _accountDataPurger;
+  final SyncOwnerStore? _ownerStore;
   final Clock _clock;
 
   SyncDrainer({
@@ -35,8 +37,10 @@ final class SyncDrainer implements SyncCoordinator {
     ProgressSyncStore? progressSyncStore,
     UserExerciseSyncDrainer? exerciseDrainer,
     LocalAccountDataPurger? accountDataPurger,
+    SyncOwnerStore? ownerStore,
   })  : _authGateway = authGateway,
         _accountDataPurger = accountDataPurger,
+        _ownerStore = ownerStore,
         _exerciseDrainer = exerciseDrainer,
         _metadataStore = metadataStore,
         _clock = clock,
@@ -88,14 +92,16 @@ final class SyncDrainer implements SyncCoordinator {
   }
 
   Future<bool> _claimLocalDataFor(String userId) async {
-    final owner = await _metadataStore.getOwnerUserId();
+    final ownerStore = _ownerStore;
+    if (ownerStore == null) return true;
+    final owner = await ownerStore.read();
     if (owner == userId) return true;
     if (owner != null) {
       final purger = _accountDataPurger;
       if (purger == null) return false;
       await purger.purgeAccountData();
     }
-    await _metadataStore.setOwnerUserId(userId);
+    await ownerStore.write(userId);
     return true;
   }
 
