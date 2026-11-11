@@ -52,7 +52,7 @@ pub(crate) fn initialize_result() -> Value {
     json!({
         "protocolVersion": "2025-06-18",
         "capabilities": {"tools": {}, "resources": {}},
-        "serverInfo": {"name": "pseudolearn", "version": "2026"}
+        "serverInfo": {"name": "pseudolearn", "version": "2027"}
     })
 }
 

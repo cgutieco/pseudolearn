@@ -107,6 +107,11 @@ Destinos de `compilar`: `aarch64-apple-darwin`, `x86_64-apple-darwin`, `x86_64-u
   sobre rutas absolutas.
 - Límites: 300 líneas por archivo, 40 por función, 4 parámetros posicionales y 3 niveles de anidación. Sin
   `unsafe` ni pánicos explícitos.
+- **La ayuda lista todo lo que `pseudo` acepta** (`TOOL.CLI.CONVENTIONS#R2`): órdenes con su alias, incluidas `bloquear`, `formatear`, `traducir`, `lsp`, `dap` y `mcp`, y las opciones `--salida`, `--proyecto` y `--entrada`. El texto sale del corpus (`cliMessages`).
+- **El lock registra paquetes locales**: `TOOL.CLI.CONVENTIONS#R9` lo fija así. `locked` (con digest y archivos) es una forma de `API.PROJECT.LOCK` para anfitriones que entregan el contenido; el manifiesto de un proyecto de disco no puede declararla, por eso la CLI no la lee ni la escribe.
+- **Nativo**: el ejecutable escribe la salida de error en el flujo de error del proceso y usa el anfitrión físico de `pseudolearn_aot_rt`; los tramos `error_ranges` pertenecen al flujo unido de la VM. `tests/aot_language_constructs_parity.rs` ejecuta en nativo los programas de aceptación de construcciones (registros, genéricos, variantes y liberación por ámbito).
+- Las reglas `TOOL.DAP` están en `cumple` en `conformance.yaml`: sus casos se miden contra `pseudo dap`.
+- Solo se ejecutaron localmente los programas de aceptación en macOS arm64; Linux y Windows se verifican en sus propias máquinas.
 
 ## Comandos útiles
 
