@@ -1036,7 +1036,10 @@ revisado_por:
         "severidad": "error"
       }
     ]
-  }
+  },
+  "sujetos": [
+    "engine"
+  ]
 }
 ```
 
