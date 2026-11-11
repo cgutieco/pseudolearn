@@ -9,6 +9,8 @@ pub(crate) fn available(executor: PropertyExecutor, declaration: &Value) -> bool
         | PropertyExecutor::LoweringExecution
         | PropertyExecutor::MathOracle
         | PropertyExecutor::JsonTextRoundtrip
+        | PropertyExecutor::TimeIsoRoundtrip
+        | PropertyExecutor::DecimalsRoundtrip
         | PropertyExecutor::FirstTrap
         | PropertyExecutor::FusedFirstTrap => "execute",
         PropertyExecutor::ObservationCorrespondence => "observe",
@@ -50,7 +52,9 @@ pub(crate) fn check(
         PropertyExecutor::ObservationCorrespondence => observed(scenario, subject),
         PropertyExecutor::LoweringExecution
         | PropertyExecutor::MathOracle
-        | PropertyExecutor::JsonTextRoundtrip => normative(scenario, subject),
+        | PropertyExecutor::JsonTextRoundtrip
+        | PropertyExecutor::TimeIsoRoundtrip
+        | PropertyExecutor::DecimalsRoundtrip => normative(scenario, subject),
         PropertyExecutor::ProgramRevision => crate::property_revision::check(scenario, subject),
         PropertyExecutor::ResourceLifecycle
         | PropertyExecutor::UsageErrors

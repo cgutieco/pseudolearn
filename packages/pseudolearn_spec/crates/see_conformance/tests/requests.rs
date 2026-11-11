@@ -34,10 +34,7 @@ fn builds_observed_execution_with_limits_cancellation_and_state_query() -> Resul
     assert_eq!(built.get("kind"), Some(&json!("execute")));
     assert_eq!(built.get("observe"), Some(&json!("events")));
     assert!(built.get("strictness").is_none());
-    assert_eq!(
-        built.get("limits"),
-        Some(&json!({"depth": 3, "cells": 9}))
-    );
+    assert_eq!(built.get("limits"), Some(&json!({"depth": 3, "cells": 9})));
     assert_eq!(built.get("cancel_at_statement"), Some(&json!(4)));
     assert_eq!(built.get("state_at"), Some(&json!(2)));
     assert_eq!(built.get("seed"), Some(&json!(42)));

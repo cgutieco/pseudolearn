@@ -284,6 +284,18 @@
       "samples": 100
     },
     {
+      "reference": "LIB.TIME@1.0.0#P1",
+      "executor": "time_iso_roundtrip",
+      "seed": 42,
+      "samples": 100
+    },
+    {
+      "reference": "LIB.CORE.CONVERSION@1.0.0#P1",
+      "executor": "decimals_roundtrip",
+      "seed": 42,
+      "samples": 100
+    },
+    {
       "reference": "LIB.CORE.MATH@1.0.0#P1",
       "executor": "math_oracle",
       "seed": 20261104,

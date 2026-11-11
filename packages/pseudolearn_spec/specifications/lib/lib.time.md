@@ -421,7 +421,8 @@
     "C13",
     "C14",
     "C15",
-    "C23"
+    "C23",
+    "P1"
   ]
 }
 ```
@@ -830,5 +831,18 @@
     "es": "Algoritmo DosFormatos\n  Segun AnalizarFechaHora(\"2026-07-20T09:15:30.25-05:00\") Hacer\n    Nada: Escribir \"---\";\n    Algo(llegada):\n      Escribir llegada.FormatoIso();\n      Escribir llegada.FormatoIsoPreciso();\n  FinSegun\n  Escribir FechaHoraUtc(0).FormatoIso();\nFinAlgoritmo\n",
     "en": "Algorithm TwoFormats\n  Switch parseDateTime(\"2026-07-20T09:15:30.25-05:00\") Do\n    None: Write \"---\";\n    Some(arrival):\n      Write arrival.isoFormat();\n      Write arrival.isoFormatPrecise();\n  EndSwitch\n  Write dateTimeUtc(0).isoFormat();\nEndAlgorithm\n"
   }
+}
+```
+
+```propiedad
+{
+  "id": "P1",
+  "regla": "R7",
+  "generador": {
+    "programas": "instantes enteros muestreados en todo el rango representable de FechaHoraUtc"
+  },
+  "propiedad": "AnalizarFechaHora(FechaHoraUtc(i).FormatoIsoPreciso()) devuelve una FechaHora cuyo Instante es i para todo instante i del rango representable.",
+  "oraculo": "El instante sembrado i es el oráculo: la diferencia entre el Instante reconstruido e i debe ser exactamente cero.",
+  "justificacion": "La ida y vuelta cruza la expansión del calendario civil, los años extremos y los nanosegundos fraccionarios de forma que una lista finita de casos no agota."
 }
 ```

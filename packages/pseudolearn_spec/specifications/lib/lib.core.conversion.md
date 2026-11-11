@@ -166,7 +166,8 @@
     "C13",
     "C14",
     "C15",
-    "C20"
+    "C20",
+    "P1"
   ]
 }
 ```
@@ -533,5 +534,18 @@
     "salida": "3.3333333333333335\n3.33\n7.00\n",
     "terminacion": "completed"
   }
+}
+```
+
+```propiedad
+{
+  "id": "P1",
+  "regla": "R2",
+  "generador": {
+    "programas": "reales n / 2^k con n entero de hasta 52 bits y k entre 0 y 60, construidos por divisiones exactas entre dos"
+  },
+  "propiedad": "Para el texto t = Decimales(x, k), Decimales(AReal(t), k) es igual a t, de modo que la expansión decimal fija de un real diádico sobrevive a la ida y vuelta por AReal.",
+  "oraculo": "Un real n / 2^k tiene una expansión decimal exacta de k dígitos; la comparación de textos no usa igualdad entre reales.",
+  "justificacion": "Los casos fijos cubren empates y bordes concretos; la propiedad recorre mantisas y escalas que no caben en una lista finita."
 }
 ```

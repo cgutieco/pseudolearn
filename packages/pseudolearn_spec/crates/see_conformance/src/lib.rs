@@ -18,6 +18,7 @@ pub mod tool_comparison;
 pub mod properties;
 mod property_api;
 mod property_comparison;
+mod property_decimals_roundtrip;
 mod property_evidence;
 mod property_json_roundtrip;
 mod property_math;
@@ -28,6 +29,7 @@ mod property_service;
 mod property_states;
 mod property_steps;
 mod property_syntax;
+mod property_time_roundtrip;
 mod property_traps;
 
 pub mod target_programs;
@@ -48,7 +50,11 @@ mod property_cli;
 mod property_cli_tests;
 
 #[cfg(test)]
+mod property_decimals_roundtrip_tests;
+#[cfg(test)]
 mod property_syntax_tests;
+#[cfg(test)]
+mod property_time_roundtrip_tests;
 #[cfg(test)]
 mod property_traps_tests;
 

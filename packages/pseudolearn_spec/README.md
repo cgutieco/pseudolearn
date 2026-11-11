@@ -103,6 +103,8 @@ y pedir su ejecución produce `SEE-SUBJECT-RETIRED`.
 - Un artefacto generado desde el corpus (`export.json`, las fichas de agente, la gramática del editor)
   se regenera, nunca se edita a mano. Las verificaciones fallan con `SEE-STALE` o `SEE-HASH` si hay desfase.
 - Los sujetos solo se alcanzan por proceso: un sujeto bloqueado es un error operativo, nunca cumplimiento.
+- Las propiedades `LIB.TIME#P1` (ida y vuelta ISO de `FechaHora`) y `LIB.CORE.CONVERSION#P1` (ida y vuelta de `Decimales` sobre reales diádicos sembrados) tienen generador propio (`time_iso_roundtrip` y `decimals_roundtrip`) y comparan contra un oráculo derivado de la regla, no contra la salida del motor.
+- La ayuda de la CLI (`cliMessages`: `helpCommands`, `helpOptions`) y los casos que la fijan viven en el corpus; cambiar las órdenes u opciones de `pseudo` obliga a actualizar ahí el texto y los casos.
 
 ## Comandos útiles
 

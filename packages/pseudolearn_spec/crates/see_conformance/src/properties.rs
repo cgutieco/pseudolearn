@@ -3,7 +3,7 @@ use see_generators::program::GenerationSeed;
 use see_model::{
     Corpus,
     contract::Vocabulary,
-    properties::{PropertyBinding, PropertyRun},
+    properties::{PropertyBinding, PropertyExecutor, PropertyRun},
 };
 use serde_json::Value;
 
@@ -89,21 +89,39 @@ fn run_samples(
     Ok(report)
 }
 
+fn profile_of(sample: u32) -> &'static str {
+    if sample & 1 == 0 { "es" } else { "en" }
+}
+
+fn sampled_scenario(binding: &PropertyBinding, sample: u32) -> Option<Result<Scenario, String>> {
+    let profile = profile_of(sample);
+    match binding.executor {
+        PropertyExecutor::MathOracle => Some(crate::property_math::scenario(binding.seed, sample)),
+        PropertyExecutor::JsonTextRoundtrip => Some(Ok(crate::property_json_roundtrip::scenario(
+            binding.seed,
+            sample,
+            profile,
+        ))),
+        PropertyExecutor::TimeIsoRoundtrip => Some(Ok(crate::property_time_roundtrip::scenario(
+            binding.seed,
+            sample,
+            profile,
+        ))),
+        PropertyExecutor::DecimalsRoundtrip => Some(Ok(
+            crate::property_decimals_roundtrip::scenario(binding.seed, sample, profile),
+        )),
+        _ => None,
+    }
+}
+
 fn scenario(
     binding: &PropertyBinding,
     context: &PropertyContext<'_>,
     scenarios: &[Scenario],
     sample: u32,
 ) -> Result<Scenario, String> {
-    if binding.executor == see_model::properties::PropertyExecutor::MathOracle {
-        return crate::property_math::scenario(binding.seed, sample);
-    }
-    if binding.executor == see_model::properties::PropertyExecutor::JsonTextRoundtrip {
-        return Ok(crate::property_json_roundtrip::scenario(
-            binding.seed,
-            sample,
-            if sample & 1 == 0 { "es" } else { "en" },
-        ));
+    if let Some(sampled) = sampled_scenario(binding, sample) {
+        return sampled;
     }
     let index = usize::try_from(sample).map_err(|error| error.to_string())?;
     if let Some(scenario) = scenarios.get(index) {
@@ -114,7 +132,7 @@ fn scenario(
             seed: binding.seed,
             sample,
         },
-        if sample & 1 == 0 { "es" } else { "en" },
+        profile_of(sample),
         context.vocabulary,
     )
 }
