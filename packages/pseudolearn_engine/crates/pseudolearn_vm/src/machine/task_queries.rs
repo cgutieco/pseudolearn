@@ -9,6 +9,12 @@ impl Machine<'_> {
         self.tasks.agenda.summaries()
     }
 
+    pub fn channel_snapshot(&self, identity: u64) -> Option<pseudolearn_runtime::ChannelSnapshot> {
+        self.tasks
+            .channels
+            .snapshot(pseudolearn_runtime::TaskChannelId(identity))
+    }
+
     pub fn current_task_id(&self) -> u64 {
         self.tasks.current.0
     }

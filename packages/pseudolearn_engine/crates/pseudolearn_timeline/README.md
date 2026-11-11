@@ -87,3 +87,11 @@ La reproducción de estado conserva los eventos de la instrucción objetivo hast
 los drena; esto permite registrar otra frontera al reducir la retención sin perder su identidad.
 La continuación viva no participa en estas reconstrucciones y ningún fallo permite consultar un
 anfitrión físico como alternativa. Las ventanas del borde público se limitan a 4096 eventos.
+
+## Canales como valor
+
+`VariableValue::ChannelReference` lleva identidad, capacidad, si sigue abierto y cuántos elementos retiene el búfer. El
+inspector lo reconoce porque el asa del registro apunta a una asignación de canal (`channel_references`) y consulta la
+agenda de la máquina con `Machine::channel_snapshot`; antes caía en `NullReference` y la vista mostraba
+`stream.identity = Nulo`. La consulta del pasado reproduce la cinta, así que el estado del canal en un evento pasado
+sale de la misma reconstrucción que el resto de la agenda.

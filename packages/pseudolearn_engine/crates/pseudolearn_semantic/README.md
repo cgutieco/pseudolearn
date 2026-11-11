@@ -323,6 +323,10 @@ al enviar y opcional al recibir, exige espera explícita y rechaza operaciones d
 Los nombres de tipo y método son contextuales; `Elegir` y `FinElegir` son reservados. Los recorridos de
 efectos incluyen canales, lanzamientos y las ramas de elección para conservar la comprobación transitiva.
 
+La única hoja de ese registro se nombra como la variable del canal (`stream`, no `stream.identity`): la vista de
+variables publica el canal como un valor propio y un nombre compuesto con un campo interno que el programa no puede
+escribir sería ruido para quien aprende.
+
 Pruebas dirigidas: filtros `task_failure_types`, `channel_types` y `select_checker` de
 `cargo test -p pseudolearn_semantic --lib`.
 

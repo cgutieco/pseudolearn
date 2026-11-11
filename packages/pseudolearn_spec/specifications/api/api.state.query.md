@@ -728,6 +728,20 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
 }
 ```
 
+```regla
+{
+  "id": "R9",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Un valor de tipo Canal se publica en el estado como un valor propio y no como los campos internos que lo componen: la variable lleva el nombre con que se declaró el canal y su valor es canal, con identidad (el ordinal estable durante la ejecución, el mismo que el campo channel de los eventos de canal), capacidad declarada, abierto (falso desde Cerrar) y en_cola, la cantidad de elementos retenidos en el búfer. Cerrar conserva el búfer. Los elementos retenidos no se publican y los emisores bloqueados no cuentan como elementos del búfer.",
+  "verificacion": [
+    "C20",
+    "C21",
+    "C22"
+  ]
+}
+```
+
 ```caso
 {
   "id": "C12",
@@ -1233,6 +1247,123 @@ Una colección se conserva como referencia con identidad compartida. Su entrada 
     "engine"
   ],
   "programa": "Algoritmo P\nDefinir total Como Entero <- 1;\ntotal <- total + 1;\nEscribir total;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "R9",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "trace",
+  "espera": {
+    "salida": "",
+    "terminacion": "completed",
+    "estado_en": {
+      "evento": 1,
+      "estado": {
+        "marcos": [
+          {
+            "unidad": "P",
+            "variables": {
+              "stream": {
+                "canal": {
+                  "identidad": 1,
+                  "capacidad": 2,
+                  "abierto": true,
+                  "en_cola": 0
+                }
+              }
+            }
+          }
+        ],
+        "objetos": {}
+      }
+    }
+  },
+  "programa": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(2);\nTareas\nAguardar stream.Enviar(7);\nstream.Cerrar();\nFinTareas\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C21",
+  "regla": "R9",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "trace",
+  "espera": {
+    "salida": "",
+    "terminacion": "completed",
+    "estado_en": {
+      "evento": 4,
+      "estado": {
+        "marcos": [
+          {
+            "unidad": "P",
+            "variables": {
+              "stream": {
+                "canal": {
+                  "identidad": 1,
+                  "capacidad": 2,
+                  "abierto": true,
+                  "en_cola": 1
+                }
+              }
+            }
+          }
+        ],
+        "objetos": {}
+      }
+    }
+  },
+  "programa": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(2);\nTareas\nAguardar stream.Enviar(7);\nstream.Cerrar();\nFinTareas\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "R9",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "trace",
+  "espera": {
+    "salida": "",
+    "terminacion": "completed",
+    "estado_en": {
+      "evento": 7,
+      "estado": {
+        "marcos": [
+          {
+            "unidad": "P",
+            "variables": {
+              "stream": {
+                "canal": {
+                  "identidad": 1,
+                  "capacidad": 2,
+                  "abierto": false,
+                  "en_cola": 1
+                }
+              }
+            }
+          }
+        ],
+        "objetos": {}
+      }
+    }
+  },
+  "programa": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(2);\nTareas\nAguardar stream.Enviar(7);\nstream.Cerrar();\nFinTareas\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

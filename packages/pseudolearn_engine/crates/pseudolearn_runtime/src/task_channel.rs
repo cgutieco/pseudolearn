@@ -15,6 +15,13 @@ pub enum ChannelError {
     InsufficientBranches,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct ChannelSnapshot {
+    pub capacity: usize,
+    pub closed: bool,
+    pub queued: usize,
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum ChannelStep<Value> {
     Ready(Value),
@@ -58,6 +65,14 @@ impl<Value> Default for TaskChannels<Value> {
 }
 
 impl<Value> TaskChannels<Value> {
+    pub fn snapshot(&self, channel: TaskChannelId) -> Option<ChannelSnapshot> {
+        self.channels.get(&channel).map(|stream| ChannelSnapshot {
+            capacity: stream.capacity,
+            closed: stream.closed,
+            queued: stream.values.len(),
+        })
+    }
+
     pub fn create(
         &mut self,
         capacity: usize,

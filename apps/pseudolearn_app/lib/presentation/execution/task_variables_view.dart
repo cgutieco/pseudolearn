@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../application/execution/execution_history_command.dart';
@@ -12,6 +10,7 @@ import '../l10n/generated/app_localizations.dart';
 import '../theme/app_theme.dart';
 import '../theme/tokens/border_metrics.dart';
 import '../theme/tokens/spacing.dart';
+import 'execution_value_text.dart';
 import 'task_selector_chips.dart';
 
 final class TaskVariablesView extends StatelessWidget {
@@ -97,23 +96,12 @@ final class _ValueColumns extends StatelessWidget {
       Expanded(
         flex: 3,
         child: AppText(
-          _valueText(AppLocalizations.of(context)!, entry),
+          executionValueText(AppLocalizations.of(context)!, entry.value),
           variant: AppTextVariant.codeInline,
         ),
       ),
     ],
   );
-}
-
-String _valueText(AppLocalizations l10n, ExecutionValueEntry entry) {
-  final value = entry.value;
-  if (value['valor'] is String) return value['valor'] as String;
-  if (value['sin_valor'] == true) return l10n.executionValueUndefined;
-  if (value['nulo'] == true) return l10n.executionValueNull;
-  if (value['ref'] is int) {
-    return l10n.executionValueReference(value['ref'] as int);
-  }
-  return jsonEncode(value);
 }
 
 final class _TaskValuePageButton extends StatelessWidget {

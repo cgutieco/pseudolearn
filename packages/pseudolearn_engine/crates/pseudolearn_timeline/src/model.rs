@@ -22,6 +22,13 @@ pub enum VariableValue {
         identity_ordinal: u64,
         dimensions: Vec<u64>,
     },
+    ChannelReference {
+        handle_word: u32,
+        identity: u64,
+        capacity: u64,
+        open: bool,
+        queued: u64,
+    },
     NullReference,
 }
 

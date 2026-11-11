@@ -545,6 +545,14 @@ del bloqueo. `task_lowering_tests` localiza los rechazos en la frontera de RI o 
 Estos tests se ejecutan por archivo desde la raíz del motor; no sustituyen la conformidad de
 los sujetos ni las pruebas de reconstrucción histórica o de cinta concurrente.
 
+## Canales en el estado
+
+`execution_state::value` publica `VariableValue::ChannelReference` como `{"canal":{"identidad","capacidad","abierto","en_cola"}}` en
+`query_state`, `query_variables`, `query_page` y `debug_state`, que comparten ese codificador. No se publican los
+elementos de la cola: sus valores solo tienen sentido con el tipo del canal y pueden ser referencias. La captura de
+inspección trata el canal como una referencia opaca. Cubierto por `API.STATE.QUERY` R9 (C20 a C22) y por
+`tests/state_channel_value.rs`.
+
 ## Historia de una ejecución con entregas reales de efectos
 
 Problema: con un anfitrión desacoplado los resultados de varias esperas llegan en el orden en que terminan, agrupados

@@ -288,8 +288,27 @@
       }
     }
   },
+  "executionValueChannel": "Channel {identity}: capacity {capacity}, {state}, {queued} queued",
+  "@executionValueChannel": {
+    "placeholders": {
+      "identity": {
+        "type": "int"
+      },
+      "capacity": {
+        "type": "int"
+      },
+      "state": {
+        "type": "String"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "executionChannelOpen": "open",
+  "executionChannelClosed": "closed",
   "executionLoadMoreValues": "Load next page",
-  "executionChannelStateUnavailable": "Channels are shown by number; their queue contents are not available.",
+  "executionChannelStateUnavailable": "Each channel shows its state and how many elements it holds; the elements themselves are not published.",
   "executionHistoryEmpty": "Step through a program with Tasks to see here how they share the work.",
   "executionObservationUnavailable": "Execution observation is unavailable for this session.",
   "executionHistoryError": "The selected event or range is outside retained history or could not be read.",

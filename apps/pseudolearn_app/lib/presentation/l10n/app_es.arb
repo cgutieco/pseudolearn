@@ -288,8 +288,27 @@
       }
     }
   },
+  "executionValueChannel": "Canal {identity}: capacidad {capacity}, {state}, {queued} en cola",
+  "@executionValueChannel": {
+    "placeholders": {
+      "identity": {
+        "type": "int"
+      },
+      "capacity": {
+        "type": "int"
+      },
+      "state": {
+        "type": "String"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "executionChannelOpen": "abierto",
+  "executionChannelClosed": "cerrado",
   "executionLoadMoreValues": "Cargar página siguiente",
-  "executionChannelStateUnavailable": "Los canales se muestran por su número; el contenido de su cola no está disponible.",
+  "executionChannelStateUnavailable": "Cada canal muestra su estado y cuántos elementos tiene en cola; los elementos en sí no se publican.",
   "executionHistoryEmpty": "Ejecuta paso a paso un programa con Tareas para ver aquí cómo se reparten el trabajo.",
   "executionObservationUnavailable": "La observación de la ejecución no está disponible en esta sesión.",
   "executionHistoryError": "El evento o el rango seleccionado venció del historial o no se pudo leer.",

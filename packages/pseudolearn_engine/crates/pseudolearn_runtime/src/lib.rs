@@ -205,8 +205,8 @@ mod task_channel;
 mod task_failure;
 mod wait_queue;
 pub use task_channel::{
-    ChannelError, ChannelReply, ChannelStep, TaskChannels, buffered_slot, channel_values,
-    pending_values, take_buffer_change,
+    ChannelError, ChannelReply, ChannelSnapshot, ChannelStep, TaskChannels, buffered_slot,
+    channel_values, pending_values, take_buffer_change,
 };
 pub use task_failure::{TaskFailure, TaskFailures};
 #[cfg(test)]

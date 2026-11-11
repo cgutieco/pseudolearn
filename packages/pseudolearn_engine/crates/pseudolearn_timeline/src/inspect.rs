@@ -179,11 +179,26 @@ fn decode_reference_value(machine: &Machine, handle_word: u32) -> VariableValue 
             identity_ordinal: ordinal,
             dimensions,
         }
+    } else if let Some(channel) = decode_channel(machine, handle) {
+        channel
     } else if let Ok(content) = pseudolearn_runtime::text_content(heap, handle) {
         VariableValue::Text(content.to_string())
     } else {
         VariableValue::NullReference
     }
+}
+
+fn decode_channel(machine: &Machine, handle: Handle) -> Option<VariableValue> {
+    let identity =
+        pseudolearn_runtime::channel_references::channel_identity(machine.heap(), handle).ok()?;
+    let snapshot = machine.channel_snapshot(identity)?;
+    Some(VariableValue::ChannelReference {
+        handle_word: handle.0,
+        identity,
+        capacity: u64::try_from(snapshot.capacity).unwrap_or(u64::MAX),
+        open: !snapshot.closed,
+        queued: u64::try_from(snapshot.queued).unwrap_or(u64::MAX),
+    })
 }
 
 pub(crate) fn decode_field_value(

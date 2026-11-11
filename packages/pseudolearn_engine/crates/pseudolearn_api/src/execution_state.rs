@@ -49,6 +49,18 @@ pub(crate) fn value(value: &VariableValue) -> Value {
             identity_ordinal, ..
         } => json!({"ref":identity_ordinal}),
         VariableValue::NullReference => json!({"nulo":true}),
+        VariableValue::ChannelReference {
+            identity,
+            capacity,
+            open,
+            queued,
+            ..
+        } => json!({"canal":{
+            "identidad":identity,
+            "capacidad":capacity,
+            "abierto":open,
+            "en_cola":queued,
+        }}),
         other => json!({"valor":display_value(other)}),
     }
 }
@@ -73,6 +85,7 @@ fn display_value(value: &VariableValue) -> String {
         VariableValue::ArrayReference {
             identity_ordinal, ..
         } => format!("arreglo({identity_ordinal})"),
+        VariableValue::ChannelReference { identity, .. } => format!("canal({identity})"),
         VariableValue::NullReference => "nulo".to_owned(),
     }
 }

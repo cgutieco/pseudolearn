@@ -23,10 +23,15 @@ pub(crate) fn components(session: &mut AnalysisSession<'_>, local: LocalId, reco
         return;
     };
     let mut identifiers = Vec::new();
+    let channel = session.module.channels.contains_key(&record);
     for (leaf_type, leaf_name) in model.leaf_types.iter().zip(&model.leaf_names) {
         let identifier = LocalId(u32::try_from(session.module.locals.len()).unwrap_or(u32::MAX));
         session.module.locals.push(HirLocal {
-            name: format!("{}.{leaf_name}", parent.name),
+            name: if channel {
+                parent.name.clone()
+            } else {
+                format!("{}.{leaf_name}", parent.name)
+            },
             type_id: *leaf_type,
             passing: parent.passing,
             span: parent.span,

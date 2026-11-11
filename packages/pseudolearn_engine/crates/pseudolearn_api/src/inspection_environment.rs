@@ -56,7 +56,8 @@ fn capture_value(
             RuntimeValue::Reference(0)
         }
         VariableValue::ArrayReference { handle_word, .. }
-        | VariableValue::ObjectReference { handle_word, .. } => {
+        | VariableValue::ObjectReference { handle_word, .. }
+        | VariableValue::ChannelReference { handle_word, .. } => {
             RuntimeValue::Reference(handle_word)
         }
         VariableValue::NullReference => RuntimeValue::Reference(0),

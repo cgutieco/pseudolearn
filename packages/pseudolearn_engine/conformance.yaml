@@ -2537,6 +2537,11 @@
       "estado": "cumple"
     },
     {
+      "regla": "API.STATE.QUERY@1.0.0#R9",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
       "regla": "API.MODEL@1.0.0#R7",
       "verificacion": "ejecutor",
       "estado": "cumple"
