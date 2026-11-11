@@ -124,18 +124,24 @@ RustEngineServices buildRustEngineServices(
     programExporter: RustProgramExporter(transport),
     exerciseChecker: RustExerciseChecker(
       behaviour: BehaviourChecker(
-        execution: RustProgramExecution(transport),
+        execution: _containedExecution(transport),
         analyzer: analyzer,
       ),
       structure: RustStructuralAssertionChecker(transport),
     ),
     routeEvaluators: buildRouteEvaluators(
-      execution: RustProgramExecution(transport),
+      execution: _containedExecution(transport),
       analyzer: analyzer,
     ),
     programTools: _programTools(transport, analyzer),
   );
 }
+
+RustProgramExecution _containedExecution(RustTransport transport) =>
+    RustProgramExecution(
+      transport,
+      effectPolicy: const RustEffectPolicy.contained(),
+    );
 
 ProgramExecutionSession _observableSession(
   RustTransport transport,

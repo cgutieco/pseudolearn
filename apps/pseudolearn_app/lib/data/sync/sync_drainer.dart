@@ -2,6 +2,7 @@ import '../../domain/ports/auth_gateway.dart';
 import '../../domain/ports/clock.dart';
 import '../../domain/ports/document_repository.dart';
 import '../../domain/ports/identifier_generator.dart';
+import '../../domain/ports/local_account_data_purger.dart';
 import '../../domain/ports/progress_sync_store.dart';
 import '../../domain/ports/remote_document_store.dart';
 import '../../domain/ports/remote_progress_store.dart';
@@ -19,6 +20,7 @@ final class SyncDrainer implements SyncCoordinator {
   final ProgressSyncDrainer? _progressDrainer;
   final UserExerciseSyncDrainer? _exerciseDrainer;
   final SyncMetadataStore _metadataStore;
+  final LocalAccountDataPurger? _accountDataPurger;
   final Clock _clock;
 
   SyncDrainer({
@@ -32,7 +34,9 @@ final class SyncDrainer implements SyncCoordinator {
     RemoteProgressStore? remoteProgressStore,
     ProgressSyncStore? progressSyncStore,
     UserExerciseSyncDrainer? exerciseDrainer,
+    LocalAccountDataPurger? accountDataPurger,
   })  : _authGateway = authGateway,
+        _accountDataPurger = accountDataPurger,
         _exerciseDrainer = exerciseDrainer,
         _metadataStore = metadataStore,
         _clock = clock,
@@ -58,6 +62,8 @@ final class SyncDrainer implements SyncCoordinator {
     final session = await _authGateway.restoreSession();
     if (session == null) return SyncDrainOutcome.unauthenticated;
 
+    if (!await _claimLocalDataFor(session.userId)) return SyncDrainOutcome.failure;
+
     final docPullOk = await _documentDrainer.drainPull();
     if (!docPullOk) return SyncDrainOutcome.failure;
 
@@ -79,6 +85,18 @@ final class SyncDrainer implements SyncCoordinator {
 
     await _metadataStore.setGlobalState(lastSyncAt: _clock.now());
     return SyncDrainOutcome.success;
+  }
+
+  Future<bool> _claimLocalDataFor(String userId) async {
+    final owner = await _metadataStore.getOwnerUserId();
+    if (owner == userId) return true;
+    if (owner != null) {
+      final purger = _accountDataPurger;
+      if (purger == null) return false;
+      await purger.purgeAccountData();
+    }
+    await _metadataStore.setOwnerUserId(userId);
+    return true;
   }
 
   Future<bool> _drainExercises() async {

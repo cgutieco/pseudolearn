@@ -24,6 +24,8 @@ final class SyncGlobalState {
 }
 
 final class SyncMetadataStore {
+  static const String _ownerKey = 'owner_user_id';
+
   final Database _database;
 
   const SyncMetadataStore(this._database);
@@ -52,6 +54,28 @@ final class SyncMetadataStore {
       cursor: cursor,
       progressCursor: progressCursor,
       lastSyncAt: lastSyncAt,
+    );
+  }
+
+  Future<String?> getOwnerUserId() async {
+    final rows = await _database.query(
+      IndexSchema.syncStateTableName,
+      where: '${IndexSchema.columnKey} = ?',
+      whereArgs: [_ownerKey],
+      limit: 1,
+    );
+    if (rows.isEmpty) return null;
+    return rows.first[IndexSchema.columnValue] as String?;
+  }
+
+  Future<void> setOwnerUserId(String userId) async {
+    await _database.insert(
+      IndexSchema.syncStateTableName,
+      {
+        IndexSchema.columnKey: _ownerKey,
+        IndexSchema.columnValue: userId,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 

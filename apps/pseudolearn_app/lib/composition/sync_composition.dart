@@ -71,7 +71,12 @@ SyncServices buildSyncServices({
   final queue = SqliteSyncQueue(index.database);
   final remoteProgressStore = SupabaseProgressStore(client: client);
   final userExercises = SqfliteUserExerciseRepository(index.database, clock: clock);
+  final accountDataPurger = LocalAccountDataPurgerAdapter(
+    database: index.database,
+    documentsDirectory: documentsDirectory,
+  );
   final drainer = _buildSyncDrainer(
+    accountDataPurger: accountDataPurger,
     exerciseDrainer: _exerciseDrainer(index, client, userExercises),
     index: index,
     authGateway: authGateway,
@@ -88,15 +93,13 @@ SyncServices buildSyncServices({
     connectivity: ConnectivityMonitorAdapter(),
     coordinator: drainer,
     repository: SyncingDocumentRepository(inner: fileRepo, queue: queue, identifiers: identifiers, clock: clock),
-    accountDataPurger: LocalAccountDataPurgerAdapter(
-      database: index.database,
-      documentsDirectory: documentsDirectory,
-    ),
+    accountDataPurger: accountDataPurger,
     userExercises: userExercises,
   );
 }
 
 SyncDrainer _buildSyncDrainer({
+  required LocalAccountDataPurger accountDataPurger,
   required UserExerciseSyncDrainer exerciseDrainer,
   required MetadataIndex index,
   required AuthGateway authGateway,
@@ -118,6 +121,7 @@ SyncDrainer _buildSyncDrainer({
     remoteProgressStore: remoteProgressStore,
     progressSyncStore: SqliteProgressSyncStore(index.database),
     exerciseDrainer: exerciseDrainer,
+    accountDataPurger: accountDataPurger,
   );
 }
 

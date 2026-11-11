@@ -162,13 +162,23 @@ Decisiones que salen de una auditoría de seguridad del 2026-11-10.
 
 **Pendientes declarados**
 
-- Los evaluadores de ejercicios y de ruta (`exerciseChecker`, `routeEvaluators`) siguen ejecutando con efectos reales.
-  Las lecciones de la Parte «exterior» usan archivos y red, así que contenerlos exige decidir antes qué efectos simula
-  cada caso. Queda para una auditoría propia.
-- La cola de sincronización y su cursor no guardan a qué usuario pertenecen. Cambiar de cuenta empuja las ediciones
-  pendientes de la cuenta anterior a la nueva.
-- `NSAllowsArbitraryLoads` en iOS existe para que los programas lleguen a servicios locales; conviene acotarlo a
-  `NSAllowsLocalNetworking`.
+- `NSAllowsArbitraryLoads` en iOS se conserva. Los efectos de red de los programas los resuelve `hyper` sobre sockets
+  en el anfitrión nativo (`pseudolearn_host`) y el resto de la app usa `dart:io`, ninguno `NSURLSession`; por eso App
+  Transport Security no gobierna esas conexiones y acotar la excepción a `NSAllowsLocalNetworking` no debería cambiar
+  su comportamiento. No se hizo porque la prueba `platform_host_configuration_test.dart` fija el valor como decisión
+  de la persona (D-08) y falta verificarlo en un dispositivo iOS con un servicio `http://` local y otro público.
+
+**Efectos en los evaluadores.** `exerciseChecker` y `routeEvaluators` ejecutan con `RustEffectPolicy.contained()`:
+solo admiten consola, argumentos, reloj y espera; cualquier otra operación recibe `permiso_denegado` sin llegar al
+anfitrión. Ningún ejercicio publicado necesita archivos ni red (los de la Parte «exterior» operan sobre texto, JSON y
+estados ya construidos), y un caso que espere el efecto real no pasa; `exercise_effect_containment_test.dart` lo fija.
+
+**Propietario de la sincronización.** `sync_state` guarda `owner_user_id`. Antes de cada vaciado, `SyncDrainer`
+compara la sesión con ese propietario: la primera cuenta que sincroniza lo adopta; si la sesión es de otra cuenta se
+purga todo el estado local con `LocalAccountDataPurger` (cola, cursores, índice, ejercicios y archivos) antes de
+adoptarla, porque empujar las ediciones pendientes de la cuenta anterior a la nueva las filtraría; sin purgador
+inyectado el vaciado falla cerrado. Los datos locales anteriores a esta columna se atribuyen a la primera cuenta que
+sincronice.
 
 ## iPhone Duo y ventanas que cambian de tamaño
 
