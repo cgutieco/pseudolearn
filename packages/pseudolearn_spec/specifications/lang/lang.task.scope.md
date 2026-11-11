@@ -837,7 +837,7 @@
   "clase": "ejecucion",
   "texto": "Una trampa en cualquier hija termina globalmente como failed sin ejecutar limpiezas pendientes.",
   "verificacion": [
-    "C21"
+    "C35"
   ]
 }
 ```
@@ -1120,6 +1120,27 @@
   "espera": {
     "salida": "10\n11\n20\n21\n0\n",
     "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C35",
+  "regla": "R16",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "SubProceso Suspendible Idle()\nDefinir quiet Como Entero <- 1;\nFinSubProceso\nSubProceso Suspendible Crash()\nDiferir\nEscribir \"cleanup\";\nFinDiferir\nDefinir value Como Entero <- 5 % 0;\nFinSubProceso\nAlgoritmo P\nTareas\nLanzar Idle();\nLanzar Crash();\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Idle()\ndefine quiet as integer <- 1;\nendSubroutine\nsubroutine suspendable Crash()\ndefer\nwrite \"cleanup\";\nendDefer\ndefine value as integer <- 5 % 0;\nendSubroutine\nalgorithm P\ntasks\nspawn Idle();\nspawn Crash();\nendTasks\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "failed"
   }
 }
 ```

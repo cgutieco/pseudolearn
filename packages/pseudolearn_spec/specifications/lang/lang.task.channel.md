@@ -142,7 +142,7 @@
   "clase": "ejecucion",
   "texto": "Elegir emite statement_entered, decision de rama caso con índice textual ganador y statement_exited.",
   "verificacion": [
-    "C9"
+    "C22"
   ]
 }
 ```
@@ -646,3 +646,103 @@
 }
 ```
 
+```caso
+{
+  "id": "C22",
+  "regla": "R8",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nDefinir other Como Canal<Entero> <- Canal(1);\nDefinir sent Como Logico <- Aguardar other.Enviar(8);\nElegir\nRecibir first Desde stream:\nEscribir 1;\nRecibir second Desde other:\nEscribir 2;\nFinElegir\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine stream as channel<integer> <- channel(1);\ndefine other as channel<integer> <- channel(1);\ndefine sent as boolean <- await other.send(8);\nselect\nreceive first from stream:\nwrite 1;\nreceive second from other:\nwrite 2;\nendSelect\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "trace",
+  "espera": {
+    "salida": "2\n",
+    "terminacion": "completed",
+    "eventos": [
+      {
+        "clase": "statement_entered",
+        "linea": 2
+      },
+      {
+        "clase": "channel_created",
+        "linea": 2,
+        "datos": {
+          "capacity": 1,
+          "channel": 1
+        }
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 2
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 3
+      },
+      {
+        "clase": "channel_created",
+        "linea": 3,
+        "datos": {
+          "capacity": 1,
+          "channel": 2
+        }
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 3
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 4
+      },
+      {
+        "clase": "channel_sent",
+        "linea": 4,
+        "datos": {
+          "channel": 2
+        }
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 4
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 5
+      },
+      {
+        "clase": "decision",
+        "linea": 5,
+        "datos": {
+          "indice": 1,
+          "rama": "caso"
+        }
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 9
+      },
+      {
+        "clase": "output",
+        "linea": 9,
+        "datos": {
+          "texto": "2\n"
+        }
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 9
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 5
+      }
+    ]
+  }
+}
+```
