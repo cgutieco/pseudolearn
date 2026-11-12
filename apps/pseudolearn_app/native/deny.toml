@@ -11,7 +11,11 @@ ignore = true
 [bans]
 multiple-versions = "deny"
 skip = [
-    { crate = "syn@3.0.9" },
+    { crate = "syn@3.0.10" },
+    { crate = "getrandom@0.2.17" },
+    { crate = "block-buffer@0.10.4" },
+    { crate = "crypto-common@0.1.7" },
+    { crate = "digest@0.10.7" },
     { crate = "hashbrown@0.14.5" },
     { crate = "io-lifetimes@2.0.4" },
     { crate = "miniz_oxide@0.8.9" },
