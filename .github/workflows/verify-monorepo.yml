@@ -302,12 +302,14 @@ jobs:
           mkdir -p unpacked
           unzip -q -o .artifacts/pseudolearn-0.1.0-win32-x64.vsix -d unpacked
           python -I ../pseudolearn_cli/tool/verify_system_paths.py unpacked/extension/bin/win32-x64/pseudo.exe
+          cat .artifacts/pseudolearn-0.1.0-win32-x64.vsix.sha256 .artifacts/pseudolearn-0.1.0-win32-x64.vsix.json
 
       - name: Upload the VSIX and its record
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: pseudolearn-vscode-win32-x64
+          include-hidden-files: true
           path: |
             apps/pseudolearn_vscode/.artifacts/*.vsix
             apps/pseudolearn_vscode/.artifacts/*.vsix.json
