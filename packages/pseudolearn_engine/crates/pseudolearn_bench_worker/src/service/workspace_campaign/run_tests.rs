@@ -32,7 +32,7 @@ fn a_slow_clock_exceeds_the_diagnostic_threshold() -> Result<(), String> {
     let samples = run_case(&mut connect, &mut SteppingClock::new(150_000_000), &case, 3)?;
     let p95_millis = p95(&samples.candidate_millis).ok_or("no samples")?;
     assert_eq!(
-        within_threshold(Scenario::BodyEdit, p95_millis),
+        within_threshold(Scenario::BodyEdit, "files-10", p95_millis),
         Some(false)
     );
     Ok(())

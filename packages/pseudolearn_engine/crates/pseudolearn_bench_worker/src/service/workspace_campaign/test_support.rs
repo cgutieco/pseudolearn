@@ -8,6 +8,7 @@ pub const TINY_LOAD: Load = Load {
     name: "tiny",
     files: 3,
     lines_per_file: 9,
+    diagnostic_threshold_millis: 100.0,
 };
 
 pub struct SteppingClock {

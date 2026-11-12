@@ -42,8 +42,8 @@ pub fn p95(samples: &[f64]) -> Option<f64> {
     summarize(samples).map(|summary| summary.p95)
 }
 
-pub fn within_threshold(scenario: Scenario, p95_millis: f64) -> Option<bool> {
+pub fn within_threshold(scenario: Scenario, load: &str, p95_millis: f64) -> Option<bool> {
     scenario
-        .threshold_millis()
+        .threshold_millis(load)
         .map(|threshold| p95_millis <= threshold)
 }

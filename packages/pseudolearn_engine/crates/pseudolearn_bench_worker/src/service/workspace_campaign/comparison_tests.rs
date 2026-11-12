@@ -58,11 +58,44 @@ fn merge_keeps_the_latest_publication_per_file() {
 
 #[test]
 fn thresholds_are_100_ms_for_diagnostics_and_500_ms_for_rename() {
-    assert_eq!(within_threshold(Scenario::BodyEdit, 100.0), Some(true));
-    assert_eq!(within_threshold(Scenario::BodyEdit, 100.5), Some(false));
-    assert_eq!(within_threshold(Scenario::Rename, 499.0), Some(true));
-    assert_eq!(within_threshold(Scenario::Rename, 501.0), Some(false));
-    assert_eq!(within_threshold(Scenario::StaleSource, 1e9), None);
+    assert_eq!(
+        within_threshold(Scenario::BodyEdit, "files-10", 100.0),
+        Some(true)
+    );
+    assert_eq!(
+        within_threshold(Scenario::BodyEdit, "files-10", 100.5),
+        Some(false)
+    );
+    assert_eq!(
+        within_threshold(Scenario::Rename, "files-10", 499.0),
+        Some(true)
+    );
+    assert_eq!(
+        within_threshold(Scenario::Rename, "files-10", 501.0),
+        Some(false)
+    );
+    assert_eq!(
+        within_threshold(Scenario::StaleSource, "files-10", 1e9),
+        None
+    );
+}
+
+#[test]
+fn the_extended_load_scales_only_the_diagnostic_threshold() {
+    let load = "files-1000-extended";
+    assert_eq!(
+        within_threshold(Scenario::ClosedFileChange, load, 300.0),
+        Some(true)
+    );
+    assert_eq!(
+        within_threshold(Scenario::ClosedFileChange, load, 300.5),
+        Some(false)
+    );
+    assert_eq!(within_threshold(Scenario::Rename, load, 501.0), Some(false));
+    assert_eq!(
+        within_threshold(Scenario::BodyEdit, "unknown-load", 100.5),
+        Some(false)
+    );
 }
 
 #[test]

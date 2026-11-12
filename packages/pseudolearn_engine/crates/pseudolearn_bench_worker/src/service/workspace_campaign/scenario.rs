@@ -57,13 +57,15 @@ impl Scenario {
             .copied()
     }
 
-    pub fn threshold_millis(self) -> Option<f64> {
+    pub fn threshold_millis(self, load: &str) -> Option<f64> {
         match self {
             Scenario::Rename => Some(RENAME_THRESHOLD_MILLIS),
             Scenario::BodyEdit
             | Scenario::SignatureEdit
             | Scenario::ManifestChange
-            | Scenario::ClosedFileChange => Some(DIAGNOSTIC_THRESHOLD_MILLIS),
+            | Scenario::ClosedFileChange => {
+                Some(crate::service::workspace_campaign::loads::diagnostic_threshold(load))
+            }
             Scenario::WorkspaceLoad | Scenario::WorkspaceSymbol => None,
             _ => None,
         }

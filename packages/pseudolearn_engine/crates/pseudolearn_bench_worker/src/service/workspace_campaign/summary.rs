@@ -42,6 +42,7 @@ fn group_summary(key: &str, records: &[&Value]) -> Result<Value, String> {
     }
     let first = records.first().ok_or("empty group")?;
     let scenario = Scenario::from_name(text(first, "scenario")).ok_or("unknown scenario")?;
+    let load = text(first, "load");
     let candidate = p95(&pooled(records, "samples_ms")).ok_or("no samples")?;
     let control = p95(&pooled(records, "control_ms")).ok_or("no control samples")?;
     Ok(json!({
@@ -49,8 +50,8 @@ fn group_summary(key: &str, records: &[&Value]) -> Result<Value, String> {
         "processes": distinct(records, "process").len(),
         "candidate_p95_ms": candidate,
         "cold_control_p95_ms": control,
-        "threshold_ms": scenario.threshold_millis(),
-        "within_threshold": within_threshold(scenario, candidate),
+        "threshold_ms": scenario.threshold_millis(load),
+        "within_threshold": within_threshold(scenario, load, candidate),
     }))
 }
 
