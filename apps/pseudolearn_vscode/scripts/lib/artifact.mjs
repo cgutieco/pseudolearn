@@ -3,8 +3,29 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { basename } from "node:path";
 
-export function loadContract(root) {
-  return JSON.parse(readFileSync(`${root}/artifact.contract.json`, "utf8"));
+export const defaultTargetName = "darwin-arm64";
+
+export function hostTargetName(platform = process.platform, architecture = process.arch) {
+  return `${platform}-${architecture}`;
+}
+
+export function loadContract(root, targetName = defaultTargetName) {
+  const shared = JSON.parse(readFileSync(`${root}/artifact.contract.json`, "utf8"));
+  return selectTarget(shared, targetName);
+}
+
+export function selectTarget(shared, targetName) {
+  const declared = shared.targets[targetName];
+  if (!declared) throw new Error(`Unsupported VSIX target ${targetName}; qualified targets: ${Object.keys(shared.targets).join(", ")}.`);
+  const executable = `bin/${targetName}/${declared.executable}`;
+  return {
+    ...shared,
+    target: { vscodeTarget: targetName, ...declared },
+    artifactName: `pseudolearn-${shared.identity.version}-${targetName}.vsix`,
+    executable,
+    required: [...shared.required, executable],
+    allowedPrefixes: [`bin/${targetName}/`, ...shared.allowedPrefixes],
+  };
 }
 
 export function sha256(content) {

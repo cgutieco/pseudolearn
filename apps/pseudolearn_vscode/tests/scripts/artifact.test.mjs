@@ -7,6 +7,7 @@ import {
   bundleViolations,
   hashViolations,
   listingViolations,
+  hostTargetName,
   loadContract,
   manifestViolations,
   provenanceViolations,
@@ -38,6 +39,24 @@ describe("artifact contract", () => {
     expect(contract.target.vscodeTarget).toBe("darwin-arm64");
     expect(contract.hashAlgorithm).toBe("sha256");
     expect(contract.executable).toBe(`bin/${contract.target.vscodeTarget}/pseudo`);
+  });
+
+  it("derives the Windows x64 package with its own executable and binary prefix", () => {
+    const windows = loadContract(root, "win32-x64");
+    expect(windows.target.cargoTarget).toBe("x86_64-pc-windows-msvc");
+    expect(windows.executable).toBe("bin/win32-x64/pseudo.exe");
+    expect(windows.artifactName).toBe("pseudolearn-0.1.0-win32-x64.vsix");
+    expect(windows.required).toContain("bin/win32-x64/pseudo.exe");
+    expect(windows.required).not.toContain("bin/darwin-arm64/pseudo");
+    const listing = ["extension.vsixmanifest", ...windows.required.map((name) => `extension/${name}`)];
+    expect(listingViolations(listing, windows)).toEqual([]);
+    expect(listingViolations([...listing, "extension/bin/darwin-arm64/pseudo"], windows).length).toBe(1);
+  });
+
+  it("rejects an undeclared target and names the host target", () => {
+    expect(() => loadContract(root, "linux-x64")).toThrow("darwin-arm64, win32-x64");
+    expect(() => loadContract(root, "")).toThrow("Unsupported VSIX target");
+    expect(hostTargetName("win32", "x64")).toBe("win32-x64");
   });
 
   it("matches the extension manifest", () => {

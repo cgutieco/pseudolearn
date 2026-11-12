@@ -114,12 +114,12 @@ Desde esta carpeta.
 | Tests                                 | `pnpm test`                                                         |
 | Compilar el binario `pseudo` incluido | `pnpm build:cli`                                                    |
 | Bundle de escritorio                  | `pnpm build`                                                        |
-| VSIX de escritorio (`darwin-arm64`)   | `pnpm package`                                                      |
+| VSIX de escritorio del host           | `pnpm package` (`darwin-arm64` o `win32-x64`)                       |
 | VSIX web                              | `pnpm package:web`                                                  |
 | Escenarios en navegador               | `pnpm test:web`                                                     |
 | Contraste LSP escritorio/Wasm         | `pnpm test:lsp:contrast`                                            |
 | Depuración por stdio                  | `pnpm test:dap:stdio`                                               |
 | Prueba en VS Code real                | `node tests/host/run-host.mjs trusted` (o `restricted`)             |
 
-Requisitos: Node 22.23.3, pnpm 12.8.1; `build:cli` y `package` necesitan Cargo y un host `darwin-arm64`; `package:web`
+Requisitos: Node 22.23.3, pnpm 12.8.1; `build:cli` y `package` necesitan Cargo y un host `darwin-arm64` o `win32-x64`; `package:web`
 necesita además la cadena del motor para el Wasm.

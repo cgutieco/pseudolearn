@@ -6,6 +6,7 @@ import { provenancePath } from "./build-cli.mjs";
 import {
   bundleViolations,
   listingViolations,
+  hostTargetName,
   loadContract,
   manifestViolations,
   provenanceViolations,
@@ -19,11 +20,10 @@ const cliRoot = resolve(extensionRoot, "../../apps/pseudolearn_cli");
 const outputDirectory = resolve(extensionRoot, ".artifacts");
 
 export function packageLocalExtension(root = extensionRoot) {
-  const contract = loadContract(root);
-  assertQualifiedTarget(process.platform, process.arch);
+  const contract = assertQualifiedTarget(root, hostTargetName());
   assertProvenance(root, contract);
   runCommand("node", ["scripts/generate-grammar.mjs", "--check"], root);
-  writeThirdPartyNotices();
+  writeThirdPartyNotices(contract.target.cargoTarget);
   mkdirSync(outputDirectory, { recursive: true });
   const artifactPath = resolve(outputDirectory, contract.artifactName);
   runCommand("pnpm", ["exec", "vsce", "package", "--target", contract.target.vscodeTarget, "--no-dependencies", "--readme-path", contract.readme, "--out", artifactPath], root);
@@ -32,10 +32,8 @@ export function packageLocalExtension(root = extensionRoot) {
   return artifactPath;
 }
 
-export function assertQualifiedTarget(platform, architecture) {
-  if (platform !== "darwin" || architecture !== "arm64") {
-    throw new Error("The qualified VSIX target requires a darwin-arm64 host.");
-  }
+export function assertQualifiedTarget(root, targetName) {
+  return loadContract(root, targetName);
 }
 
 function assertProvenance(root, contract) {
@@ -93,20 +91,20 @@ function writeArtifactRecord(path, root, contract) {
   writeFileSync(`${path}.sha256`, `${record.sha256}  ${contract.artifactName}\n`);
 }
 
-function writeThirdPartyNotices() {
-  const packages = loadCliDependencyPackages();
+function writeThirdPartyNotices(cargoTarget) {
+  const packages = loadCliDependencyPackages(cargoTarget);
   const licenseTexts = collectLicenseTexts(packages);
-  const content = renderThirdPartyNotices(packages, licenseTexts);
+  const content = renderThirdPartyNotices(packages, licenseTexts, cargoTarget);
   writeFileSync(join(extensionRoot, "third-party-notices.md"), content);
 }
 
-function loadCliDependencyPackages() {
+function loadCliDependencyPackages(cargoTarget) {
   const metadata = JSON.parse(runCommand("cargo", [
     "metadata",
     "--locked",
     "--format-version=1",
     "--filter-platform",
-    "aarch64-apple-darwin",
+    cargoTarget,
     "--manifest-path",
     join(cliRoot, "Cargo.toml"),
   ], cliRoot));
@@ -128,7 +126,7 @@ function collectLicenseTexts(packages) {
   return licenseTexts;
 }
 
-function renderThirdPartyNotices(packages, licenseTexts) {
+function renderThirdPartyNotices(packages, licenseTexts, cargoTarget) {
   const packageRows = packages.map((packageInfo) => `| ${packageInfo.name} | ${packageInfo.version} | ${packageInfo.license} |`);
   const licenseSections = [...licenseTexts.values()].map((entry, index) =>
     `## Texto ${index + 1}: ${[...entry.names].sort().join(", ")}\n\n${entry.text.trimEnd()}`,
@@ -136,7 +134,7 @@ function renderThirdPartyNotices(packages, licenseTexts) {
   const content = [
     "# Avisos de terceros",
     "",
-    "El binario `pseudo` incluye dependencias de Cargo para `aarch64-apple-darwin`. Se enumeran los paquetes resueltos y se conservan los textos de licencia disponibles en sus fuentes. Las licencias SPDX se registran tal como las declaran los paquetes.",
+    `El binario \`pseudo\` incluye dependencias de Cargo para \`${cargoTarget}\`. Se enumeran los paquetes resueltos y se conservan los textos de licencia disponibles en sus fuentes. Las licencias SPDX se registran tal como las declaran los paquetes.`,
     "",
     "| Paquete | Versión | Licencia SPDX |",
     "| --- | --- | --- |",

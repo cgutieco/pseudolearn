@@ -1,7 +1,7 @@
 import { chmodSync, copyFileSync, existsSync, mkdirSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, isAbsolute, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { loadContract, sha256File } from "./lib/artifact.mjs";
+import { hostTargetName, loadContract, sha256File } from "./lib/artifact.mjs";
 import { run } from "./lib/run.mjs";
 
 const extensionRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -12,7 +12,7 @@ export function provenancePath(root) {
 }
 
 export function buildCli(root = extensionRoot) {
-  const contract = loadContract(root);
+  const contract = loadContract(root, hostTargetName());
   const binaryPath = resolve(root, contract.executable);
   mkdirSync(dirname(binaryPath), { recursive: true });
   const origin = copyBinary(contract, binaryPath);
@@ -45,7 +45,7 @@ function copyBinary(contract, binaryPath) {
     return "development-override";
   }
   run("cargo", ["build", "--locked", "--release", "--target", contract.target.cargoTarget], cliRoot);
-  copyFileSync(resolve(cliRoot, `target/${contract.target.cargoTarget}/release/pseudo`), binaryPath);
+  copyFileSync(resolve(cliRoot, `target/${contract.target.cargoTarget}/release/${contract.target.executable}`), binaryPath);
   return "cargo-release-locked";
 }
 

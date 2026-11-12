@@ -8,15 +8,21 @@
     "vscode": "^1.144.0",
     "node": "22.23.3"
   },
-  "target": {
-    "vscodeTarget": "darwin-arm64",
-    "cargoTarget": "aarch64-apple-darwin",
-    "platform": "darwin",
-    "architecture": "arm64"
+  "targets": {
+    "darwin-arm64": {
+      "cargoTarget": "aarch64-apple-darwin",
+      "platform": "darwin",
+      "architecture": "arm64",
+      "executable": "pseudo"
+    },
+    "win32-x64": {
+      "cargoTarget": "x86_64-pc-windows-msvc",
+      "platform": "win32",
+      "architecture": "x64",
+      "executable": "pseudo.exe"
+    }
   },
-  "artifactName": "pseudolearn-0.1.0-darwin-arm64.vsix",
   "readme": "marketplace/README.md",
-  "executable": "bin/darwin-arm64/pseudo",
   "grammar": "media/pseudolearn.tmLanguage.json",
   "languageConfiguration": "media/language-configuration.json",
   "bundle": "dist/extension.js",
@@ -28,12 +34,10 @@
     "NOTICE",
     "third-party-notices.md",
     "dist/extension.js",
-    "bin/darwin-arm64/pseudo",
     "media/pseudolearn.tmLanguage.json",
     "media/language-configuration.json"
   ],
   "allowedPrefixes": [
-    "bin/darwin-arm64/",
     "media/"
   ],
   "allowedFiles": [
