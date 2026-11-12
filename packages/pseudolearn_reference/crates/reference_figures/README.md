@@ -1,33 +1,55 @@
 # reference_figures
 
-## 1. Qué es y qué no es
+Renderiza las figuras SVG de los libros: valida el contrato, sustituye marcadores, aplica la paleta por roles y separa
+las capas por paso.
 
-Contrato y producción de figuras SVG: elementos y atributos permitidos, colores solo por rol con centinelas, familias `sans`/`mono`, textos solo desde cadenas, lexemas o fragmentos de código, `viewBox` de 340 de ancho y letra de 12 o más. Expande las piezas del kit (`caja`, `flecha`) y separa los grupos por paso en capas.
+**No hace:** no dibuja en pantalla ni elige el contenido de las figuras; recibe el SVG fuente y devuelve SVG neutral.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-`cargo test -p reference_figures` y `cargo clippy -p reference_figures --all-targets -- -D warnings` desde el miembro. No se despliega.
+```mermaid
+flowchart BT
+    model["crates/reference_model"] --> figures["crates/reference_figures"]
+    xml["roxmltree"] --> figures
+    figures --> resolve["crates/reference_resolve"]
+    figures --> cli["crates/reference_cli"]
+```
 
-## 3. Arquitectura y modelo del sistema
+## Arquitectura
 
-Importa `reference_model`; usa `roxmltree`. La dirección de dependencias está en `architecture.yaml` del miembro. `src/` implementa la capa; `tests/` refleja sus módulos.
+| Pieza          | Responsabilidad                                                                              |
+|----------------|----------------------------------------------------------------------------------------------|
+| `contract`     | Ancho fijo `FIGURE_WIDTH` (340), tamaño mínimo de letra 12, elementos y atributos permitidos |
+| `palette`      | Trece `ColorRole` con marcadores y las familias `IBMPlexSans` e `IBMPlexMono`                |
+| `placeholders` | `FigureContext` y la sustitución de marcadores de texto                                      |
+| `kit`          | Piezas de la figura: cajas y flechas                                                         |
+| `steps`        | Atributos `data-paso` y `data-hasta`; `step_count`                                           |
+| `writer`       | `render_figure`: recorre el XML y emite `RenderedFigure` con sus `RenderedLayer`             |
 
-## 4. Decisiones de diseño y fundamentos técnicos
+## Flujo principal
 
-Problema: Flutter (`flutter_svg`) no admite `marker`, CSS ni `dominant-baseline`. Elección: el contrato los prohíbe y el kit dibuja las puntas de flecha como polígonos. Las capas por paso viajan aparte y el consumidor las añade antes de `</svg>`; publicar un SVG completo por paso multiplicaba el paquete por cinco.
+```mermaid
+flowchart LR
+    source["SVG fuente"] --> parse["XML"]
+    parse --> contract["contrato"]
+    contract --> layers["capas por paso"]
+    layers --> output["figura publicada"]
+```
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+Los incumplimientos devuelven una lista de `Violation`, no un SVG parcial.
 
-Reglas y límites en `architecture.yaml`; código en inglés sin comentarios ni `unsafe`.
+## Reglas que conviene saber
 
-## 6. Decisiones de producto que condicionan el código
+- Solo importa `reference_model`; dependencia externa única: `roxmltree`.
+- Una figura solo usa los elementos y atributos permitidos y colores como roles, no valores fijos.
+- Un tamaño de letra menor de 12 o un `viewBox` que no mide 340 de ancho se rechazan con `REF-FIGURE-NARROW`; el resto
+  de incumplimientos, con `REF-FIGURE-CONTRACT`.
 
-La persona lectora nunca ve identificadores del corpus; ver el README del miembro.
+## Comandos útiles
 
-## 7. Verificación, testing y aseguramiento de calidad
+| Para qué          | Comando                           |
+|-------------------|-----------------------------------|
+| Probar este crate | `cargo test -p reference_figures` |
+| Verificar todo    | `cargo xtask verify`              |
 
-Tests espejo con camino feliz, camino infeliz y casos límite; los casos negativos de cada verificador viven en `tests/`.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan del miembro y contrato del paquete descritos en el README del miembro.
+Requisitos: ejecutar desde `packages/pseudolearn_reference` con el Rust de `rust-toolchain.toml`.

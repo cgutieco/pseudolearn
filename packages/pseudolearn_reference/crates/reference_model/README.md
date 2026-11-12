@@ -1,35 +1,42 @@
 # reference_model
 
-## 1. Qué es y qué no es
+Vocabulario compartido de `pseudolearn_reference`: los documentos fuente (Especificación y ruta), las secciones,
+lecciones y ejercicios publicados, las violaciones `REF-*` y `RUTA-*` y el puerto `CodeEngine`.
 
-Tipos de datos del compilador: documento fuente, bloques, fragmentos en línea, sección publicada, violaciones con ID estable y el puerto `CodeEngine` hacia el motor. No lee archivos ni ejecuta nada.
+**No hace:** no lee archivos, no ejecuta código ni verifica nada; solo define tipos y su serialización.
 
-Incluye el modelo de la ruta de aprendizaje: cabeceras de lección y ejercicio, cercas de datos de ejercicio, lección y ejercicio publicados, evaluación por tipo y las ejecuciones que el verificador juzga.
+## Dónde encaja
 
-## 2. Guía operativa y ciclo de vida
+```mermaid
+flowchart BT
+    serde["serde"] --> model["crates/reference_model"]
+    model --> format["crates/reference_format"]
+    model --> others["los otros ocho crates de librería"]
+    model --> cli["crates/reference_cli"]
+```
 
-`cargo test -p reference_model` y `cargo clippy -p reference_model --all-targets -- -D warnings` desde el miembro. No se despliega.
+## Arquitectura
 
-## 3. Arquitectura y modelo del sistema
+| Grupo                                                        | Contenido                                                                                 |
+|--------------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| Fuente: `source_*`, `route_source`, `route_header`, `header` | Documentos, bloques, programas, figuras, cabeceras y `Profile` (`es` y `en`)              |
+| Publicado: `published*`, `route_published`, `route_exercise` | Secciones, programas con ejecuciones, lecciones y ejercicios tal como se escriben en JSON |
+| `violation`                                                  | `RuleId` (códigos serializados como `REF-FORMAT`, `RUTA-ANATOMY`…) y `Violation`          |
+| `engine_port`, `program_view`                                | Rasgo `CodeEngine` y sus tipos de petición, informe y vista del programa                  |
+| `route_check`, `category`, `callout`, `section_kind`         | Comprobaciones de la ruta, categorías de ficha, tipos de llamada y de sección             |
 
-Ninguna capa interna; solo `serde` para serializar el paquete. La dirección de dependencias está en `architecture.yaml` del miembro. `src/` implementa la capa; `tests/` refleja sus módulos.
+## Reglas que conviene saber
 
-## 4. Decisiones de diseño y fundamentos técnicos
+- Única dependencia: `serde` (con `serde_json` solo en pruebas); `architecture.yaml` permite `serde` y `serde_json`.
+- `CodeEngine` es el único punto por el que el resto del miembro toca el motor; su implementación vive en
+  `reference_engine`.
+- Ningún tipo de este crate hace entrada o salida.
 
-Problema: el resto de capas necesita hablar el mismo idioma sin depender del motor. Elección: el puerto `CodeEngine` (tokenizar, traducir, ejecutar, representación intermedia y huella) vive aquí y lo implementa `reference_engine`; así resolución y verificación se prueban con motores falsos. Los tokens se serializan como pares `[texto, categoría]` para reducir el paquete a la mitad frente a objetos con claves; se descartó un formato binario porque Flutter y Astro leen JSON sin dependencias.
+## Comandos útiles
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+| Para qué          | Comando                         |
+|-------------------|---------------------------------|
+| Probar este crate | `cargo test -p reference_model` |
+| Verificar todo    | `cargo xtask verify`            |
 
-Reglas y límites en `architecture.yaml`; código en inglés sin comentarios ni `unsafe`.
-
-## 6. Decisiones de producto que condicionan el código
-
-La persona lectora nunca ve identificadores del corpus; ver el README del miembro.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-Tests espejo con camino feliz, camino infeliz y casos límite; los casos negativos de cada verificador viven en `tests/`.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan del miembro y contrato del paquete descritos en el README del miembro.
+Requisitos: ejecutar desde `packages/pseudolearn_reference` con el Rust de `rust-toolchain.toml`.

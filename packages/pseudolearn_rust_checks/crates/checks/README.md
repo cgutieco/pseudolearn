@@ -1,44 +1,52 @@
 # pseudolearn_checks
 
-## 1. Qué es y qué no es
+Los verificadores: un módulo por regla mecánica de calidad, más la comprobación declarativa de capas y la de versión de
+Rust. Cada uno recibe las reglas del miembro y devuelve `Violation`.
 
-Capa checks del verificador; no implementa el motor PseudoLearn.
+**No hace:** no tiene interfaz de línea de comandos ni imprime; eso es de `pseudolearn_check_command`.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-Desde el workspace: `cargo test -p pseudolearn_checks` y `cargo xtask verify`.
-Rust se fija en el archivo de cadena del workspace. No se publica.
+```mermaid
+flowchart BT
+    model["crates/model"] --> checks["crates/checks"]
+    source["crates/source"] --> checks
+    syn["syn, proc-macro2, serde_json"] --> checks
+    checks --> command["crates/command"]
+```
 
-## 3. Arquitectura y modelo del sistema
+## Arquitectura
 
-`src/` contiene esta capa; `tests/` refleja módulos públicos. Dependencias permitidas en
-`architecture.yaml` del workspace. Ningún import hacia capas externas no declaradas.
+| Módulo       | Qué verifica                                                                                                        | Reglas                                            |
+|--------------|---------------------------------------------------------------------------------------------------------------------|---------------------------------------------------|
+| `layers`     | Cada crate de `cargo metadata` está declarado y solo depende de lo permitido; `declarative` lo hace sin manifiestos | `LAYER-DECLARED`, `LAYER-DIRECTION`, `SPEC-FIRST` |
+| `isolation`  | Paquetes y características alcanzables con `cargo tree` por destino                                                 | `LAYER-DIRECTION`                                 |
+| `comments`   | Comentarios y atributos `doc`                                                                                       | `QUALITY-NO-COMMENTS`                             |
+| `attributes` | `allow` y `expect`, incluso dentro de `cfg_attr`                                                                    | `QUALITY-NO-COMMENTS`                             |
+| `names`      | Longitud mínima y componentes o archivos prohibidos                                                                 | `QUALITY-SEMANTIC-NAMES`                          |
+| `limits`     | Líneas por archivo y función, parámetros, anidación y métodos públicos                                              | `SIZE-*`                                          |
+| `safety`     | `unsafe` solo en capas permitidas, en funciones breves y con fila en la tabla del README                            | `QUALITY-UNSAFE-INVARIANT`                        |
+| `toolchain`  | Todos los `rust-toolchain.toml` de un árbol fijan la misma versión exacta                                           |                                                   |
 
-## 4. Decisiones de diseño y fundamentos técnicos
+`verify("all", …)` ejecuta los siete primeros; `toolchain` va aparte.
 
-Problema: separar contratos de infraestructura. Elección: crate independiente para checks.
-El módulo declarative valida capas documentadas sin manifiestos, rechazando fuentes prematuras y
-dependencias inexistentes; sus pruebas incluyen carpeta huérfana y README ausente.
-Alternativa descartada: crate monolítico que permita saltarse las fronteras al importar módulos.
+## Reglas que conviene saber
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+- Importa `pseudolearn_check_model` y `pseudolearn_check_source`; dependencias externas: `syn`, `proc-macro2` y
+  `serde_json`.
+- Un fallo esperable es una `Violation`; un `Err` solo significa que la configuración o la lectura son inválidas.
+- `safety` lee el `README.md` de cada capa: el archivo debe existir y, si la capa tiene `unsafe`, contener la tabla
+  «Invariantes de `unsafe`» con una fila por función, en ambos sentidos.
+- `layers` en modo `declarative` exige un `README.md` por capa declarada y rechaza carpetas de crate no declaradas.
+- Los fixtures de `fixtures/` son violaciones deliberadas y se prueban como casos negativos.
 
-Código inglés, cero comentarios, sin unsafe ni pánicos explícitos. Límites en las reglas del workspace.
+## Comandos útiles
 
-## 6. Decisiones de producto que condicionan el código
+| Para qué                  | Comando                                                                       |
+|---------------------------|-------------------------------------------------------------------------------|
+| Probar este crate         | `cargo test -p pseudolearn_checks`                                            |
+| Aplicar un verificador    | `cargo run -p pseudolearn_check_command --bin rust-checks -- names <miembro>` |
+| Verificar todo el paquete | `cargo xtask verify`                                                          |
 
-Habilita verificadores, sin código del motor ni del sistema see.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-Tests válidos e inválidos, formato, Clippy y verificadores mediante `cargo xtask verify`.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Cargo define la frontera de compilación; la política de capas pertenece a PseudoLearn.
-
-Los negativos de depuración cargan las reglas vigentes de servicio y CLI en fixtures Cargo aislados: rechazan servicio → VM/API y CLI → VM/timeline, y aceptan CLI → API pública. Las dependencias deliberadas son datos de prueba fuera del producto; ningún test altera los manifiestos reales.
-
-La regla isolation inspecciona paquetes y features alcanzables del grafo normal y de build. Una
-restricción package/feature falla solo cuando esa feature está habilitada, sin rechazar una feature
-meramente declarada. El caso negativo prueba activación y ausencia sobre el mismo fixture.
+Requisitos: ejecutar desde `packages/pseudolearn_rust_checks` con el Rust de `rust-toolchain.toml`; `layers` e
+`isolation` necesitan `cargo` en el `PATH`.

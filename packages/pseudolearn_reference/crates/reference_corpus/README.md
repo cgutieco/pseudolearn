@@ -1,33 +1,43 @@
 # reference_corpus
 
-## 1. Qué es y qué no es
+Vista de solo lectura del corpus de especificaciones: léxico, especificaciones con sus reglas y huellas, diagnósticos,
+fichas, funciones y producciones de la gramática, leídos del `export.json`.
 
-Lectura de la exportación `see-export/1` como dato: léxico bilingüe (palabras reservadas, contextuales, funciones y operaciones de capacidad), especificaciones con la huella de cada regla, diagnósticos, fichas de ayuda y producciones de la gramática.
+**No hace:** no define el lenguaje ni lee archivos; recibe el texto de la exportación ya cargado.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-`cargo test -p reference_corpus` y `cargo clippy -p reference_corpus --all-targets -- -D warnings` desde el miembro. No se despliega.
+```mermaid
+flowchart BT
+    export["packages/pseudolearn_spec<br/>specifications/export.json"] -.-> corpus["crates/reference_corpus"]
+    model["crates/reference_model"] --> corpus
+    corpus --> resolve["crates/reference_resolve"]
+    corpus --> verify["crates/reference_verify"]
+    corpus --> cli["crates/reference_cli"]
+```
 
-## 3. Arquitectura y modelo del sistema
+La línea punteada es un dato, no una dependencia: lo lee `reference_cli` y se lo entrega a `Corpus::from_export`.
 
-Importa `reference_model`; usa `serde_json` y `sha2`. La dirección de dependencias está en `architecture.yaml` del miembro. `src/` implementa la capa; `tests/` refleja sus módulos.
+## Arquitectura
 
-## 4. Decisiones de diseño y fundamentos técnicos
+| Pieza                        | Responsabilidad                                                                    |
+|------------------------------|------------------------------------------------------------------------------------|
+| `Corpus`                     | `from_export`, `rule_exists` y `anchor_digest`; guarda también la huella del texto |
+| `lexicon`, `lexicon_loading` | Léxico por familia (reservada, contextual, función, operación) y `fold`            |
+| `specifications`             | `SpecificationEntry` y `anchor_parts` para separar especificación y regla          |
+| `catalogs`                   | Fichas, diagnósticos, funciones y producciones                                     |
 
-Problema: el compilador no debe copiar a mano nada que el corpus ya define (`GEN-NO-HAND-COPY`). Elección: todas las tablas salen de la exportación y la huella de una regla es el SHA-256 de su bloque serializado, que alimenta el candado de anclas. Las búsquedas de lexemas pliegan mayúsculas y tildes igual que el motor.
+## Reglas que conviene saber
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+- Solo importa `reference_model`; dependencias externas: `serde`, `serde_json` y `sha2` (`architecture.yaml`).
+- Un `export.json` sin la clave `resources` devuelve error; no se supone un corpus vacío.
+- El corpus es la fuente de verdad del lenguaje: este crate no añade ni corrige entradas.
 
-Reglas y límites en `architecture.yaml`; código en inglés sin comentarios ni `unsafe`.
+## Comandos útiles
 
-## 6. Decisiones de producto que condicionan el código
+| Para qué          | Comando                          |
+|-------------------|----------------------------------|
+| Probar este crate | `cargo test -p reference_corpus` |
+| Verificar todo    | `cargo xtask verify`             |
 
-La persona lectora nunca ve identificadores del corpus; ver el README del miembro.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-Tests espejo con camino feliz, camino infeliz y casos límite; los casos negativos de cada verificador viven en `tests/`.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan del miembro y contrato del paquete descritos en el README del miembro.
+Requisitos: ejecutar desde `packages/pseudolearn_reference` con el Rust de `rust-toolchain.toml`.

@@ -1,35 +1,48 @@
 # reference_verify
 
-## 1. Qué es y qué no es
+Verificadores de los libros: reglas `REF-*` de la Especificación, reglas `RUTA-*` de la ruta, el candado de anclas y la
+medición de cobertura contra el corpus.
 
-Verificadores del libro: ejemplos prometidos frente a ejecutados, anclas válidas y candado, anatomía por tipo de sección, paridad entre idiomas, palabras reservadas fuera de código, identificadores internos publicados, enlaces y cobertura del corpus.
+**No hace:** no lee archivos, no escribe paquetes ni resuelve contenido; recibe documentos ya leídos y devuelve
+`Violation`.
 
-Incluye los verificadores `RUTA-*` de la ruta de aprendizaje, en módulos `route_*`, y la normalización de salidas que comparte con la app.
+## Dónde encaja
 
-## 2. Guía operativa y ciclo de vida
+```mermaid
+flowchart BT
+    model["crates/reference_model"] --> verify["crates/reference_verify"]
+    corpus["crates/reference_corpus"] --> verify
+    format["crates/reference_format"] --> verify
+    verify --> cli["crates/reference_cli"]
+```
 
-`cargo test -p reference_verify` y `cargo clippy -p reference_verify --all-targets -- -D warnings` desde el miembro. No se despliega.
+## Arquitectura
 
-## 3. Arquitectura y modelo del sistema
+| Pieza                                                                   | Responsabilidad                                                                           |
+|-------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| `anchors`                                                               | `check_anchors`, `check_lock`, `build_lock` y `AnchorLock`                                |
+| `anatomy`, `parity`, `inline_code`, `internal_ids`, `links`, `examples` | Reglas `REF-*` sobre la Especificación                                                    |
+| `coverage`, `coverage_items`                                            | `measure_coverage`: léxico, fichas, diagnósticos y especificaciones cubiertos             |
+| `route_*`                                                               | Reglas `RUTA-*`: anatomía, términos, enlaces, mezcla de ejercicios, paridad y ejecuciones |
+| `program_parity`, `program_skeleton`                                    | Paridad estructural de los programas entre ediciones                                      |
+| `route_book`                                                            | `RouteBook`: lecciones, ejercicios y términos como una sola vista                         |
+| `source_walk`                                                           | Recorrido común de los bloques fuente                                                     |
 
-Importa `reference_model`, `reference_corpus` y, solo en pruebas, `reference_format`. La dirección de dependencias está en `architecture.yaml` del miembro. `src/` implementa la capa; `tests/` refleja sus módulos.
+## Reglas que conviene saber
 
-## 4. Decisiones de diseño y fundamentos técnicos
+- Importa `reference_model`, `reference_corpus` y `reference_format`; dependencias externas: `serde`, `serde_json` y
+  `sha2` (`architecture.yaml`).
+- La cobertura mide los prefijos `LANG.`, `LIB.`, `ENG.`, `MEM.` y `RT.`; las exclusiones se leen de
+  `coverage-exclusions.json`, y cada una lleva su motivo.
+- Las aserciones estructurales de un ejercicio (`route_structure`) se contrastan con la vista del programa de la
+  solución de referencia, que obtiene `route_resolve`.
 
-Problema: sin medición la especificación vuelve a desactualizarse. Elección: cada regla tiene un ID estable y un caso negativo. La paridad compara la estructura (encabezados, programas, figuras, formas, anatomías y recuadros), no el texto. La regla de código en línea solo marca palabras con mayúscula fuera del inicio de frase o con mayúscula interna, para no confundir el «Si» de una oración con la palabra reservada.
+## Comandos útiles
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+| Para qué               | Comando                                  |
+|------------------------|------------------------------------------|
+| Probar este crate      | `cargo test -p reference_verify`         |
+| Verificar ambos libros | `cargo run -p reference_cli -- check`    |
+| Ver la cobertura       | `cargo run -p reference_cli -- coverage` |
 
-Reglas y límites en `architecture.yaml`; código en inglés sin comentarios ni `unsafe`.
-
-## 6. Decisiones de producto que condicionan el código
-
-La persona lectora nunca ve identificadores del corpus; ver el README del miembro.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-Tests espejo con camino feliz, camino infeliz y casos límite; los casos negativos de cada verificador viven en `tests/`.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan del miembro y contrato del paquete descritos en el README del miembro.
+Requisitos: ejecutar desde `packages/pseudolearn_reference` con el Rust de `rust-toolchain.toml`.

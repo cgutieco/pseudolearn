@@ -1,36 +1,48 @@
 # pseudolearn_check_command
 
-## 1. Qué es y qué no es
+Binario `rust-checks`: recibe un verificador y la carpeta de un miembro, ejecuta `pseudolearn_checks` e imprime los
+hallazgos con su código de salida.
 
-Capa command del verificador; no implementa el motor PseudoLearn.
+**No hace:** no contiene reglas ni lógica de verificación; solo traduce argumentos y resultados.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-Desde el workspace: `cargo test -p pseudolearn_check_command` y `cargo xtask verify`.
-Rust se fija en el archivo de cadena del workspace. No se publica.
+```mermaid
+flowchart BT
+    checks["crates/checks"] --> command["crates/command"]
+    model["crates/model"] --> command
+    command --> xtasks["xtask de engine, spec, reference, ceiling y de este paquete"]
+```
 
-## 3. Arquitectura y modelo del sistema
+## Flujo principal
 
-`src/` contiene esta capa; `tests/` refleja módulos públicos. Dependencias permitidas en
-`architecture.yaml` del workspace. Ningún import hacia capas externas no declaradas.
+Flujo de ejecución, no de dependencias.
 
-## 4. Decisiones de diseño y fundamentos técnicos
+```mermaid
+flowchart LR
+    args["rust-checks verificador miembro"] --> run["pseudolearn_checks::verify"]
+    run --> print["ruta:línea REGLA mensaje"]
+    print --> exit["código de salida"]
+```
 
-Problema: separar contratos de infraestructura. Elección: crate independiente para command.
-Alternativa descartada: crate monolítico que permita saltarse las fronteras al importar módulos.
+Verificadores aceptados: `all`, `layers`, `isolation`, `comments`, `names`, `limits`, `unsafe`, `attributes` y
+`toolchain`. `toolchain` no imprime hallazgos: devuelve un error o éxito.
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+## Reglas que conviene saber
 
-Código inglés, cero comentarios, sin unsafe ni pánicos explícitos. Límites en las reglas del workspace.
+- Salida 0: sin violaciones; 1: hay violaciones; 2: argumentos incorrectos o configuración ilegible.
+- Exige exactamente dos argumentos; con otra cantidad imprime el uso y sale con 2.
+- Importa `pseudolearn_checks` y `pseudolearn_check_model`; no declara dependencias externas.
+- Los demás miembros lo invocan con
+  `--manifest-path ../pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command`.
 
-## 6. Decisiones de producto que condicionan el código
+## Comandos útiles
 
-Habilita verificadores, sin código del motor ni del sistema see.
+| Para qué                       | Comando                                                                          |
+|--------------------------------|----------------------------------------------------------------------------------|
+| Todos los verificadores        | `cargo run -p pseudolearn_check_command --bin rust-checks -- all <miembro>`      |
+| Uno solo                       | `cargo run -p pseudolearn_check_command --bin rust-checks -- comments <miembro>` |
+| Versión de Rust entre miembros | `cargo run -p pseudolearn_check_command --bin rust-checks -- toolchain <raíz>`   |
+| Binario de release             | `cargo build --release` (salida en `target/release/rust-checks`)                 |
 
-## 7. Verificación, testing y aseguramiento de calidad
-
-Tests válidos e inválidos, formato, Clippy y verificadores mediante `cargo xtask verify`.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Cargo define la frontera de compilación; la política de capas pertenece a PseudoLearn.
+Requisitos: ejecutar desde `packages/pseudolearn_rust_checks` con el Rust de `rust-toolchain.toml`.

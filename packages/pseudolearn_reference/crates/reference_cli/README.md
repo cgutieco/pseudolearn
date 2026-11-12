@@ -1,35 +1,65 @@
 # reference_cli
 
-## 1. Qué es y qué no es
+Binario `reference`: carga las fuentes y el corpus, compila ambos libros, ejecuta los verificadores y escribe o compara
+los paquetes de datos. Es el único crate del miembro que toca el disco.
 
-Binario `reference` con las órdenes `build`, `check`, `coverage` y `lock`.
+**No hace:** no define reglas ni formatos; los orquesta. No pinta ni se despliega.
 
-Carga, compila, verifica y publica los dos libros; `--out-ruta` cambia el destino del paquete de la ruta.
+## Dónde encaja
 
-## 2. Guía operativa y ciclo de vida
+```mermaid
+flowchart BT
+    spec["packages/pseudolearn_spec<br/>specifications/export.json"] --> cli["crates/reference_cli"]
+    engine["packages/pseudolearn_engine<br/>pseudolearn_api"] -.-> cli
+    libs["los otros nueve crates de librería"] --> cli
+    cli --> app["apps/pseudolearn_app<br/>assets/reference y assets/route"]
+    cli --> web["apps/pseudolearn_web<br/>entities/*/generated"]
+```
 
-`cargo test -p reference_cli` y `cargo clippy -p reference_cli --all-targets -- -D warnings` desde el miembro. No se despliega.
+La línea punteada es indirecta: el motor llega por `reference_engine`.
 
-## 3. Arquitectura y modelo del sistema
+## Arquitectura
 
-Importa todas las capas; es la única que lee y escribe archivos. La dirección de dependencias está en `architecture.yaml` del miembro. `src/` implementa la capa; `tests/` refleja sus módulos.
+| Pieza                                               | Responsabilidad                                                                       |
+|-----------------------------------------------------|---------------------------------------------------------------------------------------|
+| `commands`                                          | Argumentos, comandos `build`, `check`, `coverage` y `lock` y códigos de salida        |
+| `workspace`, `workspace_files`, `route_workspace`   | Lectura de `content/`, `route/`, `figures/`, `categories.json`, candado y exclusiones |
+| `book`, `route_book`                                | Compilación de ediciones y paquetes con el motor                                      |
+| `checks`, `route_checks`, `route_coverage`, `links` | Ejecución de verificadores y cobertura                                                |
+| `bundle_files`, `web_bundles`                       | Escritura y comparación de paquetes; ediciones web `es/es` y `en/en`                  |
 
-## 4. Decisiones de diseño y fundamentos técnicos
+## Flujo principal
 
-Problema: una construcción que publica contenido sin verificar repite el estado anterior. Elección: `build` solo escribe si no hay violaciones; `--borrador` existe para redactar y nunca se usa en verificación.
+Flujo de datos de `reference build`, no de dependencias.
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+```mermaid
+flowchart LR
+    load["cargar fuentes y corpus"] --> compile["compilar con el motor"]
+    compile --> verify["verificar"]
+    verify --> write["escribir paquetes"]
+```
 
-Reglas y límites en `architecture.yaml`; código en inglés sin comentarios ni `unsafe`.
+`build` solo escribe si no hay violaciones, salvo con `--borrador`. `check` añade las violaciones `*-BUNDLE-STALE`
+cuando lo escrito difiere de lo compilado.
 
-## 6. Decisiones de producto que condicionan el código
+## Reglas que conviene saber
 
-La persona lectora nunca ve identificadores del corpus; ver el README del miembro.
+- Salida 0: sin violaciones; 1: hay violaciones; 2: argumentos o lectura inválidos.
+- Por defecto escribe en `apps/pseudolearn_app/assets/reference` y `assets/route`, y en
+  `apps/pseudolearn_web/src/entities/specification/generated` y `learning-route/generated`; los paquetes generados no se
+  editan a mano.
+- Importa los otros nueve crates de librería; su única dependencia externa es `serde_json`.
+- Lee el corpus de `../pseudolearn_spec/specifications/export.json`, así que la exportación debe existir antes.
 
-## 7. Verificación, testing y aseguramiento de calidad
+## Comandos útiles
 
-Tests espejo con camino feliz, camino infeliz y casos límite; los casos negativos de cada verificador viven en `tests/`.
+| Para qué                       | Comando                                  |
+|--------------------------------|------------------------------------------|
+| Compilar y escribir paquetes   | `cargo run -p reference_cli -- build`    |
+| Verificar y detectar obsoletos | `cargo run -p reference_cli -- check`    |
+| Cobertura de ambos libros      | `cargo run -p reference_cli -- coverage` |
+| Registrar las anclas revisadas | `cargo run -p reference_cli -- lock`     |
+| Probar este crate              | `cargo test -p reference_cli`            |
 
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan del miembro y contrato del paquete descritos en el README del miembro.
+Opciones: `--root`, `--out`, `--out-ruta`, `--out-web`, `--out-web-ruta` y `--borrador`. Requisitos: la exportación del
+corpus generada y el Rust de `rust-toolchain.toml`.

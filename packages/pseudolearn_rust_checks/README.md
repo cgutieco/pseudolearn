@@ -75,7 +75,9 @@ configuración o lectura inválida.
 - Clippy deniega `unwrap`, `expect`, `panic`, indexado, aritmética implícita y `as`.
 - Límites: 300 líneas por archivo, 40 por función, 4 parámetros, anidación 3 y 7 métodos públicos por tipo.
 - Los fixtures de `fixtures/` son violaciones deliberadas; no son fuentes del producto.
-- **Licencia**: el miembro no se publica (`publish = false` en todos sus crates). `LICENSE` y `NOTICE` son idénticos a los de la raíz, de modo que quien lo lea en el repositorio tiene los mismos términos que el resto; publicar en un registro sería una decisión nueva que cambiaría `publish`.
+- **Licencia**: el miembro no se publica (`publish = false` en todos sus crates). `LICENSE` y `NOTICE` son idénticos a
+  los de la raíz, de modo que quien lo lea en el repositorio tiene los mismos términos que el resto; publicar en un
+  registro sería una decisión nueva que cambiaría `publish`.
 
 ## Comandos útiles
 

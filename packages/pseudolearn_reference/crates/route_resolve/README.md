@@ -1,36 +1,46 @@
 # route_resolve
 
-## 1. Qué es y qué no es
+Convierte las lecciones y los ejercicios fuente de la ruta de aprendizaje en lecciones y ejercicios publicados, con el
+catálogo de términos y ejercicios que los une.
 
-Convierte cada lección y cada ejercicio fuente de la ruta de aprendizaje en su forma publicada para un idioma de interfaz y un perfil de sintaxis: tira del ciclo, encabezados de fase, ficha, roles, apertura de paradigma, tarjetas de recuerdo, enlaces y figuras de la Especificación, práctica, siguiente y la evaluación de cada tipo de ejercicio. Ejecuta los programas de cada ejercicio con los casos de su fuente y entrega esas ejecuciones al verificador. No juzga si un ejercicio está bien: eso es de `reference_verify`.
+**No hace:** no lee archivos ni escribe paquetes, y no repite la Especificación: la enlaza.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-`cargo test -p route_resolve` y `cargo clippy -p route_resolve --all-targets -- -D warnings` desde el miembro. No se despliega.
+```mermaid
+flowchart BT
+    model["crates/reference_model"] --> route["crates/route_resolve"]
+    format["crates/reference_format"] --> route
+    resolve["crates/reference_resolve"] --> route
+    route --> cli["crates/reference_cli"]
+```
 
-## 3. Arquitectura y modelo del sistema
+`reference_corpus` es dependencia solo de pruebas.
 
-Importa `reference_model`, `reference_format` y `reference_resolve`; recibe el motor por el puerto a través de `Resolution`. Los bloques que la ruta comparte con la Especificación (párrafos, tablas, programas, figuras) se resuelven con `reference_resolve`; este crate solo agrega lo propio de la ruta. La dirección de dependencias está en `architecture.yaml` del miembro. `src/` implementa la capa; `tests/` refleja sus módulos.
+## Arquitectura
 
-## 4. Decisiones de diseño y fundamentos técnicos
+| Pieza                                                | Responsabilidad                                                                                                          |
+|------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| `catalog`                                            | `build_catalog`: `RouteCatalog` con `TermCard` y `ExerciseSummary`                                                       |
+| `lesson`, `lesson_blocks`, `route_callouts`, `zones` | `resolve_lesson`, sus bloques y llamadas, y las entradas de lista por zona                                               |
+| `exercise`, `exercise_runs`                          | `resolve_exercise` y las ejecuciones de la solución de referencia                                                        |
+| `evaluation`, `evaluation_order`                     | Casos y comprobación del ejercicio (`exercise_check`), vallas reutilizadas del español y orden de aserciones y programas |
+| `laps`                                               | `instrument`: inserta sondas `⟦ ⟧` para observar las filas de una tabla de vueltas                                       |
+| `ordering`                                           | `shuffled_order`: orden determinista a partir de una semilla de texto                                                    |
+| `context`                                            | `RouteContext`: resolución, catálogo, Especificación publicada y lección actual                                          |
 
-- Problema: las tarjetas «Recuerda» repetirían a mano una definición. Elección: `build_catalog` toma la frase del ítem etiquetado del resumen de la lección dueña y la tarjeta se genera desde ahí.
-- Problema: la traza del motor no publica valores de variables. Elección: `rastrear` inserta antes de la línea marcada una instrucción que escribe las columnas entre `⟦` y `⟧`, ejecuta el programa instrumentado y lee una fila por línea marcada; el programa instrumentado nunca se publica.
-- Problema: un ejercicio verificado en cuatro ediciones repetiría cada juicio. Elección: las ejecuciones para verificar se hacen solo en el perfil español; los datos publicados de cada edición (salidas esperadas, filas, bloques) salen de ejecutar el programa traducido de esa edición.
-- Problema: un ejercicio para ordenar publicado en el orden correcto regala la respuesta. Elección: un orden determinista derivado del identificador del ejercicio, nunca igual al original.
+## Reglas que conviene saber
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+- Importa `reference_model`, `reference_format` y `reference_resolve`; no declara dependencias externas.
+- El orden barajado es estable: la misma semilla da siempre el mismo orden, y nunca devuelve la identidad si hay más de
+  un elemento.
+- Reutiliza `Collector` y `SpanishReuse` de `reference_resolve`, igual que la Especificación.
 
-Reglas y límites en `architecture.yaml`; código en inglés sin comentarios ni `unsafe`.
+## Comandos útiles
 
-## 6. Decisiones de producto que condicionan el código
+| Para qué          | Comando                       |
+|-------------------|-------------------------------|
+| Probar este crate | `cargo test -p route_resolve` |
+| Verificar todo    | `cargo xtask verify`          |
 
-La app nunca muestra un mutante ni la referencia: viajan en `evaluation`, aparte de los bloques visibles.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-Tests espejo con un motor falso: camino feliz, camino infeliz (intento sin respuesta, recuerdo sin dueña, figura o sección inexistente, práctica con un ejercicio desconocido, datos de ejercicio dentro de una lección) y casos límite (orden de cero y un elemento, programa vacío).
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Los problemas de Parsons inspiran el tipo `ordenar`; las pruebas por mutación inspiran `disenar-pruebas`. Se toma la idea y se rechaza la puntuación numérica.
+Requisitos: ejecutar desde `packages/pseudolearn_reference` con el Rust de `rust-toolchain.toml`.

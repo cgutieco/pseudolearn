@@ -1,36 +1,48 @@
 # xtask
 
-## 1. Qué es y qué no es
+Puerta de calidad de `pseudolearn_rust_checks`: formato, Clippy, tests, los propios verificadores del paquete aplicados
+a sí mismo y `cargo-deny`. Se invoca con el alias `cargo xtask`.
 
-Tooling del verificador; no implementa el motor PseudoLearn.
+**No hace:** no verifica otros miembros; para eso cada uno tiene su propio `xtask` que llama al binario `rust-checks`.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-Desde el workspace: `cargo test -p xtask` y `cargo xtask verify`.
-Rust se fija en el archivo de cadena del workspace. No se publica.
+```mermaid
+flowchart BT
+    command["crates/command<br/>rust-checks"] --> xtask["xtask"]
+    cargo["cargo fmt, clippy, test, deny"] --> xtask
+```
 
-## 3. Arquitectura y modelo del sistema
+`xtask/Cargo.toml` no declara dependencias: todo se invoca como proceso de `cargo`.
 
-`src/` contiene esta capa; `tests/` refleja módulos públicos. Dependencias permitidas en
-`architecture.yaml` del workspace. Ningún import hacia capas externas no declaradas.
+## Flujo principal
 
-## 4. Decisiones de diseño y fundamentos técnicos
+Orden de ejecución; el primer paso que falla detiene el resto.
 
-Problema: separar contratos de infraestructura. Elección: crate independiente para tooling.
-Alternativa descartada: crate monolítico que permita saltarse las fronteras al importar módulos.
+```mermaid
+flowchart LR
+    fmt["fmt --check"] --> clippy["clippy -D warnings"]
+    clippy --> test["test --workspace"]
+    test --> all["rust-checks all ."]
+    all --> toolchain["rust-checks toolchain ../.."]
+    toolchain --> deny["deny check"]
+```
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+`fmt`, `clippy` y `test` cubren todo el workspace (`clippy` con `--all-targets`). `toolchain ../..` revisa la raíz del
+monorepo.
 
-Código inglés, cero comentarios, sin unsafe ni pánicos explícitos. Límites en las reglas del workspace.
+## Reglas que conviene saber
 
-## 6. Decisiones de producto que condicionan el código
+- Único argumento aceptado: `verify`; cualquier otro imprime el uso y termina con error.
+- Capa `tooling` sin imports ni dependencias externas en `architecture.yaml`.
+- Llama al binario desde su propio workspace (`-p pseudolearn_check_command --bin rust-checks`), a diferencia de los
+  demás miembros, que usan `--manifest-path`.
 
-Habilita verificadores, sin código del motor ni del sistema see.
+## Comandos útiles
 
-## 7. Verificación, testing y aseguramiento de calidad
+| Para qué              | Comando               |
+|-----------------------|-----------------------|
+| Verificación completa | `cargo xtask verify`  |
+| Probar este crate     | `cargo test -p xtask` |
 
-Tests válidos e inválidos, formato, Clippy y verificadores mediante `cargo xtask verify`.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Cargo define la frontera de compilación; la política de capas pertenece a PseudoLearn.
+Requisitos: Rust 1.99.0 con rustfmt y Clippy y `cargo-deny`.

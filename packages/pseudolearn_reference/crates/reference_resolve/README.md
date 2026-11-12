@@ -1,33 +1,50 @@
 # reference_resolve
 
-## 1. Qué es y qué no es
+Convierte un documento fuente de la Especificación en una sección publicada: resuelve bloques, programas, figuras,
+tablas generadas, llamadas y trazas ejecutando el código con el motor.
 
-Convierte cada documento fuente en una sección publicada para un idioma de interfaz y un perfil de sintaxis: tokeniza y traduce el código en línea, las formas y los programas; ejecuta los ejemplos en español y en el perfil de destino; produce anatomías, figuras, representación intermedia, traza y apéndices generados.
+**No hace:** no lee archivos, no verifica reglas del libro ni resuelve la ruta; eso es de `reference_cli`,
+`reference_verify` y `route_resolve`.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-`cargo test -p reference_resolve` y `cargo clippy -p reference_resolve --all-targets -- -D warnings` desde el miembro. No se despliega.
+```mermaid
+flowchart BT
+    model["crates/reference_model"] --> resolve["crates/reference_resolve"]
+    corpus["crates/reference_corpus"] --> resolve
+    figures["crates/reference_figures"] --> resolve
+    resolve --> route["crates/route_resolve"]
+    resolve --> cli["crates/reference_cli"]
+```
 
-## 3. Arquitectura y modelo del sistema
+`reference_format` es dependencia solo de pruebas.
 
-Importa `reference_model`, `reference_corpus` y `reference_figures`; recibe el motor por el puerto. La dirección de dependencias está en `architecture.yaml` del miembro. `src/` implementa la capa; `tests/` refleja sus módulos.
+## Arquitectura
 
-## 4. Decisiones de diseño y fundamentos técnicos
+| Pieza                                                      | Responsabilidad                                                                    |
+|------------------------------------------------------------|------------------------------------------------------------------------------------|
+| `section`, `blocks`                                        | `resolve_section` y `resolve_blocks`: recorren el documento y publican cada bloque |
+| `programs`, `runs`, `trace`                                | Programas ejecutados, fichas coloreadas y trazas del motor                         |
+| `anatomy`, `forms`, `callouts`                             | Anatomías de sintaxis, formas y llamadas                                           |
+| `figures`                                                  | `figure_block`: delega el SVG en `reference_figures`                               |
+| `generated`, `generated_tables`                            | Tablas derivadas del corpus                                                        |
+| `section_index`, `categories`, `language_pack`, `spelling` | Índice de secciones, `CategoryTable`, textos de interfaz y ortografía canónica     |
+| `resolution`, `cached_engine`                              | `Resolution`, `Collector`, `SpanishReuse` y `CachedEngine`, que memoriza al motor  |
 
-Problema: mantener dos versiones de cada programa. Elección: los programas y las formas se escriben una vez en español; la edición inglesa los reutiliza por identificador y el motor los traduce. Un programa con errores de sintaxis no se puede traducir con `translate_source`, así que se traduce token a token con la misma ortografía canónica del motor (mayúscula inicial en inglés, salvo acceso a miembros y llamadas). `CachedEngine` memoriza ejecuciones porque cada programa aparece en cuatro ediciones.
+## Reglas que conviene saber
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+- Importa `reference_model`, `reference_corpus`, `reference_figures` y `reference_format`; dependencias externas:
+  `serde` y `serde_json` (`architecture.yaml`).
+- Recibe el motor por el rasgo `CodeEngine`; `CachedEngine` guarda fichas, traducciones y ejecuciones para no repetir
+  trabajo.
+- Un fallo se acumula como `Violation` en el `Collector`; la resolución sigue y devuelve todas.
+- `SpanishReuse` deja que la edición inglesa reutilice los programas de la española.
 
-Reglas y límites en `architecture.yaml`; código en inglés sin comentarios ni `unsafe`.
+## Comandos útiles
 
-## 6. Decisiones de producto que condicionan el código
+| Para qué          | Comando                           |
+|-------------------|-----------------------------------|
+| Probar este crate | `cargo test -p reference_resolve` |
+| Verificar todo    | `cargo xtask verify`              |
 
-La persona lectora nunca ve identificadores del corpus; ver el README del miembro.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-Tests espejo con camino feliz, camino infeliz y casos límite; los casos negativos de cada verificador viven en `tests/`.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan del miembro y contrato del paquete descritos en el README del miembro.
+Requisitos: ejecutar desde `packages/pseudolearn_reference` con el Rust de `rust-toolchain.toml`.

@@ -1,35 +1,56 @@
 # reference_format
 
-## 1. Qué es y qué no es
+Lector del Markdown con directivas: separa la cabecera YAML, clasifica las líneas, ensambla los bloques y devuelve
+documentos fuente tipados.
 
-Lector del Markdown con directivas: cabecera YAML, encabezados con identificador, párrafos, listas, tablas, recuadros `:::` y bloques cercados (`forma`, `anatomia`, `programa`, `salida`, `diagnosticos`, `entrada`, `anfitrion`, `figura`, `ri`, `traza`, `generado`). Devuelve un `SourceDocument` o una violación `REF-FORMAT`.
+**No hace:** no resuelve enlaces, no ejecuta programas ni valida el contenido; solo reconoce la forma del texto.
 
-Lee también las lecciones y los ejercicios de la ruta: encabezados de fase, recuadros con atributos, definiciones de término, enlaces `especificacion:` y `ruta:` y las cercas de datos de ejercicio.
+## Dónde encaja
 
-## 2. Guía operativa y ciclo de vida
+```mermaid
+flowchart BT
+    model["crates/reference_model"] --> format["crates/reference_format"]
+    yaml["serde-saphyr"] --> format
+    format --> resolve["crates/reference_resolve"]
+    format --> route["crates/route_resolve"]
+    format --> verify["crates/reference_verify"]
+    format --> cli["crates/reference_cli"]
+```
 
-`cargo test -p reference_format` y `cargo clippy -p reference_format --all-targets -- -D warnings` desde el miembro. No se despliega.
+## Arquitectura
 
-## 3. Arquitectura y modelo del sistema
+| Pieza                                      | Responsabilidad                                                 |
+|--------------------------------------------|-----------------------------------------------------------------|
+| `front_matter`                             | Exige el bloque `---` inicial y lo deserializa como YAML        |
+| `line_kind`, `assembly`                    | Clasifican cada línea y las agrupan en bloques                  |
+| `fence`, `fence_blocks`, `route_fences`    | Vallas de código con nombre y atributos (`parse_fence_opening`) |
+| `anatomy_body`, `figure_body`, `table_row` | Cuerpos de las directivas de anatomía, figura y tabla           |
+| `inline_parser`, `summary_tags`            | Texto en línea (`parse_inline`) y etiquetas de resumen          |
+| `lib`                                      | `parse_document`, `parse_lesson` y `parse_exercise`             |
 
-Importa `reference_model`; usa `serde-saphyr` para la cabecera. La dirección de dependencias está en `architecture.yaml` del miembro. `src/` implementa la capa; `tests/` refleja sus módulos.
+## Flujo principal
 
-## 4. Decisiones de diseño y fundamentos técnicos
+```mermaid
+flowchart LR
+    text["texto"] --> split["cabecera YAML"]
+    split --> classify["líneas"]
+    classify --> assemble["bloques"]
+    assemble --> document["documento fuente"]
+```
 
-Problema: un analizador CommonMark completo acepta construcciones que el paquete no sabe publicar. Elección: un lector propio y cerrado que rechaza lo desconocido con `REF-FORMAT`. Las promesas (`salida`, `diagnosticos`, `entrada`, `anfitrion`) se pegan al programa anterior del mismo recuadro. Los opcionales de una forma se marcan con `⟦…⟧` porque `[` es sintaxis real de arreglos. Se descartó `pulldown-cmark` porque obligaría a reinterpretar su árbol y a mantener una lista de exclusiones.
+Un fallo no lanza error: devuelve una `Violation` con `REF-FORMAT` (Especificación) o `RUTA-FORMAT` (ruta).
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+## Reglas que conviene saber
 
-Reglas y límites en `architecture.yaml`; código en inglés sin comentarios ni `unsafe`.
+- Solo importa `reference_model`; dependencias externas: `serde` y `serde-saphyr` (`architecture.yaml`).
+- Un documento sin `---` inicial o con la cabecera sin cerrar se rechaza.
+- No hace entrada o salida: recibe la ruta y el texto ya leídos.
 
-## 6. Decisiones de producto que condicionan el código
+## Comandos útiles
 
-La persona lectora nunca ve identificadores del corpus; ver el README del miembro.
+| Para qué          | Comando                          |
+|-------------------|----------------------------------|
+| Probar este crate | `cargo test -p reference_format` |
+| Verificar todo    | `cargo xtask verify`             |
 
-## 7. Verificación, testing y aseguramiento de calidad
-
-Tests espejo con camino feliz, camino infeliz y casos límite; los casos negativos de cada verificador viven en `tests/`.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan del miembro y contrato del paquete descritos en el README del miembro.
+Requisitos: ejecutar desde `packages/pseudolearn_reference` con el Rust de `rust-toolchain.toml`.

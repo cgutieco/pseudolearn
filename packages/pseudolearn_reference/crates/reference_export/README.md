@@ -1,35 +1,41 @@
 # reference_export
 
-## 1. Qué es y qué no es
+Arma los paquetes de datos de cada edición: secciones, lecciones y ejercicios en JSON, índice, búsqueda, enlaces y un
+manifiesto con la huella de cada archivo.
 
-Arma el paquete por edición: `toc.json`, `sections/<id>.json`, `search.json`, `links.json` y `manifest.json` con la huella de cada archivo. La serialización es determinista para que el paquete sea reproducible bit a bit.
+**No hace:** no escribe en disco ni decide dónde van los paquetes; devuelve mapas de ruta a texto.
 
-Escribe también el paquete de la ruta: índice, lecciones, ejercicios, términos, enlaces inversos hacia la Especificación y manifiesto `pseudolearn-route/1`.
+## Dónde encaja
 
-## 2. Guía operativa y ciclo de vida
+```mermaid
+flowchart BT
+    model["crates/reference_model"] --> export["crates/reference_export"]
+    export --> cli["crates/reference_cli"]
+```
 
-`cargo test -p reference_export` y `cargo clippy -p reference_export --all-targets -- -D warnings` desde el miembro. No se despliega.
+## Arquitectura
 
-## 3. Arquitectura y modelo del sistema
+| Pieza          | Responsabilidad                                                                                                            |
+|----------------|----------------------------------------------------------------------------------------------------------------------------|
+| `bundle`       | `build_bundle`: `sections/<id>.json`, `toc.json`, `search.json`, `links.json` y `manifest.json`                            |
+| `route_bundle` | `build_route_bundle`: `lessons/<id>.json`, `exercises/<id>.json`, `toc.json`, `terms.json` y `manifest.json`; `spec_links` |
+| `parts`        | `parse_parts`: partes y orden del índice                                                                                   |
+| `search`       | Entradas de búsqueda a partir de las secciones                                                                             |
+| `manifest`     | `digest` (SHA-256 en hexadecimal) y el manifiesto con formato, idioma, perfil, corpus y motor                              |
 
-Importa `reference_model`; usa `serde_json` y `sha2`. La dirección de dependencias está en `architecture.yaml` del miembro. `src/` implementa la capa; `tests/` refleja sus módulos.
+Los formatos son `pseudolearn-reference/1` (`FORMAT`) y `pseudolearn-route/1` (`ROUTE_FORMAT`).
 
-## 4. Decisiones de diseño y fundamentos técnicos
+## Reglas que conviene saber
 
-Problema: la app y la web no deben interpretar el corpus. Elección: `links.json` resuelve de antemano qué sección explica cada ficha de ayuda y cada diagnóstico; las anclas del corpus nunca viajan.
+- Solo importa `reference_model`; dependencias externas: `serde`, `serde_json` y `sha2`.
+- El manifiesto lista la huella SHA-256 de todos los archivos del paquete salvo la suya.
+- Sin entrada ni salida: la escritura y la comparación con lo publicado son de `reference_cli`.
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+## Comandos útiles
 
-Reglas y límites en `architecture.yaml`; código en inglés sin comentarios ni `unsafe`.
+| Para qué              | Comando                               |
+|-----------------------|---------------------------------------|
+| Probar este crate     | `cargo test -p reference_export`      |
+| Escribir los paquetes | `cargo run -p reference_cli -- build` |
 
-## 6. Decisiones de producto que condicionan el código
-
-La persona lectora nunca ve identificadores del corpus; ver el README del miembro.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-Tests espejo con camino feliz, camino infeliz y casos límite; los casos negativos de cada verificador viven en `tests/`.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan del miembro y contrato del paquete descritos en el README del miembro.
+Requisitos: ejecutar desde `packages/pseudolearn_reference` con el Rust de `rust-toolchain.toml`.

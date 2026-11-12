@@ -1,36 +1,43 @@
 # pseudolearn_check_model
 
-## 1. Qué es y qué no es
+Tipos compartidos del verificador: `Architecture` (el contenido de `architecture.yaml`) y `Violation`, el hallazgo que
+imprime `rust-checks`.
 
-Capa model del verificador; no implementa el motor PseudoLearn.
+**No hace:** no lee archivos ni ejecuta verificaciones; solo define los datos.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-Desde el workspace: `cargo test -p pseudolearn_check_model` y `cargo xtask verify`.
-Rust se fija en el archivo de cadena del workspace. No se publica.
+```mermaid
+flowchart BT
+    serde["serde"] --> model["crates/model"]
+    model --> source["crates/source"]
+    model --> checks["crates/checks"]
+    model --> command["crates/command"]
+```
 
-## 3. Arquitectura y modelo del sistema
+## Arquitectura
 
-`src/` contiene esta capa; `tests/` refleja módulos públicos. Dependencias permitidas en
-`architecture.yaml` del workspace. Ningún import hacia capas externas no declaradas.
+| Tipo           | Contenido                                                                                                  |
+|----------------|------------------------------------------------------------------------------------------------------------|
+| `Architecture` | Paquete, capas, límites, nombres, aislamiento, fuentes generadas y crates de salida determinista           |
+| `Layer`        | Nombre, ruta, imports permitidos, dependencias externas y de ruta, `unsafe_allowed`, `tooling` y `pending` |
+| `Limits`       | Seis límites numéricos: archivo, función, parámetros, anidación, métodos públicos y `unsafe`               |
+| `Names`        | Longitud mínima, nombres cortos permitidos, componentes y archivos prohibidos                              |
+| `Isolation`    | Paquete, destinos y paquetes o características prohibidos                                                  |
+| `Violation`    | Ruta, línea, regla y mensaje; ordenable, y `violation()` para construirla                                  |
 
-## 4. Decisiones de diseño y fundamentos técnicos
+## Reglas que conviene saber
 
-Problema: separar contratos de infraestructura. Elección: crate independiente para model.
-Alternativa descartada: crate monolítico que permita saltarse las fronteras al importar módulos.
+- Los tipos de reglas usan `deny_unknown_fields`: una clave desconocida en `architecture.yaml` es un error, no se
+  ignora.
+- Única dependencia: `serde`; no importa ninguna otra capa.
+- Una `Violation` se ordena por ruta, línea, regla y mensaje, lo que da salida estable.
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+## Comandos útiles
 
-Código inglés, cero comentarios, sin unsafe ni pánicos explícitos. Límites en las reglas del workspace.
+| Para qué          | Comando                                 |
+|-------------------|-----------------------------------------|
+| Probar este crate | `cargo test -p pseudolearn_check_model` |
+| Verificar todo    | `cargo xtask verify`                    |
 
-## 6. Decisiones de producto que condicionan el código
-
-Habilita verificadores, sin código del motor ni del sistema see.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-Tests válidos e inválidos, formato, Clippy y verificadores mediante `cargo xtask verify`.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Cargo define la frontera de compilación; la política de capas pertenece a PseudoLearn.
+Requisitos: ejecutar desde `packages/pseudolearn_rust_checks` con el Rust de `rust-toolchain.toml`.

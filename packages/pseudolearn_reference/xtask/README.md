@@ -1,33 +1,52 @@
 # xtask
 
-## 1. Qué es y qué no es
+Puerta de calidad de `pseudolearn_reference`: exporta el corpus y ejecuta en orden los verificadores del miembro,
+incluido `reference check`. Se invoca con el alias `cargo xtask`.
 
-Puerta `cargo xtask verify` del miembro. No contiene lógica del compilador.
+**No hace:** no compila ni escribe los paquetes de datos; eso lo hace el binario `reference`.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-`cargo xtask verify` desde el miembro. No se despliega.
+```mermaid
+flowchart BT
+    spec["packages/pseudolearn_spec<br/>see_cli"] --> xtask["xtask"]
+    checks["packages/pseudolearn_rust_checks<br/>pseudolearn_check_command"] --> xtask
+    cli["crates/reference_cli<br/>reference check"] --> xtask
+    cargo["cargo fmt, clippy, test, deny"] --> xtask
+```
 
-## 3. Arquitectura y modelo del sistema
+`xtask/Cargo.toml` no declara dependencias: todo se invoca como proceso de `cargo`.
 
-Sin imports de crates del producto: ejecuta órdenes por proceso con la biblioteca estándar.
+## Flujo principal
 
-## 4. Decisiones de diseño y fundamentos técnicos
+Orden de ejecución; el primer paso que falla detiene el resto.
 
-Regenera la exportación del corpus antes de verificar porque `export.json` no se versiona; después ejecuta formato, Clippy, tests, cargo-deny, los verificadores Rust del monorepo y `reference check`.
+```mermaid
+flowchart LR
+    export["see export"] --> fmt["fmt --check"]
+    fmt --> clippy["clippy -D warnings"]
+    clippy --> test["test --workspace"]
+    test --> deny["deny check"]
+    deny --> all["checks all"]
+    all --> toolchain["checks toolchain"]
+    toolchain --> check["reference check"]
+```
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+`export` corre en `../pseudolearn_spec`; el resto, en la carpeta del miembro. `checks toolchain ../..` revisa la raíz
+del monorepo y `reference check` falla si hay violaciones o paquetes obsoletos.
 
-Reglas y límites en `architecture.yaml` del miembro.
+## Reglas que conviene saber
 
-## 6. Decisiones de producto que condicionan el código
+- Único argumento aceptado: `verify`; cualquier otro imprime el uso y termina con error.
+- Capa `tooling` sin imports ni dependencias externas en `architecture.yaml`.
+- Las rutas a los otros miembros son relativas, así que solo funciona desde `packages/pseudolearn_reference`.
 
-Ninguna.
+## Comandos útiles
 
-## 7. Verificación, testing y aseguramiento de calidad
+| Para qué              | Comando               |
+|-----------------------|-----------------------|
+| Verificación completa | `cargo xtask verify`  |
+| Probar este crate     | `cargo test -p xtask` |
 
-Tests de la lista de órdenes en `src/main_tests.rs`.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Convención xtask de Cargo, igual que el resto de miembros Rust.
+Requisitos: Rust 1.99.0 con rustfmt y Clippy, `cargo-deny` y las cadenas de `pseudolearn_spec` y
+`pseudolearn_rust_checks`.

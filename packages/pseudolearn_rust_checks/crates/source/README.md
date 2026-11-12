@@ -1,36 +1,52 @@
 # pseudolearn_check_source
 
-## 1. Qué es y qué no es
+Lee `architecture.yaml` y los fuentes Rust de un miembro: los valida, los parsea con `syn` y ofrece utilidades de fichas
+para localizar comentarios y palabras.
 
-Capa source del verificador; no implementa el motor PseudoLearn.
+**No hace:** no decide qué es una violación; entrega fuentes y reglas ya leídas a `pseudolearn_checks`.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-Desde el workspace: `cargo test -p pseudolearn_check_source` y `cargo xtask verify`.
-Rust se fija en el archivo de cadena del workspace. No se publica.
+```mermaid
+flowchart BT
+    model["crates/model"] --> source["crates/source"]
+    syn["syn, proc-macro2"] --> source
+    lexer["ra-ap-rustc_lexer"] --> source
+    yaml["serde-saphyr, serde_json"] --> source
+    source --> checks["crates/checks"]
+```
 
-## 3. Arquitectura y modelo del sistema
+## Arquitectura
 
-`src/` contiene esta capa; `tests/` refleja módulos públicos. Dependencias permitidas en
-`architecture.yaml` del workspace. Ningún import hacia capas externas no declaradas.
+| Pieza     | Responsabilidad                                                                                            |
+|-----------|------------------------------------------------------------------------------------------------------------|
+| `loading` | `read_architecture`, `load_sources`, `read_text` y `SourceFile` (ruta, texto, sintaxis, capa y si es test) |
+| `tokens`  | `comment_lines` y `word_lines`, con el lexer de rustc                                                      |
 
-## 4. Decisiones de diseño y fundamentos técnicos
+## Flujo principal
 
-Problema: separar contratos de infraestructura. Elección: crate independiente para source.
-Alternativa descartada: crate monolítico que permita saltarse las fronteras al importar módulos.
+```mermaid
+flowchart LR
+    yaml["architecture.yaml"] --> validate["validar reglas"]
+    validate --> walk["recorrer src, tests, examples y benches"]
+    walk --> parse["parsear con syn"]
+    parse --> files["SourceFile ordenados"]
+```
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+## Reglas que conviene saber
 
-Código inglés, cero comentarios, sin unsafe ni pánicos explícitos. Límites en las reglas del workspace.
+- Importa solo `pseudolearn_check_model`; dependencias externas: `syn`, `proc-macro2`, `ra-ap-rustc_lexer`,
+  `serde-saphyr` y `serde_json`.
+- `read_architecture` rechaza paquete o capas vacíos, capas duplicadas, rutas fuera del miembro, imports a capas no
+  declaradas y límites en cero.
+- Un enlace simbólico dentro de las carpetas de fuentes es un error; las fuentes declaradas como generadas se excluyen.
+- Además de `src`, `tests`, `examples` y `benches`, se lee el `build.rs` de cada capa.
 
-## 6. Decisiones de producto que condicionan el código
+## Comandos útiles
 
-Habilita verificadores, sin código del motor ni del sistema see.
+| Para qué          | Comando                                  |
+|-------------------|------------------------------------------|
+| Probar este crate | `cargo test -p pseudolearn_check_source` |
+| Verificar todo    | `cargo xtask verify`                     |
 
-## 7. Verificación, testing y aseguramiento de calidad
-
-Tests válidos e inválidos, formato, Clippy y verificadores mediante `cargo xtask verify`.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Cargo define la frontera de compilación; la política de capas pertenece a PseudoLearn.
+Requisitos: ejecutar desde `packages/pseudolearn_rust_checks` con el Rust de `rust-toolchain.toml`.

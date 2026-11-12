@@ -1,33 +1,43 @@
 # reference_engine
 
-## 1. Qué es y qué no es
+Adaptador que implementa el puerto `CodeEngine` sobre `pseudolearn_api`: tokeniza, traduce entre perfiles, ejecuta
+programas, devuelve el código intermedio y la vista del programa.
 
-Adaptador del puerto `CodeEngine` sobre `pseudolearn_api`: tokeniza con `execute_analyze`, traduce con `translate_source`, ejecuta con `execute_program` y semilla fija 42, baja a representación intermedia con `compile_source_to_ir` y rinde cada diagnóstico en español e inglés con `render_diagnostic`.
+**No hace:** no interpreta los resultados ni decide qué ejemplo es válido; devuelve lo que el motor produce.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-`cargo test -p reference_engine` y `cargo clippy -p reference_engine --all-targets -- -D warnings` desde el miembro. No se despliega.
+```mermaid
+flowchart BT
+    api["packages/pseudolearn_engine<br/>crates/pseudolearn_api"] --> engine["crates/reference_engine"]
+    model["crates/reference_model"] --> engine
+    engine --> cli["crates/reference_cli"]
+```
 
-## 3. Arquitectura y modelo del sistema
+## Arquitectura
 
-Importa `reference_model` y, por ruta, `pseudolearn_api` con la característica `test-host`. La dirección de dependencias está en `architecture.yaml` del miembro. `src/` implementa la capa; `tests/` refleja sus módulos.
+| Pieza       | Responsabilidad                                                                               |
+|-------------|-----------------------------------------------------------------------------------------------|
+| `ApiEngine` | Implementa `tokenize`, `translate`, `execute`, `intermediate`, `program_view` y `fingerprint` |
+| `tokens`    | Fichas del motor convertidas a `RawToken`                                                     |
+| `offsets`   | Línea y columna a desplazamiento en el texto                                                  |
+| `execution` | Petición y respuesta de `execute_program`, con semilla fija 42                                |
+| `view`      | Proyección del programa a `ProgramView`                                                       |
 
-## 4. Decisiones de diseño y fundamentos técnicos
+`fingerprint` concatena la versión del motor y la del protocolo, así que cambia cuando el motor cambia.
 
-Problema: los ejemplos de archivos, red y tiempo necesitan un anfitrión determinista. Elección: `test-host` sustituye el anfitrión real por el de memoria del motor, configurable con el bloque `anfitrion`; el compilador es una herramienta de construcción y nunca se distribuye, por eso no entra en la regla de aislamiento de productos. Las columnas del motor son escalares Unicode y se convierten a desplazamientos de carácter.
+## Reglas que conviene saber
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+- Es el único crate del miembro que depende del motor (`pseudolearn_api` con la característica `test-host`).
+- Un documento de anfitrión con JSON inválido produce un informe `rejected` con el diagnóstico `invalidHostDocument`, no
+  un error.
+- La semilla es 42 en toda ejecución, para que las salidas se repitan.
 
-Reglas y límites en `architecture.yaml`; código en inglés sin comentarios ni `unsafe`.
+## Comandos útiles
 
-## 6. Decisiones de producto que condicionan el código
+| Para qué          | Comando                          |
+|-------------------|----------------------------------|
+| Probar este crate | `cargo test -p reference_engine` |
+| Verificar todo    | `cargo xtask verify`             |
 
-La persona lectora nunca ve identificadores del corpus; ver el README del miembro.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-Tests espejo con camino feliz, camino infeliz y casos límite; los casos negativos de cada verificador viven en `tests/`.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan del miembro y contrato del paquete descritos en el README del miembro.
+Requisitos: ejecutar desde `packages/pseudolearn_reference` con el Rust de `rust-toolchain.toml`.
