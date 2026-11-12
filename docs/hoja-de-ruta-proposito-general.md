@@ -1,6 +1,6 @@
 # Hoja de ruta de PseudoLearn hacia un lenguaje de propósito general
 
-## Decisiones posteriores de la persona · 2026-10-22
+## Decisiones posteriores de la persona · 2026-10-22–2026-11-12
 
 Este registro actualiza las recomendaciones y puertas previas que lo contradigan; las opciones anteriores
 se conservan como rastro de análisis, no como instrucciones vigentes.
@@ -23,6 +23,14 @@ se conservan como rastro de análisis, no como instrucciones vigentes.
   cada cambio es la versión oficial aunque sea incompatible. Las menciones anteriores de migración
   asistida quedan como rastro histórico sin vigencia. El uso inicial de la extensión es local,
   mediante F5 y VSIX, sin publicación en Marketplace.
+- El 2026-11-02 la persona fijó autoridad plena por omisión, anfitriones reales y cero simulación
+  ([análisis](plan-ejecucion-proposito-general/analisis-lenguaje-completo-sin-simulacion.md)). Sin vigencia desde
+  entonces: la «denegación por defecto» de R-09 y ADR-02, los permisos y orígenes de C-07/C-08, la política SSRF y los
+  efectos simulados; la «capacidad insuficiente» es la atenuación voluntaria o el fallo real del SO o del navegador.
+  Se añadieron las fases PG-L, PG-S, PG-N (2026-11-02) y PG-C (2026-11-05).
+- El 2026-11-12 la persona confirmó la licencia Apache-2.0 vigente (cierra F9 licencia y PG-0.05) y delegó en la IA
+  las decisiones de cierre de PG-7, registradas en el
+  [plan de PG-7](plan-ejecucion-proposito-general/fase-pg-7-plan-ejecucion.md). ENT-1 queda entregado con PG-7.
 
 El detalle operativo está en [el plan de PG-0](plan-ejecucion-proposito-general/fase-pg-0-plan-ejecucion.md).
 La petición directa de implementación revisó y autorizó PG-0.C02; su ejecución y cierre siguen sujetos a PHASE-GREEN.

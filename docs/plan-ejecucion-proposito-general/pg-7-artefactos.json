@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "phase": "PG-7",
+  "date": "2026-11-12",
+  "machine": "macOS 27.2 (Darwin 27.2.0), Apple M2, 8 cores",
+  "toolchains": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)",
+    "node": "v22.23.3",
+    "pnpm": "12.8.1",
+    "wasm-bindgen": "0.2.129"
+  },
+  "provenance": "Built from the working tree whose sources were committed unchanged in 9264df25..d5ad763f; the VSIX record says dirty because the build preceded those commits.",
+  "artifacts": [
+    {
+      "name": "pseudolearn-0.1.0-darwin-arm64.vsix",
+      "platform": "darwin-arm64",
+      "bytes": 16850411,
+      "sha256": "b185212109eb48a649d325ce9426d3c94259afe91ab02369c90f7a53bb07c26c",
+      "contents": {
+        "bin/darwin-arm64/pseudo": "73a2fa296684a632619168df444a87bcb488e637faf41b943698afe41698b8fd",
+        "dist/extension.js": "846baf999ef22f9bfb7ee2bc5ed7aefd397fba2dea2cd11a8ef3bebd61efb3bd",
+        "media/pseudolearn.tmLanguage.json": "4a5d23bb9599b4ed295c1582a895ea3991072b58d5d751eb1b6ce481e2c69bb3"
+      },
+      "verification": "Installed from scratch into an isolated VS Code 1.144.0; host checks 30/30, including the PG-B.27 program against the real API"
+    },
+    {
+      "name": "pseudolearn-0.1.0-win32-x64.vsix",
+      "platform": "win32-x64",
+      "bytes": 13072650,
+      "sha256": "f51a24a16755793fcc8dda422d69d79685cde53093303891e400da035c856e21",
+      "contents": {
+        "bin/win32-x64/pseudo.exe": "b08c90659d6fe4e718b0f1f0b19fb3c2e472125edcac2289262e537bbd2bcdbe",
+        "media/pseudolearn.tmLanguage.json": "4a5d23bb9599b4ed295c1582a895ea3991072b58d5d751eb1b6ce481e2c69bb3"
+      },
+      "provenance": "GitHub Actions run 43182380141, job extension-windows on windows-latest, commit 2ef1b08a; dirty only because the job generates the unversioned library lockfiles and the corpus export",
+      "workflowArtifact": {
+        "name": "pseudolearn-vscode-win32-x64",
+        "id": 13927367041,
+        "bytes": 13027476,
+        "digest": "sha256:099b2dc8ac647e9e4ca90f8edac526dee41cd136ce77ad44647996bd82010ea2"
+      },
+      "verification": "Contract tests 25/25 on Windows; the pseudo.exe unpacked from the VSIX writes and reads a file through drive-letter, forward-slash, verbatim, relative and relative-backslash paths and fails missing paths as typed errors; VS Code with its user interface on Windows was not exercised"
+    },
+    {
+      "name": "pseudolearn-0.1.0-web.vsix",
+      "platform": "web",
+      "bytes": 1712883,
+      "sha256": "613cf59c8e17497bd57841d04626ab906c3019f95eced885639cd95be79d30d7",
+      "contents": {
+        "dist/web/wasm/pseudolearn_wasm_bg.wasm": "ad589597c990cb1bee4e42d2ccc0413fa022fb7f21839119990273965d558c7e"
+      },
+      "limits": {
+        "wasmBytes": 5378345,
+        "wasmBrotliBytes": 1115051,
+        "maximumWasmBrotliBytes": 1228800,
+        "maximumMemoryPages": 4096
+      },
+      "verification": "check-web passed; VS Code for the Web 1.144.0 in Chromium passed every scenario including debugging"
+    },
+    {
+      "name": "pseudo",
+      "platform": "aarch64-apple-darwin",
+      "bytes": 51210464,
+      "sha256": "73a2fa296684a632619168df444a87bcb488e637faf41b943698afe41698b8fd",
+      "verification": "Same binary as the darwin-arm64 VSIX; PG-B.27 program prints 200 / Rick Sanchez / Alive with the VM and with --nativo"
+    }
+  ]
+}

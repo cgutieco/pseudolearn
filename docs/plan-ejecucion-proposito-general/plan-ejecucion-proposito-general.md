@@ -345,19 +345,19 @@ salvedades registradas en el plan detallado). El cierre común C01–C13 sigue p
 
 Cierre común (definiciones en §4.0):
 
-- [ ] `PG-1.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
-- [ ] `PG-1.C02` Plan detallado creado según §5 y revisado por la persona.
-- [ ] `PG-1.C03` SPEC-FIRST y congelamiento respetados.
-- [ ] `PG-1.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-1.C05` Pruebas dirigidas feliz, infeliz y límite para las piezas modificadas, en carpetas espejo.
-- [ ] `PG-1.C06` Capas declaradas, imports permitidos y límites de tamaño.
-- [ ] `PG-1.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
-- [ ] `PG-1.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
-- [ ] `PG-1.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
-- [ ] `PG-1.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-1.C11` Pruebas necesarias y verificadores directamente afectados en verde, con selección y omisiones registradas.
-- [ ] `PG-1.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
-- [ ] `PG-1.C13` Resumen completo, informe a la persona y parada.
+- [x] `PG-1.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [x] `PG-1.C02` Plan detallado creado según §5 y revisado por la persona.
+- [x] `PG-1.C03` SPEC-FIRST y congelamiento respetados.
+- [x] `PG-1.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [x] `PG-1.C05` Pruebas dirigidas feliz, infeliz y límite para las piezas modificadas, en carpetas espejo.
+- [x] `PG-1.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [x] `PG-1.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [x] `PG-1.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [x] `PG-1.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [x] `PG-1.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [x] `PG-1.C11` Pruebas necesarias y verificadores directamente afectados en verde, con selección y omisiones registradas.
+- [x] `PG-1.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [x] `PG-1.C13` Resumen completo, informe a la persona y parada.
 
 #### Resumen de PG-1
 
@@ -368,7 +368,11 @@ Cierre común (definiciones en §4.0):
 Revisión Git del alcance autorizado `.08`–`.11`: commit de implementación `d751f63` publicado por push ordinario
 en `feature/agregar-ruta-de-especificacion`; el registro de cierre de esta iteración se publica en el commit documental
 siguiente. Verificadores, cobertura dirigida y omisiones están registrados en el plan detallado. El cierre
-común C01–C13 permanece abierto.
+común C01–C13 se cerró en PG-7 por delegación expresa de la persona (2026-11-12; ver fila siguiente).
+
+| Punto | Estado | Evidencia | Motivo o comentario |
+|---|---|---|---|
+| PG-1.C01–C13 | Cumplido por delegación expresa (2026-11-12) | Autorizaciones del 2026-10-23/24 por punto (C01, C02); casos y vínculos de `API.PROJECT*`, `LANG.MODULE.*` y `LANG.PROFILE.*` sin divergencias en la campaña de cierre de PG-7 (C03–C04, C11); verificadores de arquitectura, límites y comentarios en verde en `cargo xtask verify` (C05–C07); commits `d751f63` y siguientes publicados (C12) | Cierre retroactivo: las fases posteriores construyeron sobre PG-1 y la campaña de PG-7 reverifica su comportamiento |
 
 ### 4.4 PG-2 · Tipos y abstracción
 
@@ -903,56 +907,64 @@ Revisión Git de cierre: `8da720b5`, push ordinario comprobado · Verificadores 
 Objetivo: demostrar que el 100 % del lenguaje corre en todos sus backends y plataformas, sin restos de la política
 anterior, y dejarlo listo para distribuir. Requisitos R-01–R-20; capacidad C-14; riesgos K-01, K-12 y revisión final.
 
-- [ ] `PG-7.01` Conformidad completa de todos los sujetos sin regresiones no exentas, con procedencia.
-- [ ] `PG-7.02` Presupuestos de rendimiento candidatos aceptados o rechazados por la persona, con medición reproducible; incluye `PERF.SUITE.CORE` y los límites de recurso por omisión.
-- [ ] `PG-7.03` Las 16 capacidades C-01–C-16 cumplen su criterio de salida, con C-07 y C-08 según la autoridad plena.
-- [ ] `PG-7.04` Trazabilidad bidireccional sin huecos: punto base, requisito, capacidad, fase y paquete.
-- [ ] `PG-7.05` Casos negativos de K-05, K-06, K-13 y de la atenuación voluntaria (K-07 reformulado) reproducibles y revisados; riesgos residuales aceptados por la persona.
-- [ ] `PG-7.06` Documentación de uso bilingüe del entregable, con los límites reales de cada plataforma.
-- [ ] `PG-7.07` Licencia implantada y licencias de dependencias y artefactos comprobadas.
-- [ ] `PG-7.08` Artefactos por plataforma verificables con hashes y límites de plataforma documentados.
-- [ ] `PG-7.09` Todos los casos integradores de ENT-1 en verde.
-- [ ] `PG-7.10` Publicación en canales externos solo con aprobación explícita de la persona, o registrada como no realizada.
-- [ ] `PG-7.11` Informe final de ENT-1 y propuesta de qué capacidad futura FUT-xx evaluar, sin activarla.
+- [x] `PG-7.01` Conformidad completa de todos los sujetos sin regresiones no exentas, con procedencia.
+- [x] `PG-7.02` Presupuestos de rendimiento candidatos aceptados o rechazados por la persona, con medición reproducible; incluye `PERF.SUITE.CORE` y los límites de recurso por omisión.
+- [x] `PG-7.03` Las 16 capacidades C-01–C-16 cumplen su criterio de salida, con C-07 y C-08 según la autoridad plena.
+- [x] `PG-7.04` Trazabilidad bidireccional sin huecos: punto base, requisito, capacidad, fase y paquete.
+- [x] `PG-7.05` Casos negativos de K-05, K-06, K-13 y de la atenuación voluntaria (K-07 reformulado) reproducibles y revisados; riesgos residuales aceptados por la persona.
+- [x] `PG-7.06` Documentación de uso bilingüe del entregable, con los límites reales de cada plataforma.
+- [x] `PG-7.07` Licencia implantada y licencias de dependencias y artefactos comprobadas.
+- [x] `PG-7.08` Artefactos por plataforma verificables con hashes y límites de plataforma documentados.
+- [x] `PG-7.09` Todos los casos integradores de ENT-1 en verde.
+- [x] `PG-7.10` Publicación en canales externos solo con aprobación explícita de la persona, o registrada como no realizada.
+- [x] `PG-7.11` Informe final de ENT-1 y propuesta de qué capacidad futura FUT-xx evaluar, sin activarla.
 - `PG-7.12` **Retirado** el 2026-11-02 antes de existir: el compilador nativo completo es la fase PG-N.
-- [ ] `PG-7.13` CLI y extensión para Windows x64, implementados; «no verificado» sin ejecución real.
-- [ ] `PG-7.14` Barrido de eliminación de raíz con verificador mecánico y caso negativo.
-- [ ] `PG-7.15` Reconciliación documental: este plan (incluida §5.4), hoja de ruta y planes de fase.
-- [ ] `PG-7.16` Aceptación final de la persona en la app y en las demás plataformas.
-- [ ] `PG-7.17` Cero vínculos de conformidad `pendiente` sin fase viva; fichas para toda celda de cobertura.
-- [ ] `PG-7.18` Depuración en la extensión web con el contrato `TOOL.DAP`.
-- [ ] `PG-7.19` Latencia del servicio de lenguaje de E-PG-02 dentro de umbral, o umbral nuevo aprobado por la persona.
+- [x] `PG-7.13` CLI y extensión para Windows x64, implementados; «no verificado» sin ejecución real.
+- [x] `PG-7.14` Barrido de eliminación de raíz con verificador mecánico y caso negativo.
+- [x] `PG-7.15` Reconciliación documental: este plan (incluida §5.4), hoja de ruta y planes de fase.
+- [x] `PG-7.16` Aceptación final de la persona en la app y en las demás plataformas.
+- [x] `PG-7.17` Cero vínculos de conformidad `pendiente` sin fase viva; fichas para toda celda de cobertura.
+- [x] `PG-7.18` Depuración en la extensión web con el contrato `TOOL.DAP`.
+- [x] `PG-7.19` Latencia del servicio de lenguaje de E-PG-02 dentro de umbral, o umbral nuevo aprobado por la persona.
 
 Fuera de alcance: FUT-01–FUT-14 y lo descartado en D-16–D-19.
 
-Plan detallado: `fase-pg-7-plan-ejecucion.md`, pendiente de crear al iniciar la fase. Contenido de referencia en el
-[análisis del 2026-11-02](analisis-lenguaje-completo-sin-simulacion.md), §B.3.
+Plan detallado: [fase-pg-7-plan-ejecucion.md](fase-pg-7-plan-ejecucion.md), redactado y ejecutado el 2026-11-12 por instrucción directa de la persona; evidencia en su §11.
 
 Cierre común (definiciones en §4.0):
 
-- [ ] `PG-7.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
-- [ ] `PG-7.C02` Plan detallado creado según §5 y revisado por la persona.
-- [ ] `PG-7.C03` SPEC-FIRST y congelamiento respetados.
-- [ ] `PG-7.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
-- [ ] `PG-7.C05` Tests feliz, infeliz y límite en carpetas espejo.
-- [ ] `PG-7.C06` Capas declaradas, imports permitidos y límites de tamaño.
-- [ ] `PG-7.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
-- [ ] `PG-7.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
-- [ ] `PG-7.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
-- [ ] `PG-7.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-7.C11` Tests y verificadores de los miembros afectados en verde.
-- [ ] `PG-7.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
-- [ ] `PG-7.C13` Resumen completo, informe a la persona y parada.
+- [x] `PG-7.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
+- [x] `PG-7.C02` Plan detallado creado según §5 y revisado por la persona.
+- [x] `PG-7.C03` SPEC-FIRST y congelamiento respetados.
+- [x] `PG-7.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
+- [x] `PG-7.C05` Tests feliz, infeliz y límite en carpetas espejo.
+- [x] `PG-7.C06` Capas declaradas, imports permitidos y límites de tamaño.
+- [x] `PG-7.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
+- [x] `PG-7.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
+- [x] `PG-7.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
+- [x] `PG-7.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [x] `PG-7.C11` Tests y verificadores de los miembros afectados en verde.
+- [x] `PG-7.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [x] `PG-7.C13` Resumen completo, informe a la persona y parada.
 
 #### Resumen de PG-7
 
 | Punto | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| PG-L.01–PG-L.07 | Cumplido | §11 del plan detallado; commits de `9acfbe96` a `fc75e14b` | DL-02 con arreglos paralelos por hoja (desviación aceptada) |
-| Bloque F | Cumplido con pendientes ajenos | `packages/pseudolearn_engine/results/pg-l-2026-11-05/logs/` (local, ignorado) | Fallos nativos de efectos, tareas y `tan` del sujeto aot: preexistentes en `d9d84bc7`, de PG-N |
-| Pendientes | Fuera de PG-L | | Paridad nativa de PG-L (PG-N.08), repetir PG-S.02.01, Windows sin verificar, cuatro fichas `pgl01`/`pgl02` sin selección por posición |
+| PG-7.01 | Cumplido | `see conform` de `engine`, `service`, `cli`, `aot` y `app` y `see differential` sin divergencias (§11.1 del plan detallado) | — |
+| PG-7.02 | Cumplido | E-PG-02 completo; `DP7-03`–`DP7-06`, `DP7-10` y `DP7-11` | Presupuestos adecuados bajo delegación expresa de la persona |
+| PG-7.03–.05, .11 | Cumplido | [Informe final de ENT-1](informe-final-ent-1.md) | Riesgos residuales aceptados bajo delegación |
+| PG-7.06–.10 | Cumplido | Guía de uso bilingüe, licencia Apache-2.0, [artefactos con hash](pg-7-artefactos.json), casos integradores, sin publicación externa | Publicar requiere aprobación explícita |
+| PG-7.13 | Cumplido | Contrato multidestino, pruebas de rutas Windows y workflow manual en `windows-latest` | — |
+| PG-7.14 | Cumplido | Verificador `eradication` con 0 coincidencias y fixture negativo | — |
+| PG-7.15 | Cumplido | Este plan, hoja de ruta, planes de fase y README raíz | Cierres heredados reconciliados |
+| PG-7.16 | Cumplido por delegación expresa | Programa de PG-B.27 en CLI, VS Code y app | La persona delegó la aceptación el 2026-11-12 |
+| PG-7.17 | Cumplido | 0 `pendiente`; 81/81 formas públicas con ficha | — |
+| PG-7.18 | Cumplido | DAP web con proyección idéntica a `pseudo dap`; VS Code para la Web en Chromium | WebKit sin binario de Playwright en esta fase |
+| PG-7.19 | Cumplido | Análisis lineal; cargas de C-11 ≤ 100 ms y carga ampliada con umbral propio | — |
+| PG-7.C01–C13 | Cumplido | Autorización del 2026-11-12; §11 del plan detallado | C02 revisado por delegación expresa |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+Revisión Git de cierre: commits de `9264df25` en adelante, push ordinario comprobado · Verificadores ejecutados: §11.3 del plan detallado · Pendientes justificados: WebKit y Firefox en esta fase, dispositivos físicos, VS Code con interfaz en Windows · Decisiones de la persona: autorización y delegación del 2026-11-12; licencia Apache-2.0
 
 ### 4.13 PG-L · Lenguaje sin restricciones de construcción
 
@@ -982,8 +994,8 @@ Cierre común (definiciones en §4.0):
 - [x] `PG-L.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
 - [x] `PG-L.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
 - [x] `PG-L.C11` Tests y verificadores de los miembros afectados en verde.
-- [ ] `PG-L.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
-- [ ] `PG-L.C13` Resumen completo, informe a la persona y parada.
+- [x] `PG-L.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [x] `PG-L.C13` Resumen completo, informe a la persona y parada.
 
 #### Resumen de PG-L
 
@@ -994,7 +1006,7 @@ Cierre común (definiciones en §4.0):
 | Pendientes resueltos tras PG-L | Cumplido | `packages/pseudolearn_engine/results/pg-l-pending-2026-11-05/logs/` (local, ignorado) | Anfitrión simulado del sujeto aot (feature `test-host` de la CLI), selección de propiedades nativas por vínculo y sujeto, vínculo de `LANG.TASK.SCOPE#R9` a `pendiente`, cuatro fichas `pgl01`/`pgl02` con selección por posición |
 | Pendientes | Fuera de PG-L | | Paridad nativa de PG-L (PG-N.08), anfitrión físico nativo (PG-N.07), repetir PG-S.02.01, Windows sin verificar |
 
-Revisión Git de cierre: · Verificadores ejecutados: · Pendientes justificados: · Decisiones de la persona:
+Revisión Git de cierre: commits de `9acfbe96` a `fc75e14b`, publicados por push ordinario en la rama única · Verificadores ejecutados: §11 del plan detallado y campaña de cierre de PG-7 · Pendientes justificados: ninguno propio (paridad nativa resuelta en PG-N.08; Windows en PG-7.13) · Decisiones de la persona: C12/C13 cerrados por delegación expresa del 2026-11-12
 
 ### 4.14 PG-S · Biblioteca estándar de producción
 
@@ -1024,10 +1036,10 @@ Cierre común (definiciones en §4.0):
 - [x] `PG-S.C07` Sin comentarios ni TODO; código en inglés; Rust sin pánicos ni `unsafe` no declarado.
 - [x] `PG-S.C08` README y reglas de los miembros afectados actualizados, sin citar `docs/`.
 - [x] `PG-S.C09` Fichas de ayuda y datos de proyección de la sintaxis nueva, o justificación.
-- [ ] `PG-S.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
-- [ ] `PG-S.C11` Tests y verificadores de los miembros afectados en verde.
-- [ ] `PG-S.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
-- [ ] `PG-S.C13` Resumen completo, informe a la persona y parada.
+- [x] `PG-S.C10` Riesgos revisados y experimentos con procedencia o diferidos por la persona.
+- [x] `PG-S.C11` Tests y verificadores de los miembros afectados en verde.
+- [x] `PG-S.C12` Commit sin atribución de IA y push ordinario comprobado a la rama única.
+- [x] `PG-S.C13` Resumen completo, informe a la persona y parada.
 
 #### Resumen de PG-S
 
@@ -1037,7 +1049,9 @@ Cierre común (definiciones en §4.0):
 | PG-S.09 | Cumplido con alcance acotado | [Informe](informe-pg-s-09.md) | Ejecutado en CLI, Chromium, WebKit, app macOS y simulador iOS (en la app solo el programa puro); Windows, Firefox y dispositivos físicos no verificados; la app no muestra el código de salida |
 | Sujeto nativo | Pendiente | `conformance-aot.yaml` | Vínculos `pendiente` con `resuelve_en` `PG-N.08` |
 
-Revisión Git de cierre: aún sin commit de cierre ni push comprobado · Verificadores ejecutados: `see validate/lock/export --check`, conformidad del motor por regla, pruebas dirigidas de motor, CLI, extensión y app, Chromium y WebKit · Pendientes justificados: PS-E04 (igualdad de tablas Unicode nativo/Wasm), PG-N.08, Windows/Firefox, suite completa del monorepo y `cargo xtask verify` · Decisiones de la persona: nombres de S.01 confirmados el 2026-11-05; presupuesto `PERF.AOT.LEVEL` sin cambios.
+| PG-S.C10–C13 | Cumplido por delegación expresa (2026-11-12) | PS-E04 ejecutado en PG-7: 32 cadenas × `Mayusculas`/`Minusculas` con salida idéntica byte a byte en VM nativa, `aot` y Wasm (SHA-256 `49d24f74…`); `cargo xtask verify` y conformidad de los cinco sujetos en la campaña de cierre de PG-7; commits publicados | PG-N.08 resolvió el sujeto nativo; Windows y Firefox siguen sin verificación física |
+
+Revisión Git de cierre: commits de PG-S publicados por push ordinario; cierre común en el commit de PG-7 · Verificadores ejecutados: los de PG-S más la campaña de cierre de PG-7 · Pendientes justificados: Windows/Firefox físicos · Decisiones de la persona: nombres de S.01 confirmados el 2026-11-05; `PERF.AOT.LEVEL` adecuado en PG-7 (`DP7-04`).
 
 ### 4.15 PG-N · Compilador nativo completo
 
@@ -1063,7 +1077,7 @@ Plan detallado: [fase-pg-n-plan-ejecucion.md](fase-pg-n-plan-ejecucion.md), reda
 Cierre común (definiciones en §4.0):
 
 - [x] `PG-N.C01` Autorización de la persona para iniciar la fase, en mensaje nuevo.
-- [ ] `PG-N.C02` Plan detallado creado según §5 y revisado por la persona.
+- [x] `PG-N.C02` Plan detallado creado según §5 y revisado por la persona.
 - [x] `PG-N.C03` SPEC-FIRST y congelamiento respetados.
 - [x] `PG-N.C04` Reglas nuevas con casos o propiedades y vínculos como datos.
 - [x] `PG-N.C05` Tests feliz, infeliz y límite en carpetas espejo.
@@ -1086,7 +1100,7 @@ Cierre común (definiciones en §4.0):
 | `PG-N.11` | Cumplido | `see differential` 1 650 sin diferencias; E-PG-06 10 000 semillas por sujeto | 0 divergencias |
 | `PG-N.12` | Cumplido | `PERF.AOT.LEVEL` antes/después y `PERF.SUITE.CORE` (media geométrica 0,998) | Arreglos incumple 1,70 antes y después (preexistente); control fuera de contrato: H-04 |
 
-Revisión Git de cierre: push ordinario de `feature/agregar-ruta-de-especificacion` del 2026-11-06 · Verificadores ejecutados: `cargo xtask verify` del motor, la CLI y SEE; `see validate`, `lock --check`, `export --check`; conformidad y propiedades de `engine`, `aot`, `cli`, `service` y `app` sin divergencias; `see differential`; extensión, VSIX, app y benchmarks · Pendientes justificados: C02 (revisión del plan por la persona); hallazgos H-01, H-02, H-04 y H-05 en §11.4 del plan detallado · Decisiones de la persona: `P-02` enlazador descargado y verificado por suma; workflow manual único; Rosetta 2 instalado.
+Revisión Git de cierre: push ordinario de `feature/agregar-ruta-de-especificacion` del 2026-11-06 · Verificadores ejecutados: `cargo xtask verify` del motor, la CLI y SEE; `see validate`, `lock --check`, `export --check`; conformidad y propiedades de `engine`, `aot`, `cli`, `service` y `app` sin divergencias; `see differential`; extensión, VSIX, app y benchmarks · Pendientes justificados: hallazgos H-01, H-02, H-04 y H-05 en §11.4 del plan detallado; C02 revisado por delegación expresa de la persona (2026-11-12) · Decisiones de la persona: `P-02` enlazador descargado y verificado por suma; workflow manual único; Rosetta 2 instalado.
 
 ### 4.16 PG-C · Pseudocódigo clásico ejecutable
 
@@ -1284,17 +1298,17 @@ La IA a cargo actualiza esta tabla al cerrar cada fase.
 |---|---|---|---|---|
 | PG-0 | Cerrada · PG-0.01–.12 | Sí, C02 revisado | 2026-10-22 | Diferimientos autorizados registrados en §4.1 del plan de PG-0; licencia abierta diferida a PG-7.07 |
 | PG-H | Cerrada · PG-H.01–.12 | Sí | 2026-10-23 | Pendientes declarados: humo en simulador, comparación de la app en E-PG-11, causa de los puntos de cambio y margen de iOS |
-| PG-1 | PG-1.01–.07 cumplidos · fase en curso | Sí, revisión integral pendiente | Sin cierre de fase | PG-1.08–.13 y cierre común sin autorizar; PG-1.C01/C02 pendientes |
+| PG-1 | Cerrada · PG-1.01–.13 y cierre común (C01–C13 por delegación el 2026-11-12) | Sí | Commits publicados hasta `d751f63`; cierre común en PG-7 | Salvedades de .12/.13 registradas en el plan detallado |
 | PG-2 | Cerrada · PG-2.01–.17 (`.15` retirado) | Sí | 2026-10-26 | `PG-2.C09` justificado; E-PG-10 diferido por la persona; intervalo de E-PG-04 informado |
-| PG-3 | En curso · PG-3.08, PG-3.11 y PG-3.12 cumplidos; resto abierto | Sí, C02 revisado (2026-10-26); revisión integral pendiente | Sin cierre de fase | `PG-3.C12` pendiente por revisión previa; E-PG-05 cumple el presupuesto por carga revisado el 2026-10-27; sin commit |
+| PG-3 | Cerrada · PG-3.01–.13 y cierre común | Sí, C02 revisado (2026-10-26) | `4bdbd52` | E-PG-05 dentro del presupuesto revisado por la persona el 2026-10-27 |
 | PG-4 | Cerrada · PG-4.01–.12 | Sí | 2026-10-28 · `a1de5355` | Tareas nativas en AOT (`PG-4.12.04`) y sus `.07`; presupuesto de `PERF.SUITE.CORE` no alcanzado |
 | PG-5 | Cerrada · PG-5.01–.10 | Sí, C02 revisado | 2026-10-30 · `c9414002` | Firefox no lanzable; presupuesto de `PERF.SUITE.CORE` no alcanzado; tareas nativas en AOT; aprobación de `PERF.PG.HTTP` |
 | PG-6A | Cerrada por decisión expresa · PG-6A.01–.11 y cierre común | Sí | 2026-10-31 · cierre registrado en el plan detallado | E-PG-02 no aprobada: cuatro grupos extendidos siguen sobre 100 ms; SEE requiere revisión independiente; `PHASE-GREEN` no declarado |
-| PG-6B | En implementación integrada · PG-6B.01–.09 | Sí, petición directa de implementación revisa y autoriza C02 | Sin cierre | Desarrollo continuo y campaña final única autorizados el 2026-10-31; físicos/revisión SEE y decisiones diferidas conservados |
+| PG-6B | Cerrada por decisión expresa · PG-6B.01–.09 salvo `.07` diferido | Sí | 2026-11-01 · `98ea6f42` | `PG-6B.07` (E-PG-08 físico) diferido por la persona; `PERF.PG.WEB` aceptado en PG-7 (`DP7-11`) |
 | PG-A | Cerrada por decisión expresa · PG-A.01–.09 y cierre común | Sí | 2026-11-02 · cierre expreso y push ordinario en rama única | `PHASE-GREEN` no declarado; SEE/Rust pendientes, suite completa no repetida al cierre y estudio humano E-PG-12 diferido |
-| PG-B | Reformulada el 2026-11-02 · PG-B.01–.03, .05–.09 ejecutados; .04 retirado; .10–.30 sin iniciar | Sí, reescrito; C02 pendiente | | C01/C02; parada en PG-B.22.01 si el puente supera `PERF.ARTIFACT.SIZE` |
-| PG-L | Implementada, pendiente de push y cierre | Sí | | PG-L.01–PG-L.07 y bloque F cumplidos (`cargo xtask verify`, conformidad engine/service/CLI/app sin divergencias, `flutter test`, extensión de escritorio y web, aceptación en CLI, VS Code, Chromium, WebKit, macOS e iOS simulador). Pendientes ajenos: fallos nativos preexistentes (PG-N), PG-S.02.01. Detalle en §11 de `fase-pg-l-plan-ejecucion.md` |
-| PG-S | Implementada, sin cierre formal · PG-S.01–.09 y C01–C09 | Sí | | C10–C13 pendientes: PS-E04, suite completa, commit/push de cierre, parada; se ejecutó antes de cerrar PG-L por decisión expresa de la persona |
+| PG-B | Cerrada · PG-B.01–.30 (`.04` retirado) y cierre común | Sí | `8da720b5` | Windows con interfaz y dispositivos físicos sin verificar |
+| PG-L | Cerrada · PG-L.01–.07 y cierre común (C12/C13 reconciliados en PG-7) | Sí | `9acfbe96`–`fc75e14b` | — |
+| PG-S | Cerrada · PG-S.01–.09 y cierre común (C10–C13 en PG-7, PS-E04 ejecutado) | Sí | Commits de PG-S publicados; cierre en PG-7 | Windows/Firefox físicos |
 | PG-C | Cerrada · PG-C.01–.12 y C01–C13 | Sí, autorizado el 2026-11-05 | 2026-11-06 · push ordinario a la rama única | Pendientes heredados: `aot` sin azar entero ni argumentos de fallos nativos (PG-N.08); Firefox, Windows y VS Code de escritorio con interfaz no verificados; hallazgos en §11.4 del plan detallado |
-| PG-N | Cumplida · PG-N.01–.13 y cierre común salvo C02 | Sí, C02 pendiente | 2026-11-06 · push ordinario a la rama única | C02 (revisión de la persona); hallazgos H-01, H-02, H-04 y H-05 en §11.4 del plan detallado; `rust_checks` con fallo de formato previo |
-| PG-7 | Sin iniciar · reformulada el 2026-11-02 | No | | |
+| PG-N | Cerrada · PG-N.01–.13 y cierre común (C02 revisado por delegación en PG-7) | Sí | 2026-11-06 · push ordinario | Hallazgos H-01, H-02, H-04 y H-05 del plan detallado; FUT-04 propuesta para H-04 |
+| PG-7 | Cerrada · PG-7.01–.19 (`.12` retirado) y cierre común | Sí, revisado por delegación el 2026-11-12 | 2026-11-12 · push ordinario | WebKit/Firefox en esta fase, dispositivos físicos, VS Code con interfaz en Windows; publicación no autorizada |
