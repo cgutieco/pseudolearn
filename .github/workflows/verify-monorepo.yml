@@ -241,10 +241,75 @@ jobs:
         working-directory: apps/pseudolearn_cli
         run: python -I tool/verify_native_target.py "target/release/pseudo" "${{ matrix.target }}" "${{ runner.temp }}/native-target-logs"
 
+      - name: Check the system path forms with the VM
+        working-directory: apps/pseudolearn_cli
+        run: python -I tool/verify_system_paths.py "target/release/pseudo" | tee "${{ runner.temp }}/native-target-logs/system-paths.json"
+
+      - name: Test the Windows path handling of the physical host
+        if: runner.os == 'Windows'
+        working-directory: packages/pseudolearn_engine
+        run: cargo test --locked -p pseudolearn_host --test physical_paths 2>&1 | tee "${{ runner.temp }}/native-target-logs/host-paths.log"
+
       - name: Upload logs
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: native-target-${{ matrix.target }}
           path: ${{ runner.temp }}/native-target-logs
+          if-no-files-found: warn
+
+  extension-windows:
+    runs-on: windows-latest
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Install the pinned Rust toolchain
+        run: rustup toolchain install 1.99.0 --profile minimal --target x86_64-pc-windows-msvc
+
+      - name: Resolve the unversioned library lockfiles and the corpus export
+        run: |
+          (cd packages/pseudolearn_engine && cargo generate-lockfile)
+          (cd packages/pseudolearn_spec && cargo generate-lockfile && cargo run --locked -p see_cli --bin see -- export --root .)
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: '12.8.1'
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22.23.3'
+
+      - name: Package the win32-x64 extension
+        working-directory: apps/pseudolearn_vscode
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm exec vitest run tests/scripts/artifact.test.mjs
+          pnpm build:cli
+          pnpm generate:icon
+          pnpm build
+          node scripts/package.mjs
+
+      - name: Run the packaged binary from the VSIX
+        working-directory: apps/pseudolearn_vscode
+        run: |
+          mkdir -p unpacked
+          unzip -q -o .artifacts/pseudolearn-0.1.0-win32-x64.vsix -d unpacked
+          python -I ../pseudolearn_cli/tool/verify_system_paths.py unpacked/extension/bin/win32-x64/pseudo.exe
+
+      - name: Upload the VSIX and its record
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pseudolearn-vscode-win32-x64
+          path: |
+            apps/pseudolearn_vscode/.artifacts/*.vsix
+            apps/pseudolearn_vscode/.artifacts/*.vsix.json
+            apps/pseudolearn_vscode/.artifacts/*.vsix.sha256
           if-no-files-found: warn
