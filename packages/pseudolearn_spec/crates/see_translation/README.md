@@ -1,36 +1,48 @@
 # see_translation
 
-## 1. Qué es y qué no es
+Reimprime un programa de PseudoLearn de un perfil léxico a otro (`es` ↔ `en`) con el vocabulario del corpus, y
+resuelve los marcadores `{{lexema:clave}}` de las plantillas de programa.
 
-Reimprime lexemas del recurso bilingüe preservando cadenas, comentarios, trivia e identificadores. Detecta colisiones de nombres reservados fuera de literales y resuelve marcadores de salida. El vocabulario completo pertenece a R2.
+**No hace:** analizar ni ejecutar programas. Sustituye palabras; no entiende la gramática.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-`cargo test -p see_translation`; `cargo check -p see_translation` desde el miembro. No se despliega.
+```mermaid
+flowchart BT
+    model["crates/see_model"] --> translation["crates/see_translation"]
+    translation --> generators["crates/see_generators"]
+    translation --> conformance["crates/see_conformance"]
+    translation --> cli["crates/see_cli"]
+```
 
-## 3. Arquitectura y modelo del sistema
+## Piezas
 
-Imports internos permitidos: model. Prohibidas las capas superiores y los sujetos. `src/` implementa la capa; `tests/` refleja módulos.
+| Función             | Qué hace                                                                                 |
+|---------------------|------------------------------------------------------------------------------------------|
+| `translate`         | Reemplaza cada palabra del perfil origen por la del destino; la más larga primero        |
+| `collisions`        | Palabras del programa que son vocabulario del perfil destino y no del origen             |
+| `is_contextual`     | Distingue las entradas con prefijo `contextual:`, que `translate` no sustituye           |
+| `lexemes::resolve`  | Sustituye los marcadores `{{lexema:clave}}` por la palabra del perfil                    |
+| `lexemes::validate` | Comprueba que la salida esperada de un caso se pueda resolver en cada perfil que declara |
 
-## 4. Decisiones de diseño y fundamentos técnicos
+`translate` deja intactos los comentarios `//` y los literales entre comillas, y no traduce el nombre de una función
+que el propio programa declara. Si origen y destino son el mismo perfil, devuelve el programa tal cual.
 
-El vocabulario consumidor incluye alias derivados, con prioridad de forma canónica al reimprimir. Las identidades con prefijo function: solo se traducen en posición de llamada; nunca se renombran variables que oculten nombres de funciones ni se cuentan como reservadas para colisiones. Los nombres declarados de subprogramas, métodos y clases y los accesos detrás de punto conservan identidad aunque coincidan con una función incorporada. Se preservan literales, comentarios y fronteras de identificador.
+## Reglas que conviene saber
 
-Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
-Se descarta importar sujetos o capas superiores para preservar la dirección.
+- Solo importa `see_model` y no tiene dependencias externas (`architecture.yaml`).
+- El vocabulario llega como parámetro (`Vocabulary`); el crate no lee archivos.
+- Un fallo esperable (léxico ausente, marcador sin cerrar, literal sin cerrar) es un `Result`, no un `panic`.
+- Sin comentarios, sin `unsafe`; 300 líneas por archivo, 40 por función, 4 parámetros posicionales y 3 niveles de
+  anidación.
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+## Comandos útiles
 
-Reglas y límites en `architecture.yaml` del miembro; código inglés sin comentarios ni unsafe.
+Desde `packages/pseudolearn_spec`.
 
-## 6. Decisiones de producto que condicionan el código
+| Para qué                          | Comando                         |
+|-----------------------------------|---------------------------------|
+| Tests de este crate               | `cargo test -p see_translation` |
+| Verificación completa del paquete | `cargo xtask verify`            |
 
-R1 autoriza solo el sistema de especificaciones. Ninguna lógica del motor vive aquí.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-`cargo xtask verify` desde el miembro; casos felices, infelices y límites en tests espejo.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan aprobado del sistema SEE. Las bibliotecas externas son infraestructura, nunca autoridad sobre el comportamiento de PseudoLearn.
+Requisitos: Rust `1.99.0` con rustfmt y Clippy (`rust-toolchain.toml`).

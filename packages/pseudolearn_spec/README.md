@@ -32,25 +32,24 @@ agente generadas. El paquete no declara dependencias de otros miembros en `Cargo
 ## Arquitectura
 
 Un workspace Cargo con un crate por capa. Cada flecha va de la dependencia a quien la usa; se omiten
-las aristas hacia `see_model` y `see_format`, que casi todos importan.
+las aristas hacia `see_model`, que todos importan salvo `see_oracles`, y las de `see_graph`, `see_change`
+y `see_translation` hacia `see_cli`. `see_format` solo es dependencia de producción de `see_cli`; en los
+demás crates se usa en los tests.
 
 ```mermaid
 flowchart BT
-    model["see_model"]
-    fmt["see_format"] --> grf["see_graph"]
-    fmt --> chg["see_change"]
-    grf --> val["see_validation"]
-    chg --> val
+    fmt["see_format"] --> cli["see_cli"]
+    grf["see_graph"] --> val["see_validation"]
+    chg["see_change"] --> val
     chg --> exp["see_export"]
     trn["see_translation"] --> gen["see_generators"]
     trn --> conf["see_conformance"]
     gen --> conf
     orc["see_oracles"] --> conf
-    fmt --> rep["see_report"]
-    val --> cli["see_cli"]
+    val --> cli
     conf --> cli
     exp --> cli
-    rep --> cli
+    rep["see_report"] --> cli
 ```
 
 | Crate             | Responsabilidad                                                                  |
@@ -103,8 +102,11 @@ y pedir su ejecución produce `SEE-SUBJECT-RETIRED`.
 - Un artefacto generado desde el corpus (`export.json`, las fichas de agente, la gramática del editor)
   se regenera, nunca se edita a mano. Las verificaciones fallan con `SEE-STALE` o `SEE-HASH` si hay desfase.
 - Los sujetos solo se alcanzan por proceso: un sujeto bloqueado es un error operativo, nunca cumplimiento.
-- Las propiedades `LIB.TIME#P1` (ida y vuelta ISO de `FechaHora`) y `LIB.CORE.CONVERSION#P1` (ida y vuelta de `Decimales` sobre reales diádicos sembrados) tienen generador propio (`time_iso_roundtrip` y `decimals_roundtrip`) y comparan contra un oráculo derivado de la regla, no contra la salida del motor.
-- La ayuda de la CLI (`cliMessages`: `helpCommands`, `helpOptions`) y los casos que la fijan viven en el corpus; cambiar las órdenes u opciones de `pseudo` obliga a actualizar ahí el texto y los casos.
+- Las propiedades `LIB.TIME#P1` (ida y vuelta ISO de `FechaHora`) y `LIB.CORE.CONVERSION#P1` (ida y vuelta de
+  `Decimales` sobre reales diádicos sembrados) tienen generador propio (`time_iso_roundtrip` y `decimals_roundtrip`) y
+  comparan contra un oráculo derivado de la regla, no contra la salida del motor.
+- La ayuda de la CLI (`cliMessages`: `helpCommands`, `helpOptions`) y los casos que la fijan viven en el corpus; cambiar
+  las órdenes u opciones de `pseudo` obliga a actualizar ahí el texto y los casos.
 
 ## Comandos útiles
 

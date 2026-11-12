@@ -1,34 +1,50 @@
 # see_graph
 
-## 1. Qué es y qué no es
+El grafo de dependencias entre especificaciones: comprueba que las referencias, los rangos de versión y los tipos de
+arista sean válidos, detecta ciclos, calcula qué especificaciones se ven afectadas por una y dibuja el grafo.
 
-Resuelve rangos semver, rechaza ciclos y propaga impacto por cierres iterativos. Produce texto o DOT con aristas tipadas; el recorrido evita recursión incluso en grafos profundos.
+**No hace:** leer el corpus ni decidir qué cambió. Recibe un `Corpus` ya leído.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-`cargo test -p see_graph`; `cargo check -p see_graph` desde el miembro. No se despliega.
+```mermaid
+flowchart BT
+    model["crates/see_model"] --> graph["crates/see_graph"]
+    semver["semver"] --> graph
+    graph --> validation["crates/see_validation"]
+    graph --> cli["crates/see_cli"]
+    format["crates/see_format"] -.-> graph
+```
 
-## 3. Arquitectura y modelo del sistema
+La línea punteada es una `dev-dependency`: `see_format` solo se usa en los tests.
 
-Imports internos permitidos: model. Prohibidas las capas superiores y los sujetos. `src/` implementa la capa; `tests/` refleja módulos.
+## Piezas
 
-## 4. Decisiones de diseño y fundamentos técnicos
+| Función                      | Qué hace                                                                                                                                                   |
+|------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `validate(corpus)`           | Devuelve errores `SEE-REFERENCE` (identidad inexistente), `SEE-RANGE` (la versión no cumple el rango), `SEE-GRAPH` (tipo de arista inválido) y `SEE-CYCLE` |
+| `impact(corpus, id)`         | Cierre de las especificaciones que dependen, directa o indirectamente, de `id`, incluida ella                                                              |
+| `render(corpus, focus, dot)` | Lista de aristas en texto o en DOT; con `focus`, solo el cierre de impacto de esa especificación                                                           |
 
-Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
-Se descarta importar sujetos o capas superiores para preservar la dirección.
+Los tipos de arista válidos son `usa`, `refina`, `restringe`, `requiere`, `verifica` y `reemplaza`. El cierre y la
+detección de ciclos son iterativos, sin recursión.
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+## Reglas que conviene saber
 
-Reglas y límites en `architecture.yaml` del miembro; código inglés sin comentarios ni unsafe.
+- Solo importa `see_model` (`may_import` en `architecture.yaml`); su única dependencia externa es `semver`.
+- Los errores salen como texto con un código estable al principio; `see_validation` los reúne con los demás.
+- Sin comentarios, sin `unsafe`; 300 líneas por archivo, 40 por función, 4 parámetros posicionales y 3 niveles de
+  anidación.
 
-## 6. Decisiones de producto que condicionan el código
+## Comandos útiles
 
-R1 autoriza solo el sistema de especificaciones. Ninguna lógica del motor vive aquí.
+Desde `packages/pseudolearn_spec`.
 
-## 7. Verificación, testing y aseguramiento de calidad
+| Para qué                             | Comando                                                        |
+|--------------------------------------|----------------------------------------------------------------|
+| Tests de este crate                  | `cargo test -p see_graph`                                      |
+| Ver el grafo del corpus              | `cargo run -p see_cli --bin see -- graph [--focus ID] [--dot]` |
+| Ver el impacto de una especificación | `cargo run -p see_cli --bin see -- impact ID`                  |
+| Verificación completa del paquete    | `cargo xtask verify`                                           |
 
-`cargo xtask verify` desde el miembro; casos felices, infelices y límites en tests espejo.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan aprobado del sistema SEE. Las bibliotecas externas son infraestructura, nunca autoridad sobre el comportamiento de PseudoLearn.
+Requisitos: Rust `1.99.0` con rustfmt y Clippy (`rust-toolchain.toml`).

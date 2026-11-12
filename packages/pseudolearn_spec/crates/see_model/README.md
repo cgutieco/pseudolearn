@@ -1,53 +1,60 @@
 # see_model
 
-## 1. Qué es y qué no es
+Las entidades de datos del sistema SEE: la especificación y sus bloques, el anclaje del corpus, la evidencia de
+conformidad y las propiedades. Son estructuras serializables con `serde`; todos los demás crates las comparten.
 
-Define Metadata, Block, Specification, Anchor, Manifest, Conformance, PropertyRun y Evidence como datos serializables. Los valores de recursos en `Block.fields` permanecen como JSON tipado por su validador dueño, incluida la prosa editorial normativa. La frontera pública no ejecuta sujetos ni interpreta programas.
+**No hace:** leer archivos, validar reglas ni ejecutar sujetos. Solo describe la forma de los datos.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-`cargo test -p see_model`; `cargo check -p see_model` desde el miembro. No se despliega.
+```mermaid
+flowchart BT
+    serde["serde y serde_json"] --> model["crates/see_model"]
+    model --> format["crates/see_format"]
+    model --> graph["crates/see_graph"]
+    model --> change["crates/see_change"]
+    model --> validation["crates/see_validation"]
+    model --> translation["crates/see_translation"]
+    model --> generators["crates/see_generators"]
+    model --> conformance["crates/see_conformance"]
+    model --> export["crates/see_export"]
+    model --> report["crates/see_report"]
+    model --> cli["crates/see_cli"]
+```
 
-## 3. Arquitectura y modelo del sistema
+`see_oracles` y `xtask` no la importan.
 
-Imports internos permitidos: ninguno. Prohibidas las capas superiores y los sujetos. `src/` implementa la capa; `tests/` refleja módulos.
+## Arquitectura
 
-## 4. Decisiones de diseño y fundamentos técnicos
+| Módulo       | Contiene                                                                                                   |
+|--------------|------------------------------------------------------------------------------------------------------------|
+| `lib.rs`     | `Metadata`, `Dependency`, `Change`, `Block`, `Specification`, `Corpus`, y los lectores `field` y `strings` |
+| `contract`   | `Lock` y `Anchor` (el anclaje), `Manifest` de una característica, `Vocabulary` y el prefijo `contextual:`  |
+| `evidence`   | `Conformance`, `Binding`, `Observation` y `Evidence`                                                       |
+| `properties` | `PropertyRun`, `Counterexample`, `PropertyRegistry`, `PropertyBinding` y `PropertyExecutor`                |
 
-Problema: las propiedades nativas necesitan un oráculo independiente y artefactos de proceso. Elección: `native_equivalence`, `native_diagnostics` y `native_roots` contrastan engine con aot sobre casos del corpus y grafos de memoria sembrados, con GC forzado para raíces; conserva códigos, argumentos y tramos de errores. Los ejecutores nativos de enlace, limpieza, permisos, códigos de salida y entorno compilan casos RT del corpus, borra la fuente y verifica dependencias, limpieza, permisos y ejecución desde otro directorio con entorno vacío. Se descarta declarar conformidad a partir del nombre de un test o de una exención del ejecutor.
+Un `Block` guarda sus campos como JSON (`BTreeMap<String, Value>`): el crate dueño de cada recurso es quien lo valida.
 
-Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
-Se descarta importar sujetos o capas superiores para preservar la dirección.
+## Reglas que conviene saber
 
-La evidencia de propiedades conserva semilla, número de muestras solicitadas y completadas, veredicto y
-el primer contraejemplo con programa, perfil, esperado, observado y comando de reproducción.
-Un registro vacío o con capacidad ausente no equivale a cumplimiento. El campo `properties` es opcional
-al leer evidencia histórica y se omite al escribir una lista vacía para conservar compatibilidad JSON.
+- No importa ningún otro crate del paquete (`may_import: []`); sus únicas dependencias externas son `serde` y
+  `serde_json`.
+- `Metadata`, `Dependency`, `Change`, `Lock`, `Anchor` y `Manifest` rechazan campos desconocidos al leer
+  (`deny_unknown_fields`).
+- `Metadata.cambio` se omite al serializar cuando no hay clasificación: bajo el congelamiento de versiones su
+  presencia sería una declaración de cambio.
+- La evidencia de propiedades vive en `PropertyRun`; el vínculo entre una propiedad y su algoritmo, en
+  `PropertyRegistry`, que se carga de `property-conformance.json`, nunca de código.
+- Sin comentarios, sin `unsafe`; 300 líneas por archivo, 40 por función, 4 parámetros posicionales y 3 niveles de
+  anidación.
 
-`PropertyRegistry` contiene el vínculo entre una propiedad versionada y un algoritmo de contraste,
-con semilla y cantidad. El vínculo vive en `property-conformance.json`, nunca en el código de un ejecutor.
-Los algoritmos se identifican por responsabilidad; una entrada no declara que la propiedad se haya ejecutado.
+## Comandos útiles
 
-`Metadata.cambio` se omite al serializar cuando no hay clasificación. Una edición oficial bajo
-congelamiento no debe emitir un campo `cambio` con valor nulo, porque su presencia representa una
-declaración de cambio.
+Desde `packages/pseudolearn_spec`.
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+| Para qué                          | Comando                   |
+|-----------------------------------|---------------------------|
+| Tests de este crate               | `cargo test -p see_model` |
+| Verificación completa del paquete | `cargo xtask verify`      |
 
-Reglas y límites en `architecture.yaml` del miembro; código inglés sin comentarios ni unsafe.
-
-## 6. Decisiones de producto que condicionan el código
-
-R1 autoriza solo el sistema de especificaciones. Ninguna lógica del motor vive aquí.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-`cargo xtask verify` desde el miembro; casos felices, infelices y límites en tests espejo.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan aprobado del sistema SEE. Las bibliotecas externas son infraestructura, nunca autoridad sobre el comportamiento de PseudoLearn.
-
-## Contratos adicionales de verificación
-
-`math_oracle` identifica el contraste matemático sembrado contra intervalos racionales independientes. El modelo solo conserva esa identidad; no incorpora cálculos ni depende del motor.
+Requisitos: Rust `1.99.0` con rustfmt y Clippy (`rust-toolchain.toml`).

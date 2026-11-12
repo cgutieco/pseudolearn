@@ -1,82 +1,92 @@
 # see_cli
 
-## 1. Qué es y qué no es
+La orden `see`: la CLI del sistema SEE. Lee el corpus y los archivos de conformidad, orquesta los demás crates y
+escribe o comprueba los artefactos generados (anclaje, exportación, fichas de agente, evidencia y matrices).
 
-Orquesta archivos y procesos para new, validate, graph, lock, diff, impact, conform, matrix, feature, export, budget, math-arguments y math-check. Lee revisiones Git sin modificar el checkout, rechaza sobrescrituras y comprueba recursos generados. Los adaptadores ejecutables son engine y cli; `reference` solo conserva su manifiesto retirado.
+**No hace:** la lógica de validación, comparación o informes; delega en `see_validation`, `see_conformance` y
+`see_report`. Tampoco implementa ningún sujeto: los lanza como procesos aparte.
 
-`target-parity [--count N] [--seed S]` compara los adaptadores release nativo y wasm32-wasip1 del motor con Node WASI. Requiere compilar ambos previamente. Node usa `--no-incremental-marking`: en macOS arm64, la configuración local reproduce SIGSEGV al recolectar desde `uvwasi_fd_write` con memoria Wasm grande; desactivar el marcado incremental evita ese fallo del anfitrión sin cambiar el módulo. Guarda conteos, divergencias y tamaño Brotli en el directorio local ignorado de resultados; la matemática masiva se informa por separado y no se declara completa por este contraste.
+## Dónde encaja
 
-## 2. Guía operativa y ciclo de vida
+```mermaid
+flowchart BT
+    model["crates/see_model"] --> cli["crates/see_cli"]
+    format["crates/see_format"] --> cli
+    graph["crates/see_graph"] --> cli
+    change["crates/see_change"] --> cli
+    validation["crates/see_validation"] --> cli
+    conformance["crates/see_conformance"] --> cli
+    report["crates/see_report"] --> cli
+    export["crates/see_export"] --> cli
+    translation["crates/see_translation"] --> cli
+    cli -.-> xtask["xtask"]
+```
 
-`runtime-fixtures` emite JSON de peticiones de ejecución materializadas con el traductor vigente y
-escenarios de memoria derivados por el oráculo independiente. Cada petición lleva el perfil del caso,
-la semilla y los límites; conserva hashes del corpus y no ejecuta sujetos ni modifica conformidad.
+La línea punteada es un proceso: `xtask` ejecuta `cargo run -p see_cli --bin see`, no lo importa. `see_oracles` y
+`see_generators` los usa `see_conformance`, no este crate. Las dependencias externas son `serde_json`, `serde-saphyr`
+y `serde`.
 
-`new` crea contratos en estado estable `1.0.0` y omite `cambio`. No inventa una revisión: `revisado_por`
-queda vacío hasta que una persona independiente la realice. Para contratos de lenguaje, la plantilla
-declara engine y aot como sujetos candidatos. El archivo recién creado todavía requiere contenido,
-casos, evidencia y revisión antes de pasar `validate`.
+## Arquitectura
 
-`lock` deriva el anclaje inicial de la revisión Git y luego usa el archivo local ignorado. `--refresh ID,ID`
-reancla solo las identidades autorizadas; después, `lock --check` verifica ese mismo anclaje local.
-`validate` sigue contrastando ciclo de vida con la revisión Git base. Mientras el versionado está congelado,
-no admite transiciones de estado ni cambios de versión para identidades existentes; las ediciones oficiales
-conservan estado y versión, omiten `cambio` y se reanclan explícitamente.
+El binario se llama `see`. `main.rs` interpreta los argumentos (`arguments.rs`) y despacha en `commands.rs`.
 
-`cargo test -p see_cli`; `cargo check -p see_cli` desde el miembro. No se despliega.
+| Órdenes                                            | Módulos                                                                                                     |
+|----------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| `new`, `validate`, `graph`, `impact`               | `commands`, `templates`, `storage`                                                                          |
+| `lock`, `diff`                                     | `storage` y `history` (clasificación contra una revisión de Git)                                            |
+| `export`, `agent-sheet`                            | `resources` y `agent_sheet`: generan o comprueban (`--check`) los artefactos                                |
+| `conform`, `matrix`, `feature`                     | `conformance`, `subject_adapters`, `bindings`, `rule_status`, `structural_evidence`                         |
+| `conform --operation properties`                   | `property_execution`, `property_registry`, `property_selection`, `native_properties`, `native_artifacts`    |
+| `differential`, `target-parity`, `budget`          | `differential`, `target_parity` y `target_evidence`, `e10`: evidencia comparativa entre sujetos y objetivos |
+| `runtime-fixtures`, `math-arguments`, `math-check` | `runtime_fixtures`, `math_contrast` y `math_verdicts`                                                       |
 
-## 3. Arquitectura y modelo del sistema
+`bindings.rs` fija dónde está el manifiesto de vínculos de cada sujeto (`conformance.yaml` del paquete para `see`,
+y el `conformance*.yaml` de cada miembro para `engine`, `aot`, `service`, `cli` y `app`). `subject_adapters.rs` fija
+cómo se lanza cada uno.
 
-Imports internos permitidos: model, format, graph, change, validation, conformance, report, export, translation. Prohibidas las capas superiores y los sujetos. `src/` implementa la capa; `tests/` refleja módulos.
+## Flujo principal
 
-## 4. Decisiones de diseño y fundamentos técnicos
+Flujo de datos de `see conform`, no de dependencias.
 
-Problema: una regla estructural no produce un caso de ejecución. Elección: los vínculos con verificación `estructural` registran una observación del validador con hash del contrato, después de ejecutar `see validate`; se rechaza aplicarla a una regla que no declara verificación estructural. El esquema de límites y la cobertura de RI usan esta evidencia. Una revisión humana no se convierte en evidencia estructural automática.
+```mermaid
+flowchart LR
+    args["argumentos"] --> bindings["manifiesto del sujeto"]
+    bindings --> launch["proceso del sujeto"]
+    launch --> execute["see_conformance"]
+    execute --> evidence["results/sujeto.json"]
+    evidence --> matrix["matriz y regresiones"]
+```
 
-Problema: las propiedades nativas necesitan un oráculo independiente y artefactos de proceso. Elección: `native_equivalence`, `native_diagnostics` y `native_roots` contrastan engine con aot sobre casos del corpus y grafos de memoria sembrados, con GC forzado para raíces; conserva códigos, argumentos y tramos de errores. Los ejecutores nativos de enlace, limpieza, permisos, códigos de salida y entorno compilan casos RT del corpus, borran la fuente y verifica dependencias, limpieza, permisos y ejecución desde otro directorio con entorno vacío. Se descarta declarar conformidad a partir del nombre de un test o de una exención del ejecutor.
+Los sujetos se lanzan con `cargo run` en su miembro (`engine` y `service` desde `pseudolearn_engine`, `cli` y `aot`
+desde `apps/pseudolearn_cli`) o con `dart run` para `app`. Un sujeto cuyo manifiesto está `retirado` no se lanza:
+produce `SEE-SUBJECT-RETIRED`.
 
-Problema: una propiedad nativa que toma casos del corpus no puede contar como fallo una carencia que el manifiesto del sujeto ya declara, ni un caso que el ejecutor no puede reproducir. Elección: `rule_status` lee el estado de cada vínculo del manifiesto del sujeto. Los ejecutores nativos solo toman casos de especificaciones que declaran el sujeto `aot` y cuya regla no está `pendiente` ni `exento` en su manifiesto, porque `exento` también declara que el sujeto no mide esa regla aunque su caso ejecute; los de artefactos (enlace, limpieza, permisos, salida y entorno) omiten además los casos con anfitrión simulado, porque ejecutan el binario suelto sin canal de efectos. Toda propiedad cuya regla declarada está `pendiente` para el sujeto se informa `pendiente` sin ejecutarse, igual que una capacidad no anunciada. Una regla sin vínculo o `cumple` no cambia la selección. Se descartan las listas de especificaciones excluidas dentro del código, que duplicarían los vínculos, y ejecutar la propiedad para descartar después su fallo, que ocultaría una regresión real de las reglas medidas.
+## Reglas que conviene saber
 
-El diferencial nativo exige igualdad de código, argumentos tipados y tramo de todos los diagnósticos de error, además de salida y terminación. La comparación con reference conserva sus exenciones y su contrato reducido. Se descarta comparar el texto traducido del diagnóstico.
+- Es la capa más alta del paquete: importa nueve de los once crates anteriores (`architecture.yaml`).
+- Solo acepta las opciones declaradas en `arguments.rs`; una opción desconocida o repetida es un error.
+- Un artefacto generado se compara con `--check` y falla con `SEE-STALE` si el archivo en disco no coincide.
+- Un sujeto bloqueado o caído es un error operativo, nunca un cumplimiento.
+- Sin comentarios, sin `unsafe`; 300 líneas por archivo, 40 por función, 4 parámetros posicionales y 3 niveles de
+  anidación.
 
-Budget mide E-10 sobre archivos .pseudo de ejemplos locales: recoge candidatos de declaraciones y controles contados sin usar el sujeto ni descartar los que colisionan. Registra revisión Git, archivos, candidatos, presupuesto de lexemas y colisiones. Es una muestra editorial local, no una muestra de estudiantes ni evidencia suficiente para cambiar palabras reservadas.
+## Comandos útiles
 
-Export comprueba además los recursos derivados; la correspondencia educativa se comprueba desde el índice del núcleo sin que el corpus dependa del índice. Los contratos estructurales producen evidencia separada del sujeto reference.
+Desde `packages/pseudolearn_spec`. `see` es `cargo run -p see_cli --bin see --`; todas las órdenes admiten
+`--root <directorio>`.
 
-Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
-Se descarta importar sujetos o capas superiores para preservar la dirección.
+| Para qué                                   | Comando                                                              |
+|--------------------------------------------|----------------------------------------------------------------------|
+| Tests de este crate                        | `cargo test -p see_cli`                                              |
+| Validar el corpus                          | `see validate`                                                       |
+| Crear un borrador de especificación        | `see new <ID> --domain <dominio>`                                    |
+| Ver o comprobar los anclajes               | `see lock --check` · `see lock --refresh ID,ID`                      |
+| Comparar contra una revisión de Git        | `see diff <rev>`                                                     |
+| Contrastar un sujeto                       | `see conform --subject <engine\|aot\|service\|cli\|app> [--only ID]` |
+| Matriz regla × sujeto                      | `see matrix [--subject SUJETO]`                                      |
+| Regenerar o comprobar la exportación       | `see export [--check]`                                               |
+| Regenerar o comprobar las fichas de agente | `see agent-sheet [--check]`                                          |
+| Verificación completa del paquete          | `cargo xtask verify`                                                 |
 
-Cuando el corpus contiene propiedades, `validate` exige `property-conformance.json` y contrasta el
-esquema, el modelo tipado y sus referencias. Así retirar o desactualizar un vínculo es visible antes de ejecutar.
-
-`conform --subject engine --operation properties` ejecuta los vínculos de propiedades del sujeto.
-`--property <ID@versión#P>` selecciona uno; `--output <archivo>` conserva una ejecución dirigida sin sustituir la evidencia completa; `--seed`, `--samples` y `--sample` reproducen una muestra.
-La selección explícita de muestra omite el recorrido exhaustivo del corpus. El artefacto separado
-se guarda como `properties-<sujeto>.json` en el directorio local ignorado, sin sustituir resultados de
-casos. Un vínculo pendiente o fallido devuelve código distinto de cero después de guardar su evidencia.
-
-`math-arguments --output <directorio> [--count N] [--seed S]` escribe un archivo de argumentos por
-función matemática (bits hexadecimales, uno o dos por línea) y un manifiesto con semilla y cantidad; por
-omisión, un millón de argumentos y la semilla 20261015. `math-check --input <directorio>` lee esos
-argumentos y los `.results` que escribe la herramienta del motor, calcula el esperado con el oráculo en
-tantos hilos como núcleos haya y guarda el contraste con la revisión, la semilla, los conteos y una
-muestra de discrepancias en el directorio local ignorado; devuelve error si alguna discrepa. Ninguna de las dos órdenes
-lee el corpus. Los archivos crudos no se versionan porque se regeneran por semilla.
-
-## 5. Reglas de legibilidad, estilo y estructura de código
-
-Reglas y límites en `architecture.yaml` del miembro; código inglés sin comentarios ni unsafe.
-
-## 6. Decisiones de producto que condicionan el código
-
-El sistema especifica y contrasta el lenguaje vigente. Ninguna lógica del motor vive aquí.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-`cargo xtask verify` desde el miembro; casos felices, infelices y límites en tests espejo.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan aprobado del sistema SEE. Las bibliotecas externas son infraestructura, nunca autoridad sobre el comportamiento de PseudoLearn.
-
-Las campañas matemáticas admiten --only con nombres separados por coma para generar y contrastar un subconjunto explícito. Se rechazan nombres desconocidos; los resultados crudos conservan patrones binarios completos y el manifiesto registra funciones, semilla y cantidad por función.
+Requisitos: Rust `1.99.0` con rustfmt y Clippy (`rust-toolchain.toml`); cada sujeto necesita lo que pida su propio
+miembro.

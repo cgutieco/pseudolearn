@@ -1,45 +1,53 @@
 # see_generators
 
-## 1. Qué es y qué no es
+Genera programas de PseudoLearn bien tipados de forma determinista: la misma semilla y el mismo índice de muestra
+producen siempre el mismo programa, en el perfil `es` o `en`.
 
-Construye programas bien tipados reproducibles para propiedades. No ejecuta sujetos ni obtiene esperados de ellos.
+**No hace:** ejecutar el programa ni decidir qué resultado esperar. Entrega el código fuente y los parámetros con los
+que se generó; el esperado lo calcula el contraste.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-`cargo test -p see_generators` y `cargo xtask verify` desde el miembro. Biblioteca sin despliegue. `cargo run -p see_generators --example program -- 42 0 es`
-reproduce una muestra; acepta semilla, índice y perfil. El ejemplo lee el vocabulario del corpus.
-`cargo run -p see_generators --example program -- suite 42 100` emite una muestra reproducible por
-stdout para uso local. Las pruebas generan muestras en memoria y no leen capturas guardadas. No contienen
-resultados capturados del sujeto.
+```mermaid
+flowchart BT
+    model["crates/see_model"] --> generators["crates/see_generators"]
+    translation["crates/see_translation"] --> generators
+    generators --> conformance["crates/see_conformance"]
+```
 
-## 3. Arquitectura y modelo del sistema
+## Flujo principal
 
-Importa model y translation; serde_json solo en tests y el ejemplo de reproducción. Prohibidos los sujetos, oráculos y capas de ejecución. `src/program.rs`
-instancia la gramática de pruebas; `src/random.rs` produce decisiones por semilla. Tests espejo.
+Flujo de datos de una muestra, no de dependencias.
 
-## 4. Decisiones de diseño y fundamentos técnicos
+```mermaid
+flowchart LR
+    seed["semilla y muestra"] --> random["generador pseudoaleatorio"]
+    random --> params["tamaño, valor inicial y entrada"]
+    params --> template["plantilla con marcadores"]
+    template --> resolve["see_translation resuelve el perfil"]
+    resolve --> program["GeneratedProgram"]
+```
 
-La gramática genera declaraciones, arreglos, ciclos contados, llamadas por referencia, objetos con
-ciclos de referencias, copia superficial, concatenación y lectura. Los terminales se resuelven desde el
-vocabulario exportado, incluidos los nombres de incorporadas; no se mantienen traducciones paralelas.
-La misma semilla e índice producen la misma estructura y datos en ambos vocabularios. El generador
-entrega los operandos y tamaños originales; un oráculo separado deriva los esperados para evitar
-reproducir el mismo fallo en generación y comparación. La cantidad cero genera un bucle vacío sobre
-un arreglo de una celda, manteniendo bien tipado el programa. No se generan construcciones nuevas.
+`generate(GenerationSeed { seed, sample }, profile, vocabulary)` sortea cuántos elementos tiene el arreglo (0 a 16),
+el valor inicial (−10 a 10) y la entrada (0 a 100), rellena una plantilla de programa fija y la resuelve con el
+vocabulario del perfil. Un perfil distinto de `es` y `en` devuelve error. `GeneratedProgram` conserva `source`,
+`initial`, `elements` e `input`.
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+## Reglas que conviene saber
 
-Código inglés sin comentarios ni unsafe. Límites y nombres del miembro. Fallos como Result.
+- Importa `see_model` y `see_translation` (`architecture.yaml`); no tiene dependencias externas en producción.
+- La aleatoriedad es propia (`random.rs`) y depende solo de la semilla y la muestra: ninguna fuente del sistema.
+- El vocabulario llega como parámetro; el crate no lee archivos.
+- Sin comentarios, sin `unsafe`; 300 líneas por archivo, 40 por función, 4 parámetros posicionales y 3 niveles de
+  anidación.
 
-## 6. Decisiones de producto que condicionan el código
+## Comandos útiles
 
-Generación de propiedades de ejecución, identidad, estado y recursos. No define semántica del lenguaje.
+Desde `packages/pseudolearn_spec`.
 
-## 7. Verificación, testing y aseguramiento de calidad
+| Para qué                          | Comando                        |
+|-----------------------------------|--------------------------------|
+| Tests de este crate               | `cargo test -p see_generators` |
+| Verificación completa del paquete | `cargo xtask verify`           |
 
-Repetibilidad por semilla, perfiles equivalentes, tamaños cero y vocabulario ausente rechazado. Los
-programas se contrastan después contra el análisis del sujeto; generar no implica que el sujeto cumpla.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Corpus bilingüe y sus producciones. Se rechazan captura de resultados y dependencia de internos del motor.
+Requisitos: Rust `1.99.0` con rustfmt y Clippy (`rust-toolchain.toml`).

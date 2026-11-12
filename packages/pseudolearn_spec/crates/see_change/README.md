@@ -1,34 +1,53 @@
 # see_change
 
-## 1. Qué es y qué no es
+Calcula el hash canónico de una especificación, clasifica sus cambios entre dos versiones y gestiona el archivo de
+anclaje (`specifications.lock`): lo genera, lo comprueba y lo refresca.
 
-Calcula SHA-256 de contratos canónicos, conserva anclajes históricos y propone clases de cambio. Todo bloque contractual participa en el hash salvo `pregunta`; por eso la prosa editorial del catálogo vive dentro de `definicion.valor`, mientras que los párrafos Markdown fuera de bloques no llegan al modelo. No decide por una persona el significado de una diferencia. Mientras el versionado esté congelado, los cambios oficiales de contenido conservan versión y requieren `lock --refresh` de sus identidades; al reabrirse el versionado, vuelve la inmutabilidad estricta por versión.
+**No hace:** leer ni escribir el archivo; eso lo hace `see_cli`. Mientras el versionado esté congelado
+(`VERSIONING_FROZEN = true`) la comprobación no exige que cambie la versión cuando cambia el contenido.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-`cargo test -p see_change`; `cargo check -p see_change` desde el miembro. No se despliega.
+```mermaid
+flowchart BT
+    model["crates/see_model"] --> change["crates/see_change"]
+    sha["sha2 y serde_json"] --> change
+    change --> validation["crates/see_validation"]
+    change --> export["crates/see_export"]
+    change --> cli["crates/see_cli"]
+    format["crates/see_format"] -.-> change
+```
 
-## 3. Arquitectura y modelo del sistema
+La línea punteada es una `dev-dependency`: `see_format` solo se usa en los tests.
 
-Imports internos permitidos: model. Prohibidas las capas superiores y los sujetos. `src/` implementa la capa; `tests/` refleja módulos.
+## Piezas
 
-## 4. Decisiones de diseño y fundamentos técnicos
+| Pieza                      | Qué hace                                                                                                                                                                                                    |
+|----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `hash`                     | SHA-256 del contenido normativo (identidad, dominio, edición, sujetos, dependencias, reemplazo y bloques salvo `pregunta`)                                                                                  |
+| `elements`                 | Mapa de id de bloque a tipo de bloque, que se guarda en el anclaje                                                                                                                                          |
+| `classification::classify` | Clases de cambio entre dos versiones: `deprecacion`, `verificacion_anadida`, `ampliacion_candidata`, `cambio_significado_candidato`, `restriccion_candidata`, `retirada`, `editorial` y `requiere_revision` |
+| `locking::generate`        | Construye el anclaje del corpus conservando el historial; falla con `SEE-HASH` si una versión ya registrada cambia de hash                                                                                  |
+| `locking::check`           | Detecta `SEE-HASH` (contenido cambiado sin versión, solo con el versionado reabierto) y `SEE-IDENTITY` (especificación quitada sin lápida)                                                                  |
+| `locking::refresh`         | Reancla las identidades autorizadas; rechaza las retiradas o rechazadas con `SEE-IDENTITY`                                                                                                                  |
 
-Problema: mantener el texto oficial sin publicar aún una versión del lenguaje. Elección: el modo congelado permite reanclar una edición explícita bajo la misma identidad y versión; conserva el historial de las demás versiones.
-Se descarta abrir versiones nuevas antes de la autorización de publicación.
+## Reglas que conviene saber
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+- Importa `see_model`; `see_format` solo en tests. Sus dependencias externas son `serde_json` y `sha2`.
+- Las preguntas abiertas (`pregunta`) no entran en el hash: pueden editarse sin tocar el anclaje.
+- Un fallo esperable es un `Result` con código estable, no una excepción.
+- Sin comentarios, sin `unsafe`; 300 líneas por archivo, 40 por función, 4 parámetros posicionales y 3 niveles de
+  anidación.
 
-Reglas y límites en `architecture.yaml` del miembro; código inglés sin comentarios ni unsafe.
+## Comandos útiles
 
-## 6. Decisiones de producto que condicionan el código
+Desde `packages/pseudolearn_spec`.
 
-R1 autoriza solo el sistema de especificaciones. Ninguna lógica del motor vive aquí.
+| Para qué                            | Comando                                                                   |
+|-------------------------------------|---------------------------------------------------------------------------|
+| Tests de este crate                 | `cargo test -p see_change`                                                |
+| Comprobar o reanclar                | `cargo run -p see_cli --bin see -- lock --check` · `lock --refresh ID,ID` |
+| Comparar contra una revisión de Git | `cargo run -p see_cli --bin see -- diff REV`                              |
+| Verificación completa del paquete   | `cargo xtask verify`                                                      |
 
-## 7. Verificación, testing y aseguramiento de calidad
-
-`cargo xtask verify` desde el miembro; casos felices, infelices y límites en tests espejo.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan aprobado del sistema SEE. Las bibliotecas externas son infraestructura, nunca autoridad sobre el comportamiento de PseudoLearn.
+Requisitos: Rust `1.99.0` con rustfmt y Clippy (`rust-toolchain.toml`).

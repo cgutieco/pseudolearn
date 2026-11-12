@@ -1,81 +1,79 @@
 # see_conformance
 
-## 1. Qué es y qué no es
+Contrasta un sujeto (el motor, la CLI, el servicio, la app) contra el corpus: construye las peticiones de cada caso,
+las envía por el protocolo de sesión, compara lo observado con lo esperado y ejecuta las propiedades sembradas.
+Produce la evidencia (`Evidence`) con la que `see_report` arma la matriz.
 
-Negocia JSONL por proceso con capacidades explícitas, construye una petición por perfil declarado y compara observables. La escritura y lectura tienen timeout; el cierre conserva stderr. No deduplica diagnósticos ni completa árboles.
+**No hace:** lanzar el proceso del sujeto, elegir qué sujeto o qué casos correr ni escribir la evidencia en disco. Eso
+es de `see_cli`. Tampoco calcula resultados esperados matemáticos: los pide a `see_oracles`.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-`cargo test -p see_conformance`; `cargo check -p see_conformance` desde el miembro. No se despliega.
+```mermaid
+flowchart BT
+    model["crates/see_model"] --> conformance["crates/see_conformance"]
+    translation["crates/see_translation"] --> conformance
+    generators["crates/see_generators"] --> conformance
+    oracles["crates/see_oracles"] --> conformance
+    conformance --> cli["crates/see_cli"]
+    format["crates/see_format"] -.-> conformance
+```
 
-## 3. Arquitectura y modelo del sistema
+La línea punteada es una `dev-dependency`: `see_format` solo se usa en los tests.
 
-`runtime_fixtures` materializa casos con el mismo constructor de peticiones de conformidad y conserva la regla de
-cada caso, para que quien selecciona muestras pueda consultar su vínculo; sus
-programas generados de grafos conservan el resultado independiente de `see_oracles::cells`. Esta
-preparación de datos no anuncia capacidades de ningún sujeto ni produce un veredicto de conformidad.
-Los escenarios de memoria B4 usan un arreglo de referencias como raíz de objetos y texto durante una
-llamada, e incluyen un objeto local sin usos posteriores para comprobar que no se vuelve raíz. El resultado
-esperado incluye el costo del arreglo y la alcanzabilidad calculada por el oráculo independiente; los
-programas se traducen con el vocabulario exportado y consumen la semilla/cantidad ya registradas.
+## Arquitectura
 
-Imports internos permitidos: model, translation, generators, oracles; format solo en tests. Prohibidas las capas superiores y los sujetos. `src/` implementa la capa; `tests/` refleja módulos.
+| Grupo                | Módulos                                                                                        | Qué hace                                                                                                      |
+|----------------------|------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| Protocolo            | `protocol`                                                                                     | `Session`: proceso hijo con peticiones y respuestas JSON por línea, y tiempos límite                          |
+| Casos                | `requests`, `execution`, `target_programs`                                                     | Petición por caso y perfil, disponibilidad del sujeto (`Available`, `Pending`, `Unavailable`) y observaciones |
+| Comparación          | `comparison`, `tool_comparison`, `event_identity`, `dap_comparison`, `program_view_comparison` | Qué campos esperados coinciden con lo observado                                                               |
+| Propiedades          | `properties` y los `property_*`                                                                | Ejecución de cada propiedad versionada con semilla y muestras                                                 |
+| Contraste matemático | `math_arguments`, `math_power_arguments`, `math_sampling`, `math_contrast`                     | Argumentos sembrados y esperado de `see_oracles`                                                              |
+| Fixtures             | `runtime_fixtures`, `memory_fixtures`, `recording_replay`, `recording_tape_mutation`           | Casos de ejecución, de memoria y de grabación                                                                 |
 
-## 4. Decisiones de diseño y fundamentos técnicos
+## Flujo principal
 
-Las peticiones de ejecución del corpus fijan explícitamente 1 000 marcos cuando el caso no declara profundidad, para comparar los sujetos bajo el mismo límite. Un límite declarado prevalece. Los valores por omisión de cada producto se verifican en sus pruebas de anfitrión; no se infieren de esta configuración experimental.
+Flujo de datos de un caso, no de dependencias.
 
-La correspondencia entre ejecución rápida y observada consume la ejecución observada por lotes de la API pública cuando el sujeto anuncia posicionamiento con recursos; los sujetos anteriores conservan la operación directa. Así una traza larga no rebasa el límite JSONL de una respuesta; el contraste conserva salida, terminación, diagnósticos y entradas consumidas. Los análisis rechazados se comparan por la operación directa, porque no pueden iniciar un recurso de ejecución. Se descarta ampliar el límite del transporte para acomodar una traza completa.
+```mermaid
+flowchart LR
+    case["caso del corpus"] --> request["petición por perfil"]
+    request --> session["Session: JSON por línea"]
+    session --> subject["sujeto"]
+    subject --> actual["observado"]
+    case --> expected["esperado"]
+    actual & expected --> compare["comparación"]
+    compare --> verdict["Observation"]
+```
 
-Los casos `api` serializan varias llamadas JSON sobre una sola `ApiSession`. Cada llamada declara `operation` y `arguments`; `resource_from` copia a `arguments.resource` el identificador que devolvió una llamada anterior, e inyecta el programa y perfil del caso en `create_analysis` cuando `arguments` no fija `program`. Un paso `input` que solo declara `text` recibe del adaptador la identidad `resource_id`, `task_id` y `request_id` de la última `pending_input` devuelta antes; sin solicitud pendiente se envía sin identidad y la API lo rechaza como error de uso, de modo que los casos entregan texto a la lectura que espera sin fijar identificadores opacos. El protocolo de conformidad conserva las respuestas de cada llamada en orden, lo que permite comprobar revisiones vigentes, recursos liberados, esperas `awaiting_input` y `awaiting_effect`, entregas `input` y `effect_result`, cancelaciones y errores sin depender del valor opaco del identificador. En casos de ejecución con anfitrión, el corredor contrasta también `efecto_pendiente`, `estado_cinta`, la secuencia `efectos` de la cinta y el rechazo de reproducción (`reproduccion_fallo`) con o sin `alterar_cinta`.
+`execution::execute` recorre los casos que aplican al sujeto, anunciado en el saludo (`hello`) de la sesión, y arma una
+`Evidence` con protocolo `see-protocol/1`. Si el saludo no anuncia el perfil o una capacidad que el caso exige, el caso
+queda no disponible; si solo falta `observe`, queda pendiente. Una propiedad cuya capacidad falta produce un pendiente
+con cero muestras completadas, nunca un cumplimiento (`properties::run`).
 
-`alterar_cinta: alterar_solicitud` cambia el resumen de la última operación `network_send` y vuelve a calcular su hash encadenado. Así la prueba alcanza `replay_divergence`; modificar solo el payload o el hash probaría corrupción, no diferencia de solicitud.
+## Reglas que conviene saber
 
-El contraste entre objetivos materializa peticiones de ejecución y traza con el mismo traductor del corpus. Los programas sembrados se generan fuera del sujeto; su variante EMI elimina un bloque condicional de condición falsa agregado al final del algoritmo. La equivalencia EMI compara salida y terminación, mientras la paridad entre objetivos compara la respuesta completa de cada variante por separado. Se descarta exigir trazas idénticas entre fuentes distintas.
+- Importa `see_model`, `see_translation`, `see_generators` y `see_oracles`; `see_format` solo en tests. Dependencias
+  externas: `serde_json` y `sha2`.
+- `Session` es el único lugar donde este crate lanza procesos; la lógica de contraste depende del trait
+  `PropertySubject`, así que los tests pueden sustituir el sujeto por un doble que introduce una violación.
+- Los resultados esperados salen del corpus o de `see_oracles`, nunca de la respuesta del sujeto.
+- Un fallo operativo (proceso caído, tiempo agotado) se propaga como error; no se cuenta como incumplimiento ni como
+  cumplimiento.
+- Sin comentarios, sin `unsafe`; 300 líneas por archivo, 40 por función, 4 parámetros posicionales y 3 niveles de
+  anidación.
 
-diagnosticos compara multiconjuntos; diagnosticos_ordenados compara en orden los mismos campos observables. Ninguna comparación ordena ni deduplica resultados del sujeto. La semilla del caso se transmite sin transformación a seed del protocolo; su ausencia usa 42. `cancelacion_prueba` se transmite como `cancel_at_poll`, independiente de la cancelación por sentencia. El contador incluye condiciones para cancelar también bucles vacíos. La fuente y sus tramos se transmiten originales, también en casos de normalización NFC.
+## Comandos útiles
 
-En proyecciones de páginas, `next_cursor: "opaque"` exige un cursor no vacío, sin fijar su codificación. `candidates_include` comprueba pertenencia y no orden. `tokens_include` comprueba que cada token esperado aparece con la identidad y los campos declarados, sin exigir igualdad con toda la secuencia ni excluir la trivia. Se descartan comparar estos marcadores literalmente, porque fijarían detalles ajenos al contrato.
+Desde `packages/pseudolearn_spec`. `see` es `cargo run -p see_cli --bin see --`.
 
-Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
-Se descarta importar sujetos o capas superiores para preservar la dirección.
+| Para qué                          | Comando                                                              |
+|-----------------------------------|----------------------------------------------------------------------|
+| Tests de este crate               | `cargo test -p see_conformance`                                      |
+| Contrastar un sujeto              | `see conform --subject <engine\|aot\|service\|cli\|app> [--only ID]` |
+| Contrastar sus propiedades        | `see conform --subject engine --operation properties`                |
+| Verificación completa del paquete | `cargo xtask verify`                                                 |
 
-La ejecución de propiedades lee vínculos versionados, deriva escenarios del corpus y añade programas
-bien tipados por semilla. La frontera `PropertySubject` permite procesos reales y dobles que introducen
-una violación deliberada: la lógica de contraste no depende del transporte. Una capacidad ausente produce
-pendiente con cero muestras completadas. Nunca equivale a cumplimiento. El primer desacuerdo conserva
-petición, esperado, observado y comando de repetición; un fallo operativo se propaga como tal.
-
-El contraste matemático de `LIB.CORE.MATH` vive en `math_sampling.rs`, `math_arguments.rs`,
-`math_power_arguments.rs` y `math_contrast.rs`. Un muestreador SplitMix64 con semilla genera, por
-función, argumentos aleatorios por bits, por magnitud logarítmica y uniformes en el rango útil, junto con
-bordes (ceros con signo, subnormales, `f64::MAX`, umbrales de desbordamiento de `exp`), cercanía a uno en
-`ln` y `atan`, cercanía a múltiplos de π/2 en seno y coseno, y en la potencia bases negativas con
-exponente entero, raíces perfectas con exponentes `k/2` y `k/4` y bases cercanas a uno con exponentes
-grandes. El esperado sale siempre de `see_oracles`; un dominio inválido o un resultado infinito se
-reduce a `nonFiniteRealResult`, que es lo único observable. Se descarta una malla regular, que no
-alcanza los argumentos difíciles, y muestrear con la biblioteca del anfitrión.
-
-## 5. Reglas de legibilidad, estilo y estructura de código
-
-Reglas y límites en `architecture.yaml` del miembro; código inglés sin comentarios ni unsafe.
-
-## 6. Decisiones de producto que condicionan el código
-
-El sistema especifica y contrasta el lenguaje vigente. Ninguna lógica del motor vive aquí.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-`cargo xtask verify` desde el miembro; casos felices, infelices y límites en tests espejo.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan aprobado del sistema SEE. Las bibliotecas externas son infraestructura, nunca autoridad sobre el comportamiento de PseudoLearn.
-
-## Transcripciones DAP
-
-Los casos CLI de depuración entregan el framing completo por entrada estándar. La expectativa `dap` compara listas ordenadas `messages`, `responses` o `events` por campos explícitos, sin fijar secuencias de transporte que el caso no declara. El decodificador cuenta bytes UTF-8 y rechaza framing incompleto, longitud duplicada y límites excedidos. Esta comparación consume la capacidad CLI existente; no anuncia un sujeto DAP ni confunde pruebas de protocolo con otra implementación del lenguaje.
-
-## Contratos adicionales de verificación
-
-El ejecutor `math_oracle` genera programas con esperados calculados por el oráculo racional, incluidas las seis funciones trigonométricas y logarítmicas adicionales y `atan2` con dos argumentos. Conserva ceros con signo y usa literales decimales admitidos por la gramática. La campaña masiva admite seleccionar funciones para conservar argumentos y resultados crudos sin repetir funciones ajenas al cambio.
+Requisitos: Rust `1.99.0` con rustfmt y Clippy (`rust-toolchain.toml`); cada sujeto necesita lo que pida su propio
+miembro.

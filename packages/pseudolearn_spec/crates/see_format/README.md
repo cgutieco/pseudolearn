@@ -1,34 +1,59 @@
 # see_format
 
-## 1. Qué es y qué no es
+Lee las especificaciones del corpus (Markdown con encabezado YAML y bloques cercados tipados) y las convierte en
+`Specification`; también las escribe de vuelta en forma canónica.
 
-Convierte el encabezado YAML y los bloques cercados tipados de Markdown en Specification; acepta secuencias YAML y CRLF. La prosa fuera de bloques no ingresa al modelo. Rechaza enlaces documentales externos en prosa y bloques tipados, pero admite direcciones HTTP y HTTPS como datos de protocolo en ejemplos y anfitriones falsos. Escribe una representación canónica legible sin alterar programas. Los fallos de lectura y formato se devuelven como Result.
+**No hace:** validar el contenido de los bloques ni resolver referencias entre especificaciones. Eso es de
+`see_validation`. La prosa fuera de los bloques no entra al modelo.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-`cargo test -p see_format`; `cargo check -p see_format` desde el miembro. No se despliega.
+```mermaid
+flowchart BT
+    model["crates/see_model"] --> format["crates/see_format"]
+    yaml["serde-saphyr y serde_json"] --> format
+    format --> cli["crates/see_cli"]
+    format -.-> tests["tests de change, export, graph,<br/>report, validation y conformance"]
+```
 
-## 3. Arquitectura y modelo del sistema
+La línea punteada son `dev-dependencies`: esos crates solo la usan para leer corpus de prueba.
 
-Imports internos permitidos: model. Prohibidas las capas superiores y los sujetos. `src/` implementa la capa; `tests/` refleja módulos.
+## Flujo principal
 
-## 4. Decisiones de diseño y fundamentos técnicos
+```mermaid
+flowchart LR
+    files["archivos .md"] --> header["encabezado YAML"]
+    files --> blocks["bloques cercados"]
+    header --> spec["Specification"]
+    blocks --> spec
+```
 
-Problema: el corpus no debe citar documentación externa, mientras los casos de protocolo necesitan direcciones URL. Elección: se rechazan direcciones web usadas como enlaces documentales y referencias `www.`; se admiten como datos de ejemplos y anfitriones falsos. Las relaciones entre especificaciones se expresan por sus identidades internas.
-Se descarta prohibir cada aparición de `http://` y `https://`, porque impediría especificar comportamiento de red como datos de prueba.
+`read(root)` recorre `root` en orden alfabético, omite las carpetas `fixtures` y parsea cada `.md`. `parse` rechaza
+con un código estable cuando falta o no cierra el encabezado (`SEE-FORMAT`), cuando el YAML no encaja con
+`Metadata` (`SEE-SCHEMA`), cuando hay un bloque cercado de tipo desconocido o sin cerrar (`SEE-FORMAT`) y cuando el
+texto trae `www.` o un enlace Markdown con `://` (`SEE-REFERENCE`).
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+Los tipos de bloque admitidos son `regla`, `caso`, `definicion`, `error`, `propiedad`, `invariante`,
+`precondicion`, `resultado`, `lapida`, `pregunta`, `medicion`, `instruccion` y `cobertura`; los cercados `yaml`,
+`json`, `text` y `markdown` se ignoran. Los saltos de línea CRLF se normalizan.
 
-Reglas y límites en `architecture.yaml` del miembro; código inglés sin comentarios ni unsafe.
+## Reglas que conviene saber
 
-## 6. Decisiones de producto que condicionan el código
+- Solo importa `see_model` (`may_import` en `architecture.yaml`); sus dependencias externas son `serde-saphyr` y
+  `serde_json`.
+- Un fallo de lectura o de formato es un `Result`, nunca un `panic`.
+- Una dirección `http://` o `https://` es admisible como dato dentro de un bloque; lo que se rechaza es el enlace
+  Markdown a documentación externa.
+- Sin comentarios, sin `unsafe`; 300 líneas por archivo, 40 por función, 4 parámetros posicionales y 3 niveles de
+  anidación.
 
-R1 autoriza solo el sistema de especificaciones. Ninguna lógica del motor vive aquí.
+## Comandos útiles
 
-## 7. Verificación, testing y aseguramiento de calidad
+Desde `packages/pseudolearn_spec`.
 
-`cargo xtask verify` desde el miembro; los tests espejo cubren enlaces internos, enlaces externos en bloques y enlaces externos en prosa.
+| Para qué                          | Comando                    |
+|-----------------------------------|----------------------------|
+| Tests de este crate               | `cargo test -p see_format` |
+| Verificación completa del paquete | `cargo xtask verify`       |
 
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan aprobado del sistema SEE. Las bibliotecas externas son infraestructura, nunca autoridad sobre el comportamiento de PseudoLearn.
+Requisitos: Rust `1.99.0` con rustfmt y Clippy (`rust-toolchain.toml`).

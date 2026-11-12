@@ -1,34 +1,52 @@
 # see_report
 
-## 1. Qué es y qué no es
+Los informes del sistema SEE: la matriz regla × sujeto, las regresiones, la cobertura del corpus y el estado
+agregado de una característica.
 
-Cruza vínculos con observaciones identificadas por especificación, regla, caso y perfil. Distingue exención de incumplimiento medido y ausencia de evidencia; agrega estados de manifiestos sin inventar una versión.
+**No hace:** ejecutar sujetos ni leer evidencia de disco. Recibe el corpus, los vínculos y la evidencia ya cargados y
+devuelve filas JSON.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-`cargo test -p see_report`; `cargo check -p see_report` desde el miembro. No se despliega.
+```mermaid
+flowchart BT
+    model["crates/see_model"] --> report["crates/see_report"]
+    json["serde_json"] --> report
+    report --> cli["crates/see_cli"]
+    format["crates/see_format"] -.-> report
+```
 
-## 3. Arquitectura y modelo del sistema
+La línea punteada es una `dev-dependency`: `see_format` solo se usa en los tests.
 
-Imports internos permitidos: model. Prohibidas las capas superiores y los sujetos. `src/` implementa la capa; `tests/` refleja módulos.
+## Piezas
 
-## 4. Decisiones de diseño y fundamentos técnicos
+| Función                  | Qué hace                                                                                                                                                                           |
+|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `matrix`                 | Una fila por regla de cada especificación que declara el sujeto: vínculo (`binding`), veredicto medido, casos, mediciones y estado                                                 |
+| `regressions`            | Filas `SEE-REGRESSION`: reglas activas (estables, o experimentales activadas) vinculadas como `cumple` cuya medición no cumple; un sujeto retirado no produce ninguna              |
+| `feature`                | Estado de una característica: el peor de los estados de sus especificaciones (de `rechazada` a `estable`), con su lista y sus criterios; `SEE-FEATURE` si falta una especificación |
+| `coverage::table`        | Filas de los bloques `cobertura`: regla, instrucciones y `sin_ri`                                                                                                                  |
+| `coverage::states`       | Conteo de especificaciones por dominio y estado                                                                                                                                    |
+| `coverage::measurements` | Mediciones que cita una regla en su campo `verificacion`                                                                                                                           |
 
-Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
-Se descarta importar sujetos o capas superiores para preservar la dirección.
+Las filas de un sujeto retirado salen con vínculo y medición `no aplicable`.
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+## Reglas que conviene saber
 
-Reglas y límites en `architecture.yaml` del miembro; código inglés sin comentarios ni unsafe.
+- Importa `see_model`; `see_format` solo en tests. Su única dependencia externa es `serde_json`.
+- Una regla sin vínculo aparece como `sin vinculo`; un vínculo registrado no cuenta como medición.
+- Sin comentarios, sin `unsafe`; 300 líneas por archivo, 40 por función, 4 parámetros posicionales y 3 niveles de
+  anidación.
 
-## 6. Decisiones de producto que condicionan el código
+## Comandos útiles
 
-R1 autoriza solo el sistema de especificaciones. Ninguna lógica del motor vive aquí.
+Desde `packages/pseudolearn_spec`. `see` es `cargo run -p see_cli --bin see --`.
 
-## 7. Verificación, testing y aseguramiento de calidad
+| Para qué                                                                           | Comando                         |
+|------------------------------------------------------------------------------------|---------------------------------|
+| Tests de este crate                                                                | `cargo test -p see_report`      |
+| Matriz regla × sujeto (por omisión, `engine`)                                      | `see matrix [--subject SUJETO]` |
+| Estado de una característica (manifiesto en `specifications/features/NOMBRE.yaml`) | `see feature NOMBRE`            |
+| Verificación completa del paquete                                                  | `cargo xtask verify`            |
 
-`cargo xtask verify` desde el miembro; casos felices, infelices y límites en tests espejo.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan aprobado del sistema SEE. Las bibliotecas externas son infraestructura, nunca autoridad sobre el comportamiento de PseudoLearn.
+Requisitos: Rust `1.99.0` con rustfmt y Clippy (`rust-toolchain.toml`).

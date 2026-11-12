@@ -1,107 +1,73 @@
 # see_validation
 
-## 1. Qué es y qué no es
+La integridad del corpus: comprueba que las especificaciones respeten el esquema, que sus referencias, estados y
+versiones sean coherentes, que cada regla tenga cobertura y que los recursos normativos (vocabulario, gramática,
+catálogos) estén bien formados. Todo error sale como texto con un código `SEE-*`.
 
-Aplica esquema, identidad, referencias, ciclo de vida, clasificación, hashes y vínculos. Mientras el versionado está congelado, una identidad nueva debe empezar estable en `1.0.0` sin `cambio`; una identidad existente conserva estado y versión, y no puede avanzar ni retroceder de estado. Las ediciones oficiales pueden cambiar texto y bloques, pero conservan identidad, estado y versión, omiten `cambio` y requieren reanclaje explícito. La estabilidad sigue exigiendo revisión independiente y evidencia en los sujetos declarados. El validador no completa `revisado_por`. Al reabrirse el versionado, los cambios usan las transiciones e incrementos de versión clasificados. El esquema JSON versionado usa únicamente type, required, properties, additionalProperties, enum, const, minLength, minimum, maximum, minItems, maxItems, uniqueItems, items, $ref, anyOf, oneOf y not; el evaluador limita su profundidad. `maximum`, `maxItems` y `not` permiten expresar límites de respuesta HTTP y exclusión de cuerpos ambiguos sin validación especial acoplada al anfitrión. No anuncia soporte general de JSON Schema.
+**No hace:** leer archivos ni ejecutar sujetos. Recibe el `Corpus` y el anclaje (`Lock`) ya cargados.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-`cargo test -p see_validation`; `cargo check -p see_validation` desde el miembro. No se despliega.
+```mermaid
+flowchart BT
+    model["crates/see_model"] --> validation["crates/see_validation"]
+    graph["crates/see_graph"] --> validation
+    change["crates/see_change"] --> validation
+    semver["semver y serde_json"] --> validation
+    validation --> cli["crates/see_cli"]
+    format["crates/see_format"] -.-> validation
+```
 
-## 3. Arquitectura y modelo del sistema
+La línea punteada es una `dev-dependency`: `see_format` solo se usa en los tests.
 
-Imports internos permitidos: model, graph, change. Prohibidas las capas superiores y los sujetos. `src/` implementa la capa; `tests/` refleja módulos.
+## Arquitectura
 
-## 4. Decisiones de diseño y fundamentos técnicos
+```mermaid
+flowchart BT
+    identity & schema & references --> validate
+    lifecycle --> validate
+    coverage & measurement & expectations --> validate
+    trace & cli & resources --> validate
+    graph["see_graph"] --> validate
+    change["see_change"] --> validate
+```
 
-Las definiciones admiten valor como objeto normativo. `helpCatalog` usa el esquema `help-catalog/1`: verifica identidades y papeles únicos, identidades léxicas enlazadas a su fuente, disponibilidad 2027 por perfil, categoría, plantilla con segmentos que resuelven una identidad léxica, huecos explicados exactamente una vez por idioma, partes que nombran tokens de la ficha, contenido es/en con la misma estructura en ambos idiomas, anclajes y ejemplos con versión exacta, y exclusiones tipadas sin solapamiento con fichas disponibles. Los ejemplos no contienen programas ni resultados duplicados; el caso referenciado debe declarar cada perfil de la ficha con su programa. Los casos admiten semilla opcional de entero; las fichas bilingües y las firmas se verifican estructuralmente, sin presentar esta revisión como ejecución de reference.
+`validate(corpus, lock)` reúne los errores de todas esas piezas, los ordena y quita duplicados. `see_cli` invoca
+además, fuera de `validate`, las comprobaciones de `bindings`, `migration`, `property_registry` y `schema_engine`.
 
-La validación del catálogo compara los operadores declarados con las producciones de asignación y
-expresión, deriva las palabras reservadas del vocabulario y las incorporadas de la biblioteca, y
-comprueba cada rol declarado contra una producción de gramática vigente. La ficha de identificadores
-ancla `LANG.LEXICAL.IDENTIFIER#R1` para describir el alfabeto español en ambos perfiles y la
-normalización NFC; mantiene explícitas la distinción de caja y acentos, sin atribuir equivalencia
-general a los homógrafos. La matriz identidad/rol
-requiere una ficha o exclusión con disponibilidad completa en 2027, ambos perfiles;
-cada token cubierto debe tener una parte editorial es/en propia. La función `coverage_matrix` expone
-las filas ordenadas que justifican el 100 % y los negativos ejercitan identidad duplicada, rol sin
-ficha, alias, exclusión incompatible y traducción ausente.
+| Módulo                                | Qué comprueba                                                                                                                                                       |
+|---------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `identity`                            | Formato de la identidad y duplicados (`SEE-IDENTITY`, `SEE-DUPLICATE`)                                                                                              |
+| `schema`                              | Metadatos completos, versión semántica, dominio y campos de cada tipo de bloque (`SEE-SCHEMA`, `SEE-VERSION`, `SEE-PROFILE`, `SEE-FORCE`, `SEE-ORIGIN`)             |
+| `schema_engine`                       | Validador de JSON Schema; `see_cli` lo usa para `property-conformance.json`                                                                                         |
+| `references`                          | Referencias entre bloques, huérfanos y cobertura de errores (`SEE-REFERENCE`, `SEE-ORPHAN`, `SEE-ERROR-COVERAGE`) y revisión de capturas (`SEE-CAPTURE`)            |
+| `lifecycle`                           | Estados, transiciones, versión, edición y clasificación (`SEE-STATE`, `SEE-VERSION`, `SEE-EDITION`, `SEE-CLASSIFICATION`)                                           |
+| `coverage`                            | Una entrada de cobertura de RI por regla que la exige (`SEE-IR-COVERAGE`, `SEE-IR-UNKNOWN`)                                                                         |
+| `measurement`, `expectations`         | Protocolo de mediciones (`SEE-MEASUREMENT-*`) y expectativas de los casos (`SEE-IR-EXPECTATION`, `SEE-LIMIT-KIND`)                                                  |
+| `trace`, `cli`, `messages`, `openers` | Alfabeto de trazas, convenciones y mensajes de la CLI, y aperturas de bloque por perfil (`SEE-TRACE-CLASS`, `SEE-CLI-EXIT`, `SEE-MESSAGE-*`, `SEE-PROFILE-OPENERS`) |
+| `resources/*`                         | Gramática, léxico, gramática TextMate, límites de análisis, términos de diagnóstico, catálogo de ayuda, biblioteca y neutralidad del español                        |
+| `bindings`                            | Vínculos regla–código de un sujeto contra el corpus (`SEE-BINDING`, `SEE-SUBJECT-STATE`)                                                                            |
+| `migration`                           | Correspondencia entre las secciones del manifiesto de migración, su índice y el corpus (`SEE-COVERAGE`)                                                             |
+| `property_registry`                   | Registro de propiedades contra el corpus (`SEE-PROPERTY`)                                                                                                           |
+| `host_cases`                          | Casos de anfitrión dentro de `schema` (`SEE-HOST`)                                                                                                                  |
 
-Los ejemplos se validan en dos niveles. La forma exige perfil igual al idioma y perfil dentro de la
-disponibilidad de la ficha, clase de un conjunto cerrado y ninguna referencia repetida por idioma. Las
-referencias resuelven el caso exacto y derivan su clase (`executable`, `accepted` o `diagnostic`) de su
-operación y esperado; una clase distinta, un caso retirado o una ficha sin ejemplo en algún idioma son
-errores. El validador no ejecuta programas: la ejecución del caso pertenece a los sujetos de conformidad.
+## Reglas que conviene saber
 
-El catálogo tiene tres comprobaciones separadas: la integridad estructural, que vive aquí y no ejecuta ni
-importa el motor; la ejecución de los ejemplos, que corresponde a los sujetos de conformidad sobre sus
-casos; y la revisión editorial independiente de la prosa, que ninguna herramienta sustituye. Los
-diagnósticos tienen el prefijo `SEE-HELP-CATALOG` y una causa cada uno: ficha sin papel declarado
-(`no declared inventory role`), anclaje retirado o roto (`stale anchor`), identidad léxica retirada
-(`stale token identity`), ejemplo inválido o sin programa por perfil (`stale example`), clase
-discrepante (`mismatched kind`), ejemplo repetido (`duplicate example reference`), segmento de plantilla
-sin identidad léxica (`unknown form token`), hueco sin explicación (`slots differ from its form`) o con
-identidad inválida (`invalid slot identity`), parte ajena a los tokens (`part outside its tokens`),
-estructura distinta entre idiomas (`differs in structure between languages`), traducción ausente
-(`uncovered … identity`), identidad repetida (`duplicate`), exclusión abusiva (`overlaps an available
-card`, `must name an alias`) y recurso demasiado profundo (`nesting exceeds`). La estructura se comprueba
-después de la seguridad del texto y antes de las referencias, que solo se evalúan sobre un catálogo
-estructuralmente válido.
-Cada uno se ejercita con un fixture aislado de `fixtures/help-catalog/` aplicado sobre el catálogo real:
-el catálogo vigente debe quedar sin diagnósticos y cada fixture debe ser rechazado por su diagnóstico.
-La prueba exige un mínimo de fixtures para que borrarlos no la debilite.
+- Importa `see_model`, `see_graph` y `see_change`; `see_format` solo en tests. Dependencias externas: `semver` y
+  `serde_json`.
+- Todo error lleva un código `SEE-*` estable al principio del mensaje.
+- Los datos de los recursos viven en el corpus; este crate solo los valida.
+- Sin comentarios, sin `unsafe`; 300 líneas por archivo, 40 por función, 4 parámetros posicionales y 3 niveles de
+  anidación.
 
-El texto editorial es texto plano: el validador rechaza `<`, `>`, comillas inversas, `&`, `\`, corchetes y `|`, esquemas de URI activos (`javascript:`, `data:`, `file:`, `command:`, `http(s):`, `mailto:` y cualquier `://`), caracteres de control o de dirección, campos fuera de longitud (título 80, etiqueta de hueco 40, resto 280), etiquetas de hueco con signos, demasiados elementos por lista (16 partes, 12 huecos, 8 reglas, 6 errores comunes, 4 ejemplos), plantillas de más de 12 líneas o 16 segmentos por línea y más de 4 096 bytes de texto por idioma. Cada rechazo tiene fixture propio. Este control es la primera defensa; los clientes escapan de todos modos. La neutralidad del español en mensajes de diagnóstico, mensajes de CLI y tarjetas de ayuda rechaza voseo y modismos regionales bajo el diagnóstico `SEE-SPANISH-NEUTRALITY`, respaldado por su fixture negativo en `fixtures/spanish-neutrality/`.
+## Comandos útiles
 
-Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
-Se descarta importar sujetos o capas superiores para preservar la dirección.
+Desde `packages/pseudolearn_spec`.
 
-Problema: el límite portable de análisis debe llegar a los consumidores como dato validado.
-Elección: `analysisLimits` contiene un único campo `nesting`, entero positivo representable en u32.
-La exportación conserva el recurso y los generadores lo consumen. Se rechaza fijarlo otra vez en el parser
-y se rechazan campos desconocidos o valores cero, negativos, fraccionarios y fuera de rango.
+| Para qué                          | Comando                                      |
+|-----------------------------------|----------------------------------------------|
+| Tests de este crate               | `cargo test -p see_validation`               |
+| Validar el corpus                 | `cargo run -p see_cli --bin see -- validate` |
+| Verificación completa del paquete | `cargo xtask verify`                         |
 
-El recurso `unsupportedConstructs` valida aperturas, cierres, diagnóstico y forma de apertura.
-Son datos no reservados; el parser solo reconoce su posición estructural.
-
-La conformidad de propiedades se valida contra su esquema propio y el corpus: referencia exacta a una
-propiedad vigente, unicidad, semilla u64 y muestras positivas. Los contraejemplos no se convierten en
-casos esperados. Una propiedad sin ejecutor no se declara cumplida.
-
-## 5. Reglas de legibilidad, estilo y estructura de código
-
-Reglas y límites en `architecture.yaml` del miembro; código inglés sin comentarios ni unsafe.
-
-## 6. Decisiones de producto que condicionan el código
-
-El sistema especifica y contrasta el lenguaje vigente. Ninguna lógica del motor vive aquí.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-`cargo xtask verify` desde el miembro; casos felices, infelices y límites en tests espejo.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Plan aprobado del sistema SEE. Las bibliotecas externas son infraestructura, nunca autoridad sobre el comportamiento de PseudoLearn.
-
-El esquema admite `cancelacion_prueba` como ordinal entero no negativo de un sondeo.
-El campo no se interpreta como un presupuesto de sentencias y se rechazan tipos y signos inválidos.
-
-El catálogo acepta identidades de contextualVocabulary como fuente léxica distinta del vocabulario reservado. La cobertura combina ambos inventarios para exigir ficha y parte bilingüe por identidad sin cambiar la clasificación léxica del lenguaje.
-
-
-Los casos con anfitrion se validan contra la forma cerrada host del esquema see/1 y contra restricciones
-de rutas, octetos e incertidumbre de escritura. El proveedor es exclusivamente declarativo y en memoria:
-validar estos datos no ejecuta ni importa al sujeto. Los negativos distinguen forma inválida, escape,
-octeto fuera de rango, permiso desconocido, secuencias `effect_seq` no crecientes en `anfitrion_observado.efectos`,
-`efecto_pendiente` sin terminación `awaiting_effect` y combinaciones incoherentes entre `grabar_y_reproducir`,
-`alterar_cinta` y `reproduccion_fallo`.
-
-La clave `anfitrion.http` acepta guiones declarativos por método y URL con estados, cabeceras, cuerpos
-textuales o de bytes, fallos e incertidumbre. `alterar_cinta: alterar_solicitud` permite probar la
-divergencia HTTP durante reproducción. Se valida como dato cerrado; el validador no ejecuta el guion
-ni abre conexiones. Los nuevos discriminantes de fallo se prueban con positivos y negativos aislados.
-
-## Contratos adicionales de verificación
-
-La clase de retorno `widestNumeric` permite declarar mínimo y máximo sin perder enteros de 64 bits cuando ambos argumentos son enteros. La validación léxica reconoce la clase como dato del catálogo; la selección del tipo concreto pertenece al analizador semántico del sujeto.
+Requisitos: Rust `1.99.0` con rustfmt y Clippy (`rust-toolchain.toml`).

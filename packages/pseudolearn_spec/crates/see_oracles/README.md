@@ -1,79 +1,55 @@
 # see_oracles
 
-## 1. Qué es y qué no es
+Los oráculos independientes de `see_conformance`: calculan el resultado esperado de operaciones enteras, de
+funciones matemáticas y del conteo de celdas alcanzables sin usar el motor, la biblioteca matemática del anfitrión ni
+código de ningún sujeto.
 
-Calcula sumas y cantidad de iteraciones con i128 a partir de operandos i64. Decide límites sin ejecutar sujetos; rechaza paso cero y cantidades que no caben en u64. Expone también un evaluador independiente de expresiones enteras y un contador nocional de celdas para las propiedades. El oráculo real encierra resultados en intervalos racionales exactos y decide el redondeo binario64 por cociente y resto. No ejecuta el motor.
+**No hace:** ejecutar sujetos, comparar resultados ni leer el corpus. Solo calcula valores esperados a partir de sus
+argumentos.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-`cargo test -p see_oracles`; `cargo check -p see_oracles` desde el miembro. No se despliega.
+```mermaid
+flowchart BT
+    num["num-bigint, num-rational,<br/>num-traits y num-integer"] --> oracles["crates/see_oracles"]
+    oracles --> conformance["crates/see_conformance"]
+```
 
-## 3. Arquitectura y modelo del sistema
+No depende de ningún otro crate del paquete.
 
-Imports internos permitidos: ninguno. num-bigint, num-rational, num-integer y num-traits aportan enteros y fracciones de precisión arbitraria escritos en Rust, sin GMP ni biblioteca matemática nativa. Prohibidas las capas superiores y los sujetos. `src/` implementa la capa; `tests/` refleja módulos.
+## Arquitectura
 
-## 4. Decisiones de diseño y fundamentos técnicos
+| Módulo                                                                                                        | Qué calcula                                                                                                                                                      |
+|---------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `lib.rs`                                                                                                      | `integer_sum` y `iterations` (cantidad de vueltas de un `para`), con `i128` y comprobación del dominio `i64`                                                     |
+| `integer_expression`                                                                                          | Evalúa un árbol de expresiones enteras (`+ − × ÷ mod ^`) con pila explícita y conserva el origen de la primera trampa                                            |
+| `cells`                                                                                                       | Cuenta las celdas alcanzables desde unas raíces: los alias cuentan una vez y los ciclos terminan                                                                 |
+| `mathematics`                                                                                                 | `rounded` y `power`: valor correctamente redondeado a binario64 de raíz, logaritmos, exponencial, trigonométricas y potencia; `enclose` da el intervalo racional |
+| `rounding`                                                                                                    | `round_binary64` y `midpoint`: redondeo de un racional exacto a binario64                                                                                        |
+| `interval`                                                                                                    | Intervalos racionales con extremos exactos                                                                                                                       |
+| `exact_power`, `series`, `bounded_series`, `transcendentals`, `small_angle`, `extended`, `dyadic`, `rational` | Soporte interno: series con cota de resto, reducción de argumento, potencias exactas y aritmética racional (`atan2` se reexporta)                                |
 
-Problema: responsabilidades independientes. Elección: crate por capa con contratos tipados.
-Se descarta importar sujetos o capas superiores para preservar la dirección.
+La función matemática se refina hasta que los dos extremos del intervalo redondean al mismo binario64. Los
+resultados exactos que caen en un punto medio entre binarios64 (algunas potencias) se resuelven antes de refinar,
+porque el refinamiento no terminaría.
 
-El evaluador entero recorre un árbol de expresiones en postorden con pila explícita y usa i128 antes de
-comprobar el dominio i64 en cada operación. Conserva el origen de la primera trampa en orden izquierdo
-a derecho. El módulo `cells` marca identidades mediante una pila y un conjunto ordenado: los alias
-cuentan una vez, los ciclos terminan y el coste se deriva de campos, elementos o puntos de código.
-Se rechazan aritmética i64 idéntica al sujeto, recursión del anfitrión y contar bytes físicos como celdas.
+## Reglas que conviene saber
 
-El oráculo matemático usa series racionales con cotas explícitas del resto, reducción de argumento y refinamiento hasta que ambos extremos del intervalo redondean al mismo binario64. La representación del argumento se deriva de sus bits; no usa resultados trascendentales del anfitrión ni código del sujeto. Las dependencias solo implementan aritmética exacta: no deciden la función matemática ni su redondeo. Se rechaza reutilizar el algoritmo de la biblioteca de ejecución porque correlacionaría sus errores con el oráculo.
+- No importa ningún crate del paquete (`may_import: []`). Sus cuatro dependencias externas llevan versión exacta (`=`) y
+  solo aportan aritmética de precisión arbitraria en Rust, sin GMP.
+- Los errores del oráculo llevan un código fijo (`ORACLE-DOMAIN`, `ORACLE-PRECISION`, `integerOverflow`,
+  `forStepZero`); un dominio inválido nunca devuelve un valor.
+- El evaluador de expresiones y el conteo de celdas usan pila explícita, no recursión.
+- Sin comentarios, sin `unsafe`; 300 líneas por archivo, 40 por función, 4 parámetros posicionales y 3 niveles de
+  anidación.
 
-El refinamiento no termina si el valor exacto es un punto medio entre binarios64, y la potencia puede serlo (`9^1,5` con base cuadrada de 54 bits al cubo, `4^-537,5 = 2^-1075`). Antes de refinar, `exact_power.rs` comprueba si el exponente es `m/2^k` y la base racional tiene raíz `2^k`-ésima exacta en numerador y denominador; si la tiene y `|m|` cabe en un presupuesto de bits, eleva la raíz exactamente y redondea el racional con el mismo redondeo por cociente y resto. Fuera de esos casos el resultado no es racional o no es un punto medio, y el refinamiento decide. Se descarta acotar la precisión del refinamiento, que convertiría un punto medio en un error del oráculo en lugar de en su resultado.
+## Comandos útiles
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+Desde `packages/pseudolearn_spec`.
 
-Reglas y límites en `architecture.yaml` del miembro; código inglés sin comentarios ni unsafe.
+| Para qué                          | Comando                     |
+|-----------------------------------|-----------------------------|
+| Tests de este crate               | `cargo test -p see_oracles` |
+| Verificación completa del paquete | `cargo xtask verify`        |
 
-## 6. Decisiones de producto que condicionan el código
-
-Las propiedades de ejecución contrastan resultados derivados por reglas. Ningún código del sujeto ni captura de su resultado vive aquí.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-`cargo xtask verify` desde el miembro; casos felices, infelices y límites en tests espejo.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-[rust-num](https://github.com/rust-num/num-rational) aporta BigRational sobre BigInt bajo MIT/Apache-2.0. Se toma la aritmética racional exacta y se rechazan sus conversiones flotantes como criterio de redondeo del oráculo. Las bibliotecas externas son infraestructura, nunca autoridad sobre el comportamiento de PseudoLearn.
-
-## Ampliación numérica y de colecciones
-
-El oráculo incorpora tangente, arcoseno, arcocoseno, arcotangente de dos argumentos y logaritmos en bases dos y diez. Usa intervalos racionales independientes y resuelve resultados exactos antes del refinamiento. Los ceros con signo se tratan antes de convertir a racional.
-
-Para el contraste masivo, cada hilo conserva un único intervalo de pi/4 y su precisión, calculado
-por las mismas series racionales independientes. Solicitar una precisión mayor sustituye esa entrada; no hay
-un almacén que crezca con las muestras. Tras reducir un ángulo grande se acota su centro a la
-precisión de salida más 32 bits; el radio incorpora el ancho completo de esa nueva cota, además
-del radio de reducción. Mantener los bits del exponente original después de reducir no aumenta la
-certeza del resultado, pero encarece innecesariamente todas las series racionales posteriores.
-
-Las series de arcotangente, logaritmo, seno y coseno conservan intervalos racionales con extremos
-diádicos de precisión acotada después de cada suma y producto. Cada compresión redondea hacia
-afuera; el intervalo conserva esos errores además de la cota analítica del resto de la serie.
-Se reutiliza la misma infraestructura racional que ya acota la exponencial. Esto evita el crecimiento
-de numeradores y denominadores exactos de miles de bits por término; no comparte la representación
-ni los algoritmos de redondeo del motor. El refinamiento sigue decidiendo por coincidencia de ambos extremos.
-
-Los intervalos de ln(2) y ln(10) también conservan una única entrada por hilo y precisión;
-la memoria no depende del número de argumentos contrastados. La multiplicación de intervalos
-usa dos extremos cuando el signo determina los productos mínimo y máximo; conserva los cuatro
-productos cuando ambos intervalos cruzan cero. El escalado ordena sus dos extremos según el signo
-del factor. Los tests cubren todos los pares de signos y los intervalos degenerados.
-
-Para tangente y arcoseno con valor absoluto menor o igual a 1/4, el intervalo racional
-[x − 2|x|³, x + 2|x|³] contiene el resultado. En tangente, sen(t) ≤ t y cos(t) ≥ 1 − t²/2
-acotan tan(t) ≤ 2t; integrar tan²(t) acota la diferencia por 4|x|³/3. En arcoseno,
-1/raíz(1 − t²) − 1 ≤ t² en ese rango. El oráculo acepta esa cota solo cuando ambos
-extremos redondean al mismo patrón binario; en otro caso continúa el refinamiento.
-La primera cota de la serie alternante de atan usa x ± |x|³/3 antes de comprimir.
-Estas rutas evitan escalar precisión absoluta para subnormales ya decididos por cotas analíticas.
-El intervalo de pi/4 se calcula inicialmente con al menos 1280 bits, suficiente para reducir
-argumentos binario64 en la precisión inicial; una solicitud mayor lo sustituye. Al consumirlo
-se comprime hacia afuera a la precisión solicitada más 16 bits, conservando una sola entrada.
+Requisitos: Rust `1.99.0` con rustfmt y Clippy (`rust-toolchain.toml`).
