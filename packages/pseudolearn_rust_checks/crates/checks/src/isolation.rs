@@ -34,10 +34,7 @@ fn reachable_packages(root: &Path, package: &str, target: &str) -> Result<Vec<St
         return Err(String::from_utf8_lossy(&output.stderr).into_owned());
     }
     let listing = String::from_utf8_lossy(&output.stdout);
-    Ok(listing
-        .lines()
-        .flat_map(package_features)
-        .collect())
+    Ok(listing.lines().flat_map(package_features).collect())
 }
 
 fn forbidden_findings(isolation: &Isolation, target: &str, reachable: &[String]) -> Vec<Violation> {
@@ -71,7 +68,16 @@ fn matches_pattern(pattern: &str, name: &str) -> bool {
 
 fn package_features(line: &str) -> Vec<String> {
     let (package, features) = line.split_once('|').unwrap_or((line, ""));
-    let Some(name) = package.split_whitespace().next() else { return Vec::new(); };
-    std::iter::once(name.to_owned()).chain(features.split(',').map(str::trim)
-        .filter(|feature| !feature.is_empty()).map(|feature| format!("{name}/{feature}"))).collect()
+    let Some(name) = package.split_whitespace().next() else {
+        return Vec::new();
+    };
+    std::iter::once(name.to_owned())
+        .chain(
+            features
+                .split(',')
+                .map(str::trim)
+                .filter(|feature| !feature.is_empty())
+                .map(|feature| format!("{name}/{feature}")),
+        )
+        .collect()
 }
