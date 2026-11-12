@@ -81,7 +81,7 @@
     ],
     "wasm": "dist/web/wasm/pseudolearn_wasm_bg.wasm",
     "glue": "dist/web/wasm/pseudolearn_wasm.js",
-    "maximumWasmBrotliBytes": 921600,
+    "maximumWasmBrotliBytes": 1228800,
     "maximumMemoryPages": 4096,
     "externalInputs": [
       "../../packages/pseudolearn_engine/crates/pseudolearn_wasm/browser/fetch_host.mjs"

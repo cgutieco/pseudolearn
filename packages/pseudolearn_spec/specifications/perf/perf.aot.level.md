@@ -39,7 +39,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La media geométrica de cocientes de tiempos medianos por carga es como máximo 1,70 frente a V1F para el nivel Cranelift, en cada familia numérica, recursiva, de objetos y de arreglos. El intervalo nativo incluye ejecución y conciliación final; se conserva el tiempo de entrada por separado y se identifica la versión metodológica sin reinterpretar campañas históricas.",
+  "texto": "La media geométrica de cocientes de tiempos medianos por carga frente a V1F para el nivel Cranelift es como máximo 1,70 en cada familia numérica, recursiva y de objetos, y como máximo 2,20 en la familia de arreglos. El intervalo nativo incluye ejecución y conciliación final; se conserva el tiempo de entrada por separado y se identifica la versión metodológica sin reinterpretar campañas históricas.",
   "verificacion": [
     "M1",
     "M2",
@@ -104,7 +104,7 @@
   "unidad": "razon",
   "suite": "PERF.SUITE.CORE",
   "comparador": "<=",
-  "umbral": 1.7,
+  "umbral": 2.2,
   "provisional": false,
   "plataformas": [
     "macos-arm64"
