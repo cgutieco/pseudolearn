@@ -123,3 +123,20 @@ Desde esta carpeta.
 
 Requisitos: Node 22.23.3, pnpm 12.8.1; `build:cli` y `package` necesitan Cargo y un host `darwin-arm64` o `win32-x64`; `package:web`
 necesita además la cadena del motor para el Wasm.
+
+`test:web` corre Chromium, Firefox y WebKit de Playwright. `PSEUDOLEARN_WEB_BROWSERS=firefox` (lista separada por comas)
+elige solo algunos.
+
+**Firefox en macOS con Firefox instalado:** el sistema protege `~/Library/Application Support/Firefox`. El Firefox de
+Playwright usa esa misma carpeta, no puede leerla y se cierra con «Could not find profile folder». Para que use una
+carpeta propia hacen falta dos pasos:
+
+1. Copiar `Contents/Resources/application.ini` de
+   `~/Library/Caches/ms-playwright/firefox-<versión>/firefox/Nightly.app` a `Contents/Resources/browser/` dentro del
+   mismo `Nightly.app`. En la copia, quitar las líneas que empiezan por `;` y añadir `Profile=PlaywrightFirefox` bajo
+   `Name=Firefox`.
+2. Correr las pruebas con `XUL_APP_FILE` apuntando a esa copia, por ejemplo
+   `XUL_APP_FILE="$HOME/Library/Caches/ms-playwright/firefox-<versión>/firefox/Nightly.app/Contents/Resources/browser/application.ini" pnpm test:web`.
+
+La copia vive en la caché de Playwright: reinstalar o actualizar sus navegadores la borra y hay que repetir el paso 1
+con la nueva versión. La variable no va en el perfil de la shell, porque el Firefox normal también la leería.
