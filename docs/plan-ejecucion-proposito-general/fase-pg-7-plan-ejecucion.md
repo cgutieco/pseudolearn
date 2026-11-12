@@ -230,7 +230,7 @@ Equipo: macOS 27.2 (Darwin 27.2.0), Apple M2 de 8 núcleos, Rust 1.99.0, Node 22
 | `PG-7.15.01` | Cumplido | Plan general (§4.3, §4.12–§4.15, §6), hoja de ruta (decisiones del 2026-11-02 y 2026-11-12), README raíz (`d5ad763f`) | Cierres comunes heredados de PG-1, PG-L, PG-S y PG-N reconciliados por delegación |
 | `PG-7.16.01` | Cumplido por delegación expresa | `200 / Rick Sanchez / Alive` en CLI VM (es/en), CLI nativo, VS Code de escritorio (host real, 30/30) y app macOS (§11.6) | La persona no ejecutó la aceptación en persona; su mensaje del 2026-11-12 la delega |
 | `PG-7.17.01`–`.02` | Cumplido | 0 `pendiente` en `conformance*.yaml`; `check_syntax_coverage.dart`: 81/81 formas públicas con ficha | — |
-| `PG-7.18.01`–`.03` | Cumplido | `cfb0933c`; 241 pruebas de la extensión; proyección DAP web idéntica a `pseudo dap`; VS Code para la Web en Chromium con 6 pasos de depuración en verde | WebKit no ejecutado en esta fase: su binario de Playwright no está instalado y descargarlo no estaba autorizado |
+| `PG-7.18.01`–`.03` | Cumplido | `cfb0933c`; 241 pruebas de la extensión; proyección DAP web idéntica a `pseudo dap`; VS Code para la Web en Chromium con 6 pasos de depuración en verde | WebKit en verde tras la descarga autorizada el 2026-11-12 (ver §11.4); Firefox no calificado |
 | `PG-7.19.01`–`.02` | Cumplido | `9264df25`, `6161cf72`; §11.5 | — |
 
 ### 11.2 Correcciones de problemas heredados
@@ -263,7 +263,11 @@ Equipo: macOS 27.2 (Darwin 27.2.0), Apple M2 de 8 núcleos, Rust 1.99.0, Node 22
 
 - Suite completa de Flutter: PG-7 no cambia código Dart; la conformidad del sujeto `app` y la cobertura sintáctica
   cubren el puente con el motor modificado.
-- WebKit y Firefox en VS Code para la Web: binarios de Playwright ausentes; descargar requiere permiso explícito.
+- WebKit y Firefox en VS Code para la Web: descargados con permiso de la persona el 2026-11-12 (Playwright 1.64.1:
+  WebKit 27.2, Firefox 157.0). WebKit pasa los 70 pasos, incluidos los 6 de depuración, igual que Chromium
+  (`test-results/web/2026-11-12T12-31-58-714Z`). Firefox queda «no calificado»: su binario termina con «Could not
+  find profile folder» también al lanzarlo directamente, sin VS Code ni la extensión, así que es un fallo del equipo y no
+  del producto.
 - iOS simulador y dispositivos físicos: complementarios por la decisión del 2026-10-22.
 
 ### 11.5 E-PG-02
@@ -295,10 +299,10 @@ Valores p95 en ms. Antes de las correcciones, en esta misma revisión base: `fil
 - Programa de PG-B.27 (`200 / Rick Sanchez / Alive`): CLI VM en `es` y `en`, CLI `--nativo`, binario exacto del VSIX,
   VS Code de escritorio con el VSIX instalado desde cero (host real 30/30) y app macOS
   (`integration_test/real_api_acceptance_test.dart`, `ACCEPTANCE OUTPUT [200, Rick Sanchez, Alive]`).
-- No ejecutado en esta fase: VS Code con interfaz en Windows, app Windows, iOS (simulador verificado en PG-B.27),
-  WebKit y Firefox.
+- No ejecutado en esta fase: VS Code con interfaz en Windows, app Windows, iOS (simulador verificado en PG-B.27) y
+  Firefox (no calificado, §11.4).
 
 Revisión Git de cierre: commits de `9264df25` al commit documental de cierre, publicados por push ordinario en
-`feature/agregar-ruta-de-especificacion` · Verificadores ejecutados: §11.3 · Pendientes justificados: WebKit y Firefox en
-esta fase, iOS físico, VS Code con interfaz y app en Windows · Puntos de §4 cumplidos: PG-7.01–.11 y .13–.19 (`.12`
+`feature/agregar-ruta-de-especificacion` · Verificadores ejecutados: §11.3 · Pendientes justificados: Firefox no calificado
+en este equipo, iOS físico, VS Code con interfaz y app en Windows · Puntos de §4 cumplidos: PG-7.01–.11 y .13–.19 (`.12`
 retirado) y C01–C13.
