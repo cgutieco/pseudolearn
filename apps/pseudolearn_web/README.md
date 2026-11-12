@@ -49,7 +49,7 @@ El diagrama omite las aristas desde `shared`, `entities` y `features` hacia las 
 `views`, pero `views` sí importa de `app`.
 
 | Capa            | Contenido                                                                                                                           |
-|:----------------|:------------------------------------------------------------------------------------------------------------------------------------|
+| :-------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
 | `src/pages/`    | Rutas finas (14 líneas como máximo) que montan una vista; incluye `api/contact`, `llms*.txt`, `robots.txt` y el sitemap             |
 | `src/views/`    | Una pantalla por ruta: home, language, learn, nodo, download, contact, versions, privacy, terms, checkout, specification, not-found |
 | `src/widgets/`  | Bloques de página: encabezado, pie, héroes, muestras de lección, Nodo, descargas, lector de la especificación                       |
@@ -88,7 +88,7 @@ flowchart LR
 ## Comandos útiles
 
 | Para qué                                    | Comando                                                                          |
-|:--------------------------------------------|:---------------------------------------------------------------------------------|
+| :------------------------------------------ | :------------------------------------------------------------------------------- |
 | Servidor de desarrollo                      | `pnpm dev`                                                                       |
 | Build de producción (genera `og-image.png`) | `pnpm build`                                                                     |
 | Servir el build sobre el runtime de Workers | `pnpm preview`                                                                   |
