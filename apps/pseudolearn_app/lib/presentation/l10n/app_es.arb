@@ -2725,6 +2725,7 @@
   "agentFailureAlreadySubscribed": "Ya tienes un plan activo.",
   "agentFailurePurchaseOwnedElsewhere": "Esa compra pertenece a otra cuenta de PseudoLearn. Inicia sesión con la cuenta con la que la hiciste.",
   "agentFailureInvalidPurchase": "La tienda no pudo confirmar la compra. Vuelve a intentarlo o restaura tus compras.",
+  "agentFailurePurchaseNotApplied": "No se pudo sumar la compra a tu saldo. Si la tienda te la cobró, se sumará sola en cuanto sea posible; si no, inténtalo de nuevo.",
   "agentCreditsTitle": "Nodo · IA",
   "agentCreditsRemaining": "{count, plural, =1{1 crédito} other{{count} créditos}}",
   "@agentCreditsRemaining": {"placeholders": {"count": {"type": "int"}}},

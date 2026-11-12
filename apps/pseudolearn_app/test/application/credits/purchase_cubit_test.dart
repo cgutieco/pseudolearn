@@ -114,4 +114,25 @@ void main() {
     expect(harness.links.opened.single.toString(), 'https://pseudolearn.app/en/terms');
     await harness.close();
   });
+
+  test('a refused redeem stays with the purchase and leaves the known balance untouched', () async {
+    final harness = _Harness(attempt: const PurchaseConfirmed(_receipt));
+    await harness.credits.refresh();
+    harness.gateway.next = const CreditsUnavailable(CreditFailure.purchaseNotApplied);
+    await harness.cubit.buy(AgentProduct.topUp);
+    expect(harness.cubit.state.topUpFailure, CreditFailure.purchaseNotApplied);
+    expect(harness.credits.state.failure, isNull);
+    expect(harness.credits.state.balance?.remaining, 40);
+    await harness.close();
+  });
+
+  test('only a failed top-up reports a top-up failure', () {
+    const failedPlan = PurchaseState(status: PurchaseStatus.failed, product: AgentProduct.monthly, failure: CreditFailure.invalidPurchase);
+    const failedTopUp = PurchaseState(status: PurchaseStatus.failed, product: AgentProduct.topUp, failure: CreditFailure.invalidPurchase);
+    const purchasing = PurchaseState(status: PurchaseStatus.purchasing, product: AgentProduct.topUp);
+    expect(failedPlan.topUpFailure, isNull);
+    expect(failedTopUp.topUpFailure, CreditFailure.invalidPurchase);
+    expect(purchasing.topUpFailure, isNull);
+    expect(const PurchaseState().topUpFailure, isNull);
+  });
 }

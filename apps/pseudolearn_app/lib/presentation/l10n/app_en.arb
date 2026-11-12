@@ -2584,6 +2584,7 @@
   "agentFailureAlreadySubscribed": "You already have an active plan.",
   "agentFailurePurchaseOwnedElsewhere": "That purchase belongs to another PseudoLearn account. Sign in with the account you bought it with.",
   "agentFailureInvalidPurchase": "The store could not confirm the purchase. Try again or restore your purchases.",
+  "agentFailurePurchaseNotApplied": "The purchase could not be added to your balance. If the store charged you, it will be added automatically as soon as possible; otherwise, try again.",
   "agentCreditsTitle": "Nodo · AI",
   "agentCreditsRemaining": "{count, plural, =1{1 credit} other{{count} credits}}",
   "agentCreditsRenews": "Renews on {date}",

@@ -30,10 +30,21 @@ const Map<String, CreditFailure> _failuresByCode = {
   'invalid_signature': CreditFailure.invalidPurchase,
 };
 
-CreditFailure creditFailureOf(Object? body) {
+const Map<String, CreditFailure> _purchaseFailuresByCode = {
+  'invalid_request': CreditFailure.invalidPurchase,
+  'invalid_product': CreditFailure.invalidPurchase,
+};
+
+Object? _errorCodeOf(Object? body) {
   final error = body is Map<String, Object?> ? body['error'] : null;
-  final code = error is Map<String, Object?> ? error['code'] : null;
-  return _failuresByCode[code] ?? CreditFailure.upstream;
+  return error is Map<String, Object?> ? error['code'] : null;
+}
+
+CreditFailure creditFailureOf(Object? body) => _failuresByCode[_errorCodeOf(body)] ?? CreditFailure.upstream;
+
+CreditFailure purchaseFailureOf(Object? body) {
+  final code = _errorCodeOf(body);
+  return _purchaseFailuresByCode[code] ?? _failuresByCode[code] ?? CreditFailure.purchaseNotApplied;
 }
 
 bool retryableOf(Object? body) {

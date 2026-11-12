@@ -84,8 +84,10 @@ final class PurchaseCubit extends Cubit<PurchaseState> {
 
   Future<CreditsOutcome> _redeemAndFinish(PurchaseReceipt receipt) async {
     final outcome = await _gateway.redeem(receipt);
-    _credits.apply(outcome);
-    if (outcome is CreditsKnown) await _pendingPurchases.finish(receipt);
+    if (outcome is CreditsKnown) {
+      _credits.apply(outcome);
+      await _pendingPurchases.finish(receipt);
+    }
     return outcome;
   }
 

@@ -14,6 +14,7 @@ String agentFailureText(AppLocalizations l10n, CreditFailure failure) => switch 
   CreditFailure.alreadySubscribed => l10n.agentFailureAlreadySubscribed,
   CreditFailure.purchaseOwnedElsewhere => l10n.agentFailurePurchaseOwnedElsewhere,
   CreditFailure.invalidPurchase => l10n.agentFailureInvalidPurchase,
+  CreditFailure.purchaseNotApplied => l10n.agentFailurePurchaseNotApplied,
   CreditFailure.offline => l10n.agentFailureOffline,
   CreditFailure.upstream => l10n.agentFailureUpstream,
 };

@@ -10,6 +10,7 @@ enum CreditFailure {
   alreadySubscribed,
   purchaseOwnedElsewhere,
   invalidPurchase,
+  purchaseNotApplied,
   offline,
   upstream,
 }

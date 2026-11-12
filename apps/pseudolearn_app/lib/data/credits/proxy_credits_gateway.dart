@@ -22,7 +22,7 @@ final class ProxyCreditsGateway implements CreditsGateway {
        _send = send;
 
   @override
-  Future<CreditsOutcome> balance() => _call('GET', 'agent-credits');
+  Future<CreditsOutcome> balance() => _call('GET', 'agent-credits', failureOf: creditFailureOf, unreachable: CreditFailure.offline);
 
   @override
   Future<CreditsOutcome> redeem(PurchaseReceipt receipt) => _call(
@@ -34,9 +34,17 @@ final class ProxyCreditsGateway implements CreditsGateway {
       'transaction_id': receipt.transactionId,
       'evidence': receipt.evidence,
     },
+    failureOf: purchaseFailureOf,
+    unreachable: CreditFailure.purchaseNotApplied,
   );
 
-  Future<CreditsOutcome> _call(String method, String path, {Object? body}) async {
+  Future<CreditsOutcome> _call(
+    String method,
+    String path, {
+    Object? body,
+    required CreditFailure Function(Object? body) failureOf,
+    required CreditFailure unreachable,
+  }) async {
     final token = await _tokens.accessToken();
     if (token == null) return const CreditsUnavailable(CreditFailure.unauthenticated);
     try {
@@ -48,7 +56,7 @@ final class ProxyCreditsGateway implements CreditsGateway {
       );
       final balance = creditBalanceFromHeaders(reply.header);
       if (reply.status != 200 || balance == null) {
-        return CreditsUnavailable(creditFailureOf(reply.body));
+        return CreditsUnavailable(failureOf(reply.body));
       }
       final json = reply.body is Map<String, Object?> ? reply.body as Map<String, Object?> : const <String, Object?>{};
       return CreditsKnown(
@@ -57,9 +65,9 @@ final class ProxyCreditsGateway implements CreditsGateway {
         trialUsed: json['trial_used'] == true,
       );
     } on SocketException {
-      return const CreditsUnavailable(CreditFailure.offline);
+      return CreditsUnavailable(unreachable);
     } on TimeoutException {
-      return const CreditsUnavailable(CreditFailure.offline);
+      return CreditsUnavailable(unreachable);
     }
   }
 }

@@ -90,4 +90,31 @@ void main() {
     expect((await refused.balance() as CreditsUnavailable).failure, CreditFailure.purchasesDisabled);
     expect((await const UnconfiguredCreditsGateway().balance() as CreditsUnavailable).failure, CreditFailure.modelUnconfigured);
   });
+
+  test('a redeem failure names the purchase, not the AI service, while the balance keeps the general mapping', () async {
+    ProxyCreditsGateway replying(int status, Map<String, Object?> reply) => ProxyCreditsGateway(
+      functionsUrl: 'https://p',
+      tokens: const _Tokens('jwt'),
+      send: (method, uri, {headers = const {}, body}) async => JsonHttpReply(status: status, body: reply, headers: const {}),
+    );
+    const receipt = PurchaseReceipt(product: AgentProduct.topUp, store: 'simulated', transactionId: 't');
+    Future<CreditFailure> redeemFailure(int status, Map<String, Object?> body) async =>
+        (await replying(status, body).redeem(receipt) as CreditsUnavailable).failure;
+    expect(await redeemFailure(422, {'error': {'code': 'invalid_request'}}), CreditFailure.invalidPurchase);
+    expect(await redeemFailure(500, {'error': {'code': 'unexpected_failure'}}), CreditFailure.purchaseNotApplied);
+    expect(await redeemFailure(402, {'error': {'code': 'subscription_required'}}), CreditFailure.subscriptionRequired);
+    expect(await redeemFailure(200, const {}), CreditFailure.purchaseNotApplied);
+    expect((await replying(422, {'error': {'code': 'invalid_request'}}).balance() as CreditsUnavailable).failure, CreditFailure.upstream);
+  });
+
+  test('an unreachable server during a redeem is a purchase not applied, and offline for the balance', () async {
+    final gateway = ProxyCreditsGateway(
+      functionsUrl: 'https://p',
+      tokens: const _Tokens('jwt'),
+      send: (method, uri, {headers = const {}, body}) async => throw const SocketException('down'),
+    );
+    const receipt = PurchaseReceipt(product: AgentProduct.topUp, store: 'simulated', transactionId: 't');
+    expect((await gateway.redeem(receipt) as CreditsUnavailable).failure, CreditFailure.purchaseNotApplied);
+    expect((await gateway.balance() as CreditsUnavailable).failure, CreditFailure.offline);
+  });
 }

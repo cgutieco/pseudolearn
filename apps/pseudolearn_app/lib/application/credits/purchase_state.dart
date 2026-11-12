@@ -26,4 +26,7 @@ final class PurchaseState {
       PurchaseState(status: status, product: product, failure: failure, channel: channel, prices: prices);
 
   String? priceOf(AgentProduct product) => prices[product];
+
+  CreditFailure? get topUpFailure =>
+      status == PurchaseStatus.failed && product == AgentProduct.topUp ? failure : null;
 }
