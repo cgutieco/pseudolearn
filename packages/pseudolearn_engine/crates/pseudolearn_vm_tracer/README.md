@@ -1,65 +1,58 @@
 # pseudolearn_vm_tracer
 
-## 1. Qué es y qué no es
+Trabajador de medición de la VM sin observador: carga una carga de trabajo, compila su texto a bytecode verificado
+antes del intervalo cronometrado, ejecuta `pseudolearn_vm` directamente y devuelve las muestras en JSON. Admite un
+perfil de superinstrucciones (`compareBranch`, `fusedArithmetic`) y un modo `profile` para recoger conteos.
 
-Worker interno para medir la VM sin observador. Recibe una carga del arnés, compila su texto a RI
-verificada y bytecode antes del intervalo, y ejecuta directamente `pseudolearn_vm`. No llama a
-`API.EXECUTE`, no contiene un protocolo público y no reemplaza el arnés de referencia.
+**No hace:** pasar por la API pública de ejecución, definir un protocolo público ni formar parte del producto.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-El arnés de `pseudolearn_benchmarks` compila este binario en modo release y lo invoca como proceso
-independiente para cada carga. Cada worker valida una ejecución previa y recoge treinta iteraciones
-con estado nuevo. La versión exacta de Rust se fija en `rust-toolchain.toml`. Verificación: `cargo xtask
-verify` del motor y `rust-checks layers`.
+```mermaid
+flowchart BT
+    API["api<br/>crates/pseudolearn_api"]
+    BYT["bytecode<br/>crates/pseudolearn_bytecode"]
+    VM["vm<br/>crates/pseudolearn_vm"]
+    TRC["<b>pseudolearn_vm_tracer</b><br/>crates/pseudolearn_vm_tracer"]
+    API & BYT & VM --> TRC
+```
 
-## 3. Arquitectura y modelo del sistema
+Nadie en el monorepo lo importa: es un binario (`vm-tracer`) y una biblioteca mínima.
 
-Capa `tooling` del motor. Importa API solo para bajar el texto fuente a RI, bytecode para compilar y VM
-para ejecutar. No usa el trabajador de medición de API ni importa la implementación Dart `reference`.
-El arnés conserva en un solo archivo las cargas que ejecutan ambos motores.
+## Arquitectura
 
-El worker compila la carga a bytecode y la convierte en la forma de despacho de la VM (`load`) antes de
-leer el reloj; dentro del intervalo solo ejecuta `run_loaded`. Valida la terminación de cada resultado después del intervalo
-y emite muestras estructuradas a stdout. No realiza E/S dentro del intervalo medido.
-Los perfiles dinámicos se guardan por carga. `r5-vm-superinstructions.json` selecciona comparación-
-salto a partir de Mandelbrot y Fibonacci; el bucle entero queda reservado para validar esa selección.
+Importa `api`, `bytecode` y `vm`; la externa es `serde_json`.
 
-## 4. Decisiones de diseño y fundamentos técnicos
+| Módulo     | Responsabilidad                                                       |
+|------------|-----------------------------------------------------------------------|
+| `workload` | `Workload` y `load_workload`: identificador, fuente y salida esperada |
+| `measure`  | `prepare_workload*`, `measure_workload` y `profile_workload`          |
+| `main`     | Subcomandos `worker` y `profile`                                      |
 
-El worker mide una carga por proceso. Así, diez procesos independientes producen medias emparejables
-con los diez procesos de `reference`, mientras cada iteración construye una máquina nueva. La carga se
-compila con su perfil de vocabulario y las reglas únicas del corpus. Una guarda del propio programa
-detecta resultados incorrectos al fallar la terminación. Se descarta ejecutar la API pública, porque
-mediría análisis, adaptación o protocolo junto con la VM.
+## Flujo principal
 
-La compilación de la carga, su carga en forma de despacho y una ejecución de validación ocurren antes de
-iniciar las muestras. La medición vigente se hace sin PGO: el binario no depende de un perfil ni de
-`llvm-tools`. Las mediciones anteriores de la escalera de rendimiento y el perfil PGO se conservan como
-historial de la decisión. El
-worker solo conserva tiempos positivos y resultados completados; los resultados fallidos hacen fallar
-el proceso recolector.
+Flujo de datos, no dependencias.
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+```mermaid
+flowchart LR
+    WL["archivo de cargas"] --> LD["load_workload"]
+    LD --> PR["prepare_workload"] --> BC["bytecode verificado"]
+    BC --> ME["measure_workload"] --> OUT["muestras JSON"]
+```
 
-Código inglés, sin comentarios, `doc`, `allow`, `expect`, pánicos, `unsafe` ni conversiones con pérdida.
-Los fallos operativos se devuelven como errores y se convierten en un código de salida en el borde de
-la herramienta.
+## Reglas que conviene saber
 
-## 6. Decisiones de producto que condicionan el código
+- Es herramienta (`tooling: true`): ningún otro crate del motor lo importa.
+- El bytecode se prepara fuera del intervalo medido; cada muestra se valida contra la salida esperada.
+- Argumentos inválidos o un perfil de superinstrucciones desconocido terminan con código distinto de cero y un mensaje
+  en `stderr`.
+- Sin `unsafe`.
 
-La comparación temprana de R5 usa cargas numéricas y recursivas sin entrada externa ni efectos de
-anfitrión. La referencia y el worker reciben el mismo texto, y una guarda deriva la validez del
-resultado esperado. La VM sigue sin exponerse como API de usuario.
+## Comandos útiles
 
-## 7. Verificación, testing y aseguramiento de calidad
+| Para qué        | Comando                                                                                                   |
+|-----------------|-----------------------------------------------------------------------------------------------------------|
+| Medir una carga | `cargo run --release -p pseudolearn_vm_tracer --bin vm-tracer -- worker <cargas> <id> <proceso> <perfil>` |
+| Tests del crate | `cargo test -p pseudolearn_vm_tracer`                                                                     |
 
-Tests de selección de carga, bytecode inválido, resultado incorrecto y ejecución completada. El
-recolector verifica diez procesos, treinta iteraciones, estado nuevo, resultados válidos y ausencia de
-muestras faltantes. El resumen conserva intervalos por proceso y candidatos de cambio; no descarta
-muestras.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-El protocolo de medición del arnés fija procesos independientes, iteraciones, validación, procedencia y
-retención de resultados. El worker usa el protocolo sin importar su lógica estadística.
+Se ejecutan desde `packages/pseudolearn_engine`.

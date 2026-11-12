@@ -1,67 +1,49 @@
 # pseudolearn_math_probe
 
-## 1. Qué es y qué no es
+Herramienta que evalúa la matemática de `pseudolearn_library` sobre los argumentos que genera el sistema de
+especificaciones: lee `<función>.arguments` (bits hexadecimales de binario64) y escribe `<función>.results` con los
+bits del resultado o `nonFiniteRealResult`. Existe para contrastar la implementación contra un oráculo independiente.
 
-Herramienta interna que evalúa `pseudolearn_library` sobre los argumentos que genera SEE para el
-contraste matemático de `LIB.CORE.MATH`. Lee `<función>.arguments` (bits hexadecimales de binario64 por
-línea; dos por línea en la potencia) y escribe `<función>.results` con los bits del resultado o
-`nonFiniteRealResult`. No decide valores esperados, no importa el oráculo ni la VM y no se distribuye.
+**No hace:** decidir valores esperados, importar el oráculo ni la VM, ni distribuirse con el producto.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-Flujo completo, desde las carpetas de cada miembro y con un directorio de trabajo fuera del repositorio:
-
-```bash
-cargo run --release -p see_cli --bin see -- math-arguments --output <directorio>
+```mermaid
+flowchart BT
+    LIB["library<br/>crates/pseudolearn_library"]
+    PROBE["<b>pseudolearn_math_probe</b><br/>crates/pseudolearn_math_probe"]
+    SPEC["see (math-arguments, math-check)<br/>packages/pseudolearn_spec"]
+    LIB --> PROBE
+    PROBE -->|" archivos .results "| SPEC
 ```
 
-```bash
-cargo run --release -p pseudolearn_math_probe --bin math-probe -- <directorio>
+Aquí las flechas indican el intercambio de datos con `pseudolearn_spec`, que genera los argumentos y juzga los
+resultados; no hay dependencia de crates entre ambos miembros.
+
+## Flujo principal
+
+```mermaid
+flowchart LR
+    GEN["see math-arguments"] --> ARG["*.arguments"]
+    ARG --> PRO["math-probe"]
+    PRO --> RES["*.results"]
+    RES --> CHK["see math-check"]
 ```
 
-```bash
-cargo run --release -p see_cli --bin see -- math-check --input <directorio>
-```
+## Reglas que conviene saber
 
-El primero corre en `packages/pseudolearn_spec`, el segundo en `packages/pseudolearn_engine` y el
-tercero de nuevo en `packages/pseudolearn_spec`, que escribe el informe en su directorio local ignorado. Los archivos
-de argumentos y resultados son datos crudos regenerables por semilla y no se versionan.
+- Es de la capa `tooling` y solo importa `pseudolearn_library`; ningún crate de producto lo usa.
+- Cada función se identifica por el nombre del archivo: `exp`, `ln`, `sin`, `cos`, `atan`, `pow`, `tan`, `asin`, `acos`,
+  `atan2`, `log2` y `log10`.
+- Sin `unsafe`.
 
-## 3. Arquitectura y modelo del sistema
+## Comandos útiles
 
-Capa `tooling` del motor. Importa solo `pseudolearn_library`. Una función se identifica por el nombre
-del archivo (`exp`, `ln`, `sin`, `cos`, `atan`, `pow`).
+| Para qué                  | Comando                                                                                                             |
+|---------------------------|---------------------------------------------------------------------------------------------------------------------|
+| Generar argumentos        | `cargo run --release -p see_cli --bin see -- math-arguments --output <directorio>` (en `packages/pseudolearn_spec`) |
+| Evaluar con la biblioteca | `cargo run --release -p pseudolearn_math_probe --bin math-probe -- <directorio>` (en `packages/pseudolearn_engine`) |
+| Contrastar los resultados | `cargo run --release -p see_cli --bin see -- math-check --input <directorio>` (en `packages/pseudolearn_spec`)      |
+| Tests del crate           | `cargo test -p pseudolearn_math_probe`                                                                              |
 
-## 4. Decisiones de diseño y fundamentos técnicos
-
-- **Problema:** el motor y SEE son miembros Cargo distintos y el oráculo debe ser independiente del
-  sujeto (`SPEC-INDEPENDENT-ORACLE`). **Elección:** intercambio por archivos de texto con bits exactos;
-  SEE genera y juzga, el motor solo evalúa. **Descartado:** enlazar el oráculo en el motor o la biblioteca
-  en SEE, que acoplaría los dos miembros y permitiría correlacionar sus errores.
-- Un `PrecisionExhausted` de la biblioteca no se traduce a resultado: hace fallar la herramienta, porque
-  es un defecto interno y no un valor observable.
-
-## 5. Reglas de legibilidad, estilo y estructura de código
-
-Código inglés sin comentarios, `doc`, `allow`, `expect`, pánicos ni `unsafe`; errores como `Result`.
-
-## 6. Decisiones de producto que condicionan el código
-
-`LIB.CORE.MATH#R1`, `LANG.OPS.POWER` y `LANG.TYPES.REAL`: resultado binario64 más cercano y
-`nonFiniteRealResult` para dominio inválido o resultado no finito.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-`tests/lib_tests.rs` cubre evaluación unaria y binaria, trampas, líneas mal formadas y un directorio
-completo.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-El esquema de contraste masivo sigue a las campañas de validación de CORE-MATH (comparación bit a bit
-contra una referencia de precisión múltiple); aquí la referencia es el oráculo racional propio de SEE.
-
-## Ampliación numérica y de colecciones
-
-El intercambio incluye tan, asin, acos, atan2, log2 y log10. atan2 recibe dos patrones binarios por línea; las otras cinco funciones reciben uno. El sondeo evalúa sin decidir esperados.
-
-El sondeo admite un subconjunto no vacío de archivos de funciones conocidas, para campañas dirigidas. Rechaza un directorio inexistente o sin argumentos. SEE permite seleccionar las mismas funciones con --only y conserva la semilla y el conteo en el manifiesto.
+Usar un directorio de trabajo fuera del repositorio: los archivos son datos regenerables y no se versionan.

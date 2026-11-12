@@ -1,321 +1,59 @@
 # pseudolearn_bench_worker
 
-## 1. Qué es y qué no es
+Binario de medición del motor: ejecuta cargas de trabajo sobre la API pública, la VM, la línea temporal y el backend
+nativo, y escribe muestras crudas y resúmenes en JSON. Lo invocan las herramientas de `pseudolearn_benchmarks` y las
+campañas del propio motor. Un mismo binario reúne todas las mediciones y elige la que corresponde por el primer
+argumento.
 
-Mide cargas de la API pública en proceso. Herramienta local; no es una capa del producto ni un sujeto de conformidad.
-El comando `execute` prepara las diez cargas AWFY de medición desde la exportación y emite treinta muestras por carga; valida salida y terminación fuera del intervalo. El comando `e06` mide las ocho métricas de la línea temporal (observador en pausa, coste de los deltas por evento, independencia de la profundidad, coste de un punto con pila profunda, latencia de paso observado, latencia de retroceso, memoria retenida y memoria residente con grabación) y emite un único documento JSON con muestras crudas, veredicto por métrica y `all_passed` calculado. Pendiente: la orquestación en diez procesos del arnés Dart; hoy cada métrica se toma en un único proceso con treinta iteraciones.
+**No hace:** ser una capa del producto ni un sujeto de conformidad; tampoco decide si una medición cumple un umbral:
+solo recoge y resume.
 
-El comando `aot <directorio> <techo-raw.json> <resumen-vm.json>` mide el código nativo generado con `pseudolearn_codegen` sobre las mismas diez cargas: por cada carga emite el objeto sin punto de entrada con `build_benchmark_object` (treinta emisiones cronometradas), enlaza un lanzador propio con el objeto y la biblioteca del runtime, y ejecuta diez procesos de treinta iteraciones cada uno. Cada iteración crea una sesión nueva fuera del intervalo, cronometra solo la llamada a la función principal y verifica salida y estado después; una salida distinta aborta el proceso. Lee las dos líneas base de los archivos locales indicados y escribe `raw.json` y `summary.json` en el directorio de salida.
+## Dónde encaja
 
-El comando `paired <directorio-nuevo>` enlaza un trabajador con el mismo objeto AOT y V1F. Conserva parejas reales, medianas por carga y bootstrap de medias por proceso identificado separadamente. Rechaza sobrescribir evidencias. `paired-summary <directorio>` recalcula el resumen sin ejecutar cargas ni modificar los crudos.
-
-`paired-probe <directorio-nuevo>` ejecuta las seis cargas de diagnóstico con contadores separados, escala Storage en profundidades 3–6 y conserva un perfil del proceso de Storage. Sus tiempos instrumentados no sirven para declarar N3.
-
-El comando `service` mide las herramientas de edición: `service e09 <salida> [mediciones]` evalúa el autocompletado sobre los programas de referencia (cada identificador, palabra clave o función estándar de al menos tres caracteres se consulta con prefijo de cero y de dos caracteres sobre el documento truncado), calcula precisión en 1 y en 5, ahorro de pulsaciones y validez de plantillas, y mide la latencia del completado en un documento de diez mil líneas y, aparte y sin umbral, la de una sesión de edición sobre el mismo documento (aplicar una edición, completar y asistir al teclear); `service incremental <salida> [mediciones]` mide la latencia de una edición de cuerpo en documentos de mil y de diez mil líneas; `service e20 <binario pseudo> <salida>` mide el arranque y la latencia de `comprobar`, `ejecutar`, `compilar`, `formatear`, `traducir` y `lsp`. Los umbrales se leen de los contratos exportados, el resultado de umbral incumplido termina con error y las mediciones se registran en el directorio local ignorado `results/`.
-
-El comando `service help` mide la consulta de ayuda: `functional <directorio>` recorre los programas de referencia (recortados y completos, en ambos perfiles e idiomas) por la API y por LSP contra un oráculo derivado del corpus, `latency hot|cold <directorio> <proceso>` toma treinta muestras por documento (uno pequeño real y uno generado de diez mil líneas) y `summary` y `verify` recalculan y comprueban el resumen. `tool/e_pg_11.sh <directorio-nuevo>` orquesta la campaña: procedencia antes de compilar, diez procesos independientes por serie, y verificación final; nunca sobrescribe un directorio.
-
-El comando `service project` mide perfiles por archivo, proyectos multiarchivo y resolución con el protocolo `e-pg-13/1`; solo usa la API pública (`analyze_project`, `execute_project`, `build_lock`, `resolve_lock`). `functional <directorio>` ejecuta cada conjunto una vez y compara la salida con un oráculo que es una fórmula cerrada sobre las constantes sembradas (semilla 42): cadena, estrella, diamante y biblioteca (los tres primeros en un paquete y el último con las hojas en una biblioteca local), 100 módulos sintéticos con perfiles alternados y 20 pares es/en con cinco colisiones de palabra reservada que exigen alias; cada conjunto mixto tiene un control de un solo perfil con la misma salida esperada (los nombres colisionantes del control son neutros, porque una palabra reservada no puede declararse en su propio perfil), y los conjuntos editados (cuerpo y firma) se ejecutan también. `run profiles|project|resolution <directorio> <proceso>` toma treinta muestras por documento y por métrica (`analyze_ms`, `execute_ms`, `build_ms`, `resolve_ms`), valida cada respuesta y escribe `<serie>-process-NN.json` con protocolo, máquina (sistema, arquitectura y procesadores) y huella del conjunto. Los casos de proyecto son frío, misma revisión, edición de cuerpo y edición de firma sobre 10, 100 y 1000 archivos con unas 10 000 líneas en total repartidas por archivo, más una serie de volumen creciente (100 líneas por archivo). `summary` calcula mediana, p95 agrupado, intervalo bootstrap de 95 % (10 000 remuestreos por proceso, semilla 42) del p95 y de la media de medias por proceso, candidatos a punto de cambio y la razón mixto/control por proceso con su intervalo; el p95 es el percentil por rango sobre todas las muestras de todos los procesos del documento. `verify` rechaza menos de diez procesos, muestras distintas de treinta o no positivas, resolución de reloj nula, semilla o protocolo ajenos, mezcla de máquinas, conjunto distinto del funcional, campaña funcional vacía o con fallos, crudos distintos de las huellas del resumen y un resumen que no coincide con su recálculo. Como no existe una API incremental de proyecto, los casos de edición miden un reanálisis completo y el resumen declara la latencia incremental «no medible»; los presupuestos candidatos son valores observados, no contratos. Las asignaciones de memoria no se miden. En la serie de resolución, `lines` es el tamaño en bytes de los paquetes de la petición. `tool/e_pg_13.sh <directorio-nuevo>` orquesta la campaña (procedencia antes de compilar, diez procesos por serie, resumen y verificación) y nunca sobrescribe un directorio.
-
-El comando `pg-verify <campaña.json>` valida una campaña de E-PG-03 o E-PG-04 con el protocolo `e-pg-2/1` antes de calcular nada: al menos diez procesos con identidad única, treinta muestras por proceso, resolución de reloj positiva, duraciones del candidato y del control distintas de cero, salida del candidato igual a la del control, una sola máquina y un experimento conocido. Una campaña con muestras ausentes, salida incorrecta o máquinas mezcladas no produce un resultado verde, y una salida distinta invalida la muestra aunque el candidato sea más rápido.
-
-`pg-collect <E-PG-03|E-PG-04> <directorio> <proceso> <máquina>` mide un proceso independiente: por cada carga compila candidato y control (fuentes en `campaign_workloads.rs`), toma treinta muestras ejecutando ambos en orden alternado, compara la salida textual y repite la ejecución del candidato con recolección forzada; guarda `<directorio>/<carga>/process-NN.json` con tiempos, resolución del reloj y la forma determinista (bytes de RI, bytes de objeto nativo, instancias y tiempo de compilación) y nunca sobrescribe. El proceso 0 de E-PG-03 también registra que la recursión polimórfica expansiva es rechazada por el límite tipado. `pg-summary <E-PG-03|E-PG-04> <directorio>` valida cada carga con las reglas de `pg-verify`, calcula la razón de medias por proceso con intervalo bootstrap del 95 % (2000 remuestreos, semilla 42) y escribe `summary.json` con el cumplimiento de cada umbral (recorrido ≤1,10×, llamada indirecta ≤1,25×, crecimiento del objeto como máximo proporcional al número de instancias); un umbral incumplido se informa, nunca se ajusta. `tool/e_pg_campaign.sh <experimento> <directorio-nuevo> <máquina>` orquesta la campaña con procedencia previa, compilación release y diez procesos. La carga de 100 combinaciones del protocolo no cabe en el límite de 64 instancias de una edición, por lo que las cargas genéricas son de 1, 10 y 60 combinaciones.
-
-## 2. Guía operativa y ciclo de vida
-
-Rust exacto del workspace. `cargo run --release -p pseudolearn_bench_worker -- frontend` emite treinta muestras
-por configuración como JSONL, incluidas cargas independientes `unicode-identifiers-es` y `unicode-identifiers-en`
-con alfabeto español y usos NFC compuestos y descompuestos. Miden el análisis completo del API sobre el
-caso Unicode; sus tiempos incluyen escaneo, parser y análisis semántico. `cargo run --release -p pseudolearn_bench_worker -- aot <directorio-nuevo> <techo-raw.json> <resumen-vm.json>` recoge el experimento del código nativo; requiere `rustc` y un enlazador del sistema, y compila un lanzador por carga contra la biblioteca `pseudolearn_aot_rt` del mismo perfil. `cargo xtask verify` comprueba la herramienta con el motor. No se despliega.
-
-La orden `bridge` lee por stdin una configuración de escenarios de API y treinta iteraciones. Cada
-iteración crea una sesión nueva; `setup` y `verify` quedan fuera del reloj y `timed` publica una latencia
-por llamada. Los vínculos `$nombre.campo` conservan identidades reales y las repeticiones tienen límite.
-Las expectativas son datos independientes y una discrepancia aborta el trabajador. No hay FFI en este
-trabajador: permite contrastarlo con el trabajador Dart que consume el transporte generado.
-
-## 3. Arquitectura y modelo del sistema
-
-Tooling. Importa `pseudolearn_api`, `pseudolearn_bytecode`, `pseudolearn_vm`, `pseudolearn_timeline`, serde_json y estándar: `e06` necesita crear máquinas y líneas temporales para medirlas, y el resto de órdenes solo usa la API. Prohibido importar otros internos del motor.
-`src/workloads.rs` prepara fuentes desde la exportación; `src/frontend.rs` mide; `src/main.rs` presenta resultados. `src/corpus.rs` lee las diez cargas AWFY de medición; `src/aot/` contiene el experimento del código nativo: `emission` (tiempo de emisión), `launcher` y `launcher.template` (lanzador enlazado con el objeto), `measurement` (proceso y muestras), `baseline` (techo nativo y máquina virtual), `summary` (razones por familia, intervalos y criterios) y `statistics`; `src/e06/` contiene un módulo por métrica, estadística (percentil, media geométrica, pendiente con intervalo al 95 %) y el informe.
-`src/http_workloads.rs` define las cargas cerradas; `src/http_campaign.rs` prepara y mide cada
-proceso; `src/http_summary.rs` valida crudos y agrega muestras; `src/http_growth.rs` calcula
-las regresiones lineales candidatas por tamaño.
-El análisis crea estado nuevo por muestra. Ninguna entrada o salida ocurre dentro del intervalo.
-
-## 4. Decisiones de diseño y fundamentos técnicos
-
-Problema: excluir la conciliación final oculta trabajo de las asignaciones nativas. Elección: el intervalo versión 2 incluye entrada y `settle_session`; el tiempo de entrada se conserva por separado. El resumen identifica versión, nivel Cranelift, denominador V1F y umbral 1,70. Los registros sin versión conservan el intervalo histórico y umbral 1,30; mezclar versiones se rechaza. Se descarta reinterpretar resultados históricos o quitar la muestra VM entre parejas.
-
-Problema: una captura histórica no permite emparejar variantes por proceso. Elección: `paired/` prepara y enlaza el trabajador `pseudolearn_native_probe`, alterna el orden y conserva la configuración, el objeto y el lanzador por carga. Captura hashes antes de compilar el runtime y los objetos medidos, conserva treinta tiempos de emisión por carga, resolución observada y candidatos de cambio. Se descarta reemplazar las capturas E-NR1 o interpretar el intervalo de medias como intervalo de medianas. La latencia VM se toma sobre la API preparada y conserva dentro del intervalo su creación de máquina.
-
-Problema: el arranque de una CLI y la serialización no son coste de análisis. Elección: llamadas directas
-a la API en un proceso trabajador. Fuentes generadas por vocabulario del corpus, con terminadores y
-validación previa de su análisis. Se descartan programas con lexemas manuales o sin comprobar el resultado.
-
-E-06 se mide con la máquina real, sin constantes: el gemelo rápido se avanza en bloques de 1 024 instrucciones y el anfitrión consulta al planificador solo entre bloques, para no atribuir a la línea temporal el coste de sondear en cada paso. Los deltas por evento son el consumo incremental del búfer de cambios del gemelo sondeado (solo las entradas nuevas desde el evento anterior), y el criterio de independencia de la profundidad regresa la diferencia pareada con y sin deltas, que aísla el coste de los deltas del efecto de caché de una pila mayor. El criterio de memoria compara los bytes residentes añadidos por la grabación con la huella residente del montón vivo (palabras y descriptores), medida en dos procesos hijos; la razón respecto a las palabras solas se publica aparte. El coste de un punto con pila profunda se verifica con el número de ranuras copiadas para un mismo intervalo ejecutado a 1 000 y a 100 000 marcos. Las cargas AWFY de medición son cortas: en ellas solo se toma el punto inicial, de modo que la media geométrica del observador en pausa acota el coste del punto base y no el de una grabación sostenida; la grabación sostenida se ejercita en la métrica de memoria retenida (10⁹ sentencias).
-La captura de procedencia y la orquestación externa preceden a compilar el trabajador final; el trabajador
-solo produce tiempos crudos y conteos para validar muestras. Un perfil del sistema se realiza en una sesión
-separada de la captura normativa para no contaminar las muestras.
-
-Problema: un ejecutable compilado ejecuta el programa una sola vez y el arranque del proceso es mayor que la carga. Elección: el lanzador enlaza el mismo objeto que produce el generador y llama a su función principal repetidamente dentro de un proceso, con estado nuevo creado antes del cronómetro; la medición no incluye arranque, entrada ni salida. Descartado: cronometrar el proceso completo, que mide el sistema operativo, y enlazar el punto de entrada de producto, que no permite repetir la ejecución. El intervalo de confianza remuestrea las medias por proceso de ambos lados de forma independiente (semilla fija, 2 000 remuestreos), porque el techo nativo y el código generado no comparten proceso; la comparación no está emparejada y así se declara.
-
-Problema: una campaña de ayuda no puede juzgarse con el mismo código que se mide. Elección: el oráculo (`oracle.rs`, `scanner.rs`) toma lexemas e identidades de la exportación del corpus y recorre cada programa con un escáner de palabras propio, sin lexer del motor; solo cubre palabras reservadas y funciones de una sola palabra (compuestas, operadores simbólicos y literales textuales quedan fuera y se declaran), y trata los programas cuyo nombre declara un nombre no reservado como sombreado de incorporadas. Las consultas se validan fuera del reloj; la serie caliente prepara sesión nueva por muestra y mide la API, el núcleo y el render por separado; la serie fría incluye apertura, consulta y liberación. El resumen usa semilla 42, bootstrap sobre procesos, candidatos de cambio con los umbrales del protocolo y resolución del reloj; `verify` invalida la campaña ante una respuesta incorrecta, una muestra o un proceso faltante, un reloj sin resolución, un resumen alterado o un crudo modificado (huella FNV-1a de 64 bits: detecta alteraciones accidentales, no manipulaciones adversarias). La campaña funcional no incluye la aplicación: esa consulta la cubre el sujeto `app`.
-
-### E-PG-05: sobrecoste de la infraestructura de capacidades y cinta inactiva (2026-10-27)
-
-Método. Control: el árbol de `5f6b4b9` extraído con `git archive` a un directorio temporal (sin tocar el árbol de
-trabajo), con la exportación del corpus actual sin la instrucción `effect_call` (la exportación de ese commit no se
-regenera aislada) y compilado con `cargo build --release --offline`. Candidato: el árbol de trabajo
-(`cf4fd3a` más cambios sin confirmar), compilado con `cargo build --release --locked`. Ambos ejecutan `execute` sobre
-`PERF.SUITE.CORE` (10 cargas), 30 iteraciones por proceso, 10 procesos por lado alternando el orden (control primero en
-los procesos pares). Estadística: razón de medias candidato/control por carga con bootstrap jerárquico (procesos y luego
-muestras, 2000 remuestras, semilla 20261027, intervalo del 95 %). Se conservan binarios, sumas SHA-256, plataforma
-(Apple M2, macOS 27.0.1, `rustc 1.99.0`), muestras y resumen en `packages/pseudolearn_spec/results/pg-3-campaign-2026-10-27/`.
-
-Resultado. Media geométrica de las razones: 1,0001 (cumple el umbral de 1,02). Por carga: bounce 1,027 [1,020; 1,034],
-list 1,025 [1,015; 1,033], richards 1,060 [1,041; 1,076], sieve 0,991 [0,874; 1,124], nbody 1,004, queens 0,997,
-towers 0,998, mandelbrot 0,986, storage 0,985, permute 0,935. El límite superior del intervalo supera 1,02 en cuatro cargas
-(bounce, list, richards y sieve; esta última con un intervalo muy ancho), de modo que el umbral inicial por carga **no se cumplió**;
-no se investigó la causa. Se publica el resultado aunque refute. Decisión (2026-10-27, autorizada por la persona): la
-estimación inicial era especulativa, así que el presupuesto por carga se sube a razón puntual `≤ 1,08` y límite superior
-del IC 95 % `≤ 1,15`; la media geométrica conserva `≤ 1,02`. Con ese presupuesto la medición cumple (máximos: richards
-1,060 y sieve 1,124). Las microoptimizaciones, empezando por richards, se hacen al final del lenguaje.
-
-Crecimiento de artefactos. `pseudolearn_bench_worker` release: 8 634 144 → 9 218 480 bytes (+6,8 %). No se midió
-el crecimiento de la biblioteca estática nativa ni del puente por falta de control compilado.
-
-Cargas de efectos (caracterización, no protocolo completo: 1 proceso, 5 repeticiones, mediana y rango). Reloj: 61–62 µs por
-efecto, 552 B de cinta por entrada (100, 1 000 y 10 000 efectos). Archivo de 64 B: 62–69 µs por efecto, 920 B por entrada.
-Archivo de 4 KiB: 24–25 KB por entrada (la carga se serializa como lista decimal de octetos, unas seis veces su tamaño), por
-lo que con 1 000 y 10 000 lecturas el presupuesto de 16 MiB se agota a las 669 entradas y la cinta se sella como truncada
-sin interrumpir la ejecución. Pendiente declarado: una codificación compacta de la carga reduciría seis veces la cinta.
-
-## 5. Reglas de legibilidad, estilo y estructura de código
-
-Código inglés sin comentarios, unsafe ni pánicos explícitos. Límites del workspace. Fallos como Result.
-
-## 6. Decisiones de producto que condicionan el código
-
-PERF.PROTOCOL define muestras y criterios. Las mediciones no relajan umbrales.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-Tests espejo: el experimento nativo se prueba con un lanzador real (enlace, treinta iteraciones y aborto ante una salida incorrecta), con el análisis del techo y de la máquina virtual (incluida la ausencia de línea base), con los informes de muestras (cortos o malformados) y con el resumen (familia sobre el umbral, emisión lenta, máquina más rápida, intervalo reproducible, entradas ausentes); cargas válidas e incompletas, salida incorrecta rechazada y corpus ausente o malformado. La estadística de E-06 y el veredicto del informe tienen casos negativos: un informe con una métrica fallida, ausente o sin veredicto no es verde.
-La conformidad del motor se ejecuta aparte; el trabajador no convierte sus resultados en esperados del lenguaje.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Corpus de rendimiento del monorepo. Se conserva la separación entre procesos independientes y rondas internas.
-
-### E-PG-05: crecimiento de la cinta (`pg-tape`)
-
-`pseudolearn_bench_worker pg-tape <directorio> <proceso> <máquina>` ejecuta las nueve cargas de `tape_loads.rs` (100, 1 000 y 10 000 efectos de consola, reloj y archivo de 64 B, con `max_tape_bytes` elevado para que el tope no interfiera), registra por carga las entradas, los bytes de la cinta serializada, su reproducibilidad y el tiempo, y escribe `tape-growth-<proceso>.json`; se niega a sobrescribir. Termina con error si el crecimiento no es lineal: `grows_linearly` compara las pendientes de bytes por entrada entre 100–1 000 y 1 000–10 000 con tolerancia del 5 %, y rechaza series vacías, planas o decrecientes. Medición de validación del 2026-10-27 (1 proceso, depuración): 338, 557 y 740 B por efecto de consola, reloj y archivo, crecimiento lineal en las tres. Las pruebas de `tape_tests.rs` cubren las cargas, el camino feliz y la serie cuadrática o degenerada. Los vectores adversarios de `E-PG-09` se enumeran en `apps/pseudolearn_cli` y no en este miembro.
-
-### E-PG-06: agendas de tareas (`pg-tasks`)
-
-`pseudolearn_bench_worker pg-tasks <directorio-nuevo> <primera-semilla> <última-semilla> [vm | aot <pseudo>]`
-recorre las semillas `[primera, última)` con el sujeto indicado (por omisión la máquina virtual). Cada semilla elige la familia `semilla mod 8` y sus parámetros con un
-SplitMix64 implementado en el trabajador, nunca en el motor:
-
-| Familia | Qué genera | Resultado esperado derivado |
-|---|---|---|
-| 0 | Abanico y unión de 1 a 1 000 tareas | Una línea por tarea y el cierre |
-| 1 | Productor y consumidor con capacidad 1, 2, 8 o 64 | Suma de 1 a n |
-| 2 | Hermana que falla entre 2 y 20 | Primer error y recuento de canceladas |
-| 3 | Dos tareas de CPU con cesión y una que espera | Orden de finalización por turnos |
-| 4 | `Elegir` con 2 a 4 canales, algunos listos | Gana la primera rama lista en orden textual |
-| 5 | Tareas esperando un canal que nadie envía | `taskDeadlock` |
-| 6 | Efectos concurrentes con permutación de entrega | Salida en el orden de la permutación |
-| 7 | Instantánea con alias bajo recolección forzada | Alias conservado en la copia |
-
-Por semilla se ejecuta el programa en vivo, se repite, y si termina se reproduce desde su cinta; la
-salida, la terminación y la cinta deben coincidir y la salida y la terminación deben ser las derivadas
-de la regla. Cada familia tiene una sola plantilla (`tasks_templates.rs`, ocho programas) que lee sus
-parámetros con `Leer`; la semilla solo decide la entrada estándar (`Agenda.inputs`), el anfitrión de la
-familia 6 y la recolección forzada de la 7, y las extracciones de SplitMix64 conservan el orden de antes,
-de modo que cada semilla tiene los mismos parámetros y esperados que cuando el parámetro iba en el texto.
-Así el sujeto nativo compila ocho programas y ejecuta diez mil procesos. Sujetos (`tasks_subject.rs`):
-`vm` llama a `execute_program`; `aot` lanza `pseudo --see-adapter aot` (un binario de la CLI compilado con
-`--features test-host`, porque la familia 6 declara `orden_entrega` en el anfitrión de memoria) y le envía
-cada petición `execute` por el protocolo de líneas JSON de SEE; el adaptador compila con
-`build_native_object` y reutiliza el ejecutable de un objeto idéntico, así que solo enlaza una vez por
-plantilla. Un adaptador que no arranca o una respuesta ilegible es error de la campaña, no una
-divergencia. El resumen JSON (`tasks-<sujeto>-<primera>-<última>.json`, con el campo `subject`) no se
-sobrescribe y lista las semillas divergentes. Los datos crudos no se versionan. La campaña de 10 000 semillas se ejecuta en segundo
-plano, con notificación, y se parte por rangos si dura más de una hora; solo las pruebas unitarias del
-generador, del comparador y del resumen forman parte de la comprobación ligera.
-
-Procedencia de cada campaña: comando exacto, revisión Git, `rustc --version`, hardware, fecha, rango de
-semillas, ruta local ignorada de los datos crudos y el resumen JSON; el protocolo de regresión de
-`PERF.SUITE.CORE` (control `276a156`, al menos 10 procesos por 30 muestras, IC bootstrap 95 %) se aplica
-con los binarios `release` de control y de tratamiento sin tareas en los programas.
-
-### E-PG-07 y E-PG-09: medición HTTP del motor (`pg-http`)
-
-La campaña no abre sockets. Los casos HTTP ejecutan el motor con un anfitrión de memoria que entrega
-respuestas fijadas; los casos JSON analizan documentos en proceso. La compilación del programa queda
-fuera del intervalo y cada muestra comprueba la salida y la terminación esperadas. Las cargas HTTP
-reciben cuerpos de 0 B, 1 KiB, 64 KiB y 1 MiB. Las cargas JSON combinan textos de 1 KiB, 64 KiB y
-1 MiB con profundidad de contenedores 1, 16 y 64. El registro conserva por separado el tamaño del
-cuerpo, el texto analizado y los nodos generados, para que P6 pueda revisar el coste por byte y la
-memoria sin atribuir transporte al motor.
-
-`pg-http <directorio-nuevo> <proceso> <máquina>` toma treinta muestras de cada carga en un proceso
-independiente y rechaza sobrescribir resultados. `pg-http-summary <directorio>` exige diez procesos
-distintos, treinta muestras positivas por carga, una sola máquina, reloj con resolución positiva y
-salida y terminación correctas; calcula medianas por carga e intervalo bootstrap del 95 % sobre las
-medias por proceso con semilla 42. El resumen conserva datos crudos, tamaños y resultados de forma;
-no convierte las métricas candidatas en contratos.
-
-Presupuestos candidatos de `PERF.PG.HTTP`, pendientes de aprobación en P6: el coste por petición debe
-crecer linealmente con los bytes del cuerpo (0 B, 1 KiB, 64 KiB y 1 MiB), sin crecimiento
-superlineal; el análisis JSON debe ser O(bytes) y usar como máximo dos veces los bytes de entrada más
-una celda por nodo. La campaña mide el procesamiento del motor sin transporte. La memoria residente
-del adaptador nativo con respuesta ilimitada y el crecimiento lineal de la cinta se miden por separado
-con los protocolos HTTP de la fase. No se crea una especificación ni se declara un umbral vigente
-antes de P6.
-
-### E-PG-02: coste del servicio de workspace (`service workspace`)
-
-El trabajador mide **el RTT del proceso `pseudo lsp` por stdio**; no importa `pseudolearn_service` ni incluye el host de VS Code.
-Cada muestra arranca procesos nuevos para candidato y control. La preparación común (inicialización, snapshot y documentos de
-entrada ya abiertos) queda fuera del intervalo. En rename, la apertura de los demás archivos afectados y las barreras cada 64
-aperturas quedan dentro del intervalo; solo la apertura de los documentos iniciales queda fuera. El protocolo `pg-service/1`,
-semilla 42, treinta muestras por proceso y diez procesos por carga/escenario se mantienen; las duraciones menores a la resolución
-del reloj se conservan. Un desacuerdo con el control frío aborta la corrida antes de interpretar tiempos.
-
-Comandos desde `packages/pseudolearn_engine`; `pseudo` es el binario release de `apps/pseudolearn_cli`:
-
-```bash
-cargo run --locked --release -p pseudolearn_bench_worker -- service workspace plan <directorio-nuevo>
-cargo run --locked --release -p pseudolearn_bench_worker -- service workspace run <directorio> <ruta-a-pseudo> <proceso> --load files-10 --scenario body-edit
-cargo run --locked --release -p pseudolearn_bench_worker -- service workspace summary <directorio> --load files-10 --scenario body-edit
-cargo run --locked --release -p pseudolearn_bench_worker -- service workspace summary <directorio>
+```mermaid
+flowchart BT
+    API["api<br/>crates/pseudolearn_api"]
+    BYT["bytecode<br/>crates/pseudolearn_bytecode"]
+    TL["timeline<br/>crates/pseudolearn_timeline"]
+    VM["vm<br/>crates/pseudolearn_vm"]
+    BW["<b>pseudolearn_bench_worker</b><br/>crates/pseudolearn_bench_worker"]
+    BEN["Benchmarks (Dart)<br/>packages/pseudolearn_benchmarks"]
+    API & BYT & TL & VM --> BW
+    BW -->|" ejecuta "| BEN
 ```
 
-`--load` y `--scenario` son repetibles; `run` toma el producto cartesiano de las selecciones. Los nombres desconocidos se
-rechazan. Se invoca `run` con procesos `0`…`9`; el proceso `0` ejecuta los escenarios de corrección una vez. Ningún comando
-sobrescribe archivos. `plan` escribe `plan.json` con las huellas deterministas.
+Aquí la flecha final es de uso: los scripts `collect_execution.dart`, `collect_frontend.dart` y
+`create_bridge_campaign.dart` compilan y lanzan el binario; no hay dependencia de manifiestos.
 
-Un resumen sin filtros es completo y exige los 28 grupos esperados (cuatro cargas por siete escenarios), diez procesos por grupo,
-una máquina y una huella común. Un resumen con cualquier filtro informa `partial: true` y `included_groups` con la lista exacta de
-grupos; rechaza los grupos esperados que falten. `all_within_threshold` solo se calcula sobre esos grupos. Un resultado parcial
-sirve para repetir fallos concretos y **no sustituye a la campaña completa**.
+## Arquitectura
 
-- **Límites:** los escenarios de diagnóstico (`body-edit`, `signature-edit`, `manifest-change` y `closed-file-change`) deben quedar
-  en p95 ≤ 100 ms; `rename`, en p95 ≤ 500 ms. El paso de diagnóstico usa `textDocument/documentSymbol` como barrera ligera para
-  excluir el coste independiente de `workspace/symbol`. El paso de rename sí incluye los `didOpen` de las fuentes todavía cerradas,
-  seguidos por barreras cada 64 aperturas, y termina con rename. `workspace-load` mide la instalación del snapshot en el servicio;
-  `workspace-symbol` mide la consulta global de símbolos. Ambos registran p95 y control frío sin inventar un umbral.
-- **Cargas:** bibliotecas de 10, 100 y 1000 archivos con unas 10 000 líneas totales, más `files-1000-extended` (1000 archivos de
-  unas 100 líneas). Los escenarios reutilizan el generador de `service project`. Las cargas propuestas de 5000/10000 archivos y de
-  archivos de 5000 líneas quedan para una medición de escalado separada: no alteran el conjunto E-PG-02 y multiplicarían el tamaño
-  de las instantáneas y la duración de la campaña completa, que ya inicia 16 800 procesos LSP.
-- **Corrección, fuera del muestreo de latencia:** `stale-source`, `empty-project`, `short-names` y `unicode-source`. La sesión
-  compara análisis, diagnósticos, símbolos y referencias incrementales contra el análisis frío; las pruebas LSP comparan además
-  referencias y ediciones de rename.
-- **Límites de medición:** `workspace-load` comienza con el snapshot ya leído y con manifiestos ya resueltos; no mide la caminata de
-  disco de la CLI. El cargador evita resolver de nuevo un manifiesto sin cambios, pero vuelve a leer archivos fuente en cada save.
-  Tampoco se mide memoria ni latencia del host de VS Code. Las pruebas ligeras usan reloj y transporte falsos
-  (`workspace_campaign/*_tests.rs`); el resumen de la campaña conserva los p95 candidato y control por grupo.
+Importa `api`, `bytecode`, `timeline` y `vm`; la externa es `serde_json`. Es un binario con subcomandos, declarados en
+`main.rs`.
 
-### Resultado parcial de repetición, 2026-10-31
+| Subcomando                                          | Mide                                                       |
+|-----------------------------------------------------|------------------------------------------------------------|
+| `execute`, `bridge`, `frontend`, `frontend-profile` | Ejecución en proceso, puente y análisis                    |
+| `e06`, `e06-rss`                                    | Línea temporal (observador, deltas, retención, memoria)    |
+| `robust`, `robust-child`                            | Robustez de las mediciones                                 |
+| `aot`, `paired`, `paired-probe`, `paired-summary`   | Backend nativo frente a la referencia, en parejas          |
+| `service`                                           | Herramientas de edición (autocompletado, ayuda, proyectos) |
+| `pg-collect`, `pg-tape`, `pg-tasks`, `pg-http`      | Campañas por familia de cargas                             |
+| `pg-summary`, `pg-http-summary`, `pg-verify`        | Resumen y verificación de campañas                         |
 
-La repetición conservó 30 muestras por proceso, diez procesos ordenados de 0 a 9, semilla 42, comparación fría exacta y los
-umbrales de E-PG-02. Los datos ignorados por Git están en
-`packages/pseudolearn_spec/results/pg-6a-e-pg-02-incremental-2026-10-31/`; el resumen es parcial y contiene 20 grupos. La tabla
-compara los p95 de la campaña original con los de esta repetición. La campaña original cronometraba `workspace/symbol` como
-barrera de edición; la repetición usa `textDocument/documentSymbol` para que esa consulta global tenga su grupo separado. Por eso
-las latencias y controles de ambas columnas no son una comparación estricta del mismo tramo. El control nuevo instala desde el
-inicio el snapshot con el cambio y mide la misma barrera ligera.
+## Reglas que conviene saber
 
-| Carga/escenario | Original candidato/control p95 ms | Repetición candidato/control p95 ms | Umbral | Estado |
-|---|---:|---:|---:|---|
-| `files-10/body-edit` | 509,336/478,362 | 16,334/0,039 | 100 | pasa |
-| `files-10/closed-file-change` | 524,908/495,903 | 31,953/0,038 | 100 | pasa |
-| `files-10/manifest-change` | 604,325/564,276 | 32,012/0,040 | 100 | pasa |
-| `files-10/signature-edit` | 531,880/498,128 | 16,438/0,039 | 100 | pasa |
-| `files-10/rename` | 0,491/0,482 | 3,165/3,157 | 500 | pasa; ahora incluye aperturas |
-| `files-100/body-edit` | 94,731/72,143 | 17,369/0,074 | 100 | pasa |
-| `files-100/closed-file-change` | 95,667/72,360 | 23,505/0,074 | 100 | pasa |
-| `files-100/manifest-change` | 95,401/72,267 | 23,600/0,074 | 100 | pasa |
-| `files-100/signature-edit` | 94,820/72,142 | 17,413/0,076 | 100 | pasa |
-| `files-100/rename` | 0,344/0,343 | 1,131/1,138 | 500 | pasa; ahora incluye aperturas |
-| `files-1000/body-edit` | 86,251/27,255 | 52,047/0,364 | 100 | pasa |
-| `files-1000/closed-file-change` | 91,662/28,297 | 59,276/0,372 | 100 | pasa |
-| `files-1000/manifest-change` | 87,858/27,363 | 59,200/0,370 | 100 | pasa |
-| `files-1000/signature-edit` | 88,509/28,559 | 52,129/0,377 | 100 | pasa |
-| `files-1000/rename` | 0,604/0,605 | 9,832/9,830 | 500 | pasa; ahora incluye aperturas |
-| `files-1000-extended/body-edit` | 1924,582/937,464 | 831,377/0,383 | 100 | falla |
-| `files-1000-extended/closed-file-change` | 1845,759/908,166 | 892,849/0,376 | 100 | falla |
-| `files-1000-extended/manifest-change` | 1932,851/918,805 | 891,173/0,373 | 100 | falla |
-| `files-1000-extended/signature-edit` | 1889,281/916,073 | 828,979/0,382 | 100 | falla |
-| `files-1000-extended/rename` | 2,519/2,527 | 13,837/13,827 | 500 | pasa; ahora incluye aperturas |
+- Es herramienta (`tooling: true`): ningún crate de producto lo importa.
+- Un subcomando desconocido o sin argumentos obligatorios termina con código de salida distinto de cero y un mensaje de
+  uso.
+- `paired` y `paired-probe` rechazan un directorio de salida que ya existe: cada ejecución usa un directorio nuevo.
+- Sin `unsafe`.
 
-El p95 extendido de edición continúa entre 8,3 y 8,9 veces por encima del umbral; no se relaja. El perfil de 60 segundos de CPU
-para `files-1000-extended/body-edit` contó 57 979 muestras del proceso `pseudo`: `analyze_project_detailed` fue marco
-representado en 7 891 (13,6 %), `build_workspace` en 11 006 (19,0 %), `parse_module_source` en 1 443 (2,5 %) y
-`LineIndex::build` en 432 (0,7 %). Las pilas son inclusivas. La causa medida sigue siendo el análisis semántico completo del
-proyecto tras cada cambio; el cacheo de árboles sintácticos no alcanza para esta carga.
+## Comandos útiles
 
-El costo independiente del snapshot instalado fue 60,114/59,983 ms p95 candidato/control en `files-1000` y
-901,531/902,288 ms en `files-1000-extended`. `workspace/symbol` antes de optimizar el índice de línea dio
-19,801/19,786 ms y 439,999/440,282 ms, respectivamente. Después, la repetición filtrada de solo ese escenario dio:
+| Para qué                    | Comando                                                                          |
+|-----------------------------|----------------------------------------------------------------------------------|
+| Tests del crate             | `cargo test -p pseudolearn_bench_worker`                                         |
+| Campaña pareada nativa      | `cargo run --release -p pseudolearn_bench_worker -- paired <directorio-nuevo>`   |
+| Resumir una campaña pareada | `cargo run --release -p pseudolearn_bench_worker -- paired-summary <directorio>` |
 
-| Carga | Lado | Mínimo | p50 | p90 | p95 | p99 | Máximo (ms) |
-|---|---|---:|---:|---:|---:|---:|---:|
-| `files-1000` | candidato | 17,593 | 17,831 | 18,001 | 18,147 | 18,453 | 19,229 |
-| `files-1000` | control frío | 17,602 | 17,818 | 17,975 | 18,141 | 18,532 | 21,275 |
-| `files-1000-extended` | candidato | 287,586 | 291,644 | 294,022 | 294,779 | 298,023 | 317,001 |
-| `files-1000-extended` | control frío | 287,930 | 291,605 | 294,315 | 295,513 | 309,575 | 332,379 |
-
-Los resúmenes de símbolos son parciales, con 300 muestras por lado y grupo y validación de equivalencia; no hay umbral aprobado
-para estos dos escenarios. La carga de 5000/10000 archivos y archivos de 5000 líneas se pospone: con el límite de 6,5 GiB
-libres antes de medir, multiplicaría snapshot, registros crudos y tiempo de procesos. No se añade al conjunto E-PG-02.
-
-Las corridas parciales duraron 4 199,67 s (20 grupos, diez procesos por grupo y 30 muestras por proceso), 1 424,91 s
-(carga y símbolos para `files-1000` y `files-1000-extended`) y 761,79 s (solo símbolos grandes tras optimizar), respectivamente.
-La última tomó 76,58; 76,24; 76,22; 76,06; 76,12; 75,89; 76,04; 76,28; 76,23 y 76,13 s en procesos 0–9. No se lanzó la
-campaña completa: cuatro grupos aún fallan, así que no se cumple la condición para lanzarla.
-
-Las dos primeras corridas usaron Rust/Cargo 1.99.0 y estos binarios release: CLI
-`5000d267b36ae94ef3ce000e274bb33657789efd3926bc6a30b3ac2e921fc478`; trabajador
-`69d71cd9c76c4c1468e3f50a8bb2a26789ae965f468efdc6268fe4d3a49529da`. La repetición de símbolos tras optimizar usó
-Rust/Cargo 1.99.1. El equipo fue un Mac mini Apple M2 de 8 núcleos (4 de rendimiento, 4 de eficiencia), 16 GB,
-macOS 27.0.1 (26A434), corriente alterna y modo de bajo consumo apagado. Huellas SHA-256: CLI
-`2e8119162f8b3be59940b2021ce5c7ac262485f2e83377b32ceb5a6cdb13aa82`; trabajador
-`a48035ff822d60f6bd05e77a10355c30037e19b5ebf8f8baa882c5975ab0b0c9`. Antes de la repetición de símbolos había 6,5 GiB
-disponibles en `/`. Las tres mediciones se hicieron con el equipo conectado a corriente y el modo de bajo consumo apagado. No se
-compilaron binarios ni corrieron tests durante las corridas. El sandbox impidió verificar la carga externa con `top`/`sysctl` y
-la traza de CPU mostró otros procesos; no puede certificarse el aislamiento de tareas ajenas. No se descartaron muestras lentas.
-
-Comando exacto de la repetición de símbolos, desde `packages/pseudolearn_engine`:
-
-```bash
-for worker_process in {0..9}; do
-  /usr/bin/time -p target/release/pseudolearn_bench_worker service workspace run /Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_spec/results/pg-6a-e-pg-02-workspace-symbol-optimized-2026-10-31 /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_cli/target/release/pseudo "$worker_process" --load files-1000 --load files-1000-extended --scenario workspace-symbol || exit
-done
-target/release/pseudolearn_bench_worker service workspace summary /Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_spec/results/pg-6a-e-pg-02-workspace-symbol-optimized-2026-10-31 --load files-1000 --load files-1000-extended --scenario workspace-symbol
-```
-
-Los comandos de medición registran crudos ignorados por Git; el resumen filtrado declara `partial: true` y nunca se presenta
-como campaña completa.
-
-Comando exacto de la repetición de edición, desde `packages/pseudolearn_engine`:
-
-```bash
-for worker_process in {0..9}; do
-  /usr/bin/time -p target/release/pseudolearn_bench_worker service workspace run /Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_spec/results/pg-6a-e-pg-02-incremental-2026-10-31 /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_cli/target/release/pseudo "$worker_process" --load files-10 --load files-100 --load files-1000 --load files-1000-extended --scenario body-edit --scenario signature-edit --scenario manifest-change --scenario closed-file-change --scenario rename || exit
-done
-target/release/pseudolearn_bench_worker service workspace summary /Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_spec/results/pg-6a-e-pg-02-incremental-2026-10-31 --load files-10 --load files-100 --load files-1000 --load files-1000-extended --scenario body-edit --scenario signature-edit --scenario manifest-change --scenario closed-file-change --scenario rename
-```
-
-Comando exacto de la medición de carga y símbolos previa a la optimización, desde el mismo directorio:
-
-```bash
-for worker_process in {0..9}; do
-  /usr/bin/time -p target/release/pseudolearn_bench_worker service workspace run /Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_spec/results/pg-6a-e-pg-02-workspace-load-symbol-2026-10-31 /Users/cgutieco/Personal/pseudolearn/apps/pseudolearn_cli/target/release/pseudo "$worker_process" --load files-1000 --load files-1000-extended --scenario workspace-load --scenario workspace-symbol || exit
-done
-target/release/pseudolearn_bench_worker service workspace summary /Users/cgutieco/Personal/pseudolearn/packages/pseudolearn_spec/results/pg-6a-e-pg-02-workspace-load-symbol-2026-10-31 --load files-1000 --load files-1000-extended --scenario workspace-load --scenario workspace-symbol
-```
+Se ejecutan desde `packages/pseudolearn_engine`. Las mediciones deben hacerse con `--release`.

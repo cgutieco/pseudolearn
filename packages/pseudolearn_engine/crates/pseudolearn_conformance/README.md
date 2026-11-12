@@ -1,76 +1,69 @@
 # pseudolearn_conformance
 
-## 1. Qué es y qué no es
+Adaptador del motor al protocolo de conformidad `see-protocol/1`: el binario `conformance_adapter` lee solicitudes
+JSON por la entrada estándar, una por línea, las resuelve con la API pública (análisis, RI, ejecución) o con el
+servicio de lenguaje (completado, edición, LSP, espacio de trabajo) y responde en JSON por la salida estándar. Anuncia
+solo las operaciones que implementa.
 
-Adapta la API al protocolo de conformidad por procesos. Implementa análisis, RI y ejecución JSONL sobre la API pública. La negociación anuncia únicamente operaciones implementadas.
+**No hace:** decidir qué se espera de cada caso (lo hace el corpus de `pseudolearn_spec`) ni importar internos del
+motor: solo usa `pseudolearn_api`, `pseudolearn_service` y `pseudolearn_project`.
 
-En las llamadas de una sesión `api`, un paso `input` que solo declara `text` completa `resource_id`, `task_id` y `request_id` desde la última `pending_input` de las respuestas anteriores; un campo ya declarado se respeta y sin solicitud pendiente la API rechaza el paso.
+## Dónde encaja
 
-Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
+```mermaid
+flowchart BT
+    API["api<br/>crates/pseudolearn_api"]
+    SVC["service<br/>crates/pseudolearn_service"]
+    PRJ["project<br/>crates/pseudolearn_project"]
+    CNF["<b>pseudolearn_conformance</b><br/>crates/pseudolearn_conformance"]
+    SPEC["see conform<br/>packages/pseudolearn_spec"]
+    API & SVC & PRJ --> CNF
+    CNF -->|" JSONL por stdin/stdout "| SPEC
+```
 
-| Pendiente | Dependencia | Hito técnico |
-|---|---|---|
-| execute, observe, seek, ir y gc_stress | Capas de ejecución | Motor de ejecución |
+La flecha final es de protocolo: `pseudolearn_spec` ejecuta el adaptador como proceso; no es una dependencia de
+manifiestos.
 
-## 2. Guía operativa y ciclo de vida
+## Arquitectura
 
-Rust exacto del miembro, rustfmt y Clippy. El binario `conformance_adapter` procesa JSONL; no se despliega por separado.
-La implementación se verifica desde el workspace con `cargo xtask verify` y conformidad del sujeto engine.
-La comprobación disponible usa, desde la raíz del monorepo,
-`cargo run --manifest-path packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command -- layers packages/pseudolearn_engine`.
+Importa `api`, `service` y `project`; las externas son `serde` y `serde_json`. Es un binario sin biblioteca.
 
-## 3. Arquitectura y modelo del sistema
+| Módulo                                                                              | Responsabilidad                                                 |
+|-------------------------------------------------------------------------------------|-----------------------------------------------------------------|
+| `main`                                                                              | Lee el JSONL, elige el sujeto (`engine` o `service`) y despacha |
+| `service_handler`, `service_request`, `service_queries`                             | Consultas del servicio de lenguaje: completado, ayuda, símbolos |
+| `service_edits`, `service_edit_request`, `service_completion_edits`, `service_text` | Ediciones y proyecciones de texto                               |
+| `service_workspace`                                                                 | Espacio de trabajo de proyecto                                  |
+| `lsp_handler`                                                                       | Mensajes LSP                                                    |
 
-Nivel 9. Dependencias internas permitidas: pseudolearn_api, pseudolearn_service, pseudolearn_project y pseudolearn_lexicon. Externas: serde, serde_json.
-Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
+## Flujo principal
 
-Estructuras y algoritmos: Binario del protocolo `see-protocol/1` sobre la API, con las capacidades `analyze`, `execute`, `observe`, `ir` y `cli` (esta última a través del binario `pseudo`).
+Flujo de datos, no dependencias.
 
-Invariantes: Solo API pública.
+```mermaid
+flowchart LR
+    IN["stdin: una solicitud JSON por línea"] --> MAIN["main"]
+    MAIN -->|" sujeto engine "| API["ApiSession"]
+    MAIN -->|" sujeto service "| SVC["manejadores de servicio y LSP"]
+    API & SVC --> OUT["stdout: respuesta JSON"]
+```
 
-Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capacidades inyectadas.
+## Reglas que conviene saber
 
-## 4. Decisiones de diseño y fundamentos técnicos
+- Solo puede importar `api`, `service` y `project`; nunca los internos del motor.
+- Una línea vacía se ignora y una que no es JSON válido se omite sin respuesta.
+- Las respuestas usan `PROTOCOL_VERSION`, `ENGINE_VERSION` y las capacidades de `pseudolearn_api`.
+- Sin `unsafe`.
 
-Problema: adapta la api al protocolo de conformidad por procesos respetando los observables del corpus.
-Elección: Binario del protocolo `see-protocol/1` sobre la API, con las capacidades `analyze`, `execute`, `observe`, `ir` y `cli` (esta última a través del binario `pseudo`).
-Alternativas descartadas y fundamento: SEE.ADAPTER.PROTOCOL define JSONL y negociación. Se rechaza importar internos del motor o declarar observe sin soportar eventos.
+## Comandos útiles
 
-La proyección `en_linea` del completado devuelve explícitamente `null` cuando no hay sugerencia; así los casos negativos verifican ausencia real y no una expectativa vacía. La aceptación usa los mismos rangos y texto insertable de la API.
+| Para qué                                | Comando                                                                          |
+|-----------------------------------------|----------------------------------------------------------------------------------|
+| Tests del crate                         | `cargo test -p pseudolearn_conformance`                                          |
+| Conformidad de análisis (desde `spec`)  | `cargo run -p see_cli --bin see -- conform --subject engine --operation analyze` |
+| Conformidad del servicio (desde `spec`) | `cargo run -p see_cli --bin see -- conform --subject service`                    |
 
-Las proyecciones `descripcion`, `ayuda` y `capacidades_ayuda` del servicio comprueban la descripción de una
-palabra reservada por idioma, el contenido y el rango del hover o del comando `pseudolearn.explain` (con
-fragmentos esperados tomados del catálogo, no del adaptador) y el anuncio del comando. Los errores LSP se
-proyectan por su código.
-
-La proyección `resolucion` de las consultas de servicio expone identidad o símbolo y certeza para comprobar la resolución por posición; los casos de API verifican además rangos léxicos y contextuales.
-
-La operación `workspace` recibe snapshots completos y acciones de overlays como JSON. Proyecta diagnósticos, errores de proyecto e invalidación, y compara el estado con una sesión nueva sobre los mismos datos; no realiza E/S. El campo opcional `campos` restringe la respuesta a las claves nombradas, porque cada caso del corpus afirma solo el subconjunto que su regla gobierna; sin él devuelve todas. La proyección LSP `transactional_rename_with_materialized_sources` informa el número de ediciones del renombrado y la versión de cada documento editado, para comprobar que los fuentes materializados por el snapshot conservan la versión del overlay abierto. Importa `pseudolearn_service` para ejercitar el contrato público separado de las sesiones de documento.
-
-## 5. Reglas de legibilidad, estilo y estructura de código
-
-Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.
-Los errores son valores Result. Los límites físicos, nombres y dependencias se leen de architecture.yaml del miembro.
-Las fuentes generadas se producen desde la exportación del corpus en OUT_DIR; nunca se copian manualmente.
-
-## 6. Decisiones de producto que condicionan el código
-
-Contratos: `SEE.ADAPTER.PROTOCOL`.
-La ejecución y la observación conservan la misma semántica; idioma de interfaz y vocabulario son independientes.
-Los identificadores del usuario, el texto original y la salida del programa se conservan.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-Tests en tests/ espejo de src/, internos en archivos hermanos separados.
-Camino feliz e infeliz, texto vacío, Unicode, tamaño cero, profundidad extrema y bordes numéricos.
-Conformidad ejecuta los casos del corpus sin copiarlos como tests Rust.
-Verificadores de capas, comentarios, nombres, límites, seguridad y atributos con casos negativos;
-formato, Clippy, auditoría de dependencias y pruebas diferenciales según los contratos de este crate.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-SEE.ADAPTER.PROTOCOL define JSONL y negociación. Se rechaza importar internos del motor o declarar observe sin soportar eventos.
-
-La robustez se ejecuta en procesos aislados por entrada, con semilla 42 y ambos perfiles.
-Incluye texto vacío, trivia, NFD, Unicode arbitrario, UTF-8 inválido y anidaciones de hasta 100.000
-operadores o paréntesis. Se exige proceso exitoso, stderr vacío, árbol y ausencia de fallo interno.
+Los tests se ejecutan desde `packages/pseudolearn_engine`; la conformidad, desde `packages/pseudolearn_spec`. La
+conformidad compara con evidencia local de `results/`, que no se versiona: si una especificación cambió, la evidencia
+de propiedades anterior queda con otro hash y la conformidad termina con `SEE-STALE`; se regenera con
+`see conform --subject engine --operation properties`.

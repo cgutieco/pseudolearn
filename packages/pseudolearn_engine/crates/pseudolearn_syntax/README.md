@@ -1,176 +1,76 @@
 # pseudolearn_syntax
 
-## 1. Qué es y qué no es
+Análisis léxico y sintáctico: convierte un `SourceText` en tokens (`Lexer`) y en un árbol sintáctico sin pérdida
+(`Parser`, `SyntaxTree`) que conserva trivia y permite reimprimir el texto original idéntico. Entrega los diagnósticos
+léxicos y sintácticos, extrae el esquema de un módulo (`ModuleSchema`) y acota la profundidad de anidamiento para que
+ningún programa agote la pila del anfitrión.
 
-Construye un árbol sintáctico sin pérdida para cualquier texto. La implementación conserva tokens y nodos en columnas.
+**No hace:** resolver nombres ni tipos (eso es `semantic`) ni ejecutar nada.
 
-Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
+## Dónde encaja
 
-| Pendiente | Dependencia | Hito técnico |
-|---|---|---|
-| Extensiones de ejecución ajenas a sintaxis | Consumidores superiores | Motor de ejecución |
+```mermaid
+flowchart BT
+    SPEC["Corpus exportado<br/>packages/pseudolearn_spec"]
+    SRC["source<br/>crates/pseudolearn_source"]
+    DIA["diagnostics<br/>crates/pseudolearn_diagnostics"]
+    LEX["lexicon<br/>crates/pseudolearn_lexicon"]
+    SYN["<b>pseudolearn_syntax</b><br/>crates/pseudolearn_syntax"]
 
-## 2. Guía operativa y ciclo de vida
+    subgraph USERS["Lo usan"]
+        SEM["semantic"]
+        SVC["service"]
+        API["api"]
+    end
 
-Rust exacto del miembro, rustfmt y Clippy. Biblioteca del workspace; no se despliega por separado.
-La implementación se verifica desde el workspace con `cargo xtask verify` y conformidad del sujeto engine.
-La comprobación disponible usa, desde la raíz del monorepo,
-`cargo run --manifest-path packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command -- layers packages/pseudolearn_engine`.
+    SPEC -->|" build.rs "| SYN
+    SRC & DIA & LEX --> SYN
+    SYN --> SEM & SVC & API
+```
 
-## 3. Arquitectura y modelo del sistema
+`transpiler` lo usa solo en pruebas (dependencia de desarrollo).
 
-Nivel 2. Dependencias internas permitidas: pseudolearn_source, pseudolearn_diagnostics, pseudolearn_lexicon. Externas: biblioteca estándar y serde_json exclusivamente para generación durante el build.
-Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
+## Arquitectura
 
-Estructuras y algoritmos: Lexer con avance UTF-8; tokens en columnas (`kinds: Vec<TokenKind>`, `starts: Vec<u32>`) con la trivia como tokens; parser de descenso recursivo con recuperación por conjuntos de sincronización; **árbol postorden** `Node { kind: u16, first_token: u32, subtree_size: u32 }`; vistas tipadas generadas de `LANG.SYNTAX.GRAMMAR`. El lexer consume el identificador Unicode completo y delega a `pseudolearn_source` la validación del alfabeto tras NFC.
+Importa `source`, `diagnostics` y `lexicon`; la externa es `serde_json`. `build.rs` y `codegen/` (`grammar_reader`,
+`structural`, `contextual`, `views`) leen el corpus y emiten `generated_syntax.rs` en `OUT_DIR`, incluido desde
+`tree.rs`.
 
-Invariantes: Reimprimir los tokens da el texto exacto; todo texto produce árbol; recursión del parser acotada por la profundidad de anidación, con diagnóstico, sin agotar la pila.
+| Pieza                                                                | Responsabilidad                                                                              |
+|----------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| `lexer`, `tokens`, `*_scanner`                                       | `Lexer::scan` devuelve `Tokens` y diagnósticos léxicos                                       |
+| `parser`, `parser_state`, `*_parser`                                 | `Parser::parse` devuelve `SyntaxTree` y diagnósticos sintácticos; un parser por construcción |
+| `tree`                                                               | `SyntaxTree`, `SyntaxNode`, `NodeKind` (vistas generadas)                                    |
+| `reprint`                                                            | `reprint_lossless`, `reprint` y `verify_reprint_identity`                                    |
+| `schema`                                                             | `ModuleSchema`, `UnitDeclaration`, `UnitKind`, `ParameterSignature`                          |
+| `expression_entry`                                                   | `parse_expression_source`, entrada para una sola expresión                                   |
+| `subprogram_keywords`, `contextual`, `stray_closings`, `unsupported` | Apertura y cierre de subprogramas, palabras contextuales y recuperación de errores           |
 
-Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capacidades inyectadas.
+## Flujo principal
 
-## 4. Decisiones de diseño y fundamentos técnicos
+Flujo de datos, no dependencias.
 
-Problema: construye un árbol sintáctico sin pérdida para cualquier texto respetando los observables del corpus.
-Elección: Lexer con avance UTF-8 y reconocimiento ASCII; tokens en columnas (`kinds: Vec<TokenKind>`, `starts: Vec<u32>`) con la trivia como tokens; parser de descenso recursivo con recuperación por conjuntos de sincronización; **árbol postorden** `Node { kind: u16, first_token: u32, subtree_size: u32 }`; vistas tipadas generadas de `LANG.SYNTAX.GRAMMAR`.
-Alternativas descartadas y fundamento: Carbon y Zig inspiran tokens en columnas y postorden; se rechaza el árbol verde/rojo rowan por asignaciones e indirecciones. El descenso recursivo facilita recuperación explícita; se descartan LALR y PEG para mantener sus decisiones visibles.
+```mermaid
+flowchart LR
+    TXT["SourceText"] --> LX["Lexer::scan"] --> TK["Tokens"]
+    TK --> PA["Parser::parse"] --> TR["SyntaxTree"]
+    TR --> RP["reprint"]
+    TR --> SC["ModuleSchema::extract"]
+    LX & PA --> DG["diagnósticos"]
+```
 
+## Reglas que conviene saber
 
-Problema: los consumidores necesitan distinguir producciones sin mantener un segundo catálogo manual.
-Elección: `build.rs` valida el subconjunto EBNF del recurso `grammar` y genera `NodeKind`, vistas
-inmutables tipadas y acceso a las producciones hijas; las identidades se derivan de las producciones
-y de los terminales. El generador rechaza referencias sin resolver, delimitadores sin pareja y
-producciones vacías. `ErrorNode` es el único nodo sintético de recuperación. `analysisLimits` aporta
-la cota del análisis, sin una segunda constante escrita a mano.
-Las dos consultas de `contextualVocabulary` usan tablas ordenadas generadas y búsqueda binaria para
-mantener pequeño el cuerpo de consulta cuando crece el vocabulario.
-El recurso `unsupportedConstructs` genera las formas pedagógicas no reservadas; se reconocen solo
-en cabeceras estructurales, nunca al asignar o llamar un identificador homónimo. Desde que existen las clases
-genéricas el recurso ya no incluye la forma `Generico`: tras `Clase` es un nombre ordinario.
-El árbol postorden mantiene `SyntaxNode { kind, first_token, subtree_size }`; las columnas laterales
-conservan el último token, el token de operador y los intervalos de hijos directos. El recorrido de
-hijos conserva el orden de fuente sin reservar memoria por recorrido. El nodo es un dato sin métodos.
-El parser es dueño exclusivo de la estructura; semántica recibe vistas y no reinterpreta texto como gramática.
-Cada contexto conserva apertura, cierre y sincronización. Un fallo se recupera una vez por sentencia;
-se informa solo el cierre interior pendiente, con su apertura relacionada. El lexer conserva el fragmento
-inválido como trivia de error y la semántica no corre cuando léxico o sintaxis contienen errores.
-Alternativas descartadas: enum manual, árboles enlazados, recorridos que reconstruyen hijos en cada visita
-y constantes de límites duplicadas.
+- Solo importa `source`, `diagnostics` y `lexicon` según `architecture.yaml`.
+- La gramática estructural y las vistas del árbol son código generado desde el corpus; no se editan a mano.
+- El parser corta la recursión en `ANALYSIS_NESTING_LIMIT` (generado en `tree.rs`) en vez de agotar la pila.
+- Sin `unsafe`; la salida es determinista (`deterministic_output_crates`).
 
-El punto y coma termina toda sentencia en cualquier perfil. El parser no tiene un ajuste para omitirlo;
-si falta, emite `missingStatementTerminator` y se recupera en el siguiente límite de sentencia.
+## Comandos útiles
 
-El reconocimiento estructural de construcciones excluidas se aplica también fuera de unidades y en miembros de clase. Una lista de superclases produce el diagnóstico específico en la coma, sin aceptar herencia múltiple ni reservar nombres nuevos.
+| Para qué              | Comando                            |
+|-----------------------|------------------------------------|
+| Tests del crate       | `cargo test -p pseudolearn_syntax` |
+| Verificación completa | `cargo xtask verify`               |
 
-Problema: un archivo de proyecto es un módulo y no exige un algoritmo, mientras que el texto suelto conserva
-su contrato. Elección: el analizador tiene un modo de proyecto (`parse_module_source`) que acepta cero
-algoritmos, `Importar` y `Exportar` antes de las unidades y los prefijos `Publico`/`Privado` en subprogramas
-y clases. En texto suelto, las grafías de directiva del perfil activo se reconocen contextualmente en
-posición de unidad superior y producen `moduleSyntaxOutsideProject`; dentro de un programa, los cuatro
-lexemas `Importar`, `Exportar`, `import` y `export` permanecen disponibles como nombres. El texto vacío
-conserva `expectedAlgorithmStart`, y los prefijos de visibilidad mantienen su diagnóstico. El nodo de una
-unidad con prefijo empieza en el prefijo, de forma que semantic lee la visibilidad del primer token sin
-recorrer los miembros de la clase. Se rechaza un segundo analizador de módulos, porque duplicaría la
-recuperación de errores, y los comodines: tras un punto de la ruta se exige un nombre (`expectedModuleName`).
-
-### Segmentos de ruta de importación
-
-Problema: un símbolo declarado con el vocabulario de otro perfil puede coincidir con una palabra reservada del perfil del
-archivo que lo importa (`while` en inglés, `Mientras` en español). Elección: los segmentos de la ruta de `Importar` y
-`Exportar` aceptan cualquier palabra reservada, salvo el conector de alias, porque nombran símbolos y no introducen nombres;
-el alias de `Como` sigue exigiendo un nombre legal. La obligación de alias para el nombre local reservado se comprueba al
-enlazar (`pseudolearn_semantic`), no al analizar la sintaxis.
-
-### Constantes, enumerados y registros
-
-`Constante nombre Como tipo <- expresión;`, `Enumerado nombre … FinEnumerado` y `Registro nombre … FinRegistro` son
-unidades superiores (la constante también es sentencia). Cada una tiene su analizador (`constant_parser`,
-`enum_parser`, `record_parser`) para no crecer `unit_parser`, y la recuperación reconoce sus cierres. Un enumerado lleva
-una sola línea de miembros; un registro solo admite declaraciones `Definir`, y cualquier otra forma, incluida
-`Dimension`, es `expectedRecordField`. Los prefijos `Publico` y `Privado` preceden a subprogramas, clases, interfaces, variantes, enumerados, registros y constantes de nivel superior. Una
-etiqueta de `Segun` que empieza por identificador (`Color.Rojo:`) cierra el cuerpo anterior igual que un literal. Las
-construcciones de registro y el acceso a miembros de enumerado no tienen sintaxis propia: son llamada y punto, que
-resuelve semantic. Las palabras nuevas son reservadas y se registran como aperturas de perfil.
-
-El acceso a `Codigo`/`code` de los errores de entrada/salida y JSON admite el lexema reservado después del punto;
-el selector se convierte en un nombre de miembro para que semantic resuelva el campo del tipo correcto.
-
-Las variables locales usan un analizador distinto de los campos: `Definir n₁, …, nₖ Como tipo` admite `<- expresión` solo con un nombre y con varios emite `initializerWithMultipleNames`; los campos conservan listas y rechazan el valor. `Mutable` dejó de ser palabra reservada: `Definir Mutable x …` se lee como el nombre `Mutable` seguido de un conector ausente. `Dimension` admite omitir `Como tipo` en una sentencia, porque Semantic adopta la variable ya declarada, y lo exige en los campos de clase (`field_dimension`); la variante se inyecta como dato (`DimensionType`) en vez de duplicar el analizador. La cabecera `Funcion r <- nombre(…)` produce un nodo `ReturnVariable` con el nombre de la variable de retorno y no admite `Como tipo`; `following_kind` mira el token significativo siguiente para distinguir esa forma de un nombre ordinario sin retroceder. Se conserva `Declaration` en ambos árboles para no duplicar la extracción de campos.
-
-Los tipos incorporados aceptan argumentos concretos entre ángulos con la misma cota de anidación del parser. `variant_parser` reconoce construcciones, patrones de carga útil, propagación y descarte; los genéricos de usuario no reservan palabras nuevas. La construcción y el patrón tienen nodos distintos: el patrón solo declara un nombre y no evalúa una llamada. Una rama de variante contiene un patrón; De Otro Modo es el comodín.
-
-Los parámetros de tipo (`<T, U>`) se aceptan tras el nombre de un registro, un subprograma, una clase, una interfaz o una variante, y los argumentos de tipo (`<Entero, T>`) tras un nombre de tipo, tras la superclase de `Hereda De`, tras cada interfaz de `Realiza`, tras la interfaz de una restricción `T: I<U>` y tras el nombre de clase de `Nuevo`. `generic_parser` produce los nodos `TypeParameters` y `TypeArguments`; un tipo con argumentos conserva el nodo `Type` de su nombre como padre, y en la cabecera de clase, en `Realization`, en `TypeParameter` y en `Instantiation` el nodo `TypeArguments` es hermano inmediato del nombre al que acompaña, de modo que los consumidores que filtran identificadores no cambian. No hay ambigüedad con la comparación porque los argumentos solo se leen en posición de tipo o inmediatamente tras el nombre que sigue a `Nuevo`. Las listas vacías, sin cierre o con coma final recuperan sin pánico. Un método no declara parámetros de tipo propios: `Metodo f<T>(…)` es un error sintáctico de parámetros, porque los métodos usan los parámetros de su clase.
-
-### Variantes declaradas
-
-`user_variant_parser` reconoce `Variante Nombre [<T>] … FinVariante` con líneas `Alternativa Nombre [(campo Como Tipo, …)]`. Las tres palabras son contextuales (`variantKeyword`, `endVariant`, `alternativeKeyword` del vocabulario generado): la apertura solo se reconoce en posición de unidad y seguida de un identificador, como `Interfaz`, por lo que `Variante` y `Alternativa` siguen siendo nombres en el resto del programa. Los nodos `VariantUnit`, `VariantAlternative` y `AlternativeField` proceden de la gramática. Una línea que no empieza por la palabra de alternativa produce `expectedVariantAlternative` y se recupera en la línea siguiente; la falta de cierre produce `unclosedVariant` con la apertura relacionada y se detiene ante la siguiente unidad. La construcción `Tipo.Alternativa(…)` y el patrón `Tipo.Alternativa(v)` no tienen sintaxis propia: son el postfijo de punto con argumentos que ya produce el parser de expresiones, y semantic los interpreta según el tipo nombrado. Se descartó un nodo de patrón dedicado porque obligaría a distinguir en el parser un patrón de una llamada a método con la misma forma.
-
-## 5. Reglas de legibilidad, estilo y estructura de código
-
-Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.
-Los errores son valores Result. Los límites físicos, nombres y dependencias se leen de architecture.yaml del miembro.
-Las fuentes generadas se producen desde la exportación del corpus en OUT_DIR; nunca se copian manualmente.
-
-## 6. Decisiones de producto que condicionan el código
-
-Contratos: `LANG.LEXICAL.*`, `LANG.SYNTAX.*`, `TOOL.SERVICE.LOSSLESS-TREE`.
-La ejecución y la observación conservan la misma semántica; idioma de interfaz y vocabulario son independientes.
-Los identificadores del usuario, el texto original y la salida del programa se conservan.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-Tests en tests/ espejo de src/, internos en archivos hermanos separados.
-Camino feliz e infeliz, texto vacío, Unicode, tamaño cero, profundidad extrema y bordes numéricos.
-Conformidad ejecuta los casos del corpus sin copiarlos como tests Rust.
-Verificadores de capas, comentarios, nombres, límites, seguridad y atributos con casos negativos;
-formato, Clippy, auditoría de dependencias y pruebas diferenciales según los contratos de este crate.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Carbon y Zig inspiran tokens en columnas y postorden; se rechaza el árbol verde/rojo rowan por asignaciones e indirecciones. El descenso recursivo facilita recuperación explícita; se descartan LALR y PEG para mantener sus decisiones visibles.
-
-El esquema de unidades se extrae de los hijos directos de la raíz y centraliza nombres, tipos de retorno,
-parámetros, modo de paso y tramos completos. La API convierte ese esquema sin repetir la extracción.
-El reconocimiento de palabras compuestas pertenece a `compound_scanner.rs`; nunca cruza una línea.
-
-
-### Funciones como valores y ámbitos de ejecución
-
-`function_parser` distingue el tipo estructural `SubProceso(Entero) Como Entero` del literal con parámetros nombrados y cuerpo terminado en `FinSubProceso`. Ambos reutilizan el vocabulario bilingüe existente. Los nodos de firma y literal proceden de la gramática generada; no existe un segundo catálogo de sintaxis.
-
-## Colecciones, interfaces e iteración con limpieza
-
-Las palabras de interfaces, colecciones, iteración y limpieza son contextuales y provienen del recurso contextualVocabulary generado. El campo de código de los errores de biblioteca (`Codigo`/`code`) también es contextual: el analizador de miembros lo recibe como identificador ordinario tras el punto, mientras que los campos de línea y columna siguen siendo palabras reservadas aceptadas en esa posición. `Hacer` sigue reservada porque cierra las cabeceras de `Para`, `Mientras` y `Segun`, donde un identificador homónimo haría ambigua la cabecera. No se incorporan al vocabulario reservado: un nombre interface fuera de una apertura sigue siendo identificador. Los nodos InterfaceUnit, InterfaceSignature, Realization y TypeParameter conservan las identidades nominales; IterationBindings separa los vínculos de la expresión recorrida. ForEachLoop, BreakStatement y DeferStatement conservan sus límites léxicos.
-
-Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
-
-## Elección de recepciones
-
-`select_parser` reconoce `Elegir … FinElegir` y ramas `Recibir nombre Desde canal:`. El cuerpo
-termina ante la siguiente recepción o el cierre, conservando los bloques interiores. Los nodos
-`SelectStatement` y `ReceiveBranch` se generan desde la gramática. La cantidad mínima de ramas
-se comprueba en semántica para producir el diagnóstico específico en lugar de perder el árbol.
-
-## Entrada de expresión para inspección
-
-`expression_entry::parse_expression_source` consume exclusivamente la expresión original mediante el parser existente y exige EOF, sin generar ni concatenar un algoritmo envolvente. Conserva tokens, spans y diagnósticos del texto recibido. La validación del subconjunto admisible corresponde a semántica y no cambia el parser del lenguaje.
-
-## Aperturas de subprograma y recuperación sin cascada
-
-- **`Funcion` es palabra propia.** `LANG.PROFILE.VOCABULARY#R3` declara `function`/`endFunction` como identidades de D1,
-  no como alias de `subroutine`. `subprogram_keywords` nombra las aperturas de subprograma (`SubProceso`, `Funcion`) y el
-  cierre que corresponde a cada una; el subprograma, la función anónima, el tipo función y la firma de interfaz aceptan
-  las dos aperturas, y cada una se cierra con el suyo. Un cierre ajeno (`Funcion … FinSubProceso`) produce
-  `unclosedSubroutine` y se consume, para que no se informe además como elemento fuera de unidad. Se descartó aceptar
-  cualquier cierre: la gramática empareja apertura y cierre en los demás bloques.
-- **Construcción rechazada.** Tras `unsupportedAbstractConstruct` la recuperación ya había saltado hasta `FinClase`;
-  `recover_unit` seguía buscando y se detenía en `Algoritmo`, pero la recuperación de sentencia posterior consumía esa
-  línea y producía `unexpectedTokenOutsideProgramUnit` y `expectedAlgorithmStart`. Ahora `recover_unit` informa si paró
-  en una apertura de unidad y, en ese caso, no se recupera la línea (`LANG.CLASS.OUT-OF-SCOPE` C6).
-- **Palabras intermedias o de cierre sueltas.** `ParserState::open_blocks` apila las aperturas de control abiertas
-  (`Si`, `Mientras`, `Repetir`, `Para`, `Segun`, `Tareas`, `Elegir`); una función anónima empieza con la pila vacía.
-  `stray_closings` trata como sentencia no reconocida (`unexpectedStatement`) un `Sino`, `FinSi`, `Hasta Que`, etc. sin
-  bloque abierto que lo acepte: se descarta y el bloque continúa. Antes cerraba el algoritmo y producía
-  `unclosedAlgorithm` más un error por cada línea restante (`LANG.SYNTAX.RECOVERY` C10–C13). Se descartó resolverlo en
-  cada parser de bloque porque el bloque que recibe la palabra no sabe si algún bloque exterior la espera.
-- **Huecos léxicos.** Si la sentencia contiene un carácter no reconocido, `terminator` no informa
-  `missingStatementTerminator`: el fragmento descartado ya tiene su diagnóstico léxico (`LANG.LEXICAL.ERRORS` C4).
+Se ejecutan desde `packages/pseudolearn_engine`; la compilación necesita el corpus exportado.

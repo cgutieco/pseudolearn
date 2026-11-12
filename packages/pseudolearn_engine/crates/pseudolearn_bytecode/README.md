@@ -1,122 +1,63 @@
 # pseudolearn_bytecode
 
-## 1. Qué es y qué no es
+Compila la representación intermedia verificada a bytecode: asigna registros por clase (escalar y referencia),
+construye los depósitos de constantes, calcula los mapas de raíces del recolector, selecciona superinstrucciones
+(`CompareBranch`, `FusedArithmetic`) y verifica el resultado antes de entregarlo como `VerifiedBytecode`. El catálogo de
+opcodes se genera desde el corpus.
 
-Traduce una RI verificada a bytecode gemelo con asignación de registros por clase, depósitos de constantes,
-verificación estructural y selección perfilada de superinstrucciones.
-No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
+**No hace:** ejecutar bytecode (eso es `vm`) ni construir la RI (`lowering`): su entrada es una RI ya verificada, o su
+texto canónico.
 
-| Pendiente | Dependencia | Hito técnico |
-|---|---|---|
-| Ninguno | — | — |
+## Dónde encaja
 
-## 2. Guía operativa y ciclo de vida
+```mermaid
+flowchart BT
+    SPEC["Corpus exportado<br/>packages/pseudolearn_spec"]
+    SRC["source<br/>crates/pseudolearn_source"]
+    IR["ir<br/>crates/pseudolearn_ir"]
+    BYT["<b>pseudolearn_bytecode</b><br/>crates/pseudolearn_bytecode"]
 
-Usa la versión exacta de rust-toolchain.toml del miembro. El crate está activo en el workspace.
-Comprobación: `cargo xtask verify` y `rust-checks layers` del miembro. No se despliega por separado.
+    subgraph USERS["Lo usan"]
+        VM["vm"]
+        TL["timeline"]
+        TRC["vm_tracer"]
+        BW["bench_worker"]
+        API["api"]
+    end
 
-## 3. Arquitectura y modelo del sistema
+    SPEC -->|" build.rs "| BYT
+    SRC & IR --> BYT
+    BYT --> VM & TL & TRC & BW & API
+```
 
-El módulo conserva vocabulario, jerarquía de clases, disposiciones heredadas y metadatos de origen por función. Cada variante
-lleva mapas de raíces en instrucciones que asignan memoria o llaman: ranuras de variables en ámbito más
-temporales vivos de la evaluación actual. La información de variables sobrevive aunque no tengan usos
-futuros; la liveness de registros por sí sola no representa el conteo nocional. Las continuaciones
-suspendidas consultan el mapa de su llamada. Los mapas son datos verificados antes de cargar la VM.
+## Arquitectura
 
-Nivel 5. Importa ir y source; serde_json solo para generación. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
+Importa `ir` y `source`; la externa es `serde_json`. `build.rs` emite `generated_opcodes.rs` en `OUT_DIR`, incluido
+desde
+`lib.rs`.
 
-El catálogo de opcodes y sus identidades se generan desde la exportación de `IR.INSTRUCTIONS`. Cada función
-conserva descriptores de bloque, tablas de constantes, tipos de registro y spans laterales con su ID de fuente.
-El ID no se copia a cada valor ni cambia su representación. Las ranuras se
-asignan en orden estable y se separan por clase de valor. La salida SSA transporta argumentos de bloque
-como copias paralelas; los gemelos rápido y sondeado comparten registros, constantes, descriptores y puntos
-de retorno.
+| Pieza                                           | Responsabilidad                                                                                                   |
+|-------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| `compile`, `compile/*`                          | `compile_module`, `compile_text` (y variantes con superinstrucciones); registros, constantes, operandos y relleno |
+| `model`                                         | `BytecodeModule`, `BytecodeFunction`, `Instruction`, `Register`, `VerifiedBytecode`                               |
+| `verify*`, `class_verification`                 | Verificación de saltos, ventanas de operandos, clases de valor, relleno y mapas de raíces                         |
+| `roots`, `root_liveness`, `collection_metadata` | Raíces del recolector y metadatos de colecciones                                                                  |
+| `error`                                         | `BytecodeError` y `VerificationRule`                                                                              |
 
-Los metadatos de clase incluyen superclase, campos aplanados en orden heredado, mapas de referencias y
-objetivos de métodos. El verificador valida nombres únicos, jerarquías acíclicas, prefijos de campos
-heredados y receptores compatibles con cada método. También comprueba las clases de destino y operandos
-de arreglos, celdas, objetos, comparación de referencias y azar antes de cargar la VM.
+## Reglas que conviene saber
 
-Cada variante termina acolchada con `unreachable` hasta la siguiente potencia de dos y registra en
-`used_length` cuántas instrucciones son código real. El consumidor indexa con `pc & (longitud − 1)`: un pc
-que se saliera del código cae en una instrucción que atrapa, nunca fuera del vector.
+- Solo importa `ir` y `source`; el bytecode no conoce el runtime ni la VM.
+- Antes de compilar se verifica la RI (`verify_module`); el bytecode resultante se verifica con las reglas de
+  `VerificationRule` (`OperandWindow`, `FunctionJump`, `ValueClass`, `ReturnPoint`, `SuperInstruction`, `Padding`,
+  `RootMap`).
+- Los opcodes son código generado desde el corpus; no se editan a mano.
+- Sin `unsafe`; la salida es determinista.
 
-Invariantes: Los gemelos comparten el mapa de registros, depósitos de constantes y descriptores de bloque. Cada operando cabe en su ventana; cada salto pertenece a su función; cada superinstrucción contiene un par compatible del mismo bloque; cada punto de retorno existe en ambos gemelos con PC propio. La longitud de cada variante es potencia de dos, la cola solo contiene `unreachable` sin operandos y ningún bloque, salto, continuación ni superinstrucción apunta a la cola.
+## Comandos útiles
 
-## 4. Decisiones de diseño y fundamentos técnicos
+| Para qué              | Comando                              |
+|-----------------------|--------------------------------------|
+| Tests del crate       | `cargo test -p pseudolearn_bytecode` |
+| Verificación completa | `cargo xtask verify`                 |
 
-Una única generación parametrizada produce Fast y Probed. El rápido omite observación y registro de escrituras. Descriptores de bloque contienen masas de sentencia y evento; los cargos se fusionan en saltos. Los puntos de retorno tienen identidad independiente del gemelo y PC propio para cada variante. El verificador rechaza registros fuera de ventana, saltos inválidos, clases incompatibles, continuaciones sin identidad, jerarquías o disposiciones de objeto incoherentes (incluido un entorno de captura con campos `capture<N>` desordenados y más de 65535 campos por clase) y fusiones de opcode incompatibles. Las aristas de bloque y las escrituras a celdas aceptan un objeto derivado cuando el destino espera una superclase. El compilador recibe las superinstrucciones elegidas a partir de perfiles de entrenamiento; la fusión de comparación y salto se valida con una carga reservada. Una expresión pura fusionada reejecuta sus componentes en orden ante una marca de fallo para atribuir la primera trampa.
-Los literales escalares usados por operaciones aritméticas, comparaciones y escritura pasan como
-operandos constantes directos; se mantienen registros solo cuando una transferencia de bloque,
-llamada o instrucción sin forma inmediata necesita el valor.
-Fast elimina marcadores de observación antes del despacho; Probed los conserva.
-El acolchado se descartó como relleno con copias del código o con saltos al inicio: una instrucción que
-atrapa conserva la semántica ante un defecto y el verificador la reconoce sin análisis de flujo. Las tablas de retorno
-comparten identidad y mantienen sus contadores de programa por gemelo.
-
-La implementación permanece secuencial y determinista. La exportación del corpus es una dependencia
-de datos. Las técnicas que requieren medición se aceptan solo tras conservar resultados y criterios.
-
-`BytecodeModule` conserva la tabla de perfiles por fuente del módulo RI (`profiles`) y reexporta `SourceProfile`; el
-bytecode no la interpreta, la entrega al cargador de la VM.
-
-El switch de RI conserva sus destinos como operandos verificados y se carga como tabla de aristas en cada gemelo. La verificación exige selector entero, ordinales crecientes dentro de 16 bits y tipos válidos para reinterpretación y transporte de celdas. Reinterpretar conserva el banco: los opcodes no permiten convertir una palabra escalar en raíz ni una celda en objeto.
-
-Las instrucciones `task.scope_open`, `task.spawn`, `task.await`, `task.scope_join`, `call.suspendible`, `effect.await` y `task.yield_check` se generan desde el catálogo normativo de RI. La llamada de lanzamiento conserva destino, retorno y movimientos tipados en su `CallSite`; los puntos de raíces reconocen operaciones que pueden cambiar de tarea.
-
-Los valores de una misma variable de origen comparten registro solo si tienen exactamente el mismo tipo de RI. Una variable de tipo clase base que recibe instancias de subclases hermanas conserva un registro por clase concreta; el salto al bloque de unión copia cada valor al parámetro, cuyo tipo es el declarado, y el verificador acepta la copia porque la subclase es asignable a la base. Compartir el registro del primer valor fijaba su clase como tipo del registro y rechazaba el segundo valor con `ValueClass`.
-
-## 5. Reglas de legibilidad, estilo y estructura de código
-
-Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,
-funciones pequeñas y fallos como Result. Límites y dependencias en architecture.yaml del miembro.
-Las salidas generadas se producen en OUT_DIR y no se copian a consumidores.
-
-## 6. Decisiones de producto que condicionan el código
-
-No introduce observables; conserva los de la RI y habilita ENG.EXEC y ENG.TRACE. Ejecutar y observar conservan la misma semántica. Los identificadores, el contenido de
-literales y los efectos del programa se preservan; idioma de interfaz y vocabulario son independientes.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-Negativos del verificador (incluidos longitud no potencia de dos, cola con otra instrucción, longitud
-usada vacía o mayor que el código y bloque que empieza en la cola), ciclos de copias paralelas, diferencial entre gemelos, cambio arbitrario de gemelo y validación de superinstrucciones fuera de muestra. Tests espejo, caminos felices, infelices y límites explícitos. Cada verificador tiene un negativo
-con violación deliberada. No se cierran pendientes hasta tener cargo xtask verify y conformidad en verde.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Lua inspira registros, JVM verificación y Self cambio de código. Ertl y Gregg inspiran superinstrucciones por perfil; se rechaza elegirlas por intuición o solo por entrenamiento.
-
-
-### Funciones como valores y ámbitos de ejecución
-
-Cada función conserva el tipo de retorno y los intervalos léxicos de sus registros nombrados. La firma de una llamada indirecta incluye tipos de parámetros y retorno; el registro de identidad ocupa el banco escalar. La generación de raíces elimina vínculos cerrados que tampoco siguen vivos por flujo. Esa poda es la que hace observable la liberación por ámbito de `MEM.MANAGED.UNOBSERVABLE#R3`: `tests/lexical_roots.rs` comprueba el mapa de raíces sin el registro de un vínculo cerrado en ambos gemelos y, como caso negativo, que el mismo módulo sin intervalo léxico conserva la raíz tras el cierre, que es lo que ocurriría si `roots::expire` no se aplicara. La pila de raíces nativa no usa intervalos léxicos sino vivacidad por flujo, de modo que puede liberar antes que la VM un vínculo todavía en ámbito que ya no se usa; los casos del corpus solo fijan el límite de celdas con valores de bloque ya cerrados, que ambos sujetos liberan. Ambos gemelos conservan las mismas disposiciones, puntos de retorno y tamaño fijo de instrucción.
-
-## Colecciones, interfaces e iteración con limpieza
-
-Las operaciones de colecciones conservan los metadatos tipados de RI. La verificación reutiliza el contrato de tipos de las colecciones al reconstruir operandos tipados, incluidos los ordinales literales de hojas. Las operaciones que pueden reservar y text.quote son puntos de raíces; una lectura o consulta de versión no requiere recolección.
-
-Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
-
-
-effect_call es un punto seguro con mapas de raíces y definición: una respuesta puede alojar Bytes,
-texto o tokens de capacidad. Los argumentos, receptor y celdas de retorno permanecen vivos durante
-suspensión y reanudación. Se rechaza bytecode que omita estos mapas antes de cargarlo en la VM.
-
-## Puntos seguros de tareas
-
-La reserva y suspensión de canal y la materialización del agregado de fallos requieren mapas de
-raíces, igual que las llamadas y la unión de tareas. `roots` los genera y verifica para
-`task.channel` y `task.scope_result`. Las cargas `task.value_load` mantienen su banco estático.
-Las continuaciones de cancelación y de salida del cuerpo usan destinos de bloque verificados;
-el bytecode conserva esos destinos en ambos gemelos.
-
-`verify_task_types` reutiliza el comprobador de tipos de RI para rechazar operandos y bancos inválidos
-en las operaciones de tarea antes de cargarlas; los tests negativos alteran el comando, sus operandos
-y el banco de resultado. Así no se mantiene una segunda copia del contrato de tipos.
-
-## Contratos adicionales de verificación
-
-`collection.clone` es un punto de raíces: la copia temporal usada por la ordenación puede cruzar el umbral de recolección durante su reserva. Ambos gemelos conservan las referencias vivas del llamador y del comparador antes de iniciar esa copia.
-
-`verify_host_random_integer` exige que `host.random_below` reciba un operando `i64` y `host.random_between` dos, y que el destino sea `i64`.
+Se ejecutan desde `packages/pseudolearn_engine`; la compilación necesita el corpus exportado.

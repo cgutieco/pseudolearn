@@ -1,151 +1,56 @@
 # pseudolearn_wasm
 
-## 1. Qué es y qué no es
+Módulo WebAssembly del motor para el navegador: expone `WasmSession`, que envuelve una `ApiSession` y recibe y devuelve
+JSON como texto. `call` devuelve la respuesta tal cual y `callProjected` añade una proyección en la que los números
+viajan como cadenas para que JavaScript no pierda precisión. También incluye el binario `wasm_native_probe`, que ejecuta
+las mismas operaciones de forma nativa desde la entrada estándar para comparar ambos entornos.
 
-Expone `pseudolearn_api` como módulo WebAssembly para navegadores. El crate convierte cadenas JSON en operaciones de `ApiSession` y devuelve cadenas JSON con la respuesta completa.
+**No hace:** lógica del lenguaje ni de la API (todo está en `pseudolearn_api`), ni red nativa ni backend nativo: el
+grafo para `wasm32` los excluye.
 
-Responsabilidades: crear sesiones aisladas, reenviar operaciones y conservar la codificación exacta de enteros JSON de 64 bits.
+## Dónde encaja
 
-Fuera de alcance de producto: interfaz Flutter web, almacenamiento, autenticación y presentación. El
-transporte de una aplicación de producto queda fuera; `browser/` contiene el adaptador Fetch de
-referencia para comprobar la frontera de red de la API.
-
-Fuera de alcance técnico: AOT, Cranelift, memoria compartida, punteros prestados entre llamadas y buffers de bytes visibles al consumidor.
-
-Casos soportados: análisis, ejecución por lotes, entrada, cancelación, consultas, servicio de lenguaje, negociación y liberación de recursos a través de la API existente.
-
-| Pendiente | Dependencia | Estado |
-|---|---|---|
-| Integración del módulo en una aplicación web de producto | Decisión de producto y adaptadores de anfitrión | Fuera de alcance de R8 |
-
-## 2. Guía operativa y ciclo de vida
-
-Requisitos: Rust `1.99.0`, objetivo `wasm32-unknown-unknown`, `wasm-bindgen-cli` `0.2.129`, Node.js `22.12.0` o posterior, pnpm `12.8.1`, Google Chrome estable y Playwright Core `1.64.0`.
-
-Preparación:
-
-```bash
-rustup target add wasm32-unknown-unknown --toolchain 1.99.0
-cargo install wasm-bindgen-cli --version 0.2.129 --locked
-pnpm --dir packages/pseudolearn_engine/crates/pseudolearn_wasm/browser install --frozen-lockfile
+```mermaid
+flowchart BT
+    API["api<br/>crates/pseudolearn_api"]
+    WASM["<b>pseudolearn_wasm</b><br/>crates/pseudolearn_wasm"]
+    VSC["Extensión VS Code<br/>apps/pseudolearn_vscode"]
+    API --> WASM
+    WASM -->|" tool/wasm.sh build "| VSC
 ```
 
-Generación reproducible del módulo y sus enlaces JavaScript:
+La flecha final es de artefacto: la extensión ejecuta `build:wasm` (`tool/wasm.sh build`) y empaqueta el módulo
+generado; no hay dependencia en manifiestos de Cargo.
 
-```bash
-bash packages/pseudolearn_engine/tool/wasm.sh build
-```
+## Arquitectura
 
-Pruebas del artefacto final en Chrome, incluida la comparación con la API nativa:
+Importa solo `pseudolearn_api`; las externas son `serde_json` y `wasm-bindgen`.
 
-```bash
-bash packages/pseudolearn_engine/tool/wasm.sh test
-```
+| Pieza                   | Responsabilidad                                                      |
+|-------------------------|----------------------------------------------------------------------|
+| `lib` (`WasmSession`)   | `call` y `callProjected`: JSON de entrada y de salida como texto     |
+| `projection`            | Convierte cada número JSON en cadena                                 |
+| `bin/wasm_native_probe` | Lee `operación<TAB>argumentos` por línea y escribe la respuesta JSON |
+| `browser/`              | Arnés de pruebas en Chrome (Playwright) y host de red por `fetch`    |
 
-Los archivos generados quedan en `packages/pseudolearn_engine/target/wasm-browser/pkg/`. No se versionan.
+## Reglas que conviene saber
 
-## 3. Arquitectura y modelo del sistema
+- Es una de las tres únicas capas con `unsafe` permitido (`unsafe_allowed`), solo porque las macroexpansiones de
+  `wasm-bindgen` pueden generarlo; el código escrito a mano no contiene `unsafe`.
+- Para `wasm32`, `architecture.yaml` prohíbe `pseudolearn_codegen`, `pseudolearn_aot_rt`, `cranelift-*`, la
+  característica `test-host` y las bibliotecas de red nativa (`hyper`, `reqwest`, `rustls`…). `tool/wasm.sh build` lo
+  comprueba con `cargo tree` antes de compilar.
+- `wasm-bindgen` debe ser exactamente la versión 0.2.129 y el perfil es `wasm-release` (`opt-level = "z"`, LTO fat,
+  `panic = "abort"`).
+- Un JSON de argumentos inválido se rechaza con un error de JavaScript (`Result<String, JsValue>`).
 
-El crate es la capa exterior del motor y solo importa `pseudolearn_api`. La feature `native` permanece desactivada. `wasm-bindgen` genera la frontera JavaScript y `serde_json` conserva el protocolo JSON de la API.
+## Comandos útiles
 
-| Carpeta | Responsabilidad | Puede importar | Prohibido |
-|---|---|---|---|
-| `src/` | Enlace Wasm y sonda nativa para comparación | API, `serde_json`, `wasm-bindgen` | Cranelift, Flutter, app, I/O dentro del módulo Wasm |
-| `browser/` | Página mínima, adaptador Fetch y pruebas del paquete generado | Paquete Wasm, Fetch, Node.js, Playwright Core | Lógica de motor duplicada, datos generados editados a mano |
+| Para qué               | Comando                          |
+|------------------------|----------------------------------|
+| Generar el módulo Wasm | `bash tool/wasm.sh build`        |
+| Probarlo en Chrome     | `bash tool/wasm.sh test`         |
+| Tests del crate        | `cargo test -p pseudolearn_wasm` |
 
-`WasmSession.call(operation, argumentsJson)` analiza el objeto de argumentos en Rust, llama `ApiSession.call` y serializa su sobre de éxito o fallo. Los enteros de 64 bits viajan como tokens JSON, no como `Number` de JavaScript. La memoria es privada al módulo; cada llamada intercambia cadenas dueñas.
-
-`WasmSession.callProjected(operation, argumentsJson)` conserva `call` y añade una proyección de transporte.
-Devuelve un JSON con dos campos de texto: `response_json`, la respuesta API exacta, y `projection_json`,
-la misma estructura con cada número reemplazado por su representación decimal como cadena. Textos,
-booleanos y nulos permanecen intactos. El consumidor analiza solamente esta proyección; conserva la
-respuesta exacta como texto opaco y usa tokens numéricos canónicos al construir argumentos. Esto evita
-que un identificador, semilla o entero del programa pase por `Number`. La proyección no distingue un
-texto numérico de un número: los adaptadores conocen el tipo por el contrato de cada campo.
-
-El recurso `create_lsp`/`lsp_message` pertenece a API y conserva un servidor LSP por identificador.
-Wasm no importa service directamente. La llamada de LSP sigue siendo síncrona: cancelar durante una
-consulta no interrumpe el cálculo de Wasm; el anfitrión descarta el resultado obsoleto cuando recupera
-el control. Una terminación de Worker requiere reconstruir snapshot y overlays antes de reutilizarlo.
-
-La ejecución es síncrona. El anfitrión divide el trabajo en lotes, devuelve el control al navegador y solicita cancelación entre llamadas. El archivo de salida limita la memoria lineal a 256 MiB. Cualquier `Uint8Array` creado por un consumidor sobre la memoria del módulo queda invalidado cuando `memory.grow` reemplaza su `ArrayBuffer`; este crate no expone tales vistas.
-
-`browser/fetch_host.mjs` adapta `network_send` al `fetch` del navegador. `declareFetchHost(session)` comunica
-el descriptor A4 mediante `negotiate`; `performFetch(effect, { signal, fetchImplementation })`
-permite inyectar el transporte y cancelar; no filtra destinos. Envía con
-`credentials: omit`, `cache: no-store` y `redirect: follow`; aborta al vencer el plazo y corta el flujo
-al superar el límite de bytes decodificados. El navegador valida TLS, aplica su política SSRF y
-descomprime contenido; el adaptador declara que no puede medir bytes de cable, distinguir errores de
-certificado ni leer de forma portable la ubicación de una redirección.
-
-`performFetch` acepta también `signal`, un `AbortSignal` externo. Una señal ya cancelada impide el
-despacho; la cancelación en vuelo aborta el transporte y retira el listener al terminar. Se devuelve
-`interrumpido` y una mutación ya enviada conserva el resultado `uncertain`; no se reintenta. La
-extensión consume este archivo canónico mediante su build, con declaración de tipos y hash de entrada.
-
-La sonda `wasm_native_probe` usa el mismo protocolo de registros tabulados y mantiene una sesión nativa para comparar, operación por operación, las mismas solicitudes y respuestas que ejecuta Playwright.
-
-## 4. Decisiones de diseño y fundamentos técnicos
-
-**Problema:** el transporte JavaScript de números puede redondear enteros superiores a `2^53 - 1`.
-
-**Elección:** la frontera recibe y devuelve texto JSON; Rust analiza y serializa directamente con `serde_json`, y JavaScript no convierte los argumentos numéricos antes de enviarlos.
-
-**Alternativas descartadas:** pasar mapas JavaScript o números tipados pierde exactitud de enteros de 64 bits; exponer la API Rust directamente duplica su protocolo en el consumidor.
-
-**Problema:** una biblioteca compilada para navegador no debe incorporar backend nativo ni crecer sin límite explícito.
-
-**Elección:** `pseudolearn_api` se declara con `default-features = false`; el enlazador limita la memoria Wasm a 256 MiB durante la generación canónica. El consumidor usa memoria solo durante una llamada y no conserva vistas.
-
-**Alternativas descartadas:** activar `native` incorpora Cranelift; compartir buffers entre llamadas requiere reglas de vida incompatibles con el crecimiento de memoria; dejar el límite al navegador vuelve no reproducible el comportamiento de agotamiento.
-
-**Problema:** las macroexpansiones de `wasm-bindgen` pueden generar `unsafe` aunque el adaptador escrito a mano no lo use.
-
-**Elección:** `unsafe` queda permitido únicamente en el crate declarado; el código propio no contiene bloques `unsafe` y los enlaces generados solo viven bajo `target/`.
-
-**Alternativas descartadas:** permitir `unsafe` globalmente debilita todos los crates; mantener a mano los enlaces generados hace no reproducible la frontera.
-
-## 5. Reglas de legibilidad, estilo y estructura de código
-
-Código en inglés, sin comentarios, `TODO`, `unwrap`, `expect`, pánicos explícitos ni conversiones numéricas con pérdida. El adaptador no contiene código `unsafe`. Los límites del crate se declaran en `architecture.yaml` del miembro.
-
-La salida de `wasm-bindgen` no se edita ni versiona. El paquete se genera con el CLI y el lockfile fijados; una segunda generación se compara byte por byte con la primera.
-
-## 6. Decisiones de producto que condicionan el código
-
-El navegador consume las mismas operaciones y observables que la API. El anfitrión controla los puntos de cesión y cancelación sin cambiar la semántica de la VM. Los errores de operación permanecen en el sobre JSON; JSON sintácticamente inválido produce una excepción JavaScript explícita.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-El módulo se compila con el perfil `wasm-release` del `Cargo.toml` del motor (`opt-level = "z"`, `lto = "fat"`, `strip`, `panic = "abort"`), no con `release`: con `release` el Wasm comprimido con Brotli Q11/lgwin22 medía 1,163,473 bytes y superaba el tope de 900 KiB; con `wasm-release` mide 772,804 bytes. El perfil `release` queda intacto para la CLI y el trabajador de medición.
-
-`cargo xtask verify` ejecuta formato, Clippy, pruebas del workspace, verificadores Rust y auditoría de dependencias. `bash tool/wasm.sh test` compila el artefacto release, comprueba que no aparece `native` ni Cranelift, valida reproducibilidad y ejecuta Playwright en Chrome.
-
-La comprobación ligera del adaptador Fetch usa `node --test browser/fetch_host.test.mjs`; no necesita
-servidor ni navegador. Sus casos cubren negociación A4, concesión de origen, opciones Fetch, fallos de
-conexión, redirecciones opacas, tope de cuerpo decodificado, plazo y petición mal formada.
-
-Para comprobar transporte en navegador, iniciar `cargo xtask http-test-server` desde la CLI. El
-proceso publica `http_address`, `https_address` y `root_certificate` en su línea JSON inicial; el
-harness de Playwright puede usar las direcciones como destinos de Fetch y la raíz PEM para confiar en
-TLS dentro de su perfil de prueba, sin desactivar la validación. `browser/server.mjs` sirve la página,
-los archivos Wasm y el módulo del adaptador para las pruebas. Los tests unitarios del adaptador
-mantienen `fetch` falso y no abren sockets.
-
-La prueba de navegador compara respuestas byte por byte con `wasm_native_probe` para completado, análisis, entrada, extremos de enteros, cancelación entre lotes y liberación. Otros casos rechazan JSON inválido, fuerzan crecimiento de memoria, comprueban la invalidación de vistas y verifican que superar el límite falla sin alterar la instancia.
-
-`browser/http_contract.test.mjs` ejercita el contrato Fetch contra `cargo xtask http-test-server`
-ligado a loopback: estados, cabeceras y cuerpos, redirecciones sin seguimiento, límites y fallos
-ambientales. La misma tabla de peticiones se compara con el adaptador nativo; solo se excluyen las
-diferencias ambientales declaradas por el perfil del navegador. Esta prueba usa Chromium, WebKit y
-Firefox y se reserva a P6. `fetch_host.test.mjs` sigue siendo la comprobación ligera con `fetch`
-falso y sin sockets.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-`wasm-bindgen` aporta la generación de enlaces JavaScript desde Rust. Se fija la misma versión para el crate y el CLI para mantener compatible el formato de enlace. WebAssembly define la memoria lineal y el reemplazo del `ArrayBuffer` al crecer; el contrato de este paquete evita compartir vistas entre llamadas.
-
-Fetch no recibe lista de orígenes: la autoridad es plena. El navegador valida TLS, aplica CORS y
-contenido mixto y sigue redirecciones. Cookie y las cabeceras reservadas por Fetch se rechazan antes
-de enviar, como error de petición de plataforma. Se omiten credenciales ambientales y caché; no hay
-proxy ni respuesta alternativa. El bundle Wasm mantiene excluidos transporte nativo y test-host.
+Se ejecutan desde `packages/pseudolearn_engine`. Requisitos: target `wasm32-unknown-unknown`, `wasm-bindgen-cli`
+0.2.129 y, para `test`, `pnpm`.

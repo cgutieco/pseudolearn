@@ -1,13 +1,7 @@
 package: pseudolearn_engine
 declarative: false
 unsafe_allowed: [pseudolearn_wasm, pseudolearn_aot_rt, pseudolearn_native_probe]
-generated_sources:
-  - crates/pseudolearn_diagnostics/generated
-  - crates/pseudolearn_lexicon/generated
-  - crates/pseudolearn_syntax/generated
-  - crates/pseudolearn_ir/generated
-  - crates/pseudolearn_bytecode/generated
-  - crates/pseudolearn_vm/generated
+generated_sources: []
 deterministic_output_crates: [pseudolearn_transpiler, pseudolearn_project, pseudolearn_ir, pseudolearn_lowering, pseudolearn_runtime, pseudolearn_library, pseudolearn_diagnostics, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_bytecode, pseudolearn_vm, pseudolearn_timeline, pseudolearn_service, pseudolearn_api, pseudolearn_codegen, pseudolearn_wasm]
 isolation:
   - package: pseudolearn_api

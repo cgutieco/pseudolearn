@@ -1,76 +1,48 @@
 # pseudolearn_vm_dispatch
 
-## 1. Qué es y qué no es
+Generador del despacho de la VM: lee `IR.INSTRUCTIONS` de la exportación del corpus y la tabla de formas
+`crates/pseudolearn_vm/data/dispatch_forms.json`, y produce el código Rust que `build.rs` de `pseudolearn_vm` escribe
+como `generated_dispatch.rs`: la clasificación de cada opcode, las operaciones de despacho y el `match` del paso de
+ejecución.
 
-Generador de la forma de despacho de `pseudolearn_vm`. Lee la exportación de `IR.INSTRUCTIONS` y la tabla
-de formas `crates/pseudolearn_vm/data/dispatch_forms.json`, y produce el código Rust que el `build.rs` de la
-VM escribe en `OUT_DIR`: la clasificación de cada opcode, el `enum` de operaciones de despacho, las
-funciones que eligen una forma para una instrucción y el `match` del paso de ejecución.
-No ejecuta programas, no se enlaza en la VM en tiempo de ejecución y no decide semántica: la semántica de
-cada operación vive en los evaluadores y manejadores escritos a mano de `pseudolearn_vm`.
+**No hace:** ejecutar programas, enlazarse en la VM en tiempo de ejecución ni decidir semántica: lo que hace cada
+operación está en los manejadores escritos a mano de `pseudolearn_vm`.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-Es una dependencia de compilación (`build-dependencies`) de `pseudolearn_vm`; no tiene binario. Usa la
-versión exacta de `rust-toolchain.toml` del miembro. Comprobación: `cargo xtask verify` del motor, que
-incluye sus tests y `rust-checks all`. Cambiar la tabla de formas o la exportación recompila la VM.
+```mermaid
+flowchart BT
+    SPEC["Corpus exportado<br/>packages/pseudolearn_spec"]
+    FRM["dispatch_forms.json<br/>crates/pseudolearn_vm/data"]
+    DSP["<b>pseudolearn_vm_dispatch</b><br/>crates/pseudolearn_vm_dispatch"]
+    VM["vm (build.rs)<br/>crates/pseudolearn_vm"]
+    SPEC & FRM -->|" datos "| DSP
+    DSP -->|" build-dependency "| VM
+```
 
-## 3. Arquitectura y modelo del sistema
+## Arquitectura
 
-Capa `tooling` del motor; no importa crates del motor y solo depende de `serde_json`.
+No importa crates del motor; la única dependencia externa es `serde_json`. No tiene binario: la VM la usa como
+`build-dependency`.
 
-| Módulo | Responsabilidad |
-|---|---|
-| `lib.rs` | Orquesta la generación y ofrece acceso tipado al JSON |
-| `catalog.rs` | Nombres de `IR.INSTRUCTIONS`, familia de despacho de cada opcode y cobertura escalar |
-| `forms.rs` | Expansión de cada fila de la tabla en formas registro/inmediato y fusionadas |
-| `render.rs` | Texto Rust del `enum`, de la selección y del paso de despacho |
+| Módulo    | Responsabilidad                                                                  |
+|-----------|----------------------------------------------------------------------------------|
+| `lib`     | `generate(export_path, forms_path)`: orquesta y devuelve el código Rust          |
+| `catalog` | Nombres de las instrucciones y familia de despacho de cada opcode                |
+| `forms`   | Expansión de cada fila de la tabla en formas de registro, inmediato y fusionadas |
+| `render`  | Emisión del código de despacho                                                   |
 
-Una fila de operación declara forma, opcode de la RI, aridad, predicado opcional, evaluador y si admite
-fusión con `branch`. La aridad se expande con las formas de operando declaradas en `shapes`
-(registro o inmediato por operando). Las filas especiales declaran campos y el manejador de la máquina.
+## Reglas que conviene saber
 
-Invariante: toda instrucción de las familias `int.`, `real.`, `math.`, `bool.` y `char.` del catálogo
-tiene al menos una forma; si falta, la generación falla y la VM no compila.
+- Es herramienta (`tooling: true`) con `may_import` vacío; solo la VM la usa, y solo en compilación.
+- Cambiar la exportación del corpus o `dispatch_forms.json` recompila la VM (`cargo:rerun-if-changed`).
+- Sin `unsafe`.
 
-## 4. Decisiones de diseño y fundamentos técnicos
+## Comandos útiles
 
-- **Problema:** el despacho de la VM debe cubrir el catálogo exportado sin copiarlo a mano
-  (`GEN-NO-HAND-COPY`) y añadir una operación no debe modificar el bucle. **Elección:** tabla de datos más
-  generador; una operación nueva es una fila nueva. **Descartado:** escribir a mano el `match` de cientos
-  de brazos, que mezclaría decodificación y semántica y repetiría cada forma de operando.
-- **Problema:** los programas sin tareas pagaban consultas dinámicas en control, llamada y retorno, y el
-  payload anidado de una operación de tarea agrandaba cada elemento del código cargado. **Elección:** el
-  modo constante se propaga a control, llamada y retorno; el código común usa `CompactOp` y guarda los
-  payloads de `TaskOp` en una tabla aparte. Una tabla de índices se crea solo en funciones con tareas, y
-  el recorrido ordinario no consulta ninguna de las dos. **Descartado:**
-  una consulta del modo en cada operación y repetir el payload de tarea en cada instrucción ordinaria.
-- **Problema:** el generador superaba el límite de tamaño de un `build.rs`. **Elección:** crate de
-  herramienta propio, partido por responsabilidad y sujeto a `rust-checks`. **Descartado:** módulos con
-  `#[path]` fuera de `src`, que el verificador no inspecciona.
-- **Problema:** el `match` generado es un artefacto de cientos de brazos que el lint de longitud de
-  función rechazaría sin aportar legibilidad. **Elección:** el texto generado se emite compacto, una
-  función por línea; se lee la tabla y el generador, nunca `OUT_DIR`. **Descartado:** atributos `allow`,
-  prohibidos en el repositorio, y una segunda búsqueda para cada operación ordinaria.
+| Para qué              | Comando                                 |
+|-----------------------|-----------------------------------------|
+| Tests del crate       | `cargo test -p pseudolearn_vm_dispatch` |
+| Verificación completa | `cargo xtask verify`                    |
 
-## 5. Reglas de legibilidad, estilo y estructura de código
-
-Código inglés sin comentarios, `doc`, `allow`, `expect`, pánicos ni `unsafe`. Errores como `Result` con
-mensaje; nunca una salida parcial. Límites en `architecture.yaml` del miembro.
-
-## 6. Decisiones de producto que condicionan el código
-
-Ninguna observable. El generador conserva la identidad de cada opcode de la RI y no inventa
-instrucciones: una forma solo existe para un opcode del catálogo exportado.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-`tests/lib_tests.rs` genera con la exportación y la tabla reales y comprueba formas, fusión y
-clasificación; los caminos infelices cubren cobertura escalar incompleta, aridad no soportada, campos
-ausentes y archivos inexistentes.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Ertl y Gregg (superinstrucciones y especialización de operandos) y las formas registro-constante de Lua
-inspiran la expansión por forma de operando. Se toma la especialización estática; se rechaza la
-generación de código máquina en tiempo de ejecución.
+Se ejecutan desde `packages/pseudolearn_engine`.

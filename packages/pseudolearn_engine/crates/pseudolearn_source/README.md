@@ -1,71 +1,62 @@
 # pseudolearn_source
 
-## 1. Qué es y qué no es
+Texto fuente con posiciones verificadas: guarda el programa tal como llegó, indexa sus líneas, convierte desplazamientos
+entre bytes, puntos de código Unicode y unidades UTF-16, y da identidad estable a cada archivo de un proyecto. Es la
+base de todo el análisis: casi todos los demás crates la importan.
 
-Representa el texto fuente original con posiciones verificadas. Implementación disponible en el workspace.
+**No hace:** analizar sintaxis ni tipos, leer archivos del disco ni normalizar el texto almacenado (solo normaliza
+nombres para compararlos).
 
-Fuera de alcance: otras responsabilidades del motor, UI, I/O libre y construcciones nuevas.
+## Dónde encaja
 
-| Pendiente | Dependencia | Hito técnico |
-|---|---|---|
-| Ninguno en el contrato de análisis implementado | — | — |
+```mermaid
+flowchart BT
+    SRC["<b>pseudolearn_source</b><br/>crates/pseudolearn_source"]
 
-## 2. Guía operativa y ciclo de vida
+    subgraph USERS["Lo usan"]
+        PRJ["project"]
+        LEX["lexicon"]
+        DIA["diagnostics"]
+        SYN["syntax"]
+        SEM["semantic"]
+        SVC["service"]
+        TRA["transpiler"]
+        LOW["lowering"]
+        IR["ir"]
+        BYT["bytecode"]
+        AOT["aot_rt"]
+        API["api"]
+    end
 
-Rust exacto del miembro, rustfmt y Clippy. Biblioteca del workspace; no se despliega por separado.
-La implementación se verifica desde el workspace con `cargo xtask verify` y conformidad del sujeto engine.
-La comprobación disponible usa, desde la raíz del monorepo,
-`cargo run --manifest-path packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command -- layers packages/pseudolearn_engine`.
+    SRC --> PRJ & LEX & DIA & SYN & SEM & SVC & TRA & LOW & IR & BYT & AOT & API
+```
 
-## 3. Arquitectura y modelo del sistema
+## Arquitectura
 
-Nivel 0. Dependencias internas permitidas: ninguna capa interna. Externas: unicode-normalization, unicode-ident.
-Prohibido importar capas superiores, paquetes de UI o internos de otros miembros.
+Sin dependencias internas. Las externas son `unicode-normalization` y `unicode-ident`.
 
-Estructuras y algoritmos: `SourceText` con los bytes originales e índice de inicios de línea; funciones del módulo convierten desplazamientos UTF-8 a puntos de código Unicode o unidades UTF-16 y validan tramos. La identidad se consulta con funciones separadas para mantener pequeña la interfaz del texto. BOM; NFC solo para comparar nombres y validar identificadores, con camino rápido ASCII. El alfabeto de identificadores es ASCII latino, ñ/Ñ, á/Á, é/É, í/Í, ó/Ó, ú/Ú, ü/Ü y guion bajo; los continuadores también admiten dígitos ASCII. `SourceIdentity` combina proyecto, revisión y archivo; `SourceTable` ordena fuentes por ID y valida nodos y tramos antes de resolver una localización.
+| Módulo         | Pieza                                                 | Responsabilidad                                                                    |
+|----------------|-------------------------------------------------------|------------------------------------------------------------------------------------|
+| `source_text`  | `SourceText` y funciones de conversión                | Bytes originales, BOM, validez de tramos y conversión byte ↔ escalar ↔ UTF-16      |
+| `line_index`   | `LineIndex`                                           | Inicio de cada línea y paso de desplazamiento a línea y columna                    |
+| `span`         | `Span`, `SourceId`                                    | Tramo en bytes dentro de una fuente; `SourceId::STANDALONE` es el documento suelto |
+| `identity`     | `ProjectId`, `RevisionId`, `NodeId`, `SourceIdentity` | Identidad compuesta de proyecto, revisión y archivo; `SourceLocation`              |
+| `source_table` | `SourceTable`, `SourceFile`                           | Revisión inmutable de fuentes ordenadas por id; resuelve una localización          |
+| `normalizer`   | `IdentifierNormalizer`                                | Normaliza (NFC) y valida identificadores para compararlos                          |
 
-Invariantes: Los desplazamientos son siempre límites de carácter UTF-8; el texto original nunca se modifica. La identidad de fuente es distinta del nombre visible; el ID cero se reserva al documento suelto. Una tabla representa una revisión inmutable: una localización de otro proyecto o revisión no se resuelve y un ID no se reutiliza dentro de la tabla.
+## Reglas que conviene saber
 
-Ejecución síncrona determinista; los efectos del anfitrión solo cruzan capacidades inyectadas.
+- Está en la base de las capas: `may_import` vacío en `architecture.yaml`, por lo que ningún otro crate del motor puede
+  ser una dependencia suya.
+- Sin `unsafe` (`unsafe_allowed: false`).
+- Una `SourceTable` representa una revisión: una localización de otro proyecto o revisión no se resuelve
+  (`SourceLookupFailure`).
 
-## 4. Decisiones de diseño y fundamentos técnicos
+## Comandos útiles
 
-Problema: representa el texto fuente original con posiciones verificadas respetando los observables del corpus.
-Elección: `SourceText` con los bytes originales; índice de inicios de línea; conversión perezosa de desplazamiento de byte a columna en puntos de código; detección de BOM; NFC solo para comparar nombres, con camino rápido ASCII.
-Alternativas descartadas y fundamento: Unicode aporta UTF-8 y NFC para comparar identificadores; se rechaza normalizar el texto almacenado porque perdería posiciones originales.
+| Para qué              | Comando                            |
+|-----------------------|------------------------------------|
+| Tests del crate       | `cargo test -p pseudolearn_source` |
+| Verificación completa | `cargo xtask verify`               |
 
-Problema: dos archivos pueden tener el mismo nombre y rango local. Elección: offsets UTF-8 compactos con `SourceId` y una identidad compuesta de proyecto/revisión/archivo; las búsquedas usan ID, no el nombre. `SourceTable` valida la revisión antes de devolver una fuente. Se rechaza repetir URI o ruta en cada tramo y combinar tramos de fuentes distintas.
-
-Problema: los consumidores usan unidades de coordenadas distintas. Elección: el núcleo conserva offsets de byte; funciones públicas del módulo convierten a línea/columna en escalares Unicode o UTF-16 solo en límites válidos, y rechazan los interiores de un par sustituto. Estas funciones reciben `SourceText` por referencia y mantienen sus métodos centrados en el contenido original. CRLF cuenta como un salto de línea y el BOM permanece en el texto original.
-
-Problema: NFC debe aplicarse después de consumir el nombre completo. Elección: el scanner consulta
-`IdentifierNormalizer::is_continuation` para conservar las marcas combinantes dentro del mismo token.
-La admisibilidad del alfabeto es idéntica en ambos perfiles, y se comprueba sobre el nombre
-normalizado. Una marca combinante se conserva dentro del token; solo se acepta si NFC produce un
-nombre compuesto por el alfabeto permitido. El texto fuente y los offsets originales nunca se
-normalizan. Se rechaza cortar el token ante una marca combinante, porque produciría un falso carácter
-inválido.
-
-## 5. Reglas de legibilidad, estilo y estructura de código
-
-Código en inglés, cero comentarios, sin atributos doc/allow/expect ni unsafe.
-Los errores son valores Result. Los límites físicos, nombres y dependencias se leen de architecture.yaml del miembro.
-Las fuentes generadas se producen desde la exportación del corpus en OUT_DIR; nunca se copian manualmente.
-
-## 6. Decisiones de producto que condicionan el código
-
-Contratos: `LANG.SOURCE.*`.
-La ejecución y la observación conservan la misma semántica; idioma de interfaz y vocabulario son independientes.
-Los identificadores del usuario, el texto original y la salida del programa se conservan.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-Tests en tests/ espejo de src/, internos en archivos hermanos separados.
-Camino feliz e infeliz, texto vacío, Unicode, tamaño cero, profundidad extrema y bordes numéricos.
-Conformidad ejecuta los casos del corpus sin copiarlos como tests Rust.
-Verificadores de capas, comentarios, nombres, límites, seguridad y atributos con casos negativos;
-formato, Clippy, auditoría de dependencias y pruebas diferenciales según los contratos de este crate.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Unicode aporta UTF-8 y NFC para comparar identificadores; se rechaza normalizar el texto almacenado porque perdería posiciones originales.
+Los comandos se ejecutan desde `packages/pseudolearn_engine`.

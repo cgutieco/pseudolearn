@@ -1,36 +1,49 @@
 # xtask
 
-## 1. Qué es y qué no es
+Orquestador de la verificación completa del motor: `cargo xtask verify` encadena, en orden, la exportación del corpus,
+el formato, Clippy, los tests, los verificadores mecánicos de `pseudolearn_rust_checks` y la auditoría de dependencias,
+y se detiene en el primer paso que falle.
 
-Tooling de verificación del motor; no implementa el evaluador ni la máquina virtual de PseudoLearn.
+**No hace:** compilar ni ejecutar el lenguaje, ni medir rendimiento; tampoco publica nada. No tiene tests propios: es un
+guion de comandos.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-Desde el workspace: `cargo test -p xtask` y `cargo xtask verify`.
-Rust se fija en el archivo de cadena del workspace. No se publica.
+```mermaid
+flowchart BT
+    SPEC["Exportación del corpus<br/>packages/pseudolearn_spec"]
+    CHK["rust-checks<br/>packages/pseudolearn_rust_checks"]
+    XT["<b>xtask</b><br/>packages/pseudolearn_engine/xtask"]
+    SPEC -->|" see export "| XT
+    CHK -->|" all y toolchain "| XT
+```
 
-## 3. Arquitectura y modelo del sistema
+Aquí las flechas indican qué comandos invoca `xtask`; no hay dependencias de Cargo: no importa ningún crate del motor y
+no tiene dependencias externas.
 
-`src/` contiene las tareas operativas del motor; dependencias permitidas en `architecture.yaml` del workspace.
+## Flujo principal
 
-## 4. Decisiones de diseño y fundamentos técnicos
+Flujo de ejecución, en orden.
 
-Problema: automatizar la verificación integral de formato, linter, tests y conformidad.
-Elección: subcomando `cargo xtask verify`.
-Alternativa descartada: scripts de shell no portables entre plataformas.
+```mermaid
+flowchart LR
+    EXP["see export"] --> FMT["cargo fmt --check"] --> CLP["clippy -D warnings"] --> TST["cargo test --workspace"]
+    TST --> RCK["rust-checks all ."] --> TCH["rust-checks toolchain ../.."] --> DNY["cargo deny check"]
+```
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+## Reglas que conviene saber
 
-Código en inglés, cero comentarios, sin unsafe ni pánicos explícitos. Límites en las reglas del workspace.
+- Sin argumentos distintos de `verify`, termina con un mensaje de uso y código de salida distinto de cero.
+- Es herramienta (`tooling: true`) con `may_import` vacío y sin `unsafe`.
+- Los pasos se ejecutan con `workspace`: Clippy y los tests cubren todos los crates del motor, incluidos `xtask` y las
+  herramientas.
 
-## 6. Decisiones de producto que condicionan el código
+## Comandos útiles
 
-Habilita el front-end del motor y sus verificadores asociados.
+| Para qué                        | Comando              |
+|---------------------------------|----------------------|
+| Verificación completa del motor | `cargo xtask verify` |
 
-## 7. Verificación, testing y aseguramiento de calidad
-
-Formato, Clippy estricto, tests unitarios, verificadores mecánicos y chequeo de dependencias mediante `cargo xtask verify`.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-Patrón `xtask` estándar de la comunidad de Rust para automatización sin dependencias externas.
+Se ejecuta desde `packages/pseudolearn_engine` (el alias `xtask` está en `.cargo/config.toml`). Requisitos: la
+toolchain de `rust-toolchain.toml`, `cargo-deny` y el repositorio completo, porque el motor invoca
+`../pseudolearn_spec` y `../pseudolearn_rust_checks` por ruta relativa.

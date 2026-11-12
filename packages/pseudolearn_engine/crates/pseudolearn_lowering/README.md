@@ -1,179 +1,64 @@
 # pseudolearn_lowering
 
-## 1. Qué es y qué no es
+Baja el modelo semántico (`HirModule`) a la representación intermedia: construye las clases y las funciones de la RI
+instrucción por instrucción, con sus bloques, sus puntos de suspensión y su tabla de orígenes hacia la fuente. Cubre
+sentencias, expresiones, registros, variantes, colecciones, cierres, tareas y canales, efectos y la limpieza al salir
+de un ámbito.
 
-Traduce el HIR tipado a representación intermedia observable SSA.
-No añade construcciones del lenguaje, UI ni efectos libres del anfitrión.
+**No hace:** analizar ni tipar el programa (eso es `semantic`), verificar la RI resultante (`ir`) ni ejecutarla.
 
-| Pendiente | Dependencia | Hito técnico |
-|---|---|---|
-| Ninguno | B2 completado | R5 B2 |
+## Dónde encaja
 
-## 2. Guía operativa y ciclo de vida
+```mermaid
+flowchart BT
+    SRC["source<br/>crates/pseudolearn_source"]
+    DIA["diagnostics<br/>crates/pseudolearn_diagnostics"]
+    SEM["semantic<br/>crates/pseudolearn_semantic"]
+    IR["ir<br/>crates/pseudolearn_ir"]
+    LOW["<b>pseudolearn_lowering</b><br/>crates/pseudolearn_lowering"]
+    API["api<br/>crates/pseudolearn_api"]
+    SRC & DIA & SEM & IR --> LOW
+    LOW --> API
+```
 
-Versión exacta de rust-toolchain.toml del miembro. Crate de librería incorporado al workspace Cargo del motor.
-Comprobación: `cargo xtask verify` y `rust-checks all .` del miembro. No se despliega por separado.
+## Arquitectura
 
-## 3. Arquitectura y modelo del sistema
+Importa `source`, `semantic`, `ir` y `diagnostics`; no tiene dependencias externas. Los archivos se agrupan por
+prefijo.
 
-Los argumentos por referencia se traducen como celdas de local, campo o elemento y se validan antes
-de entrar al cuerpo. Los constructores conservan argumentos y receptor; los métodos tienen identidad
-calificada por su clase. Los orígenes laterales quedan calificados por función.
+| Familia de archivos                                                 | Responsabilidad                                                                             |
+|---------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| `lib`, `functions`, `classes`, `builder`, `environment`             | `lower_module`, `lower_project`, `lower_function`, `FunctionBuilder` y entorno de variables |
+| `statements*`, `loop_exits`, `cleanup_edges`                        | Una pieza por sentencia y la limpieza al salir                                              |
+| `expressions*`, `places`, `expression_values`                       | Expresiones, operadores y lugares asignables                                                |
+| `records*`, `variant_*`, `collections`, `collection_*`              | Registros, variantes y colecciones                                                          |
+| `task_*`, `channel_operations`, `suspension_points`, `yield_points` | Tareas, canales y puntos de suspensión                                                      |
+| `effect_*`, `closure_values`, `indirect_calls`                      | Efectos, cierres y llamadas indirectas                                                      |
+| `spans`, `lexical_origins`                                          | Tabla de orígenes enlazada con la fuente                                                    |
 
-Nivel 4. Importa semantic, ir, diagnostics y source; solo biblioteca estándar externa. Prohibido importar capas superiores, UI, Dart o el sistema de especificaciones como código.
+## Flujo principal
 
-Traducción procedural de expresiones, asignación, controles, entrada y salida; después llamadas y objetos. CFG SSA con análisis de asignación definida, celdas para referencias, masas y orígenes. Se marca la arista de retroceso de componentes cíclicos sin masa para sondeo.
+Flujo de datos, no dependencias.
 
-Invariantes: Cada bloque tiene una masa igual a su cantidad de stmt.enter. Las conversiones están explícitas en Widen; no se vuelven a resolver nombres ni a interpretar fuente.
+```mermaid
+flowchart LR
+    HIR["HirModule"] --> CL["lower_classes"]
+    HIR --> FN["lower_function por función"]
+    SRC["SourceText"] --> FN
+    CL & FN --> MOD["ir::Module + OriginTable"]
+```
 
-Llamadas a efectos (`effect_calls`): `emit_effect_call` traduce invocaciones a operaciones de capacidad emitiendo `Operation::EffectCall` (`O93`) con el asa de capacidad, el nombre de la operación y los argumentos tipados, asignando el valor resultante en la forma SSA de RI. Aristas de limpieza con efectos: `Diferir` cuyo cuerpo invoca una capacidad (por ejemplo `Cerrar`) emite el `effect_call` en cada salida alcanzada después del registro (retorno normal y propagación fallida), tras guardar el resultado, y en ninguna anterior al registro. La comprobación compila programas completos y por eso vive en `pseudolearn_api/tests/cleanup_effect_edges_tests.rs`; este crate no depende del sintáctico para sus propias pruebas.
+## Reglas que conviene saber
 
-## 4. Decisiones de diseño y fundamentos técnicos
+- Solo importa `source`, `semantic`, `ir` y `diagnostics`; no conoce la VM ni el backend nativo.
+- Falla con `LoweringError` (descripción en texto) si una función no tiene fuente asociada; no lanza excepciones.
+- Sin `unsafe`; la salida es determinista.
 
-Problema: representar parámetros arreglo como celdas introduce una indirección que no permite ninguna operación adicional del lenguaje. Elección: LANG.TYPES.ARRAY y LANG.STMT.ASSIGNMENT prohíben asignar o retornar el arreglo completo; los parámetros arreglo conservan el asa y comparten los elementos. La declaración y todas las llamadas usan el mismo tipo RI array; los orígenes conservan esa asa observable. Las referencias escalares y las celdas de elemento o campo conservan su representación. Se descarta especializar solo AOT y mantener dos interpretaciones de cell<array>.
+## Comandos útiles
 
-Los locales respaldados por celdas conservan su asa estable a través de un bucle y no reciben parámetros SSA escalares. Se descarta acarrear como entero una referencia de celda: las escrituras indirectas ya conservan el valor y el alias.
+| Para qué              | Comando                              |
+|-----------------------|--------------------------------------|
+| Tests del crate       | `cargo test -p pseudolearn_lowering` |
+| Verificación completa | `cargo xtask verify`                 |
 
-Los límites y el paso de Para se congelan en temporales sin origen de variable para que una escritura del cuerpo no altere los controles ya evaluados. Mientras tiene una entrada a sentencia para el bucle completo y una decisión por prueba, incluida la final. La escritura sin valores usa un texto vacío, manteniendo el evento de salida y su salto opcional. Se descartan ranuras de origen mutables como caché de límites, entradas repetidas al bucle y RI inválida para salida vacía.
-
-Escribir evalúa todos sus operandos antes del único out.write. Para evalúa inicial, final y paso una vez, comprueba paso, prueba inclusive por signo e incrementa con comprobación aun tras la última iteración. Los índices de celdas por referencia se evalúan y comprueban antes de llamar. La desvirtualización usa la jerarquía cerrada. Se omite value.require solo para lecturas demostradas asignadas; los enteros restantes reciben definición SSA.
-
-La traducción permanece determinista y conserva el orden de evaluación. La exportación del corpus es
-una dependencia de datos. Las técnicas que requieren medición se aceptan solo tras conservar
-resultados y criterios.
-El conjunto de variables acarreadas por un bucle incluye escrituras anidadas en condicionales,
-selecciones y bucles internos; así cada iteración recibe el valor SSA que dejó la anterior.
-
-La detección de llamada inicial al constructor padre se consulta a semantic. La traducción no redefine esa decisión ni acepta una llamada ordinaria a método como inicialización de superclase.
-
-Problema: las funciones de un proyecto proceden de varias fuentes. Elección: `lower_project` recibe una fuente por
-unidad y cada función se baja con la de su unidad, sin tocar el resto del bajado; las funciones llevan el
-calificador de módulo en su nombre de RI y solo la entrada seleccionada se llama `@main`. Las demás
-unidades con algoritmo se nombran `@calificador.main`. Se rechaza una tabla global de fuentes dentro de cada
-expresión, porque ninguna instrucción cruza unidades.
-
-`lower_project` emite el módulo sin tabla de perfiles; quien conoce el perfil de cada archivo (la API) completa
-`profiles` y el vocabulario de entrada antes de verificar. El bajado no decide perfiles.
-
-### Registros aplanados, retorno por celdas y nombre de enumerado
-
-Un registro nunca es un valor de la RI: `record_values::lower_range` entrega los valores de sus hojas y cada consumidor
-(asignación, argumento, retorno, igualdad) trabaja sobre esa lista. Leer `p.x` solo lee (y exige definida) la hoja
-tocada, no el registro entero. Las variables de tipo registro se declaran, acarrean en bucles y se unen en ramas como
-sus hojas, porque semantic ya las expuso como locales. Los argumentos se expanden a un argumento por hoja y el
-resultado de una función registro se devuelve por celdas: la función recibe, tras sus parámetros, una `cell<hoja>`
-por hoja (`FunctionBuilder.result_cells`), escribe con `cell.store` y retorna sin operando; el llamador crea un
-`cell.local` por hoja, pasa las celdas y las lee con `cell.load_raw` después de `call` para transportar también las referencias inactivas de las variantes. El transporte cuesta una celda por hoja en cada llamada; es el coste medible que un
-retorno multivalor de la RI eliminaría (decisión reversible: se revisa si una medición con cargas de registros muestra que la celda domina el coste). La igualdad compara hoja a
-hoja con la instrucción de su tipo y combina los resultados con una cadena de ramas que termina en el primer falso;
-las comparaciones previas son puras. `<>` niega el resultado. `Escribir` de un valor enumerado selecciona el nombre del
-miembro con una cadena de comparaciones de ordinal y bloques que unen un texto (`enum_output`), sin instrucción nueva;
-la tabla de saltos del terminador `switch` llega con la exhaustividad de `Segun`. Un enumerado es un entero de RI, por lo que
-`class_density` lo trata como entero para no omitir la máscara de definidos de un campo sin asignar.
-
-**Posiciones de registro.** Los consumidores de hojas leen tres orígenes nuevos sin instrucción de RI nueva.
-`class_record_values` carga y almacena las hojas incrustadas de un campo de clase con `object.load`/`object.store`
-evaluando el receptor una sola vez, y entrega una `cell.field` por hoja para el paso por referencia. `record_arrays`
-direcciona los arreglos sintéticos por hoja que semantic creó para un arreglo de registros: evalúa los índices una sola vez y
-emite `array.load`, `array.store` o `cell.element` sobre cada hoja; la expansión de un parámetro arreglo entrega un arreglo
-por hoja. `record_cells` entrega una celda por hoja de una variable, un campo incrustado o un elemento cuando el parámetro es
-`Por Referencia`; el prototipo no cambia porque el llamado ya recibe una celda por hoja. `Dimension` sobre un arreglo de
-registros evalúa cada dimensión una sola vez aunque emita un `array.new` por hoja.
-
-Las declaraciones locales con valor inicial llegan como asignaciones tipadas y las que no lo tienen como `Declare`, que crea la celda si la variable se pasa por referencia y nada más si no; Semantic garantiza que ninguna variable local se lee sin valor, así que no hace falta centinela ni comprobación. Un argumento sin valor para un parámetro de salida usa esa celda como cualquier paso por referencia. `Widen` baja a `int.to_real` desde un entero y a `text.format` desde un carácter, de modo que la ampliación de carácter a cadena no necesita instrucción nueva. Un `Para` sin `Con Paso` baja su paso como la constante 1. `Azar(n)` y `Aleatorio(a, b)` bajan a `host.random_below` y `host.random_between`; `AzarReal()` a `host.random`, y `Concatenar` a `text.concat`. Los campos y elementos sin valor conservan los centinelas y las comprobaciones existentes.
-
-Las variantes conservan la disposición de abi como agregado SSA de palabras enteras y referencias: `value.reinterpret` empaqueta y extrae bits del mismo banco sin conversión numérica. Al construir se ponen en cero todas las referencias inactivas. Los resultados agregados usan celdas locales de transporte y `cell.load_raw`, que permite copiar un centinela inactivo sin confundirlo con una lectura del lenguaje. La evaluación de la carga activa ya comprueba su existencia; por ello la asignación no repite value.require al almacenar. Cuando una asignación copia un valor SSA que ya tiene origen en otra variable de la misma función, `lower_assign_local` emite `value.reinterpret` al tipo del destino para que cada variable reciba un `ValueId` propio y la asignación de registros del bytecode no unifique ambas variables en la misma ranura ni corrompa el valor previo al reasignar la variable origen. Propagar evalúa una vez y retorna por una arista explícita; su camino normal solo extrae la carga de éxito. No se implementa limpieza de usuario antes de la construcción que la introduzca. Switch une los entornos de todas las ramas que continúan, incluidos los registros aplanados. Desde cuatro etiquetas enteras distintas, con intervalo no mayor al doble de su cantidad, emite switch; los demás casos usan cadenas del tipo correcto. El umbral reduce despachos y tamaño de la RI sin introducir una campaña de optimización ajena a la fase.
-
-Los parámetros SSA de un bucle incluyen solo vínculos existentes antes de entrar; los vínculos del cuerpo se inicializan en cada ejecución. Repetir conserva su entorno al salir porque ejecuta el cuerpo al menos una vez.
-
-Los genéricos no llegan a lowering: semantic ya emitió una función o un registro concretos por instancia, con nombre `nombre<tipos>`, y la RI recibe una función por instancia sin instrucción nueva. Esto es lo que mantiene directa cada llamada y evita borrado o diccionarios; el coste es un cuerpo de RI por instancia, acotado por el límite de 64 instancias de semantic y medido por E-PG-03. Los registros opacos de la comprobación de definición no tienen hojas ni uso en funciones emitidas.
-
-## 5. Reglas de legibilidad, estilo y estructura de código
-
-Código inglés sin comentarios, doc, allow, expect, pánicos ni unsafe. Datos con índices tipados,
-funciones pequeñas y fallos como Result. Límites y dependencias en architecture.yaml del miembro.
-Las salidas generadas se producen en OUT_DIR y no se copian a consumidores.
-
-## 6. Decisiones de producto que condicionan el código
-
-IR.LOWERING, IR.OBSERVATION-POINTS, IR.SOURCE-MAP y orden de efectos de LANG. Ejecutar y observar conservan la misma semántica. Los identificadores, el contenido de
-literales y los efectos del programa se preservan; idioma de interfaz y vocabulario son independientes.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-P1 y P3 sobre corpus y generados; cada traducción y primera trampa en distintas posiciones de evaluación. El resultado pasa el verificador. Tests espejo, caminos felices, infelices y límites explícitos. Cada verificador tiene un negativo
-con violación deliberada. No se cierran pendientes hasta tener cargo xtask verify y conformidad en verde.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-La RI tipada conserva el orden normativo; se rechaza optimizar antes de conservar efectos, tramos y variables observables.
-
-
-### Funciones como valores y ámbitos de ejecución
-
-Los valores función se bajan como identidad numérica de código y asa de entorno, con clases internas que copian solo las capturas. `closure_values` separa construcción y lectura de capturas; la lectura cruda conserva las referencias cero inactivas que forman parte de valores agregados. `indirect_calls` aplana argumentos y resultados según la firma estructural. Los prototipos internos fijan la firma verificable de la llamada sin ejecutar el cuerpo del prototipo. Las llamadas a nombres conocidos permanecen directas. Los orígenes conservan el intervalo léxico de cada variable desde su declaración para observación y raíces.
-
-## Colecciones, interfaces e iteración con limpieza
-
-Las interfaces se borran tras comprobar y monomorfizar; las llamadas conservan la resolución de clase y los slots virtuales existentes. Las colecciones se bajan a collection.* con hojas escalares antes de referencias; Buscar y Eliminar de diccionario construyen Opcional y conservan el valor previo antes de borrar. La salida recorre contenidos en orden, con texto delimitado y el marcador de clausura vigente. Para Cada evalúa el receptor una vez y comprueba su versión en la cabecera de cada avance, también antes de decidir el final. Los ámbitos de limpieza se representan durante compilación: cada arista de salida emite sus cuerpos en orden inverso. El retorno conserva primero el valor o las celdas de resultado; cuando hay limpiezas pendientes copia el operando con `value.require` antes de emitirlas, porque una limpieza puede reasignar la variable devuelta y los valores de una variable comparten registro. Los literales de delimitadores del formato de colecciones llevan el tramo de la expresión: sin él, las raíces léxicas no cubren la colección durante la recolección y un recolector forzado la libera antes de terminar de formatearla. Salir transporta los valores exteriores mediante parámetros SSA hacia la salida del bucle interior. No existe pila dinámica de manejadores y una trampa no atraviesa estas aristas.
-
-Los ámbitos de tarea emiten `task.scope_open`/`task.scope_join`; `Lanzar` emite `task.spawn` con el destino y sus argumentos; `Aguardar` emite `task.await`. Las uniones aparecen en la salida normal del ámbito y en las aristas de retorno o salida de bucle que cruzan ámbitos activos. Aún no se generan comprobaciones de cancelación ni aristas que ejecuten `Diferir` ante cancelación.
-
-Los tests de estas capacidades se ejecutaron en selecciones acotadas, incluida la comparación de gemelos con recolección forzada. La conformidad del corpus sigue pendiente de la revisión editorial independiente de los contratos nuevos, y la medición de tamaño excede el presupuesto de Wasm.
-
-
-effect_call conserva receptor, identidad normativa de operación y argumentos evaluados de izquierda
-a derecha, seguidos por celdas de resultado. Resultado usa tres hojas canónicas: discriminante,
-palabra escalar y referencia; ErrorES superpone código textual e incertidumbre. Las operaciones
-puras de Bytes usan una celda del tipo de resultado. El verificador valida aridad, bancos y celdas
-antes del bytecode; ninguna respuesta de host se convierte silenciosamente en cero.
-
-## Resultados y suspensión cooperativa de tareas
-
-`task_wrappers` genera una entrada interna por destino de lanzamiento. Invoca la unidad con celdas
-locales de resultado y emite `task.outcome` con las hojas exitosas o las del error. Así una hija no
-recibe celdas locales prestadas del padre y los retornos compuestos mantienen la misma representación
-que las llamadas ordinarias. Las operaciones generadas conservan el tramo de la cabecera de la unidad.
-`task_values` concentra las cargas tipadas del transporte de resultados, compartidas con recepción
-y con el agregado del ámbito. `task_scope_result` enlaza el opcional después de la unión.
-
-`suspension_points` registra continuaciones de limpieza para los marcos y de salida para el cuerpo
-del ámbito antes de las esperas. Cada continuación usa los valores y limpiezas activos en ese punto;
-no ejecuta sentencias posteriores del cuerpo cancelado. Los canales bajan por `channel_operations`,
-y `select_dispatch` reutiliza la unión y las decisiones de `Segun`. La inicialización implícita de
-una rama no emite una sentencia adicional. Las expresiones de canal se evalúan una sola vez antes
-de registrar la elección.
-
-## Instantáneas y retorno de bucles
-
-`snapshot_values` evalúa una vez el valor de origen, aplana sus hojas y emite una única copia conjunta
-de las referencias mediante celdas de salida locales. Los escalares conservan sus bits; repetir la
-instantánea de un valor ya inmutable conserva su aislamiento. El tipo inmutable se borra únicamente
-para decidir la representación de ejecución.
-
-`yield_points` identifica aristas de retorno mediante dominancia e introduce un bloque puente con
-`task.yield_check` y el salto original. Así una condición que abandona el bucle no cede, los argumentos
-SSA conservan sus definiciones y las unidades síncronas no adquieren instrucciones de cesión.
-
-## Lowering de inspección
-
-`inspection_lowering` convierte la expresión tipada en una función temporal con capturas explícitas como parámetros y retorno del valor. Reutiliza `lower_expression`, bancos y operaciones ordinarias, incluidos cortocircuito, campos e índices; no genera ni reanaliza texto de un programa envolvente. La función no contiene E/S ni llamadas admitidas por la frontera de inspección.
-
-## Ampliación numérica y de colecciones
-
-La mezcla estable se sintetiza y reutiliza por tipo y firma de comparador. Los auxiliares no emiten stmt.enter ni decisiones visibles; el comparador conserva sus llamadas y observaciones. Dos copias contabilizadas en celdas aíslan el reordenamiento hasta comprobar la versión y confirmar las hojas completas. Los efectos propios del comparador no se revierten. La búsqueda y la copia de claves usan auxiliares tipados.
-
-## Resultado falible de un opcional
-
-`Obtener` es la primera operación de efecto cuyo resultado es `Resultado<Opcional<T>, ErrorES>`. El tipo de resultado
-de la llamada al efecto es el del valor interno del opcional (`str` en este caso): el verificador de RI exige la misma
-forma que para un opcional no falible, y la ausencia viaja como referencia nula en la última de las tres celdas. Sin
-esa reducción `effect_values.rs` bajaba el opcional anidado a `unit` y el verificador rechazaba el módulo.
-
-## Argumentos registro que viven en celdas
-
-`record_arrays::array_values` también recibe las variables registro simples, no solo los arreglos de registros. Cuando
-la variable se pasa además por referencia en otro punto, sus hojas viven en celdas y el paso por valor emite `cell.load`,
-que puede atrapar. Esa carga salía sin tramo de fuente, la verificación de la RI la rechazaba (`IR.WELL-FORMEDNESS#R7`) y
-la API devolvía `analysisFailed` sin diagnóstico. La carga lleva ahora el tramo del argumento (`LANG.TYPES.RECORD#R3`,
-caso C54).
+Se ejecutan desde `packages/pseudolearn_engine`.
