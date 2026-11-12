@@ -303,6 +303,10 @@ Valores p95 en ms. Antes de las correcciones, en esta misma revisión base: `fil
   VS Code de escritorio con el VSIX instalado desde cero (host real 30/30) y app macOS
   (`integration_test/real_api_acceptance_test.dart`, `ACCEPTANCE OUTPUT [200, Rick Sanchez, Alive]`).
 - No ejecutado en esta fase: VS Code con interfaz en Windows, app Windows e iOS (simulador verificado en PG-B.27).
+- Prueba manual de la persona en un iPhone físico (2026-11-12): VS Code para la Web 1.144.0 con el VSIX web de esta
+  fase, servido desde la Mac por la red local con HTTPS (CA local de 30 días instalada en el teléfono) y el proyecto del
+  kit de E-PG-08. La persona informa que funciona correctamente, y también la app. Es una comprobación de humo: no usa
+  vscode.dev/github.dev ni la planilla del kit, así que no sustituye a E-PG-08, que sigue diferido.
 
 Revisión Git de cierre: commits de `9264df25` al commit documental de cierre, publicados por push ordinario en
 `feature/agregar-ruta-de-especificacion` · Verificadores ejecutados: §11.3 · Pendientes justificados: iOS físico, VS Code con interfaz y app en Windows · Puntos de §4 cumplidos: PG-7.01–.11 y .13–.19 (`.12`
