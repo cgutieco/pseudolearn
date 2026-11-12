@@ -44,7 +44,7 @@ FinAlgoritmo
 
 | Superficie                                           | Qué ofrece                                                                                                                                                                                                                              | Estado                                                                                                       |
 |------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
-| **Extensión de VS Code** (`apps/pseudolearn_vscode`) | Resaltado, errores en vivo, navegación, renombrado, ayuda en el cursor, ejecución con entrada por teclado, depuración, traducción de vocabulario y herramientas para asistentes de código. También en VS Code para la Web mediante Wasm | Versión previa de uso privado; se instala desde un VSIX en macOS con Apple silicon                           |
+| **Extensión de VS Code** (`apps/pseudolearn_vscode`) | Resaltado, errores en vivo, navegación, renombrado, ayuda en el cursor, ejecución con entrada por teclado, depuración, traducción de vocabulario y herramientas para asistentes de código. También en VS Code para la Web mediante Wasm | Versión previa de uso privado; se instala desde un VSIX en macOS con Apple silicon o Windows x64             |
 | **App PseudoLearn** (`apps/pseudolearn_app`)         | Editor con diagnósticos, ejecución paso a paso, ordinograma, estructograma y diagramas de clases, código equivalente, ruta de aprendizaje, cuenta con sincronización y el agente Nodo                                                   | Cliente Flutter para iOS, macOS y Windows; la validación de plataformas se limita inicialmente a macOS e iOS |
 | **CLI `pseudo`** (`apps/pseudolearn_cli`)            | `comprobar`, `ejecutar`, `compilar`, `formatear`, `traducir`, `ri`, `bloquear`, `preferencias` y servidores LSP, DAP y MCP                                                                                                              | Base de las demás superficies de escritorio                                                                  |
 | **Sitio web** (`apps/pseudolearn_web`)               | Presentación pública del producto                                                                                                                                                                                                       | Astro                                                                                                        |
@@ -201,11 +201,13 @@ Las superficies de la app se sincronizan mediante identidades del programa, no m
 
 La verificación habitual es local. `verify-monorepo.yml` se ejecuta únicamente por despacho manual y su trabajo
 `native-target` compila y ejecuta los programas de aceptación de `pseudo compilar` en Linux x64, macOS x86_64,
-macOS arm64 y Windows x64; con la entrada `native_targets_only` se ejecuta solo ese trabajo. Los workflows productivos
+macOS arm64 y Windows x64, y `extension-windows` empaqueta y prueba el VSIX `win32-x64`; con la entrada
+`native_targets_only` se ejecutan solo esos dos trabajos. Los workflows productivos
 conservan sus disparadores propios. Los resultados de un sistema operativo no certifican otro.
 
 SEE verifica corpus, anclajes, exportaciones, conformidad, propiedades y referencias documentales, y su puerta local
-rechaza dependencias operativas del núcleo retirado. Las suites reflejan sus capas y cubren caminos felices, fallos y
+rechaza dependencias operativas del núcleo retirado y términos de la política de concesiones y simulación ya
+erradicada. Las suites reflejan sus capas y cubren caminos felices, fallos y
 límites; cada verificador mecánico incluye una violación deliberada que debe rechazar. Un resultado de rendimiento
 desfavorable no se convierte en exención ni se sustituye por otro estimador.
 
