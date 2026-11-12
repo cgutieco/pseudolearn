@@ -1,33 +1,53 @@
 # xtask
 
-## 1. Qué es y qué no es
+Orquestador de verificación del workspace `ceiling`: genera la exportación del corpus y ejecuta en orden los
+verificadores. Se invoca con el alias `cargo xtask`.
 
-Recolección de medidas con validación del corpus. Sin consumidores fuera del experimento.
+**No hace:** no recolecta mediciones ni contiene lógica de cargas; ese trabajo es de `ceiling_runner`.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-Desde el workspace: `cargo test -p xtask` y `cargo xtask verify`. Sin despliegue.
+```mermaid
+flowchart BT
+    spec["packages/pseudolearn_spec<br/>see_cli"] --> xtask["xtask"]
+    checks["packages/pseudolearn_rust_checks<br/>pseudolearn_check_command"] --> xtask
+    cargo["cargo fmt, clippy, test, deny"] --> xtask
+```
 
-## 3. Arquitectura y modelo del sistema
+Las dependencias son programas invocados por proceso; `xtask/Cargo.toml` no declara ninguna.
 
-Capa xtask; dependencias: ceiling_kernels, ceiling_statistics, serde_json. Sin acceso al motor ni al núcleo Dart. Reglas en architecture.yaml del workspace.
+## Flujo principal
 
-## 4. Decisiones de diseño y fundamentos técnicos
+Orden de ejecución; el primer paso que falla detiene el resto:
 
-Problema: aislar semántica de representación. Elección: V1–V3 comparten algoritmos monomorfizados; V0 usa estructuras idiomáticas. Se descarta comparar algoritmos diferentes. Problema: congelar memoria sin copiar todo. Elección: asas u32, barrera de época, Rc por página, bancos separados y trampas diferidas hasta efectos; V3 conserva puntos cada milisegundo aproximado. Se descarta atribuir a la futura VM los tiempos de estos núcleos compilados. Problema: ruido entre procesos. Elección: diez procesos, treinta muestras, bootstrap emparejado al 95 %, sin descartar muestras; procedencia previa a compilación.
+```mermaid
+flowchart LR
+    export["see export"] --> fmt["fmt --check"]
+    fmt --> clippy["clippy -D warnings"]
+    clippy --> test["test --workspace"]
+    test --> deny["deny check"]
+    deny --> all["checks all"]
+    all --> toolchain["checks toolchain"]
+```
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+`fmt`, `clippy` y `test` cubren todo el workspace (`clippy` con `--all-targets`). `checks all .` pasa todos los
+verificadores de `pseudolearn_rust_checks` a esta carpeta y `checks toolchain ../../..` ejecuta su verificación de
+versiones sobre la raíz del monorepo.
 
-Código inglés sin comentarios, unsafe, índices que puedan entrar en pánico ni conversiones numéricas con pérdida. Fallos como Result; límites leídos de architecture.yaml. Tests externos en tests/ espejo de src/.
+## Reglas que conviene saber
 
-## 6. Decisiones de producto que condicionan el código
+- Único argumento aceptado: `verify`; cualquier otro imprime el uso y termina con error.
+- Sin dependencias de Cargo: `may_import` y `external_dependencies` vacíos, y la capa está marcada como `tooling: true`
+  en `architecture.yaml`.
+- Las rutas a `pseudolearn_spec` y `pseudolearn_rust_checks` son relativas, así que solo funciona desde la carpeta
+  `ceiling/`.
 
-La salida esperada procede de PERF.SUITE.CORE exportado. No se captura desde una variante. V2/V1 superior a 1,30 en una familia impone revisión del diseño de memoria antes de R5; el resultado desfavorable se conserva.
+## Comandos útiles
 
-## 7. Verificación, testing y aseguramiento de calidad
+| Para qué                    | Comando               |
+|-----------------------------|-----------------------|
+| Verificar todo el workspace | `cargo xtask verify`  |
+| Probar este crate           | `cargo test -p xtask` |
 
-cargo xtask verify ejecuta formato, Clippy, tests, cargo-deny y los verificadores del monorepo. Tests de resultados de los diez algoritmos y tamaños contra el corpus, desbordamiento, división por cero, índice inválido, tamaño cero, memoria compartida y puntos de control. El recolector rechaza muestras incompletas y salidas incorrectas.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-PERF.PROTOCOL define la metodología; PERF.SUITE.CORE define algoritmos y controles. AWFY aporta los algoritmos bajo MIT, con aviso en el README del paquete padre. Se descarta adoptar resultados de rendimiento de otras máquinas o lenguajes.
+Requisitos: Rust 1.99.0 con rustfmt y Clippy, `cargo-deny` y las toolchains de `pseudolearn_spec` y
+`pseudolearn_rust_checks`.

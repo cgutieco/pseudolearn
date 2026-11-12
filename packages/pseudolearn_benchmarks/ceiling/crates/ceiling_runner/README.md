@@ -1,53 +1,83 @@
 # ceiling_runner
 
-## 1. Qué es y qué no es
+Binario `ceiling` que carga las cargas de trabajo del corpus, las mide por procesos sobre las variantes de
+`ceiling_kernels`, valida cada salida y escribe las muestras crudas y su resumen estadístico.
 
-Recolección de medidas con validación del corpus. Sin consumidores fuera del experimento.
+**No hace:** no define algoritmos ni estadística propia, no compara contra ninguna VM y no sube resultados a ninguna
+parte; escribe archivos JSON en un directorio local.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-Desde el workspace: `cargo test -p ceiling_runner` y `cargo xtask verify`. Sin despliegue.
+```mermaid
+flowchart BT
+    spec["packages/pseudolearn_spec<br/>specifications/export.json"] --> runner["crates/ceiling_runner"]
+    kernels["crates/ceiling_kernels"] --> runner
+    statistics["crates/ceiling_statistics"] --> runner
+    json["serde_json"] --> runner
+```
 
-## 3. Arquitectura y modelo del sistema
+## Arquitectura
 
-Capa ceiling_runner; dependencias: ceiling_kernels, ceiling_statistics, serde_json. Sin acceso al motor ni al núcleo Dart. Reglas en architecture.yaml del workspace.
+```mermaid
+flowchart BT
+    corpus["corpus"] --> worker["worker"]
+    corpus --> memory_worker["memory_worker"]
+    worker --> collection["collection"]
+    memory_worker --> collection
+    capture["capture"] --> collection
+    collection --> report["report"]
+    collection --> memory_report["memory_report"]
+    main["main<br/>dispatch"] --> collection
+```
 
-## 4. Decisiones de diseño y fundamentos técnicos
+Las flechas indican quién usa a quién en la recolección; `main` también invoca directamente los trabajadores y los
+informes.
 
-Problema: distinguir el costo del contrato semántico del techo histórico. Elección: V1F-S se identifica como variante 9 y usa los algoritmos comprobados con definición y recolección por celdas vivas; sus controles ordinarios y con recolección forzada se contrastan con la exportación. Se descarta modificar las variantes 0–8 o sus campañas.
+| Pieza                     | Responsabilidad                                                                               |
+|---------------------------|-----------------------------------------------------------------------------------------------|
+| `main`                    | Despacha el primer argumento y fija el directorio por defecto de cada comando                 |
+| `corpus`                  | Lee `PERF.SUITE.CORE` del export y exige exactamente diez cargas con la etiqueta pedida       |
+| `worker`                  | Mide las variantes 0 a 3 (`run`) o 0 a 8 (`run-remanso`), con 30 iteraciones por carga        |
+| `memory_worker`           | Mide los tres recolectores sobre las diez cargas más `storage-deep` y `list-churn`            |
+| `capture`                 | Procedencia: commit, hashes de fuentes y corpus, `rustc`, SO, hardware y resolución del reloj |
+| `collection`              | Compila en release, lanza diez procesos con `/usr/bin/time -lp` y guarda los archivos         |
+| `report`, `memory_report` | Agrupan las muestras, calculan razones con intervalo bootstrap y escriben `summary.json`      |
 
-Problema: aislar semántica de representación. Elección: V1–V3 comparten algoritmos monomorfizados; V0 usa estructuras idiomáticas. Se descarta comparar algoritmos diferentes. Problema: congelar memoria sin copiar todo. Elección: asas u32, barrera de época, Rc por página, bancos separados y trampas diferidas hasta efectos; V3 conserva puntos cada milisegundo aproximado. Se descarta atribuir a la futura VM los tiempos de estos núcleos compilados. Problema: ruido entre procesos. Elección: diez procesos, treinta muestras, bootstrap emparejado al 95 %, sin descartar muestras; procedencia previa a compilación.
+## Flujo principal
 
+Flujo de datos, no de dependencias:
 
-Problema: comparar acceso paginado con acceso plano requiere el mismo coste de llamadas.
-Elección: el experimento de revalidación conserva V0–V3 e incorpora V1F con los bancos de V2,
-V2R con montón contiguo, asignación en bloques puestos a cero, trampas inmediatas y combustible,
-V2R sin comprobación de índice del lenguaje como cota experimental, V3R con sombra diferencial
-sin barrera y V3R con tarjetas. Ninguna variante se usa como implementación del motor.
-Las políticas de observación se monomorfizan: la diferencial no ejecuta código por escritura;
-la de tarjetas marca el bloque modificado. Los puntos comparan bloques de 64 palabras,
-retienen contenido antiguo y copian los bancos activos; la captura queda acotada a 64 puntos.
-El combustible persiste entre repeticiones de una muestra y se exige al menos un punto real
-por muestra observada. Reiniciar una repetición borra el estado lógico, no el contador de muestras.
-El asignador avanza sobre bloques de 4096 palabras inicializados de una vez, sin reservar por objeto.
-Alternativas descartadas: V1 sin marcos como denominador de llamadas, muestras sin puntos reales,
-reemplazar resultados antiguos o atribuir rendimiento de estos núcleos nativos a la VM.
-La revalidación se ejecuta con `cargo run --release -p ceiling_runner -- collect-remanso <directorio-nuevo>`;
-los resultados locales incluyen diez procesos y treinta iteraciones. `summarize-remanso <directorio>`
-recalcula el resumen desde datos externos.
+```mermaid
+flowchart LR
+    capture["capture.json"] --> build["cargo build --release"]
+    build --> processes["10 procesos"]
+    processes --> raw["raw.json y processes.json"]
+    raw --> summary["summary.json"]
+```
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+Cada proceso debe emitir exactamente 1200 filas (`collect`), 2700 (`collect-remanso`) o 1080 (`collect-memory`); de lo
+contrario la recolección falla. Dentro de un proceso, el orden de las variantes rota por iteración.
 
-Código inglés sin comentarios, unsafe, índices que puedan entrar en pánico ni conversiones numéricas con pérdida. Fallos como Result; límites leídos de architecture.yaml. Tests externos en tests/ espejo de src/.
+## Reglas que conviene saber
 
-## 6. Decisiones de producto que condicionan el código
+- Solo importa `ceiling_kernels` y `ceiling_statistics`, y como dependencia externa solo `serde_json`
+  (`architecture.yaml`).
+- Una muestra acumula repeticiones hasta 5 ms; las variantes 3, 7 y 8 exigen al menos un punto de control real y fallan
+  si pasa un segundo sin él.
+- Toda salida se compara con el valor esperado del corpus y una diferencia aborta la medición; no se descarta ninguna
+  muestra.
+- Los trabajadores `run*` imprimen una fila JSON por muestra; solo `collect*` las agrega, así que no se invocan a mano
+  salvo para depurar.
 
-La salida esperada procede de PERF.SUITE.CORE exportado. No se captura desde una variante. V2/V1 superior a 1,30 en una familia impone revisión del diseño de memoria antes de R5; el resultado desfavorable se conserva.
+## Comandos útiles
 
-## 7. Verificación, testing y aseguramiento de calidad
+| Para qué                   | Comando                                                                 |
+|----------------------------|-------------------------------------------------------------------------|
+| Recolectar variantes 0 a 3 | `cargo run --release -p ceiling_runner -- collect <directorio>`         |
+| Recolectar variantes 0 a 8 | `cargo run --release -p ceiling_runner -- collect-remanso <directorio>` |
+| Recolectar recolectores    | `cargo run --release -p ceiling_runner -- collect-memory <directorio>`  |
+| Resumir una captura        | `cargo run --release -p ceiling_runner -- summarize <directorio>`       |
+| Probar este crate          | `cargo test -p ceiling_runner`                                          |
 
-cargo xtask verify ejecuta formato, Clippy, tests, cargo-deny y los verificadores del monorepo. Tests de resultados de los diez algoritmos y tamaños contra el corpus, desbordamiento, división por cero, índice inválido, tamaño cero, memoria compartida y puntos de control. El recolector rechaza muestras incompletas y salidas incorrectas.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-PERF.PROTOCOL define la metodología; PERF.SUITE.CORE define algoritmos y controles. AWFY aporta los algoritmos bajo MIT, con aviso en el README del paquete padre. Se descarta adoptar resultados de rendimiento de otras máquinas o lenguajes.
+Requisitos: la exportación del corpus generada (`cargo xtask verify` la crea), `git`, y macOS para recolectar. Sin
+directorio, `summarize*` y `collect*` usan `../results/e02`, `e02r` o `e12`.

@@ -1,33 +1,39 @@
 # ceiling_statistics
 
-## 1. Qué es y qué no es
+Funciones estadísticas puras sobre listas de `f64`: media, media geométrica, intervalo bootstrap, razones emparejadas y
+detección de puntos de cambio.
 
-Estadística reproducible por proceso. Sin consumidores fuera del experimento.
+**No hace:** no lee archivos, no ejecuta procesos ni conoce las cargas de trabajo; solo recibe números.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-Desde el workspace: `cargo test -p ceiling_statistics` y `cargo xtask verify`. Sin despliegue.
+```mermaid
+flowchart BT
+    std["biblioteca estándar"] --> statistics["crates/ceiling_statistics"]
+    statistics --> runner["crates/ceiling_runner"]
+```
 
-## 3. Arquitectura y modelo del sistema
+## Arquitectura
 
-Capa ceiling_statistics; dependencias: biblioteca estándar. Sin acceso al motor ni al núcleo Dart. Reglas en architecture.yaml del workspace.
+| Pieza                   | Responsabilidad                                                                                           |
+|-------------------------|-----------------------------------------------------------------------------------------------------------|
+| `mean`                  | Media; rechaza listas vacías o con valores no finitos                                                     |
+| `geometric`             | Media geométrica; rechaza valores no positivos                                                            |
+| `confidence`            | Intervalo del 95 %: 1000 remuestreos con semilla fija 42, cuantiles en los puestos 25 y 974               |
+| `ratio`                 | Cociente elemento a elemento; rechaza longitudes distintas, vacío o denominadores no positivos            |
+| `change_points::detect` | Fronteras (a partir de cinco muestras por lado) donde la diferencia de medias supera el 5 % y 3,3 errores |
 
-## 4. Decisiones de diseño y fundamentos técnicos
+## Reglas que conviene saber
 
-Problema: aislar semántica de representación. Elección: V1–V3 comparten algoritmos monomorfizados; V0 usa estructuras idiomáticas. Se descarta comparar algoritmos diferentes. Problema: congelar memoria sin copiar todo. Elección: asas u32, barrera de época, Rc por página, bancos separados y trampas diferidas hasta efectos; V3 conserva puntos cada milisegundo aproximado. Se descarta atribuir a la futura VM los tiempos de estos núcleos compilados. Problema: ruido entre procesos. Elección: diez procesos, treinta muestras, bootstrap emparejado al 95 %, sin descartar muestras; procedencia previa a compilación.
+- Sin dependencias: `may_import` y `external_dependencies` vacíos en `architecture.yaml`.
+- Todo fallo es `Result<_, String>`; ninguna función entra en pánico ni usa conversiones numéricas con pérdida.
+- El bootstrap es determinista: la misma lista da siempre el mismo intervalo.
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+## Comandos útiles
 
-Código inglés sin comentarios, unsafe, índices que puedan entrar en pánico ni conversiones numéricas con pérdida. Fallos como Result; límites leídos de architecture.yaml. Tests externos en tests/ espejo de src/.
+| Para qué                    | Comando                            |
+|-----------------------------|------------------------------------|
+| Probar este crate           | `cargo test -p ceiling_statistics` |
+| Verificar todo el workspace | `cargo xtask verify`               |
 
-## 6. Decisiones de producto que condicionan el código
-
-La salida esperada procede de PERF.SUITE.CORE exportado. No se captura desde una variante. V2/V1 superior a 1,30 en una familia impone revisión del diseño de memoria antes de R5; el resultado desfavorable se conserva.
-
-## 7. Verificación, testing y aseguramiento de calidad
-
-cargo xtask verify ejecuta formato, Clippy, tests, cargo-deny y los verificadores del monorepo. Tests de resultados de los diez algoritmos y tamaños contra el corpus, desbordamiento, división por cero, índice inválido, tamaño cero, memoria compartida y puntos de control. El recolector rechaza muestras incompletas y salidas incorrectas.
-
-## 8. Fuentes consultadas y genealogía conceptual
-
-PERF.PROTOCOL define la metodología; PERF.SUITE.CORE define algoritmos y controles. AWFY aporta los algoritmos bajo MIT, con aviso en el README del paquete padre. Se descarta adoptar resultados de rendimiento de otras máquinas o lenguajes.
+Requisitos: ejecutar desde la carpeta `ceiling/` con el Rust fijado en `rust-toolchain.toml`.
