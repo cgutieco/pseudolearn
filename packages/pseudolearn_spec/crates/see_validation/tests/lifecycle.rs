@@ -133,7 +133,9 @@ fn version_changes_require_an_increase_and_a_matching_classification() -> Result
     assert!(
         !see_validation::lifecycle::check(&specification, &lock)
             .iter()
-            .any(|error| error.starts_with("SEE-VERSION") || error.starts_with("SEE-CLASSIFICATION"))
+            .any(
+                |error| error.starts_with("SEE-VERSION") || error.starts_with("SEE-CLASSIFICATION")
+            )
     );
     Ok(())
 }

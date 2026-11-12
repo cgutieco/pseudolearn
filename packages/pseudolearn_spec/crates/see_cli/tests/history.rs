@@ -86,14 +86,10 @@ fn reads_member_corpus_from_repository_root_paths() -> Result<(), String> {
     let text = std::fs::read_to_string(fixture.root.join("specifications/see/sample.md"))
         .map_err(|error| error.to_string())?;
     std::fs::write(&path, &text).map_err(|error| error.to_string())?;
-    let subject_manifest =
-        std::fs::read_to_string(fixture.root.join("conformance.yaml"))
-            .map_err(|error| error.to_string())?;
-    std::fs::write(
-        member.join("conformance.yaml"),
-        subject_manifest,
-    )
-    .map_err(|error| error.to_string())?;
+    let subject_manifest = std::fs::read_to_string(fixture.root.join("conformance.yaml"))
+        .map_err(|error| error.to_string())?;
+    std::fs::write(member.join("conformance.yaml"), subject_manifest)
+        .map_err(|error| error.to_string())?;
     initialize(&fixture)?;
     std::fs::write(
         path,

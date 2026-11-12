@@ -37,9 +37,7 @@ fn check_initial(specification: &Specification, errors: &mut Vec<String>) {
         errors.push("SEE-VERSION: new specification must start at 1.0.0".to_owned());
     }
     if metadata.cambio.is_some() {
-        errors.push(
-            "SEE-CLASSIFICATION: new specification cannot carry a change field".to_owned(),
-        );
+        errors.push("SEE-CLASSIFICATION: new specification cannot carry a change field".to_owned());
     }
 }
 
