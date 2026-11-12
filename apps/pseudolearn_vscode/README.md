@@ -96,8 +96,11 @@ flowchart LR
 - El VSIX contiene solo lo declarado en `artifact.contract.json`; excluye fuentes, tests, scripts, ejemplos, mapas y
   `node_modules`.
 - El README del VSIX es `marketplace/README.md` (`readme` del contrato). El `README.md` de esta carpeta no se empaqueta.
-- **El VSIX de escritorio solo admite `dist/extension.js`** del directorio `dist/`: cualquier otro archivo (por ejemplo un `dist/web/test/index.js` residual de una compilación local) es un recurso no declarado y `pnpm package` falla.
-- **Salida del host web**: el código de salida que pide el programa (`console_set_exit_code`) se muestra al terminar como `(exit code N)` cuando no es cero. La salida de error no tiene estilo propio porque el motor la une a la salida normal del programa; separarla exigiría que el motor publique los tramos de error.
+- **El VSIX de escritorio solo admite `dist/extension.js`** del directorio `dist/`: cualquier otro archivo (por ejemplo
+  un `dist/web/test/index.js` residual de una compilación local) es un recurso no declarado y `pnpm package` falla.
+- **Salida del host web**: el código de salida que pide el programa (`console_set_exit_code`) se muestra al terminar
+  como `(exit code N)` cuando no es cero. La salida de error no tiene estilo propio porque el motor la une a la salida
+  normal del programa; separarla exigiría que el motor publique los tramos de error.
 
 ## Comandos útiles
 
@@ -121,7 +124,8 @@ Desde esta carpeta.
 | Depuración por stdio                  | `pnpm test:dap:stdio`                                               |
 | Prueba en VS Code real                | `node tests/host/run-host.mjs trusted` (o `restricted`)             |
 
-Requisitos: Node 22.23.3, pnpm 12.8.1; `build:cli` y `package` necesitan Cargo y un host `darwin-arm64` o `win32-x64`; `package:web`
+Requisitos: Node 22.23.3, pnpm 12.8.1; `build:cli` y `package` necesitan Cargo y un host `darwin-arm64` o `win32-x64`;
+`package:web`
 necesita además la cadena del motor para el Wasm.
 
 `test:web` corre Chromium, Firefox y WebKit de Playwright. `PSEUDOLEARN_WEB_BROWSERS=firefox` (lista separada por comas)
