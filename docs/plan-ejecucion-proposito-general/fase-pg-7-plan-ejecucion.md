@@ -213,7 +213,7 @@ Equipo: macOS 27.2 (Darwin 27.2.0), Apple M2 de 8 núcleos, Rust 1.99.0, Node 22
 
 | Tarea | Estado | Evidencia | Motivo o comentario |
 |---|---|---|---|
-| `PG-7.01.01`–`.03` | Cumplido | `see conform` sobre el corpus final: `engine` 34 propiedades y 3 412 observaciones; `service` 8 y 229; `cli` 4 y 193; `aot` 17 y 2 893; `app` 2 y 275; **0 divergencias** en todos. `see differential`: 2 070 observaciones, 0 diferencias, 0 exentas | La CLI y `aot` registraban propiedades de reglas exentas como «pendientes»; el selector ya no informa un resultado no disponible de una regla exenta (`28930221`, `ebdae2f6`); la CLI queda con 4 propiedades cumplidas y 0 pendientes |
+| `PG-7.01.01`–`.03` | Cumplido | `see conform` sobre el corpus final: `engine` 34 propiedades y 3 412 observaciones; `service` 8 y 229; `cli` 4 y 193; `aot` 17 y 2 893; `app` 2 y 275; **0 divergencias** en todos. `see differential`: 2 070 observaciones, 0 diferencias, 0 exentas | La CLI y `aot` registraban propiedades de reglas exentas como «pendientes»; el selector ya no informa un resultado no disponible de una regla exenta (`28930221`, `ebdae2f6`); repetidas con el selector corregido, la CLI queda con 4 propiedades cumplidas y `aot` con 17, ambas con 0 pendientes y sin divergencias en sus casos |
 | `PG-7.02.01` | Cumplido | E-PG-02 completo (§11.5) | Umbral de `DP7-03` |
 | `PG-7.02.02` | Cumplido | `DP7-04`, `DP7-05`, `DP7-06`, `DP7-10`, `DP7-11`; `PERF.AOT.LEVEL` y `PERF.ARTIFACT.SIZE` editados en su versión y reanclados (`d2287b02`) | Decisiones bajo delegación expresa |
 | `PG-7.03.01` | Cumplido | [Informe final](informe-final-ent-1.md), §1 | C-07/C-08 con el criterio de autoridad plena |
@@ -290,7 +290,8 @@ Valores p95 en ms. Antes de las correcciones, en esta misma revisión base: `fil
   Linux x64, macOS arm64 y Windows x64 en verde; `physical_paths` 4/4 en `windows-latest`; la VM recorre las seis
   formas de ruta en Windows; `extension-windows` empaqueta el VSIX `win32-x64` (SHA-256 `f51a24a1…`), pasa 25 pruebas del
   contrato y ejecuta el `pseudo.exe` desempaquetado del VSIX. El primer run reveló que `upload-artifact` omitía la
-  carpeta oculta del VSIX (`2ef1b08a`).
+  carpeta oculta del VSIX (`2ef1b08a`). En el segundo, el trabajo macOS Intel perdió el runner por un fallo de
+  infraestructura de GitHub; relanzado, pasó (8 min 16 s) y el run terminó en `success`.
 - Programa de PG-B.27 (`200 / Rick Sanchez / Alive`): CLI VM en `es` y `en`, CLI `--nativo`, binario exacto del VSIX,
   VS Code de escritorio con el VSIX instalado desde cero (host real 30/30) y app macOS
   (`integration_test/real_api_acceptance_test.dart`, `ACCEPTANCE OUTPUT [200, Rick Sanchez, Alive]`).
