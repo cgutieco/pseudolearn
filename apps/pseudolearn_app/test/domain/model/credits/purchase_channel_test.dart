@@ -19,4 +19,8 @@ void main() {
     expect(PurchaseChannel.values.where((channel) => channel.restoresPurchases), [PurchaseChannel.appStore]);
     expect(PurchaseChannel.simulated.managesSubscriptions, isFalse);
   });
+
+  test('only Paddle quotes its price at its own checkout', () {
+    expect(PurchaseChannel.values.where((channel) => channel.quotesPriceAtCheckout), [PurchaseChannel.paddle]);
+  });
 }

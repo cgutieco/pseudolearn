@@ -4,6 +4,7 @@ final class DevicePreferences {
   final bool showIndentGuides;
   final bool hasSeenOnboarding;
   final bool editorAssistance;
+  final bool agentLauncherShown;
 
   const DevicePreferences({
     required this.editorFontSize,
@@ -11,6 +12,7 @@ final class DevicePreferences {
     required this.showIndentGuides,
     required this.hasSeenOnboarding,
     this.editorAssistance = false,
+    this.agentLauncherShown = true,
   });
 
   const DevicePreferences.defaults()
@@ -18,7 +20,8 @@ final class DevicePreferences {
         showLineNumbers = true,
         showIndentGuides = true,
         hasSeenOnboarding = false,
-        editorAssistance = false;
+        editorAssistance = false,
+        agentLauncherShown = true;
 
   DevicePreferences copyWith({
     double? editorFontSize,
@@ -26,6 +29,7 @@ final class DevicePreferences {
     bool? showIndentGuides,
     bool? hasSeenOnboarding,
     bool? editorAssistance,
+    bool? agentLauncherShown,
   }) {
     return DevicePreferences(
       editorFontSize: editorFontSize ?? this.editorFontSize,
@@ -33,6 +37,7 @@ final class DevicePreferences {
       showIndentGuides: showIndentGuides ?? this.showIndentGuides,
       hasSeenOnboarding: hasSeenOnboarding ?? this.hasSeenOnboarding,
       editorAssistance: editorAssistance ?? this.editorAssistance,
+      agentLauncherShown: agentLauncherShown ?? this.agentLauncherShown,
     );
   }
 
@@ -42,6 +47,7 @@ final class DevicePreferences {
         'showIndentGuides': showIndentGuides,
         'hasSeenOnboarding': hasSeenOnboarding,
         'editorAssistance': editorAssistance,
+        'agentLauncherShown': agentLauncherShown,
       };
 
   factory DevicePreferences.fromJson(Map<String, dynamic> json) {
@@ -51,6 +57,7 @@ final class DevicePreferences {
       showIndentGuides: json['showIndentGuides'] as bool? ?? true,
       hasSeenOnboarding: json['hasSeenOnboarding'] as bool? ?? false,
       editorAssistance: json['editorAssistance'] as bool? ?? false,
+      agentLauncherShown: json['agentLauncherShown'] as bool? ?? true,
     );
   }
 
@@ -63,7 +70,8 @@ final class DevicePreferences {
           showLineNumbers == other.showLineNumbers &&
           showIndentGuides == other.showIndentGuides &&
           hasSeenOnboarding == other.hasSeenOnboarding &&
-          editorAssistance == other.editorAssistance;
+          editorAssistance == other.editorAssistance &&
+          agentLauncherShown == other.agentLauncherShown;
 
   @override
   int get hashCode => Object.hash(
@@ -72,5 +80,6 @@ final class DevicePreferences {
         showIndentGuides,
         hasSeenOnboarding,
         editorAssistance,
+        agentLauncherShown,
       );
 }

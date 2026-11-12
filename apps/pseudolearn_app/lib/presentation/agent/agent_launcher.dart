@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../application/account/account_cubit.dart';
+import '../../application/account/account_state.dart';
+import '../../application/agent/agent_access.dart';
+import '../../application/agent/agent_launcher_cubit.dart';
 import '../../application/agent/agent_session_cubit.dart';
 import '../../application/agent/agent_session_state.dart';
 import '../../application/credits/credits_cubit.dart';
+import '../../application/credits/credits_state.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../shell/design_canvas.dart';
 import '../shell/device_class.dart';
@@ -35,11 +40,33 @@ final class AgentLauncher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final delegate = GoRouter.of(context).routerDelegate;
-    return ListenableBuilder(
-      listenable: delegate,
-      builder: (context, _) => _PlacedLauncher(
-        aboveFooter: delegate.currentConfiguration.uri.path.startsWith(_editorRoutePrefix),
-        onOpen: () => _open(context),
+    return _LauncherGate(
+      child: ListenableBuilder(
+        listenable: delegate,
+        builder: (context, _) => _PlacedLauncher(
+          aboveFooter: delegate.currentConfiguration.uri.path.startsWith(_editorRoutePrefix),
+          onOpen: () => _open(context),
+        ),
+      ),
+    );
+  }
+}
+
+final class _LauncherGate extends StatelessWidget {
+  final Widget child;
+
+  const _LauncherGate({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AccountCubit, AccountState>(
+      builder: (context, account) => BlocBuilder<CreditsCubit, CreditsState>(
+        builder: (context, credits) => BlocBuilder<AgentLauncherCubit, bool>(
+          builder: (context, preferred) =>
+              agentLauncherShown(signedIn: account is AccountAuthenticated, credits: credits, preferred: preferred)
+                  ? child
+                  : const SizedBox.shrink(),
+        ),
       ),
     );
   }

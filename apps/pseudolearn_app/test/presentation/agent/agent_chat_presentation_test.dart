@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/presentation/agent/agent_chat_presentation.dart';
 import '../../fakes/pump_app.dart';
+import '../../fakes/subscribed_agent.dart';
 
 const ValueKey<String> _launcher = ValueKey('feature:agent');
 const ValueKey<String> _panel = ValueKey('agent-chat-panel');
 
 Future<Rect> _openPanel(WidgetTester tester, Size size) async {
-  await pumpApp(tester, size);
+  await pumpApp(tester, size, dependencies: buildSubscribedDependencies());
   await tester.tap(find.byKey(_launcher));
   await tester.pumpAndSettle();
   return tester.getRect(find.byKey(_panel));

@@ -25,6 +25,14 @@ void main() {
       },
     );
 
+    test('the Nodo launcher is shown by default, round-trips and tolerates old files', () {
+      expect(const DevicePreferences.defaults().agentLauncherShown, isTrue);
+      final hidden = const DevicePreferences.defaults().copyWith(agentLauncherShown: false);
+      expect(DevicePreferences.fromJson(hidden.toJson()), hidden);
+      expect(DevicePreferences.fromJson(const <String, dynamic>{}).agentLauncherShown, isTrue);
+      expect(hidden == const DevicePreferences.defaults(), isFalse);
+    });
+
     test('defaults have expected initial values', () {
       const prefs = DevicePreferences.defaults();
       expect(prefs.editorFontSize, equals(14.0));

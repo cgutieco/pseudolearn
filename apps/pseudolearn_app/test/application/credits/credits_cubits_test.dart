@@ -31,6 +31,21 @@ void main() {
     await cubit.close();
   });
 
+  test('a failed refresh keeps the known period and trial so Nodo stays available offline', () async {
+    final gateway = FakeCreditsGateway(const CreditsKnown(CreditBalance(remaining: 30, allowance: 300, topUp: 0), periodActive: true, trialUsed: true));
+    final cubit = CreditsCubit(gateway: gateway);
+    addTearDown(cubit.close);
+    await cubit.refresh();
+    gateway.next = const CreditsUnavailable(CreditFailure.offline);
+    await cubit.refresh();
+    expect(cubit.state.periodActive, isTrue);
+    expect(cubit.state.trialUsed, isTrue);
+    expect(cubit.state.hasAccess, isTrue);
+    gateway.next = const CreditsUnavailable(CreditFailure.subscriptionRequired);
+    await cubit.refresh();
+    expect(cubit.state.hasAccess, isFalse);
+  });
+
   test('session balances and an exhaustion failure update the credits', () async {
     final updates = StreamController<SessionCredits>();
     final cubit = CreditsCubit(gateway: FakeCreditsGateway(), sessionBalances: updates.stream);

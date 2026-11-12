@@ -7,6 +7,7 @@ import 'package:pseudolearn_app/presentation/shell/shell_bottom_bar.dart';
 import 'package:pseudolearn_app/presentation/shell/shell_navigation_rail.dart';
 import 'package:pseudolearn_app/presentation/theme/tokens/typography.dart';
 import '../../fakes/pump_app.dart';
+import '../../fakes/subscribed_agent.dart';
 
 final class _Window {
   final String name;
@@ -44,7 +45,7 @@ Future<void> _pumpWindow(WidgetTester tester, _Window window, {double textScale 
   addTearDown(tester.view.resetPadding);
   addTearDown(tester.view.resetViewPadding);
   addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
-  await pumpApp(tester, window.size);
+  await pumpApp(tester, window.size, dependencies: buildSubscribedDependencies());
 }
 
 String _currentPath(WidgetTester tester) {

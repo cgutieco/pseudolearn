@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../application/agent/agent_launcher_cubit.dart';
 import '../application/agent/agent_loop.dart';
 import '../application/agent/agent_session_cubit.dart';
 import '../application/agent/code_block_checker.dart';
@@ -64,6 +65,9 @@ List<BlocProvider> buildAgentProviders({
     BlocProvider<PurchaseCubit>(create: (_) => _purchases(dependencies, credits)),
     BlocProvider<AgentConsentCubit>(
       create: (_) => AgentConsentCubit(store: dependencies.agent.consentStore)..load(),
+    ),
+    BlocProvider<AgentLauncherCubit>(
+      create: (_) => AgentLauncherCubit(preferences: dependencies.preferences)..load(),
     ),
   ];
 }

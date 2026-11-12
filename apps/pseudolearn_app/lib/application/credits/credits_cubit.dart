@@ -45,6 +45,8 @@ final class CreditsCubit extends Cubit<CreditsState> {
       CreditsUnavailable(:final failure) => CreditsState(
         status: CreditsStatus.unavailable,
         balance: state.balance,
+        periodActive: state.periodActive,
+        trialUsed: state.trialUsed,
         failure: failure,
         lastRequestSpent: state.lastRequestSpent,
       ),

@@ -7,6 +7,7 @@ import '../application/settings/settings_cubit.dart';
 import '../application/settings/settings_state.dart';
 import '../domain/model/settings/app_theme_mode.dart';
 import '../domain/model/settings/ui_language_id.dart';
+import '../presentation/agent/agent_credits_refresher.dart';
 import '../presentation/l10n/generated/app_localizations.dart';
 import '../presentation/routing/app_router.dart';
 import '../presentation/settings/account/local_account_data_refresher.dart';
@@ -47,7 +48,7 @@ final class CubitScope extends StatelessWidget {
         value: ReplyLinkOpener(dependencies.agent.externalLinks),
         child: MultiBlocProvider(
           providers: buildAppProviders(dependencies, scope: scope),
-          child: LocalAccountDataRefresher(child: _CubitScopeApp(router: router)),
+          child: LocalAccountDataRefresher(child: AgentCreditsRefresher(child: _CubitScopeApp(router: router))),
         ),
       ),
     );

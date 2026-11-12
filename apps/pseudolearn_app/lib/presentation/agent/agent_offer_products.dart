@@ -57,9 +57,11 @@ final class _PlanPrice extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (price != null)
-          AppText(l10n.agentOfferPriceMonthly(price), key: const ValueKey('agent-offer-price'), variant: AppTextVariant.heading3)
+          AppText(l10n.agentOfferPriceMonthly(price), key: const ValueKey('agent-offer-price'), variant: AppTextVariant.heading2)
+        else if (purchase.channel.quotesPriceAtCheckout)
+          AppText(l10n.agentOfferPriceAtCheckout, key: const ValueKey('agent-offer-price-at-checkout'), variant: AppTextVariant.bodyDefault)
         else if (!purchase.channel.sellsOwnTrial)
-          AppText(l10n.agentOfferPriceAtCheckout, key: const ValueKey('agent-offer-price-at-checkout'), variant: AppTextVariant.bodyDefault),
+          AppText(l10n.agentOfferPricePending, key: const ValueKey('agent-offer-price-pending'), variant: AppTextVariant.bodyDefault),
         if (trialAvailable && !purchase.channel.sellsOwnTrial)
           AppText(l10n.agentOfferTrialIncluded, key: const ValueKey('agent-offer-trial-included'), variant: AppTextVariant.bodySmall),
       ],

@@ -269,7 +269,7 @@
       "anchor": "feature:agent",
       "route": "/biblioteca",
       "title": "Nodo, el asistente de IA",
-      "body": "El botón flotante con el nodo y el destello abre Nodo, un asistente de IA que ve la pantalla en la que estás, explica, comprueba y ejecuta programas con el motor, y puede crear o editar algoritmos y ejercicios con tu confirmación. En los ejercicios hace de tutor: da pistas graduadas y solo muestra la solución tras tres intentos fallidos y si la pides. Todo código que muestra va marcado como Verificado o Con errores.",
+      "body": "Con una cuenta que tenga Nodo activo, el botón flotante con el nodo y el destello abre Nodo, un asistente de IA que ve la pantalla en la que estás, explica, comprueba y ejecuta programas con el motor, y puede crear o editar algoritmos y ejercicios con tu confirmación. En los ejercicios hace de tutor: da pistas graduadas y solo muestra la solución tras tres intentos fallidos y si la pides. Todo código que muestra va marcado como Verificado o Con errores. En Ajustes → Nodo ves tus créditos, recargas, gestionas la suscripción y puedes ocultar el botón para practicar sin ayuda.",
       "keywords": [
         "nodo",
         "ia",

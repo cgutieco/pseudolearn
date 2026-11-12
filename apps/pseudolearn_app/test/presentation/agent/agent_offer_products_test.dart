@@ -66,4 +66,13 @@ void main() {
     await tester.pumpAndSettle();
     expect(harness.links.opened.map((url) => url.path), ['/en/terms', '/en/privacy']);
   });
+
+  testWidgets('an App Store without a confirmed price says so instead of sending to a checkout', (tester) async {
+    final harness = PurchaseWidgetHarness(store: ScriptedPurchaseStore(), balance: _noPlan);
+    await harness.pump(tester, const AgentOfferProducts());
+    expect(find.byKey(const ValueKey('agent-offer-price-pending')), findsOneWidget);
+    expect(find.byKey(const ValueKey('agent-offer-price-at-checkout')), findsNothing);
+    expect(find.byKey(const ValueKey('agent-offer-price')), findsNothing);
+    expect(find.text('Suscribirme'), findsOneWidget);
+  });
 }
