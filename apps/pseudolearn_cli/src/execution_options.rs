@@ -8,18 +8,6 @@ const MAX_PENDING_NETWORK: u64 = 8;
 const MAX_HTTP_TIMEOUT_NANOS: u64 = 30_000_000_000;
 const MAX_JSON_DEPTH: usize = 64;
 
-const RETIRED_AUTHORITY_OPTIONS: &[&str] = &[
-    "--grant",
-    "--conceder",
-    "--files",
-    "--archivos",
-    "--origin",
-    "--origen",
-    "--local-origin",
-    "--origen-local",
-    "--files-root",
-];
-
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct ExecutionArguments {
     pub seed: Option<i64>,
@@ -48,13 +36,6 @@ pub fn parse_numeric(
     execution: &mut ExecutionArguments,
 ) -> Result<(), CliError> {
     let flag = arguments.get(*index).map_or("", String::as_str);
-    if RETIRED_AUTHORITY_OPTIONS.contains(&flag) {
-        return Err(CliError::Usage(crate::messages::render(
-            "retiredAuthorityOption",
-            locale,
-            &[("option", flag)],
-        )));
-    }
     let next = index.saturating_add(1);
     let choice = arguments.get(next).map_or("", String::as_str);
     let invalid = || CliError::Usage(invalid_option_value(locale, flag, choice));

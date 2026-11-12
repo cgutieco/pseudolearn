@@ -140,9 +140,7 @@ fn handle_valued_option(
         ),
         "--semilla" | "--seed" | "--profundidad" | "--depth" | "--sentencias" | "--statements"
         | "--celdas" | "--cells" | "--tareas" | "--tasks" | "--grabar-cinta" | "--record-tape"
-        | "--reproducir-cinta" | "--replay-tape" | "--conceder" | "--grant" | "--archivos"
-        | "--files" | "--origen" | "--origin" | "--origen-local" | "--local-origin"
-        | "--files-root" | "--raiz-prueba" | "--test-root" => {
+        | "--reproducir-cinta" | "--replay-tape" | "--raiz-prueba" | "--test-root" => {
             handle_execution_option(raw_arguments, current_index, locale, parsed)
         }
         "--proyecto" | "--project" | "--entrada" | "--entry" => {

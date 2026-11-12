@@ -46,7 +46,7 @@ fn a_real_wait_advances_the_system_clock_by_at_least_the_requested_time() -> std
 }
 
 #[test]
-fn retired_authority_options_are_usage_errors_that_explain_why() -> std::io::Result<()> {
+fn authority_options_are_unknown_usage_errors() -> std::io::Result<()> {
     for flag in [
         "--grant",
         "--conceder",
@@ -61,7 +61,10 @@ fn retired_authority_options_are_usage_errors_that_explain_why() -> std::io::Res
         assert_eq!(output.status.code(), Some(2), "{flag}: {output:?}");
         let message = String::from_utf8_lossy(&output.stderr);
         assert!(message.contains(flag), "{flag}: {message}");
-        assert!(message.contains("autoridad plena") || message.contains("full authority"));
+        assert!(
+            message.contains("opción desconocida") || message.contains("unknown option"),
+            "{flag}: {message}"
+        );
     }
     Ok(())
 }

@@ -567,18 +567,6 @@
         "line": "numero",
         "code": "lexema"
       }
-    },
-    "retiredAuthorityOption": {
-      "mensajes": {
-        "es": "pseudo: {option} ya no hace falta; las capacidades tienen autoridad plena por omisión",
-        "en": "pseudo: {option} is no longer needed; capabilities have full authority by default"
-      },
-      "argumentos": [
-        "option"
-      ],
-      "tipos_argumentos": {
-        "option": "lexema"
-      }
     }
   }
 }

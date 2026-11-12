@@ -614,7 +614,7 @@
   "id": "R6",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "La ejecución VM usa el anfitrión físico completo por omisión: HTTP y HTTPS a cualquier destino, archivos del sistema, reloj y temporizador reales y argumentos. Las opciones --conceder, --grant, --archivos, --files, --origen, --origin, --origen-local y --local-origin están retiradas y producen error de uso: ya no se necesitan concesiones. Las raíces TLS de prueba solo se configuran mediante --raiz-prueba o --test-root.",
+  "texto": "La ejecución VM usa el anfitrión físico completo por omisión: HTTP y HTTPS a cualquier destino, archivos del sistema, reloj y temporizador reales y argumentos. No existe ninguna opción de concesión de autoridad: una opción que no figura en la ayuda, como --grant, es una opción desconocida y produce error de uso. Las raíces TLS de prueba solo se configuran mediante --raiz-prueba o --test-root.",
   "verificacion": [
     "C18",
     "C19"
@@ -634,7 +634,7 @@
   "espera": {
     "codigo_salida": 2,
     "salida": "",
-    "salida_error": "pseudo: --grant ya no hace falta; las capacidades tienen autoridad plena por omisión\n"
+    "salida_error": "pseudo: opción desconocida «--grant»\n"
   },
   "cli": {
     "argumentos": [

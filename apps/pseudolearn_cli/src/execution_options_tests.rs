@@ -38,7 +38,7 @@ fn preserves_program_arguments_after_the_separator() -> Result<(), String> {
 }
 
 #[test]
-fn rejects_retired_authority_options() {
+fn authority_options_do_not_exist() {
     for flag in [
         "--grant",
         "--origin",

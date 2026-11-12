@@ -1480,18 +1480,6 @@
         "path": "lexema"
       }
     },
-    "retiredAuthorityOption": {
-      "argumentos": [
-        "option"
-      ],
-      "mensajes": {
-        "en": "pseudo: {option} is no longer needed; capabilities have full authority by default",
-        "es": "pseudo: {option} ya no hace falta; las capacidades tienen autoridad plena por omisión"
-      },
-      "tipos_argumentos": {
-        "option": "lexema"
-      }
-    },
     "traceCall": {
       "argumentos": [
         "path",
