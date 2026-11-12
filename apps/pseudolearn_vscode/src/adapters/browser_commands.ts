@@ -31,7 +31,7 @@ export function browserCommands(context: BrowserCommands): vscode.Disposable[] {
     register("pseudolearn.translate", () => translate(context)),
     register("pseudolearn.explainAtCursor", () => explain(context)),
     register("pseudolearn.showCapabilities", async () => vscode.window.showInformationMessage(
-      "PseudoLearn browser: local Wasm execution, input, language tools; HTTP uses Fetch and browser platform rules. Program files use the workspace filesystem; clock and timer are real and arguments come from the run. CORS, mixed content and forbidden headers surface as platform errors. AOT, FFI, processes and browser debugging are unavailable.")),
+      "PseudoLearn browser: local Wasm execution, input, language tools; HTTP uses Fetch and browser platform rules. Program files use the workspace filesystem; clock and timer are real and arguments come from the run. CORS, mixed content and forbidden headers surface as platform errors. Debugging runs the Wasm VM in a Worker with breakpoints, steps, tasks as threads and step back. AOT, FFI and processes are unavailable.")),
   ];
 }
 

@@ -5,6 +5,7 @@ import { BrowserWorkspace } from "../adapters/browser_workspace";
 import { BrowserRun } from "../adapters/browser_run";
 import { browserCommands } from "../adapters/browser_commands";
 import type { BrowserCommands } from "../adapters/browser_commands";
+import { registerBrowserDebugCommands } from "./browser_debug_commands";
 
 let active: BrowserCommands | undefined;
 let generation = 0;
@@ -30,6 +31,8 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   active = { extension: context, api: languageApi, language, workspace, run, output, host: { root: vscode.workspace.workspaceFolders?.[0]?.uri.toString() }, options };
   context.subscriptions.push(output, ...browserCommands(active), { dispose: () => { run.close(); void language.close(); } },
     vscode.commands.registerCommand("pseudolearn.restartServer", () => restart(context)),
+    ...registerBrowserDebugCommands({ extension: context, worker: () => worker(context, "execution"),
+      workspace: () => active?.workspace, options: () => ({ profile: active?.options.profile ?? options.profile }) }),
     vscode.workspace.onDidChangeConfiguration((event) => void reconfigure(context, event)),
     vscode.workspace.onDidSaveTextDocument(() => void synchronize(active!)),
     vscode.workspace.onDidCreateFiles(() => void synchronize(active!)),

@@ -1,6 +1,4 @@
 export const desktopOnlyCommands = Object.freeze([
-  "pseudolearn.debugFile",
-  "pseudolearn.debugProject",
   "pseudolearn.createAgentInstructions",
 ]);
 

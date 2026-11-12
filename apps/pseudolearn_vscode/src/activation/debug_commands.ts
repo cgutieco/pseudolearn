@@ -7,6 +7,7 @@ import { entryProblemMessage } from "../application/entry_choice";
 import { hasUnsavedChanges } from "../application/saved_snapshot_guard";
 import type { ResolvedExtensionConfiguration } from "../contracts/extension_configuration";
 import { entryKey } from "./command_context";
+import { inputTracker } from "./debug_input_tracker";
 
 export function registerDebugCommands(
   extension: vscode.ExtensionContext,
@@ -46,24 +47,6 @@ function descriptor(extension: vscode.ExtensionContext, session: vscode.DebugSes
     ["dap", "--language", configuration.interfaceLanguage, "--profile", configuration.profile], session.configuration.workspaceRoot as string | undefined);
   extension.subscriptions.push(adapter);
   return new vscode.DebugAdapterInlineImplementation(adapter);
-}
-
-function inputTracker(session: vscode.DebugSession): vscode.DebugAdapterTracker {
-  let active: string | undefined;
-  return { onDidSendMessage: (message: Record<string, unknown>) => {
-    if (message.event === "terminated") active = undefined;
-    if (message.event !== "pseudolearn/awaitingInput") return;
-    const body = message.body as { token?: string } | undefined;
-    const token = body?.token;
-    if (!token) return;
-    active = token;
-    void vscode.window.showInputBox({ prompt: vscode.env.language.startsWith("es") ? "Entrada del programa" : "Program input", ignoreFocusOut: true })
-      .then((text) => {
-        if (active !== token) return;
-        active = undefined;
-        void session.customRequest("pseudolearn/input", { token, action: text === undefined ? "cancel" : "line", text });
-      });
-  } };
 }
 
 function startFile(): Thenable<boolean> | undefined {

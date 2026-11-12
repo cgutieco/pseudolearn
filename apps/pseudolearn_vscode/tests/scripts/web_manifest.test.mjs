@@ -9,6 +9,8 @@ describe("browserCommandContributions", () => {
     const names = browserCommandContributions(manifest.contributes.commands).map((entry) => entry.command);
     expect(names).toContain("pseudolearn.runFile");
     expect(names).toContain("pseudolearn.stopRun");
+    expect(names).toContain("pseudolearn.debugFile");
+    expect(names).toContain("pseudolearn.debugProject");
   });
 
   it("drops every desktop-only command", () => {

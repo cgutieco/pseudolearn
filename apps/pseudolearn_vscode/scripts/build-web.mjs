@@ -20,13 +20,10 @@ function copy(source, destination) {
 function browserManifest() {
   const manifest = JSON.parse(readFileSync(resolve(root, "package.json"), "utf8"));
   delete manifest.main;
-  delete manifest.contributes.debuggers;
-  delete manifest.contributes.breakpoints;
   delete manifest.contributes.configuration.properties["pseudolearn.server.path"];
   delete manifest.capabilities.untrustedWorkspaces.restrictedConfigurations;
   manifest.browser = `./${contract.web.browser}`;
   manifest.extensionKind = ["workspace"];
-  manifest.activationEvents = manifest.activationEvents.filter((event) => !event.startsWith("onDebug"));
   manifest.contributes.commands = browserCommandContributions(manifest.contributes.commands);
   for (const [command, title] of [["showCapabilities", "Show Browser Capabilities"]]) {
     manifest.contributes.commands.push({ command: `pseudolearn.${command}`, title, category: "PseudoLearn" });

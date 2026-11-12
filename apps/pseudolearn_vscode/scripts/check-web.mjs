@@ -15,7 +15,7 @@ violations.push(...hashViolations(stage, provenance.files, "Hash mismatch"));
 violations.push(...hashViolations(root, provenance.inputs, "Input changed"));
 if (hash(resolve(root, "pnpm-lock.yaml")) !== provenance.lock) violations.push("Lockfile changed after build");
 const manifest = JSON.parse(readFileSync(resolve(stage, "package.json"), "utf8"));
-if (manifest.main || manifest.browser !== `./${contract.browser}` || manifest.contributes.debuggers) violations.push("Invalid browser manifest");
+if (manifest.main || manifest.browser !== `./${contract.browser}` || manifest.contributes.debuggers?.[0]?.type !== "pseudolearn") violations.push("Invalid browser manifest");
 const wasm = readFileSync(resolve(stage, contract.wasm));
 const compressed = brotliCompressSync(wasm, { params: { [constants.BROTLI_PARAM_QUALITY]: 11, [constants.BROTLI_PARAM_LGWIN]: 22 } });
 if (compressed.length > contract.maximumWasmBrotliBytes) violations.push(`Wasm Brotli ${compressed.length} exceeds ${contract.maximumWasmBrotliBytes}`);

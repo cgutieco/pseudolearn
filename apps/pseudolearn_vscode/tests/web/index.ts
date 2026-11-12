@@ -8,6 +8,7 @@ import { runAcceptanceScenario } from "./acceptance_scenario";
 import { runGeneralPurposeScenarios } from "./general_purpose_scenario";
 import { runLanguageConstructScenarios } from "./language_constructs_scenario";
 import { runClassicScenario } from "./classic_scenario";
+import { runDebugScenario } from "./debug_scenario";
 
 declare const __FIXTURE__: Fixture;
 
@@ -24,6 +25,7 @@ export async function run(): Promise<void> {
     await runLanguageConstructScenarios(recorder);
     await runClassicScenario(recorder);
     await runAcceptanceScenario(recorder);
+    await runDebugScenario(recorder);
     console.log(JSON.stringify({ schema: 2, target: "vscode-web-host", result: "passed", tls, durablePersistence: false,
       steps: recorder.steps }));
   } catch (error) {

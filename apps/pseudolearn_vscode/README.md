@@ -91,7 +91,7 @@ flowchart LR
       `isRunActive` (solo cuando cambia, para no emitir un `setContext` por cada salida), en navegador desde
       `BrowserRun.start` al empezar y en su `finally`.
     - El manifiesto web quita los comandos que el navegador no registra (`desktopOnlyCommands` en
-      `scripts/lib/web-manifest.mjs`: depuración e instrucciones de agente) y los menús que los nombran, para no dejar
+      `scripts/lib/web-manifest.mjs`: instrucciones de agente) y los menús que los nombran, para no dejar
       botones que fallan con «comando no encontrado».
 - El VSIX contiene solo lo declarado en `artifact.contract.json`; excluye fuentes, tests, scripts, ejemplos, mapas y
   `node_modules`.
