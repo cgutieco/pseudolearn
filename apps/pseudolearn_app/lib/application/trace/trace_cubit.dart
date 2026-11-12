@@ -13,9 +13,8 @@ final class TraceCubit extends Cubit<TraceState> {
 
   TraceCubit({
     required Stream<ExecutionState> executionStates,
-    TraceRowsProjection projection = const TraceRowsProjection(),
-  })  : _projection = projection,
-        super(const TraceState.initial()) {
+    this._projection = const TraceRowsProjection(),
+  })  : super(const TraceState.initial()) {
     _subscription = executionStates.listen(_onExecutionState);
   }
 

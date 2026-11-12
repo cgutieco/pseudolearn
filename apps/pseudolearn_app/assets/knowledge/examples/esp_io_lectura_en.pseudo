@@ -1,5 +1,0 @@
-Algorithm ReadDesignators
-  Define a, b As Integer
-  Read a, b
-  Write a + b
-EndAlgorithm

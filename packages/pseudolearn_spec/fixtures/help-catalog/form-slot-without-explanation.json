@@ -1,0 +1,13 @@
+{
+  "violation": "form slot that no localized slot explains",
+  "expect": "slots differ from its form",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/form/0/segments/0",
+      "value": {
+        "slot": "ghost"
+      }
+    }
+  ]
+}

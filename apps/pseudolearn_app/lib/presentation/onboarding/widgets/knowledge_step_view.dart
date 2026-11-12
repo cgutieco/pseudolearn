@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../../application/onboarding/onboarding_state.dart';
-import '../../../domain/model/knowledge/learning_track.dart';
 import '../../../domain/model/onboarding/knowledge_highlights.dart';
+import '../../route/route_labels.dart';
 import '../../components/progress/app_skeleton_list.dart';
 import '../../components/typography/app_text.dart';
 import '../../l10n/generated/app_localizations.dart';
@@ -13,14 +13,6 @@ import 'knowledge_cards_layout.dart';
 import 'knowledge_value_card.dart';
 import 'onboarding_step_header.dart';
 
-String _trackLabel(AppLocalizations l10n, LearningTrack track) {
-  return switch (track) {
-    LearningTrack.foundations => l10n.onboardingKnowledgeTrackFoundations,
-    LearningTrack.imperative => l10n.onboardingKnowledgeTrackImperative,
-    LearningTrack.objectOriented =>
-      l10n.onboardingKnowledgeTrackObjectOriented,
-  };
-}
 
 final class KnowledgeStepView extends StatelessWidget {
   final OnboardingState state;
@@ -66,7 +58,7 @@ final class _HighlightCards extends StatelessWidget {
           icon: Icons.route_outlined,
           title: l10n.onboardingKnowledgeRouteTitle,
           description: l10n.onboardingKnowledgeRouteDescription,
-          facts: _trackFacts(l10n, highlights.tracks),
+          facts: _partFacts(l10n, highlights.parts),
         ),
         KnowledgeValueCard(
           icon: Icons.menu_book_outlined,
@@ -84,18 +76,15 @@ final class _HighlightCards extends StatelessWidget {
     );
   }
 
-  List<String> _trackFacts(
+  List<String> _partFacts(
     AppLocalizations l10n,
-    List<LearningTrackHighlight> tracks,
+    List<RoutePartHighlight> parts,
   ) {
-    final facts = <String>[];
-    for (final track in tracks) {
-      facts.add(
-        '${_trackLabel(l10n, track.track)} · '
-        '${l10n.onboardingKnowledgeModuleCount(track.moduleCount)}',
-      );
-    }
-    return facts;
+    return [
+      for (final part in parts)
+        '${part.number} · ${part.title} · '
+            '${l10n.onboardingKnowledgeLessonCount(part.lessonCount)}',
+    ];
   }
 
   List<String> _specificationFacts(AppLocalizations l10n, int count) {
@@ -113,7 +102,10 @@ final class _HighlightCards extends StatelessWidget {
     ];
     for (final level in highlights.exerciseLevels) {
       facts.add(
-        l10n.onboardingKnowledgeLevelCount(level.level.number, level.count),
+        l10n.onboardingKnowledgeLevelNamedCount(
+          routeLevelLabel(level.level, l10n),
+          level.count,
+        ),
       );
     }
     return facts;

@@ -1,0 +1,9 @@
+{
+  "size": {
+    "fileLines": 3,
+    "functionLines": 2,
+    "positionalParameters": 2,
+    "nestingDepth": 2,
+    "publicMethodsPerClass": 2
+  }
+}

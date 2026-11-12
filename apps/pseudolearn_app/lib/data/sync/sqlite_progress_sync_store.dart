@@ -59,6 +59,7 @@ final class SqliteProgressSyncStore implements ProgressSyncStore {
           IndexSchema.columnFirstCompletedAt:
               merged.firstCompletedAt?.toIso8601String(),
           IndexSchema.columnDirty: isLocalDirty ? 1 : 0,
+          IndexSchema.columnAssisted: merged.assisted ? 1 : 0,
         },
         conflictAlgorithm: ConflictAlgorithm.replace,
       );

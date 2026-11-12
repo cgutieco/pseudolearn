@@ -1,0 +1,19 @@
+{
+  "shared": [
+    { "id": "price", "pattern": "(\\$|€|£|S/\\.?)\\s?\\d|\\d\\s?(usd|eur|mxn|pen)\\b|\\bgratis\\b|\\bfree\\b|\\bprecio\\b|\\bprice\\b|\\bdescuento\\b|\\bdiscount\\b|\\boferta\\b" },
+    { "id": "timely", "pattern": "\\b(19|20)\\d{2}\\b|\\bnuev[oa]s? (para|de|esta|este) (primavera|verano|oto[ñn]o|invierno|temporada)|\\bnew (for|this) (spring|summer|fall|autumn|winter|season)|\\bnavidad\\b|\\bchristmas\\b|black friday|cyber monday|\\bhalloween\\b|\\b(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)\\b|\\b(january|february|march|april|june|july|august|september|october|november|december)\\b" },
+    { "id": "url", "pattern": "https?://|\\bwww\\.|\\.(com|net|org|app|dev|io)\\b" },
+    { "id": "copyright", "pattern": "©|\\(c\\)|\\bcopyright\\b|™|®" },
+    { "id": "unverifiable-claim", "pattern": "#\\s?1\\b|n\\.?º\\s?1\\b|\\bnúmero uno\\b|\\bnumber one\\b|\\bel mejor\\b|\\bla mejor\\b|\\bthe best\\b|\\bpremiad[ao]\\b|\\baward[- ]winning\\b" },
+    { "id": "pre-release", "pattern": "\\bbeta\\b|\\balfa\\b|\\balpha\\b|acceso anticipado|early access|pr[oó]ximamente|coming soon" },
+    { "id": "call-to-action", "pattern": "desc[aá]rga(la|lo)?( ya| ahora)|download (it )?now|inst[aá]la(la|lo)? (ya|ahora)|install (it )?now|get it now|cons[ií]gue(la|lo)" }
+  ],
+  "app-store": [
+    { "id": "other-platform", "pattern": "\\bandroid\\b|\\bgoogle play\\b|\\bplay store\\b|\\bwindows\\b|\\bmicrosoft\\b|\\bxbox\\b" },
+    { "id": "apple-recognition", "pattern": "editor'?s'? choice|app of the day|game of the day|apple design award|elección de los editores|app del día" }
+  ],
+  "microsoft-store": [
+    { "id": "other-platform", "pattern": "\\biphone\\b|\\bipad\\b|\\bmacos\\b|\\bmac\\b|\\bapp store\\b|\\bapple\\b|\\bandroid\\b|\\bgoogle play\\b" },
+    { "id": "age-rating", "pattern": "\\biarc\\b|\\bpegi\\b|\\besrb\\b|\\bclasificación por edades\\b|\\bage rating\\b" }
+  ]
+}

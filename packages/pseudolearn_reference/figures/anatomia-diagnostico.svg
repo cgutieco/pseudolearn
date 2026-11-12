@@ -1,0 +1,11 @@
+<svg viewBox="0 0 340 220">
+  <rect x="10" y="10" width="320" height="120" rx="8" fill="@superficie" stroke="@atenuado"/>
+  <text x="22" y="30" font-size="12" fill="@atenuado">{{t:dato}}</text>
+  <text x="22" y="52" font-size="12" font-family="mono" fill="@error">{{t:codigo}}</text>
+  <text x="22" y="72" font-size="12" font-family="mono" fill="@tinta">{{t:clase}}</text>
+  <text x="22" y="92" font-size="12" font-family="mono" fill="@tinta">{{t:tramo}}</text>
+  <text x="22" y="112" font-size="12" font-family="mono" fill="@acento-procedimental">{{t:argumentos}}</text>
+  <flecha puntos="170,132 170,156"/>
+  <text x="178" y="148" font-size="12" fill="@atenuado">{{t:plantilla}}</text>
+  <caja x="10" y="160" ancho="320" alto="50" rol="error" fondo="0.08" tamano="12" texto="{{t:mensaje1}}¶{{t:mensaje2}}"/>
+</svg>

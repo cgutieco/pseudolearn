@@ -1,0 +1,11 @@
+{
+  "violation": "token identity absent from its source vocabulary",
+  "expect": "stale token identity",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/tokens/0/identity",
+      "value": "retiredToken"
+    }
+  ]
+}

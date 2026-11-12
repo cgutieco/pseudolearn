@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/dashboard/week_start.dart';
 
 void main() {
-  group('weekStartOf (PANT-06-F5)', () {
+  group('weekStartOf', () {
     test('a Monday is its own week start at midnight', () {
       expect(
         weekStartOf(DateTime(2026, 8, 31, 18, 45)),

@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/account/account_state.dart';
 import 'package:pseudolearn_app/domain/model/account/account_session.dart';
 import 'package:pseudolearn_app/domain/model/account/auth_method.dart';
 import 'package:pseudolearn_app/presentation/components/dialog/app_dialog.dart';
+import 'package:pseudolearn_app/composition/app_localization_delegates.dart';
 import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.dart';
 import 'package:pseudolearn_app/presentation/settings/account/account_avatar.dart';
 import 'package:pseudolearn_app/presentation/settings/account/account_view.dart';
@@ -23,7 +24,7 @@ Widget _buildTestApp({
   return MaterialApp(
     theme: AppTheme.light(),
     locale: const Locale('es'),
-    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    localizationsDelegates: appLocalizationDelegates,
     supportedLocales: AppLocalizations.supportedLocales,
     builder: (context, child) => DesignCanvas(child: child ?? const SizedBox.shrink()),
     home: AccountView(

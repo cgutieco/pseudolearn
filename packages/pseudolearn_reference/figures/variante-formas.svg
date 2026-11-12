@@ -1,0 +1,18 @@
+<svg viewBox="0 0 340 260">
+  <rect x="10" y="10" width="320" height="118" rx="12" fill="@tipo" fill-opacity="0.06" stroke="@tipo" stroke-width="1.5"/>
+  <text x="22" y="32" font-size="14" fill="@tipo" font-weight="600">{{t:forma}}</text>
+  <circle cx="60" cy="82" r="26" fill="@acento-estructurado" fill-opacity="0.14" stroke="@acento-estructurado" stroke-width="1.5"/>
+  <text x="60" y="122" font-size="12" text-anchor="middle" fill="@tinta">{{t:circulo}}</text>
+  <rect x="120" y="58" width="80" height="48" fill="@acento-objetos" fill-opacity="0.14" stroke="@acento-objetos" stroke-width="1.5"/>
+  <text x="160" y="122" font-size="12" text-anchor="middle" fill="@tinta">{{t:rectangulo}}</text>
+  <circle cx="270" cy="82" r="5" fill="@tinta"/>
+  <text x="270" y="122" font-size="12" text-anchor="middle" fill="@tinta">{{t:punto}}</text>
+  <flecha puntos="170,128 170,156"/>
+  <caja x="70" y="156" ancho="200" alto="34" rol="acento-estructurado" fondo="0.10" fuente="mono" tamano="13" texto="{{codigo:Segun f Hacer}}"/>
+  <flecha puntos="110,190 60,222"/>
+  <flecha puntos="170,190 170,222"/>
+  <flecha puntos="230,190 280,222"/>
+  <text x="60" y="244" font-size="12" text-anchor="middle" fill="@atenuado">{{t:r1}}</text>
+  <text x="170" y="244" font-size="12" text-anchor="middle" fill="@atenuado">{{t:r2}}</text>
+  <text x="280" y="244" font-size="12" text-anchor="middle" fill="@atenuado">{{t:r3}}</text>
+</svg>

@@ -23,18 +23,13 @@ final class DocumentSyncDrainer {
   final Clock _clock;
 
   const DocumentSyncDrainer({
-    required RemoteDocumentStore remoteStore,
-    required SyncQueue queue,
-    required SyncMetadataStore metadataStore,
-    required DocumentRepository repository,
-    required IdentifierGenerator identifiers,
-    required Clock clock,
-  })  : _remoteStore = remoteStore,
-        _queue = queue,
-        _metadataStore = metadataStore,
-        _repository = repository,
-        _identifiers = identifiers,
-        _clock = clock;
+    required this._remoteStore,
+    required this._queue,
+    required this._metadataStore,
+    required this._repository,
+    required this._identifiers,
+    required this._clock,
+  });
 
   Future<bool> drainPull() async {
     final state = await _metadataStore.getGlobalState();
@@ -60,8 +55,11 @@ final class DocumentSyncDrainer {
 
     final result = await _remoteStore.pushDocuments(batch);
     return switch (result) {
-      PushBatchSuccess(:final serverRevision) =>
-        await _onPushSuccess(entries, batch, serverRevision),
+      PushBatchSuccess(:final serverRevision) => await _onPushSuccess(
+        entries,
+        batch,
+        serverRevision,
+      ),
       PushBatchFailure(:final error) => await _onPushFailure(entries, error),
     };
   }
@@ -73,8 +71,9 @@ final class DocumentSyncDrainer {
     for (final remote in documents) {
       final local = await _repository.loadDocument(remote.id);
       final revisions = await _metadataStore.getDocumentRevisions(remote.id);
-      final localSnapshot =
-          local != null ? DocumentSnapshot.fromDocument(local) : null;
+      final localSnapshot = local != null
+          ? DocumentSnapshot.fromDocument(local)
+          : null;
 
       final outcome = reconcileDocument(
         local: localSnapshot,
@@ -113,6 +112,7 @@ final class DocumentSyncDrainer {
     if (remote.isDeleted) {
       await _repository.deleteDocument(remote.id);
     } else {
+      final local = await _repository.loadDocument(remote.id);
       final adopted = Document(
         id: remote.id,
         title: remote.title,
@@ -122,6 +122,7 @@ final class DocumentSyncDrainer {
         createdAt: remote.updatedAt,
         updatedAt: remote.updatedAt,
         exerciseId: remote.exerciseId,
+        executionArguments: local?.executionArguments ?? const [],
       );
       await _repository.saveDocument(adopted);
     }
@@ -156,13 +157,15 @@ final class DocumentSyncDrainer {
     );
 
     await _repository.saveDocument(conflictCopy);
-    await _queue.enqueue(OutboxEntry(
-      entryId: _identifiers.generate(),
-      entityType: 'document',
-      entityId: conflictId,
-      operation: 'upsert',
-      enqueuedAt: _clock.now(),
-    ));
+    await _queue.enqueue(
+      OutboxEntry(
+        entryId: _identifiers.generate(),
+        entityType: 'document',
+        entityId: conflictId,
+        operation: 'upsert',
+        enqueuedAt: _clock.now(),
+      ),
+    );
 
     await _adoptRemote(remote);
   }

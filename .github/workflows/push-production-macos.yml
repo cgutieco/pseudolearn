@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -19,12 +21,13 @@ jobs:
           channel: stable
           flutter-version-file: apps/pseudolearn_app/pubspec.yaml
 
-      - name: Install core package dependencies
-        working-directory: packages/pseudolearn_core
-        run: dart pub get
-
       - name: Install app dependencies
         run: flutter pub get
+
+      - name: Set up Rust bridge
+        uses: ./.github/actions/setup-rust-bridge
+        with:
+          targets: aarch64-apple-darwin x86_64-apple-darwin
 
       - name: Write build-time auth configuration
         run: |
@@ -32,7 +35,10 @@ jobs:
           {
             "SUPABASE_URL": "${{ secrets.SUPABASE_URL }}",
             "SUPABASE_ANON_KEY": "${{ secrets.SUPABASE_ANON_KEY }}",
-            "GOOGLE_IOS_CLIENT_ID": "${{ secrets.GOOGLE_IOS_CLIENT_ID }}"
+            "GOOGLE_IOS_CLIENT_ID": "${{ secrets.GOOGLE_IOS_CLIENT_ID }}",
+            "AGENT_BACKEND": "proxy",
+            "AGENT_PROXY_URL": "${{ secrets.SUPABASE_URL }}/functions/v1",
+            "AGENT_PURCHASES": "storekit"
           }
           JSON
 
@@ -41,6 +47,18 @@ jobs:
           flutter build macos --release \
             --dart-define-from-file=dart_define.ci.json \
             --build-number="$GITHUB_RUN_NUMBER"
+
+      - name: Verify universal application and Rust asset
+        run: |
+          APP_PATH="build/macos/Build/Products/Release/PseudoLearn.app"
+          APP_EXECUTABLE=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$APP_PATH/Contents/Info.plist")
+          BRIDGE_FRAMEWORK="$APP_PATH/Contents/Frameworks/pseudolearn_bridge.framework/Versions/A/pseudolearn_bridge"
+          test -f "$APP_PATH/Contents/Resources/Assets.car"
+          test -f "$BRIDGE_FRAMEWORK"
+          lipo -verify_arch arm64 x86_64 "$APP_PATH/Contents/MacOS/$APP_EXECUTABLE"
+          lipo -verify_arch arm64 x86_64 "$BRIDGE_FRAMEWORK"
+          FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR="$PWD/build/native_assets/macos" \
+            flutter test --no-pub tool/native_bridge_test.dart tool/native_bridge_adapters_test.dart
 
       - name: Import distribution certificates into a temporary keychain
         env:

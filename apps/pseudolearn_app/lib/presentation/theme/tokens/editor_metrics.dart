@@ -13,6 +13,7 @@ final class EditorMetricsTokens {
   static const double editorLineHeightExpanded = 21.0;
 
   static const double editorCaretWidth = 2.0;
+  static const double editorCaretHeightFactor = 1.0;
   static const Duration editorCaretBlinkPeriod = Duration(milliseconds: 1000);
 
   static const int editorIndentColumns = 4;

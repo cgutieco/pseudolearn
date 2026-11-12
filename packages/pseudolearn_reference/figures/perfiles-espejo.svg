@@ -1,0 +1,16 @@
+<svg viewBox="0 0 340 230">
+  <text x="85" y="20" font-size="13" text-anchor="middle" fill="@atenuado" font-weight="600">{{t:espanol}}</text>
+  <text x="255" y="20" font-size="13" text-anchor="middle" fill="@atenuado" font-weight="600">{{t:ingles}}</text>
+  <caja x="8" y="32" ancho="154" alto="30" rol="acento-estructurado" fondo="0.10" fuente="mono" tamano="13" texto="{{t:si}}"/>
+  <caja x="178" y="32" ancho="154" alto="30" rol="acento-estructurado" fondo="0.10" fuente="mono" tamano="13" texto="{{t:if}}"/>
+  <caja x="8" y="72" ancho="154" alto="30" rol="acento-estructurado" fondo="0.10" fuente="mono" tamano="13" texto="{{t:entonces}}"/>
+  <caja x="178" y="72" ancho="154" alto="30" rol="acento-estructurado" fondo="0.10" fuente="mono" tamano="13" texto="{{t:then}}"/>
+  <caja x="8" y="112" ancho="154" alto="30" rol="tipo" fondo="0.10" fuente="mono" tamano="13" texto="{{t:cadena}}"/>
+  <caja x="178" y="112" ancho="154" alto="30" rol="tipo" fondo="0.10" fuente="mono" tamano="13" texto="{{t:string}}"/>
+  <caja x="8" y="152" ancho="154" alto="30" rol="tinta" fondo="0.04" fuente="mono" tamano="13" texto="{{t:nombre}}"/>
+  <caja x="178" y="152" ancho="154" alto="30" rol="tinta" fondo="0.04" fuente="mono" tamano="13" texto="{{t:nombre}}"/>
+  <caja x="8" y="192" ancho="154" alto="30" rol="texto" fondo="0.10" fuente="mono" tamano="13" texto="{{t:hola}}"/>
+  <caja x="178" y="192" ancho="154" alto="30" rol="texto" fondo="0.10" fuente="mono" tamano="13" texto="{{t:hola}}"/>
+  <path d="M 162 47 H 178 M 162 87 H 178 M 162 127 H 178" fill="none" stroke="@exito" stroke-width="2"/>
+  <path d="M 162 167 H 178 M 162 207 H 178" fill="none" stroke="@atenuado" stroke-width="2" stroke-dasharray="3 3"/>
+</svg>

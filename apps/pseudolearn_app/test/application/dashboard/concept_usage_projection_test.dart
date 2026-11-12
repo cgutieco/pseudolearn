@@ -3,7 +3,7 @@ import 'package:pseudolearn_app/application/dashboard/concept_usage_projection.d
 import 'package:pseudolearn_app/domain/model/knowledge/ast_construct.dart';
 
 void main() {
-  group('projectConceptUsage (PANT-06-F5)', () {
+  group('projectConceptUsage', () {
     test('counts how many documents use each construct', () {
       final coverage = projectConceptUsage({
         'a': {AstConstruct.conditional, AstConstruct.countedLoop},

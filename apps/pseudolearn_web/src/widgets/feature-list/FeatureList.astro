@@ -1,0 +1,64 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import type { FeatureItem } from './feature-item';
+
+export interface Props {
+  locale: Locale;
+  items: readonly FeatureItem[];
+  numbered?: boolean;
+  single?: boolean;
+}
+
+const { locale, items, numbered = false, single = false } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+<ul class:list={['feature-list', { 'feature-list--single': single }]}>
+  {items.map((item, index) => (
+    <li class="pl-card feature-list__item">
+      {numbered && <span class="feature-list__index pl-mono">{String(index + 1).padStart(2, '0')}</span>}
+      <h3 class="feature-list__title">{t(item.titleKey)}</h3>
+      <p class="feature-list__text">{t(item.textKey)}</p>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .feature-list {
+    display: grid;
+    gap: var(--pl-space-md);
+  }
+
+  .feature-list__item {
+    display: grid;
+    gap: 6px;
+    align-content: start;
+    padding: var(--pl-space-lg);
+  }
+
+  .feature-list__index {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--pl-brand);
+  }
+
+  .feature-list__title {
+    margin: 0;
+    font-size: 17px;
+  }
+
+  .feature-list__text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--pl-ink-2);
+  }
+
+  @media (min-width: 900px) {
+    .feature-list:not(.feature-list--single) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--pl-space-lg);
+    }
+  }
+</style>

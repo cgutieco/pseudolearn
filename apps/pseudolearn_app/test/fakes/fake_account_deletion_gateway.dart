@@ -14,7 +14,7 @@ final class FakeAccountDeletionGateway implements AccountDeletionGateway {
     deleteCalls++;
     final pending = pendingCompletion;
     if (pending != null) await pending;
-    if (throwOnDelete) throw StateError('Simulated deleteAccount error');
+    if (throwOnDelete) throw StateError('Injected deleteAccount error');
     return nextOutcome;
   }
 }

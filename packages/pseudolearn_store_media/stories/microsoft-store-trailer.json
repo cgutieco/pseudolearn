@@ -1,0 +1,61 @@
+{
+  "id": "microsoft-store-trailer",
+  "durationSeconds": 30,
+  "startSeconds": 1.6,
+  "stepSeconds": 1.3,
+  "thumbnailSeconds": 13.2,
+  "lockupSeconds": 26.6,
+  "title": {
+    "es": "PseudoLearn: mira tu programa ejecutarse paso a paso",
+    "en": "PseudoLearn: watch your program run step by step"
+  },
+  "program": {
+    "es": {
+      "lines": [
+        "Proceso DemostracionGuiada",
+        "    Definir temperatura Como Entero <- 30;",
+        "    Definir lecturas Como Entero <- 0;",
+        "    Mientras temperatura > 24 Hacer",
+        "        temperatura <- temperatura - 3;",
+        "        lecturas <- lecturas + 1;",
+        "        Escribir \"Lectura \", lecturas, \": \", temperatura, \" grados\";",
+        "    FinMientras",
+        "    Escribir \"Confort alcanzado tras \", lecturas, \" lecturas\";",
+        "FinProceso"
+      ],
+      "variables": ["temperatura", "lecturas"],
+      "outputs": ["Lectura 1: 27 grados", "Lectura 2: 24 grados", "Confort alcanzado tras 2 lecturas"]
+    },
+    "en": {
+      "lines": [
+        "algorithm GuidedDemo",
+        "    define temperature as integer <- 30;",
+        "    define readings as integer <- 0;",
+        "    while temperature > 24 do",
+        "        temperature <- temperature - 3;",
+        "        readings <- readings + 1;",
+        "        write \"Reading \", readings, \": \", temperature, \" degrees\";",
+        "    endWhile",
+        "    write \"Comfort reached after \", readings, \" readings\";",
+        "endAlgorithm"
+      ],
+      "variables": ["temperature", "readings"],
+      "outputs": ["Reading 1: 27 degrees", "Reading 2: 24 degrees", "Comfort reached after 2 readings"]
+    }
+  },
+  "trace": [
+    { "line": 1, "values": [30, null], "output": null, "condition": false },
+    { "line": 2, "values": [30, 0], "output": null, "condition": false },
+    { "line": 3, "values": [30, 0], "output": null, "condition": true },
+    { "line": 4, "values": [27, 0], "output": null, "condition": false },
+    { "line": 5, "values": [27, 1], "output": null, "condition": false },
+    { "line": 6, "values": [27, 1], "output": 0, "condition": false },
+    { "line": 3, "values": [27, 1], "output": null, "condition": true },
+    { "line": 4, "values": [24, 1], "output": null, "condition": false },
+    { "line": 5, "values": [24, 2], "output": null, "condition": false },
+    { "line": 6, "values": [24, 2], "output": 1, "condition": false },
+    { "line": 3, "values": [24, 2], "output": null, "condition": true },
+    { "line": 8, "values": [24, 2], "output": 2, "condition": false }
+  ],
+  "interface": { "plate": "trailer-run", "appTheme": "light", "startSeconds": 21.4, "seconds": 5, "mediaStart": 2.5 }
+}

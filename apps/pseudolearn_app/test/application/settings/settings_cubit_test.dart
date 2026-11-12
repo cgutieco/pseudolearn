@@ -32,6 +32,20 @@ void main() {
       expect(cubit.state.assistedDiagramZoom, isFalse);
     });
 
+    test('editor assistance starts off, loads and persists', () async {
+      expect(cubit.state.editorAssistance, isFalse);
+      await preferences.write(
+        const AppPreferences.defaults().copyWith(editorAssistance: true),
+      );
+
+      await cubit.init();
+      expect(cubit.state.editorAssistance, isTrue);
+
+      await cubit.setEditorAssistance(false);
+      expect(cubit.state.editorAssistance, isFalse);
+      expect((await preferences.read()).editorAssistance, isFalse);
+    });
+
     test('the diagram assistance starts on before anything is read', () {
       expect(cubit.state.assistedDiagramZoom, isTrue);
     });

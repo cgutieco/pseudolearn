@@ -1,0 +1,16 @@
+<svg viewBox="0 0 340 230">
+  <text x="12" y="22" font-size="13" fill="@numero" font-weight="600">{{t:enteros}}</text>
+  <caja x="12" y="32" ancho="60" alto="30" rol="numero" fondo="0.12" fuente="mono" texto="0"/>
+  <caja x="80" y="32" ancho="60" alto="30" rol="numero" fondo="0.12" fuente="mono" texto="42"/>
+  <caja x="148" y="32" ancho="80" alto="30" rol="numero" fondo="0.12" fuente="mono" texto="2026"/>
+  <text x="12" y="96" font-size="13" fill="@numero" font-weight="600">{{t:reales}}</text>
+  <caja x="12" y="106" ancho="70" alto="30" rol="numero" fondo="0.12" fuente="mono" texto="3.14"/>
+  <caja x="90" y="106" ancho="60" alto="30" rol="numero" fondo="0.12" fuente="mono" texto="0.5"/>
+  <caja x="158" y="106" ancho="80" alto="30" rol="numero" fondo="0.12" fuente="mono" texto="100.0"/>
+  <text x="12" y="170" font-size="13" fill="@error" font-weight="600">{{t:no}}</text>
+  <caja x="12" y="180" ancho="56" alto="30" rol="error" fondo="0.10" fuente="mono" texto=".5"/>
+  <caja x="76" y="180" ancho="56" alto="30" rol="error" fondo="0.10" fuente="mono" texto="5."/>
+  <caja x="140" y="180" ancho="56" alto="30" rol="error" fondo="0.10" fuente="mono" texto="3,5"/>
+  <caja x="204" y="180" ancho="56" alto="30" rol="error" fondo="0.10" fuente="mono" texto="{{t:cientifica}}"/>
+  <caja x="268" y="180" ancho="64" alto="30" rol="error" fondo="0.10" fuente="mono" texto="1_000"/>
+</svg>

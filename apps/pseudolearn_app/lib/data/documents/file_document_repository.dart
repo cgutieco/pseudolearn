@@ -1,6 +1,9 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:path/path.dart' as p;
 import '../../domain/model/documents/document.dart';
+import '../../domain/model/documents/document_change.dart';
 import '../../domain/model/profiles/syntax_profile_id.dart';
 import '../../domain/ports/document_repository.dart';
 import '../index/index_rebuild.dart';
@@ -53,6 +56,7 @@ Document? _buildDocumentFromHeader(String headerText, String bodyText) {
     createdAt: DateTime.tryParse(map['created_at'] ?? '') ?? DateTime.now(),
     updatedAt: DateTime.tryParse(map['updated_at'] ?? '') ?? DateTime.now(),
     exerciseId: map['exercise_id'],
+    executionArguments: _readArguments(map['execution_arguments']),
   );
 }
 
@@ -71,27 +75,38 @@ String serializeDocumentFile(Document doc) {
   final buffer = StringBuffer();
   buffer.writeln('---');
   buffer.writeln('id: ${doc.id}');
-  buffer.writeln('title: ${doc.title}');
+  buffer.writeln('title: ${_headerValue(doc.title)}');
   buffer.writeln('profile: ${doc.profileId.name}');
   buffer.writeln('revision: ${doc.revision}');
+  buffer.writeln('execution_arguments: ${jsonEncode(doc.executionArguments)}');
   buffer.writeln('created_at: ${doc.createdAt.toIso8601String()}');
   buffer.writeln('updated_at: ${doc.updatedAt.toIso8601String()}');
   if (doc.exerciseId != null) {
-    buffer.writeln('exercise_id: ${doc.exerciseId}');
+    buffer.writeln('exercise_id: ${_headerValue(doc.exerciseId!)}');
   }
   buffer.writeln('---');
   buffer.write(doc.content);
   return buffer.toString();
 }
 
+String _headerValue(String value) {
+  var single = value.replaceAll(RegExp(r'[\r\n]+'), ' ');
+  while (single.contains('---')) {
+    single = single.replaceAll('---', '--');
+  }
+  return single;
+}
+
 final class FileDocumentRepository implements DocumentRepository {
   final Directory directory;
   final MetadataIndex index;
+  final StreamController<DocumentChange> _changes =
+      StreamController<DocumentChange>.broadcast();
 
-  const FileDocumentRepository({
-    required this.directory,
-    required this.index,
-  });
+  FileDocumentRepository({required this.directory, required this.index});
+
+  @override
+  Stream<DocumentChange> get changes => _changes.stream;
 
   @override
   Future<List<DocumentSummary>> listDocuments() async {
@@ -126,6 +141,9 @@ final class FileDocumentRepository implements DocumentRepository {
     tempFile.renameSync(file.path);
 
     await index.upsert(document.toSummary());
+    _changes.add(
+      DocumentChange.saved(documentId: document.id, revision: document.revision),
+    );
     return document;
   }
 
@@ -136,10 +154,24 @@ final class FileDocumentRepository implements DocumentRepository {
       file.deleteSync();
     }
     await index.markDeleted(id);
+    _changes.add(DocumentChange.deleted(documentId: id));
   }
 
   @override
   Future<void> rebuildIndex() async {
     await rebuildMetadataIndex(directory: directory, index: index);
+    _changes.add(const DocumentChange.reindexed());
+  }
+}
+
+List<String> _readArguments(String? text) {
+  if (text == null) return const [];
+  try {
+    final value = jsonDecode(text);
+    return value is List && value.every((element) => element is String)
+        ? value.cast<String>()
+        : const [];
+  } on FormatException {
+    return const [];
   }
 }

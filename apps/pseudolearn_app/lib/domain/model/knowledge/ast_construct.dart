@@ -6,7 +6,8 @@ enum AstConstruct {
   countedLoop('bucle-contado'),
   arrayDeclaration('arreglo'),
   subprogram('subprograma'),
-  classDeclaration('clase');
+  classDeclaration('clase'),
+  interfaceDeclaration('interfaz');
 
   final String slug;
 

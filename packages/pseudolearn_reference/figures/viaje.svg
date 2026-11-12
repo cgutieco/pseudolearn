@@ -1,0 +1,20 @@
+<svg viewBox="0 0 340 410">
+  <caja x="70" y="6" ancho="200" alto="40" rol="texto" fondo="0.10" fuente="mono" tamano="13" texto="{{t:texto}}"/>
+  <flecha puntos="170,46 170,70"/>
+  <caja x="40" y="70" ancho="260" alto="44" rol="acento-estructurado" fondo="0.10" texto="{{t:lexico}}"/>
+  <flecha puntos="170,114 170,138"/>
+  <caja x="40" y="138" ancho="260" alto="44" rol="acento-estructurado" fondo="0.10" texto="{{t:sintaxis}}"/>
+  <flecha puntos="170,182 170,206"/>
+  <caja x="40" y="206" ancho="260" alto="44" rol="acento-estructurado" fondo="0.10" texto="{{t:semantica}}"/>
+  <flecha puntos="170,250 170,274"/>
+  <caja x="40" y="274" ancho="260" alto="44" rol="acento-procedimental" fondo="0.10" texto="{{t:traduccion}}"/>
+  <flecha puntos="170,318 170,342"/>
+  <caja x="40" y="342" ancho="260" alto="44" rol="tipo" fondo="0.14" texto="{{t:ejecucion}}"/>
+  <path d="M 312 70 V 250" fill="none" stroke="@error" stroke-width="2" stroke-dasharray="5 4"/>
+  <text x="326" y="164" font-size="12" fill="@error" text-anchor="middle" transform="rotate(90 326 164)">{{t:analisis}}</text>
+  <g data-paso="1" data-hasta="1"><rect x="34" y="64" width="272" height="56" rx="10" fill="none" stroke="@acento-procedimental" stroke-width="3"/></g>
+  <g data-paso="2" data-hasta="2"><rect x="34" y="132" width="272" height="56" rx="10" fill="none" stroke="@acento-procedimental" stroke-width="3"/></g>
+  <g data-paso="3" data-hasta="3"><rect x="34" y="200" width="272" height="56" rx="10" fill="none" stroke="@acento-procedimental" stroke-width="3"/></g>
+  <g data-paso="4" data-hasta="4"><rect x="34" y="268" width="272" height="56" rx="10" fill="none" stroke="@acento-procedimental" stroke-width="3"/></g>
+  <g data-paso="5"><rect x="34" y="336" width="272" height="56" rx="10" fill="none" stroke="@exito" stroke-width="3"/><text x="170" y="404" font-size="13" text-anchor="middle" fill="@exito" font-weight="600">{{t:resultado}}</text></g>
+</svg>

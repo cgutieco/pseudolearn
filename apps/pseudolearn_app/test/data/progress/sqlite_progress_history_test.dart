@@ -9,7 +9,7 @@ void main() {
     sqfliteFfiInit();
   });
 
-  group('SqliteProgressHistory (PANT-06-F5)', () {
+  group('SqliteProgressHistory', () {
     late Database db;
     late SqliteProgressHistory history;
     late SqliteLocalProgressStore store;

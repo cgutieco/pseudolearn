@@ -1,7 +1,0 @@
-Algorithm MultipleDeclaration
-  Define a, b, c As Integer
-  a <- 1
-  b <- 2
-  c <- 3
-  Write a, b, c
-EndAlgorithm

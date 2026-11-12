@@ -1,4 +1,5 @@
 import '../model/documents/document.dart';
+import '../model/documents/document_change.dart';
 
 abstract interface class DocumentRepository {
   Future<List<DocumentSummary>> listDocuments();
@@ -6,4 +7,5 @@ abstract interface class DocumentRepository {
   Future<Document> saveDocument(Document document);
   Future<void> deleteDocument(String id);
   Future<void> rebuildIndex();
+  Stream<DocumentChange> get changes;
 }

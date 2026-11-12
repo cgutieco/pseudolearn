@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/data/platform/random_identifier_generator.dart';
 
 void main() {
-  group('RandomIdentifierGenerator Tests (CIM-F4)', () {
+  group('RandomIdentifierGenerator Tests', () {
     test('generate produces unique valid UUID format strings', () {
       final generator = RandomIdentifierGenerator();
       final id1 = generator.generate();

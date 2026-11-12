@@ -1,0 +1,15 @@
+<svg viewBox="0 0 340 320">
+  <caja x="100" y="8" ancho="140" alto="40" rol="tipo" fondo="0.14" negrita="" texto="{{t:ejecutando}}"/>
+  <flecha puntos="170,48 170,78"/>
+  <rect x="14" y="78" width="312" height="128" rx="12" fill="@tinta" fill-opacity="0.03" stroke="@atenuado" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="26" y="98" font-size="12" fill="@atenuado">{{t:finales}}</text>
+  <caja x="26" y="106" ancho="140" alto="38" rol="exito" fondo="0.14" fuente="mono" tamano="13" texto="{{t:completed}}"/>
+  <caja x="174" y="106" ancho="140" alto="38" rol="error" fondo="0.14" fuente="mono" tamano="13" texto="{{t:failed}}"/>
+  <caja x="26" y="154" ancho="140" alto="38" rol="atenuado" fondo="0.12" fuente="mono" tamano="13" texto="{{t:cancelled}}"/>
+  <caja x="174" y="154" ancho="140" alto="38" rol="atenuado" fondo="0.12" fuente="mono" tamano="13" texto="{{t:limit}}"/>
+  <flecha puntos="100,28 4,28 4,256 14,256"/>
+  <flecha puntos="240,28 336,28 336,256 326,256"/>
+  <caja x="14" y="236" ancho="150" alto="40" rol="hueco" fondo="0.12" discontinua="" fuente="mono" tamano="12" texto="{{t:input}}"/>
+  <caja x="176" y="236" ancho="150" alto="40" rol="hueco" fondo="0.12" discontinua="" fuente="mono" tamano="12" texto="{{t:effect}}"/>
+  <text x="170" y="302" font-size="12" text-anchor="middle" fill="@atenuado">{{t:pausas}}</text>
+</svg>

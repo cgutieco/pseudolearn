@@ -1,12 +1,12 @@
 import 'package:flutter/widgets.dart';
 import '../../../domain/model/dashboard/specification_coverage.dart';
-import '../../components/typography/app_text.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../shell/design_canvas.dart';
-import '../../theme/app_theme.dart';
 import '../../theme/tokens/spacing.dart';
+import 'chip_cloud.dart';
+import 'coverage_chip.dart';
+import 'coverage_meter.dart';
 import 'dashboard_card.dart';
-import 'dashboard_state_mark.dart';
 
 final class SpecificationCard extends StatelessWidget {
   final SpecificationCoverage coverage;
@@ -16,7 +16,6 @@ final class SpecificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final canvas = DesignCanvasScope.of(context);
-    final theme = AppThemeExtension.of(context);
     final l10n = AppLocalizations.of(context)!;
 
     return DashboardCard(
@@ -25,54 +24,40 @@ final class SpecificationCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          AppText(
-            l10n.dashboardCoverageRatio(
-              coverage.count.done,
-              coverage.count.total,
-            ),
-            variant: AppTextVariant.heading3,
-            color: theme.colors.text.primary,
+          CoverageMeter(
+            label: l10n.dashboardSpecificationSections,
+            count: coverage.count,
           ),
           SizedBox(height: canvas.scaled(SpacingTokens.space3)),
-          for (final section in coverage.sections)
-            _SectionRow(section: section),
+          _SectionChips(coverage: coverage),
         ],
       ),
     );
   }
 }
 
-final class _SectionRow extends StatelessWidget {
-  final SpecificationSectionCoverage section;
+final class _SectionChips extends StatelessWidget {
+  final SpecificationCoverage coverage;
 
-  const _SectionRow({required this.section});
+  const _SectionChips({required this.coverage});
 
   @override
   Widget build(BuildContext context) {
-    final canvas = DesignCanvasScope.of(context);
-    final theme = AppThemeExtension.of(context);
     final l10n = AppLocalizations.of(context)!;
-    final state = section.isExercised
-        ? l10n.dashboardSpecificationExercised
-        : l10n.dashboardSpecificationPending;
 
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: canvas.scaled(SpacingTokens.space1)),
-      child: Row(
-        children: [
-          Expanded(
-            child: AppText(
-              section.title,
-              variant: AppTextVariant.bodySmall,
-              color: theme.colors.text.primary,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+    return ChipCloud(
+      chips: [
+        for (final section in coverage.sections)
+          Semantics(
+            label: section.isExercised
+                ? l10n.dashboardSpecificationExercised
+                : l10n.dashboardSpecificationPending,
+            child: CoverageChip(
+              label: section.title,
+              isDone: section.isExercised,
             ),
           ),
-          SizedBox(width: canvas.scaled(SpacingTokens.space2)),
-          DashboardStateMark(isDone: section.isExercised, label: state),
-        ],
-      ),
+      ],
     );
   }
 }

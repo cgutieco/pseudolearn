@@ -1,0 +1,96 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { routeParts } from '@entities/learning-route/model/route-contents';
+import { plainRouteText } from '@entities/learning-route/model/route-runs';
+import {
+  firstExerciseOfKind,
+  loadExercise,
+  paragraphRuns,
+} from '@entities/learning-route/model/route-samples';
+import CodeSample from '@widgets/code-sample/CodeSample.astro';
+import { routeRunsHtml } from './route-html';
+
+export interface Props {
+  locale: Locale;
+}
+
+const FEATURED_KIND = 'encontrar-error';
+const { locale } = Astro.props;
+const { t } = useTranslations(locale);
+const entry = firstExerciseOfKind(routeParts(locale), FEATURED_KIND);
+const exercise = entry === undefined ? undefined : await loadExercise(locale, entry.id);
+---
+
+{exercise && (
+  <article class="bug">
+    <p class="bug__tags">
+      <span class="pl-tag">{t(`route.kind.${exercise.kind}`)}</span>
+      <span class="pl-tag">{t(`route.level.${exercise.level}`)}</span>
+    </p>
+    <h4 class="bug__title">{plainRouteText(exercise.title)}</h4>
+    {paragraphRuns(exercise.statement).map((runs) => (
+      <p class="bug__text" set:html={routeRunsHtml(runs, locale)} />
+    ))}
+    {exercise.program && <CodeSample lines={exercise.program.lines} label={t('home.exercise.codeLabel')} />}
+    <div class="bug__hints">
+      {exercise.hints.map((hint, index) => (
+        <details class="bug__hint">
+          <summary>{t('home.exercise.hint', { number: index + 1 })}</summary>
+          <p set:html={routeRunsHtml(hint, locale)} />
+        </details>
+      ))}
+    </div>
+  </article>
+)}
+
+<style>
+  .bug {
+    display: grid;
+    gap: var(--pl-space-sm);
+    padding: var(--pl-space-lg);
+    border: 1px solid var(--pl-line);
+    border-radius: var(--pl-radius-card);
+    background: var(--pl-surface);
+    box-shadow: var(--pl-shadow-2);
+  }
+
+  .bug__tags {
+    display: flex;
+    gap: var(--pl-space-xs);
+  }
+
+  .bug__title {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  .bug__text {
+    color: var(--pl-ink-2);
+    line-height: 1.55;
+  }
+
+  .bug__hints {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--pl-space-xs);
+  }
+
+  .bug__hint {
+    flex: 1 1 100%;
+    border: 1px solid var(--pl-line);
+    border-radius: var(--pl-radius-control);
+  }
+
+  .bug__hint summary {
+    padding: 10px var(--pl-space-md);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .bug__hint p {
+    padding: 0 var(--pl-space-md) var(--pl-space-sm);
+    color: var(--pl-ink-2);
+    line-height: 1.55;
+  }
+</style>

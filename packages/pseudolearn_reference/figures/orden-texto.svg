@@ -1,0 +1,14 @@
+<svg viewBox="0 0 340 170">
+  <path d="M 10 96 H 330" fill="none" stroke="@tinta" stroke-width="2"/>
+  <caja x="20" y="50" ancho="40" alto="40" rol="texto" fondo="0.14" fuente="mono" texto="{{t:ma}}"/>
+  <caja x="80" y="50" ancho="40" alto="40" rol="texto" fondo="0.14" fuente="mono" texto="{{t:mz}}"/>
+  <caja x="200" y="50" ancho="40" alto="40" rol="texto" fondo="0.14" fuente="mono" texto="{{t:a}}"/>
+  <caja x="260" y="50" ancho="40" alto="40" rol="texto" fondo="0.14" fuente="mono" texto="{{t:z}}"/>
+  <text x="40" y="114" font-size="12" text-anchor="middle" fill="@numero">65</text>
+  <text x="100" y="114" font-size="12" text-anchor="middle" fill="@numero">90</text>
+  <text x="220" y="114" font-size="12" text-anchor="middle" fill="@numero">97</text>
+  <text x="280" y="114" font-size="12" text-anchor="middle" fill="@numero">122</text>
+  <text x="70" y="36" font-size="12" text-anchor="middle" fill="@atenuado">{{t:mayusculas}}</text>
+  <text x="250" y="36" font-size="12" text-anchor="middle" fill="@atenuado">{{t:minusculas}}</text>
+  <text x="170" y="150" font-size="13" text-anchor="middle" fill="@tinta">{{t:nota}}</text>
+</svg>

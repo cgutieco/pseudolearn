@@ -1,0 +1,42 @@
+---
+import type { Locale } from '@shared/i18n/locales';
+import FeatureList from '@widgets/feature-list/FeatureList.astro';
+import NodoChat from '@widgets/nodo-preview/NodoChat.astro';
+import NodoConfirmation from '@widgets/nodo-preview/NodoConfirmation.astro';
+import { NODO_CAPABILITIES } from '@widgets/nodo-capabilities/capabilities';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<div class="nodo-what">
+  <div class="nodo-what__chat">
+    <NodoChat locale={locale}>
+      <NodoConfirmation locale={locale} />
+    </NodoChat>
+  </div>
+  <FeatureList locale={locale} items={NODO_CAPABILITIES} numbered single />
+</div>
+
+<style>
+  .nodo-what {
+    display: grid;
+    gap: var(--pl-space-2xl);
+  }
+
+  @media (min-width: 1000px) {
+    .nodo-what {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      gap: 72px;
+      align-items: start;
+    }
+
+    .nodo-what__chat {
+      position: sticky;
+      top: 96px;
+    }
+  }
+</style>

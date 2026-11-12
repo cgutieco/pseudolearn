@@ -1,0 +1,35 @@
+package: ceiling
+layers:
+  - name: ceiling_kernels
+    path: crates/ceiling_kernels
+    may_import: []
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: ceiling_statistics
+    path: crates/ceiling_statistics
+    may_import: []
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: ceiling_runner
+    path: crates/ceiling_runner
+    may_import: [ceiling_kernels, ceiling_statistics]
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
+  - name: xtask
+    path: xtask
+    may_import: []
+    external_dependencies: []
+    unsafe_allowed: false
+    tooling: true
+limits:
+  file_lines: 300
+  function_lines: 40
+  positional_parameters: 4
+  nesting_depth: 3
+  public_methods_per_class: 7
+  unsafe_function_lines: 10
+names:
+  minimum_length: 3
+  permitted_short: [id, io, ir, vm, gc, os]
+  forbidden_components: [ctx, cfg, env, expr, stmt, decl, tok, idx, len, pos, cnt, num, buf, ptr, ref, val, msg, err, res, ret, args, params, attrs, tmp, temp, aux, data, info, item, obj, thing, stuff, foo, bar]
+  forbidden_files: [utils, helpers, common, misc]

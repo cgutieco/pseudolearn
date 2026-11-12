@@ -1,11 +1,12 @@
+import '../../fakes/native_test_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/diagram/diagram_scene.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
-import 'package:pseudolearn_app/engine/classdiagram/core_class_diagram_builder.dart';
 import 'diagram_scene_validators.dart';
 import 'fixtures/class_diagram_corpus.dart';
 
-DiagramScene _build(String source) => CoreClassDiagramBuilder().buildDiagram(
+DiagramScene _build(String source) =>
+    nativeTestEngine.classDiagramBuilder.buildDiagram(
       sourceCode: source,
       profileId: SyntaxProfileId.classicSpanish,
     );
@@ -20,8 +21,11 @@ void main() {
         final scene1 = _build(source);
         final scene2 = _build(source);
 
-        expect(areScenesIdentical(scene1, scene2), isTrue,
-            reason: '$name must be deterministic');
+        expect(
+          areScenesIdentical(scene1, scene2),
+          isTrue,
+          reason: '$name must be deterministic',
+        );
         expect(scene1.width, greaterThan(0));
         expect(scene1.height, greaterThan(0));
       });

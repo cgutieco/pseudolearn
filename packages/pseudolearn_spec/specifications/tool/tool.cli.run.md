@@ -1,0 +1,903 @@
+---
+{
+  "formato": "see/1",
+  "id": "TOOL.CLI.RUN",
+  "titulo": "Orden ejecutar",
+  "dominio": "herramienta",
+  "estado": "estable",
+  "version": "1.0.0",
+  "duenos": [
+    "responsable-herramientas"
+  ],
+  "sujetos": [
+    "cli"
+  ],
+  "resumen": "pseudo ejecutar con entrada estándar, semilla, límites y traza.",
+  "depende_de": [
+    {
+      "id": "API.PROJECT",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "TOOL.CLI.MESSAGES",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "API.EXECUTE",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    }
+  ],
+  "titulo_en": "Run command",
+  "revisado_por": [
+    "César Antonio Gutiérrez Contreras"
+  ]
+}
+---
+
+# Orden ejecutar
+
+```regla
+{
+  "id": "R1",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "pseudo ejecutar analiza el archivo y, si no hay errores, lo ejecuta: la salida del programa va sin traducir a la salida estándar y la entrada estándar alimenta Leer, una línea por valor sin su fin de línea. Los diagnósticos de análisis y de ejecución van a la salida de error con las plantillas de diagnóstico.",
+  "verificacion": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C12"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C1",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "1\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C2",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "1\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "run",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "42\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
+    },
+    "entrada": "21\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "",
+    "salida_error": "p.pseudo:2:10: error: Variable no declarada: total [undeclaredVariable]\n    2 | Escribir total;\n      |          ^\n"
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir total;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R2",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El código de salida es el código establecido por el programa (0 por omisión) si la ejecución termina con completed, y 1 en cualquier otro caso. Un fallo escribe su diagnóstico; un límite alcanzado escribe statementBudgetExhausted; la entrada estándar agotada mientras Leer espera escribe inputExhausted.",
+  "verificacion": [
+    "C5",
+    "C6",
+    "C7"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "",
+    "salida_error": "p.pseudo:4:12: error: División por cero [divisionByZero]\n    4 | Escribir 1 div x;\n      |            ^\n"
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero <- 0;\nx <- 0;\nEscribir 1 div x;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "",
+    "salida_error": "p.pseudo: la entrada estándar terminó mientras el programa esperaba un valor\n"
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R2",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "1\n2\n",
+    "salida_error": "p.pseudo:4:1: información: Se agotó el presupuesto de sentencias: 2 [statementBudgetExhausted]\n    4 | Escribir 3;\n      | ^\n"
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "--sentencias",
+      "2",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir 1;\nEscribir 2;\nEscribir 3;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "--semilla fija la semilla de RT.HOST.INTERFACE; sin ella se obtiene entropía del sistema operativo y se graba la semilla efectiva. --profundidad, --sentencias y --celdas fijan límites; por omisión la CLI admite 100 000 marcos sin presupuesto de sentencias. Los argumentos después de -- se entregan al programa en orden, sin el nombre del ejecutable. La carpeta de trabajo es el directorio actual.",
+  "verificacion": [
+    "C8",
+    "C9"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "5415695640260286\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "--semilla",
+      "0",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir trunc(AzarReal() * 9007199254740992.0);\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R3",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "fin\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "SubProceso f(n Como Entero)\nSi n > 0 Entonces\nf(n - 1);\nFinSi\nFinSubProceso\nAlgoritmo P\nf(5000);\nEscribir \"fin\";\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "--traza narra cada evento de ENG.TRACE.EVENTS en la salida de error, una línea por evento, con las plantillas trace* en el idioma de interfaz. source es el texto de la línea de la sentencia sin espacios iniciales ni finales y text muestra cada salto de línea como \\n. La salida del programa y sus lexemas no se traducen.",
+  "verificacion": [
+    "C10",
+    "C11"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "1\n",
+    "salida_error": "p.pseudo:2  entra en sentencia  Escribir 1;\np.pseudo:2  escribe  1\\n\np.pseudo:2  sale de sentencia  Escribir 1;\n"
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "--traza",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R4",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "1\n",
+    "salida_error": "p.pseudo:2  enters statement  Escribir 1;\np.pseudo:2  writes  1\\n\np.pseudo:2  exits statement  Escribir 1;\n"
+  },
+  "cli": {
+    "argumentos": [
+      "run",
+      "--trace",
+      "--language",
+      "en",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R1",
+  "perfiles": ["es"],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "1234\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": ["ejecutar", "p.pseudo"],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nDefinir Importar Como Entero <- 1;\nDefinir Exportar Como Entero <- 2;\nDefinir import Como Entero <- 3;\nDefinir export Como Entero <- 4;\nEscribir Importar, Exportar, import, export;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "pseudo ejecutar --proyecto <directorio> --entrada <ruta lógica> ejecuta la entrada con execute_project: la salida del programa va a la salida estándar y los diagnósticos a la salida de error con la ruta del archivo donde ocurren, incluidos los fallos de ejecución dentro de un módulo importado. Sin --entrada es un uso incorrecto (código 2); una entrada inexistente es el error de proyecto entryNotFound (código 1); el código es 0 solo si la ejecución termina con completed. Las opciones de ejecución no se aplican a un proyecto: sus límites proceden del manifiesto.",
+  "verificacion": [
+    "C13",
+    "C14",
+    "C15",
+    "C16",
+    "C17"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "42\n7\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "--proyecto",
+      "proyecto",
+      "--entrada",
+      "app/main"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C14",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "",
+    "salida_error": "proyecto/geo/vectores.pseudo:2:12: error: División por cero [divisionByZero]\n    2 | Retornar n / 0;\n      |            ^\n"
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "--proyecto",
+      "proyecto",
+      "--entrada",
+      "app/main"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Real\nRetornar n / 0;\nFinSubProceso\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C15",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 2,
+    "salida": "",
+    "salida_error": "pseudo: falta la entrada del proyecto (--entrada)\n"
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "--proyecto",
+      "proyecto"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C16",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "",
+    "salida_error": "proyecto/app/nada: error de proyecto [entryNotFound]\n"
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "--proyecto",
+      "proyecto",
+      "--entrada",
+      "app/nada"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R5",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "42\n7\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "run",
+      "--project",
+      "proyecto",
+      "--entry",
+      "app/main",
+      "--language",
+      "en"
+    ],
+    "entorno": {},
+    "archivos": {
+      "proyecto/app/pseudolearn.toml": "schema = 1\n[package]\nname = \"app\"\nkind = \"application\"\nentries = [\"app/main\"]\n[dependencies]\ngeo = { package = \"geo\" }\n[profiles]\n\"app/informe\" = \"en\"\n",
+      "proyecto/geo/pseudolearn.toml": "schema = 1\n[package]\nname = \"geo\"\nkind = \"library\"\n",
+      "proyecto/app/main.pseudo": "Importar app.informe.Informe;\nImportar geo.vectores.Doble;\nAlgoritmo Principal\nEscribir Doble(21);\nInforme();\nFinAlgoritmo\n",
+      "proyecto/app/informe.pseudo": "public subroutine Informe()\nwrite 7;\nendSubroutine\n",
+      "proyecto/geo/vectores.pseudo": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n"
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R6",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La ejecución VM usa el anfitrión físico completo por omisión: HTTP y HTTPS a cualquier destino, archivos del sistema, reloj y temporizador reales y argumentos. No existe ninguna opción de concesión de autoridad: una opción que no figura en la ayuda, como --grant, es una opción desconocida y produce error de uso. Las raíces TLS de prueba solo se configuran mediante --raiz-prueba o --test-root.",
+  "verificacion": [
+    "C18",
+    "C19"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 2,
+    "salida": "",
+    "salida_error": "pseudo: opción desconocida «--grant»\n"
+  },
+  "cli": {
+    "argumentos": [
+      "run",
+      "--grant",
+      "red",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R6",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "1\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "run",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R7",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "pseudo ejecutar --editor, con un archivo o con --proyecto y --entrada, ejecuta bajo un protocolo de líneas JSON para clientes de editor con el anfitrión físico completo por omisión. La salida estándar solo lleva eventos, uno por línea con las claves en el orden documentado: hello (schema 1, capabilities input, cancel y close, y limits con command_bytes 65536 y output_bytes 1048576) es siempre el primero; output lleva en text la salida del programa como texto, de modo que un programa que imprime JSON no fabrica eventos; awaiting_input anuncia que Leer espera; diagnostics lleva diagnostics, project_errors y sources y precede al fin cuando el análisis o la ejecución producen diagnósticos; finished lleva status, termination y exit_code y es siempre el último. La entrada estándar lleva una orden JSON por línea: input con text (la cadena vacía es una línea válida), cancel o close. Una línea de entrada sin orden que llegue antes de que Leer la espere se encola. status es completed solo si termination es completed; cancel, close o EOF mientras Leer espera terminan con cancelled o input_closed según el caso, y un EOF con el programa en marcha no lo detiene. El código de salida es 0 solo con completed. Una orden inválida o de más de 65536 bytes termina con protocol_error y la salida del programa que pase de 1048576 bytes termina con output_limit. Un uso incorrecto se reporta antes de cualquier evento.",
+  "verificacion": [
+    "C20",
+    "C21",
+    "C22"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "{\"event\":\"hello\",\"schema\":1,\"capabilities\":[\"input\",\"cancel\",\"close\"],\"limits\":{\"command_bytes\":65536,\"output_bytes\":1048576}}\n{\"event\":\"awaiting_input\"}\n{\"event\":\"output\",\"text\":\"42\\n\"}\n{\"event\":\"finished\",\"status\":\"completed\",\"termination\":\"completed\",\"exit_code\":0}\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "--editor",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
+    },
+    "entrada": "{\"command\":\"input\",\"text\":\"21\"}\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C21",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "{\"event\":\"hello\",\"schema\":1,\"capabilities\":[\"input\",\"cancel\",\"close\"],\"limits\":{\"command_bytes\":65536,\"output_bytes\":1048576}}\n{\"event\":\"awaiting_input\"}\n{\"event\":\"finished\",\"status\":\"input_closed\",\"termination\":null,\"exit_code\":1}\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "run",
+      "--editor",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
+    },
+    "entrada": ""
+  }
+}
+```
+
+```caso
+{
+  "id": "C22",
+  "regla": "R7",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "{\"event\":\"hello\",\"schema\":1,\"capabilities\":[\"input\",\"cancel\",\"close\"],\"limits\":{\"command_bytes\":65536,\"output_bytes\":1048576}}\n{\"event\":\"awaiting_input\"}\n{\"event\":\"finished\",\"status\":\"cancelled\",\"termination\":null,\"exit_code\":1}\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "run",
+      "--editor",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x * 2;\nFinAlgoritmo\n"
+    },
+    "entrada": "{\"command\":\"cancel\"}\n"
+  }
+}
+```
+
+```regla
+{
+  "id": "R8",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Si la ejecución termina con completed, el código de salida es el que el programa estableció con Consola.EstablecerCodigoSalida (0 por omisión, el último si se estableció varias veces); en cualquier otro final es 1 aunque el programa haya establecido otro. Consola.EscribirError escribe su texto en la salida de error estándar sin mezclarlo con la salida estándar y en el orden del programa.",
+  "verificacion": [
+    "C23",
+    "C24",
+    "C25",
+    "C26"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C23",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 7,
+    "salida": "7\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir con Como Consola <- Propagar SolicitarConsola();\nDefinir a Como Entero <- Propagar con.EstablecerCodigoSalida(7);\nRetornar Exito(a);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C24",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 1,
+    "salida": "",
+    "salida_error": "p.pseudo:8:12: error: División por cero [divisionByZero]\n    8 | Escribir 1 div cero;\n      |            ^\n"
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir con Como Consola <- Propagar SolicitarConsola();\nDefinir a Como Entero <- Propagar con.EstablecerCodigoSalida(7);\nRetornar Exito(a);\nFinSubProceso\nAlgoritmo Main\nDefinir cero Como Entero <- 0;\nEscribir 1 div cero;\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C25",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 9,
+    "salida": "11\n",
+    "salida_error": ""
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir con Como Consola <- Propagar SolicitarConsola();\nDefinir a Como Entero <- Propagar con.EstablecerCodigoSalida(2);\nDefinir b Como Entero <- Propagar con.EstablecerCodigoSalida(9);\nRetornar Exito(a + b);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C26",
+  "regla": "R8",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "cli",
+  "espera": {
+    "codigo_salida": 0,
+    "salida": "salida\nfin\n6\n",
+    "salida_error": "error\n"
+  },
+  "cli": {
+    "argumentos": [
+      "ejecutar",
+      "p.pseudo"
+    ],
+    "entorno": {},
+    "archivos": {
+      "p.pseudo": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir con Como Consola <- Propagar SolicitarConsola();\nEscribir \"salida\";\nDefinir n Como Entero <- Propagar con.EscribirError(\"error\\n\");\nEscribir \"fin\";\nRetornar Exito(n);\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n"
+    }
+  }
+}
+```

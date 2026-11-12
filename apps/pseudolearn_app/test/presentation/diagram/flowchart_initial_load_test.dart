@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pseudolearn_app/composition/cubit_scope.dart';
@@ -8,9 +8,9 @@ import '../../fakes/in_memory_document_repository.dart';
 import '../../fakes/test_dependencies.dart';
 
 const String _factorialSource = 'Proceso Factorial\n'
-    '  Definir n Como Entero;\n'
-    '  Definir f Como Entero;\n'
-    '  Definir i Como Entero;\n'
+    '  Definir n Como Entero <- 0;\n'
+    '  Definir f Como Entero <- 0;\n'
+    '  Definir i Como Entero <- 0;\n'
     '  n <- 5;\n'
     '  f <- 1;\n'
     '  Para i <- 1 Hasta n Con Paso 1 Hacer\n'

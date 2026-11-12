@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import '../agent/agent_launcher.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 import '../theme/app_theme.dart';
 import '../theme/tokens/border_metrics.dart';
@@ -32,7 +33,7 @@ final class _CompactShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: navigationShell,
+      body: Stack(children: [navigationShell, const _LauncherLayer()]),
       bottomNavigationBar: ShellBottomBar(navigationShell: navigationShell),
     );
   }
@@ -55,9 +56,20 @@ final class _RailShell extends StatelessWidget {
             thickness: BorderMetricsTokens.widthHairline,
             color: theme.colors.borders.subtle,
           ),
-          Expanded(child: navigationShell),
+          Expanded(child: Stack(children: [navigationShell, const _LauncherLayer()])),
         ],
       ),
+    );
+  }
+}
+
+final class _LauncherLayer extends StatelessWidget {
+  const _LauncherLayer();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Positioned.fill(
+      child: SafeArea(child: Stack(children: [AgentLauncher()])),
     );
   }
 }

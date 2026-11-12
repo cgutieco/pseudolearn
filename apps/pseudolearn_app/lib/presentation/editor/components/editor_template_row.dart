@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../../domain/model/completion/completion_item.dart';
 import '../../components/typography/app_text.dart';
 import '../../theme/app_theme.dart';
@@ -25,8 +25,7 @@ final class EditorTemplateRow extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: SpacingTokens.space3),
         itemCount: templates.length,
-        separatorBuilder: (_, __) =>
-            const SizedBox(width: SpacingTokens.space2),
+        separatorBuilder: (_, _) => const SizedBox(width: SpacingTokens.space2),
         itemBuilder: (context, index) => _TemplateChip(
           template: templates[index],
           onTap: () => onTemplateSelected(templates[index]),
@@ -43,20 +42,15 @@ final class _TemplateChip extends StatelessWidget {
   const _TemplateChip({required this.template, required this.onTap});
 
   Color _chipColor(AppThemeExtension theme) => switch (template.family) {
-        CompletionFamily.structured => theme.syntax.keywordStructured,
-        CompletionFamily.procedural => theme.syntax.keywordProcedural,
-        CompletionFamily.oop => theme.syntax.keywordOop,
-      };
+    CompletionFamily.structured => theme.syntax.keywordStructured,
+    CompletionFamily.procedural => theme.syntax.keywordProcedural,
+    CompletionFamily.oop => theme.syntax.keywordOop,
+  };
 
   @override
   Widget build(BuildContext context) {
     final theme = AppThemeExtension.of(context);
     final radius = BorderRadius.circular(RadiusTokens.radiusSm);
-    final chipBorder = Border.all(
-      color: theme.colors.borders.subtle,
-      width: BorderMetricsTokens.widthHairline,
-    );
-
     return InkWell(
       onTap: onTap,
       borderRadius: radius,
@@ -68,10 +62,16 @@ final class _TemplateChip extends StatelessWidget {
           decoration: BoxDecoration(
             color: theme.colors.surfaces.defaultSurface,
             borderRadius: radius,
-            border: chipBorder,
+            border: Border.all(
+              color: theme.colors.borders.subtle,
+              width: BorderMetricsTokens.widthHairline,
+            ),
           ),
-          child: AppText(template.label,
-              variant: AppTextVariant.codeInline, color: _chipColor(theme)),
+          child: AppText(
+            template.insertionPreview,
+            variant: AppTextVariant.codeInline,
+            color: _chipColor(theme),
+          ),
         ),
       ),
     );

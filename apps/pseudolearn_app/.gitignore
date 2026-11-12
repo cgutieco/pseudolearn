@@ -44,5 +44,24 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# Artefactos de comparación de golden; se regeneran en cada fallo.
+# Capturas de diagnóstico generadas por pruebas fallidas.
 test/**/failures/
+
+# Salidas locales de generadores de Flutter y plataforma
+lib/engine/bridge/api.dart
+lib/engine/bridge/frb_generated*.dart
+lib/presentation/l10n/generated/
+native/src/frb_generated.rs
+ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json
+ios/Runner/Assets.xcassets/AppIcon.appiconset/*.png
+ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json
+ios/Runner/Assets.xcassets/LaunchImage.imageset/*.png
+ios/Runner/Assets.xcassets/LaunchBackground.colorset/Contents.json
+macos/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json
+macos/Runner/Assets.xcassets/AppIcon.appiconset/*.png
+macos/Flutter/GeneratedPluginRegistrant.swift
+windows/flutter/generated_plugin_registrant.cc
+windows/flutter/generated_plugin_registrant.h
+windows/flutter/generated_plugins.cmake
+windows/runner/resources/app_icon.png
+windows/runner/resources/app_icon.ico

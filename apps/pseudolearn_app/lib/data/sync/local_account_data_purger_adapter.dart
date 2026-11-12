@@ -1,3 +1,4 @@
+import '../exercises/user_exercise_schema.dart';
 import 'dart:io';
 import 'package:sqflite/sqflite.dart';
 import '../../domain/ports/local_account_data_purger.dart';
@@ -10,10 +11,9 @@ final class LocalAccountDataPurgerAdapter implements LocalAccountDataPurger {
   final Directory _documentsDirectory;
 
   const LocalAccountDataPurgerAdapter({
-    required Database database,
-    required Directory documentsDirectory,
-  })  : _database = database,
-        _documentsDirectory = documentsDirectory;
+    required this._database,
+    required this._documentsDirectory,
+  });
 
   @override
   Future<void> purgeAccountData() async {
@@ -22,6 +22,7 @@ final class LocalAccountDataPurgerAdapter implements LocalAccountDataPurger {
       await transaction.delete(IndexSchema.syncStateTableName);
       await transaction.delete(IndexSchema.progressTableName);
       await transaction.delete(IndexSchema.tableName);
+      await transaction.delete(UserExerciseSchema.table);
     });
     _deleteDocumentFiles();
   }

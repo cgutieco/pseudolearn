@@ -1,10 +1,14 @@
 import 'spacing.dart';
 
 final class ComponentMetricsTokens {
-  static const double editorKeyBarContainerHeight = SpacingTokens.targetTouchMin;
+  static const double editorKeyBarContainerHeight =
+      SpacingTokens.targetTouchMin;
   static const double editorKeyCapHeight = 32.0;
   static const double editorTemplateRowHeight = SpacingTokens.targetTouchMin;
   static const double editorTemplateChipHeight = 32.0;
+  static const double editorCompletionPopupWidth = 320.0;
+  static const double editorCompletionRowHeight = 32.0;
+  static const double editorCompletionPopupGap = 4.0;
   static const double diagnosticsPanelRelatedConnector = 1.0;
   static const double severityChipHeight = 20.0;
   static const double chipFilterHeight = 32.0;
@@ -14,6 +18,7 @@ final class ComponentMetricsTokens {
   static const double flowCanvasZoomMax = 2.0;
   static const double flowCanvasZoomStep = 0.25;
   static const double flowCanvasZoomControlsInset = 16.0;
+  static const double flowCanvasDependencyStripMaxWidth = 360.0;
   static const double flowCanvasFocusPadding = 48.0;
   static const double flowCanvasFocusZoomMax = 1.25;
   static const double diagramNotationSegmentedMinWidth = 760.0;
@@ -21,7 +26,9 @@ final class ComponentMetricsTokens {
   static const double contextMenuMinWidth = 180.0;
   static const double contextMenuItemHeight = 40.0;
   static const double progressStepsDotSize = 8.0;
-  static const Duration buttonCopyConfirmedDuration = Duration(milliseconds: 1600);
+  static const Duration buttonCopyConfirmedDuration = Duration(
+    milliseconds: 1600,
+  );
   static const int outputLinesVisible = 5;
   static const double navRailWidth = 96.0;
   static const double bottomBarHeight = 64.0;
@@ -30,6 +37,10 @@ final class ComponentMetricsTokens {
   static const double outputPanelBodyHeight = 120.0;
   static const double diagnosticsListHeight = 140.0;
   static const double diagnosticsEmptyHeight = 100.0;
+  static const double runResultPillHeight = 24.0;
+  static const double runOptionsBadgeDotSize = 8.0;
+  static const double keywordHelpChipSize = 28.0;
+  static const double keywordHelpChipGap = 2.0;
   static const double inlineTitleFieldWidth = 240.0;
   static const double inlineTitleFieldHeight = 36.0;
   static const double codeGutterWidth = 24.0;
@@ -48,4 +59,19 @@ final class ComponentMetricsTokens {
   static const double dashboardBarBaselineHeight = 2.0;
   static const double dashboardStateDotSize = 8.0;
   static const double dashboardCardExtent = 200.0;
+  static const double dashboardHeroRingSize = 184.0;
+  static const double dashboardHeroRingStroke = 10.0;
+  static const double dashboardHeroRingGap = 4.0;
+  static const double dashboardGaugeSize = 72.0;
+  static const double dashboardGaugeStroke = 8.0;
+  static const double dashboardDonutSize = 112.0;
+  static const double dashboardDonutStroke = 16.0;
+  static const double dashboardRadarMaxSize = 320.0;
+  static const double dashboardRadarLabelInset = 56.0;
+  static const double dashboardRadarLabelWidth = 76.0;
+  static const int dashboardRadarRings = 4;
+  static const double dashboardLessonNodeSize = 20.0;
+  static const double dashboardLessonLinkHeight = 2.0;
+  static const double dashboardLegendSwatch = 10.0;
+  static const double dashboardStackedChartHeight = 120.0;
 }

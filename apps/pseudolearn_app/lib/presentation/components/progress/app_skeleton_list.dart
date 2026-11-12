@@ -25,7 +25,9 @@ final class _AppSkeletonListState extends State<AppSkeletonList>
   void initState() {
     super.initState();
     _controller = AnimationController(
-        vsync: this, duration: MotionTokens.motionScreen * 3);
+      vsync: this,
+      duration: MotionTokens.motionScreen * 3,
+    );
   }
 
   @override
@@ -51,13 +53,14 @@ final class _AppSkeletonListState extends State<AppSkeletonList>
     final gap = canvas.scaled(GridMetricsTokens.cardGap);
 
     return FadeTransition(
-      opacity:
-          _controller.drive(Tween<double>(begin: _restingOpacity, end: 1.0)),
+      opacity: _controller.drive(
+        Tween<double>(begin: _restingOpacity, end: 1.0),
+      ),
       child: ListView.separated(
         physics: const NeverScrollableScrollPhysics(),
         itemCount: _placeholderCount,
-        separatorBuilder: (_, __) => SizedBox(height: gap),
-        itemBuilder: (_, __) =>
+        separatorBuilder: (_, _) => SizedBox(height: gap),
+        itemBuilder: (_, _) =>
             _SkeletonBlock(height: canvas.scaled(widget.itemExtent)),
       ),
     );

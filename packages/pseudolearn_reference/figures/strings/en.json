@@ -1,0 +1,1535 @@
+{
+  "interface": {
+    "trace.statement_entered": "enters statement",
+    "trace.decision": "decision",
+    "trace.output": "writes",
+    "trace.call": "calls",
+    "trace.return": "returns from",
+    "trace.failure": "fails",
+    "trace.input_requested": "asks for input",
+    "trace.input_received": "receives",
+    "trace.branch.afirmativa": "true branch",
+    "trace.branch.negativa": "false branch",
+    "trace.branch.caso": "chosen case",
+    "trace.branch.otro": "Otherwise",
+    "trace.branch.ninguna": "no branch",
+    "table.spanish": "Spanish",
+    "table.english": "English",
+    "table.category": "Category",
+    "table.code": "Code",
+    "table.severity": "Severity",
+    "table.class": "Class",
+    "table.message": "Message",
+    "table.section": "Section",
+    "table.family": "Family",
+    "table.parameters": "Parameters",
+    "table.result": "Result",
+    "table.production": "Production",
+    "table.rule": "Rule",
+    "category.keywordStructured": "structured word",
+    "category.keywordProcedural": "subroutine word",
+    "category.keywordOop": "object word",
+    "category.identifier": "name or member",
+    "category.type": "type",
+    "category.literalNumber": "number",
+    "category.literalString": "text",
+    "category.literalBoolean": "value",
+    "category.operator": "operator",
+    "category.punctuation": "sign",
+    "category.comment": "comment",
+    "severity.error": "error",
+    "severity.warning": "warning",
+    "severity.info": "information",
+    "class.lexical": "lexical",
+    "class.syntax": "syntax",
+    "class.semantic": "semantic",
+    "class.runtime": "runtime",
+    "class.internal": "internal",
+    "family.bytes": "bytes",
+    "family.collections": "collections",
+    "family.io": "input and output",
+    "family.json": "JSON",
+    "family.network": "network",
+    "family.numbers": "numbers",
+    "family.text": "text",
+    "family.time": "time"
+  },
+  "productions": {
+    "addition": "sum",
+    "algorithmUnit": "algorithm",
+    "alternativeField": "alternative field",
+    "arguments": "arguments",
+    "assignmentStatement": "assignment",
+    "awaitExpression": "await",
+    "body": "statements",
+    "breakStatement": "loop exit",
+    "callStatement": "call",
+    "characterLiteral": "character",
+    "classUnit": "class",
+    "comment": "comment",
+    "conditional": "decision",
+    "conjunction": "conjunction",
+    "constantDeclaration": "constant",
+    "constructorMember": "constructor",
+    "declaration": "definition",
+    "deferStatement": "deferred block",
+    "designator": "designator",
+    "dimensionDeclaration": "dimension",
+    "dimensioned": "dimensioned array",
+    "discardStatement": "discard",
+    "disjunction": "disjunction",
+    "endOfFile": "end of file",
+    "endOfLine": "end of line",
+    "enumMembers": "members",
+    "enumUnit": "enumeration",
+    "equality": "equality",
+    "exportDeclaration": "export",
+    "expression": "expression",
+    "expressions": "expressions",
+    "fieldBinding": "field",
+    "fieldDeclaration": "attribute",
+    "forEachLoop": "for each",
+    "forLoop": "for",
+    "functionLiteral": "anonymous function",
+    "functionParameterType": "parameter",
+    "functionType": "function type",
+    "identifier": "name",
+    "importDeclaration": "import",
+    "input": "read",
+    "instantiation": "instantiation",
+    "integerLiteral": "integer",
+    "interfaceSignature": "signature",
+    "interfaceUnit": "interface",
+    "iterationBindings": "loop variables",
+    "labels": "labels",
+    "line": "line",
+    "literal": "literal",
+    "methodMember": "method",
+    "moduleDirective": "module directive",
+    "modulePath": "module path",
+    "moduleUnit": "module unit",
+    "multiplication": "product",
+    "names": "names",
+    "ordering": "ordering",
+    "output": "write",
+    "parameter": "parameter",
+    "parameters": "parameters",
+    "pattern": "pattern",
+    "postfix": "access",
+    "powerExpression": "power",
+    "primary": "primary value",
+    "program": "program",
+    "propagation": "propagation",
+    "realLiteral": "real",
+    "realization": "realization",
+    "receiveBranch": "receive branch",
+    "recordField": "record field",
+    "recordUnit": "record",
+    "repeatLoop": "repeat",
+    "returnStatement": "return",
+    "returnVariable": "return variable",
+    "selectStatement": "select",
+    "signedInteger": "signed integer",
+    "spawnExpression": "spawn",
+    "spawnStatement": "spawn",
+    "statement": "statement",
+    "stringLiteral": "string",
+    "subprogram": "subroutine",
+    "switch": "switch",
+    "taskScope": "task scope",
+    "terminator": "statement end",
+    "trivia": "spacing",
+    "type": "type",
+    "typeArguments": "type arguments",
+    "typeParameter": "type parameter",
+    "typeParameters": "type parameters",
+    "unary": "unary",
+    "variantAlternative": "alternative",
+    "variantConstruction": "variant construction",
+    "variantPattern": "variant pattern",
+    "variantUnit": "variant",
+    "visibility": "visibility",
+    "whileLoop": "while",
+    "whitespace": "whitespace"
+  },
+  "figures": {
+    "agenda-cola": {
+      "titulo": "The schedule",
+      "descripcion": "On the left, the running task. On the right, the ready queue with tasks 1 and 2, from which the next one to come in leaves. Below, the suspended tasks, where the current one goes if it waits for something.",
+      "actual": "task 0",
+      "enMarcha": "running",
+      "t1": "task 1",
+      "t2": "task 2",
+      "final": "back",
+      "listas": "ready queue",
+      "suspendidas": "suspended, waiting"
+    },
+    "aguardar-pausa": {
+      "titulo": "Pausing at Await",
+      "descripcion": "Two timelines. Task A works, pauses at Await while task B works, and continues when B hands it the result.",
+      "tareaA": "task A",
+      "tareaB": "task B",
+      "pausa": "paused",
+      "resultado": "result"
+    },
+    "alcanzables": {
+      "titulo": "Reachable values",
+      "descripcion": "The active frames point to an object, which points to another. A third object has no arrow reaching it and is marked as unreachable.",
+      "marcos": "active frames",
+      "obj1": "object 1",
+      "obj2": "object 2",
+      "obj3": "object 3",
+      "inalcanzable": "unreachable"
+    },
+    "alias-copia": {
+      "titulo": "Alias versus copy",
+      "descripcion": "a and alias point to object 1 with owner Ana and 3 books. Copiar creates object 2 with the same data, pointed to by copia. Afterwards object 1 has 5 books and object 2 has 9."
+    },
+    "ambito-tareas": {
+      "titulo": "A task scope",
+      "descripcion": "The parent's line runs from top to bottom. At Tasks it spawns two children, Ana and Leo, that progress in parallel. Both join the parent again at EndTasks.",
+      "padre": "parent",
+      "unidas": "all joined"
+    },
+    "ambitos-anidados": {
+      "titulo": "Nested scopes",
+      "descripcion": "A large box for the process with the variable n, and inside it another for the If branch with the variable doble. From inside n is visible; from outside doble is not.",
+      "veN": "n is visible here",
+      "noVeDoble": "doble no longer exists here"
+    },
+    "ampliaciones": {
+      "titulo": "The three widenings",
+      "descripcion": "Three green arrows: from Integer to Real, from Character to String and from a subclass to its superclass. Below, in red, the conversions that never happen by themselves: Real to Integer, Boolean to number and number to text.",
+      "subclase": "Subclass",
+      "superclase": "Superclass",
+      "nunca": "Never happen by themselves:",
+      "n1": "Real → Integer · String → Character",
+      "n2": "Boolean → number · number → text"
+    },
+    "anatomia-diagnostico": {
+      "titulo": "Data and message",
+      "descripcion": "At the top, the diagnostic as data: code incompatibleTypesInAssignment, semantic class and error severity, span on line 2 and arguments expected Integer and found String. An arrow with the language template leads to the presented message.",
+      "dato": "data",
+      "codigo": "code: incompatibleTypesInAssignment",
+      "clase": "class: semantic · severity: error",
+      "tramo": "span: line 2, columns 3 to 38",
+      "argumentos": "arguments: expected Integer, found String",
+      "plantilla": "language template",
+      "mensaje1": "Incompatible type in assignment:",
+      "mensaje2": "cannot assign String to Integer"
+    },
+    "arbol-precedencia": {
+      "titulo": "The tree of 2 + 3 * 4",
+      "descripcion": "The expression 2 + 3 * 4 is grouped as a tree with + at the root, 2 on the left and 3 * 4 on the right. The product reduces to 12 and the sum to 14."
+    },
+    "archivo-capas": {
+      "titulo": "From folder to contents",
+      "descripcion": "DirCap leads with open to FileCap, which leads with readText to the contents \"Comprar pan\". Every step can end in Error(IoError)."
+    },
+    "arreglo-casillas": {
+      "titulo": "The boxes of an array",
+      "descripcion": "Four boxes in a row with the values 7, 9, 6 and 8 and the indices 0, 1, 2 and 3 below. On the right, a fifth dashed, crossed-out box with index 4, which does not exist.",
+      "notas": "notas",
+      "tamano": "Size 4: indices 0 to 3",
+      "fuera": "notas[4] → arrayIndexOutOfRange"
+    },
+    "ausentes": {
+      "titulo": "Absent constructs",
+      "descripcion": "Four constructs that do not exist, each with its alternative: abstract classes versus interfaces, static members versus parameters, protected versus Public and Private, and exceptions versus Result.",
+      "abstracta": "abstract class",
+      "estatico": "static member",
+      "protegido": "protected",
+      "excepciones": "exceptions",
+      "interfaces": "interfaces",
+      "parametros": "pass parameters",
+      "publicoPrivado": "Public or Private",
+      "resultado": "Optional and Result"
+    },
+    "bytes-utf8": {
+      "titulo": "Characters and octets",
+      "descripcion": "At the top, the three characters of año: a, ñ and o. Below, their four octets: 97 for a, 195 and 177 for ñ, and 111 for o.",
+      "caracteres": "Characters",
+      "a": "a",
+      "enie": "ñ",
+      "o": "o",
+      "octetos": "UTF-8 octets",
+      "nota": "3 characters → 4 octets"
+    },
+    "cadena-caracter": {
+      "titulo": "Character or string",
+      "descripcion": "At the top, A between single quotes and between double quotes both lead to the Character type. Below, empty quotes and a two-letter text lead to the String type.",
+      "uno": "Exactly one character",
+      "ab": "'ab'",
+      "otros": "Zero or several characters",
+      "nota": "The content decides, not the quotes",
+      "a-simple": "'A'",
+      "a-doble": "\"A\""
+    },
+    "cajas-variables": {
+      "titulo": "Variable boxes",
+      "descripcion": "Three boxes in memory: libros and cuadernos, of type Integer, start empty; nombre, of type String, starts with \"Leo\". Then libros receives 3 and cuadernos receives 6, computed by reading libros.",
+      "memoria": "memory",
+      "vacia": "empty",
+      "lee": "read to compute"
+    },
+    "caminos-valor": {
+      "titulo": "Paths without a value",
+      "descripcion": "A diagram with the condition puntos > 50. Along the true branch premio receives 10; along the false one it receives nothing. Both paths reach Write premio, which is marked as an error.",
+      "vacia": "premio: empty",
+      "nada": "no assignment",
+      "sigueVacia": "still empty",
+      "codigoError": "variableUsedUninitialized"
+    },
+    "canal-cola": {
+      "titulo": "A channel of capacity 2",
+      "descripcion": "A producer on the left sends values into a channel with two slots holding 20 and 10; a consumer on the right receives them in order.",
+      "productor": "producer",
+      "consumidor": "consumer",
+      "capacidad": "capacity 2",
+      "orden": "first in, first out"
+    },
+    "capacidades-llaves": {
+      "titulo": "Capabilities as keys",
+      "descripcion": "On the left, the program with three capabilities: Console, FileCap and Clock. On the right, the host with the terminal, the disk and the time. Each capability is an arrow to its resource.",
+      "programa": "program",
+      "anfitrion": "host",
+      "terminal": "terminal",
+      "disco": "disk",
+      "hora": "time",
+      "llaves": "one key per resource"
+    },
+    "capas-motor": {
+      "titulo": "Engine layers",
+      "descripcion": "A column of layers from top to bottom: text, lexical, syntax, semantics and intermediate representation. Two arrows leave the intermediate representation: virtual machine and native code.",
+      "texto": "program text",
+      "lexico": "lexical",
+      "sintaxis": "syntax",
+      "semantica": "semantics",
+      "ri": "intermediate representation",
+      "vm": "virtual machine",
+      "nativo": "native code"
+    },
+    "cinta-efectos": {
+      "titulo": "The effect tape",
+      "descripcion": "A tape with three numbered entries: output, file and clock, joined by arrows. Below, the note that they are chained and that replaying gives the same run.",
+      "salida": "output",
+      "archivo": "file",
+      "reloj": "clock",
+      "cinta": "effect tape",
+      "encadenadas": "every entry is chained to the previous one",
+      "reproducir": "replaying the tape gives the same run"
+    },
+    "clase-objetos": {
+      "titulo": "A class and its objects",
+      "descripcion": "At the top, the class Punto with the attributes x and yy. Two arrows marked New lead to two objects: one with x = 3 and yy = 4, the other with x = 0 and yy = 7."
+    },
+    "clases-diagnostico": {
+      "titulo": "Diagnostic classes",
+      "descripcion": "Four stages in a column, lexical, syntax, semantic and runtime, each with an example on the right. A red bar next to the first three marks that they are discovered before running.",
+      "lexico": "Lexical",
+      "lexico-ej": "unknown character",
+      "sintaxis": "Syntax",
+      "sintaxis-ej": "missing ;",
+      "semantica": "Semantic",
+      "semantica-ej": "undefined variable",
+      "antes": "Discovered before running: they prevent running",
+      "ejecucion": "Runtime",
+      "ejecucion-ej": "index out of range",
+      "nota": "Warnings warn but still let the program run"
+    },
+    "clausura": {
+      "titulo": "Each closure with its own copy",
+      "descripcion": "The call multiplicador produces two closures, doble and triple. Each carries its own copy of factor inside, 2 and 3 respectively.",
+      "factor": "factor",
+      "nota": "Captured copies travel with each function"
+    },
+    "coincidencia-larga": {
+      "titulo": "The longest piece",
+      "descripcion": "At the top, x stuck to the arrow and the 1 splits into x, the assignment arrow and 1: an assignment. Below, with spaces, it splits into x, less than, minus and 1: a comparison.",
+      "asigna": "assignment",
+      "compara": "comparison",
+      "regla": "The engine takes the longest possible piece.",
+      "regla2": "A space can change the pieces.",
+      "ejemplos": "<- before < · <= before < · <> before <"
+    },
+    "comentario": {
+      "titulo": "Where a comment starts",
+      "descripcion": "Two program lines. In the first, what follows the two slashes is shaded and labelled comment. In the second, the two slashes are inside a quoted text and are labelled ordinary text.",
+      "comentario": "comment: up to the end of the line",
+      "texto": "inside quotes: it is text"
+    },
+    "compilar-nativo": {
+      "titulo": "Virtual machine and native code",
+      "descripcion": "The intermediate representation feeds two paths: the virtual machine and native code. An equals sign between them shows they give the same run.",
+      "ri": "intermediate representation",
+      "vm": "virtual machine",
+      "nativo": "native executable",
+      "igual": "same output, same failures"
+    },
+    "concatenar": {
+      "titulo": "Concatenating three pieces",
+      "descripcion": "Three boxes, \"Hola, \", \"Ana\" and '!', with arrows converging on a larger box with \"Hola, Ana!\".",
+      "hola": "\"Hola, \"",
+      "ana": "\"Ana\"",
+      "resultado": "\"Hola, Ana!\""
+    },
+    "constante-sustituye": {
+      "titulo": "The constant is replaced",
+      "descripcion": "A declaration of the constant SEMANA as 7 * 24 that is computed as 168. The line Write base, SEMANA becomes Write base, 168. Only base appears in memory; the constant has no box.",
+      "memoria": "memory",
+      "sinCaja": "constants take no box"
+    },
+    "convenciones": {
+      "titulo": "Conventions of the specification",
+      "descripcion": "Three stacked examples. A code pill with the word If; a dashed slot with the word condition; and a program block with a title, a line number, a Write instruction and, below, a band with the output.",
+      "pildora": "Language word",
+      "pildora-nota": "written exactly as shown",
+      "hueco": "Slot",
+      "condicion": "condition",
+      "hueco-nota": "you fill it in",
+      "programa": "Run program",
+      "titulo-programa": "Program title",
+      "salida": "Output",
+      "salida-texto": "what the engine wrote"
+    },
+    "conversiones": {
+      "titulo": "Back and forth between text and number",
+      "descripcion": "At the top, the text \"42\" becomes a number with toInteger and comes back with toText. Below, the text \"doce\" cannot be converted and toInteger fails.",
+      "falla": "fails"
+    },
+    "cortocircuito": {
+      "titulo": "Short circuit",
+      "descripcion": "At the top, False And a crossed-out division by zero: the result is False without computing the right side. Below, True Or the same division: the result is True.",
+      "conY": "With And",
+      "conO": "With Or",
+      "noSeCalcula": "not computed",
+      "resultadoFalso": "result: False",
+      "resultadoVerdadero": "result: True"
+    },
+    "declarar-antes": {
+      "titulo": "Declare before use",
+      "descripcion": "A Define total As Integer line creates an empty box named total. Below, the assignment total gets 10 stores a value in that box. A note recalls that assigning to an undeclared name is an error.",
+      "total": "total",
+      "sin-valor": "no value yet",
+      "prohibido": "Assigning to a name without Define: error"
+    },
+    "designadores": {
+      "titulo": "Places and values",
+      "descripcion": "On the left, three designators: x, notas[i] and persona.nombre. On the right, three expressions that are not: 5, x + 1 and length(t).",
+      "lugar": "name a place",
+      "valor": "only have a value",
+      "nota": "Values can only be stored in a place"
+    },
+    "determinismo": {
+      "titulo": "Same seed, same sequence",
+      "descripcion": "A box with seed 42 from which two runs leave. Both produce the sequence 1, 1, 6 and an equals sign joins them.",
+      "semilla": "seed 42",
+      "ejecucion-a": "Run A",
+      "ejecucion-b": "Run B",
+      "nota": "Same program, inputs and seed",
+      "nota2": "→ same output, trace and termination"
+    },
+    "diccionario": {
+      "titulo": "Keys pointing to values",
+      "descripcion": "Two columns, keys and values. The key Ana points to the value 13, marked as replaced; the key Luis points to 11. A note explains that keys keep the order in which they were inserted.",
+      "claves": "keys",
+      "valores": "values",
+      "ana": "\"Ana\"",
+      "luis": "\"Luis\"",
+      "nota": "Keys stay in the order they came in"
+    },
+    "diferir-pila": {
+      "titulo": "The cleanup stack",
+      "descripcion": "A stack: first cierro la puerta goes in and apago la luz on top. On leaving, apago la luz runs first and then cierro la puerta.",
+      "pila": "noted cleanups",
+      "puerta": "cierro la puerta",
+      "luz": "apago la luz"
+    },
+    "ecosistema": {
+      "titulo": "One language, one engine, three doors",
+      "descripcion": "At the top, the PseudoLearn language in Spanish and English. Below, the engine that analyses and runs. Three arrows leave the engine towards the app, the command line and the web.",
+      "lenguaje": "PseudoLearn language (es · en)",
+      "motor": "Engine",
+      "motor-sub": "analyse · run · observe",
+      "app": "App",
+      "app-sub": "editor",
+      "cli": "pseudo",
+      "cli-sub": "command line",
+      "web": "Web",
+      "web-sub": "browser",
+      "nota": "Same result in all three"
+    },
+    "edicion": {
+      "titulo": "Contents of the 2026 edition",
+      "descripcion": "A frame titled 2026 edition with three boxes: a single grammar, a single type policy and a fixed prelude with examples of built-in functions.",
+      "edicion": "2026 edition",
+      "gramatica": "A single grammar",
+      "tipos": "A single type policy",
+      "preludio": "Fixed prelude",
+      "preludio-ejemplos": "length · sqrt · Optional · vector…"
+    },
+    "enumerado": {
+      "titulo": "The members of an enumeration",
+      "descripcion": "A box with the type Semaforo and its three members: Rojo, Amarillo and Verde. A variable luz, outside the box, points to the member Verde.",
+      "tipo": "Semaforo",
+      "rojo": "Rojo",
+      "amarillo": "Amarillo",
+      "verde": "Verde",
+      "luz": "luz",
+      "variable": "variable",
+      "cerrada": "Closed list:",
+      "cerrada2": "there are no other values"
+    },
+    "error-lexico": {
+      "titulo": "A lexical error and recovery",
+      "descripcion": "A Write statement with an at sign between two texts. The at sign is marked in red and an arrow joins it to the diagnostic unrecognizedCharacter. Another arrow shows that the engine keeps reading; a dashed box recalls that no semantic analysis is done.",
+      "sigue": "the engine keeps reading",
+      "no-semantica": "no semantic analysis",
+      "nota": "No values are invented and nothing runs",
+      "codigo": "unrecognizedCharacter"
+    },
+    "escalera-precedencia": {
+      "titulo": "The precedence ladder",
+      "descripcion": "Nine steps from top to bottom: postfix; sign and Not; power; product, division, div and mod; sum, subtraction and concatenation; order; equality; And; Or. Unary operators and power associate to the right.",
+      "postfijos": "call · index · field",
+      "postfijosNota": "binds tightest",
+      "derecha": "associates right",
+      "sumaNota": "also concatenates",
+      "debil": "binds loosest"
+    },
+    "espacios": {
+      "titulo": "Same program, different indentation",
+      "descripcion": "Two boxes with the same If. The top one has tidy indentation; the bottom one, messy spaces. Below, an equals sign marks that they mean the same.",
+      "ordenado": "With tidy indentation",
+      "desordenado": "With messy spaces",
+      "igual": "= the same program for the engine"
+    },
+    "estructura-archivo": {
+      "titulo": "A program file",
+      "descripcion": "A file with four sibling units one under the other: the constant SALUDO, the enumeration Color, the algorithm Tienda, highlighted as the only one, and the subroutine Precio.",
+      "archivo": "tienda.psl",
+      "unico": "exactly one"
+    },
+    "familias-biblioteca": {
+      "titulo": "Library families",
+      "descripcion": "Two columns. On the left, the families that only compute: text, numbers, collections, JSON and bytes. On the right, those that need a capability: input and output, time, network and tasks.",
+      "puras": "compute only",
+      "efectos": "need a capability",
+      "texto": "text",
+      "numeros": "numbers",
+      "colecciones": "collections",
+      "json": "JSON",
+      "bytes": "bytes",
+      "io": "input and output",
+      "tiempo": "time",
+      "red": "network",
+      "tareas": "tasks"
+    },
+    "familias-palabras": {
+      "titulo": "Families of reserved words",
+      "descripcion": "Six coloured bands: program structure, subroutines, objects, types, boolean values and operators written with letters, each with examples.",
+      "estructura": "Program structure",
+      "subprogramas": "Subroutines",
+      "objetos": "Objects",
+      "tipos": "Types",
+      "valores": "Values",
+      "operadores": "Operators with letters",
+      "nota": "The full list is in Appendix B"
+    },
+    "fecha-hora": {
+      "titulo": "Instant and offset",
+      "descripcion": "A DateTime joins an instant in nanoseconds since 1970 and an offset of +3600 seconds. Together they give the local time 2026-11-07T18:30:00+01:00.",
+      "instante": "instant (ns)",
+      "desplazamiento": "offset +3600 s",
+      "local": "local time",
+      "iso": "2026-11-07T18:30:00+01:00"
+    },
+    "generico": {
+      "titulo": "A template and its uses",
+      "descripcion": "At the top, the template Caja with a type slot T. Two arrows lead to two concrete versions, Caja of Integer and Caja of String.",
+      "plantilla": "Caja<T>",
+      "entero": "Caja<Integer>",
+      "cadena": "Caja<String>",
+      "nota": "A single definition; one version per type used"
+    },
+    "herencia-despacho": {
+      "titulo": "Dispatch by real class",
+      "descripcion": "The class Animal with Sonido and Presentarse, and below it Perro, which inherits from Animal and redefines Sonido. The object Toby is a Perro: the search for Sonido starts in Perro.",
+      "clasereal": "real class: Perro",
+      "busca": "Sonido is looked up in Perro"
+    },
+    "higiene": {
+      "titulo": "Use of three variables",
+      "descripcion": "A table with three variables. usada is written and read. olvidada is neither written nor read. escrita is written but not read.",
+      "escribe": "written",
+      "lee": "read",
+      "bien": "correct",
+      "nuncaUsada": "never used",
+      "nuncaLeida": "never read"
+    },
+    "http-ida-vuelta": {
+      "titulo": "Request and response",
+      "descripcion": "The program sends a GET request to the server and receives a 200 response with its body. Responses, including 404 and 500, are Success; transport failures are Error.",
+      "programa": "program",
+      "servidor": "server",
+      "get": "GET /hoy",
+      "respuesta": "200 · Soleado, 25",
+      "exito": "200, 404, 500: Success with the response",
+      "error": "no connection: Error(IoError)"
+    },
+    "identificadores": {
+      "titulo": "Identifier alphabet",
+      "descripcion": "Two boxes joined by an arrow: the first character, which may be a letter, ñ, an accented vowel or an underscore, and the following ones, which also accept digits and may repeat. Below, four valid names in green and three invalid ones in red.",
+      "inicio": "First character",
+      "inicio-ej": "a–z A–Z ñ á é í ó ú ü _",
+      "siguiente": "Following",
+      "siguiente-ej": "the above and 0–9",
+      "repite": "they repeat",
+      "validos": "Valid",
+      "v1": "x",
+      "v2": "año",
+      "v3": "_tmp",
+      "v4": "nota2",
+      "invalidos": "Invalid",
+      "i1": "2notas",
+      "i2": "mi-nota",
+      "i3": "Write"
+    },
+    "instantanea": {
+      "titulo": "The snapshot does not change",
+      "descripcion": "The vector notas held a 7 when the snapshot was taken; a 9 was added afterwards. The picture, with a padlock, keeps only the 7: it can be read but not written.",
+      "despues": "added afterwards",
+      "lectura": "read: yes",
+      "escritura": "modify: no",
+      "nota": "The picture was taken before adding the 9"
+    },
+    "intercambio": {
+      "titulo": "Swapping with an auxiliary",
+      "descripcion": "Three boxes a, b and auxiliar. a is 1 and b is 2. First auxiliar receives 1, then a receives 2 and finally b receives 1 from auxiliar.",
+      "hecho": "swapped"
+    },
+    "interfaz-promesa": {
+      "titulo": "An interface and two classes",
+      "descripcion": "The interface Figura with the method Area. The classes Cuadrado and Circulo realize it. Below, Describir with the parameter T: Figura, which accepts both."
+    },
+    "json-arbol": {
+      "titulo": "JSON tree",
+      "descripcion": "An object with three fields: nombre with \"Ana\", edad with 15 and notas with an array of 7 and 9. field(\"edad\") goes down to 15.",
+      "objeto": "object",
+      "arreglo": "array",
+      "k1": "nombre",
+      "k2": "edad",
+      "k3": "notas"
+    },
+    "leer-escribir": {
+      "titulo": "Input, variables and output",
+      "descripcion": "The input holds 3 and 4. Read stores them in a and b. Write shows 3 + 4 = 7 on the output.",
+      "entrada": "input",
+      "salida": "output",
+      "nota": "Read asks for one value per target, in order"
+    },
+    "leer-figura": {
+      "titulo": "Example of a stepped figure",
+      "descripcion": "Three stacked instructions joined by arrows: total gets 0, total gets total plus 5, and Write total. Below, a box with the name total and its value. Each step highlights the instruction being run and the value changes from 0 to 5.",
+      "programa": "Instructions",
+      "total": "total ="
+    },
+    "leer-forma": {
+      "titulo": "How to read a form",
+      "descripcion": "At the top, the If form: the word If and the word Then are fixed, and between them there is a dashed slot called condition. An arrow goes down from the slot to the filled line If n > 0 Then. At the bottom, Else appears between double brackets: it is an optional part that can be left out.",
+      "forma": "The form",
+      "fija": "fixed",
+      "hueco": "slot: you fill it",
+      "condicion": "condition",
+      "rellenada": "Filled in",
+      "opcional": "Optional part",
+      "se-omite": "you may write it or leave it out",
+      "sin-sino": "An If without Else is also valid."
+    },
+    "limites-recursos": {
+      "titulo": "Capped resources",
+      "descripcion": "Four bars: depth, full and marked as exhausted; cells, statements and time, partly full.",
+      "profundidad": "depth",
+      "celdas": "cells",
+      "sentencias": "statements",
+      "tiempo": "time",
+      "agotada": "exhausted: failure",
+      "nota": "caps are set by the host"
+    },
+    "literales-numericos": {
+      "titulo": "Valid and invalid numeric literals",
+      "descripcion": "Three rows. Integers: 0, 42 and 2026. Reals: 3.14, 0.5 and 100.0. Not numbers: point 5, 5 point, 3 comma 5, scientific notation and 1 underscore 000.",
+      "enteros": "Integers",
+      "reales": "Reals",
+      "no": "Not numbers",
+      "cientifica": "1e3"
+    },
+    "llamada-marcos": {
+      "titulo": "The frame stack",
+      "descripcion": "A stack with the Principal frame at the bottom. Calling Doble pushes a frame with n = 21; on return it disappears and the value 42 goes down to Principal.",
+      "pila": "call stack",
+      "activo": "running",
+      "desaparece": "frame removed"
+    },
+    "mapa-partes": {
+      "titulo": "Map of the parts",
+      "descripcion": "A diagram of stacked boxes. At the top Part 0 on how to read and Part I with the overview. Below, in two columns, lexical structure and types; then expressions and declarations; then control flow; then subroutines and objects. At the bottom a band with programs, errors, concurrency, library and engine, and another with the appendices.",
+      "p0": "0 · How to read",
+      "p1": "I · Overview",
+      "p2": "II · Lexical",
+      "p3": "III · Types",
+      "p4": "IV · Expressions",
+      "p5": "V · Declarations",
+      "p6": "VI · Control flow",
+      "p7": "VII · Subroutines",
+      "p9": "IX · Objects",
+      "resto": "VIII · X · XI · XII · XIII",
+      "apendices": "Appendices A–F: reference"
+    },
+    "mientras-ciclo": {
+      "titulo": "The While cycle",
+      "descripcion": "A diamond with the condition n > 0. If it is true the body runs and control returns to the diamond; if it is false the loop is left towards EndWhile. Beside it, the value of n goes down from 3 to 0.",
+      "valorN": "value of n"
+    },
+    "niveles": {
+      "titulo": "Before and during the run",
+      "descripcion": "Two columns. Before running, shape, names, types and called subroutines are checked. When running, division by zero, indices, variables without a value and overflow are checked.",
+      "antes": "Before running",
+      "a1": "program shape",
+      "a2": "declared names",
+      "a3": "compatible types",
+      "a4": "correct calls",
+      "durante": "When running",
+      "d1": "division by zero",
+      "d2": "indices in range",
+      "d3": "variables with a value",
+      "d4": "overflow",
+      "nota": "What can be known without running is checked beforehand"
+    },
+    "nuevo-pasos": {
+      "titulo": "Creating an object",
+      "descripcion": "The variable pasos starts empty. An object with the attribute valor is reserved, the constructor gives it 10 and finally pasos receives the reference to the object.",
+      "vacia": "empty",
+      "objeto": "new object",
+      "ref": "reference"
+    },
+    "opcional-resultado": {
+      "titulo": "Optional and Result",
+      "descripcion": "Two columns. Optional can be Some with a value or None. Result can be Success with a value or Failure with a reason. Below, a note says both cases must be considered with Switch, and that Propagate passes the error upwards.",
+      "motivo": "reason",
+      "regla": "Before using the value, consider both cases",
+      "segun": "Switch … Do",
+      "propagar": "or Propagate: the error leaves the subroutine"
+    },
+    "orden-texto": {
+      "titulo": "Character order",
+      "descripcion": "A line with upper-case A and Z on the left, with codes 65 and 90, and lower-case a and z on the right, with codes 97 and 122.",
+      "ma": "A",
+      "mz": "Z",
+      "a": "a",
+      "z": "z",
+      "mayusculas": "upper case",
+      "minusculas": "lower case",
+      "nota": "\"Zeta\" < \"alfa\" because 90 < 97"
+    },
+    "paquete-modulos": {
+      "titulo": "A package with two modules",
+      "descripcion": "A package called tienda with the module principal, which is the entry and holds the algorithm, and the module formas.geometria, with the public subroutine AreaCirculo and the private Ayudante. An import arrow goes from principal to geometria.",
+      "paquete": "package tienda",
+      "principal": "principal",
+      "entrada": "entry module",
+      "geometria": "formas.geometria",
+      "privado": "private: not importable"
+    },
+    "para-cada-recorrido": {
+      "titulo": "Walking a vector",
+      "descripcion": "A vector with pan, leche and huevos at positions 0, 1 and 2. A frame moves through each cell and producto takes the value of the framed cell.",
+      "fin": "end of traversal"
+    },
+    "para-contador": {
+      "titulo": "The For counter",
+      "descripcion": "A line with the values 1 to 6. The control starts at 1 and moves one by one; 5, the final value, is still included; on reaching 6 the loop ends.",
+      "inicial": "initial",
+      "final": "final",
+      "incluido": "included",
+      "termina": "ends"
+    },
+    "paso-valor": {
+      "titulo": "By value and by reference",
+      "descripcion": "On the left, the main frame with x equal to 5. In the first step, Copia receives a box n with a copy that becomes 6 without changing x. In the second, Incrementar receives an arrow to x, which becomes 6.",
+      "principal": "main",
+      "subprograma": "subprogram",
+      "copia": "copy",
+      "sinCambio": "unchanged",
+      "mismaCaja": "same box",
+      "cambia": "changes"
+    },
+    "perfiles-espejo": {
+      "titulo": "The same program in two profiles",
+      "descripcion": "Two columns, Spanish on the left and English on the right. Each row pairs a word: Si with If, Entonces with Then, Cadena with String. The last two rows show that the name nombre and the text Hola do not change.",
+      "espanol": "Spanish profile",
+      "ingles": "English profile",
+      "si": "Si",
+      "if": "If",
+      "entonces": "Entonces",
+      "then": "Then",
+      "cadena": "Cadena",
+      "string": "String",
+      "nombre": "nombre",
+      "hola": "\"Hola\""
+    },
+    "posiciones": {
+      "titulo": "Lines, columns and spans",
+      "descripcion": "A three-line program on a grid with line numbers on the left and column numbers above. On the second line the x of Write x is highlighted in red, and an arrow joins it to a note explaining that the span starts at line 2, column 12.",
+      "columnas": "Columns",
+      "lineas": "Lines",
+      "tramo": "Span: line 2, columns 12 to 13"
+    },
+    "potencia-derecha": {
+      "titulo": "Power groups to the right",
+      "descripcion": "The expression 2 ^ 3 ^ 2 with an arc under 3 ^ 2 showing it is computed first. Below, the result 2 ^ 9 = 512.",
+      "primero": "computed first",
+      "nota": "The other operators group from left to right"
+    },
+    "punto-y-coma": {
+      "titulo": "Where the semicolon goes",
+      "descripcion": "A While block with two statements inside. The two simple statements have a semicolon marked in green; the opening and closing lines have none, marked with an empty-set symbol in red.",
+      "simples": "✓ simple statements: end in ;",
+      "bloques": "∅ block openings and closings: no ;"
+    },
+    "pureza-grafo": {
+      "titulo": "An effect that climbs",
+      "descripcion": "Principal calls the function Triple, which calls Avisar, which uses Write. The effect of Write climbs up to Triple, marked as an error.",
+      "sube": "the effect climbs"
+    },
+    "receptor-este": {
+      "titulo": "The receiver and This",
+      "descripcion": "The variable pasos and, inside the method, This: both are references pointing to the same object, with valor = 12.",
+      "ref": "reference",
+      "mismo": "the same object",
+      "dentro": "inside Sumar"
+    },
+    "recursion-pila": {
+      "titulo": "The factorial stack",
+      "descripcion": "Four frames stacked from Factorial(4) to Factorial(1). The base case returns 1 and every frame multiplies: 2, 6 and 24.",
+      "casoBase": "base case"
+    },
+    "redondeos": {
+      "titulo": "Rounding -2.5",
+      "descripcion": "A line with -3, -2 and -1 and the point -2.5. floor and round take it to -3; ceil and trunc take it to -2.",
+      "nota": "round takes ties away from zero"
+    },
+    "referencia-salida": {
+      "titulo": "Output parameters",
+      "descripcion": "On the left, the main boxes c and r with 3 and 2. On the right, Dividir with cociente and resto, which are arrows to c and r.",
+      "principal": "main"
+    },
+    "registro-copia": {
+      "titulo": "Assigning a record copies it",
+      "descripcion": "Two cards, a and b, with the fields fila and columna. Both had fila 1 and columna 2; after changing b.fila to 10, only b shows 10 and a still has 1.",
+      "fila": "fila",
+      "columna": "columna",
+      "copia": "b <- a copies both fields",
+      "separado": "afterwards, each card changes on its own"
+    },
+    "regla-reales": {
+      "titulo": "The ruler with gaps",
+      "descripcion": "A horizontal ruler with separate marks. The literal 0.3 points at one mark; the result of 0.1 plus 0.2 points at the neighbouring mark, 0.30000000000000004.",
+      "literal": "0.3 written as it is",
+      "suma": "0.1 + 0.2",
+      "nota": "There is no Real between two marks",
+      "nota2": "The marks are very close, but they never touch"
+    },
+    "reparto": {
+      "titulo": "Sharing seven sweets",
+      "descripcion": "Seven circles: three for the first person, three for the second and one left over, highlighted. Below, the three operations: 7 / 2 = 3.5, 7 div 2 = 3 and 7 mod 2 = 1.",
+      "persona1": "person 1",
+      "persona2": "person 2",
+      "sobra": "left over",
+      "regla": "7 = 3 × 2 + 1"
+    },
+    "repetir-ciclo": {
+      "titulo": "While versus Repeat",
+      "descripcion": "On the left, While: first the question and then the body, which can run zero times. On the right, Repeat: first the body and then the question; with False it repeats and with True it leaves, so the body runs at least once.",
+      "pregunta": "condition?",
+      "cuerpo": "body",
+      "ceroOMas": "zero or more rounds",
+      "unaOMas": "one or more rounds"
+    },
+    "retornar-salidas": {
+      "titulo": "Several exits",
+      "descripcion": "Three Returns. The first If is false; the second holds and b, which is -2, is returned. The last Return is never reached.",
+      "falso": "false",
+      "nunca": "not reached"
+    },
+    "salir-corte": {
+      "titulo": "Exit cuts the loop",
+      "descripcion": "Five cells with 7, 14, 21, 28 and 35. 7, 14 and 21 are visited; at 21 a red line marks Exit and cells 28 and 35 are never visited.",
+      "visitadas": "visited",
+      "nunca": "never visited"
+    },
+    "segun-ramas": {
+      "titulo": "The branches of Switch",
+      "descripcion": "A Switch on dia with three branches: 1 to 5 school day, 6 and 7 weekend, and Otherwise. The selector is 6 and only the second branch is followed down to EndSwitch.",
+      "clase": "school day",
+      "finde": "weekend",
+      "noExiste": "does not exist"
+    },
+    "semilla": {
+      "titulo": "Same seed, same sequence",
+      "descripcion": "Two runs with the same seed draw the same sequence 1, 1, 6, 15. A run with seed 7 draws a different one.",
+      "semilla42": "seed 42",
+      "semilla7": "seed 7",
+      "iguales": "equal"
+    },
+    "severidad-clases": {
+      "titulo": "Classes and severities",
+      "descripcion": "At the top, the four classes in order: lexical, syntactic and semantic before running, and runtime during. Below, the four severity letters: A error, C hygiene, D information and E reading.",
+      "lexica": "lexical",
+      "sintactica": "syntactic",
+      "semantica": "semantic",
+      "ejecucion": "runtime",
+      "antes": "before running",
+      "durante": "during",
+      "error": "error",
+      "higiene": "hygiene",
+      "info": "information",
+      "lectura": "reading",
+      "letraA": "A",
+      "letraC": "C",
+      "letraD": "D",
+      "letraE": "E"
+    },
+    "si-ordinograma": {
+      "titulo": "Step-by-step run of Montana",
+      "descripcion": "A flowchart with the start, the assignment of estatura, a diamond asking whether estatura is greater than or equal to 120, two boxes with the Write of each branch, the point where they join and the end. Each step highlights the part being run.",
+      "inicio": "Start",
+      "fin": "End",
+      "texto-si": "\"Puedes subir…\"",
+      "texto-no": "\"Todavía no…\"",
+      "juntan": "EndIf: they join",
+      "no-se-ejecuta": "not run"
+    },
+    "sincronizacion": {
+      "titulo": "Synchronizing after an error",
+      "descripcion": "Four lines. The first and third have an error and a mark that jumps to the next safe point; the second and fourth are recognised as usual.",
+      "sigue": "continues",
+      "nota": "one main error per broken statement"
+    },
+    "subcadena-posiciones": {
+      "titulo": "Positions in a text",
+      "descripcion": "The text Hola, mundo in cells numbered from 0 to 10. The first four, from 0 to 3, are highlighted as the result of substring(t, 0, 3).",
+      "c0": "H",
+      "c1": "o",
+      "c2": "l",
+      "c3": "a",
+      "c6": "m",
+      "c7": "u",
+      "c8": "n",
+      "c9": "d",
+      "c10": "o"
+    },
+    "subprograma-caja": {
+      "titulo": "A subprogram as a box",
+      "descripcion": "A box called Doble. The argument 21 goes in on the left and the result 42 comes out on the right.",
+      "argumento": "argument",
+      "resultado": "result",
+      "dentro": "the inside is not visible from outside"
+    },
+    "terminaciones": {
+      "titulo": "The six terminations",
+      "descripcion": "At the top, the running state. An arrow goes down to a box with the four final terminations: completed, failed, cancelled and limit_reached. Two side arrows lead to the pauses awaiting_input and awaiting_effect, which resume.",
+      "ejecutando": "Running",
+      "finales": "Final",
+      "completed": "completed",
+      "failed": "failed",
+      "cancelled": "cancelled",
+      "limit": "limit_reached",
+      "input": "awaiting_input",
+      "effect": "awaiting_effect",
+      "pausas": "Pauses: once the data arrives, they run again"
+    },
+    "tipo-resultado": {
+      "titulo": "The type of the result",
+      "descripcion": "At the top, Integer plus Integer gives Integer. Below, Integer times Real gives Real.",
+      "nota": "Two integers: an exact integer result",
+      "nota2": "Any real: a real result"
+    },
+    "tipos-cajas": {
+      "titulo": "The five primitive types",
+      "descripcion": "Five boxes. Integer with the value 42; Real with 3.14; Boolean with its two values, True and False; Character with a single letter L; and String with the letters of Lucía in five boxes numbered 0 to 4.",
+      "entero": "no decimals, exact",
+      "real": "with decimals",
+      "logico": "yes or no",
+      "letra": "L",
+      "caracter": "a single symbol",
+      "c0": "L",
+      "c1": "u",
+      "c2": "c",
+      "c3": "í",
+      "c4": "a",
+      "posiciones": "positions"
+    },
+    "traza-pasos": {
+      "titulo": "Trace steps",
+      "descripcion": "A line with five events: enter, decision, write, exit and end. An arc between two events marks a step. Below, a state change: n = 3.",
+      "e1": "enter",
+      "e2": "decide",
+      "e3": "write",
+      "e4": "exit",
+      "e5": "end",
+      "paso": "one step",
+      "cambio": "change: n = 3"
+    },
+    "tres-trabajos": {
+      "titulo": "Analysing, running and observing",
+      "descripcion": "A program with three arrows leaving it towards Analyse, Run and Observe. Below each one, what it produces: diagnostics, colours and help; output, termination and failures; trace, memory and timeline. A green line joins Run and Observe because both go through the instructions.",
+      "programa": "Program",
+      "analizar": "Analyse",
+      "ejecutar": "Run",
+      "observar": "Observe",
+      "a1": "diagnostics",
+      "a2": "colours",
+      "a3": "help",
+      "e1": "output",
+      "e2": "termination",
+      "e3": "failures",
+      "o1": "trace",
+      "o2": "memory",
+      "o3": "timeline",
+      "sin-ejecutar": "runs nothing",
+      "recorren": "go through the instructions"
+    },
+    "variante-formas": {
+      "titulo": "The shapes of a variant",
+      "descripcion": "A box with the type Forma and its three alternatives drawn: a circle, a rectangle and a point. Below, Switch f Do distributes the value into three branches, one per alternative.",
+      "forma": "Forma",
+      "circulo": "Circulo(radio)",
+      "rectangulo": "Rectangulo(ancho, alto)",
+      "punto": "Punto",
+      "r1": "r → 3·r·r",
+      "r2": "a, h → a·h",
+      "r3": "→ 0"
+    },
+    "vector-crece": {
+      "titulo": "A vector that changes size",
+      "descripcion": "A dashed box representing the vector lista, with positions numbered 0, 1 and 2. Stepping forward, pan and leche appear; then fruta at the start, shifting the others; finally pan disappears and leche moves to position 1.",
+      "lista": "lista",
+      "pan": "\"pan\"",
+      "leche": "\"leche\"",
+      "fruta": "\"fruta\""
+    },
+    "viaje": {
+      "titulo": "The five stages of the engine",
+      "descripcion": "A column of boxes joined by arrows: the source text, lexical analysis, syntax analysis, semantic analysis, translation and execution. A dashed red line next to the first three marks that they form the analysis. Each step highlights one stage.",
+      "texto": "Program text",
+      "lexico": "1 · Lexical analysis → tokens",
+      "sintaxis": "2 · Syntax analysis → tree",
+      "semantica": "3 · Semantic analysis → types",
+      "traduccion": "4 · Translation → instructions",
+      "ejecucion": "5 · Virtual machine → output",
+      "analisis": "analysis",
+      "resultado": "Output: 42"
+    },
+    "ruta-ciclo": {
+      "titulo": "The PseudoLearn cycle",
+      "descripcion": "Five steps in a circle: Understand, Plan, Write, Test and Improve, joined by solid arrows. A red dashed arrow goes back from Test to Plan when something failed, and another dashed arrow goes from Improve to Understand, towards the next problem.",
+      "entender": "1. Understand",
+      "planear": "2. Plan",
+      "escribir": "3. Write",
+      "probar": "4. Test",
+      "mejorar": "5. Improve",
+      "fallo": "failed?",
+      "siguiente-1": "next",
+      "siguiente-2": "problem",
+      "vuelta": "A failure does not start from scratch"
+    },
+    "ruta-instrucciones-en-orden": {
+      "titulo": "Instructions run in order",
+      "descripcion": "On the left, a program with three Write instructions; on the right, the output. Each step highlights one instruction and its line appears in the output: first Hola, then 5 and finally 2 + 3.",
+      "programa": "program",
+      "salida": "output",
+      "hola": "Hola"
+    },
+    "ruta-caja-no-se-recalcula": {
+      "titulo": "A box does not recompute itself",
+      "descripcion": "Two boxes, guests and portions. At first they hold 23 and 69. When guests changes to 30, portions stays at 69, marked in red. Only when the calculation runs again does portions become 90.",
+      "no-recalculo": "not recomputed",
+      "recalculada": "computed again"
+    },
+    "ruta-ficha": {
+      "titulo": "The problem card",
+      "descripcion": "A card with four zones for the tip problem: the bill and the number of friends go in; what each one pays comes out; the relation says how the total is computed and shared; the worked examples are 120 and 4 giving 33, 100 and 3 giving 37, and 100 and 1 giving 110.",
+      "entra": "In",
+      "entra-1": "the bill",
+      "entra-2": "the number of friends",
+      "sale": "Out",
+      "sale-1": "what each one pays",
+      "relacion": "Relation",
+      "relacion-1": "bill plus a tenth, shared among friends, rounded up",
+      "ejemplos": "Worked examples"
+    },
+    "ruta-tres-errores": {
+      "titulo": "Three ways to fail",
+      "descripcion": "A bus trip from departure to destination. Step 1: the bus does not start, like a compile error, which the engine reports before starting. Step 2: the bus breaks down on the way, like a runtime error, which the engine reports when it happens. Step 3: the bus arrives in another town, like a logic error, which only your test cases reveal.",
+      "salida": "Start",
+      "destino": "Goal",
+      "compilar-1": "Won't start",
+      "compilar-2": "(compile)",
+      "compilar-quien-1": "the engine says",
+      "compilar-quien-2": "before starting",
+      "ejecutar-1": "Breaks down",
+      "ejecutar-2": "(runtime)",
+      "ejecutar-quien-1": "the engine says",
+      "ejecutar-quien-2": "on the way",
+      "logica-1": "Wrong town",
+      "logica-2": "(logic)",
+      "logica-quien-1": "only you, with",
+      "logica-quien-2": "your cases",
+      "otra-ciudad": "are we there?"
+    },
+    "ruta-recta-casos": {
+      "titulo": "Choosing cases on the line",
+      "descripcion": "A number line with the number of friends from -1 to 5, split into three zones: odd for 0 and negatives, edge at 1, and normal from 2 upwards. One point is marked in each zone: 0, 1 and 4.",
+      "raro": "odd",
+      "borde": "edge",
+      "normal": "normal",
+      "pie": "number of friends: one case per zone"
+    },
+    "ruta-particion-edad": {
+      "titulo": "Partitioning the ages",
+      "descripcion": "A line of ages from 0 to 100 split into two regions: those who pay 5, up to 11, and those who pay 8, from 12. A red line marks the edge between 11 and 12, with a point on each side.",
+      "paga-5": "pay 5",
+      "paga-8": "pay 8",
+      "borde": "edge"
+    },
+    "ruta-dedo-decision": {
+      "titulo": "The finger skips a branch",
+      "descripcion": "The cinema program with a triangle pointing at the current instruction. The age is declared, 30 is read, the condition is false, the finger skips the Then branch, which is dimmed, and reaches the Write of Else, which shows Paga 8.",
+      "paga-8": "Paga 8"
+    },
+    "ruta-tabla-decision-bisiesto": {
+      "titulo": "Leap year decision table",
+      "descripcion": "A table with three rows of questions, whether the year divides by 4, by 100 and by 400, and four columns of examples: 2023, 2024, 1900 and 2000. The last row gives the result: no, yes, no and yes.",
+      "pregunta": "Divides…",
+      "entre-4": "by 4?",
+      "entre-100": "by 100?",
+      "entre-400": "by 400?",
+      "si": "yes",
+      "no": "no",
+      "bisiesto": "Leap?"
+    },
+    "ruta-orden-preguntas": {
+      "titulo": "The order of the questions",
+      "descripcion": "Two funnels for the year 1900. In the first one it only asks whether it divides by 4, the answer is yes and 1900 comes out as a leap year, which is wrong. In the second it asks by 400 first, then by 100, and 1900 comes out as not a leap year, which is right.",
+      "entre-4": "divides by 4?",
+      "entre-400": "divides by 400?",
+      "entre-100": "divides by 100?",
+      "si": "yes",
+      "no": "no",
+      "bisiesto": "leap",
+      "no-bisiesto": "not leap",
+      "mal": "Wrong order: 1900 comes out wrong",
+      "bien": "Right order"
+    },
+    "ruta-tabla-por-vuelta": {
+      "titulo": "The money box pass table",
+      "descripcion": "On the left, the three boxes of the money box: day, what is saved today and the total. On the right, a table that gains a row per step: before the loop 1, 2 and 2; the first pass 2, 3 and 5; the second 3, 4 and 9; and the eighth 9, 10 and 54, when the loop ends.",
+      "vuelta": "pass",
+      "antes": "before",
+      "sale": "54 is enough: the loop ends"
+    },
+    "ruta-rol-contador": {
+      "titulo": "Role: counter",
+      "descripcion": "Three steps growing by one, labelled counter.",
+      "nombre": "counter",
+      "frase": "moves the same amount every pass"
+    },
+    "ruta-rol-acumulador": {
+      "titulo": "Role: accumulator",
+      "descripcion": "A money box receiving a coin, labelled accumulator.",
+      "nombre": "accumulator",
+      "frase": "keeps gathering"
+    },
+    "ruta-rol-bandera": {
+      "titulo": "Role: flag",
+      "descripcion": "A pennant that goes up once and never comes down, labelled flag.",
+      "nombre": "flag",
+      "frase": "changes once and remembers that something happened"
+    },
+    "ruta-rol-mejor-hasta-ahora": {
+      "titulo": "Role: best so far",
+      "descripcion": "A podium with a single place and an arrow that replaces whoever holds it, labelled best so far.",
+      "nombre": "best so far",
+      "frase": "keeps the best one seen"
+    },
+    "ruta-elegir-bucle": {
+      "titulo": "Choosing the loop",
+      "descripcion": "A tree of two questions. If you know how many passes there will be, For goes. Otherwise, you ask whether the first pass always happens: if it does, Repeat; if not, While.",
+      "cuantas": "Do you know how many passes?",
+      "primera": "Does the first pass always happen?",
+      "si": "yes",
+      "no": "no"
+    },
+    "ruta-rol-recorredor": {
+      "titulo": "Role: walker",
+      "descripcion": "A row of cells with an arrow under one of them, labelled walker.",
+      "nombre": "walker",
+      "frase": "moves cell by cell"
+    },
+    "ruta-dos-pasadas": {
+      "titulo": "Two passes over the array",
+      "descripcion": "The array of temperatures 20, 23, 19, 25, 22, 18 and 26. First step: an arrow walks through all of it and feeds the average, 21.86. Second step: the cells above the average are marked: 23, 25, 22 and 26.",
+      "promedio": "average: 21.86",
+      "superan": "above the average"
+    },
+    "ruta-rol-seguidor": {
+      "titulo": "Role: follower",
+      "descripcion": "Two footprints: the one behind follows the one in front, labelled follower.",
+      "nombre": "follower",
+      "frase": "remembers the previous one to compare"
+    },
+    "ruta-esquemas": {
+      "titulo": "Six patterns",
+      "descripcion": "The same array of seven temperatures drawn six times. Walking visits them all; counting marks the ones that meet a condition and gives a number; accumulating gathers them all into a total; searching marks up to the first one that meets it and stops; filtering keeps the ones that meet it in another array; transforming changes each one and gives another array of the same length.",
+      "recorrer": "Walk",
+      "recorrer-da": "visits each value",
+      "contar": "Count",
+      "contar-da": "gives how many meet it: 4",
+      "acumular": "Gather",
+      "acumular-da": "gives a total: 153",
+      "buscar": "Search",
+      "buscar-da": "stops at the first that meets it",
+      "filtrar": "Filter",
+      "filtrar-da": "gives a shorter collection",
+      "transformar": "Transf.",
+      "transformar-da": "gives a collection of the same length"
+    },
+    "ruta-racha": {
+      "titulo": "The streak of hot days",
+      "descripcion": "Fourteen temperatures in a row and, below, the value of the streak day by day: it goes up with each day above 30 and goes back to 0 when it breaks. The streak reaches 3 in the first days, the first wave, and 4 between days 8 and 11, the second and longest wave. The last streak, of 2 days, ends with the data.",
+      "temperaturas": "temperatures",
+      "racha": "streak",
+      "ola-1": "wave of 3",
+      "ola-2": "wave of 4",
+      "final": "The last streak is checked after the loop"
+    },
+    "ruta-matriz-coordenadas": {
+      "titulo": "The board coordinates",
+      "descripcion": "A 3 by 3 board with the row and the column written in each cell, from [0, 0] to [2, 2]. The two diagonals are highlighted: the one where the row equals the column and the one where row plus column equals 2.",
+      "diagonal-1": "row =",
+      "diagonal-1b": "column",
+      "diagonal-2": "row +",
+      "diagonal-2b": "col. = 2",
+      "pie": "[row, column]"
+    },
+    "ruta-busqueda-binaria": {
+      "titulo": "Binary search",
+      "descripcion": "A sorted array of fifteen numbers, from 2 to 44 in steps of three, where 26 is searched for. At each step the middle one is looked at and the half that cannot hold it is crossed out: first 23, then 35, then 29, and on the fourth step 26 appears.",
+      "buscado": "searched: 26",
+      "paso-1": "23 is smaller: cross out the left",
+      "paso-2": "35 is greater: cross out the right",
+      "paso-3": "29 is greater: cross out the right",
+      "paso-4": "26: found in 4 steps"
+    },
+    "ruta-pasos-crecen": {
+      "titulo": "Steps grow differently",
+      "descripcion": "Horizontal bars with the steps each strategy needs in the worst case. With 10 values, one by one takes 10 and by halves 4; with 100, 100 and 7; with 1000, 1000 and 10.",
+      "datos": "values",
+      "uno-por-uno": "one by one",
+      "mitades": "by halves"
+    },
+    "ruta-seleccion": {
+      "titulo": "Selection sort",
+      "descripcion": "Five numbers, 5, 3, 8, 1 and 9. At each step the smallest of the unsorted part moves to the front and is marked as sorted: first 1, then 3, which was already in place, then 5 and 8. 9 stays last.",
+      "paso-1": "unsorted",
+      "paso-2": "1 moves to the front",
+      "paso-3": "3 is already in place",
+      "paso-4": "5 moves to third place",
+      "paso-5": "8 moves to fourth place"
+    },
+    "ruta-arbol-boletin": {
+      "titulo": "The report card tree",
+      "descripcion": "A decomposition tree. At the top, the report card. Below, four branches: read the marks, compute the average, decide the status and find the best. In the last step, each branch shows what solves it: reading, the Promedio subprogram, the Estado subprogram and the best so far.",
+      "boletin": "Report card",
+      "leer-1": "Read",
+      "leer-2": "the marks",
+      "promedio-1": "Compute",
+      "promedio-2": "the average",
+      "estado-1": "Decide",
+      "estado-2": "the status",
+      "mejor-1": "Find",
+      "mejor-2": "the best",
+      "rol": "best so far",
+      "pie": "each leaf is already solvable"
+    },
+    "ruta-maquina-pura": {
+      "titulo": "A pure machine and one with doors",
+      "descripcion": "Two machines. The pure one has a single input, the data, and a single output, the result. The other also has side doors: through one it reads, through others it writes and changes things outside, without it showing in the call.",
+      "pura": "pure",
+      "impura": "with effects",
+      "datos": "data",
+      "resultado": "result",
+      "lee": "reads",
+      "escribe": "through the sides it writes",
+      "cambia": "and changes what is outside",
+      "pie": "what does not go through the call is an effect"
+    },
+    "ruta-hanoi": {
+      "titulo": "The tower of Hanoi with three discs",
+      "descripcion": "Three posts, A, B and C. In seven steps the three discs move from A to C, one at a time and never a big one on a small one. Halfway through, the top tower of two discs is on B and the big disc moves to C.",
+      "paso-1": "1. small from A to C",
+      "paso-2": "2. middle from A to B",
+      "paso-3": "3. small from C to B",
+      "paso-4": "4. big from A to C",
+      "paso-5": "5. small from B to A",
+      "paso-6": "6. middle from B to C",
+      "paso-7": "7. small from A to C",
+      "poste-a": "A",
+      "poste-b": "B",
+      "poste-c": "C"
+    },
+    "ruta-munecas": {
+      "titulo": "The nesting dolls",
+      "descripcion": "A big doll that opens and holds a smaller one, and that one another, down to the smallest, which does not open and is the base case. At the end they close from the inside out.",
+      "paso-1": "the big one holds a smaller one",
+      "paso-2": "and that one, a smaller one",
+      "paso-3": "the smallest does not open: base case",
+      "paso-4": "they close from the inside out"
+    },
+    "ruta-forma-de-datos": {
+      "titulo": "Three ways to keep the contacts",
+      "descripcion": "The same contact list of three classmates drawn three times. At the top, three separate rows of names, phones and months, which have to stay aligned. In the middle, one card per classmate with their three values together. At the bottom, a list that goes from each name to its phone.",
+      "paralelos": "Separate rows",
+      "paralelos-riesgo": "if one row shifts, the values no longer match",
+      "registros": "One card per classmate",
+      "registros-bien": "each one's values travel together",
+      "diccionario": "By name",
+      "diccionario-bien": "the phone is found without walking it all",
+      "ana": "Ana",
+      "beto": "Beto",
+      "caro": "Caro"
+    },
+    "ruta-filtro-validacion": {
+      "titulo": "Two filters in a row",
+      "descripcion": "A pipe: the text goes into the first filter, which asks whether it is a number; what passes goes into the second, which asks whether it is in range, and comes out as a valid age. Each filter has an exit downwards with its reason: not a number, or out of range.",
+      "texto": "text",
+      "numero-1": "is it a",
+      "numero-2": "number?",
+      "rango-1": "is it in",
+      "rango-2": "range?",
+      "ok": "age",
+      "motivo-1a": "not",
+      "motivo-1b": "a number",
+      "motivo-2a": "out",
+      "motivo-2b": "of range",
+      "pie": "the first filter that fails gives the reason"
+    },
+    "ruta-kiosco-modulos": {
+      "titulo": "The kiosk modules",
+      "descripcion": "Four boxes: principal at the top; tickets and ventas in the middle; inventario at the bottom. The arrows go from principal to the other three, from tickets to ventas and from ventas to inventario. No arrow goes back.",
+      "principal": "principal",
+      "tickets": "tickets",
+      "ventas": "ventas",
+      "inventario": "inventario",
+      "pie": "the arrow goes from whoever uses to whoever is used"
+    },
+    "ruta-molde": {
+      "titulo": "The cutter and the biscuits",
+      "descripcion": "First step: a star-shaped cutter, which is the class. Second step: three biscuits with the same shape and different decoration, which are three objects with their own state.",
+      "molde": "the cutter: the class",
+      "galletas": "three biscuits: three objects",
+      "pie": "same shape, different state"
+    },
+    "ruta-caja-fuerte": {
+      "titulo": "An object as a safe",
+      "descripcion": "A safe with the balance inside, private. Outside, three windows: Cobrar and Cargar, which decide whether the request gets in, and Saldo, which lets you see the value without touching it.",
+      "privado": "private",
+      "pie": "only the windows touch what is inside"
+    },
+    "ruta-flechas-pedido": {
+      "titulo": "Two arrows, one order",
+      "descripcion": "The variables pedido and copia. First, both arrows reach the same order with juice and sandwich. Then a biscuit is added through copia and it appears in the only order. Finally, with a real copy, there are two orders: the original with juice and sandwich, and the other one with the biscuit.",
+      "pedido": "order #1",
+      "otro-pedido": "order #2",
+      "jugo-sandwich": "Jugo, Sándwich",
+      "alfajor": "+ Alfajor",
+      "uno-solo": "there is only one order",
+      "dos": "two orders, each with its list"
+    },
+    "ruta-enchufe": {
+      "titulo": "The till as a socket",
+      "descripcion": "The till has a socket. Below, three appliances with the same plug: cash, card and voucher. Any of them can be plugged into the till.",
+      "caja": "till",
+      "efectivo": "cash",
+      "tarjeta": "card",
+      "vale": "voucher",
+      "pie": "the same plug for every payment method"
+    },
+    "ruta-explosion-clases": {
+      "titulo": "Inheriting explodes, composing adds up",
+      "descripcion": "First step: a tree with the product at the top and a particular case for each combination of three traits: expires, offer, deposit bottle, and their combinations of two and three; the combined ones are in red. Second step: a single product that has, or not, each of the three traits.",
+      "producto": "Product",
+      "vence": "expires",
+      "oferta": "offer",
+      "envase": "bottle",
+      "vence-oferta": "expires + offer",
+      "vence-envase": "expires + bottle",
+      "oferta-envase": "offer + bottle",
+      "los-tres": "all three",
+      "ocho": "eight types for three traits",
+      "tiene": "has traits",
+      "tres": "three pieces for three traits"
+    },
+    "ruta-tarjetas": {
+      "titulo": "The kiosk cards",
+      "descripcion": "Four cards. Product knows its price and computes the amount. Stock knows how much is left and takes away if there is enough. Receipt notes and prints the lines. Till registers the sale and gathers the total, and asks the other three for help.",
+      "producto": "Producto",
+      "producto-1": "knows its price",
+      "producto-2": "computes the amount",
+      "inventario": "Inventario",
+      "inventario-1": "knows the stock",
+      "inventario-2": "takes if enough",
+      "ticket": "Ticket",
+      "ticket-1": "notes lines",
+      "ticket-2": "prints them",
+      "caja": "Caja",
+      "caja-1": "registers the sale",
+      "caja-2": "gathers the total",
+      "pide": "the till asks them for help"
+    },
+    "ruta-nucleo-borde": {
+      "titulo": "Pure core and effectful edge",
+      "descripcion": "A large circle labelled effectful edge holds Read and Write. Inside there is a smaller circle labelled pure core with the functions Linea and ConDescuento, which change nothing. An arrow comes in from outside with the data and another goes out with the result towards the edge, which shows it.",
+      "borde": "effectful edge",
+      "nucleo": "pure core",
+      "no-cambia": "changes nothing",
+      "pie": "data comes in through the edge and the result goes out through it"
+    },
+    "ruta-sustitucion": {
+      "titulo": "Computing by substitution",
+      "descripcion": "Six lines. Each one replaces part of the previous one by its value: the two calls to Linea by 9 and 10, the sum by 19, the call to ConDescuento by its calculation, 19 div 10 by 1, and finally 18."
+    },
+    "ruta-cinta": {
+      "titulo": "A conveyor of prices",
+      "descripcion": "The prices 3, 5 and 2 go through three machines, one per step. The first changes each one and gives 4, 6 and 3. The second is a gate that only lets the cheap ones through: 2. The third is a funnel that gathers them into a single value: 10.",
+      "mapear": "map",
+      "filtrar": "filter",
+      "reducir": "reduce",
+      "maquina": "adds 1",
+      "compuerta": "is it cheap?",
+      "embudo": "sum",
+      "pie": "the operation is a value given to each machine"
+    },
+    "ruta-mochila": {
+      "titulo": "A function's backpack",
+      "descripcion": "First step: the factory CrearDescuento receives 20 and gives back a function that carries the 20 in its backpack. Second step: the function receives the price 50, uses the 20 from the backpack and gives back 40.",
+      "funcion": "discount",
+      "paso-1": "the factory keeps 20 in the backpack",
+      "paso-2": "the function uses 20 with each price"
+    },
+    "ruta-estados-pedido": {
+      "titulo": "The states of an order",
+      "descripcion": "Four states. Pending, without data, moves to on its way, with the courier, and on its way moves to delivered, with the courier and the time. From pending and from on its way it can be cancelled, with a reason. No arrow leaves delivered or cancelled.",
+      "pendiente": "Pendiente",
+      "encamino": "EnCamino",
+      "repartidor": "courier",
+      "entregado": "Entregado",
+      "repartidor-hora": "courier, time",
+      "cancelado": "Cancelado",
+      "motivo": "reason",
+      "pie": "each state carries only its data"
+    },
+    "ruta-tres-kioscos": {
+      "titulo": "Three kiosks",
+      "descripcion": "The same receipt in three steps. First, orders that keep changing the total: add 9, add 10, take the discount off. Then, a till that keeps its total and a main algorithm that asks it to sell. Finally, an expression that computes the total with discount from the lines.",
+      "imp-1": "total ← total + 9",
+      "imp-2": "total ← total + 10",
+      "imp-3": "total ← total - 1",
+      "imperativa": "orders that change boxes",
+      "caja": "Till",
+      "obj-1": "keeps its total",
+      "obj-2": "knows the discount",
+      "principal": "main",
+      "obj-3": "asks it to sell",
+      "objetos": "pieces that work together",
+      "fun-1": "ConDescuento(",
+      "fun-2": "Linea(3, 3) + Linea(5, 2))",
+      "funcional": "functions that transform"
+    },
+    "ruta-cocina-turnos": {
+      "titulo": "Kitchen by turns",
+      "descripcion": "Four columns: the algorithm and the cooks of juices, sandwiches and fruit. In each step, a single column runs; the others wait, are in the line or have finished. At the end, the algorithm adds up the three results and the scope closes with no task alive.",
+      "algoritmo": "Algorithm",
+      "jugos": "Juices",
+      "sandwiches": "Sandwiches",
+      "frutas": "Fruit",
+      "avanza": "runs",
+      "espera": "waits",
+      "lista": "in line",
+      "termino": "finished",
+      "pie": "Only one task moves forward in each turn.",
+      "paso-1": "The algorithm launches the three tasks.",
+      "paso-2": "It awaits the juices and gives up its turn.",
+      "paso-3": "The juices finish; the sandwiches go next.",
+      "paso-4": "The fruit goes next.",
+      "paso-5": "The three finished: the algorithm adds 27.",
+      "paso-6": "When the scope closes, no task is left alive."
+    },
+    "ruta-mostrador": {
+      "titulo": "The channel between the kitchen and the window",
+      "descripcion": "On the left the kitchen, on the right the service window and in the middle a channel that holds two orders. The kitchen leaves orders 1 and 2; with the channel full, it waits. The window receives 1, a place is freed and the kitchen leaves 3. The orders come out in the order they went in.",
+      "cocina": "Kitchen",
+      "mostrador": "Window",
+      "caben": "channel: holds 2",
+      "libre": "free",
+      "p1": "order 1",
+      "p2": "order 2",
+      "p3": "order 3",
+      "pie": "The orders come out in the order they went in.",
+      "paso-1": "The kitchen leaves order 1.",
+      "paso-2": "It leaves 2: the channel is full.",
+      "paso-3": "The window receives 1; a place is free.",
+      "paso-4": "The kitchen leaves order 3."
+    },
+    "ruta-carrera": {
+      "titulo": "The suppliers' race",
+      "descripcion": "Two lanes, North and South, with a finish line on the right. The two offers set off at once; the North one arrives first and is served; the South one, no longer needed, is cut before arriving.",
+      "norte": "North",
+      "sur": "South",
+      "meta": "finish",
+      "oferta": "offer",
+      "atendida": "served",
+      "cortada": "cut",
+      "pie": "The first one is served; the rest is cut.",
+      "paso-1": "The two offers set off at once.",
+      "paso-2": "The North one arrives first and is served.",
+      "paso-3": "The South one is no longer needed: it is cut."
+    },
+    "ruta-memoria-y-disco": {
+      "titulo": "Memory and disk",
+      "descripcion": "On the left, the memory of the program with the stock boxes: juice 10, water 12 and fruit 6; on the right, the disk with the file stock.txt. In the first step the program saves the boxes into the file. In the second the program has closed: the memory is empty and the file stays on the disk.",
+      "archivo": "stock.txt",
+      "memoria": "Memory",
+      "disco": "Disk",
+      "jugo": "jugo: 10",
+      "agua": "agua: 12",
+      "fruta": "fruta: 6",
+      "vacia": "empty",
+      "paso-1": "The program saves the stock into the file.",
+      "paso-2": "The program closed: the file stays."
+    },
+    "ruta-json-viaje": {
+      "titulo": "The journey of a datum in JSON",
+      "descripcion": "On the left, the kiosk inventory as a datum of the program, with juice 10. An arrow turns it into JSON text, which travels; another arrow parses it on the other side and rebuilds the same datum in the school's program.",
+      "programa-a": "Kiosk",
+      "programa-b": "School",
+      "registro": "jugo: 10",
+      "texto": "text",
+      "json": "{\"jugo\": 10}",
+      "serializa": "serialized",
+      "analiza": "parsed",
+      "pie": "The datum travels as text and is rebuilt the same."
+    }
+  }
+}

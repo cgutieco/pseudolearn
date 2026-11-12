@@ -22,19 +22,13 @@ final class SyncCubit extends Cubit<SyncState> {
   Timer? _debounceTimer;
 
   SyncCubit({
-    required SyncCoordinator coordinator,
-    required ConnectivityMonitor connectivityMonitor,
-    required AuthGateway authGateway,
-    required DocumentRepository repository,
-    required SyncQueue syncQueue,
-    ConflictProjection conflictProjection = const ConflictProjection(),
-  })  : _coordinator = coordinator,
-        _connectivityMonitor = connectivityMonitor,
-        _authGateway = authGateway,
-        _repository = repository,
-        _syncQueue = syncQueue,
-        _conflictProjection = conflictProjection,
-        super(const SyncIdle());
+    required this._coordinator,
+    required this._connectivityMonitor,
+    required this._authGateway,
+    required this._repository,
+    required this._syncQueue,
+    this._conflictProjection = const ConflictProjection(),
+  })  : super(const SyncIdle());
 
   void init() {
     _refreshCounts();

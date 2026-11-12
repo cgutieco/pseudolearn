@@ -1,16 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:cupertino_ui/cupertino_ui.dart' show GlobalCupertinoLocalizations;
+import 'package:material_ui/material_ui.dart';
+import 'package:flutter_localizations/flutter_localizations.dart' show GlobalWidgetsLocalizations;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pseudolearn_app/application/knowledge/session/exercise_session_state.dart';
+import 'package:pseudolearn_app/application/route/session/exercise_session_state.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/expected_value_kind.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise_case.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise_case_failure.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise_check_outcome.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/exercise_check_result.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/exercise_kind.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/exercise_level.dart';
-import 'package:pseudolearn_app/presentation/components/button/app_button.dart';
+import 'package:pseudolearn_app/domain/model/route/route_kinds.dart';
 import 'package:pseudolearn_app/presentation/components/button/app_icon_button.dart';
 import 'package:pseudolearn_app/presentation/document/components/exercise_strip.dart';
 import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.dart';
@@ -39,9 +38,9 @@ void main() {
     id: 'CON-B1-E1',
     title: 'Suma de dos números',
     statement: 'Escribe un programa que lea dos números y escriba su suma.',
-    level: ExerciseLevel.reproduce,
-    kind: ExerciseKind.create,
-    moduleId: 'CON-B1',
+    level: RouteLevel.seed,
+    kind: RouteExerciseKind.solve,
+    lessonId: 'CON-B1',
     visibleCases: [
       ExerciseCase(
         inputs: ['2', '3'],
@@ -58,12 +57,10 @@ void main() {
     ],
   );
 
-  group('ExerciseStrip Component Tests (CON-F15)', () {
+  group('ExerciseStrip Component Tests', () {
     testWidgets(
-        'Renders ready state with statement, visible cases and check button',
+        'Renders ready state with statement and visible cases, without a check button',
         (tester) async {
-      var checkCalled = false;
-
       const sessionState = ExerciseSessionState(
         status: ExerciseSessionStatus.ready,
         exercise: sampleExercise,
@@ -77,15 +74,14 @@ void main() {
             sessionState: sessionState,
             isExpanded: true,
             onToggleExpand: () {},
-            onCheck: () => checkCalled = true,
           ),
         ),
       );
       await tester.pumpAndSettle();
 
       expect(find.text('Ejercicio: Suma de dos números'), findsOneWidget);
-      expect(find.text('Nivel 1'), findsOneWidget);
-      expect(find.text('Crear'), findsOneWidget);
+      expect(find.text('Semilla'), findsOneWidget);
+      expect(find.text('Resolver'), findsOneWidget);
       expect(
           find.text(
               'Escribe un programa que lea dos números y escriba su suma.'),
@@ -93,14 +89,11 @@ void main() {
       expect(find.text('Casos de prueba visibles:'), findsOneWidget);
       expect(find.text('Entrada: 2, 3'), findsOneWidget);
       expect(find.text('Salida esperada: 5'), findsOneWidget);
-      expect(find.text('Comprobar'), findsOneWidget);
-
-      await tester.tap(find.widgetWithText(AppButton, 'Comprobar'));
-      await tester.pump();
-      expect(checkCalled, isTrue);
+      expect(find.text('Comprobar'), findsNothing);
     });
 
-    testWidgets('Renders checking state with loading feedback', (tester) async {
+    testWidgets('Checking does not add any progress text to the strip',
+        (tester) async {
       const sessionState = ExerciseSessionState(
         status: ExerciseSessionStatus.checking,
         exercise: sampleExercise,
@@ -113,13 +106,13 @@ void main() {
             sessionState: sessionState,
             isExpanded: true,
             onToggleExpand: () {},
-            onCheck: () {},
           ),
         ),
       );
       await tester.pump();
 
-      expect(find.text('Comprobando...'), findsOneWidget);
+      expect(find.text('Comprobando...'), findsNothing);
+      expect(find.text('Ejercicio: Suma de dos números'), findsOneWidget);
     });
 
     testWidgets(
@@ -143,14 +136,15 @@ void main() {
             sessionState: sessionState,
             isExpanded: true,
             onToggleExpand: () {},
-            onCheck: () {},
           ),
         ),
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Cumple 2 de 2 casos'), findsOneWidget);
-      expect(find.text('Superado'), findsOneWidget);
+      expect(find.text('2/2'), findsOneWidget);
+      expect(find.bySemanticsLabel('Cumple 2 de 2 casos'), findsOneWidget);
+      expect(find.text('Cumple 2 de 2 casos'), findsNothing);
+      expect(find.text('Superado'), findsNothing);
 
       expect(find.textContaining('%'), findsNothing);
       expect(find.textContaining('Aprobado'), findsNothing);
@@ -187,12 +181,12 @@ void main() {
             sessionState: sessionState,
             isExpanded: true,
             onToggleExpand: () {},
-            onCheck: () {},
           ),
         ),
       );
       await tester.pumpAndSettle();
 
+      expect(find.text('1/2'), findsOneWidget);
       expect(find.text('Cumple 1 de 2 casos'), findsOneWidget);
       expect(find.text('Primer caso oculto fallido:'), findsOneWidget);
       expect(find.text('Entrada: -1, 1'), findsOneWidget);
@@ -237,7 +231,6 @@ void main() {
               sessionState: sessionState,
               isExpanded: true,
               onToggleExpand: () {},
-              onCheck: () {},
             ),
           ),
         );
@@ -261,7 +254,6 @@ void main() {
             sessionState: sessionState,
             isExpanded: true,
             onToggleExpand: () {},
-            onCheck: () {},
           ),
         ),
       );
@@ -290,7 +282,6 @@ void main() {
             sessionState: sessionState,
             isExpanded: false,
             onToggleExpand: () => toggled = true,
-            onCheck: () {},
           ),
         ),
       );
@@ -306,6 +297,58 @@ void main() {
       await tester.tap(find.byType(AppIconButton));
       await tester.pump();
       expect(toggled, isTrue);
+    });
+
+    testWidgets('A completed exercise without a fresh check shows Superado',
+        (tester) async {
+      const sessionState = ExerciseSessionState(
+        status: ExerciseSessionStatus.ready,
+        exercise: sampleExercise,
+        isCompleted: true,
+      );
+
+      await tester.pumpWidget(
+        buildTestWidget(
+          ExerciseStrip(
+            exerciseId: 'CON-B1-E1',
+            sessionState: sessionState,
+            isExpanded: false,
+            onToggleExpand: () {},
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Superado'), findsOneWidget);
+      expect(find.text('Resolver'), findsNothing);
+    });
+
+    testWidgets('A collapsed strip still shows the latest case ratio',
+        (tester) async {
+      const sessionState = ExerciseSessionState(
+        status: ExerciseSessionStatus.success,
+        exercise: sampleExercise,
+        lastResult: ExerciseCheckResult(
+          outcome: ExerciseCheckOutcome.caseFailed,
+          passedCases: 0,
+          totalCases: 2,
+        ),
+      );
+
+      await tester.pumpWidget(
+        buildTestWidget(
+          ExerciseStrip(
+            exerciseId: 'CON-B1-E1',
+            sessionState: sessionState,
+            isExpanded: false,
+            onToggleExpand: () {},
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('0/2'), findsOneWidget);
+      expect(find.text('Cumple 0 de 2 casos'), findsNothing);
     });
   });
 }

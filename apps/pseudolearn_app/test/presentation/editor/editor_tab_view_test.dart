@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pseudolearn_app/composition/cubit_scope.dart';
 import 'package:pseudolearn_app/domain/model/documents/document.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/presentation/components/status_banner.dart';
+import 'package:pseudolearn_app/presentation/document/components/run_result_pill.dart';
 import '../../fakes/in_memory_document_repository.dart';
 import '../../fakes/test_dependencies.dart';
 
@@ -45,33 +46,59 @@ Future<void> _runToEnd(WidgetTester tester) async {
 }
 
 void main() {
-  testWidgets('an idle editor shows no execution banner', (tester) async {
+  testWidgets('an idle editor shows no execution banner nor result', (tester) async {
     await _openDocument(tester);
 
     expect(find.byType(StatusBanner), findsNothing);
+    expect(find.byType(RunResultPill), findsNothing);
   });
 
-  testWidgets('finishing a run announces it once and lets it be dismissed', (tester) async {
+  testWidgets('finishing a run is told by a quiet pill, never a banner', (tester) async {
     await _openDocument(tester);
     await _runToEnd(tester);
-
-    expect(find.byType(StatusBanner), findsOneWidget);
-    expect(find.text('Ejecución finalizada con éxito'), findsOneWidget);
-
-    await tester.tap(find.byIcon(Icons.close));
-    await tester.pumpAndSettle();
 
     expect(find.byType(StatusBanner), findsNothing);
+    expect(find.text('Ejecución finalizada con éxito'), findsNothing);
+    expect(find.widgetWithText(RunResultPill, 'Terminado'), findsOneWidget);
+    expect(find.text('Hola'), findsOneWidget);
   });
 
-  testWidgets('a dismissed banner comes back with the next run', (tester) async {
+  testWidgets('the run bar no longer narrates status nor counts statements', (tester) async {
     await _openDocument(tester);
     await _runToEnd(tester);
-    await tester.tap(find.byIcon(Icons.close));
-    await tester.pumpAndSettle();
 
+    expect(find.text('Ejecución terminada'), findsNothing);
+    expect(find.textContaining('Sentencia'), findsNothing);
+    expect(find.textContaining('Carpeta de trabajo'), findsNothing);
+    expect(find.text('Argumentos'), findsNothing);
+  });
+
+  testWidgets('run options gather arguments, replay and the files folder', (tester) async {
+    await _openDocument(tester);
     await _runToEnd(tester);
 
-    expect(find.byType(StatusBanner), findsOneWidget);
+    await tester.tap(find.byTooltip('Opciones de ejecución'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Argumentos'), findsOneWidget);
+    expect(
+      find.text('Los archivos que tu programa crea o lee se guardan en la carpeta de este algoritmo.'),
+      findsOneWidget,
+    );
+    expect(find.text('Repetir última ejecución'), findsOneWidget);
+  });
+
+  testWidgets('malformed arguments are flagged inside the options sheet', (tester) async {
+    await _openDocument(tester);
+
+    await tester.tap(find.byTooltip('Opciones de ejecución'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField).last, '"sin cerrar');
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Revisa las comillas y los escapes de los argumentos.'),
+      findsOneWidget,
+    );
   });
 }

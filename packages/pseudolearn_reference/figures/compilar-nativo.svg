@@ -1,0 +1,9 @@
+<svg viewBox="0 0 340 170">
+  <caja x="110" y="10" ancho="120" alto="34" rol="acento-procedimental" fondo="0.18" negrita="" tamano="12" texto="{{t:ri}}"/>
+  <flecha puntos="150,46 80,76"/>
+  <flecha puntos="190,46 260,76"/>
+  <caja x="10" y="78" ancho="140" alto="40" rol="exito" fondo="0.14" tamano="12" texto="{{t:vm}}"/>
+  <caja x="190" y="78" ancho="140" alto="40" rol="exito" fondo="0.14" tamano="12" texto="{{t:nativo}}"/>
+  <text x="170" y="104" font-size="16" text-anchor="middle" fill="@tinta">=</text>
+  <text x="170" y="146" font-size="12" text-anchor="middle" fill="@atenuado">{{t:igual}}</text>
+</svg>

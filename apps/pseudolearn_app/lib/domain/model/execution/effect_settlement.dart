@@ -1,0 +1,1 @@
+enum EffectSettlement { resolve, cancel }

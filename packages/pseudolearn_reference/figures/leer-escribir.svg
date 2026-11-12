@@ -1,0 +1,12 @@
+<svg viewBox="0 0 340 160">
+  <caja x="10" y="20" ancho="80" alto="70" rol="atenuado" fondo="0.06" fuente="mono" tamano="13" texto="3¶4"/>
+  <text x="50" y="108" font-size="12" text-anchor="middle" fill="@atenuado">{{t:entrada}}</text>
+  <caja x="130" y="20" ancho="80" alto="70" rol="acento-estructurado" fondo="0.10" fuente="mono" tamano="13" texto="{{codigo:a = 3}}¶{{codigo:b = 4}}"/>
+  <flecha puntos="92,55 128,55" rol="acento-estructurado"/>
+  <text x="110" y="46" font-size="12" text-anchor="middle" fill="@acento-estructurado">{{codigo:Leer}}</text>
+  <caja x="250" y="20" ancho="84" alto="70" rol="atenuado" fondo="0.06" fuente="mono" tamano="13" texto="3 + 4 = 7"/>
+  <flecha puntos="212,55 248,55" rol="acento-estructurado"/>
+  <text x="230" y="46" font-size="12" text-anchor="middle" fill="@acento-estructurado">{{codigo:Escribir}}</text>
+  <text x="292" y="108" font-size="12" text-anchor="middle" fill="@atenuado">{{t:salida}}</text>
+  <text x="170" y="144" font-size="12" text-anchor="middle" fill="@atenuado">{{t:nota}}</text>
+</svg>

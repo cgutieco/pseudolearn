@@ -1,0 +1,16 @@
+[package]
+name = "pseudolearn_check_source"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+pseudolearn_check_model = { path = "../model", version = "=0.1.0" }
+syn = { version = "3", features = ["full", "visit"] }
+proc-macro2 = { version = "1", features = ["span-locations"] }
+ra_ap_rustc_lexer = { package = "ra-ap-rustc_lexer", version = "0.143" }
+serde_yaml = { package = "serde-saphyr", version = "2" }
+serde_json = "1"

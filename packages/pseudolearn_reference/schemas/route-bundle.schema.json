@@ -1,0 +1,559 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pseudolearn-route/1",
+  "title": "Paquete de la ruta de aprendizaje",
+  "description": "Contrato de los archivos de assets/route/<idioma>/<perfil>/. El archivo raíz describe una lección; $defs describe el ejercicio, el índice, los términos, los enlaces inversos y el manifiesto.",
+  "$ref": "#/$defs/lesson",
+  "$defs": {
+    "runs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/run"
+      }
+    },
+    "run": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "text",
+            "strong",
+            "emphasis",
+            "code",
+            "slot",
+            "link",
+            "term",
+            "definition",
+            "spec_link",
+            "lesson_link"
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "tokens": {
+          "type": "array"
+        },
+        "section": {
+          "type": "string"
+        },
+        "anchor": {
+          "type": "string"
+        },
+        "lesson": {
+          "type": "string"
+        },
+        "term": {
+          "type": "string"
+        }
+      }
+    },
+    "lessonReference": {
+      "type": "object",
+      "required": [
+        "id",
+        "number",
+        "title"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "number": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "blocks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/block"
+      }
+    },
+    "block": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "heading",
+            "paragraph",
+            "list",
+            "table",
+            "form",
+            "program",
+            "figure",
+            "callout",
+            "summary",
+            "see_also",
+            "diagnostic",
+            "intermediate",
+            "trace",
+            "phrase",
+            "problem",
+            "attempt",
+            "cycle",
+            "phase_heading",
+            "brief",
+            "roles",
+            "paradigm",
+            "recall",
+            "spec_links",
+            "deepen",
+            "practice",
+            "next",
+            "spec_figure"
+          ]
+        },
+        "runs": {
+          "$ref": "#/$defs/runs"
+        },
+        "blocks": {
+          "$ref": "#/$defs/blocks"
+        },
+        "phases": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "lesson": {
+          "$ref": "#/$defs/lessonReference"
+        }
+      }
+    },
+    "lesson": {
+      "type": "object",
+      "required": [
+        "id",
+        "number",
+        "part",
+        "kind",
+        "title",
+        "minutes",
+        "levels",
+        "needs",
+        "introduces",
+        "brief_problem",
+        "blocks"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "number": {
+          "type": "string"
+        },
+        "part": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "leccion",
+            "apertura",
+            "proyecto"
+          ]
+        },
+        "title": {
+          "$ref": "#/$defs/runs"
+        },
+        "minutes": {
+          "type": "integer"
+        },
+        "levels": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "semilla",
+              "brote",
+              "arbol"
+            ]
+          }
+        },
+        "needs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/lessonReference"
+          }
+        },
+        "introduces": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "label"
+            ]
+          }
+        },
+        "brief_problem": {
+          "type": "string"
+        },
+        "previous": {
+          "$ref": "#/$defs/lessonReference"
+        },
+        "next": {
+          "$ref": "#/$defs/lessonReference"
+        },
+        "blocks": {
+          "$ref": "#/$defs/blocks"
+        }
+      }
+    },
+    "case": {
+      "type": "object",
+      "required": [
+        "inputs",
+        "expected",
+        "hidden"
+      ],
+      "properties": {
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "expected": {
+          "type": "string"
+        },
+        "hidden": {
+          "type": "boolean"
+        }
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "predict",
+            "trace",
+            "order_program",
+            "order_steps",
+            "cases",
+            "break",
+            "design_tests",
+            "classify",
+            "choice"
+          ]
+        },
+        "cases": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/case"
+          }
+        },
+        "output": {
+          "type": "string"
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "solution": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "mutants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reads": {
+          "type": "integer"
+        },
+        "minimum": {
+          "type": "integer"
+        },
+        "maximum": {
+          "type": "integer"
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reference": {
+          "type": "string"
+        }
+      }
+    },
+    "exercise": {
+      "type": "object",
+      "required": [
+        "id",
+        "lesson",
+        "kind",
+        "level",
+        "required",
+        "title",
+        "statement",
+        "restriction",
+        "hints",
+        "variant",
+        "explanation",
+        "evaluation"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "lesson": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "predecir",
+            "rastrear",
+            "ordenar",
+            "encontrar-error",
+            "romperlo",
+            "disenar-pruebas",
+            "modificar",
+            "resolver",
+            "comparar",
+            "clasificar",
+            "explicar"
+          ]
+        },
+        "level": {
+          "enum": [
+            "semilla",
+            "brote",
+            "arbol"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "title": {
+          "$ref": "#/$defs/runs"
+        },
+        "statement": {
+          "$ref": "#/$defs/blocks"
+        },
+        "restriction": {
+          "$ref": "#/$defs/blocks"
+        },
+        "hints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/runs"
+          }
+        },
+        "variant": {
+          "$ref": "#/$defs/blocks"
+        },
+        "explanation": {
+          "$ref": "#/$defs/blocks"
+        },
+        "program": {
+          "type": "object"
+        },
+        "starter_code": {
+          "type": "string"
+        },
+        "evaluation": {
+          "$ref": "#/$defs/evaluation"
+        }
+      }
+    },
+    "toc": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "number",
+          "title",
+          "motto",
+          "summary",
+          "lessons"
+        ],
+        "properties": {
+          "lessons": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "number",
+                "kind",
+                "title",
+                "brief_problem",
+                "minutes",
+                "levels",
+                "needs",
+                "exercises"
+              ],
+              "properties": {
+                "title": {
+                  "$ref": "#/$defs/runs"
+                },
+                "levels": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "semilla",
+                      "brote",
+                      "arbol"
+                    ]
+                  }
+                },
+                "needs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "exercises": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "kind",
+                      "level",
+                      "required",
+                      "title"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "kind": {
+                        "enum": [
+                          "predecir",
+                          "rastrear",
+                          "ordenar",
+                          "encontrar-error",
+                          "romperlo",
+                          "disenar-pruebas",
+                          "modificar",
+                          "resolver",
+                          "comparar",
+                          "clasificar",
+                          "explicar"
+                        ]
+                      },
+                      "level": {
+                        "enum": [
+                          "semilla",
+                          "brote",
+                          "arbol"
+                        ]
+                      },
+                      "required": {
+                        "type": "boolean"
+                      },
+                      "title": {
+                        "$ref": "#/$defs/runs"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "terms": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "label",
+          "lesson",
+          "phrase"
+        ],
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "lesson": {
+            "type": "string"
+          },
+          "phrase": {
+            "$ref": "#/$defs/runs"
+          }
+        }
+      }
+    },
+    "specLinks": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "manifest": {
+      "type": "object",
+      "required": [
+        "format",
+        "language",
+        "profile",
+        "engine",
+        "specification",
+        "files"
+      ],
+      "properties": {
+        "format": {
+          "enum": [
+            "pseudolearn-route/1"
+          ]
+        },
+        "language": {
+          "enum": [
+            "es",
+            "en"
+          ]
+        },
+        "profile": {
+          "enum": [
+            "es",
+            "en"
+          ]
+        },
+        "engine": {
+          "type": "string"
+        },
+        "specification": {
+          "type": "string"
+        },
+        "files": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

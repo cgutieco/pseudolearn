@@ -12,6 +12,7 @@ ProgressEntry mergeProgress({
     completed: local.completed || remote.completed,
     firstVisitedAt: _earliest(local.firstVisitedAt, remote.firstVisitedAt),
     firstCompletedAt: _earliest(local.firstCompletedAt, remote.firstCompletedAt),
+    assisted: local.assisted || remote.assisted,
   );
 }
 

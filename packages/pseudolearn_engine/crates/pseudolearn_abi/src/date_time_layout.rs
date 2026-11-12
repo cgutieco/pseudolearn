@@ -1,0 +1,6 @@
+pub const DATE_TIME_PREFIX: [u8; 4] = *b"PLDT";
+pub const DATE_TIME_PREFIX_BYTES: usize = 4;
+pub const DATE_TIME_INSTANT_BYTES: usize = 8;
+pub const DATE_TIME_OFFSET_BYTES: usize = 4;
+pub const DATE_TIME_TOTAL_BYTES: usize =
+    DATE_TIME_PREFIX_BYTES + DATE_TIME_INSTANT_BYTES + DATE_TIME_OFFSET_BYTES;

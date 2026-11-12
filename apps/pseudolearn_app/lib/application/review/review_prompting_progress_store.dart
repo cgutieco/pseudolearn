@@ -9,12 +9,10 @@ final class ReviewPromptingProgressStore implements LocalProgressStore {
   final ReviewPromptPolicy _policy;
 
   const ReviewPromptingProgressStore({
-    required LocalProgressStore inner,
-    required StoreReviewPrompt prompt,
-    ReviewPromptPolicy policy = ReviewPromptPolicy.standard,
-  })  : _inner = inner,
-        _prompt = prompt,
-        _policy = policy;
+    required this._inner,
+    required this._prompt,
+    this._policy = ReviewPromptPolicy.standard,
+  });
 
   @override
   Future<bool> isModuleVisited(String moduleId) =>

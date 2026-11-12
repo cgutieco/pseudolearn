@@ -1,5 +1,0 @@
-Algorithm FunctionShadowing
-  Define length As Integer
-  length <- 42
-  Write length
-EndAlgorithm

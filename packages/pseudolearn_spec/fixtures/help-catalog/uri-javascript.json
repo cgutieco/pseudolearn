@@ -1,0 +1,11 @@
+{
+  "violation": "javascript URI in editorial text",
+  "expect": "active URI",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/content/es/summary",
+      "value": "Abre javascript:alert(1) ahora"
+    }
+  ]
+}

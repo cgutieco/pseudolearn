@@ -1,0 +1,10 @@
+algorithm Network
+switch requestNetwork() do
+success(net):
+switch net.send(HttpRequest(HttpMethod.GET, "__ORIGIN__/ok")) do
+success(response): write response.status(); write response.body().length();
+failure(problem): write problem.code;
+endSwitch
+failure(problem): write problem.code;
+endSwitch
+endAlgorithm

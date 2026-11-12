@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../application/diagram/diagram_state.dart';
 import '../../application/diagram/focus_frame_projection.dart';
+import '../../domain/model/analysis/source_range.dart';
 import '../../domain/model/diagram/diagram_focus_frame.dart';
 import '../../domain/model/diagram/diagram_notation.dart';
 import '../../domain/model/execution/execution_focus.dart';
@@ -9,6 +10,7 @@ import '../theme/tokens/component_metrics.dart';
 import '../theme/tokens/motion.dart';
 import 'diagram_camera_animator.dart';
 import 'diagram_controls_overlay.dart';
+import 'diagram_dependency_strip.dart';
 import 'diagram_empty_state.dart';
 import 'flowchart_canvas.dart';
 import 'flowchart_viewport.dart';
@@ -20,6 +22,7 @@ final class FlowchartTabView extends StatefulWidget {
   final bool followsExecutionFocus;
   final ValueChanged<String>? onUnitSelected;
   final ValueChanged<DiagramNotation>? onNotationSelected;
+  final ValueChanged<SourceRange>? onSourceSelected;
 
   const FlowchartTabView({
     super.key,
@@ -29,6 +32,7 @@ final class FlowchartTabView extends StatefulWidget {
     this.followsExecutionFocus = false,
     this.onUnitSelected,
     this.onNotationSelected,
+    this.onSourceSelected,
   });
 
   @override
@@ -66,6 +70,7 @@ final class _FlowchartTabViewState extends State<FlowchartTabView>
       return DiagramEmptyState(
         notation: widget.state.notation,
         hasValidAst: widget.state.hasValidAst,
+        unsupportedKinds: widget.state.unsupportedKinds,
         onNotationSelected: widget.onNotationSelected,
       );
     }
@@ -80,6 +85,7 @@ final class _FlowchartTabViewState extends State<FlowchartTabView>
           flowViewport: _flowViewport,
           onUnitSelected: widget.onUnitSelected,
           onNotationSelected: widget.onNotationSelected,
+          onSourceSelected: widget.onSourceSelected,
           onZoomIn: _zoomIn,
           onZoomOut: _zoomOut,
           onFit: _fitToViewport,
@@ -173,6 +179,7 @@ final class _FlowchartStack extends StatelessWidget {
   final FlowchartViewport flowViewport;
   final ValueChanged<String>? onUnitSelected;
   final ValueChanged<DiagramNotation>? onNotationSelected;
+  final ValueChanged<SourceRange>? onSourceSelected;
   final VoidCallback onZoomIn;
   final VoidCallback onZoomOut;
   final VoidCallback onFit;
@@ -185,6 +192,7 @@ final class _FlowchartStack extends StatelessWidget {
     required this.flowViewport,
     this.onUnitSelected,
     this.onNotationSelected,
+    this.onSourceSelected,
     required this.onZoomIn,
     required this.onZoomOut,
     required this.onFit,
@@ -201,7 +209,13 @@ final class _FlowchartStack extends StatelessWidget {
           focus: focus,
           flowViewport: flowViewport,
           onInteractionStart: onInteractionStart,
+          onSourceSelected: onSourceSelected,
         ),
+        if (state.dependencies.isNotEmpty)
+          DiagramDependencyOverlay(
+            dependencies: state.dependencies,
+            onSourceSelected: onSourceSelected,
+          ),
         DiagramControlsOverlay(
           units: state.units,
           selectedUnitId: state.selectedUnitId,

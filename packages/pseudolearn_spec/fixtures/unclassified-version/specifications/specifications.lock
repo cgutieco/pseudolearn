@@ -1,0 +1,31 @@
+{
+  "formato": "see-lock/1",
+  "history": {
+    "LANG.TEST.SAMPLE@0.1.0": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "R1": "regla"
+      },
+      "hash": "9dffa3ae5dae9a65e48ef473d524fc05ccb3b5d13455a90ee954726a1c185e4d",
+      "state": "experimental",
+      "version": "0.1.0"
+    }
+  },
+  "specifications": {
+    "LANG.TEST.SAMPLE": {
+      "edition": {
+        "introducida_en": "2026"
+      },
+      "elements": {
+        "C1": "caso",
+        "R1": "regla"
+      },
+      "hash": "9dffa3ae5dae9a65e48ef473d524fc05ccb3b5d13455a90ee954726a1c185e4d",
+      "state": "experimental",
+      "version": "0.1.0"
+    }
+  }
+}

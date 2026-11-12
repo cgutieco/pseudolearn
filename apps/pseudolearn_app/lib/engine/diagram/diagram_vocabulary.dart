@@ -14,6 +14,7 @@ final class DiagramVocabulary {
   final String constructorPrefix;
   final String methodPrefix;
   final String emptyCell;
+  final ExitVocabulary exits;
 
   const DiagramVocabulary({
     required this.start,
@@ -28,6 +29,7 @@ final class DiagramVocabulary {
     required this.constructorPrefix,
     required this.methodPrefix,
     required this.emptyCell,
+    required this.exits,
   });
 
   static DiagramVocabulary forLanguage(UiLanguageId languageId) {
@@ -70,6 +72,15 @@ const DiagramVocabulary _spanish = DiagramVocabulary(
   constructorPrefix: 'Constructor',
   methodPrefix: 'Método',
   emptyCell: 'Sin sentencias',
+  exits: ExitVocabulary(
+    loopEnd: 'Fin del bucle',
+    cleanupsAtEnd: 'Limpiezas al terminar',
+    cleanups: 'limpiezas',
+    line: 'línea',
+    lines: 'líneas',
+    propagatedFailure: 'Propaga el fallo',
+    propagationNote: 'si falla, propaga',
+  ),
 );
 
 const DiagramVocabulary _english = DiagramVocabulary(
@@ -85,4 +96,45 @@ const DiagramVocabulary _english = DiagramVocabulary(
   constructorPrefix: 'Constructor',
   methodPrefix: 'Method',
   emptyCell: 'No statements',
+  exits: ExitVocabulary(
+    loopEnd: 'Loop end',
+    cleanupsAtEnd: 'Cleanups at end',
+    cleanups: 'cleanups',
+    line: 'line',
+    lines: 'lines',
+    propagatedFailure: 'Propagates failure',
+    propagationNote: 'on failure, propagates',
+  ),
 );
+
+final class ExitVocabulary {
+  final String loopEnd;
+  final String cleanupsAtEnd;
+  final String cleanups;
+  final String line;
+  final String lines;
+  final String propagatedFailure;
+  final String propagationNote;
+
+  const ExitVocabulary({
+    required this.loopEnd,
+    required this.cleanupsAtEnd,
+    required this.cleanups,
+    required this.line,
+    required this.lines,
+    required this.propagatedFailure,
+    required this.propagationNote,
+  });
+
+  String loopExit(int loopLine) => '$loopEnd ($line $loopLine)';
+
+  String cleanupsAtEndOf(List<int> sourceLines) =>
+      '$cleanupsAtEnd: ${_lineList(sourceLines)}';
+
+  String withCleanups(String text, List<int> sourceLines) => sourceLines.isEmpty
+      ? text
+      : '$text — $cleanups: ${_lineList(sourceLines)}';
+
+  String _lineList(List<int> sourceLines) =>
+      '${sourceLines.length == 1 ? line : lines} ${sourceLines.join(', ')}';
+}

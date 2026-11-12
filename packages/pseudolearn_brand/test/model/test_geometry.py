@@ -1,7 +1,7 @@
 import unittest
 
 from pseudolearn_brand.model import catalog
-from pseudolearn_brand.model.geometry import SymbolGeometry, flag_path, route_path, symbol_path
+from pseudolearn_brand.model.geometry import SymbolGeometry, centerline_path, flag_path, route_path, symbol_path
 
 
 def geometry(**overrides):
@@ -20,6 +20,12 @@ class CornersTest(unittest.TestCase):
         steps = {round(abs(b[0] - a[0]) + abs(b[1] - a[1]), 6)
                  for a, b in zip(corners, corners[1:])}
         self.assertEqual(steps, {26.0})
+
+    def test_the_centerline_walks_every_corner_from_the_node(self):
+        self.assertEqual(centerline_path(geometry(turns=2)), "M 10,86 L 36,86 L 36,60")
+
+    def test_the_centerline_of_a_route_with_no_turns_is_only_the_start(self):
+        self.assertEqual(centerline_path(geometry(turns=0)), "M 10,86")
 
     def test_a_route_with_no_turns_is_a_single_point(self):
         self.assertEqual(geometry(turns=0).corners(), [(10.0, 86.0)])

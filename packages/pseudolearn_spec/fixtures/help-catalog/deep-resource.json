@@ -1,0 +1,41 @@
+{
+  "violation": "resource nested deeper than the declared limit",
+  "expect": "nesting exceeds",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/content/es/extra",
+      "value": {
+        "nested": {
+          "nested": {
+            "nested": {
+              "nested": {
+                "nested": {
+                  "nested": {
+                    "nested": {
+                      "nested": {
+                        "nested": {
+                          "nested": {
+                            "nested": {
+                              "nested": {
+                                "nested": {
+                                  "nested": {
+                                    "leaf": 1
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

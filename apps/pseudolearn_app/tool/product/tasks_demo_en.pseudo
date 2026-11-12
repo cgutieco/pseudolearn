@@ -1,0 +1,14 @@
+Subroutine Suspendable Prepare(order As String, minutes As Integer) As Integer
+  Write "Preparing ", order;
+  Return minutes;
+EndSubroutine
+
+Algorithm Counter
+  Tasks
+    Define coffee As Task<Integer> <- Spawn Prepare("coffee", 3);
+    Define toast As Task<Integer> <- Spawn Prepare("toast", 5);
+    Define juice As Task<Integer> <- Spawn Prepare("juice", 2);
+    Write "Total work: ", Await coffee + Await toast + Await juice, " minutes";
+  EndTasks
+  Write "Order delivered";
+EndAlgorithm

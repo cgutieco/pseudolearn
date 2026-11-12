@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../domain/model/analysis/highlight_span.dart';
 import '../../domain/model/execution/execution_focus.dart';
 import '../components/typography/app_text.dart';
 import '../theme/app_theme.dart';
 import '../theme/tokens/editor_metrics.dart';
+import 'components/code_text_input.dart';
 import 'components/line_numbers_gutter.dart';
 import 'highlight_controller.dart';
 
@@ -15,6 +16,7 @@ final class CodeField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final bool isReadOnly;
   final FocusNode? focusNode;
+  final VoidCallback? onExplain;
 
   const CodeField({
     super.key,
@@ -25,6 +27,7 @@ final class CodeField extends StatefulWidget {
     this.onChanged,
     this.isReadOnly = false,
     this.focusNode,
+    this.onExplain,
   });
 
   Set<int> get focusedLines => focus == null
@@ -141,6 +144,7 @@ final class _CodeFieldState extends State<CodeField> {
         isReadOnly: widget.isReadOnly,
         focusNode: widget.focusNode,
         onChanged: _onTextChanged,
+        onExplain: widget.onExplain,
       ),
     );
   }
@@ -154,6 +158,7 @@ final class _CodeFieldBody extends StatelessWidget {
   final bool isReadOnly;
   final FocusNode? focusNode;
   final ValueChanged<String> onChanged;
+  final VoidCallback? onExplain;
 
   const _CodeFieldBody({
     required this.scrollController,
@@ -163,6 +168,7 @@ final class _CodeFieldBody extends StatelessWidget {
     required this.isReadOnly,
     required this.focusNode,
     required this.onChanged,
+    required this.onExplain,
   });
 
   @override
@@ -179,6 +185,7 @@ final class _CodeFieldBody extends StatelessWidget {
               isReadOnly: isReadOnly,
               focusNode: focusNode,
               onChanged: onChanged,
+              onExplain: onExplain,
             ),
           ),
         ],
@@ -192,17 +199,18 @@ final class _HorizontalCodeScroll extends StatelessWidget {
   final bool isReadOnly;
   final FocusNode? focusNode;
   final ValueChanged<String> onChanged;
+  final VoidCallback? onExplain;
 
   const _HorizontalCodeScroll({
     required this.controller,
     required this.isReadOnly,
     required this.focusNode,
     required this.onChanged,
+    required this.onExplain,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppThemeExtension.of(context);
     return LayoutBuilder(
       builder: (context, constraints) => SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -211,17 +219,12 @@ final class _HorizontalCodeScroll extends StatelessWidget {
           child: IntrinsicWidth(
             child: Padding(
               padding: _editorContentPadding,
-              child: TextField(
+              child: CodeTextInput(
                 controller: controller,
                 focusNode: focusNode,
-                readOnly: isReadOnly,
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                style: resolveAppTextStyle(context, AppTextVariant.codeEditor),
-                cursorColor: theme.editor.caret,
-                cursorWidth: EditorMetricsTokens.editorCaretWidth,
-                decoration: _editorInputDecoration,
+                isReadOnly: isReadOnly,
                 onChanged: onChanged,
+                onExplain: onExplain,
               ),
             ),
           ),
@@ -236,10 +239,3 @@ const _editorContentPadding = EdgeInsets.symmetric(
   vertical: EditorMetricsTokens.editorContentPaddingTop,
 );
 
-const _editorInputDecoration = InputDecoration(
-  border: InputBorder.none,
-  enabledBorder: InputBorder.none,
-  focusedBorder: InputBorder.none,
-  isDense: true,
-  contentPadding: EdgeInsets.zero,
-);

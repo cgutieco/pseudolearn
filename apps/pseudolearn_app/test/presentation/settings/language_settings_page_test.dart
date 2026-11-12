@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:cupertino_ui/cupertino_ui.dart' show GlobalCupertinoLocalizations;
+import 'package:material_ui/material_ui.dart';
+import 'package:flutter_localizations/flutter_localizations.dart' show GlobalWidgetsLocalizations;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pseudolearn_app/composition/cubit_scope.dart';
@@ -42,7 +43,7 @@ Widget _buildLanguageSettingsTestApp({
 }
 
 void main() {
-  group('LanguageSettingsView Interaction Tests (PANT-05-F3)', () {
+  group('LanguageSettingsView Interaction Tests', () {
     testWidgets('Renders language options and notice', (tester) async {
       await tester.pumpWidget(_buildLanguageSettingsTestApp());
       await tester.pumpAndSettle();

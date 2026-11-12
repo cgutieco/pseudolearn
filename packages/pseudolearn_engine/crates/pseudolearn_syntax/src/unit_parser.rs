@@ -1,0 +1,287 @@
+use crate::declaration_parser::{name, parse_type};
+use crate::parameter_parser::parameters;
+use crate::parser_state::ParserState;
+use crate::statement_parser::{parse_statement_block, recover};
+use crate::subprogram_keywords;
+use crate::tokens::TokenKind;
+use crate::tree::NodeKind;
+use pseudolearn_diagnostics::DiagnosticCode;
+use pseudolearn_lexicon::KeywordKind;
+
+pub(crate) fn algorithm(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    let start = state.token();
+    let marker = state.nodes.len();
+    state.unit_context = NodeKind::AlgorithmUnit;
+    state.advance();
+    if name(state, DiagnosticCode::ExpectedAlgorithmName).is_err() {
+        recover(state);
+    }
+    parse_statement_block(state);
+    state.close(
+        KeywordKind::EndAlgorithm,
+        DiagnosticCode::UnclosedAlgorithm,
+        start,
+    );
+    Ok(state.finish(NodeKind::AlgorithmUnit, start, marker))
+}
+
+pub(crate) fn subprogram(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    let start = state.token();
+    let marker = state.nodes.len();
+    state.unit_context = NodeKind::Subprogram;
+    state.advance();
+    if crate::contextual::matches(state, "suspendibleModifier") {
+        let modifier = state.token();
+        let modifier_marker = state.nodes.len();
+        state.advance();
+        state.finish(NodeKind::SuspendibleModifier, modifier, modifier_marker);
+    }
+    let returning = return_variable(state)?;
+    name(state, DiagnosticCode::ExpectedSubroutineName)?;
+    crate::generic_parser::optional_parameters(state)?;
+    parameters(state)?;
+    if !returning && state.keyword(KeywordKind::TypeConnector) {
+        parse_type(state)?;
+    }
+    parse_statement_block(state);
+    subprogram_keywords::close(state, start);
+    Ok(state.finish(NodeKind::Subprogram, start, marker))
+}
+
+fn return_variable(state: &mut ParserState<'_>) -> Result<bool, ()> {
+    if state.kind() != TokenKind::Identifier || state.following_kind() != TokenKind::Assignment {
+        return Ok(false);
+    }
+    let start = state.token();
+    let marker = state.nodes.len();
+    name(state, DiagnosticCode::ExpectedSubroutineName)?;
+    state.eat(TokenKind::Assignment);
+    state.finish(NodeKind::ReturnVariable, start, marker);
+    Ok(true)
+}
+
+pub(crate) fn class(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    let start = state.token();
+    let marker = state.nodes.len();
+    state.unit_context = NodeKind::ClassUnit;
+    state.advance();
+    if crate::unsupported::reject(state) {
+        return Err(());
+    }
+    let class_name = state.token();
+    class_header(state)?;
+    loop {
+        state.separators();
+        if matches!(
+            state.kind(),
+            TokenKind::EndOfFile | TokenKind::Keyword(KeywordKind::EndClass)
+        ) {
+            break;
+        }
+        let before = state.cursor;
+        if class_member(state, class_name).is_err() {
+            recover(state);
+        }
+        if state.cursor == before {
+            state.advance();
+        }
+    }
+    state.close(KeywordKind::EndClass, DiagnosticCode::UnclosedClass, start);
+    state.has_superclass = false;
+    Ok(state.finish(NodeKind::ClassUnit, start, marker))
+}
+
+fn class_header(state: &mut ParserState<'_>) -> Result<(), ()> {
+    name(state, DiagnosticCode::ExpectedClassName)?;
+    crate::generic_parser::optional_parameters(state)?;
+    state.has_superclass = state.keyword(KeywordKind::InheritsFrom);
+    if state.has_superclass {
+        name(state, DiagnosticCode::ExpectedClassName)?;
+        crate::generic_parser::optional_arguments(state)?;
+        if state.kind() == TokenKind::Comma {
+            let span = state.span();
+            state.report(DiagnosticCode::MultipleInheritanceNotSupported, span);
+            return Err(());
+        }
+    }
+    crate::interface_parser::realization(state)
+}
+
+fn class_member(state: &mut ParserState<'_>, class_name: u32) -> Result<(), ()> {
+    if crate::unsupported::reject(state) {
+        return Err(());
+    }
+    let start = state.token();
+    let marker = state.nodes.len();
+    let modifier = state.keyword(KeywordKind::PublicVisibility)
+        || state.keyword(KeywordKind::PrivateVisibility);
+    match state.kind() {
+        TokenKind::Keyword(KeywordKind::Declare) => {
+            crate::declaration_parser::field(state)?;
+        }
+        TokenKind::Keyword(KeywordKind::Dimension) => {
+            crate::declaration_parser::field_dimension(state)?;
+        }
+        TokenKind::Keyword(KeywordKind::Method) => {
+            method(state, class_name, modifier)?;
+            if let Some(node) = state.nodes.last_mut() {
+                node.first_token = start;
+            }
+            return Ok(());
+        }
+        TokenKind::Keyword(
+            KeywordKind::ClassKeyword | KeywordKind::Subroutine | KeywordKind::Function,
+        ) => {
+            reject_nested(state)?;
+            return Ok(());
+        }
+        _ => {
+            let span = state.span();
+            state.report(DiagnosticCode::UnexpectedStatement, span);
+            return Err(());
+        }
+    }
+    finish_field(state, start, marker);
+    Ok(())
+}
+
+fn finish_field(state: &mut ParserState<'_>, start: u32, marker: usize) {
+    if !state.eat(TokenKind::Semicolon) {
+        let span = state.span();
+        state.report(DiagnosticCode::MissingStatementTerminator, span);
+    }
+    state.finish(NodeKind::FieldDeclaration, start, marker);
+}
+
+fn method(state: &mut ParserState<'_>, class_name: u32, modifier: bool) -> Result<(), ()> {
+    let start = state.token();
+    let marker = state.nodes.len();
+    state.advance();
+    let constructor = state.kind() == TokenKind::Keyword(KeywordKind::Constructor);
+    parse_method_signature(state, (class_name, constructor, modifier))?;
+    state.inside_method = true;
+    parse_statement_block(state);
+    state.inside_method = false;
+    state.close(
+        KeywordKind::EndMethod,
+        DiagnosticCode::UnclosedMethod,
+        start,
+    );
+    state.finish(
+        if constructor {
+            NodeKind::ConstructorMember
+        } else {
+            NodeKind::MethodMember
+        },
+        start,
+        marker,
+    );
+    Ok(())
+}
+
+fn parse_method_signature(
+    state: &mut ParserState<'_>,
+    (class_name, constructor, modifier): (u32, bool, bool),
+) -> Result<(), ()> {
+    if constructor {
+        check_method_name(state, class_name, true)?;
+        suspendible_modifier(state);
+    } else {
+        suspendible_modifier(state);
+        check_method_name(state, class_name, false)?;
+    }
+    report_constructor_visibility(state, (constructor, modifier));
+    parameters(state)?;
+    parse_method_result(state, constructor)
+}
+
+fn report_constructor_visibility(
+    state: &mut ParserState<'_>,
+    (constructor, modifier): (bool, bool),
+) {
+    if constructor && modifier {
+        let span = state.span();
+        state.report(DiagnosticCode::ConstructorVisibilityNotAllowed, span);
+    }
+}
+
+fn parse_method_result(state: &mut ParserState<'_>, constructor: bool) -> Result<(), ()> {
+    if state.keyword(KeywordKind::TypeConnector) {
+        if constructor {
+            let span = state.span();
+            state.report(DiagnosticCode::ConstructorReturnTypeNotAllowed, span);
+        }
+        parse_type(state)?;
+    }
+    Ok(())
+}
+
+fn suspendible_modifier(state: &mut ParserState<'_>) {
+    if crate::contextual::matches(state, "suspendibleModifier") {
+        let modifier = state.token();
+        let marker = state.nodes.len();
+        state.advance();
+        state.finish(NodeKind::SuspendibleModifier, modifier, marker);
+    }
+}
+
+fn check_method_name(
+    state: &mut ParserState<'_>,
+    class_name: u32,
+    constructor: bool,
+) -> Result<(), ()> {
+    if constructor {
+        let start = state.token();
+        let marker = state.nodes.len();
+        state.advance();
+        state.finish(NodeKind::Identifier, start, marker);
+        return Ok(());
+    }
+    let token = state.token();
+    if state.text(token) == state.text(class_name) {
+        let span = state.span();
+        state.report(DiagnosticCode::MethodNamedAsClass, span);
+    }
+    name(state, DiagnosticCode::ExpectedSubroutineName)?;
+    Ok(())
+}
+
+pub(crate) fn reject_nested(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    let opening = state.kind();
+    let code = match (state.unit_context, opening) {
+        (NodeKind::AlgorithmUnit, TokenKind::Keyword(KeywordKind::ClassKeyword)) => {
+            DiagnosticCode::ClassInsideAlgorithm
+        }
+        (NodeKind::Subprogram, TokenKind::Keyword(KeywordKind::ClassKeyword)) => {
+            DiagnosticCode::ClassInsideSubroutine
+        }
+        (_, TokenKind::Keyword(KeywordKind::ClassKeyword)) => {
+            DiagnosticCode::NestedClassNotSupported
+        }
+        (NodeKind::AlgorithmUnit, opening) if subprogram_keywords::opens_subprogram(opening) => {
+            DiagnosticCode::SubroutineInsideAlgorithm
+        }
+        (NodeKind::ClassUnit, opening) if subprogram_keywords::opens_subprogram(opening) => {
+            DiagnosticCode::SubroutineInsideClass
+        }
+        (_, opening) if subprogram_keywords::opens_subprogram(opening) => {
+            DiagnosticCode::SubroutineInsideSubroutine
+        }
+        _ => DiagnosticCode::MethodOutsideClass,
+    };
+    let span = state.span();
+    state.report(code, span);
+    let closing = match opening {
+        TokenKind::Keyword(KeywordKind::ClassKeyword) => KeywordKind::EndClass,
+        opening if subprogram_keywords::opens_subprogram(opening) => {
+            subprogram_keywords::subprogram_closing(opening)
+        }
+        _ => KeywordKind::EndMethod,
+    };
+    state.advance();
+    while state.kind() != TokenKind::EndOfFile && state.kind() != TokenKind::Keyword(closing) {
+        state.advance();
+    }
+    state.keyword(closing);
+    Err(())
+}

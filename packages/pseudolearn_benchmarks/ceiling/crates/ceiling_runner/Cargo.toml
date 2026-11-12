@@ -1,0 +1,17 @@
+[package]
+name = "ceiling_runner"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lints]
+workspace = true
+
+[[bin]]
+name = "ceiling"
+path = "src/main.rs"
+
+[dependencies]
+ceiling_kernels = { version = "0.1.0", path = "../ceiling_kernels" }
+ceiling_statistics = { version = "0.1.0", path = "../ceiling_statistics" }
+serde_json = "1"

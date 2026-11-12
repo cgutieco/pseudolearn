@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/settings/settings_cubit.dart';
@@ -7,7 +7,7 @@ import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import '../fakes/test_dependencies.dart';
 
 void main() {
-  group('Composition and Startup Tests (CIM-F4)', () {
+  group('Composition and Startup Tests', () {
     test('buildTestDependencies builds complete dependency container', () {
       final dependencies = buildTestDependencies();
 

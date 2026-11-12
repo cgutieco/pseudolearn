@@ -1,0 +1,11 @@
+{
+  "violation": "card whose identity matches no inventory role",
+  "expect": "no declared inventory role",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/identity/id",
+      "value": "ghost"
+    }
+  ]
+}

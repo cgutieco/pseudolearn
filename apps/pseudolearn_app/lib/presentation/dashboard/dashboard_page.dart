@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../application/dashboard/dashboard_cubit.dart';
@@ -57,7 +57,7 @@ final class _DashboardWithSyncMoment extends StatelessWidget {
       builder: (context, syncState) => DashboardView(
         state: state,
         lastSyncAt: syncState.lastSyncAt,
-        onOpenModule: (moduleId) => context.push('/conocimiento/$moduleId'),
+        onOpenModule: (lessonId) => context.push('/conocimiento/ruta/$lessonId'),
       ),
     );
   }

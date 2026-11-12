@@ -1,0 +1,14 @@
+<svg viewBox="0 0 340 170">
+  <text x="70" y="18" font-size="12" text-anchor="middle" fill="@atenuado">{{t:principal}}</text>
+  <rect x="10" y="26" width="120" height="134" rx="8" fill="@superficie" stroke="@atenuado" stroke-dasharray="4 3"/>
+  <text x="34" y="64" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:c}}</text>
+  <caja x="52" y="44" ancho="60" alto="36" rol="numero" fondo="0.20" negrita="" fuente="mono" tamano="16" texto="3"/>
+  <text x="34" y="122" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:r}}</text>
+  <caja x="52" y="102" ancho="60" alto="36" rol="numero" fondo="0.20" negrita="" fuente="mono" tamano="16" texto="2"/>
+  <text x="260" y="18" font-size="12" text-anchor="middle" fill="@atenuado">{{codigo:Dividir}}</text>
+  <rect x="180" y="26" width="150" height="134" rx="8" fill="@superficie" stroke="@acento-procedimental" stroke-dasharray="4 3"/>
+  <text x="255" y="66" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:cociente}}</text>
+  <text x="255" y="124" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:resto}}</text>
+  <flecha puntos="210,62 116,62" rol="acento-procedimental"/>
+  <flecha puntos="220,120 116,120" rol="acento-procedimental"/>
+</svg>

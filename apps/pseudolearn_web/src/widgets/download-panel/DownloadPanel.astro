@@ -1,0 +1,66 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { DOWNLOAD_CARDS } from './download-cards';
+import DownloadCard from './DownloadCard.astro';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+<div class="downloads">
+  <div class="downloads__grid">
+    {DOWNLOAD_CARDS.map((card) => (
+      <DownloadCard locale={locale} card={card} />
+    ))}
+  </div>
+  <p class="pl-card--dashed downloads__upcoming">
+    <span class="pl-overline">{t('download.upcomingLabel')}</span>
+    <span>{t('download.upcomingText')}</span>
+  </p>
+</div>
+
+<style>
+  .downloads__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .downloads__upcoming {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pl-space-xs);
+    margin-top: 14px;
+    padding: var(--pl-space-md) 18px;
+    border: 1px dashed var(--pl-line);
+    border-radius: var(--pl-radius-card);
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--pl-ink-2);
+  }
+
+  @media (min-width: 900px) {
+    .downloads__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--pl-space-lg);
+    }
+
+    .downloads__upcoming {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--pl-space-md);
+      margin-top: var(--pl-space-lg);
+      padding: 20px var(--pl-space-lg);
+      font-size: 15px;
+    }
+
+    .downloads__upcoming :global(.pl-overline) {
+      flex: none;
+    }
+  }
+</style>

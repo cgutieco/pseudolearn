@@ -2,19 +2,32 @@ import '../analysis/program_node_id.dart';
 
 enum ClassMemberVisibility { public, private }
 
-enum ClassRelationKind { generalization, association }
+enum ClassRelationKind { generalization, association, realization, usage }
+
+enum ClassBoxKind {
+  classType,
+  interfaceContract,
+  genericSubprogram,
+  record,
+  enumeration,
+  variant,
+}
+
+enum ClassRowRole { member, contractIssue, enumMember }
 
 final class ClassMemberRow {
   final String text;
   final ClassMemberVisibility visibility;
   final ProgramNodeId nodeId;
   final int sourceLine;
+  final ClassRowRole role;
 
   const ClassMemberRow({
     required this.text,
     required this.visibility,
     required this.nodeId,
     required this.sourceLine,
+    this.role = ClassRowRole.member,
   });
 }
 
@@ -25,6 +38,9 @@ final class ClassBox {
   final List<ClassMemberRow> methods;
   final ProgramNodeId nodeId;
   final int sourceLine;
+  final ClassBoxKind kind;
+  final List<String> contractNames;
+  final String typeParameters;
 
   const ClassBox({
     required this.name,
@@ -33,7 +49,12 @@ final class ClassBox {
     required this.methods,
     required this.nodeId,
     required this.sourceLine,
+    this.kind = ClassBoxKind.classType,
+    this.contractNames = const [],
+    this.typeParameters = '',
   });
+
+  String get title => '$name$typeParameters';
 }
 
 final class ClassRelation {
@@ -41,13 +62,23 @@ final class ClassRelation {
   final String toClassName;
   final ClassRelationKind kind;
   final String? label;
+  final ProgramNodeId? fromNodeId;
+  final ProgramNodeId? toNodeId;
+  final ProgramNodeId? originNodeId;
+  final List<String> diagnostics;
 
   const ClassRelation({
     required this.fromClassName,
     required this.toClassName,
     required this.kind,
     this.label,
+    this.fromNodeId,
+    this.toNodeId,
+    this.originNodeId,
+    this.diagnostics = const [],
   });
+
+  bool get isValid => diagnostics.isEmpty;
 }
 
 final class ClassModel {

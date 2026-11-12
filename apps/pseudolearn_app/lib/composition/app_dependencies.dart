@@ -1,9 +1,11 @@
+import '../application/route/progress_updates.dart';
 import '../domain/ports/account_deletion_gateway.dart';
 import '../domain/ports/app_version_source.dart';
 import '../domain/ports/auth_gateway.dart';
 import '../domain/ports/class_diagram_builder.dart';
 import '../domain/ports/clock.dart';
 import '../domain/ports/completion_source.dart';
+import '../domain/ports/contextual_completion_source.dart';
 import '../domain/ports/connectivity_monitor.dart';
 import '../domain/ports/document_repository.dart';
 import '../domain/ports/editor_key_source.dart';
@@ -11,7 +13,11 @@ import '../domain/ports/exercise_checker.dart';
 import '../domain/ports/flowchart_builder.dart';
 import '../domain/ports/identifier_generator.dart';
 import '../domain/ports/incoming_link_source.dart';
-import '../domain/ports/knowledge_repository.dart';
+import '../domain/ports/demo_program_source.dart';
+import '../domain/model/route/route_kinds.dart';
+import '../domain/ports/route_answer_evaluator.dart';
+import '../domain/ports/route_repository.dart';
+import '../domain/ports/reference_repository.dart';
 import '../domain/ports/local_account_data_purger.dart';
 import '../domain/ports/local_progress_store.dart';
 import '../domain/ports/preferences_store.dart';
@@ -25,8 +31,12 @@ import '../domain/ports/source_editor.dart';
 import '../domain/ports/structogram_builder.dart';
 import '../domain/ports/sync_coordinator.dart';
 import '../domain/ports/sync_queue.dart';
-import '../domain/ports/syntax_reference_source.dart';
+import '../domain/ports/syntax_help_source.dart';
 import '../domain/ports/text_entry_modality.dart';
+import '../domain/ports/user_exercise_repository.dart';
+import 'program_execution_session.dart';
+import 'agent_services.dart';
+import 'program_tools.dart';
 
 final class AppDependencies {
   final Clock clock;
@@ -43,21 +53,30 @@ final class AppDependencies {
   final SyncCoordinator syncCoordinator;
   final ProgramAnalyzer programAnalyzer;
   final ProgramExecution Function() createProgramExecution;
+  final ProgramExecutionSession Function()? createObservableExecutionSession;
   final FlowchartBuilder flowchartBuilder;
   final StructogramBuilder structogramBuilder;
   final ClassDiagramBuilder classDiagramBuilder;
   final CompletionSource completionSource;
+  final ContextualCompletionSource? contextualCompletionSource;
   final SourceEditor sourceEditor;
   final EditorKeySource editorKeySource;
   final TextEntryModality textEntryModality;
   final AppVersionSource appVersionSource;
-  final KnowledgeRepository knowledgeRepository;
-  final SyntaxReferenceSource syntaxReferenceSource;
+  final RouteRepository routeRepository;
+  final DemoProgramSource demoProgramSource;
+  final Map<RouteExerciseKind, RouteAnswerEvaluator> routeEvaluators;
+  final ReferenceRepository referenceRepository;
+  final SyntaxHelpSource syntaxHelpSource;
   final ProgramExporter programExporter;
   final LocalProgressStore localProgressStore;
+  final ProgressUpdates progressUpdates;
   final ProgressHistory progressHistory;
   final ProgramConstructReader programConstructReader;
   final ExerciseChecker exerciseChecker;
+  final ProgramTools programTools;
+  final UserExerciseRepository userExerciseRepository;
+  final AgentServices agent;
 
   const AppDependencies({
     required this.clock,
@@ -74,20 +93,29 @@ final class AppDependencies {
     required this.syncCoordinator,
     required this.programAnalyzer,
     required this.createProgramExecution,
+    this.createObservableExecutionSession,
     required this.flowchartBuilder,
     required this.structogramBuilder,
     required this.classDiagramBuilder,
     required this.completionSource,
+    this.contextualCompletionSource,
     required this.sourceEditor,
     required this.editorKeySource,
     required this.textEntryModality,
     required this.appVersionSource,
-    required this.knowledgeRepository,
-    required this.syntaxReferenceSource,
+    required this.routeRepository,
+    required this.demoProgramSource,
+    required this.routeEvaluators,
+    required this.referenceRepository,
+    required this.syntaxHelpSource,
     required this.programExporter,
     required this.localProgressStore,
+    required this.progressUpdates,
     required this.progressHistory,
     required this.programConstructReader,
     required this.exerciseChecker,
+    required this.programTools,
+    required this.userExerciseRepository,
+    required this.agent,
   });
 }

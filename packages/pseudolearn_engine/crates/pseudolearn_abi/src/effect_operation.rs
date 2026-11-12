@@ -1,0 +1,117 @@
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum EffectValueKind {
+    Integer,
+    Real,
+    Boolean,
+    Text,
+    Bytes,
+    TextList,
+    JsonValue,
+    JsonResult,
+    JsonKind,
+    OptionalBoolean,
+    OptionalInteger,
+    OptionalReal,
+    OptionalText,
+    OptionalJsonValue,
+    Console,
+    Arguments,
+    Directory,
+    File,
+    Clock,
+    Timer,
+    Network,
+    Environment,
+    DateTime,
+    OptionalDateTime,
+    HttpMethod,
+    HttpRequest,
+    HttpResponse,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct EffectOperation {
+    pub id: u32,
+    pub identity: &'static str,
+    pub family: &'static str,
+    pub receiver: Option<EffectValueKind>,
+    pub spanish: &'static str,
+    pub english: &'static str,
+    pub parameters: &'static [EffectValueKind],
+    pub result: EffectValueKind,
+    pub effect: bool,
+    pub fallible: bool,
+    pub spanish_aliases: &'static [&'static str],
+    pub english_aliases: &'static [&'static str],
+}
+
+include!(concat!(env!("OUT_DIR"), "/effect_operations.rs"));
+
+pub fn find_effect_operation(
+    name: &str,
+    spanish: bool,
+    receiver: Option<EffectValueKind>,
+) -> Option<&'static EffectOperation> {
+    EFFECT_OPERATIONS.iter().find(|operation| {
+        let (canonical, aliases) = if spanish {
+            (operation.spanish, operation.spanish_aliases)
+        } else {
+            (operation.english, operation.english_aliases)
+        };
+        operation.receiver == receiver
+            && std::iter::once(canonical)
+                .chain(aliases.iter().copied())
+                .any(|form| name.eq_ignore_ascii_case(form))
+    })
+}
+
+impl EffectOperation {
+    pub fn result_cell_count(&self) -> usize {
+        match self.result {
+            EffectValueKind::OptionalBoolean
+            | EffectValueKind::OptionalInteger
+            | EffectValueKind::OptionalReal => 2,
+            EffectValueKind::JsonResult => 5,
+            _ if self.fallible => 3,
+            EffectValueKind::OptionalText
+            | EffectValueKind::OptionalJsonValue
+            | EffectValueKind::OptionalDateTime => 1,
+            _ => 1,
+        }
+    }
+
+    pub fn is_scalar(kind: EffectValueKind) -> bool {
+        matches!(
+            kind,
+            EffectValueKind::Integer
+                | EffectValueKind::Real
+                | EffectValueKind::Boolean
+                | EffectValueKind::JsonKind
+                | EffectValueKind::HttpMethod
+        )
+    }
+
+    pub fn capability_family(&self) -> &'static str {
+        match self.receiver {
+            Some(EffectValueKind::Directory | EffectValueKind::File) => "filesystem",
+            Some(EffectValueKind::Clock) => "clock",
+            Some(EffectValueKind::Console) => "console",
+            Some(EffectValueKind::Arguments) => "arguments",
+            Some(EffectValueKind::Timer) => "timer",
+            Some(EffectValueKind::Network) => "network",
+            Some(EffectValueKind::Environment) => "environment",
+            _ => match self.identity.strip_prefix("request_") {
+                Some("directory") => "filesystem",
+                Some(requested) => requested,
+                None if !self.family.is_empty() => self.family,
+                None => "host",
+            },
+        }
+    }
+}
+
+pub fn effect_operation(identity: &str) -> Option<&'static EffectOperation> {
+    EFFECT_OPERATIONS
+        .iter()
+        .find(|operation| operation.identity == identity)
+}

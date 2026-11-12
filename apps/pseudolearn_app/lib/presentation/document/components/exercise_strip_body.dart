@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../../domain/model/knowledge/exercise.dart';
 import '../../../domain/model/knowledge/exercise_case.dart';
 import '../../../domain/model/knowledge/exercise_case_failure.dart';
@@ -9,22 +9,19 @@ import '../../theme/app_theme.dart';
 import '../../theme/tokens/border_metrics.dart';
 import '../../theme/tokens/radii.dart';
 import '../../theme/tokens/spacing.dart';
+import 'exercise_strip_badges.dart';
 import 'exercise_strip_feedback.dart';
 
 final class ExerciseStripBodyContent extends StatelessWidget {
   final Exercise exercise;
-  final bool isChecking;
   final ExerciseCheckResult? lastResult;
   final ExerciseCaseFailure? revealedHiddenFailure;
-  final VoidCallback onCheck;
 
   const ExerciseStripBodyContent({
     super.key,
     required this.exercise,
-    required this.isChecking,
     required this.lastResult,
     required this.revealedHiddenFailure,
-    required this.onCheck,
   });
 
   @override
@@ -37,10 +34,8 @@ final class ExerciseStripBodyContent extends StatelessWidget {
       ),
       child: _ExerciseContentList(
         exercise: exercise,
-        isChecking: isChecking,
         lastResult: lastResult,
         revealedHiddenFailure: revealedHiddenFailure,
-        onCheck: onCheck,
       ),
     );
   }
@@ -49,17 +44,13 @@ final class ExerciseStripBodyContent extends StatelessWidget {
 
 final class _ExerciseContentList extends StatelessWidget {
   final Exercise exercise;
-  final bool isChecking;
   final ExerciseCheckResult? lastResult;
   final ExerciseCaseFailure? revealedHiddenFailure;
-  final VoidCallback onCheck;
 
   const _ExerciseContentList({
     required this.exercise,
-    required this.isChecking,
     required this.lastResult,
     required this.revealedHiddenFailure,
-    required this.onCheck,
   });
 
   @override
@@ -69,20 +60,21 @@ final class _ExerciseContentList extends StatelessWidget {
     final cases = exercise.visibleCases.isNotEmpty
         ? _VisibleCasesSection(visibleCases: exercise.visibleCases, l10n: l10n, theme: theme)
         : null;
+    final result = lastResult;
+    final failed = result != null && !result.isSolved ? result : null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
+        StripKindBadge(kind: exercise.kind),
+        const SizedBox(height: SpacingTokens.space2),
         AppText(exercise.statement, variant: AppTextVariant.bodyDefault, color: theme.colors.text.primary),
         if (cases != null) ...[const SizedBox(height: SpacingTokens.space3), cases],
-        const SizedBox(height: SpacingTokens.space3),
-        CheckActionBar(
-          isChecking: isChecking,
-          lastResult: lastResult,
-          revealedHiddenFailure: revealedHiddenFailure,
-          onCheck: onCheck,
-        ),
+        if (failed != null) ...[
+          const SizedBox(height: SpacingTokens.space3),
+          CheckResultFeedback(result: failed, revealedHiddenFailure: revealedHiddenFailure, l10n: l10n, theme: theme),
+        ],
       ],
     );
   }

@@ -44,6 +44,33 @@ class DocumentTest(unittest.TestCase):
         self.assertIn("rx=", self.document("favicon"))
 
 
+class CardTest(unittest.TestCase):
+    def setUp(self):
+        self.catalog = catalog.load()
+        self.composition = composition.build(self.catalog)
+        self.variant = next(variant for variant in self.catalog.variants
+                            if variant.composition == "card")
+        self.document = svg.document(self.composition, self.variant)
+
+    def test_the_card_declares_the_open_graph_canvas(self):
+        self.assertIn('viewBox="0 0 1200 630"', self.document)
+
+    def test_the_card_paints_the_ground_the_watermark_and_the_lockup(self):
+        self.assertIn("url(#ground)", self.document)
+        self.assertIn(f'opacity="{self.catalog.card.watermark_opacity:g}"', self.document)
+        self.assertIn(self.composition.wordmark.path, self.document)
+
+    def test_the_card_draws_no_text_so_no_font_is_needed_to_rasterize_it(self):
+        self.assertNotIn("<text", self.document)
+
+    def test_the_lockup_stays_inside_the_margins_of_the_canvas(self):
+        layout = self.composition.lockup("horizontal")
+        scale = self.variant.canvas * self.catalog.card.span / layout.width
+        left = self.variant.canvas * self.catalog.card.margin
+        self.assertLess(left + layout.width * scale, self.variant.canvas)
+        self.assertLess(layout.height * scale, self.variant.canvas_height)
+
+
 class FragmentTest(unittest.TestCase):
     def setUp(self):
         self.catalog = catalog.load()

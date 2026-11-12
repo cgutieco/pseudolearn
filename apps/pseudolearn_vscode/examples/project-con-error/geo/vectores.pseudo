@@ -1,0 +1,3 @@
+Publico SubProceso Doble(n Como Entero) Como Entero
+Retornar total;
+FinSubProceso

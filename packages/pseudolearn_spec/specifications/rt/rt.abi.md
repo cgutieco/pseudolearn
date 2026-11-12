@@ -1,0 +1,204 @@
+---
+{
+  "formato": "see/1",
+  "id": "RT.ABI",
+  "titulo": "Frontera binaria del código nativo",
+  "dominio": "motor",
+  "estado": "estable",
+  "version": "1.0.0",
+  "duenos": [
+    "responsable-motor"
+  ],
+  "sujetos": [
+    "aot"
+  ],
+  "resumen": "Contexto, retornos, valores y raíces entre el código nativo generado y el runtime.",
+  "depende_de": [
+    {
+      "id": "ENG.LIMITS",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "MEM.IDENTITY",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    }
+  ],
+  "titulo_en": "Native code binary boundary",
+  "revisado_por": [
+    "César Antonio Gutiérrez Contreras"
+  ]
+}
+---
+
+# Frontera binaria del código nativo
+
+```regla
+{
+  "id": "R1",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Toda función del código nativo generado y todo punto de entrada del runtime reciben como primer parámetro un puntero no nulo al contexto de ejecución, que contiene el montón, la arena de textos, la fuente aleatoria, la pila de raíces y los contadores de los límites de ENG.LIMITS. Los puntos de entrada del runtime devuelven 0 si el cómputo continúa, 1 si el programa falló y 2 si se agotó un límite; ante un valor distinto de 0 el código nativo propaga el retorno sin ejecutar más efectos.",
+  "verificacion": [
+    "P1",
+    "C1"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C1",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1\n",
+    "terminacion": "failed",
+    "fallo": {
+      "codigo": "divisionByZero"
+    }
+  },
+  "programa": "Algoritmo P\nEscribir 1;\nEscribir 1 div 0;\nEscribir 2;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Las disposiciones de continuación, tarea y canal son únicas: etiqueta de forma, cabecera y desplazamientos viven en pseudolearn_abi y los consumen la máquina virtual y el código nativo. Sus etiquetas de forma son distintas entre sí y de las demás formas reservadas, y una clase de usuario no puede ocupar ninguna.",
+  "verificacion": [
+    "estructural"
+  ],
+  "justificacion": "Las pruebas unitarias dirigidas de la disposición comprueban el contrato estructural; el código nativo aún no ofrece tareas."
+}
+```
+
+```propiedad
+{
+  "id": "P1",
+  "regla": "R1",
+  "generador": {
+    "programas": "casos de ejecución del corpus con fallos y límites"
+  },
+  "propiedad": "El código de retorno de la ejecución es 0 si y solo si la terminación es completed, 1 si es failed y 2 si es limit_reached, y no se observa ningún efecto posterior al primer retorno distinto de 0.",
+  "oraculo": "Terminación observada del sujeto engine.",
+  "justificacion": "La ejecuta el sujeto aot en R6."
+}
+```
+
+```regla
+{
+  "id": "R2",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Los valores cruzan la frontera con la codificación exacta del runtime: entero como entero con signo de 64 bits, real como binary64 IEEE-754, lógico como 0 o 1, carácter como valor escalar Unicode y texto, arreglo, objeto y celda como asa de 32 bits. Una celda sin definir se distingue de cualquier valor definido sin reservar bits de un entero o un real.",
+  "verificacion": [
+    "P2",
+    "C2"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C2",
+  "regla": "R2",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "failed",
+    "fallo": {
+      "codigo": "uninitializedVariableRead"
+    }
+  },
+  "programa": "Algoritmo P\nDimension a[2] Como Entero;\nEscribir a[1];\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+```caso
+{
+  "id": "C3",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "msg-1\nmsg-2\nmsg-3\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Suspendible Produce(stream Como Canal<Cadena>, base Como Cadena)\nAguardar stream.Enviar(base + \"-1\");\nAguardar stream.Enviar(base + \"-2\");\nAguardar stream.Enviar(base + \"-3\");\nstream.Cerrar();\nFinSubProceso\nSubProceso Suspendible Consume(stream Como Canal<Cadena>)\nRepetir\nSegun Aguardar stream.Recibir() Hacer\nAlgo(text): Escribir text;\nNada: Salir;\nFinSegun\nHasta Que Falso\nFinSubProceso\nAlgoritmo Main\nDefinir stream Como Canal<Cadena> <- Canal(1);\nTareas\nLanzar Produce(stream, \"msg\");\nLanzar Consume(stream);\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Produce(stream as channel<string>, base as string)\nawait stream.send(base + \"-1\");\nawait stream.send(base + \"-2\");\nawait stream.send(base + \"-3\");\nstream.close();\nendSubroutine\nsubroutine suspendable Consume(stream as channel<string>)\nrepeat\nswitch await stream.receive() do\nsome(text): write text;\nnone: break;\nendSwitch\nuntil false\nendSubroutine\nalgorithm Main\ndefine stream as channel<string> <- channel(1);\ntasks\nspawn Produce(stream, \"msg\");\nspawn Consume(stream);\nendTasks\nendAlgorithm\n"
+  }
+}
+```
+
+```propiedad
+{
+  "id": "P2",
+  "regla": "R2",
+  "generador": {
+    "programas": "casos con enteros extremos, reales no finitos y celdas sin definir"
+  },
+  "propiedad": "Cada valor escrito en una celda se lee de vuelta idéntico bit a bit y una celda nunca escrita se lee como sin definir.",
+  "oraculo": "Semántica de MEM.VALUE.COPY y LANG.ARRAY.ACCESS en el sujeto engine.",
+  "justificacion": "La ejecuta el sujeto aot en R6."
+}
+```
+
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Todo asa viva que deba sobrevivir a una llamada al runtime capaz de recolectar se registra en la pila de raíces del marco antes de la llamada y se libera al salir del marco. El recolector solo examina las raíces registradas, de modo que ningún objeto alcanzable se pierde ni se conserva un objeto inalcanzable.",
+  "verificacion": [
+    "P3"
+  ]
+}
+```
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "ejecucion",
+  "texto": "El código nativo de un programa con tareas conserva la convención de R1: cada tarea ejecuta su propia pila nativa y un testigo único garantiza que solo una tarea ejecuta código del programa a la vez. Un punto de suspensión es una entrada del runtime que devuelve el control solo cuando la agenda reanuda la tarea; el estado 3 indica desenrollar los marcos hasta el punto de cancelación o la frontera de ámbito registrados, cuya profundidad fija el runtime. Las raíces y las celdas de cada tarea suspendida permanecen en su propia pila de raíces y el recolector las recorre junto con las de la tarea en ejecución.",
+  "verificacion": [
+    "C3"
+  ]
+}
+```
+
+```propiedad
+{
+  "id": "P3",
+  "regla": "R3",
+  "generador": {
+    "programas": "casos de asignación intensiva con arreglos, objetos y celdas"
+  },
+  "propiedad": "Tras recolectar, todo objeto alcanzable desde una variable del programa conserva su contenido y la salida coincide con la del sujeto engine.",
+  "oraculo": "Salida observada del sujeto engine.",
+  "justificacion": "La ejecuta el sujeto aot en R6."
+}
+```
+
+## Colecciones e interfaces
+
+Las colecciones usan cabecera estable con etiqueta de forma u32 máximo menos uno para Vector y menos dos para Diccionario. Tras las dos palabras comunes: longitud en 2, capacidad en 3, versión en 4, ancho escalar en 5, ancho de referencias en 6, asa del banco escalar en 7, asa del banco de referencias en 8 e identidad estática de tipo en 9. Vector ocupa diez palabras fijas. Diccionario añade posiciones usadas en 10, clase de clave en 11, asas de claves en 12, hashes en 13, índice en 14, capacidad del índice en 15 y ocupación en 16: diecisiete palabras fijas. Los bancos reemplazables llevan dos palabras de cabecera y datos desde 2. Escalares y referencias no se intercalan. Claves: entero 0, carácter 1, lógico 2, enumerado 3, cadena 4. El índice vacío es u32 máximo y el borrado u32 máximo menos uno. Crecer conserva asa, ordinal e identidad de cabecera. La codificación es común a VM y AOT.

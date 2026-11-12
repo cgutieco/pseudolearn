@@ -1,0 +1,24 @@
+<svg viewBox="0 0 340 190">
+  <text x="70" y="18" font-size="12" text-anchor="middle" fill="@atenuado">{{t:principal}}</text>
+  <rect x="10" y="26" width="120" height="150" rx="8" fill="@superficie" stroke="@atenuado" stroke-dasharray="4 3"/>
+  <text x="70" y="60" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:x}}</text>
+  <caja x="40" y="68" ancho="60" alto="40" rol="numero" fondo="0.16" fuente="mono" tamano="18" texto="5"/>
+  <text x="260" y="18" font-size="12" text-anchor="middle" fill="@atenuado">{{t:subprograma}}</text>
+  <rect x="190" y="26" width="140" height="150" rx="8" fill="@superficie" stroke="@acento-procedimental" stroke-dasharray="4 3"/>
+  <g data-paso="1" data-hasta="1">
+    <text x="260" y="60" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:n}}</text>
+    <caja x="230" y="68" ancho="60" alto="40" rol="numero" fondo="0.16" fuente="mono" tamano="18" texto="6"/>
+    <flecha puntos="100,88 228,88" rol="atenuado" discontinua=""/>
+    <text x="164" y="80" font-size="12" text-anchor="middle" fill="@atenuado">{{t:copia}}</text>
+    <text x="260" y="134" font-size="12" text-anchor="middle" fill="@acento-procedimental">{{codigo:n &lt;- n + 1}}</text>
+    <text x="70" y="134" font-size="12" text-anchor="middle" fill="@exito">{{t:sinCambio}}</text>
+  </g>
+  <g data-paso="2">
+    <rect x="40" y="68" width="60" height="40" rx="6" fill="@superficie"/>
+    <caja x="40" y="68" ancho="60" alto="40" rol="numero" fondo="0.24" negrita="" fuente="mono" tamano="18" texto="6"/>
+    <text x="260" y="60" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:n}}</text>
+    <flecha puntos="236,88 104,88" rol="acento-procedimental"/>
+    <text x="164" y="80" font-size="12" text-anchor="middle" fill="@acento-procedimental">{{t:mismaCaja}}</text>
+    <text x="70" y="134" font-size="12" text-anchor="middle" fill="@acento-procedimental">{{t:cambia}}</text>
+  </g>
+</svg>

@@ -8,10 +8,7 @@ final class _RemoteStoredEntry {
   final ProgressEntry entry;
   final int serverRevision;
 
-  const _RemoteStoredEntry({
-    required this.entry,
-    required this.serverRevision,
-  });
+  const _RemoteStoredEntry({required this.entry, required this.serverRevision});
 }
 
 final class FakeRemoteProgressStore implements RemoteProgressStore {
@@ -26,7 +23,7 @@ final class FakeRemoteProgressStore implements RemoteProgressStore {
   @override
   Future<PushProgressResult> pushProgress(List<ProgressEntry> entries) async {
     if (shouldFailPush) {
-      return const PushProgressFailure('Simulated network failure on push');
+      return const PushProgressFailure('Injected network failure on push');
     }
 
     final userMap = _userProgress.putIfAbsent(activeUserId, () => {});
@@ -47,7 +44,7 @@ final class FakeRemoteProgressStore implements RemoteProgressStore {
   @override
   Future<PullProgressResult> pullProgressSince(int cursor) async {
     if (shouldFailPull) {
-      return const PullProgressFailure('Simulated network failure on pull');
+      return const PullProgressFailure('Injected network failure on pull');
     }
 
     final userMap = _userProgress[activeUserId] ?? {};

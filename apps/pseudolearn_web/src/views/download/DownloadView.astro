@@ -1,0 +1,61 @@
+---
+import BaseLayout from '@app/layouts/BaseLayout.astro';
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { ROUTES } from '@shared/i18n/routes';
+import { Icon } from '@shared/ui/icon';
+import { StairMark } from '@shared/ui/brand-mark';
+import { latestRelease } from '@entities/release/model/release-catalog';
+import StoryHero from '@widgets/story-hero/StoryHero.astro';
+import DownloadPanel from '@widgets/download-panel/DownloadPanel.astro';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t, formatDate } = useTranslations(locale);
+const release = latestRelease();
+---
+
+<BaseLayout
+  locale={locale}
+  path={ROUTES.download}
+  title={t('download.seoTitle')}
+  description={t('download.seoDescription')}
+>
+  <StoryHero
+    overline={t('download.hero.overline')}
+    title={t('download.hero.title')}
+    lead={t('download.hero.lead', { version: release.version, date: formatDate(release.date) })}
+    ceremony
+  >
+    <StairMark slot="visual" id="download" motion="ceremony" class="download-mark" />
+    <Fragment slot="actions">
+      <a class="pl-btn pl-btn--on-field" href="#platforms">
+        <Icon name="download" size={19} />
+        <span>{t('download.hero.cta')}</span>
+      </a>
+    </Fragment>
+  </StoryHero>
+  <section class="download-page" id="platforms">
+    <div class="pl-container">
+      <DownloadPanel locale={locale} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  :global(.download-mark) {
+    width: clamp(96px, 24vw, 140px);
+    height: auto;
+
+    --pl-stair-flag: var(--pl-on-field);
+  }
+
+  .download-page {
+    scroll-margin-top: 16px;
+    padding-top: 72px;
+    padding-bottom: 104px;
+  }
+</style>

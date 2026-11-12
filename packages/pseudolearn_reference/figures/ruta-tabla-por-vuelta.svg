@@ -1,0 +1,39 @@
+<svg viewBox="0 0 340 190">
+  <text x="44" y="18" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:dia}}</text>
+  <caja x="14" y="24" ancho="60" alto="34" rol="acento-estructurado" fondo="0.12" texto="9" tamano="14" fuente="mono" colortexto="numero"/>
+  <text x="44" y="78" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:guardaHoy}}</text>
+  <caja x="14" y="84" ancho="60" alto="34" rol="acento-estructurado" fondo="0.12" texto="10" tamano="14" fuente="mono" colortexto="numero"/>
+  <text x="44" y="138" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:ahorro}}</text>
+  <caja x="14" y="144" ancho="60" alto="34" rol="acento-estructurado" fondo="0.12" texto="54" tamano="14" fuente="mono" colortexto="numero"/>
+  <text x="130" y="18" font-size="12" text-anchor="middle" fill="@atenuado">{{t:vuelta}}</text>
+  <text x="190" y="18" font-size="12" text-anchor="middle" font-family="mono" fill="@atenuado">{{codigo:dia}}</text>
+  <text x="250" y="18" font-size="12" text-anchor="middle" font-family="mono" fill="@atenuado">{{codigo:guardaHoy}}</text>
+  <text x="310" y="18" font-size="12" text-anchor="middle" font-family="mono" fill="@atenuado">{{codigo:ahorro}}</text>
+  <line x1="96" y1="26" x2="336" y2="26" fill="none" stroke="@atenuado"/>
+  <g data-paso="1">
+    <text x="130" y="46" font-size="12" text-anchor="middle" fill="@tinta">{{t:antes}}</text>
+    <text x="190" y="46" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">1</text>
+    <text x="250" y="46" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">2</text>
+    <text x="310" y="46" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">2</text>
+  </g>
+  <g data-paso="2">
+    <text x="130" y="72" font-size="12" text-anchor="middle" fill="@tinta">1</text>
+    <text x="190" y="72" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">2</text>
+    <text x="250" y="72" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">3</text>
+    <text x="310" y="72" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">5</text>
+  </g>
+  <g data-paso="3">
+    <text x="130" y="98" font-size="12" text-anchor="middle" fill="@tinta">2</text>
+    <text x="190" y="98" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">3</text>
+    <text x="250" y="98" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">4</text>
+    <text x="310" y="98" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">9</text>
+  </g>
+  <g data-paso="4">
+    <text x="130" y="124" font-size="12" text-anchor="middle" fill="@atenuado">…</text>
+    <text x="130" y="150" font-size="12" text-anchor="middle" fill="@tinta">8</text>
+    <text x="190" y="150" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">9</text>
+    <text x="250" y="150" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">10</text>
+    <text x="310" y="150" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">54</text>
+    <caja x="100" y="160" ancho="236" alto="24" rol="exito" fondo="0.14" texto="{{t:sale}}" tamano="12"/>
+  </g>
+</svg>

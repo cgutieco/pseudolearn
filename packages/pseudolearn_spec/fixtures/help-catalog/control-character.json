@@ -1,0 +1,11 @@
+{
+  "violation": "control character in editorial text",
+  "expect": "control characters",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/content/es/summary",
+      "value": "Texto con campana \u0007 dentro"
+    }
+  ]
+}

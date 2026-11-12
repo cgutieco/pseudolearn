@@ -4,7 +4,7 @@ import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'dashboard_fixtures.dart';
 
 void main() {
-  group('projectLibraryMetrics (PANT-06-F5)', () {
+  group('projectLibraryMetrics', () {
     test('counts documents and splits them by syntax profile', () {
       final metrics = projectLibraryMetrics([
         summaryOf('a'),

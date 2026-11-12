@@ -1,10 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../application/diagram/diagram_state.dart';
+import '../../domain/model/analysis/source_range.dart';
 import '../../domain/model/diagram/diagram_notation.dart';
 import '../../domain/model/execution/execution_focus.dart';
 import '../theme/app_theme.dart';
 import '../theme/tokens/color_semantic.dart';
 import '../theme/tokens/component_metrics.dart';
+import 'class_diagram_semantics_layer.dart';
 import 'class_execution_overlay_painter.dart';
 import 'diagram_structure_painter.dart';
 import 'execution_overlay_painter.dart';
@@ -16,6 +18,7 @@ final class FlowchartCanvas extends StatelessWidget {
   final ExecutionFocus? focus;
   final FlowchartViewport flowViewport;
   final VoidCallback? onInteractionStart;
+  final ValueChanged<SourceRange>? onSourceSelected;
 
   const FlowchartCanvas({
     super.key,
@@ -24,6 +27,7 @@ final class FlowchartCanvas extends StatelessWidget {
     required this.focus,
     required this.flowViewport,
     this.onInteractionStart,
+    this.onSourceSelected,
   });
 
   @override
@@ -44,7 +48,13 @@ final class FlowchartCanvas extends StatelessWidget {
       child: SizedBox(
         width: childSize.width,
         height: childSize.height,
-        child: Center(child: _DiagramLayers(state: state, focus: focus)),
+        child: Center(
+          child: _DiagramLayers(
+            state: state,
+            focus: focus,
+            onSourceSelected: onSourceSelected,
+          ),
+        ),
       ),
     );
   }
@@ -69,8 +79,13 @@ CustomPainter _overlayPainterFor(
 final class _DiagramLayers extends StatelessWidget {
   final DiagramState state;
   final ExecutionFocus? focus;
+  final ValueChanged<SourceRange>? onSourceSelected;
 
-  const _DiagramLayers({required this.state, required this.focus});
+  const _DiagramLayers({
+    required this.state,
+    required this.focus,
+    required this.onSourceSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +105,10 @@ final class _DiagramLayers extends StatelessWidget {
             CustomPaint(
               size: Size(scene.width, scene.height),
               painter: _overlayPainterFor(state, focus, theme.colors),
+            ),
+            ClassDiagramSemanticsLayer(
+              elements: state.accessibleElements,
+              onSourceSelected: onSourceSelected,
             ),
           ],
         ),

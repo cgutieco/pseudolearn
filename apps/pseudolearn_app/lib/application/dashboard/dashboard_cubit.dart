@@ -11,11 +11,9 @@ final class DashboardCubit extends Cubit<DashboardState> {
   final DashboardProjection _projection;
 
   DashboardCubit({
-    required DashboardLoader loader,
-    DashboardProjection projection = const DashboardProjection(),
-  })  : _loader = loader,
-        _projection = projection,
-        super(const DashboardState());
+    required this._loader,
+    this._projection = const DashboardProjection(),
+  })  : super(const DashboardState());
 
   Future<void> load(UiLanguageId language) async {
     emit(const DashboardState(status: DashboardStatus.loading));

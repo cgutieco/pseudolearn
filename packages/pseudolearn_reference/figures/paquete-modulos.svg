@@ -1,0 +1,11 @@
+<svg viewBox="0 0 340 200">
+  <rect x="6" y="6" width="328" height="188" rx="10" fill="@superficie" stroke="@acento-estructurado"/>
+  <text x="18" y="26" font-size="12" fill="@acento-estructurado" font-weight="bold">{{t:paquete}}</text>
+  <caja x="12" y="40" ancho="150" alto="60" rol="acento-estructurado" fondo="0.14" fuente="mono" tamano="12" texto="{{t:principal}}¶{{codigo:Algoritmo Principal}}"/>
+  <text x="90" y="116" font-size="12" text-anchor="middle" fill="@atenuado">{{t:entrada}}</text>
+  <caja x="178" y="40" ancho="150" alto="60" rol="acento-procedimental" fondo="0.12" fuente="mono" tamano="12" texto="{{t:geometria}}¶{{codigo:Publico AreaCirculo}}"/>
+  <caja x="180" y="124" ancho="140" alto="40" rol="atenuado" discontinua="" fondo="0.0" fuente="mono" tamano="12" colortexto="atenuado" texto="{{codigo:Ayudante}}"/>
+  <text x="250" y="182" font-size="12" text-anchor="middle" fill="@atenuado">{{t:privado}}</text>
+  <flecha puntos="162,70 176,70" rol="acento-procedimental"/>
+  <text x="170" y="36" font-size="12" text-anchor="middle" fill="@acento-procedimental">{{codigo:Importar}}</text>
+</svg>

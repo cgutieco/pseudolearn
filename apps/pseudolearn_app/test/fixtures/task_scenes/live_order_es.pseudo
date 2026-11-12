@@ -1,0 +1,17 @@
+SubProceso Suspendible Fetch(label Como Cadena, net Como RedCap, path Como Cadena)
+Segun Aguardar net.Enviar(PeticionHttp(MetodoHttp.GET, "__ORIGIN__" + path)) Hacer
+Exito(response): Escribir label;
+Error(problem): Escribir problem.Codigo;
+FinSegun
+FinSubProceso
+Algoritmo Main
+Segun SolicitarRed() Hacer
+Exito(net):
+Tareas
+Lanzar Fetch("slow", net, "/slow");
+Lanzar Fetch("fast", net, "/fast");
+FinTareas
+Escribir "done";
+Error(problem): Escribir problem.Codigo;
+FinSegun
+FinAlgoritmo

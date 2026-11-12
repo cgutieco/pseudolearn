@@ -1,0 +1,71 @@
+package: pseudolearn_reference
+layers:
+  - name: reference_model
+    path: crates/reference_model
+    may_import: []
+    external_dependencies: [serde, serde_json]
+    unsafe_allowed: false
+  - name: reference_format
+    path: crates/reference_format
+    may_import: [reference_model]
+    external_dependencies: [serde, serde-saphyr]
+    unsafe_allowed: false
+  - name: reference_corpus
+    path: crates/reference_corpus
+    may_import: [reference_model]
+    external_dependencies: [serde, serde_json, sha2]
+    unsafe_allowed: false
+  - name: reference_engine
+    path: crates/reference_engine
+    may_import: [reference_model]
+    permitted_path_dependencies: [pseudolearn_api]
+    external_dependencies: [pseudolearn_api, serde_json]
+    unsafe_allowed: false
+  - name: reference_figures
+    path: crates/reference_figures
+    may_import: [reference_model]
+    external_dependencies: [roxmltree]
+    unsafe_allowed: false
+  - name: reference_resolve
+    path: crates/reference_resolve
+    may_import: [reference_model, reference_corpus, reference_figures, reference_format]
+    external_dependencies: [serde, serde_json]
+    unsafe_allowed: false
+  - name: route_resolve
+    path: crates/route_resolve
+    may_import: [reference_model, reference_corpus, reference_figures, reference_format, reference_resolve]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: reference_verify
+    path: crates/reference_verify
+    may_import: [reference_model, reference_corpus, reference_format]
+    external_dependencies: [serde, serde_json, sha2]
+    unsafe_allowed: false
+  - name: reference_export
+    path: crates/reference_export
+    may_import: [reference_model]
+    external_dependencies: [serde, serde_json, sha2]
+    unsafe_allowed: false
+  - name: reference_cli
+    path: crates/reference_cli
+    may_import: [reference_model, reference_corpus, reference_figures, reference_format, reference_engine, reference_resolve, route_resolve, reference_verify, reference_export]
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
+  - name: xtask
+    path: xtask
+    may_import: []
+    external_dependencies: []
+    unsafe_allowed: false
+    tooling: true
+limits:
+  file_lines: 300
+  function_lines: 40
+  positional_parameters: 4
+  nesting_depth: 3
+  public_methods_per_class: 7
+  unsafe_function_lines: 10
+names:
+  minimum_length: 3
+  permitted_short: [id, io, ir, vm, gc, os]
+  forbidden_components: [ctx, cfg, env, expr, stmt, decl, tok, idx, len, pos, cnt, num, buf, ptr, ref, val, msg, err, res, ret, args, params, attrs, tmp, temp, aux, data, info, item, obj, thing, stuff, foo, bar]
+  forbidden_files: [utils, helpers, common, misc]

@@ -1,10 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import '../../fakes/native_test_engine.dart';
+import 'package:cupertino_ui/cupertino_ui.dart' show GlobalCupertinoLocalizations;
+import 'package:material_ui/material_ui.dart';
+import 'package:flutter_localizations/flutter_localizations.dart' show GlobalWidgetsLocalizations;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/completion/completion_item.dart';
+import 'package:pseudolearn_app/domain/model/editor/caret_range.dart';
 import 'package:pseudolearn_app/domain/model/editor/editor_key.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
-import 'package:pseudolearn_app/engine/editing/profile_key_source.dart';
 import 'package:pseudolearn_app/presentation/editor/components/editor_key_cap.dart';
 import 'package:pseudolearn_app/presentation/editor/components/editor_template_row.dart';
 import 'package:pseudolearn_app/presentation/editor/editor_key_bar.dart';
@@ -13,7 +15,9 @@ import 'package:pseudolearn_app/presentation/shell/design_canvas.dart';
 import 'package:pseudolearn_app/presentation/theme/app_theme.dart';
 import 'package:pseudolearn_app/presentation/theme/tokens/spacing.dart';
 
-final _keys = const ProfileKeySource().keysFor(SyntaxProfileId.classicSpanish);
+final _keys = nativeTestEngine.editorKeySource.keysFor(
+  SyntaxProfileId.classicSpanish,
+);
 
 const _templates = [
   CompletionItem(
@@ -27,6 +31,8 @@ const _templates = [
 Widget _bar({
   required ValueChanged<EditorKey> onKeyPressed,
   List<CompletionItem> templates = _templates,
+  bool alwaysShowsCandidates = false,
+  bool templateActive = false,
 }) {
   return MaterialApp(
     theme: AppTheme.light(),
@@ -46,6 +52,8 @@ Widget _bar({
             keys: _keys,
             templates: templates,
             onKeyPressed: onKeyPressed,
+            alwaysShowsCandidates: alwaysShowsCandidates,
+            templateActive: templateActive,
           ),
         ),
       ),
@@ -55,7 +63,108 @@ Widget _bar({
 
 void main() {
   group('EditorKeyBar', () {
-    testWidgets('shows every key of the profile in one fixed row', (tester) async {
+    testWidgets(
+      'a touch candidate previews its insertion and preserves its identity',
+      (tester) async {
+        EditorKey? pressed;
+        await tester.pumpWidget(
+          _bar(
+            onKeyPressed: (key) => pressed = key,
+            alwaysShowsCandidates: true,
+            templates: const [
+              CompletionItem(
+                label: 'area',
+                template: 'area <- ',
+                caretOffset: 8,
+                family: CompletionFamily.structured,
+                replacementRange: CaretRange(start: 0, end: 4),
+                revision: 3,
+              ),
+            ],
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(find.text('area <-'), findsOneWidget);
+        expect(find.text('area'), findsNothing);
+        await tester.tap(find.text('area <-'));
+        expect(pressed?.label, 'area');
+        expect(pressed?.insertion, 'area <- ');
+        expect(pressed?.revision, 3);
+      },
+    );
+    testWidgets(
+      'keeps the candidate row folded unless assistance asks for it',
+      (tester) async {
+        await tester.pumpWidget(_bar(onKeyPressed: (_) {}));
+        await tester.pumpAndSettle();
+        expect(find.byType(EditorTemplateRow), findsNothing);
+
+        await tester.pumpWidget(
+          _bar(onKeyPressed: (_) {}, alwaysShowsCandidates: true),
+        );
+        await tester.pumpAndSettle();
+        expect(find.byType(EditorTemplateRow), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'an active template replaces the candidates with stop controls',
+      (tester) async {
+        final pressed = <EditorKey>[];
+        await tester.pumpWidget(
+          _bar(
+            onKeyPressed: pressed.add,
+            alwaysShowsCandidates: true,
+            templateActive: true,
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(EditorTemplateRow), findsNothing);
+        await tester.tap(find.bySemanticsLabel('Siguiente parada'));
+        await tester.tap(find.bySemanticsLabel('Parada anterior'));
+        await tester.tap(find.bySemanticsLabel('Terminar plantilla'));
+
+        expect(pressed.map((key) => key.kind), [
+          EditorKeyKind.stopNext,
+          EditorKeyKind.stopPrevious,
+          EditorKeyKind.stopExit,
+        ]);
+      },
+    );
+
+    testWidgets(
+      'a candidate with a replacement range becomes a completion key',
+      (tester) async {
+        EditorKey? pressed;
+        await tester.pumpWidget(
+          _bar(
+            onKeyPressed: (key) => pressed = key,
+            alwaysShowsCandidates: true,
+            templates: const [
+              CompletionItem(
+                label: 'Mientras',
+                template: 'Mientras',
+                caretOffset: 8,
+                family: CompletionFamily.structured,
+                replacementRange: CaretRange(start: 0, end: 3),
+                revision: 2,
+              ),
+            ],
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.text('Mientras'));
+
+        expect(pressed?.kind, EditorKeyKind.completion);
+        expect(pressed?.revision, 2);
+      },
+    );
+
+    testWidgets('shows every key of the profile in one fixed row', (
+      tester,
+    ) async {
       await tester.pumpWidget(_bar(onKeyPressed: (_) {}));
       await tester.pumpAndSettle();
 
@@ -77,88 +186,134 @@ void main() {
       expect(pressed?.kind, EditorKeyKind.assignment);
     });
 
-    testWidgets('every key announces what it inserts, not how it is spelled', (tester) async {
+    testWidgets('every key announces what it inserts, not how it is spelled', (
+      tester,
+    ) async {
       await tester.pumpWidget(_bar(onKeyPressed: (_) {}));
       await tester.pumpAndSettle();
 
       expect(find.bySemanticsLabel('Insertar asignación'), findsOneWidget);
       expect(find.bySemanticsLabel('Insertar sangría'), findsOneWidget);
-      expect(find.bySemanticsLabel('Mostrar plantillas de estructura'), findsOneWidget);
+      expect(
+        find.bySemanticsLabel('Mostrar plantillas de estructura'),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('the templates toggle leads the row, away from the exit actions', (tester) async {
+    testWidgets(
+      'the templates toggle leads the row, away from the exit actions',
+      (tester) async {
+        await tester.pumpWidget(_bar(onKeyPressed: (_) {}));
+        await tester.pumpAndSettle();
+
+        final toggleLeft = tester
+            .getTopLeft(
+              find.bySemanticsLabel('Mostrar plantillas de estructura'),
+            )
+            .dx;
+        for (final key in _keys) {
+          expect(
+            toggleLeft,
+            lessThan(tester.getTopLeft(find.text(key.label)).dx),
+          );
+        }
+      },
+    );
+
+    testWidgets(
+      'every key is tappable over the full touch target, not just its face',
+      (tester) async {
+        await tester.pumpWidget(_bar(onKeyPressed: (_) {}));
+        await tester.pumpAndSettle();
+
+        for (final key in _keys) {
+          final cap = find.ancestor(
+            of: find.text(key.label),
+            matching: find.byType(EditorKeyCap),
+          );
+          final size = tester.getSize(cap);
+          expect(
+            size.height,
+            greaterThanOrEqualTo(SpacingTokens.targetTouchMin),
+          );
+          expect(
+            size.width,
+            greaterThanOrEqualTo(SpacingTokens.targetTouchMin),
+          );
+        }
+      },
+    );
+
+    testWidgets('the templates toggle also fills its touch target', (
+      tester,
+    ) async {
       await tester.pumpWidget(_bar(onKeyPressed: (_) {}));
       await tester.pumpAndSettle();
 
-      final toggleLeft = tester.getTopLeft(find.bySemanticsLabel('Mostrar plantillas de estructura')).dx;
-      for (final key in _keys) {
-        expect(toggleLeft, lessThan(tester.getTopLeft(find.text(key.label)).dx));
-      }
-    });
-
-    testWidgets('every key is tappable over the full touch target, not just its face', (tester) async {
-      await tester.pumpWidget(_bar(onKeyPressed: (_) {}));
-      await tester.pumpAndSettle();
-
-      for (final key in _keys) {
-        final cap = find.ancestor(
-          of: find.text(key.label),
-          matching: find.byType(EditorKeyCap),
-        );
-        final size = tester.getSize(cap);
-        expect(size.height, greaterThanOrEqualTo(SpacingTokens.targetTouchMin));
-        expect(size.width, greaterThanOrEqualTo(SpacingTokens.targetTouchMin));
-      }
-    });
-
-    testWidgets('the templates toggle also fills its touch target', (tester) async {
-      await tester.pumpWidget(_bar(onKeyPressed: (_) {}));
-      await tester.pumpAndSettle();
-
-      final size = tester.getSize(find.bySemanticsLabel('Mostrar plantillas de estructura'));
+      final size = tester.getSize(
+        find.bySemanticsLabel('Mostrar plantillas de estructura'),
+      );
 
       expect(size.height, greaterThanOrEqualTo(SpacingTokens.targetTouchMin));
       expect(size.width, greaterThanOrEqualTo(SpacingTokens.targetTouchMin));
     });
 
-    testWidgets('a template chip is tappable above its visible height', (tester) async {
+    testWidgets('a template chip is tappable above its visible height', (
+      tester,
+    ) async {
       await tester.pumpWidget(_bar(onKeyPressed: (_) {}));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.bySemanticsLabel('Mostrar plantillas de estructura'));
+      await tester.tap(
+        find.bySemanticsLabel('Mostrar plantillas de estructura'),
+      );
       await tester.pumpAndSettle();
 
       final chip = find.ancestor(
-        of: find.text('Si Entonces'),
+        of: find.text('Si condicion Entonces'),
         matching: find.byType(InkWell),
       );
 
-      expect(tester.getSize(chip).height, greaterThanOrEqualTo(SpacingTokens.targetTouchMin));
+      expect(
+        tester.getSize(chip).height,
+        greaterThanOrEqualTo(SpacingTokens.targetTouchMin),
+      );
     });
 
-    testWidgets('the templates row stays hidden until it is asked for', (tester) async {
+    testWidgets('the templates row stays hidden until it is asked for', (
+      tester,
+    ) async {
       await tester.pumpWidget(_bar(onKeyPressed: (_) {}));
       await tester.pumpAndSettle();
 
       expect(find.byType(EditorTemplateRow), findsNothing);
 
-      await tester.tap(find.bySemanticsLabel('Mostrar plantillas de estructura'));
+      await tester.tap(
+        find.bySemanticsLabel('Mostrar plantillas de estructura'),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byType(EditorTemplateRow), findsOneWidget);
-      expect(find.text('Si Entonces'), findsOneWidget);
-      expect(find.bySemanticsLabel('Ocultar plantillas de estructura'), findsOneWidget);
+      expect(find.text('Si condicion Entonces'), findsOneWidget);
+      expect(
+        find.bySemanticsLabel('Ocultar plantillas de estructura'),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('a template reaches the caller as a template key', (tester) async {
+    testWidgets('a template reaches the caller as a template key', (
+      tester,
+    ) async {
       EditorKey? pressed;
 
       await tester.pumpWidget(_bar(onKeyPressed: (key) => pressed = key));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.bySemanticsLabel('Mostrar plantillas de estructura'));
+      await tester.tap(
+        find.bySemanticsLabel('Mostrar plantillas de estructura'),
+      );
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Si Entonces'));
+      await tester.tap(find.text('Si condicion Entonces'));
       await tester.pumpAndSettle();
 
       expect(pressed?.kind, EditorKeyKind.template);
@@ -166,11 +321,15 @@ void main() {
       expect(pressed?.caretOffset, 3);
     });
 
-    testWidgets('with no templates the row stays empty instead of breaking', (tester) async {
+    testWidgets('with no templates the row stays empty instead of breaking', (
+      tester,
+    ) async {
       await tester.pumpWidget(_bar(onKeyPressed: (_) {}, templates: const []));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.bySemanticsLabel('Mostrar plantillas de estructura'));
+      await tester.tap(
+        find.bySemanticsLabel('Mostrar plantillas de estructura'),
+      );
       await tester.pumpAndSettle();
 
       expect(tester.takeException(), isNull);

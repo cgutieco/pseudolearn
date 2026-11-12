@@ -1,0 +1,7 @@
+{
+  "package": {
+    "included": ["dist/**", "src/**"],
+    "excluded": ["src/**"],
+    "secretKeys": ["api_key", "password", "secret", "token"]
+  }
+}

@@ -1,0 +1,12 @@
+<svg viewBox="0 0 340 170">
+  <caja x="10" y="20" ancho="90" alto="44" rol="exito" fondo="0.20" negrita="" tamano="12" texto="{{t:actual}}"/>
+  <text x="55" y="80" font-size="12" text-anchor="middle" fill="@exito">{{t:enMarcha}}</text>
+  <rect x="130" y="20" width="200" height="44" rx="8" fill="@superficie" stroke="@acento-estructurado"/>
+  <caja x="138" y="26" ancho="56" alto="32" rol="acento-estructurado" fondo="0.14" tamano="12" texto="{{t:t1}}"/>
+  <caja x="200" y="26" ancho="56" alto="32" rol="acento-estructurado" fondo="0.14" tamano="12" texto="{{t:t2}}"/>
+  <text x="290" y="46" font-size="12" text-anchor="middle" fill="@atenuado">{{t:final}}</text>
+  <text x="230" y="80" font-size="12" text-anchor="middle" fill="@acento-estructurado">{{t:listas}}</text>
+  <flecha puntos="136,42 104,42" rol="acento-estructurado"/>
+  <caja x="130" y="110" ancho="200" alto="44" rol="hueco" discontinua="" fondo="0.06" tamano="12" texto="{{t:suspendidas}}"/>
+  <flecha puntos="55,66 55,132 126,132" rol="hueco" discontinua=""/>
+</svg>

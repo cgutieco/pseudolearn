@@ -1,0 +1,147 @@
+---
+import type { SpecificationBlock } from '@entities/specification/model/specification';
+import { sectionPath } from '@entities/specification/model/section-address';
+import type { Locale } from '@shared/i18n/locales';
+import { localizePath } from '@shared/i18n/routes';
+import { useTranslations } from '@shared/i18n/translator';
+import SpecRuns from './SpecRuns.astro';
+import SpecTable from './SpecTable.astro';
+import SpecForm from './SpecForm.astro';
+import SpecProgram from './SpecProgram.astro';
+import SpecFigure from './SpecFigure.astro';
+import SpecEngineView from './SpecEngineView.astro';
+
+export interface Props {
+  block: Exclude<SpecificationBlock, { readonly type: 'callout' }>;
+  locale: Locale;
+}
+
+const { block, locale } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+{block.type === 'heading' && (
+  <h2 class="spec-heading" id={block.id}>
+    <span class="spec-heading__number pl-mono">{block.number}</span>{' '}
+    <SpecRuns runs={block.runs} locale={locale} />
+  </h2>
+)}
+{block.type === 'paragraph' && (
+  <p class="spec-paragraph">
+    <SpecRuns runs={block.runs} locale={locale} />
+  </p>
+)}
+{block.type === 'list' && !block.ordered && (
+  <ul class="spec-list">
+    {block.entries.map((entry) => (
+      <li>
+        <SpecRuns runs={entry} locale={locale} />
+      </li>
+    ))}
+  </ul>
+)}
+{block.type === 'list' && block.ordered && (
+  <ol class="spec-list">
+    {block.entries.map((entry) => (
+      <li>
+        <SpecRuns runs={entry} locale={locale} />
+      </li>
+    ))}
+  </ol>
+)}
+{block.type === 'table' && <SpecTable block={block} locale={locale} />}
+{(block.type === 'form' || block.type === 'anatomy') && <SpecForm block={block} locale={locale} />}
+{block.type === 'program' && <SpecProgram block={block} locale={locale} />}
+{block.type === 'figure' && <SpecFigure block={block} locale={locale} />}
+{(block.type === 'intermediate' || block.type === 'trace') && (
+  <SpecEngineView block={block} locale={locale} />
+)}
+{block.type === 'summary' && (
+  <section class="spec-summary" aria-label={t('specification.summary')}>
+    <p class="spec-summary__label pl-overline">{t('specification.summary')}</p>
+    <ul class="spec-list">
+      {block.points.map((point) => (
+        <li>
+          <SpecRuns runs={point} locale={locale} />
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+{block.type === 'see_also' && (
+  <nav class="spec-see-also" aria-label={t('specification.seeAlso')}>
+    <p class="spec-see-also__label pl-overline">{t('specification.seeAlso')}</p>
+    <ul class="spec-see-also__list">
+      {block.links.map((link) => (
+        <li>
+          <a class="spec-see-also__link" href={localizePath(sectionPath(link.section), locale)}>
+            <span class="pl-mono">{link.number}</span> {link.title}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+{block.type === 'diagnostic' && (
+  <p class="spec-paragraph">
+    <code class="pl-mono">{block.code}</code> · {block.severity} · {block.message}
+  </p>
+)}
+
+<style>
+  .spec-heading {
+    margin-top: var(--pl-space-2xl);
+    font-size: 1.375rem;
+    line-height: 1.3;
+    scroll-margin-top: var(--pl-space-xl);
+  }
+
+  .spec-heading__number {
+    color: var(--pl-ink-3);
+    font-size: 0.85em;
+    font-weight: 500;
+  }
+
+  .spec-paragraph,
+  .spec-list {
+    margin-top: var(--pl-space-md);
+    line-height: 1.7;
+  }
+
+  .spec-list {
+    padding-left: var(--pl-space-lg);
+    list-style: disc;
+  }
+
+  ol.spec-list {
+    list-style: decimal;
+  }
+
+  .spec-list li + li {
+    margin-top: var(--pl-space-2xs);
+  }
+
+  .spec-summary,
+  .spec-see-also {
+    margin-top: var(--pl-space-lg);
+    padding: var(--pl-space-md) var(--pl-space-lg);
+    border-left: 3px solid var(--pl-brand);
+    border-radius: 0 var(--pl-radius-control) var(--pl-radius-control) 0;
+    background: var(--pl-brand-faint);
+  }
+
+  .spec-summary .spec-list {
+    margin-top: var(--pl-space-xs);
+  }
+
+  .spec-see-also__list {
+    display: grid;
+    gap: var(--pl-space-xs);
+    margin-top: var(--pl-space-xs);
+    list-style: none;
+  }
+
+  .spec-see-also__link {
+    color: var(--pl-brand);
+  }
+</style>

@@ -1,0 +1,59 @@
+[workspace]
+members = [
+    "crates/pseudolearn_host",
+    "crates/pseudolearn_source",
+    "crates/pseudolearn_abi",
+    "crates/pseudolearn_project",
+    "crates/pseudolearn_diagnostics",
+    "crates/pseudolearn_lexicon",
+    "crates/pseudolearn_syntax",
+    "crates/pseudolearn_semantic",
+    "crates/pseudolearn_ir",
+    "crates/pseudolearn_lowering",
+    "crates/pseudolearn_bytecode",
+    "crates/pseudolearn_runtime",
+    "crates/pseudolearn_library",
+    "crates/pseudolearn_aot_rt",
+    "crates/pseudolearn_codegen",
+    "crates/pseudolearn_math_probe",
+    "crates/pseudolearn_vm_dispatch",
+    "crates/pseudolearn_vm",
+    "crates/pseudolearn_vm_tracer",
+    "crates/pseudolearn_timeline",
+    "crates/pseudolearn_service",
+    "crates/pseudolearn_transpiler",
+    "crates/pseudolearn_api",
+    "crates/pseudolearn_wasm",
+    "crates/pseudolearn_conformance",
+    "crates/pseudolearn_bench_worker",
+    "crates/pseudolearn_native_probe",
+    "xtask",
+]
+resolver = "3"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+unimplemented = "deny"
+unreachable = "deny"
+indexing_slicing = "deny"
+arithmetic_side_effects = "deny"
+as_conversions = "deny"
+too_many_arguments = "deny"
+too_many_lines = "deny"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+
+[profile.wasm-release]
+inherits = "release"
+opt-level = "z"
+lto = "fat"
+strip = true
+panic = "abort"

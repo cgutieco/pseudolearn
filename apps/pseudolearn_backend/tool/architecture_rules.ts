@@ -1,3 +1,4 @@
+import { functionSpans } from "./function_spans.ts";
 import type { SourceToken } from "./source_lexer.ts";
 
 export interface LayerRule {
@@ -12,7 +13,7 @@ export interface ArchitectureRules {
   readonly layers: readonly LayerRule[];
   readonly forbidden_import_prefixes: readonly string[];
   readonly code_rules: { readonly forbid_comments: boolean; readonly scanned_roots: string[] };
-  readonly limits: { readonly file_lines: number };
+  readonly limits: { readonly file_lines: number; readonly function_lines: number };
   readonly limits_exempt: readonly string[];
 }
 
@@ -44,6 +45,21 @@ export function findFileLengthViolations(file: SourceFile, rules: ArchitectureRu
   if (lines <= rules.limits.file_lines) return [];
   const message = `file has ${lines} lines (max ${rules.limits.file_lines})`;
   return [violation(file, 1, "SIZE-FILE-LINES", message)];
+}
+
+export function findFunctionLengthViolations(
+  file: SourceFile,
+  rules: ArchitectureRules,
+): Violation[] {
+  if (rules.limits_exempt.some((prefix) => file.path.startsWith(prefix))) return [];
+  return functionSpans(file.tokens)
+    .map((span) => ({ span, lines: span.endLine - span.startLine + 1 }))
+    .filter(({ lines }) => lines > rules.limits.function_lines)
+    .map(({ span, lines }) => {
+      const message =
+        `function ${span.name} has ${lines} lines (max ${rules.limits.function_lines})`;
+      return violation(file, span.startLine, "SIZE-FUNCTION-LINES", message);
+    });
 }
 
 export function layerOf(path: string, rules: ArchitectureRules): LayerRule | null {

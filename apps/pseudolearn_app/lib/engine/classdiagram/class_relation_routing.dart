@@ -1,3 +1,4 @@
+import '../../domain/model/analysis/program_node_id.dart';
 import '../../domain/model/diagram/class_diagram_metrics.dart';
 import '../../domain/model/diagram/class_model.dart';
 import '../../domain/model/diagram/diagram_scene.dart';
@@ -10,6 +11,7 @@ import 'routing_reservations.dart';
 
 final class ClassRelationRouting {
   final Map<String, PlacedClassBox> _byName;
+  final Map<int, PlacedClassBox> _byNode;
   final RoutingCorridors _corridors;
   final RoutingReservations _reservations;
   final RelationRouteSearch _search;
@@ -17,16 +19,17 @@ final class ClassRelationRouting {
   ClassRelationRouting(List<PlacedClassBox> placed, {double boxGap = ClassDiagramMetrics.boxGapFloor})
       : this._(
           byName: {for (final box in placed) box.box.name: box},
+          byNode: {for (final box in placed) box.box.nodeId.value: box},
           corridors: RoutingCorridors.of(placed, boxGap: boxGap),
           reservations: RoutingReservations(),
         );
 
   ClassRelationRouting._({
-    required Map<String, PlacedClassBox> byName,
+    required this._byName,
+    required this._byNode,
     required RoutingCorridors corridors,
     required RoutingReservations reservations,
-  })  : _byName = byName,
-        _corridors = corridors,
+  })  : _corridors = corridors,
         _reservations = reservations,
         _search = RelationRouteSearch(
           corridors: corridors,
@@ -35,7 +38,7 @@ final class ClassRelationRouting {
 
   List<DiagramEdge> of(List<ClassRelation> relations) {
     final edges = <DiagramEdge>[];
-    final generalizations = relations.where((r) => r.kind == ClassRelationKind.generalization).toList();
+    final generalizations = relations.where(_isHierarchical).toList();
     final associations = relations.where((r) => r.kind == ClassRelationKind.association).toList();
 
     for (final relation in generalizations) {
@@ -53,16 +56,31 @@ final class ClassRelationRouting {
     return List.unmodifiable(edges);
   }
 
+  static bool _isHierarchical(ClassRelation relation) =>
+      relation.kind == ClassRelationKind.generalization ||
+      relation.kind == ClassRelationKind.realization ||
+      relation.kind == ClassRelationKind.usage;
+
+  static DiagramEdgeKind _edgeKindOf(ClassRelationKind kind) => switch (kind) {
+        ClassRelationKind.generalization => DiagramEdgeKind.generalization,
+        ClassRelationKind.realization => DiagramEdgeKind.realization,
+        ClassRelationKind.usage => DiagramEdgeKind.usage,
+        ClassRelationKind.association => DiagramEdgeKind.association,
+      };
+
+  PlacedClassBox? _endpoint(String name, ProgramNodeId? nodeId) =>
+      (nodeId == null ? null : _byNode[nodeId.value]) ?? _byName[name];
+
   DiagramEdge? _routeGeneralization(ClassRelation relation) {
-    final child = _byName[relation.fromClassName];
-    final parent = _byName[relation.toClassName];
+    final child = _endpoint(relation.fromClassName, relation.fromNodeId);
+    final parent = _endpoint(relation.toClassName, relation.toNodeId);
     if (child == null || parent == null) return null;
 
     if (parent.levelIndex == child.levelIndex) {
       return _routeCyclicGeneralization(relation, child, parent);
     }
 
-    final sharedKey = 'gen_${parent.box.name}';
+    final sharedKey = '${relation.kind.name}_${parent.box.nodeId.value}';
     final bandLevel = child.levelIndex - 1;
     final bandSub = _reservations.findHorizontalSublane(
       bandIndex: bandLevel,
@@ -86,12 +104,31 @@ final class ClassRelationRouting {
       DiagramPoint(parent.centerX, parent.bottom),
     ];
 
-    return DiagramEdge(
-      fromId: ClassBoxNodes.frameIdOf(child),
-      toId: ClassBoxNodes.frameIdOf(parent),
-      points: points,
-      kind: DiagramEdgeKind.generalization,
-    );
+    return _hierarchicalEdge(relation, child, parent, points: points);
+  }
+
+  DiagramEdge _hierarchicalEdge(
+    ClassRelation relation,
+    PlacedClassBox child,
+    PlacedClassBox parent, {
+    required List<DiagramPoint> points,
+  }) =>
+      DiagramEdge(
+        fromId: ClassBoxNodes.frameIdOf(child),
+        toId: ClassBoxNodes.frameIdOf(parent),
+        points: points,
+        kind: _edgeKindOf(relation.kind),
+        label: relation.label,
+        labelAnchor: relation.label == null ? null : _midpointOf(points),
+        originNodeId: relation.originNodeId,
+        diagnostics: relation.diagnostics,
+      );
+
+  static DiagramPoint _midpointOf(List<DiagramPoint> points) {
+    final middle = points.length ~/ 2;
+    final before = points[middle - 1];
+    final after = points[middle];
+    return DiagramPoint((before.x + after.x) / 2, (before.y + after.y) / 2);
   }
 
   DiagramEdge _routeCyclicGeneralization(
@@ -105,15 +142,10 @@ final class ClassRelationRouting {
     final offset = isLeftToRight ? -ClassDiagramMetrics.relationLane : ClassDiagramMetrics.relationLane;
     final y = from.centerY + offset;
 
-    return DiagramEdge(
-      fromId: ClassBoxNodes.frameIdOf(from),
-      toId: ClassBoxNodes.frameIdOf(to),
-      points: [
-        DiagramPoint(fromX, y),
-        DiagramPoint(toX, y),
-      ],
-      kind: DiagramEdgeKind.generalization,
-    );
+    return _hierarchicalEdge(relation, from, to, points: [
+      DiagramPoint(fromX, y),
+      DiagramPoint(toX, y),
+    ]);
   }
 
   DiagramEdge? _routeAssociation(

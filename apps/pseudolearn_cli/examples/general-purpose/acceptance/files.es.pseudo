@@ -1,0 +1,25 @@
+SubProceso Probe() Como Resultado<Entero, ErrorES>
+Definir root Como DirectorioCap <- Propagar SolicitarDirectorio(".");
+Definir created Como Logico <- Propagar root.CrearDirectorio("pgs-acceptance");
+Definir folder Como DirectorioCap <- Propagar root.Subdirectorio("pgs-acceptance", "lectura_escritura");
+Definir file Como ArchivoCap <- Propagar folder.Abrir("a.txt", "escritura");
+Definir first Como Entero <- Propagar file.EscribirTexto("uno");
+Definir second Como Entero <- Propagar file.AgregarTexto(" dos");
+Definir closed Como Logico <- Propagar file.Cerrar();
+Definir moved Como Logico <- Propagar folder.Renombrar("a.txt", "b.txt");
+Definir names Como Vector<Cadena> <- Propagar folder.Listar(".");
+Escribir names.Longitud(), ":", names[0], ":", first, ":", second;
+Definir exists Como Logico <- Propagar folder.Existe("b.txt");
+Definir isFolder Como Logico <- Propagar folder.EsDirectorio("b.txt");
+Si exists Entonces Escribir 1; Sino Escribir 0; FinSi
+Si isFolder Entonces Escribir 1; Sino Escribir 0; FinSi
+Definir deleted Como Logico <- Propagar folder.Borrar("b.txt");
+Definir removed Como Logico <- Propagar root.Borrar("pgs-acceptance");
+Retornar Exito(0);
+FinSubProceso
+Algoritmo Main
+Segun Probe() Hacer
+Exito(value): Escribir value;
+Error(problem): Escribir problem.Codigo;
+FinSegun
+FinAlgoritmo

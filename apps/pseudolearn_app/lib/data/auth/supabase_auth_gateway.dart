@@ -10,6 +10,9 @@ import 'auth_callback_link.dart';
 import 'native_credential_source.dart';
 import 'supabase_session_persistence.dart';
 
+const String _sessionTokenCallbackReason =
+    'An authentication callback cannot carry session tokens';
+
 final class SupabaseAuthGateway implements AuthGateway {
   final SupabaseClient _client;
   final NativeCredentialSource _credentialSource;
@@ -17,13 +20,11 @@ final class SupabaseAuthGateway implements AuthGateway {
   final ExternalUrlLauncher _externalUrlLauncher;
 
   SupabaseAuthGateway({
-    required SupabaseClient client,
-    required SupabaseSessionPersistence sessionPersistence,
+    required this._client,
+    required this._sessionPersistence,
     NativeCredentialSource? credentialSource,
     ExternalUrlLauncher? externalUrlLauncher,
-  })  : _client = client,
-        _sessionPersistence = sessionPersistence,
-        _credentialSource =
+  })  : _credentialSource =
             credentialSource ?? PlatformNativeCredentialSource(),
         _externalUrlLauncher =
             externalUrlLauncher ?? const PlatformExternalUrlLauncher();
@@ -60,6 +61,9 @@ final class SupabaseAuthGateway implements AuthGateway {
   @override
   Future<AuthOutcome?> completeSignInFromLink(Uri link) async {
     if (!isAuthCallbackLink(link)) return null;
+    if (carriesSessionTokens(link)) {
+      return const Rejected(_sessionTokenCallbackReason);
+    }
     return _guarded(() async {
       final response = await _client.auth.getSessionFromUrl(link);
       return Authenticated(_mapToAccountSession(response.session));

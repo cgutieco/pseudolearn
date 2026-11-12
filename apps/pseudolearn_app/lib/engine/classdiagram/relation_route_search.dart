@@ -10,10 +10,9 @@ final class RelationRouteSearch {
   final RoutingReservations _reservations;
 
   const RelationRouteSearch({
-    required RoutingCorridors corridors,
-    required RoutingReservations reservations,
-  })  : _corridors = corridors,
-        _reservations = reservations;
+    required this._corridors,
+    required this._reservations,
+  });
 
   List<DiagramPoint> findAssociationRoute({
     required PlacedClassBox fromBox,

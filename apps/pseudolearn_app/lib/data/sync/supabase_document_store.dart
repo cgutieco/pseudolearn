@@ -10,10 +10,9 @@ final class SupabaseDocumentStore implements RemoteDocumentStore {
   final String _originDevice;
 
   const SupabaseDocumentStore({
-    required SupabaseClient client,
-    String originDevice = 'app',
-  })  : _client = client,
-        _originDevice = originDevice;
+    required this._client,
+    this._originDevice = 'app',
+  });
 
   @override
   Future<PushBatchResult> pushDocuments(List<DocumentSnapshot> batch) async {

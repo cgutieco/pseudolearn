@@ -1,5 +1,0 @@
-ALGORITHM Uppercase
-  DEFINE n AS INTEGER
-  n <- 10
-  WRITE n
-ENDALGORITHM

@@ -1,0 +1,40 @@
+package: pseudolearn_rust_checks
+layers:
+  - name: pseudolearn_check_model
+    path: crates/model
+    may_import: []
+    external_dependencies: [serde]
+    unsafe_allowed: false
+  - name: pseudolearn_check_source
+    path: crates/source
+    may_import: [pseudolearn_check_model]
+    external_dependencies: [syn, proc-macro2, ra-ap-rustc_lexer, serde-saphyr, serde_json]
+    unsafe_allowed: false
+  - name: pseudolearn_checks
+    path: crates/checks
+    may_import: [pseudolearn_check_model, pseudolearn_check_source]
+    external_dependencies: [syn, proc-macro2, serde_json]
+    unsafe_allowed: false
+  - name: pseudolearn_check_command
+    path: crates/command
+    may_import: [pseudolearn_checks, pseudolearn_check_model]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: xtask
+    path: xtask
+    may_import: []
+    external_dependencies: []
+    unsafe_allowed: false
+    tooling: true
+limits:
+  file_lines: 300
+  function_lines: 40
+  positional_parameters: 4
+  nesting_depth: 3
+  public_methods_per_class: 7
+  unsafe_function_lines: 10
+names:
+  minimum_length: 3
+  permitted_short: [id, io, ir, vm, gc, os]
+  forbidden_components: [ctx, cfg, env, expr, stmt, decl, tok, idx, len, pos, cnt, num, buf, ptr, ref, val, msg, err, res, ret, args, params, attrs, tmp, temp, aux, data, info, item, obj, thing, stuff, foo, bar]
+  forbidden_files: [utils, helpers, common, misc]

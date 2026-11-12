@@ -1,0 +1,15 @@
+SubProceso Run() Como Resultado<Entero, ErrorES>
+Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(".");
+Definir output Como ArchivoCap <- Propagar directory.Abrir("salida.txt", "escritura");
+Diferir
+Descartar output.Cerrar();
+FinDiferir
+Descartar output.EscribirTexto("guardado ñ");
+Retornar Exito(0);
+FinSubProceso
+Algoritmo Main
+Segun Run() Hacer
+Exito(value): Escribir "escrito";
+Error(problem): Escribir problem.Codigo;
+FinSegun
+FinAlgoritmo

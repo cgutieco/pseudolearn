@@ -1,0 +1,1535 @@
+{
+  "interface": {
+    "trace.statement_entered": "entra en sentencia",
+    "trace.decision": "decisión",
+    "trace.output": "escribe",
+    "trace.call": "llama a",
+    "trace.return": "vuelve de",
+    "trace.failure": "falla",
+    "trace.input_requested": "pide entrada",
+    "trace.input_received": "recibe",
+    "trace.branch.afirmativa": "rama afirmativa",
+    "trace.branch.negativa": "rama negativa",
+    "trace.branch.caso": "caso elegido",
+    "trace.branch.otro": "De Otro Modo",
+    "trace.branch.ninguna": "ninguna rama",
+    "table.spanish": "Español",
+    "table.english": "Inglés",
+    "table.category": "Categoría",
+    "table.code": "Código",
+    "table.severity": "Severidad",
+    "table.class": "Clase",
+    "table.message": "Mensaje",
+    "table.section": "Sección",
+    "table.family": "Familia",
+    "table.parameters": "Parámetros",
+    "table.result": "Resultado",
+    "table.production": "Producción",
+    "table.rule": "Regla",
+    "category.keywordStructured": "palabra estructurada",
+    "category.keywordProcedural": "palabra de subprogramas",
+    "category.keywordOop": "palabra de objetos",
+    "category.identifier": "nombre o miembro",
+    "category.type": "tipo",
+    "category.literalNumber": "número",
+    "category.literalString": "texto",
+    "category.literalBoolean": "valor",
+    "category.operator": "operador",
+    "category.punctuation": "signo",
+    "category.comment": "comentario",
+    "severity.error": "error",
+    "severity.warning": "advertencia",
+    "severity.info": "información",
+    "class.lexical": "léxico",
+    "class.syntax": "sintaxis",
+    "class.semantic": "semántico",
+    "class.runtime": "ejecución",
+    "class.internal": "interno",
+    "family.bytes": "bytes",
+    "family.collections": "colecciones",
+    "family.io": "entrada y salida",
+    "family.json": "JSON",
+    "family.network": "red",
+    "family.numbers": "números",
+    "family.text": "texto",
+    "family.time": "tiempo"
+  },
+  "productions": {
+    "addition": "suma",
+    "algorithmUnit": "proceso",
+    "alternativeField": "campo de alternativa",
+    "arguments": "argumentos",
+    "assignmentStatement": "asignación",
+    "awaitExpression": "espera",
+    "body": "instrucciones",
+    "breakStatement": "salida de bucle",
+    "callStatement": "llamada",
+    "characterLiteral": "carácter",
+    "classUnit": "clase",
+    "comment": "comentario",
+    "conditional": "decisión",
+    "conjunction": "conjunción",
+    "constantDeclaration": "constante",
+    "constructorMember": "constructor",
+    "declaration": "definición",
+    "deferStatement": "diferido",
+    "designator": "designador",
+    "dimensionDeclaration": "dimensión",
+    "dimensioned": "arreglo dimensionado",
+    "discardStatement": "descarte",
+    "disjunction": "disyunción",
+    "endOfFile": "fin de archivo",
+    "endOfLine": "fin de línea",
+    "enumMembers": "miembros",
+    "enumUnit": "enumerado",
+    "equality": "igualdad",
+    "exportDeclaration": "exportación",
+    "expression": "expresión",
+    "expressions": "expresiones",
+    "fieldBinding": "campo",
+    "fieldDeclaration": "atributo",
+    "forEachLoop": "para cada",
+    "forLoop": "para",
+    "functionLiteral": "función sin nombre",
+    "functionParameterType": "parámetro",
+    "functionType": "tipo función",
+    "identifier": "nombre",
+    "importDeclaration": "importación",
+    "input": "lectura",
+    "instantiation": "instanciación",
+    "integerLiteral": "entero",
+    "interfaceSignature": "firma",
+    "interfaceUnit": "interfaz",
+    "iterationBindings": "variables de recorrido",
+    "labels": "etiquetas",
+    "line": "línea",
+    "literal": "literal",
+    "methodMember": "método",
+    "moduleDirective": "directiva de módulo",
+    "modulePath": "ruta de módulo",
+    "moduleUnit": "unidad de módulo",
+    "multiplication": "producto",
+    "names": "nombres",
+    "ordering": "orden",
+    "output": "escritura",
+    "parameter": "parámetro",
+    "parameters": "parámetros",
+    "pattern": "patrón",
+    "postfix": "acceso",
+    "powerExpression": "potencia",
+    "primary": "valor primario",
+    "program": "programa",
+    "propagation": "propagación",
+    "realLiteral": "real",
+    "realization": "realización",
+    "receiveBranch": "rama de recepción",
+    "recordField": "campo de registro",
+    "recordUnit": "registro",
+    "repeatLoop": "repetir",
+    "returnStatement": "retorno",
+    "returnVariable": "variable de retorno",
+    "selectStatement": "elegir",
+    "signedInteger": "entero con signo",
+    "spawnExpression": "lanzamiento",
+    "spawnStatement": "lanzamiento",
+    "statement": "sentencia",
+    "stringLiteral": "cadena",
+    "subprogram": "subproceso",
+    "switch": "según",
+    "taskScope": "ámbito de tareas",
+    "terminator": "fin de sentencia",
+    "trivia": "espacios",
+    "type": "tipo",
+    "typeArguments": "argumentos de tipo",
+    "typeParameter": "parámetro de tipo",
+    "typeParameters": "parámetros de tipo",
+    "unary": "unario",
+    "variantAlternative": "alternativa",
+    "variantConstruction": "construcción de variante",
+    "variantPattern": "patrón de variante",
+    "variantUnit": "variante",
+    "visibility": "visibilidad",
+    "whileLoop": "mientras",
+    "whitespace": "espacio"
+  },
+  "figures": {
+    "agenda-cola": {
+      "titulo": "La agenda",
+      "descripcion": "A la izquierda, la tarea en marcha. A la derecha, la cola de listas con las tareas 1 y 2, de la que sale la siguiente en entrar. Debajo, las tareas suspendidas, adonde va la actual si espera algo.",
+      "actual": "tarea 0",
+      "enMarcha": "en marcha",
+      "t1": "tarea 1",
+      "t2": "tarea 2",
+      "final": "final",
+      "listas": "cola de listas",
+      "suspendidas": "suspendidas, esperando"
+    },
+    "aguardar-pausa": {
+      "titulo": "Pausa en Aguardar",
+      "descripcion": "Dos líneas de tiempo. La tarea A trabaja, se pausa en Aguardar mientras la tarea B trabaja, y continúa cuando B le entrega el resultado.",
+      "tareaA": "tarea A",
+      "tareaB": "tarea B",
+      "pausa": "en pausa",
+      "resultado": "resultado"
+    },
+    "alcanzables": {
+      "titulo": "Valores alcanzables",
+      "descripcion": "Los marcos activos apuntan a un objeto, que apunta a otro. Un tercer objeto no tiene ninguna flecha que llegue a él y queda marcado como inalcanzable.",
+      "marcos": "marcos activos",
+      "obj1": "objeto 1",
+      "obj2": "objeto 2",
+      "obj3": "objeto 3",
+      "inalcanzable": "inalcanzable"
+    },
+    "alias-copia": {
+      "titulo": "Alias frente a copia",
+      "descripcion": "a y alias apuntan al objeto 1 con dueño Ana y 3 libros. Copiar crea el objeto 2 con los mismos datos, al que apunta copia. Después el objeto 1 tiene 5 libros y el 2 tiene 9."
+    },
+    "ambito-tareas": {
+      "titulo": "Un ámbito de tareas",
+      "descripcion": "La línea del padre baja de arriba abajo. En Tareas lanza dos hijas, Ana y Leo, que avanzan en paralelo. Las dos vuelven a unirse con el padre en FinTareas.",
+      "padre": "padre",
+      "unidas": "todas unidas"
+    },
+    "ambitos-anidados": {
+      "titulo": "Ámbitos anidados",
+      "descripcion": "Una caja grande para el proceso con la variable n, y dentro otra para la rama del Si con la variable doble. Desde dentro se ve n; desde fuera no se ve doble.",
+      "veN": "aquí se ve n",
+      "noVeDoble": "aquí doble ya no existe"
+    },
+    "ampliaciones": {
+      "titulo": "Las tres ampliaciones",
+      "descripcion": "Tres flechas verdes: de Entero a Real, de Caracter a Cadena y de una subclase a su superclase. Debajo, en rojo, las conversiones que nunca ocurren solas: de Real a Entero, de Logico a número y de número a texto.",
+      "subclase": "Subclase",
+      "superclase": "Superclase",
+      "nunca": "Nunca ocurren solas:",
+      "n1": "Real → Entero · Cadena → Caracter",
+      "n2": "Logico → número · número → texto"
+    },
+    "anatomia-diagnostico": {
+      "titulo": "Dato y mensaje",
+      "descripcion": "Arriba, el diagnóstico como dato: código incompatibleTypesInAssignment, clase semántica y severidad error, tramo en la línea 2 y argumentos esperado Entero y encontrado Cadena. Una flecha con la plantilla del idioma lleva al mensaje presentado.",
+      "dato": "dato",
+      "codigo": "código: incompatibleTypesInAssignment",
+      "clase": "clase: semántica · severidad: error",
+      "tramo": "tramo: línea 2, columnas 3 a 38",
+      "argumentos": "argumentos: esperado Entero, encontrado Cadena",
+      "plantilla": "plantilla del idioma",
+      "mensaje1": "Tipo incompatible en la asignación:",
+      "mensaje2": "no se puede asignar Cadena a Entero"
+    },
+    "arbol-precedencia": {
+      "titulo": "El árbol de 2 + 3 * 4",
+      "descripcion": "La expresión 2 + 3 * 4 se agrupa en un árbol con + en la raíz, 2 a la izquierda y 3 * 4 a la derecha. El producto se reduce a 12 y la suma a 14."
+    },
+    "archivo-capas": {
+      "titulo": "De la carpeta al contenido",
+      "descripcion": "DirectorioCap lleva con Abrir a ArchivoCap, que lleva con LeerTexto al contenido \"Comprar pan\". Cada paso puede terminar en Error(ErrorES)."
+    },
+    "arreglo-casillas": {
+      "titulo": "Las casillas de un arreglo",
+      "descripcion": "Cuatro casillas seguidas con los valores 7, 9, 6 y 8 y los índices 0, 1, 2 y 3 debajo. A la derecha, una quinta casilla punteada y tachada con el índice 4, que no existe.",
+      "notas": "notas",
+      "tamano": "Tamaño 4: índices de 0 a 3",
+      "fuera": "notas[4] → arrayIndexOutOfRange"
+    },
+    "ausentes": {
+      "titulo": "Construcciones ausentes",
+      "descripcion": "Cuatro construcciones que no existen, cada una con su alternativa: clases abstractas frente a interfaces, miembros estáticos frente a parámetros, protegido frente a Publico y Privado, y excepciones frente a Resultado.",
+      "abstracta": "clase abstracta",
+      "estatico": "miembro estático",
+      "protegido": "protegido",
+      "excepciones": "excepciones",
+      "interfaces": "interfaces",
+      "parametros": "pasar parámetros",
+      "publicoPrivado": "Publico o Privado",
+      "resultado": "Opcional y Resultado"
+    },
+    "bytes-utf8": {
+      "titulo": "Caracteres y octetos",
+      "descripcion": "Arriba, los tres caracteres de año: a, ñ y o. Debajo, sus cuatro octetos: 97 para la a, 195 y 177 para la ñ y 111 para la o.",
+      "caracteres": "Caracteres",
+      "a": "a",
+      "enie": "ñ",
+      "o": "o",
+      "octetos": "Octetos UTF-8",
+      "nota": "3 caracteres → 4 octetos"
+    },
+    "cadena-caracter": {
+      "titulo": "Carácter o cadena",
+      "descripcion": "Arriba, A entre comillas simples y entre comillas dobles llevan al tipo Caracter. Abajo, unas comillas vacías y un texto de dos letras llevan al tipo Cadena.",
+      "uno": "Exactamente un carácter",
+      "ab": "'ab'",
+      "otros": "Cero o varios caracteres",
+      "nota": "Lo decide el contenido, no las comillas",
+      "a-simple": "'A'",
+      "a-doble": "\"A\""
+    },
+    "cajas-variables": {
+      "titulo": "Cajas de variables",
+      "descripcion": "Tres cajas en memoria: libros y cuadernos, de tipo Entero, empiezan vacías; nombre, de tipo Cadena, empieza con \"Leo\". Después libros recibe 3 y cuadernos recibe 6, calculado leyendo libros.",
+      "memoria": "memoria",
+      "vacia": "vacía",
+      "lee": "se lee para calcular"
+    },
+    "caminos-valor": {
+      "titulo": "Caminos sin valor",
+      "descripcion": "Un diagrama con la condición puntos > 50. Por la rama verdadera premio recibe 10; por la falsa no recibe nada. Los dos caminos llegan a Escribir premio, que se marca como error.",
+      "vacia": "premio: vacía",
+      "nada": "sin asignación",
+      "sigueVacia": "sigue vacía",
+      "codigoError": "variableUsedUninitialized"
+    },
+    "canal-cola": {
+      "titulo": "Un canal de capacidad 2",
+      "descripcion": "Un productor a la izquierda envía valores a un canal con dos huecos ocupados por 20 y 10; un consumidor a la derecha los recibe en orden.",
+      "productor": "productor",
+      "consumidor": "consumidor",
+      "capacidad": "capacidad 2",
+      "orden": "sale primero lo que entró primero"
+    },
+    "capacidades-llaves": {
+      "titulo": "Capacidades como llaves",
+      "descripcion": "A la izquierda, el programa con tres capacidades: Consola, ArchivoCap y Reloj. A la derecha, el anfitrión con la terminal, el disco y la hora. Cada capacidad es una flecha hacia su recurso.",
+      "programa": "programa",
+      "anfitrion": "anfitrión",
+      "terminal": "terminal",
+      "disco": "disco",
+      "hora": "hora",
+      "llaves": "una llave por recurso"
+    },
+    "capas-motor": {
+      "titulo": "Capas del motor",
+      "descripcion": "Una columna de capas de arriba abajo: texto, léxico, sintaxis, semántica y representación intermedia. De la representación intermedia salen dos flechas: máquina virtual y código nativo.",
+      "texto": "texto del programa",
+      "lexico": "léxico",
+      "sintaxis": "sintaxis",
+      "semantica": "semántica",
+      "ri": "representación intermedia",
+      "vm": "máquina virtual",
+      "nativo": "código nativo"
+    },
+    "cinta-efectos": {
+      "titulo": "La cinta de efectos",
+      "descripcion": "Una cinta con tres entradas numeradas: salida, archivo y reloj, unidas por flechas. Debajo, la nota de que están encadenadas y de que reproducir da la misma ejecución.",
+      "salida": "salida",
+      "archivo": "archivo",
+      "reloj": "reloj",
+      "cinta": "cinta de efectos",
+      "encadenadas": "cada entrada se encadena con la anterior",
+      "reproducir": "reproducir la cinta da la misma ejecución"
+    },
+    "clase-objetos": {
+      "titulo": "Una clase y sus objetos",
+      "descripcion": "Arriba, la clase Punto con los atributos x e yy. Dos flechas marcadas con Nuevo llevan a dos objetos: uno con x = 3 e yy = 4, otro con x = 0 e yy = 7."
+    },
+    "clases-diagnostico": {
+      "titulo": "Clases de diagnóstico",
+      "descripcion": "Cuatro etapas en columna, léxica, sintáctica, semántica y ejecución, cada una con un ejemplo a la derecha. Una barra roja junto a las tres primeras indica que se descubren antes de ejecutar.",
+      "lexico": "Léxica",
+      "lexico-ej": "carácter desconocido",
+      "sintaxis": "Sintáctica",
+      "sintaxis-ej": "falta ;",
+      "semantica": "Semántica",
+      "semantica-ej": "variable sin definir",
+      "antes": "Descubiertas antes de ejecutar: impiden ejecutar",
+      "ejecucion": "Ejecución",
+      "ejecucion-ej": "índice fuera de rango",
+      "nota": "Las advertencias avisan pero dejan ejecutar"
+    },
+    "clausura": {
+      "titulo": "Cada clausura con su copia",
+      "descripcion": "La llamada multiplicador produce dos clausuras, doble y triple. Cada una lleva dentro su propia copia de factor, 2 y 3 respectivamente.",
+      "factor": "factor",
+      "nota": "Las copias capturadas viajan con cada función"
+    },
+    "coincidencia-larga": {
+      "titulo": "La pieza más larga",
+      "descripcion": "Arriba, x pegado a la flecha y al 1 se parte en x, flecha de asignación y 1: es una asignación. Abajo, con espacios, se parte en x, menor que, menos y 1: es una comparación.",
+      "asigna": "asignación",
+      "compara": "comparación",
+      "regla": "El motor toma la pieza más larga posible.",
+      "regla2": "Un espacio puede cambiar las piezas.",
+      "ejemplos": "<- antes que < · <= antes que < · <> antes que <"
+    },
+    "comentario": {
+      "titulo": "Dónde empieza un comentario",
+      "descripcion": "Dos líneas de programa. En la primera, lo que sigue a las dos barras está sombreado y rotulado comentario. En la segunda, las dos barras están dentro de un texto entre comillas y se rotulan como texto normal.",
+      "comentario": "comentario: hasta el final de la línea",
+      "texto": "dentro de comillas: es texto"
+    },
+    "compilar-nativo": {
+      "titulo": "Máquina virtual y código nativo",
+      "descripcion": "La representación intermedia alimenta dos caminos: la máquina virtual y el código nativo. Un signo igual entre los dos indica que dan la misma ejecución.",
+      "ri": "representación intermedia",
+      "vm": "máquina virtual",
+      "nativo": "ejecutable nativo",
+      "igual": "misma salida, mismos fallos"
+    },
+    "concatenar": {
+      "titulo": "Concatenar tres piezas",
+      "descripcion": "Tres cajas, \"Hola, \", \"Ana\" y '!', con flechas que convergen en una caja mayor con \"Hola, Ana!\".",
+      "hola": "\"Hola, \"",
+      "ana": "\"Ana\"",
+      "resultado": "\"Hola, Ana!\""
+    },
+    "constante-sustituye": {
+      "titulo": "La constante se sustituye",
+      "descripcion": "Una declaración de constante SEMANA igual a 7 * 24 que se calcula como 168. La línea Escribir base, SEMANA se convierte en Escribir base, 168. En memoria solo aparece base; la constante no tiene caja.",
+      "memoria": "memoria",
+      "sinCaja": "las constantes no ocupan caja"
+    },
+    "convenciones": {
+      "titulo": "Convenciones de la especificación",
+      "descripcion": "Tres ejemplos apilados. Una píldora de código con la palabra Si; un hueco punteado con la palabra condición; y un bloque de programa con título, número de línea, una instrucción Escribir y debajo una franja con la salida.",
+      "pildora": "Palabra del lenguaje",
+      "pildora-nota": "se escribe tal cual",
+      "hueco": "Hueco",
+      "condicion": "condición",
+      "hueco-nota": "lo rellenas tú",
+      "programa": "Programa ejecutado",
+      "titulo-programa": "Título del programa",
+      "salida": "Salida",
+      "salida-texto": "lo que escribió el motor"
+    },
+    "conversiones": {
+      "titulo": "Ida y vuelta entre texto y número",
+      "descripcion": "Arriba, el texto \"42\" pasa a número con AEntero y vuelve con ATexto. Abajo, el texto \"doce\" no se puede convertir y AEntero falla.",
+      "falla": "falla"
+    },
+    "cortocircuito": {
+      "titulo": "El cortocircuito",
+      "descripcion": "Arriba, Falso Y una división entre cero tachada: el resultado es Falso sin calcular la derecha. Abajo, Verdadero O la misma división: el resultado es Verdadero.",
+      "conY": "Con Y",
+      "conO": "Con O",
+      "noSeCalcula": "no se calcula",
+      "resultadoFalso": "resultado: Falso",
+      "resultadoVerdadero": "resultado: Verdadero"
+    },
+    "declarar-antes": {
+      "titulo": "Declarar antes de usar",
+      "descripcion": "Una línea Definir total Como Entero crea una caja vacía con el nombre total. Debajo, la asignación total recibe 10 guarda un valor en esa caja. Una nota recuerda que asignar a un nombre no declarado es un error.",
+      "total": "total",
+      "sin-valor": "sin valor todavía",
+      "prohibido": "Asignar a un nombre sin Definir: error"
+    },
+    "designadores": {
+      "titulo": "Lugares y valores",
+      "descripcion": "A la izquierda, tres designadores: x, notas[i] y persona.nombre. A la derecha, tres expresiones que no lo son: 5, x + 1 y Longitud(t).",
+      "lugar": "nombran un lugar",
+      "valor": "solo tienen valor",
+      "nota": "Solo se puede guardar en un lugar"
+    },
+    "determinismo": {
+      "titulo": "Misma semilla, misma secuencia",
+      "descripcion": "Una caja con la semilla 42 de la que salen dos ejecuciones. Las dos producen la secuencia 1, 1, 6 y un signo igual las une.",
+      "semilla": "semilla 42",
+      "ejecucion-a": "Ejecución A",
+      "ejecucion-b": "Ejecución B",
+      "nota": "Mismo programa, entradas y semilla",
+      "nota2": "→ misma salida, traza y terminación"
+    },
+    "diccionario": {
+      "titulo": "Claves que apuntan a valores",
+      "descripcion": "Dos columnas, claves y valores. La clave Ana apunta al valor 13, marcado como reemplazado; la clave Luis apunta al 11. Una nota explica que las claves conservan el orden en que se insertaron.",
+      "claves": "claves",
+      "valores": "valores",
+      "ana": "\"Ana\"",
+      "luis": "\"Luis\"",
+      "nota": "Las claves se quedan en el orden en que entraron"
+    },
+    "diferir-pila": {
+      "titulo": "La pila de limpiezas",
+      "descripcion": "Una pila: primero entra cierro la puerta y encima apago la luz. Al salir se ejecuta primero apago la luz y después cierro la puerta.",
+      "pila": "limpiezas apuntadas",
+      "puerta": "cierro la puerta",
+      "luz": "apago la luz"
+    },
+    "ecosistema": {
+      "titulo": "Un lenguaje, un motor, tres puertas",
+      "descripcion": "Arriba, el lenguaje PseudoLearn en español e inglés. Debajo, el motor que analiza y ejecuta. Del motor salen tres flechas hacia la app, la línea de órdenes y la web.",
+      "lenguaje": "Lenguaje PseudoLearn (es · en)",
+      "motor": "Motor",
+      "motor-sub": "analiza · ejecuta · observa",
+      "app": "App",
+      "app-sub": "editor",
+      "cli": "pseudo",
+      "cli-sub": "línea de órdenes",
+      "web": "Web",
+      "web-sub": "navegador",
+      "nota": "Mismo resultado en las tres"
+    },
+    "edicion": {
+      "titulo": "Contenido de la edición 2026",
+      "descripcion": "Un marco titulado Edición 2026 con tres cajas: una sola gramática, una sola política de tipos y un preludio fijo con ejemplos de funciones incorporadas.",
+      "edicion": "Edición 2026",
+      "gramatica": "Una sola gramática",
+      "tipos": "Una sola política de tipos",
+      "preludio": "Preludio fijo",
+      "preludio-ejemplos": "Longitud · rc · Opcional · Vector…"
+    },
+    "enumerado": {
+      "titulo": "Los miembros de un enumerado",
+      "descripcion": "Un recuadro con el tipo Semaforo y sus tres miembros: Rojo, Amarillo y Verde. Una variable luz, fuera del recuadro, apunta al miembro Verde.",
+      "tipo": "Semaforo",
+      "rojo": "Rojo",
+      "amarillo": "Amarillo",
+      "verde": "Verde",
+      "luz": "luz",
+      "variable": "variable",
+      "cerrada": "Lista cerrada:",
+      "cerrada2": "no hay otros valores"
+    },
+    "error-lexico": {
+      "titulo": "Un error léxico y la recuperación",
+      "descripcion": "Una sentencia Escribir con una arroba entre dos textos. La arroba está marcada en rojo y una flecha la une al diagnóstico unrecognizedCharacter. Otra flecha indica que el motor sigue leyendo; una caja punteada recuerda que no se hace análisis semántico.",
+      "sigue": "el motor sigue leyendo",
+      "no-semantica": "sin análisis semántico",
+      "nota": "No se inventan valores ni se ejecuta nada",
+      "codigo": "unrecognizedCharacter"
+    },
+    "escalera-precedencia": {
+      "titulo": "La escalera de precedencia",
+      "descripcion": "Nueve escalones de arriba abajo: postfijos; signo y NO; potencia; producto, división, div y mod; suma, resta y concatenación; orden; igualdad; Y; O. Los unarios y la potencia asocian a la derecha.",
+      "postfijos": "llamada · índice · campo",
+      "postfijosNota": "liga más fuerte",
+      "derecha": "asocia a la derecha",
+      "sumaNota": "también concatena",
+      "debil": "liga más débil"
+    },
+    "espacios": {
+      "titulo": "Mismo programa, distinta sangría",
+      "descripcion": "Dos recuadros con el mismo Si. El de arriba tiene una sangría ordenada; el de abajo, espacios desordenados. Debajo, un signo de igualdad indica que significan lo mismo.",
+      "ordenado": "Con sangría ordenada",
+      "desordenado": "Con espacios desordenados",
+      "igual": "= el mismo programa para el motor"
+    },
+    "estructura-archivo": {
+      "titulo": "Un archivo de programa",
+      "descripcion": "Un archivo con cuatro unidades hermanas una debajo de otra: la constante SALUDO, el enumerado Color, el algoritmo Tienda, destacado como único, y el subproceso Precio.",
+      "archivo": "tienda.psl",
+      "unico": "exactamente uno"
+    },
+    "familias-biblioteca": {
+      "titulo": "Familias de la biblioteca",
+      "descripcion": "Dos columnas. A la izquierda, las familias que solo calculan: texto, números, colecciones, JSON y bytes. A la derecha, las que necesitan una capacidad: entrada y salida, tiempo, red y tareas.",
+      "puras": "solo calculan",
+      "efectos": "necesitan capacidad",
+      "texto": "texto",
+      "numeros": "números",
+      "colecciones": "colecciones",
+      "json": "JSON",
+      "bytes": "bytes",
+      "io": "entrada y salida",
+      "tiempo": "tiempo",
+      "red": "red",
+      "tareas": "tareas"
+    },
+    "familias-palabras": {
+      "titulo": "Familias de palabras reservadas",
+      "descripcion": "Seis franjas de colores: estructura del programa, subprogramas, objetos, tipos, valores lógicos y operadores escritos con letras, cada una con ejemplos.",
+      "estructura": "Estructura del programa",
+      "subprogramas": "Subprogramas",
+      "objetos": "Objetos",
+      "tipos": "Tipos",
+      "valores": "Valores",
+      "operadores": "Operadores con letras",
+      "nota": "La lista completa está en el Apéndice B"
+    },
+    "fecha-hora": {
+      "titulo": "Instante y desplazamiento",
+      "descripcion": "Una FechaHora une un instante en nanosegundos desde 1970 y un desplazamiento de +3600 segundos. Juntos dan la hora local 2026-11-07T18:30:00+01:00.",
+      "instante": "instante (ns)",
+      "desplazamiento": "desplazamiento +3600 s",
+      "local": "hora local",
+      "iso": "2026-11-07T18:30:00+01:00"
+    },
+    "generico": {
+      "titulo": "Una plantilla y sus usos",
+      "descripcion": "Arriba, la plantilla Caja con un hueco de tipo T. Dos flechas llevan a dos versiones concretas, Caja de Entero y Caja de Cadena.",
+      "plantilla": "Caja<T>",
+      "entero": "Caja<Entero>",
+      "cadena": "Caja<Cadena>",
+      "nota": "Una sola definición; una versión por tipo usado"
+    },
+    "herencia-despacho": {
+      "titulo": "Despacho por clase real",
+      "descripcion": "La clase Animal con Sonido y Presentarse, y debajo Perro, que hereda de Animal y redefine Sonido. El objeto Toby es un Perro: la búsqueda de Sonido empieza en Perro.",
+      "clasereal": "clase real: Perro",
+      "busca": "Sonido se busca en Perro"
+    },
+    "higiene": {
+      "titulo": "Uso de tres variables",
+      "descripcion": "Una tabla con tres variables. usada se escribe y se lee. olvidada no se escribe ni se lee. escrita se escribe pero no se lee.",
+      "escribe": "se escribe",
+      "lee": "se lee",
+      "bien": "correcto",
+      "nuncaUsada": "nunca usada",
+      "nuncaLeida": "nunca leída"
+    },
+    "http-ida-vuelta": {
+      "titulo": "Petición y respuesta",
+      "descripcion": "El programa envía una petición GET al servidor y recibe una respuesta 200 con su cuerpo. Las respuestas, también 404 y 500, son Exito; los fallos de transporte son Error.",
+      "programa": "programa",
+      "servidor": "servidor",
+      "get": "GET /hoy",
+      "respuesta": "200 · Soleado, 25",
+      "exito": "200, 404, 500: Exito con la respuesta",
+      "error": "sin conexión: Error(ErrorES)"
+    },
+    "identificadores": {
+      "titulo": "Alfabeto de los identificadores",
+      "descripcion": "Dos cajas unidas por una flecha: el primer carácter, que puede ser letra, ñ, vocal con tilde o guion bajo, y los siguientes, que además admiten dígitos y pueden repetirse. Debajo, cuatro nombres válidos en verde y tres no válidos en rojo.",
+      "inicio": "Primer carácter",
+      "inicio-ej": "a–z A–Z ñ á é í ó ú ü _",
+      "siguiente": "Siguientes",
+      "siguiente-ej": "lo anterior y 0–9",
+      "repite": "se repiten",
+      "validos": "Válidos",
+      "v1": "x",
+      "v2": "año",
+      "v3": "_tmp",
+      "v4": "nota2",
+      "invalidos": "No válidos",
+      "i1": "2notas",
+      "i2": "mi-nota",
+      "i3": "Escribir"
+    },
+    "instantanea": {
+      "titulo": "La instantánea no cambia",
+      "descripcion": "El vector notas tenía un 7 cuando se tomó la instantánea; después se le añadió un 9. La foto, con un candado, conserva solo el 7: se puede leer pero no escribir.",
+      "despues": "añadido después",
+      "lectura": "leer: sí",
+      "escritura": "modificar: no",
+      "nota": "La foto se tomó antes de añadir el 9"
+    },
+    "intercambio": {
+      "titulo": "Intercambio con auxiliar",
+      "descripcion": "Tres cajas a, b y auxiliar. a vale 1 y b vale 2. Primero auxiliar recibe 1, después a recibe 2 y al final b recibe 1 desde auxiliar.",
+      "hecho": "intercambiados"
+    },
+    "interfaz-promesa": {
+      "titulo": "Una interfaz y dos clases",
+      "descripcion": "La interfaz Figura con el método Area. Las clases Cuadrado y Circulo la realizan. Debajo, Describir con el parámetro T: Figura, que acepta las dos."
+    },
+    "json-arbol": {
+      "titulo": "Árbol JSON",
+      "descripcion": "Un objeto con tres campos: nombre con \"Ana\", edad con 15 y notas con un arreglo de 7 y 9. Campo(\"edad\") baja hasta el 15.",
+      "objeto": "objeto",
+      "arreglo": "arreglo",
+      "k1": "nombre",
+      "k2": "edad",
+      "k3": "notas"
+    },
+    "leer-escribir": {
+      "titulo": "Entrada, variables y salida",
+      "descripcion": "La entrada tiene 3 y 4. Leer los guarda en a y b. Escribir muestra 3 + 4 = 7 en la salida.",
+      "entrada": "entrada",
+      "salida": "salida",
+      "nota": "Leer pide un valor por destino, en orden"
+    },
+    "leer-figura": {
+      "titulo": "Ejemplo de figura por pasos",
+      "descripcion": "Tres instrucciones apiladas unidas por flechas: total recibe 0, total recibe total más 5 y Escribir total. Debajo, una caja con el nombre total y su valor. En cada paso se resalta la instrucción que se ejecuta y el valor cambia de 0 a 5.",
+      "programa": "Instrucciones",
+      "total": "total ="
+    },
+    "leer-forma": {
+      "titulo": "Cómo se lee una forma",
+      "descripcion": "Arriba, la forma de Si: la palabra Si y la palabra Entonces van fijas, y entre ellas hay un hueco punteado llamado condición. Una flecha baja desde el hueco hasta la línea rellenada Si n > 0 Entonces. Abajo, Sino aparece entre corchetes dobles: es una parte opcional que se puede omitir.",
+      "forma": "La forma",
+      "fija": "fija",
+      "hueco": "hueco: lo rellenas",
+      "condicion": "condición",
+      "rellenada": "Rellenada",
+      "opcional": "Parte opcional",
+      "se-omite": "puedes escribirla u omitirla",
+      "sin-sino": "Un Si sin Sino también es válido."
+    },
+    "limites-recursos": {
+      "titulo": "Recursos con tope",
+      "descripcion": "Cuatro barras: profundidad, llena y marcada como agotada; celdas, sentencias y tiempo, parcialmente llenas.",
+      "profundidad": "profundidad",
+      "celdas": "celdas",
+      "sentencias": "sentencias",
+      "tiempo": "tiempo",
+      "agotada": "agotada: fallo",
+      "nota": "los topes los fija el anfitrión"
+    },
+    "literales-numericos": {
+      "titulo": "Literales numéricos válidos y no válidos",
+      "descripcion": "Tres filas. Enteros: 0, 42 y 2026. Reales: 3.14, 0.5 y 100.0. No son números: punto 5, 5 punto, 3 coma 5, notación científica y 1 guion bajo 000.",
+      "enteros": "Enteros",
+      "reales": "Reales",
+      "no": "No son números",
+      "cientifica": "1e3"
+    },
+    "llamada-marcos": {
+      "titulo": "La pila de marcos",
+      "descripcion": "Una pila con el marco de Principal abajo. Al llamar a Doble se apila un marco con n = 21; al retornar desaparece y el valor 42 baja a Principal.",
+      "pila": "pila de llamadas",
+      "activo": "en marcha",
+      "desaparece": "marco retirado"
+    },
+    "mapa-partes": {
+      "titulo": "Mapa de las partes",
+      "descripcion": "Un diagrama de cajas apiladas. Arriba la Parte 0 sobre cómo leer y la Parte I con la visión general. Debajo, en dos columnas, la estructura léxica y los tipos; luego expresiones y declaraciones; después el control del flujo; luego subprogramas y objetos. Al final una franja con programas, errores, concurrencia, biblioteca y motor, y otra con los apéndices.",
+      "p0": "0 · Cómo leer",
+      "p1": "I · Visión general",
+      "p2": "II · Léxico",
+      "p3": "III · Tipos",
+      "p4": "IV · Expresiones",
+      "p5": "V · Declaraciones",
+      "p6": "VI · Control del flujo",
+      "p7": "VII · Subprogramas",
+      "p9": "IX · Objetos",
+      "resto": "VIII · X · XI · XII · XIII",
+      "apendices": "Apéndices A–F: consulta"
+    },
+    "mientras-ciclo": {
+      "titulo": "El ciclo de Mientras",
+      "descripcion": "Un rombo con la condición n > 0. Si es verdadera se ejecuta el cuerpo y se vuelve al rombo; si es falsa se sale hacia FinMientras. Al lado, el valor de n baja de 3 a 0.",
+      "valorN": "valor de n"
+    },
+    "niveles": {
+      "titulo": "Antes y durante la ejecución",
+      "descripcion": "Dos columnas. Antes de ejecutar se comprueban la forma, los nombres, los tipos y los subprogramas llamados. Al ejecutar se comprueban la división entre cero, los índices, las variables sin valor y el desbordamiento.",
+      "antes": "Antes de ejecutar",
+      "a1": "forma del programa",
+      "a2": "nombres declarados",
+      "a3": "tipos compatibles",
+      "a4": "llamadas correctas",
+      "durante": "Al ejecutar",
+      "d1": "división entre cero",
+      "d2": "índices en rango",
+      "d3": "variables con valor",
+      "d4": "desbordamiento",
+      "nota": "Lo que se puede saber sin ejecutar, se comprueba antes"
+    },
+    "nuevo-pasos": {
+      "titulo": "Crear un objeto",
+      "descripcion": "La variable pasos empieza vacía. Se reserva un objeto con el atributo valor, el constructor le da 10 y por último pasos recibe la referencia al objeto.",
+      "vacia": "vacía",
+      "objeto": "objeto nuevo",
+      "ref": "referencia"
+    },
+    "opcional-resultado": {
+      "titulo": "Opcional y Resultado",
+      "descripcion": "Dos columnas. Opcional puede ser Algo con un valor o Nada. Resultado puede ser Exito con un valor o Error con un motivo. Debajo, una nota dice que hay que contemplar los dos casos con Segun, y que Propagar pasa el error hacia arriba.",
+      "motivo": "motivo",
+      "regla": "Antes de usar el valor, contempla los dos casos",
+      "segun": "Segun … Hacer",
+      "propagar": "o Propagar: el error sale del subprograma"
+    },
+    "orden-texto": {
+      "titulo": "Orden de los caracteres",
+      "descripcion": "Una línea con A y Z mayúsculas a la izquierda, con códigos 65 y 90, y a y z minúsculas a la derecha, con códigos 97 y 122.",
+      "ma": "A",
+      "mz": "Z",
+      "a": "a",
+      "z": "z",
+      "mayusculas": "mayúsculas",
+      "minusculas": "minúsculas",
+      "nota": "\"Zeta\" < \"alfa\" porque 90 < 97"
+    },
+    "paquete-modulos": {
+      "titulo": "Un paquete con dos módulos",
+      "descripcion": "Un paquete llamado tienda con el módulo principal, que es la entrada y contiene el algoritmo, y el módulo formas.geometria, con el subproceso público AreaCirculo y el privado Ayudante. Una flecha de importación va de principal a geometria.",
+      "paquete": "paquete tienda",
+      "principal": "principal",
+      "entrada": "módulo de entrada",
+      "geometria": "formas.geometria",
+      "privado": "privado: no se importa"
+    },
+    "para-cada-recorrido": {
+      "titulo": "Recorrido de un vector",
+      "descripcion": "Un vector con pan, leche y huevos en las posiciones 0, 1 y 2. Un marco avanza por cada casilla y producto toma el valor de la casilla marcada.",
+      "fin": "fin del recorrido"
+    },
+    "para-contador": {
+      "titulo": "El contador de Para",
+      "descripcion": "Una recta con los valores 1 a 6. El control empieza en 1 y avanza de uno en uno; el 5, que es el final, todavía se incluye; al llegar a 6 el bucle termina.",
+      "inicial": "inicial",
+      "final": "final",
+      "incluido": "incluido",
+      "termina": "termina"
+    },
+    "paso-valor": {
+      "titulo": "Por valor y por referencia",
+      "descripcion": "A la izquierda, el marco principal con x valiendo 5. En el primer paso, Copia recibe una caja n con una copia que pasa a 6 sin cambiar x. En el segundo, Incrementar recibe una flecha hacia x, que pasa a 6.",
+      "principal": "principal",
+      "subprograma": "subprograma",
+      "copia": "copia",
+      "sinCambio": "no cambia",
+      "mismaCaja": "misma caja",
+      "cambia": "cambia"
+    },
+    "perfiles-espejo": {
+      "titulo": "El mismo programa en dos perfiles",
+      "descripcion": "Dos columnas, español a la izquierda e inglés a la derecha. Cada fila empareja una palabra: Si con If, Entonces con Then, Cadena con String. Las dos últimas filas muestran que el nombre nombre y el texto Hola no cambian.",
+      "espanol": "Perfil español",
+      "ingles": "Perfil inglés",
+      "si": "Si",
+      "if": "If",
+      "entonces": "Entonces",
+      "then": "Then",
+      "cadena": "Cadena",
+      "string": "String",
+      "nombre": "nombre",
+      "hola": "\"Hola\""
+    },
+    "posiciones": {
+      "titulo": "Líneas, columnas y tramos",
+      "descripcion": "Un programa de tres líneas sobre una cuadrícula con números de línea a la izquierda y de columna arriba. En la segunda línea se resalta en rojo la x de Escribir x, y una flecha la une a una nota que explica que el tramo empieza en la línea 2, columna 12.",
+      "columnas": "Columnas",
+      "lineas": "Líneas",
+      "tramo": "Tramo: línea 2, columnas 12 a 13"
+    },
+    "potencia-derecha": {
+      "titulo": "La potencia se agrupa a la derecha",
+      "descripcion": "La expresión 2 ^ 3 ^ 2 con un arco bajo 3 ^ 2 que indica que se calcula primero. Debajo, el resultado 2 ^ 9 = 512.",
+      "primero": "se calcula primero",
+      "nota": "Los demás operadores se agrupan de izquierda a derecha"
+    },
+    "punto-y-coma": {
+      "titulo": "Dónde va el punto y coma",
+      "descripcion": "Un bloque Mientras con dos sentencias dentro. Las dos sentencias simples llevan punto y coma marcado en verde; la línea de apertura y la de cierre no llevan, marcado con un símbolo de vacío en rojo.",
+      "simples": "✓ sentencias simples: terminan en ;",
+      "bloques": "∅ aperturas y cierres de bloque: sin ;"
+    },
+    "pureza-grafo": {
+      "titulo": "Un efecto que sube",
+      "descripcion": "Principal llama a la función Triple, que llama a Avisar, que usa Escribir. El efecto de Escribir sube hasta Triple, marcada como error.",
+      "sube": "el efecto sube"
+    },
+    "receptor-este": {
+      "titulo": "El receptor y Este",
+      "descripcion": "La variable pasos y, dentro del método, Este: las dos son referencias que apuntan al mismo objeto, con valor = 12.",
+      "ref": "referencia",
+      "mismo": "el mismo objeto",
+      "dentro": "dentro de Sumar"
+    },
+    "recursion-pila": {
+      "titulo": "La pila del factorial",
+      "descripcion": "Cuatro marcos apilados de Factorial(4) a Factorial(1). El caso base devuelve 1 y cada marco multiplica: 2, 6 y 24.",
+      "casoBase": "caso base"
+    },
+    "redondeos": {
+      "titulo": "Redondear -2.5",
+      "descripcion": "Una recta con -3, -2 y -1 y el punto -2.5. piso y redon lo llevan a -3; techo y trunc lo llevan a -2.",
+      "nota": "redon aleja los empates del cero"
+    },
+    "referencia-salida": {
+      "titulo": "Parámetros de salida",
+      "descripcion": "A la izquierda, las cajas c y r del principal con 3 y 2. A la derecha, Dividir con cociente y resto, que son flechas hacia c y r.",
+      "principal": "principal"
+    },
+    "registro-copia": {
+      "titulo": "Asignar un registro lo copia",
+      "descripcion": "Dos fichas, a y b, con los campos fila y columna. Las dos tenían fila 1 y columna 2; después de cambiar b.fila a 10, solo b muestra el 10 y a sigue con 1.",
+      "fila": "fila",
+      "columna": "columna",
+      "copia": "b <- a copia los dos campos",
+      "separado": "después, cada ficha cambia por su cuenta"
+    },
+    "regla-reales": {
+      "titulo": "La regla con huecos",
+      "descripcion": "Una regla horizontal con marcas separadas. El literal 0.3 apunta a una marca; el resultado de 0.1 más 0.2 apunta a la marca vecina, 0.30000000000000004.",
+      "literal": "0.3 escrito tal cual",
+      "suma": "0.1 + 0.2",
+      "nota": "Entre dos marcas no hay ningún Real",
+      "nota2": "Las marcas están muy juntas, pero no se tocan"
+    },
+    "reparto": {
+      "titulo": "Repartir siete caramelos",
+      "descripcion": "Siete círculos: tres para la primera persona, tres para la segunda y uno que sobra, resaltado. Debajo, las tres operaciones: 7 / 2 = 3.5, 7 div 2 = 3 y 7 mod 2 = 1.",
+      "persona1": "persona 1",
+      "persona2": "persona 2",
+      "sobra": "sobra",
+      "regla": "7 = 3 × 2 + 1"
+    },
+    "repetir-ciclo": {
+      "titulo": "Mientras frente a Repetir",
+      "descripcion": "A la izquierda, Mientras: primero la pregunta y después el cuerpo, que puede ejecutarse cero veces. A la derecha, Repetir: primero el cuerpo y después la pregunta; con Falso se repite y con Verdadero se sale, así que el cuerpo se ejecuta al menos una vez.",
+      "pregunta": "¿condición?",
+      "cuerpo": "cuerpo",
+      "ceroOMas": "cero o más vueltas",
+      "unaOMas": "una o más vueltas"
+    },
+    "retornar-salidas": {
+      "titulo": "Varias salidas",
+      "descripcion": "Tres Retornar. El primer Si es falso; el segundo se cumple y se retorna b, que vale -2. El último Retornar queda sin alcanzar.",
+      "falso": "falso",
+      "nunca": "no se alcanza"
+    },
+    "salir-corte": {
+      "titulo": "Salir corta el bucle",
+      "descripcion": "Cinco casillas con 7, 14, 21, 28 y 35. Se visitan 7, 14 y 21; en 21 una línea roja marca Salir y las casillas 28 y 35 quedan sin visitar.",
+      "visitadas": "visitadas",
+      "nunca": "nunca visitadas"
+    },
+    "segun-ramas": {
+      "titulo": "Las ramas de Segun",
+      "descripcion": "Un Segun sobre dia con tres ramas: 1 a 5 hay clase, 6 y 7 fin de semana, y De Otro Modo. El selector vale 6 y se recorre solo la segunda rama hasta FinSegun.",
+      "clase": "hay clase",
+      "finde": "fin de semana",
+      "noExiste": "no existe"
+    },
+    "semilla": {
+      "titulo": "Misma semilla, misma secuencia",
+      "descripcion": "Dos ejecuciones con la misma semilla sacan la misma secuencia 1, 1, 6, 15. Una ejecución con la semilla 7 saca otra distinta.",
+      "semilla42": "semilla 42",
+      "semilla7": "semilla 7",
+      "iguales": "iguales"
+    },
+    "severidad-clases": {
+      "titulo": "Clases y severidades",
+      "descripcion": "Arriba, las cuatro clases en orden: léxica, sintáctica y semántica antes de ejecutar, y ejecución durante. Abajo, las cuatro letras de severidad: A error, C higiene, D información y E lectura.",
+      "lexica": "léxica",
+      "sintactica": "sintáctica",
+      "semantica": "semántica",
+      "ejecucion": "ejecución",
+      "antes": "antes de ejecutar",
+      "durante": "durante",
+      "error": "error",
+      "higiene": "higiene",
+      "info": "información",
+      "lectura": "lectura",
+      "letraA": "A",
+      "letraC": "C",
+      "letraD": "D",
+      "letraE": "E"
+    },
+    "si-ordinograma": {
+      "titulo": "Ejecución paso a paso de Montana",
+      "descripcion": "Un ordinograma con el inicio, la asignación de estatura, un rombo con la pregunta estatura mayor o igual que 120, dos cajas con los Escribir de cada rama, el punto donde se juntan y el fin. Cada paso resalta la parte que se está ejecutando.",
+      "inicio": "Inicio",
+      "fin": "Fin",
+      "texto-si": "\"Puedes subir…\"",
+      "texto-no": "\"Todavía no…\"",
+      "juntan": "FinSi: se juntan",
+      "no-se-ejecuta": "no se ejecuta"
+    },
+    "sincronizacion": {
+      "titulo": "Sincronizar tras un error",
+      "descripcion": "Cuatro líneas. La primera y la tercera tienen un error y una marca que salta al siguiente punto seguro; la segunda y la cuarta se reconocen con normalidad.",
+      "sigue": "sigue",
+      "nota": "un error principal por sentencia rota"
+    },
+    "subcadena-posiciones": {
+      "titulo": "Posiciones de un texto",
+      "descripcion": "El texto Hola, mundo en casillas numeradas de 0 a 10. Las cuatro primeras, de 0 a 3, están resaltadas como resultado de Subcadena(t, 0, 3).",
+      "c0": "H",
+      "c1": "o",
+      "c2": "l",
+      "c3": "a",
+      "c6": "m",
+      "c7": "u",
+      "c8": "n",
+      "c9": "d",
+      "c10": "o"
+    },
+    "subprograma-caja": {
+      "titulo": "Un subprograma como caja",
+      "descripcion": "Una caja llamada Doble. Por la izquierda entra el argumento 21 y por la derecha sale el resultado 42.",
+      "argumento": "argumento",
+      "resultado": "resultado",
+      "dentro": "lo de dentro no se ve desde fuera"
+    },
+    "terminaciones": {
+      "titulo": "Las seis terminaciones",
+      "descripcion": "Arriba, el estado ejecutando. Una flecha baja hasta un recuadro con las cuatro terminaciones definitivas: completed, failed, cancelled y limit_reached. Dos flechas laterales llevan a las pausas awaiting_input y awaiting_effect, que se reanudan.",
+      "ejecutando": "Ejecutando",
+      "finales": "Definitivas",
+      "completed": "completed",
+      "failed": "failed",
+      "cancelled": "cancelled",
+      "limit": "limit_reached",
+      "input": "awaiting_input",
+      "effect": "awaiting_effect",
+      "pausas": "Pausas: al recibir el dato, vuelven a ejecutar"
+    },
+    "tipo-resultado": {
+      "titulo": "El tipo del resultado",
+      "descripcion": "Arriba, Entero más Entero da Entero. Abajo, Entero por Real da Real.",
+      "nota": "Dos enteros: resultado entero y exacto",
+      "nota2": "Algún real: resultado real"
+    },
+    "tipos-cajas": {
+      "titulo": "Los cinco tipos primitivos",
+      "descripcion": "Cinco recuadros. Entero con el valor 42; Real con 3.14; Logico con sus dos valores, Verdadero y Falso; Caracter con una sola letra L; y Cadena con las letras de Lucía en cinco casillas numeradas de 0 a 4.",
+      "entero": "sin decimales, exacto",
+      "real": "con decimales",
+      "logico": "sí o no",
+      "letra": "L",
+      "caracter": "un solo símbolo",
+      "c0": "L",
+      "c1": "u",
+      "c2": "c",
+      "c3": "í",
+      "c4": "a",
+      "posiciones": "posiciones"
+    },
+    "traza-pasos": {
+      "titulo": "Pasos de la traza",
+      "descripcion": "Una línea con cinco eventos: entra, decisión, escribe, sale y termina. Un arco entre dos eventos marca un paso. Debajo, un cambio de estado: n = 3.",
+      "e1": "entra",
+      "e2": "decide",
+      "e3": "escribe",
+      "e4": "sale",
+      "e5": "fin",
+      "paso": "un paso",
+      "cambio": "cambio: n = 3"
+    },
+    "tres-trabajos": {
+      "titulo": "Analizar, ejecutar y observar",
+      "descripcion": "Un programa del que salen tres flechas hacia Analizar, Ejecutar y Observar. Debajo de cada uno, lo que produce: diagnósticos, colores y ayuda; salida, terminación y fallos; traza, memoria y línea de tiempo. Una línea verde une Ejecutar y Observar porque los dos recorren las instrucciones.",
+      "programa": "Programa",
+      "analizar": "Analizar",
+      "ejecutar": "Ejecutar",
+      "observar": "Observar",
+      "a1": "diagnósticos",
+      "a2": "colores",
+      "a3": "ayuda",
+      "e1": "salida",
+      "e2": "terminación",
+      "e3": "fallos",
+      "o1": "traza",
+      "o2": "memoria",
+      "o3": "línea de tiempo",
+      "sin-ejecutar": "no ejecuta nada",
+      "recorren": "recorren las instrucciones"
+    },
+    "variante-formas": {
+      "titulo": "Las formas de una variante",
+      "descripcion": "Un recuadro con el tipo Forma y sus tres alternativas dibujadas: un círculo, un rectángulo y un punto. Debajo, Segun f Hacer reparte el valor en tres ramas, una por alternativa.",
+      "forma": "Forma",
+      "circulo": "Circulo(radio)",
+      "rectangulo": "Rectangulo(ancho, alto)",
+      "punto": "Punto",
+      "r1": "r → 3·r·r",
+      "r2": "a, h → a·h",
+      "r3": "→ 0"
+    },
+    "vector-crece": {
+      "titulo": "Un vector que cambia de tamaño",
+      "descripcion": "Un recuadro punteado que representa el vector lista, con posiciones numeradas 0, 1 y 2. Al avanzar, aparecen pan y leche; después fruta al principio, desplazando a los demás; por último desaparece pan y leche se corre a la posición 1.",
+      "lista": "lista",
+      "pan": "\"pan\"",
+      "leche": "\"leche\"",
+      "fruta": "\"fruta\""
+    },
+    "viaje": {
+      "titulo": "Las cinco etapas del motor",
+      "descripcion": "Una columna de cajas unidas por flechas: el texto fuente, el análisis léxico, el sintáctico, el semántico, la traducción y la ejecución. Una línea roja discontinua junto a las tres primeras indica que forman el análisis. Cada paso resalta una etapa.",
+      "texto": "Texto del programa",
+      "lexico": "1 · Análisis léxico → tokens",
+      "sintaxis": "2 · Análisis sintáctico → árbol",
+      "semantica": "3 · Análisis semántico → tipos",
+      "traduccion": "4 · Traducción → instrucciones",
+      "ejecucion": "5 · Máquina virtual → salida",
+      "analisis": "análisis",
+      "resultado": "Salida: 42"
+    },
+    "ruta-ciclo": {
+      "titulo": "El ciclo PseudoLearn",
+      "descripcion": "Cinco pasos en círculo: Entender, Planear, Escribir, Probar y Mejorar, unidos por flechas llenas. Una flecha punteada roja vuelve de Probar a Planear si algo falló, y otra punteada va de Mejorar a Entender hacia el siguiente problema.",
+      "entender": "1. Entender",
+      "planear": "2. Planear",
+      "escribir": "3. Escribir",
+      "probar": "4. Probar",
+      "mejorar": "5. Mejorar",
+      "fallo": "¿falló?",
+      "siguiente-1": "siguiente",
+      "siguiente-2": "problema",
+      "vuelta": "Al fallar no se empieza de cero"
+    },
+    "ruta-instrucciones-en-orden": {
+      "titulo": "Las instrucciones se ejecutan en orden",
+      "descripcion": "A la izquierda, un programa con tres instrucciones Escribir; a la derecha, la salida. En cada paso se resalta una instrucción y aparece su línea en la salida: primero Hola, después 5 y al final 2 + 3.",
+      "programa": "programa",
+      "salida": "salida",
+      "hola": "Hola"
+    },
+    "ruta-caja-no-se-recalcula": {
+      "titulo": "Una caja no se recalcula sola",
+      "descripcion": "Dos cajas, invitados y porciones. Primero valen 23 y 69. Al cambiar invitados a 30, porciones sigue en 69, marcada en rojo. Solo al volver a ejecutar el cálculo, porciones pasa a 90.",
+      "no-recalculo": "no se recalculó",
+      "recalculada": "se volvió a calcular"
+    },
+    "ruta-ficha": {
+      "titulo": "La ficha del problema",
+      "descripcion": "Una tarjeta con cuatro zonas para el problema de la propina: entra la cuenta y la cantidad de amigos; sale lo que paga cada uno; la relación dice cómo se calcula el total y cómo se reparte; los ejemplos a mano son 120 y 4 con 33, 100 y 3 con 37, y 100 y 1 con 110.",
+      "entra": "Entra",
+      "entra-1": "la cuenta",
+      "entra-2": "la cantidad de amigos",
+      "sale": "Sale",
+      "sale-1": "lo que paga cada uno",
+      "relacion": "Relación",
+      "relacion-1": "cuenta más su décima parte, entre los amigos, hacia arriba",
+      "ejemplos": "Ejemplos a mano"
+    },
+    "ruta-tres-errores": {
+      "titulo": "Tres maneras de fallar",
+      "descripcion": "Un viaje en bus de la salida al destino. Paso 1: el bus no arranca, como un error al compilar, que el motor avisa antes de empezar. Paso 2: el bus se rompe en el camino, como un error al ejecutar, que el motor avisa cuando pasa. Paso 3: el bus llega a otra ciudad, como un error de lógica, que solo descubres con tus casos de prueba.",
+      "salida": "Salida",
+      "destino": "Destino",
+      "compilar-1": "No arranca",
+      "compilar-2": "(al compilar)",
+      "compilar-quien-1": "lo avisa el motor",
+      "compilar-quien-2": "antes de empezar",
+      "ejecutar-1": "Se rompe",
+      "ejecutar-2": "(al ejecutar)",
+      "ejecutar-quien-1": "lo avisa el motor",
+      "ejecutar-quien-2": "en el camino",
+      "logica-1": "Otra ciudad",
+      "logica-2": "(de lógica)",
+      "logica-quien-1": "solo tú, con",
+      "logica-quien-2": "tus casos",
+      "otra-ciudad": "¿llegamos?"
+    },
+    "ruta-recta-casos": {
+      "titulo": "Elegir casos en la recta",
+      "descripcion": "Una recta con la cantidad de amigos de -1 a 5, partida en tres zonas: raro para 0 y los negativos, borde en 1 y normal de 2 en adelante. Hay un punto marcado en cada zona: 0, 1 y 4.",
+      "raro": "raro",
+      "borde": "borde",
+      "normal": "normal",
+      "pie": "cantidad de amigos: un caso por zona"
+    },
+    "ruta-particion-edad": {
+      "titulo": "La partición de las edades",
+      "descripcion": "Una recta de edades de 0 a 100 partida en dos regiones: los que pagan 5, hasta 11, y los que pagan 8, desde 12. Una línea roja marca el borde entre 11 y 12, y hay un punto a cada lado.",
+      "paga-5": "pagan 5",
+      "paga-8": "pagan 8",
+      "borde": "borde"
+    },
+    "ruta-dedo-decision": {
+      "titulo": "El dedo salta una rama",
+      "descripcion": "El programa del cine con un triángulo que señala la instrucción actual. Se declara la edad, se lee 30, la condición da falso, el dedo salta la rama de Entonces, que queda atenuada, y llega al Escribir de Sino, que muestra Paga 8.",
+      "paga-8": "Paga 8"
+    },
+    "ruta-tabla-decision-bisiesto": {
+      "titulo": "Tabla de decisión del bisiesto",
+      "descripcion": "Una tabla con tres filas de preguntas, si el año se divide entre 4, entre 100 y entre 400, y cuatro columnas de ejemplos: 2023, 2024, 1900 y 2000. La última fila da el resultado: no, sí, no y sí.",
+      "pregunta": "¿Se divide…",
+      "entre-4": "entre 4?",
+      "entre-100": "entre 100?",
+      "entre-400": "entre 400?",
+      "si": "sí",
+      "no": "no",
+      "bisiesto": "¿Bisiesto?"
+    },
+    "ruta-orden-preguntas": {
+      "titulo": "El orden de las preguntas",
+      "descripcion": "Dos embudos para el año 1900. En el primero se pregunta solo si se divide entre 4, la respuesta es sí y 1900 sale como bisiesto, que está mal. En el segundo se pregunta primero entre 400, después entre 100, y 1900 sale como no bisiesto, que está bien.",
+      "entre-4": "¿se divide entre 4?",
+      "entre-400": "¿se divide entre 400?",
+      "entre-100": "¿se divide entre 100?",
+      "si": "sí",
+      "no": "no",
+      "bisiesto": "bisiesto",
+      "no-bisiesto": "no bisiesto",
+      "mal": "Orden equivocado: 1900 sale mal",
+      "bien": "Orden correcto"
+    },
+    "ruta-tabla-por-vuelta": {
+      "titulo": "La tabla por vuelta de la alcancía",
+      "descripcion": "A la izquierda, las tres cajas de la alcancía: día, lo que se guarda hoy y lo juntado. A la derecha, una tabla que gana una fila por paso: antes del bucle 1, 2 y 2; la primera vuelta 2, 3 y 5; la segunda 3, 4 y 9; y la octava 9, 10 y 54, cuando el bucle sale.",
+      "vuelta": "vuelta",
+      "antes": "antes",
+      "sale": "54 alcanza: el bucle sale"
+    },
+    "ruta-rol-contador": {
+      "titulo": "Rol: contador",
+      "descripcion": "Tres escalones que crecen de a uno, con el rótulo contador.",
+      "nombre": "contador",
+      "frase": "avanza lo mismo en cada vuelta"
+    },
+    "ruta-rol-acumulador": {
+      "titulo": "Rol: acumulador",
+      "descripcion": "Una alcancía que recibe una moneda, con el rótulo acumulador.",
+      "nombre": "acumulador",
+      "frase": "va juntando"
+    },
+    "ruta-rol-bandera": {
+      "titulo": "Rol: bandera",
+      "descripcion": "Un banderín que se levanta una vez y no vuelve a bajar, con el rótulo bandera.",
+      "nombre": "bandera",
+      "frase": "cambia una vez y recuerda que algo pasó"
+    },
+    "ruta-rol-mejor-hasta-ahora": {
+      "titulo": "Rol: mejor hasta ahora",
+      "descripcion": "Un podio con un solo puesto y una flecha que reemplaza al que lo ocupa, con el rótulo mejor hasta ahora.",
+      "nombre": "mejor hasta ahora",
+      "frase": "se queda con el mejor visto"
+    },
+    "ruta-elegir-bucle": {
+      "titulo": "Elegir el bucle",
+      "descripcion": "Un árbol de dos preguntas. Si se sabe cuántas vueltas habrá, va Para. Si no, se pregunta si la primera vuelta va siempre: si va, Repetir; si no, Mientras.",
+      "cuantas": "¿Sabes cuántas vueltas habrá?",
+      "primera": "¿La primera vuelta va siempre?",
+      "si": "sí",
+      "no": "no"
+    },
+    "ruta-rol-recorredor": {
+      "titulo": "Rol: recorredor",
+      "descripcion": "Una fila de casillas con una flecha debajo de una de ellas, con el rótulo recorredor.",
+      "nombre": "recorredor",
+      "frase": "avanza casilla por casilla"
+    },
+    "ruta-dos-pasadas": {
+      "titulo": "Dos pasadas sobre el arreglo",
+      "descripcion": "El arreglo de temperaturas 20, 23, 19, 25, 22, 18 y 26. Primer paso: una flecha lo recorre entero y alimenta el promedio, 21,86. Segundo paso: se marcan las casillas que superan el promedio: 23, 25, 22 y 26.",
+      "promedio": "promedio: 21,86",
+      "superan": "superan el promedio"
+    },
+    "ruta-rol-seguidor": {
+      "titulo": "Rol: seguidor",
+      "descripcion": "Dos huellas: la de atrás sigue a la de adelante, con el rótulo seguidor.",
+      "nombre": "seguidor",
+      "frase": "recuerda lo anterior para compararlo"
+    },
+    "ruta-esquemas": {
+      "titulo": "Seis esquemas",
+      "descripcion": "El mismo arreglo de siete temperaturas dibujado seis veces. Recorrer visita todas; contar marca las que cumplen y da un número; acumular junta todas en un total; buscar marca hasta la primera que cumple y se detiene; filtrar se queda con las que cumplen en otro arreglo; transformar cambia cada una y da otro arreglo del mismo largo.",
+      "recorrer": "Recorrer",
+      "recorrer-da": "visita cada dato",
+      "contar": "Contar",
+      "contar-da": "da cuántos cumplen: 4",
+      "acumular": "Acumular",
+      "acumular-da": "da un total: 153",
+      "buscar": "Buscar",
+      "buscar-da": "se detiene en el primero que cumple",
+      "filtrar": "Filtrar",
+      "filtrar-da": "da otra colección más corta",
+      "transformar": "Transf.",
+      "transformar-da": "da otra colección del mismo largo"
+    },
+    "ruta-racha": {
+      "titulo": "La racha de días calurosos",
+      "descripcion": "Catorce temperaturas en fila y, debajo, el valor de la racha día por día: sube con cada día de más de 30 y vuelve a 0 al cortarse. La racha llega a 3 en los primeros días, que son la primera ola, y a 4 entre los días 8 y 11, la segunda ola y la más larga. La última racha, de 2 días, termina con los datos.",
+      "temperaturas": "temperaturas",
+      "racha": "racha",
+      "ola-1": "ola de 3",
+      "ola-2": "ola de 4",
+      "final": "La última racha se revisa después del bucle"
+    },
+    "ruta-matriz-coordenadas": {
+      "titulo": "Las coordenadas del tablero",
+      "descripcion": "Un tablero de 3 por 3 con la fila y la columna escritas en cada casilla, de [0, 0] a [2, 2]. Están resaltadas las dos diagonales: la que tiene fila igual a columna y la que tiene fila más columna igual a 2.",
+      "diagonal-1": "fila =",
+      "diagonal-1b": "columna",
+      "diagonal-2": "fila +",
+      "diagonal-2b": "col. = 2",
+      "pie": "[fila, columna]"
+    },
+    "ruta-busqueda-binaria": {
+      "titulo": "Búsqueda binaria",
+      "descripcion": "Un arreglo ordenado de quince números, de 2 a 44 de tres en tres, donde se busca el 26. En cada paso se mira el del medio y se tacha la mitad que no puede contenerlo: primero el 23, después el 35, después el 29, y en el cuarto paso aparece el 26.",
+      "buscado": "buscado: 26",
+      "paso-1": "23 es menor: se tacha la izquierda",
+      "paso-2": "35 es mayor: se tacha la derecha",
+      "paso-3": "29 es mayor: se tacha la derecha",
+      "paso-4": "26: encontrado en 4 pasos"
+    },
+    "ruta-pasos-crecen": {
+      "titulo": "Los pasos crecen distinto",
+      "descripcion": "Barras horizontales con los pasos que necesita cada estrategia en el peor caso. Con 10 datos, uno por uno tarda 10 y por mitades 4; con 100, 100 y 7; con 1000, 1000 y 10.",
+      "datos": "datos",
+      "uno-por-uno": "uno por uno",
+      "mitades": "por mitades"
+    },
+    "ruta-seleccion": {
+      "titulo": "Ordenamiento por selección",
+      "descripcion": "Cinco números, 5, 3, 8, 1 y 9. En cada paso el menor de la parte desordenada pasa al frente y queda marcado como ordenado: primero el 1, después el 3, que ya estaba en su lugar, después el 5 y el 8. El 9 queda último.",
+      "paso-1": "desordenados",
+      "paso-2": "el 1 pasa al frente",
+      "paso-3": "el 3 ya está en su lugar",
+      "paso-4": "el 5 pasa al tercer lugar",
+      "paso-5": "el 8 pasa al cuarto lugar"
+    },
+    "ruta-arbol-boletin": {
+      "titulo": "El árbol del boletín",
+      "descripcion": "Un árbol de descomposición. Arriba, el boletín. Debajo, cuatro ramas: leer las notas, calcular el promedio, decidir el estado y buscar el mejor. En el último paso, cada rama muestra con qué se resuelve: leer, el subprograma Promedio, el subprograma Estado y el mejor hasta ahora.",
+      "boletin": "Boletín",
+      "leer-1": "Leer",
+      "leer-2": "las notas",
+      "promedio-1": "Calcular",
+      "promedio-2": "el promedio",
+      "estado-1": "Decidir",
+      "estado-2": "el estado",
+      "mejor-1": "Buscar",
+      "mejor-2": "el mejor",
+      "rol": "mejor hasta ahora",
+      "pie": "cada hoja ya se sabe resolver"
+    },
+    "ruta-maquina-pura": {
+      "titulo": "Una máquina pura y una con puertas",
+      "descripcion": "Dos máquinas. La pura tiene una sola entrada, los datos, y una sola salida, el resultado. La otra tiene además puertas laterales: por una lee, por otras escribe y cambia cosas de afuera, sin que se vea en la llamada.",
+      "pura": "pura",
+      "impura": "con efectos",
+      "datos": "datos",
+      "resultado": "resultado",
+      "lee": "lee",
+      "escribe": "por los costados escribe",
+      "cambia": "y cambia lo de afuera",
+      "pie": "lo que no pasa por la llamada es un efecto"
+    },
+    "ruta-hanoi": {
+      "titulo": "La torre de Hanói con tres discos",
+      "descripcion": "Tres postes, A, B y C. En siete pasos los tres discos pasan de A a C, moviendo uno por vez y sin poner uno grande sobre uno chico. A mitad de camino, la torre de dos discos de arriba queda en B y el disco grande pasa a C.",
+      "paso-1": "1. el chico de A a C",
+      "paso-2": "2. el mediano de A a B",
+      "paso-3": "3. el chico de C a B",
+      "paso-4": "4. el grande de A a C",
+      "paso-5": "5. el chico de B a A",
+      "paso-6": "6. el mediano de B a C",
+      "paso-7": "7. el chico de A a C",
+      "poste-a": "A",
+      "poste-b": "B",
+      "poste-c": "C"
+    },
+    "ruta-munecas": {
+      "titulo": "Las muñecas que se abren",
+      "descripcion": "Una muñeca grande que se abre y contiene otra más chica, y esa otra, hasta la más chica, que no se abre y es el caso base. Al final se cierran de adentro hacia afuera.",
+      "paso-1": "la grande contiene una más chica",
+      "paso-2": "y esa, otra más chica",
+      "paso-3": "la más chica no se abre: caso base",
+      "paso-4": "se cierran de adentro hacia afuera"
+    },
+    "ruta-forma-de-datos": {
+      "titulo": "Tres formas de guardar la agenda",
+      "descripcion": "La misma agenda de tres compañeros dibujada tres veces. Arriba, tres filas separadas de nombres, teléfonos y meses, que hay que mantener alineadas. En el medio, una ficha por compañero con sus tres datos juntos. Abajo, una lista que lleva de cada nombre a su teléfono.",
+      "paralelos": "Filas separadas",
+      "paralelos-riesgo": "si una fila se corre, los datos ya no coinciden",
+      "registros": "Una ficha por compañero",
+      "registros-bien": "los datos de cada uno viajan juntos",
+      "diccionario": "Por nombre",
+      "diccionario-bien": "el teléfono se encuentra sin recorrer todo",
+      "ana": "Ana",
+      "beto": "Beto",
+      "caro": "Caro"
+    },
+    "ruta-filtro-validacion": {
+      "titulo": "Dos filtros en fila",
+      "descripcion": "Una tubería: el texto entra al primer filtro, que pregunta si es un número; lo que pasa entra al segundo, que pregunta si está en el rango, y sale como edad válida. Cada filtro tiene una salida hacia abajo con su motivo: no es un número, o fuera de rango.",
+      "texto": "texto",
+      "numero-1": "¿es un",
+      "numero-2": "número?",
+      "rango-1": "¿está en",
+      "rango-2": "el rango?",
+      "ok": "edad",
+      "motivo-1a": "no es",
+      "motivo-1b": "un número",
+      "motivo-2a": "fuera",
+      "motivo-2b": "de rango",
+      "pie": "el primer filtro que falla da el motivo"
+    },
+    "ruta-kiosco-modulos": {
+      "titulo": "Los módulos del kiosco",
+      "descripcion": "Cuatro cajas: principal arriba; tickets y ventas en el medio; inventario abajo. Las flechas van de principal a los otros tres, de tickets a ventas y de ventas a inventario. Ninguna flecha vuelve hacia atrás.",
+      "principal": "principal",
+      "tickets": "tickets",
+      "ventas": "ventas",
+      "inventario": "inventario",
+      "pie": "la flecha va de quien usa a quien es usado"
+    },
+    "ruta-molde": {
+      "titulo": "El molde y las galletas",
+      "descripcion": "Primer paso: un molde con forma de estrella, que es la clase. Segundo paso: tres galletas con la misma forma y distinta decoración, que son tres objetos con su propio estado.",
+      "molde": "el molde: la clase",
+      "galletas": "tres galletas: tres objetos",
+      "pie": "la misma forma, distinto estado"
+    },
+    "ruta-caja-fuerte": {
+      "titulo": "Un objeto como caja fuerte",
+      "descripcion": "Una caja fuerte con el saldo adentro, privado. Por fuera, tres ventanillas: Cobrar y Cargar, que deciden si el pedido entra, y Saldo, que deja ver el valor sin tocarlo.",
+      "privado": "privado",
+      "pie": "solo las ventanillas tocan lo de adentro"
+    },
+    "ruta-flechas-pedido": {
+      "titulo": "Dos flechas, un pedido",
+      "descripcion": "Las variables pedido y copia. Primero, las dos flechas llegan al mismo pedido con jugo y sándwich. Después se agrega un alfajor por copia y aparece en el único pedido. Al final, con una copia real, hay dos pedidos: el original con jugo y sándwich, y el otro con el alfajor.",
+      "pedido": "pedido #1",
+      "otro-pedido": "pedido #2",
+      "jugo-sandwich": "Jugo, Sándwich",
+      "alfajor": "+ Alfajor",
+      "uno-solo": "hay un solo pedido",
+      "dos": "dos pedidos, cada uno con su lista"
+    },
+    "ruta-enchufe": {
+      "titulo": "La caja como un enchufe",
+      "descripcion": "La caja tiene un enchufe. Debajo, tres aparatos con el mismo enchufe: efectivo, tarjeta y vale. Cualquiera se puede conectar a la caja.",
+      "caja": "caja",
+      "efectivo": "efectivo",
+      "tarjeta": "tarjeta",
+      "vale": "vale",
+      "pie": "el mismo enchufe para todos los medios"
+    },
+    "ruta-explosion-clases": {
+      "titulo": "Heredar explota, componer suma",
+      "descripcion": "Primer paso: un árbol con el producto arriba y un caso particular por cada combinación de tres rasgos: vence, oferta, envase, y sus combinaciones de a dos y de a tres; los combinados están en rojo. Segundo paso: un solo producto que tiene, o no, cada uno de los tres rasgos.",
+      "producto": "Producto",
+      "vence": "vence",
+      "oferta": "oferta",
+      "envase": "envase",
+      "vence-oferta": "vence + oferta",
+      "vence-envase": "vence + envase",
+      "oferta-envase": "oferta + envase",
+      "los-tres": "los tres",
+      "ocho": "ocho tipos para tres rasgos",
+      "tiene": "tiene rasgos",
+      "tres": "tres piezas para tres rasgos"
+    },
+    "ruta-tarjetas": {
+      "titulo": "Las tarjetas del kiosco",
+      "descripcion": "Cuatro tarjetas. Producto sabe su precio y calcula el importe. Inventario sabe el stock y quita si alcanza. Ticket anota e imprime las líneas. Caja registra la venta y junta el total, y le pide ayuda a las otras tres.",
+      "producto": "Producto",
+      "producto-1": "sabe su precio",
+      "producto-2": "calcula el importe",
+      "inventario": "Inventario",
+      "inventario-1": "sabe el stock",
+      "inventario-2": "quita si alcanza",
+      "ticket": "Ticket",
+      "ticket-1": "anota líneas",
+      "ticket-2": "las imprime",
+      "caja": "Caja",
+      "caja-1": "registra la venta",
+      "caja-2": "junta el total",
+      "pide": "la caja les pide ayuda"
+    },
+    "ruta-nucleo-borde": {
+      "titulo": "Núcleo puro y borde con efectos",
+      "descripcion": "Un círculo grande rotulado borde con efectos contiene a Leer y Escribir. Adentro hay un círculo más chico rotulado núcleo puro con las funciones Linea y ConDescuento, que no cambian nada. Una flecha entra desde afuera con los datos y otra sale con el resultado hacia el borde, que lo muestra.",
+      "borde": "borde con efectos",
+      "nucleo": "núcleo puro",
+      "no-cambia": "no cambia nada",
+      "pie": "los datos entran por el borde y el resultado sale por el borde"
+    },
+    "ruta-sustitucion": {
+      "titulo": "Calcular por sustitución",
+      "descripcion": "Seis renglones. Cada uno reemplaza una parte del anterior por su valor: las dos llamadas a Linea por 9 y 10, la suma por 19, la llamada a ConDescuento por su cálculo, 19 div 10 por 1, y al final 18."
+    },
+    "ruta-cinta": {
+      "titulo": "Una cinta de precios",
+      "descripcion": "Los precios 3, 5 y 2 pasan por tres máquinas, una por paso. La primera cambia cada uno y da 4, 6 y 3. La segunda es una compuerta que deja pasar solo los baratos: el 2. La tercera es un embudo que los junta en un solo valor: 10.",
+      "mapear": "mapear",
+      "filtrar": "filtrar",
+      "reducir": "reducir",
+      "maquina": "suma 1",
+      "compuerta": "¿es barato?",
+      "embudo": "suma",
+      "pie": "la operación es un dato que se le pasa a cada máquina"
+    },
+    "ruta-mochila": {
+      "titulo": "La mochila de una función",
+      "descripcion": "Primer paso: la fábrica CrearDescuento recibe 20 y devuelve una función que lleva el 20 en su mochila. Segundo paso: la función recibe el precio 50, usa el 20 de la mochila y devuelve 40.",
+      "funcion": "descuento",
+      "paso-1": "la fábrica guarda el 20 en la mochila",
+      "paso-2": "la función usa el 20 con cada precio"
+    },
+    "ruta-estados-pedido": {
+      "titulo": "Los estados de un pedido",
+      "descripcion": "Cuatro estados. Pendiente, sin datos, pasa a en camino, con el repartidor, y en camino pasa a entregado, con el repartidor y la hora. Desde pendiente y desde en camino se puede cancelar, con un motivo. De entregado y de cancelado no sale ninguna flecha.",
+      "pendiente": "Pendiente",
+      "encamino": "EnCamino",
+      "repartidor": "repartidor",
+      "entregado": "Entregado",
+      "repartidor-hora": "repartidor, hora",
+      "cancelado": "Cancelado",
+      "motivo": "motivo",
+      "pie": "cada estado lleva solo sus datos"
+    },
+    "ruta-tres-kioscos": {
+      "titulo": "Tres kioscos",
+      "descripcion": "El mismo ticket en tres pasos. Primero, órdenes que van cambiando el total: se suma 9, se suma 10, se descuenta. Después, una caja que guarda su total y un principal que le pide vender. Al final, una expresión que calcula el total con descuento a partir de las líneas.",
+      "imp-1": "total ← total + 9",
+      "imp-2": "total ← total + 10",
+      "imp-3": "total ← total - 1",
+      "imperativa": "órdenes que cambian cajas",
+      "caja": "Caja",
+      "obj-1": "guarda su total",
+      "obj-2": "sabe descontar",
+      "principal": "principal",
+      "obj-3": "le pide vender",
+      "objetos": "piezas que colaboran",
+      "fun-1": "ConDescuento(",
+      "fun-2": "Linea(3, 3) + Linea(5, 2))",
+      "funcional": "funciones que transforman"
+    },
+    "ruta-cocina-turnos": {
+      "titulo": "Cocina por turnos",
+      "descripcion": "Cuatro columnas: el algoritmo y los cocineros de jugos, sándwiches y frutas. En cada paso, una sola columna avanza; las demás esperan, están en la fila o ya terminaron. Al final, el algoritmo suma los tres resultados y el ámbito se cierra sin tareas vivas.",
+      "algoritmo": "Algoritmo",
+      "jugos": "Jugos",
+      "sandwiches": "Sándwiches",
+      "frutas": "Frutas",
+      "avanza": "avanza",
+      "espera": "espera",
+      "lista": "en la fila",
+      "termino": "terminó",
+      "pie": "Una sola tarea avanza en cada turno.",
+      "paso-1": "El algoritmo lanza las tres tareas.",
+      "paso-2": "Aguarda los jugos y cede su turno.",
+      "paso-3": "Los jugos terminan; siguen los sándwiches.",
+      "paso-4": "Siguen las frutas.",
+      "paso-5": "Las tres terminaron: el algoritmo suma 27.",
+      "paso-6": "Al cerrar el ámbito no queda ninguna tarea viva."
+    },
+    "ruta-mostrador": {
+      "titulo": "El canal entre la cocina y el mostrador",
+      "descripcion": "A la izquierda la cocina, a la derecha el mostrador y en el medio un canal donde caben dos pedidos. La cocina deja los pedidos 1 y 2; con el canal lleno, espera. El mostrador recibe el 1, se libera un lugar y la cocina deja el 3. Los pedidos salen en el orden en que entraron.",
+      "cocina": "Cocina",
+      "mostrador": "Mostrador",
+      "caben": "canal: caben 2",
+      "libre": "libre",
+      "p1": "pedido 1",
+      "p2": "pedido 2",
+      "p3": "pedido 3",
+      "pie": "Los pedidos salen en el orden en que entraron.",
+      "paso-1": "La cocina deja el pedido 1.",
+      "paso-2": "Deja el 2: el canal está lleno.",
+      "paso-3": "El mostrador recibe el 1; queda lugar.",
+      "paso-4": "La cocina deja el pedido 3."
+    },
+    "ruta-carrera": {
+      "titulo": "La carrera de los proveedores",
+      "descripcion": "Dos carriles, Norte y Sur, con una meta a la derecha. Las dos ofertas salen a la vez; la del Norte llega primero y se atiende; la del Sur, que ya no hace falta, se corta antes de llegar.",
+      "norte": "Norte",
+      "sur": "Sur",
+      "meta": "meta",
+      "oferta": "oferta",
+      "atendida": "atendida",
+      "cortada": "cortada",
+      "pie": "Se atiende la primera; lo demás se corta.",
+      "paso-1": "Las dos ofertas salen a la vez.",
+      "paso-2": "La del Norte llega primero y se atiende.",
+      "paso-3": "La del Sur ya no hace falta: se corta."
+    },
+    "ruta-memoria-y-disco": {
+      "titulo": "La memoria y el disco",
+      "descripcion": "A la izquierda, la memoria del programa con las cajas del stock: jugo 10, agua 12 y fruta 6; a la derecha, el disco con el archivo stock.txt. En el primer paso el programa guarda las cajas en el archivo. En el segundo el programa se cerró: la memoria queda vacía y el archivo sigue en el disco.",
+      "archivo": "stock.txt",
+      "memoria": "Memoria",
+      "disco": "Disco",
+      "jugo": "jugo: 10",
+      "agua": "agua: 12",
+      "fruta": "fruta: 6",
+      "vacia": "vacía",
+      "paso-1": "El programa guarda el stock en el archivo.",
+      "paso-2": "El programa se cerró: el archivo queda."
+    },
+    "ruta-json-viaje": {
+      "titulo": "El viaje de un dato en JSON",
+      "descripcion": "A la izquierda, el inventario del kiosco como dato del programa, con jugo 10. Una flecha lo convierte en texto JSON, que viaja; otra flecha lo analiza del otro lado y reconstruye el mismo dato en el programa de la escuela.",
+      "programa-a": "Kiosco",
+      "programa-b": "Escuela",
+      "registro": "jugo: 10",
+      "texto": "texto",
+      "json": "{\"jugo\": 10}",
+      "serializa": "se serializa",
+      "analiza": "se analiza",
+      "pie": "El dato viaja como texto y se reconstruye igual."
+    }
+  }
+}

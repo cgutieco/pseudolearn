@@ -1,0 +1,14 @@
+[package]
+name = "pseudolearn_lowering"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+pseudolearn_source = { path = "../pseudolearn_source", version = "=0.1.0" }
+pseudolearn_semantic = { path = "../pseudolearn_semantic", version = "=0.1.0" }
+pseudolearn_ir = { path = "../pseudolearn_ir", version = "=0.1.0" }
+pseudolearn_diagnostics = { path = "../pseudolearn_diagnostics", version = "=0.1.0" }
+
+[lints]
+workspace = true

@@ -1,0 +1,12 @@
+<svg viewBox="0 0 340 200">
+  <path d="M 10 90 H 330" fill="none" stroke="@tinta" stroke-width="2"/>
+  <path d="M 30 80 V 100 M 70 80 V 100 M 110 80 V 100 M 150 80 V 100 M 190 80 V 100 M 230 80 V 100 M 270 80 V 100 M 310 80 V 100" fill="none" stroke="@tinta" stroke-width="2"/>
+  <text x="150" y="122" font-size="13" font-family="mono" text-anchor="middle" fill="@numero" font-weight="600">0.3</text>
+  <text x="190" y="122" font-size="12" font-family="mono" text-anchor="middle" fill="@numero">0.30000000000000004</text>
+  <flecha puntos="140,40 150,76" rol="exito"/>
+  <text x="70" y="34" font-size="12" fill="@exito">{{t:literal}}</text>
+  <flecha puntos="226,40 192,76" rol="error"/>
+  <text x="206" y="34" font-size="12" fill="@error">{{t:suma}}</text>
+  <text x="170" y="160" font-size="13" text-anchor="middle" fill="@tinta">{{t:nota}}</text>
+  <text x="170" y="182" font-size="12" text-anchor="middle" fill="@atenuado">{{t:nota2}}</text>
+</svg>

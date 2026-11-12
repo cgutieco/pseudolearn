@@ -1,0 +1,110 @@
+{
+  "identity": {
+    "publisher": "pseudolearn",
+    "name": "pseudolearn-vscode",
+    "version": "0.1.0"
+  },
+  "engines": {
+    "vscode": "^1.144.0",
+    "node": "26.13.1"
+  },
+  "targets": {
+    "darwin-arm64": {
+      "cargoTarget": "aarch64-apple-darwin",
+      "platform": "darwin",
+      "architecture": "arm64",
+      "executable": "pseudo"
+    },
+    "win32-x64": {
+      "cargoTarget": "x86_64-pc-windows-msvc",
+      "platform": "win32",
+      "architecture": "x64",
+      "executable": "pseudo.exe"
+    }
+  },
+  "readme": "marketplace/README.md",
+  "grammar": "media/pseudolearn.tmLanguage.json",
+  "languageConfiguration": "media/language-configuration.json",
+  "bundle": "dist/extension.js",
+  "license": "LICENSE.md",
+  "required": [
+    "package.json",
+    "readme.md",
+    "LICENSE.md",
+    "NOTICE",
+    "third-party-notices.md",
+    "dist/extension.js",
+    "media/pseudolearn.tmLanguage.json",
+    "media/language-configuration.json"
+  ],
+  "allowedPrefixes": [
+    "media/"
+  ],
+  "allowedFiles": [
+    "dist/extension.js",
+    "package.json",
+    "readme.md",
+    "LICENSE.md",
+    "NOTICE",
+    "third-party-notices.md"
+  ],
+  "forbiddenSegments": [
+    "src",
+    "tests",
+    "scripts",
+    "examples",
+    "node_modules",
+    ".git",
+    ".artifacts",
+    "test-results"
+  ],
+  "forbiddenSuffixes": [
+    ".map"
+  ],
+  "forbiddenPrefixes": [
+    ".env"
+  ],
+  "bundledRuntimeModules": [
+    "vscode-languageclient"
+  ],
+  "externalRuntimeModules": [
+    "vscode"
+  ],
+  "hashAlgorithm": "sha256",
+  "web": {
+    "vscodeTarget": "web",
+    "artifactName": "pseudolearn-0.1.0-web.vsix",
+    "browser": "dist/web/browser_extension.js",
+    "workers": [
+      "dist/web/language_worker.js",
+      "dist/web/execution_worker.js"
+    ],
+    "wasm": "dist/web/wasm/pseudolearn_wasm_bg.wasm",
+    "glue": "dist/web/wasm/pseudolearn_wasm.js",
+    "maximumWasmBrotliBytes": 1228800,
+    "maximumMemoryPages": 4096,
+    "externalInputs": [
+      "../../packages/pseudolearn_engine/crates/pseudolearn_wasm/browser/fetch_host.mjs"
+    ],
+    "required": [
+      "package.json",
+      "README.md",
+      "LICENSE.md",
+      "NOTICE",
+      "third-party-notices.md",
+      "media/pseudolearn.tmLanguage.json",
+      "media/language-configuration.json",
+      "media/icon.png",
+      "media/icons/pseudo-file.svg",
+      "media/icons/file.svg",
+      "media/icons/folder.svg",
+      "media/icons/folder-open.svg",
+      "media/icons/pseudolearn-icon-theme.json",
+      "dist/web/browser_extension.js",
+      "dist/web/language_worker.js",
+      "dist/web/execution_worker.js",
+      "dist/web/wasm/pseudolearn_wasm_bg.wasm",
+      "dist/web/wasm/pseudolearn_wasm.js"
+    ]
+  }
+}

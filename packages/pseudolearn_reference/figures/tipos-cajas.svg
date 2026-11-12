@@ -1,0 +1,32 @@
+<svg viewBox="0 0 340 330">
+  <caja x="8" y="8" ancho="158" alto="96" rol="numero" fondo="0.10"/>
+  <text x="20" y="32" font-size="14" font-weight="600" fill="@tipo">{{lex:integerType}}</text>
+  <text x="87" y="72" font-size="26" font-family="mono" text-anchor="middle" fill="@numero" font-weight="600">42</text>
+  <text x="20" y="94" font-size="12" fill="@atenuado">{{t:entero}}</text>
+  <caja x="174" y="8" ancho="158" alto="96" rol="numero" fondo="0.10"/>
+  <text x="186" y="32" font-size="14" font-weight="600" fill="@tipo">{{lex:realType}}</text>
+  <text x="253" y="72" font-size="26" font-family="mono" text-anchor="middle" fill="@numero" font-weight="600">3.14</text>
+  <text x="186" y="94" font-size="12" fill="@atenuado">{{t:real}}</text>
+  <caja x="8" y="114" ancho="158" alto="96" rol="logico" fondo="0.10"/>
+  <text x="20" y="138" font-size="14" font-weight="600" fill="@tipo">{{lex:booleanType}}</text>
+  <caja x="22" y="152" ancho="62" alto="28" rol="exito" fondo="0.16" fuente="mono" tamano="12" texto="{{lex:booleanTrue}}"/>
+  <caja x="92" y="152" ancho="62" alto="28" rol="error" fondo="0.16" fuente="mono" tamano="12" texto="{{lex:booleanFalse}}"/>
+  <text x="20" y="200" font-size="12" fill="@atenuado">{{t:logico}}</text>
+  <caja x="174" y="114" ancho="158" alto="96" rol="texto" fondo="0.10"/>
+  <text x="186" y="138" font-size="14" font-weight="600" fill="@tipo">{{lex:characterType}}</text>
+  <caja x="232" y="148" ancho="42" alto="36" rol="texto" fondo="0.18" fuente="mono" tamano="18" negrita="" texto="{{t:letra}}"/>
+  <text x="186" y="200" font-size="12" fill="@atenuado">{{t:caracter}}</text>
+  <caja x="8" y="220" ancho="324" alto="102" rol="texto" fondo="0.10"/>
+  <text x="20" y="244" font-size="14" font-weight="600" fill="@tipo">{{lex:stringType}}</text>
+  <caja x="40" y="256" ancho="40" alto="34" rol="texto" fondo="0.18" fuente="mono" tamano="16" texto="{{t:c0}}"/>
+  <caja x="82" y="256" ancho="40" alto="34" rol="texto" fondo="0.18" fuente="mono" tamano="16" texto="{{t:c1}}"/>
+  <caja x="124" y="256" ancho="40" alto="34" rol="texto" fondo="0.18" fuente="mono" tamano="16" texto="{{t:c2}}"/>
+  <caja x="166" y="256" ancho="40" alto="34" rol="texto" fondo="0.18" fuente="mono" tamano="16" texto="{{t:c3}}"/>
+  <caja x="208" y="256" ancho="40" alto="34" rol="texto" fondo="0.18" fuente="mono" tamano="16" texto="{{t:c4}}"/>
+  <text x="60" y="306" font-size="12" text-anchor="middle" fill="@atenuado">0</text>
+  <text x="102" y="306" font-size="12" text-anchor="middle" fill="@atenuado">1</text>
+  <text x="144" y="306" font-size="12" text-anchor="middle" fill="@atenuado">2</text>
+  <text x="186" y="306" font-size="12" text-anchor="middle" fill="@atenuado">3</text>
+  <text x="228" y="306" font-size="12" text-anchor="middle" fill="@atenuado">4</text>
+  <text x="262" y="306" font-size="12" fill="@atenuado">{{t:posiciones}}</text>
+</svg>

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/onboarding/demo/guided_demo_state.dart';
 import 'package:pseudolearn_app/application/onboarding/onboarding_state.dart';
@@ -93,7 +93,7 @@ void main() {
           findsOneWidget);
     });
 
-    testWidgets('the knowledge step lists the three tracks with real counts',
+    testWidgets('the knowledge step lists the parts of the route with real counts',
         (tester) async {
       sizeCanvas(tester, const Size(960, 1400));
       await tester.pumpWidget(buildOnboardingApp(
@@ -107,7 +107,8 @@ void main() {
 
       expect(find.byType(KnowledgeStepView), findsOneWidget);
       expect(find.text('Ruta personalizada'), findsOneWidget);
-      expect(find.text('Objetos con pseudocódigo · 5 módulos'), findsOneWidget);
+      expect(find.text('II · Procedimental y modular · 8 lecciones'), findsOneWidget);
+      expect(find.text('Semilla: 40'), findsOneWidget);
       expect(find.text('22 secciones'), findsOneWidget);
       expect(find.text('95 ejercicios'), findsOneWidget);
     });

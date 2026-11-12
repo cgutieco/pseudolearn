@@ -1,27 +1,30 @@
 import 'package:bloc/bloc.dart';
 import '../../domain/model/knowledge/content_load_result.dart';
-import '../../domain/model/knowledge/knowledge_entry.dart';
+import '../../domain/model/profiles/syntax_profile_for_language.dart';
+import '../../domain/model/reference/reference_edition.dart';
+import '../../domain/model/reference/reference_index.dart';
+import '../../domain/model/route/route_toc.dart';
 import '../../domain/model/onboarding/onboarding_exit.dart';
 import '../../domain/model/onboarding/onboarding_step.dart';
-import '../../domain/ports/knowledge_repository.dart';
+import '../../domain/ports/reference_repository.dart';
+import '../../domain/ports/route_repository.dart';
 import '../../domain/ports/preferences_store.dart';
 import 'knowledge_highlights_projection.dart';
 import 'onboarding_state.dart';
 
 final class OnboardingCubit extends Cubit<OnboardingState> {
   final PreferencesStore _preferences;
-  final KnowledgeRepository _knowledgeRepository;
+  final RouteRepository _routeRepository;
+  final ReferenceRepository _referenceRepository;
   final KnowledgeHighlightsProjection _highlights;
 
   OnboardingCubit({
-    required PreferencesStore preferences,
-    required KnowledgeRepository knowledgeRepository,
-    KnowledgeHighlightsProjection highlights =
+    required this._preferences,
+    required this._routeRepository,
+    required this._referenceRepository,
+    this._highlights =
         const KnowledgeHighlightsProjection(),
-  })  : _preferences = preferences,
-        _knowledgeRepository = knowledgeRepository,
-        _highlights = highlights,
-        super(const OnboardingState());
+  })  : super(const OnboardingState());
 
   Future<void> init() async {
     final prefs = await _preferences.read();
@@ -63,24 +66,25 @@ final class OnboardingCubit extends Cubit<OnboardingState> {
   Future<void> _loadHighlights() async {
     if (state.highlightsStatus == KnowledgeHighlightsStatus.loading) return;
     emit(state.copyWith(highlightsStatus: KnowledgeHighlightsStatus.loading));
-    try {
-      final result = await _knowledgeRepository.getEntries(state.language);
-      if (result is ContentLoadFailed<List<KnowledgeEntry>>) {
-        emit(state.copyWith(
-          highlightsStatus: KnowledgeHighlightsStatus.unavailable,
-        ));
-        return;
-      }
-      final entries = (result as ContentLoaded<List<KnowledgeEntry>>).value;
-      emit(state.copyWith(
-        highlights: _highlights.of(entries),
-        highlightsStatus: KnowledgeHighlightsStatus.ready,
-      ));
-    } catch (_) {
+    final edition = ReferenceEdition(
+      language: state.language,
+      profile: syntaxProfileForLanguage(state.language),
+    );
+    final toc = await _routeRepository.loadToc(edition);
+    final index = await _referenceRepository.loadIndex(edition);
+    if (toc is! ContentLoaded<RouteToc>) {
       emit(state.copyWith(
         highlightsStatus: KnowledgeHighlightsStatus.unavailable,
       ));
+      return;
     }
+    emit(state.copyWith(
+      highlights: _highlights.of(
+        toc: toc.value,
+        index: index is ContentLoaded<ReferenceIndex> ? index.value : null,
+      ),
+      highlightsStatus: KnowledgeHighlightsStatus.ready,
+    ));
   }
 
   Future<void> finishWith(OnboardingExit exit) async {

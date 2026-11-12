@@ -1,0 +1,49 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+<div class="nodo-confirm">
+  <p>{t('nodo.chat.confirm')}</p>
+  <span class="nodo-confirm__choices" aria-hidden="true">
+    <span class="nodo-confirm__choice nodo-confirm__choice--primary">{t('nodo.chat.allow')}</span>
+    <span class="nodo-confirm__choice">{t('nodo.chat.deny')}</span>
+  </span>
+</div>
+
+<style>
+  .nodo-confirm {
+    display: grid;
+    gap: var(--pl-space-xs);
+    padding: var(--pl-space-sm) var(--pl-space-md);
+    border: 1px solid var(--pl-brand-tint);
+    border-radius: var(--pl-radius-control);
+    font-size: 14px;
+  }
+
+  .nodo-confirm__choices {
+    display: flex;
+    gap: var(--pl-space-xs);
+  }
+
+  .nodo-confirm__choice {
+    padding: 6px 12px;
+    border: 1px solid var(--pl-line-strong);
+    border-radius: var(--pl-radius-control);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .nodo-confirm__choice--primary {
+    border-color: transparent;
+    background: var(--pl-btn-bg);
+    color: var(--pl-btn-fg);
+  }
+</style>

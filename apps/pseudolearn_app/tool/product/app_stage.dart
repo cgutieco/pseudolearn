@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:pseudolearn_app/composition/app_dependencies.dart';
 import 'package:pseudolearn_app/composition/cubit_scope.dart';
 

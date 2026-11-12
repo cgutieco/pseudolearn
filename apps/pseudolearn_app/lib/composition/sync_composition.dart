@@ -1,6 +1,10 @@
 import 'dart:io';
 import 'package:supabase/supabase.dart';
 import '../data/auth/session_storage.dart';
+import '../data/exercises/sqflite_user_exercise_repository.dart';
+import '../data/exercises/supabase_user_exercise_store.dart';
+import '../data/exercises/user_exercise_sync_drainer.dart';
+import '../data/exercises/user_exercise_sync_state.dart';
 import '../data/documents/file_document_repository.dart';
 import '../data/index/metadata_index.dart';
 import '../data/sync/sqlite_progress_sync_store.dart';
@@ -10,6 +14,7 @@ import '../data/sync/supabase_document_store.dart';
 import '../data/sync/supabase_progress_store.dart';
 import '../data/sync/sync_drainer.dart';
 import '../data/sync/sync_metadata_store.dart';
+import '../data/sync/sync_owner_store.dart';
 import '../data/sync/syncing_document_repository.dart';
 import '../data/platform/connectivity_monitor_adapter.dart';
 import '../domain/ports/auth_gateway.dart';
@@ -22,6 +27,7 @@ import '../domain/ports/remote_document_store.dart';
 import '../domain/ports/remote_progress_store.dart';
 import '../domain/ports/sync_coordinator.dart';
 import '../domain/ports/sync_queue.dart';
+import '../domain/ports/user_exercise_repository.dart';
 
 final class SyncServices {
   final RemoteProgressStore remoteProgressStore;
@@ -30,6 +36,7 @@ final class SyncServices {
   final SyncCoordinator coordinator;
   final DocumentRepository repository;
   final LocalAccountDataPurger accountDataPurger;
+  final UserExerciseRepository userExercises;
 
   const SyncServices({
     required this.remoteProgressStore,
@@ -38,6 +45,7 @@ final class SyncServices {
     required this.coordinator,
     required this.repository,
     required this.accountDataPurger,
+    required this.userExercises,
   });
 }
 
@@ -62,12 +70,18 @@ SyncServices buildSyncServices({
 }) {
   final fileRepo = FileDocumentRepository(directory: documentsDirectory, index: index);
   final queue = SqliteSyncQueue(index.database);
-  final remoteStore = SupabaseDocumentStore(client: client);
   final remoteProgressStore = SupabaseProgressStore(client: client);
+  final userExercises = SqfliteUserExerciseRepository(index.database, clock: clock);
+  final accountDataPurger = LocalAccountDataPurgerAdapter(
+    database: index.database,
+    documentsDirectory: documentsDirectory,
+  );
   final drainer = _buildSyncDrainer(
+    accountDataPurger: accountDataPurger,
+    exerciseDrainer: _exerciseDrainer(index, client, userExercises),
     index: index,
     authGateway: authGateway,
-    remoteStore: remoteStore,
+    remoteStore: SupabaseDocumentStore(client: client),
     remoteProgressStore: remoteProgressStore,
     fileRepo: fileRepo,
     queue: queue,
@@ -79,20 +93,15 @@ SyncServices buildSyncServices({
     queue: queue,
     connectivity: ConnectivityMonitorAdapter(),
     coordinator: drainer,
-    repository: SyncingDocumentRepository(
-      inner: fileRepo,
-      queue: queue,
-      identifiers: identifiers,
-      clock: clock,
-    ),
-    accountDataPurger: LocalAccountDataPurgerAdapter(
-      database: index.database,
-      documentsDirectory: documentsDirectory,
-    ),
+    repository: SyncingDocumentRepository(inner: fileRepo, queue: queue, identifiers: identifiers, clock: clock),
+    accountDataPurger: accountDataPurger,
+    userExercises: userExercises,
   );
 }
 
 SyncDrainer _buildSyncDrainer({
+  required LocalAccountDataPurger accountDataPurger,
+  required UserExerciseSyncDrainer exerciseDrainer,
   required MetadataIndex index,
   required AuthGateway authGateway,
   required RemoteDocumentStore remoteStore,
@@ -112,5 +121,18 @@ SyncDrainer _buildSyncDrainer({
     clock: clock,
     remoteProgressStore: remoteProgressStore,
     progressSyncStore: SqliteProgressSyncStore(index.database),
+    exerciseDrainer: exerciseDrainer,
+    accountDataPurger: accountDataPurger,
+    ownerStore: SyncOwnerStore(index.database),
   );
 }
+
+UserExerciseSyncDrainer _exerciseDrainer(
+  MetadataIndex index,
+  SupabaseClient client,
+  UserExerciseRepository userExercises,
+) => UserExerciseSyncDrainer(
+  remote: SupabaseUserExerciseStore(client: client),
+  repository: userExercises,
+  state: UserExerciseSyncState(index.database),
+);

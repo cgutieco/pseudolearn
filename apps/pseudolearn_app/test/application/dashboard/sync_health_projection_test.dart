@@ -3,7 +3,7 @@ import 'package:pseudolearn_app/application/dashboard/sync_health_projection.dar
 import 'dashboard_fixtures.dart';
 
 void main() {
-  group('projectSyncHealth (PANT-06-F5)', () {
+  group('projectSyncHealth', () {
     final now = DateTime(2026, 9, 2, 12);
 
     test('reports the queue size and the age of its oldest entry', () {

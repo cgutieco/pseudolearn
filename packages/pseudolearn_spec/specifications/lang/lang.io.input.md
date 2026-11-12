@@ -1,0 +1,202 @@
+---
+{
+  "formato": "see/1",
+  "id": "LANG.IO.INPUT",
+  "titulo": "Entrada",
+  "dominio": "lenguaje",
+  "estado": "estable",
+  "version": "1.0.0",
+  "duenos": [
+    "responsable-lenguaje"
+  ],
+  "revisado_por": [
+    "César Antonio Gutiérrez Contreras"
+  ],
+  "sujetos": [
+    "engine",
+    "aot"
+  ],
+  "resumen": "Entrada.",
+  "edicion": {
+    "introducida_en": "2027"
+  },
+  "depende_de": [
+    {
+      "id": "LANG.DECL.DESIGNATOR",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "requiere"
+    }
+  ]
+}
+---
+
+# Entrada
+
+```regla
+{
+  "id": "R1",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Leer requiere uno o más designadores y solicita valores de uno en uno, en orden. La conversión depende del tipo esperado. Una entrada inválida emite readValueTypeMismatch como advertencia y vuelve a pedir la misma posición sin modificarla. Sin entrada disponible la ejecución espera; un índice inválido del destino falla antes de pedir valor. Leer da valor a cada designador que completa: desde ese punto la variable tiene valor aunque se haya declarado sin él (LANG.DECL.UNINITIALIZED).",
+  "verificacion": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C1",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- 0;\nread x;\nwrite x;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "7\n",
+    "terminacion": "completed"
+  },
+  "entradas": [
+    "7"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C2",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\n  Definir x Como Entero <- 0;\n  Leer x;\n  Escribir x;\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Define x As Integer <- 0;\n  Read x;\n  Write x;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "7\n",
+    "terminacion": "completed",
+    "diagnosticos": [
+      {
+        "codigo": "readValueTypeMismatch",
+        "severidad": "warning"
+      }
+    ]
+  },
+  "entradas": [
+    "oops",
+    "7"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- 0;\nread x;\nwrite x;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "terminacion": "awaiting_input",
+    "salida": ""
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nLeer;\nFinAlgoritmo\n",
+    "en": "algorithm P\nread;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "expectedReadTarget",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir n Como Entero;\nDefinir t Como Cadena;\nLeer n, t;\nEscribir t, n + 1;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine n as integer;\ndefine t as string;\nread n, t;\nwrite t, n + 1;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "ab8\n",
+    "terminacion": "completed"
+  },
+  "entradas": [
+    "7",
+    "ab"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Suma\n  Definir primero, segundo Como Entero;\n  Leer primero, segundo;\n  Escribir primero + segundo;\nFinAlgoritmo\n",
+    "en": "Algorithm Sum\n  Define first, second As Integer;\n  Read first, second;\n  Write first + second;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "10\n",
+    "terminacion": "completed"
+  },
+  "entradas": [
+    "4",
+    "6"
+  ]
+}
+```

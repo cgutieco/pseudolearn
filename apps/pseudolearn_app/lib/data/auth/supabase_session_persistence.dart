@@ -18,10 +18,9 @@ final class SupabaseSessionPersistence {
   StreamSubscription<AuthState>? _subscription;
 
   SupabaseSessionPersistence({
-    required GoTrueClient auth,
-    required SessionStorage storage,
-  })  : _auth = auth,
-        _storage = storage;
+    required this._auth,
+    required this._storage,
+  });
 
   void start() {
     _subscription ??= _auth.onAuthStateChange.listen(

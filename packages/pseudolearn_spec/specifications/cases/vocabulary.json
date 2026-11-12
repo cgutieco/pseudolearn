@@ -1,0 +1,1174 @@
+{
+  "algorithm": {
+    "en": "algorithm",
+    "es": "Algoritmo"
+  },
+  "algorithm.alias.es.0": {
+    "en": "algorithm",
+    "es": "Proceso"
+  },
+  "and": {
+    "en": "and",
+    "es": "Y"
+  },
+  "and.alias.en.0": {
+    "en": "&",
+    "es": "Y"
+  },
+  "and.alias.es.0": {
+    "en": "and",
+    "es": "&"
+  },
+  "assignment": {
+    "en": "<-",
+    "es": "<-"
+  },
+  "assignment.alias.en.0": {
+    "en": ":=",
+    "es": "<-"
+  },
+  "assignment.alias.es.0": {
+    "en": "<-",
+    "es": ":="
+  },
+  "awaitKeyword": {
+    "en": "await",
+    "es": "Aguardar"
+  },
+  "booleanFalse": {
+    "en": "false",
+    "es": "Falso"
+  },
+  "booleanTrue": {
+    "en": "true",
+    "es": "Verdadero"
+  },
+  "booleanType": {
+    "en": "boolean",
+    "es": "Logico"
+  },
+  "branchSeparator": {
+    "en": ":",
+    "es": ":"
+  },
+  "byReference": {
+    "en": "by reference",
+    "es": "Por Referencia"
+  },
+  "byReference.alias.en.0": {
+    "en": "byReference",
+    "es": "Por Referencia"
+  },
+  "byReference.alias.es.0": {
+    "en": "by reference",
+    "es": "PorReferencia"
+  },
+  "byValue": {
+    "en": "by value",
+    "es": "Por Valor"
+  },
+  "byValue.alias.en.0": {
+    "en": "byValue",
+    "es": "Por Valor"
+  },
+  "byValue.alias.es.0": {
+    "en": "by value",
+    "es": "PorValor"
+  },
+  "characterType": {
+    "en": "character",
+    "es": "Caracter"
+  },
+  "characterType.alias.en.0": {
+    "en": "char",
+    "es": "Caracter"
+  },
+  "classKeyword": {
+    "en": "class",
+    "es": "Clase"
+  },
+  "comma": {
+    "en": ",",
+    "es": ","
+  },
+  "constantKeyword": {
+    "en": "constant",
+    "es": "Constante"
+  },
+  "constructor": {
+    "en": "constructor",
+    "es": "Constructor"
+  },
+  "contextual:alternativeKeyword": {
+    "en": "case",
+    "es": "Alternativa"
+  },
+  "contextual:argumentsCapabilityType": {
+    "en": "Arguments",
+    "es": "Argumentos"
+  },
+  "contextual:breakKeyword": {
+    "en": "break",
+    "es": "Salir"
+  },
+  "contextual:bytesType": {
+    "en": "Bytes",
+    "es": "Bytes"
+  },
+  "contextual:channelClose": {
+    "en": "close",
+    "es": "Cerrar"
+  },
+  "contextual:channelReceive": {
+    "en": "receive",
+    "es": "Recibir"
+  },
+  "contextual:channelSend": {
+    "en": "send",
+    "es": "Enviar"
+  },
+  "contextual:channelType": {
+    "en": "channel",
+    "es": "Canal"
+  },
+  "contextual:clockCapabilityType": {
+    "en": "Clock",
+    "es": "Reloj"
+  },
+  "contextual:collectionLength": {
+    "en": "length",
+    "es": "Longitud"
+  },
+  "contextual:collectionRemove": {
+    "en": "remove",
+    "es": "Eliminar"
+  },
+  "contextual:consoleCapabilityType": {
+    "en": "Console",
+    "es": "Consola"
+  },
+  "contextual:dateTimeType": {
+    "en": "DateTime",
+    "es": "FechaHora"
+  },
+  "contextual:deferKeyword": {
+    "en": "defer",
+    "es": "Diferir"
+  },
+  "contextual:dictionaryFind": {
+    "en": "find",
+    "es": "Buscar"
+  },
+  "contextual:dictionaryKeys": {
+    "en": "keys",
+    "es": "Claves"
+  },
+  "contextual:dictionaryType": {
+    "en": "dictionary",
+    "es": "Diccionario"
+  },
+  "contextual:directoryCapabilityType": {
+    "en": "DirCap",
+    "es": "DirectorioCap"
+  },
+  "contextual:eachKeyword": {
+    "en": "each",
+    "es": "Cada"
+  },
+  "contextual:endDefer": {
+    "en": "endDefer",
+    "es": "FinDiferir"
+  },
+  "contextual:endInterface": {
+    "en": "endInterface",
+    "es": "FinInterfaz"
+  },
+  "contextual:endVariant": {
+    "en": "endVariant",
+    "es": "FinVariante"
+  },
+  "contextual:environmentCapabilityType": {
+    "en": "Environment",
+    "es": "Entorno"
+  },
+  "contextual:fileCapabilityType": {
+    "en": "FileCap",
+    "es": "ArchivoCap"
+  },
+  "contextual:httpMethodType": {
+    "en": "HttpMethod",
+    "es": "MetodoHttp"
+  },
+  "contextual:httpRequestType": {
+    "en": "HttpRequest",
+    "es": "PeticionHttp"
+  },
+  "contextual:httpResponseType": {
+    "en": "HttpResponse",
+    "es": "RespuestaHttp"
+  },
+  "contextual:immutableType": {
+    "en": "immutable",
+    "es": "Inmutable"
+  },
+  "contextual:implementsKeyword": {
+    "en": "implements",
+    "es": "Realiza"
+  },
+  "contextual:inKeyword": {
+    "en": "in",
+    "es": "En"
+  },
+  "contextual:interfaceKeyword": {
+    "en": "interface",
+    "es": "Interfaz"
+  },
+  "contextual:ioErrorType": {
+    "en": "IoError",
+    "es": "ErrorES"
+  },
+  "contextual:jsonErrorCodeDepthExceeded": {
+    "en": "DepthExceeded",
+    "es": "ProfundidadExcedida"
+  },
+  "contextual:jsonErrorCodeDuplicateKey": {
+    "en": "DuplicateKey",
+    "es": "ClaveDuplicada"
+  },
+  "contextual:jsonErrorCodeField": {
+    "en": "code",
+    "es": "Codigo"
+  },
+  "contextual:jsonErrorCodeInvalidEscape": {
+    "en": "InvalidEscape",
+    "es": "EscapeInvalido"
+  },
+  "contextual:jsonErrorCodeInvalidSyntax": {
+    "en": "InvalidSyntax",
+    "es": "SintaxisInvalida"
+  },
+  "contextual:jsonErrorCodeTrailingContent": {
+    "en": "TrailingContent",
+    "es": "ContenidoSobrante"
+  },
+  "contextual:jsonErrorCodeType": {
+    "en": "JsonErrorCode",
+    "es": "CodigoErrorJson"
+  },
+  "contextual:jsonErrorCodeUnexpectedEnd": {
+    "en": "UnexpectedEnd",
+    "es": "FinInesperado"
+  },
+  "contextual:jsonErrorColumnField": {
+    "en": "jsonColumn",
+    "es": "JsonColumna"
+  },
+  "contextual:jsonErrorLineField": {
+    "en": "jsonLine",
+    "es": "JsonLinea"
+  },
+  "contextual:jsonErrorType": {
+    "en": "JsonError",
+    "es": "ErrorJson"
+  },
+  "contextual:jsonKindArray": {
+    "en": "Array",
+    "es": "Arreglo"
+  },
+  "contextual:jsonKindBoolean": {
+    "en": "JsonBoolean",
+    "es": "JsonLogico"
+  },
+  "contextual:jsonKindNull": {
+    "en": "Null",
+    "es": "Nulo"
+  },
+  "contextual:jsonKindNumber": {
+    "en": "JsonNumber",
+    "es": "JsonNumero"
+  },
+  "contextual:jsonKindObject": {
+    "en": "Object",
+    "es": "Objeto"
+  },
+  "contextual:jsonKindString": {
+    "en": "JsonStringKind",
+    "es": "CadenaJson"
+  },
+  "contextual:jsonKindType": {
+    "en": "JsonKind",
+    "es": "TipoJson"
+  },
+  "contextual:jsonValueType": {
+    "en": "JsonValue",
+    "es": "ValorJson"
+  },
+  "contextual:networkCapabilityType": {
+    "en": "NetworkCap",
+    "es": "RedCap"
+  },
+  "contextual:receiveSource": {
+    "en": "from",
+    "es": "Desde"
+  },
+  "contextual:requestArguments": {
+    "en": "requestArguments",
+    "es": "SolicitarArgumentos"
+  },
+  "contextual:requestClock": {
+    "en": "requestClock",
+    "es": "SolicitarReloj"
+  },
+  "contextual:requestConsole": {
+    "en": "requestConsole",
+    "es": "SolicitarConsola"
+  },
+  "contextual:requestDirectory": {
+    "en": "requestDirectory",
+    "es": "SolicitarDirectorio"
+  },
+  "contextual:requestEnvironment": {
+    "en": "requestEnvironment",
+    "es": "SolicitarEntorno"
+  },
+  "contextual:requestTimer": {
+    "en": "requestTimer",
+    "es": "SolicitarTemporizador"
+  },
+  "contextual:snapshotBuiltin": {
+    "en": "snapshot",
+    "es": "Instantanea"
+  },
+  "contextual:suspendibleModifier": {
+    "en": "suspendable",
+    "es": "Suspendible"
+  },
+  "contextual:taskAssociatedErrors": {
+    "en": "associated",
+    "es": "Asociados"
+  },
+  "contextual:taskCancelledCount": {
+    "en": "cancelled",
+    "es": "Canceladas"
+  },
+  "contextual:taskFailureType": {
+    "en": "taskFailure",
+    "es": "FalloTareas"
+  },
+  "contextual:taskFirstError": {
+    "en": "first",
+    "es": "Primero"
+  },
+  "contextual:timerCapabilityType": {
+    "en": "Timer",
+    "es": "Temporizador"
+  },
+  "contextual:variantKeyword": {
+    "en": "variant",
+    "es": "Variante"
+  },
+  "contextual:vectorAppend": {
+    "en": "append",
+    "es": "Agregar"
+  },
+  "contextual:vectorContains": {
+    "en": "contains",
+    "es": "Contiene"
+  },
+  "contextual:vectorIndexOf": {
+    "en": "indexOf",
+    "es": "PosicionDe"
+  },
+  "contextual:vectorInsert": {
+    "en": "insert",
+    "es": "Insertar"
+  },
+  "contextual:vectorReverse": {
+    "en": "reverse",
+    "es": "Invertir"
+  },
+  "contextual:vectorSort": {
+    "en": "sort",
+    "es": "Ordenar"
+  },
+  "contextual:vectorType": {
+    "en": "vector",
+    "es": "Vector"
+  },
+  "declare": {
+    "en": "define",
+    "es": "Definir"
+  },
+  "declare.alias.en.0": {
+    "en": "declare",
+    "es": "Definir"
+  },
+  "defaultCase": {
+    "en": "otherwise",
+    "es": "De Otro Modo"
+  },
+  "defaultCase.alias.en.0": {
+    "en": "default",
+    "es": "De Otro Modo"
+  },
+  "defaultCase.alias.es.0": {
+    "en": "otherwise",
+    "es": "DeOtroModo"
+  },
+  "dimension": {
+    "en": "dimension",
+    "es": "Dimension"
+  },
+  "discardKeyword": {
+    "en": "discard",
+    "es": "Descartar"
+  },
+  "divide": {
+    "en": "/",
+    "es": "/"
+  },
+  "doKeyword": {
+    "en": "do",
+    "es": "Hacer"
+  },
+  "dot": {
+    "en": ".",
+    "es": "."
+  },
+  "elseKeyword": {
+    "en": "else",
+    "es": "Sino"
+  },
+  "endAlgorithm": {
+    "en": "endAlgorithm",
+    "es": "FinAlgoritmo"
+  },
+  "endAlgorithm.alias.en.0": {
+    "en": "end algorithm",
+    "es": "FinAlgoritmo"
+  },
+  "endAlgorithm.alias.es.0": {
+    "en": "endAlgorithm",
+    "es": "FinProceso"
+  },
+  "endAlgorithm.alias.es.1": {
+    "en": "endAlgorithm",
+    "es": "Fin Algoritmo"
+  },
+  "endAlgorithm.alias.es.2": {
+    "en": "endAlgorithm",
+    "es": "Fin Proceso"
+  },
+  "endClass": {
+    "en": "endClass",
+    "es": "FinClase"
+  },
+  "endClass.alias.en.0": {
+    "en": "end class",
+    "es": "FinClase"
+  },
+  "endClass.alias.es.0": {
+    "en": "endClass",
+    "es": "Fin Clase"
+  },
+  "endEnum": {
+    "en": "endEnum",
+    "es": "FinEnumerado"
+  },
+  "endEnum.alias.en.0": {
+    "en": "end enum",
+    "es": "FinEnumerado"
+  },
+  "endEnum.alias.es.0": {
+    "en": "endEnum",
+    "es": "Fin Enumerado"
+  },
+  "endFor": {
+    "en": "endFor",
+    "es": "FinPara"
+  },
+  "endFor.alias.en.0": {
+    "en": "end for",
+    "es": "FinPara"
+  },
+  "endFor.alias.es.0": {
+    "en": "endFor",
+    "es": "Fin Para"
+  },
+  "endFunction": {
+    "en": "endFunction",
+    "es": "FinFuncion"
+  },
+  "endFunction.alias.en.0": {
+    "en": "end function",
+    "es": "FinFuncion"
+  },
+  "endFunction.alias.es.0": {
+    "en": "endFunction",
+    "es": "Fin Funcion"
+  },
+  "endIf": {
+    "en": "endIf",
+    "es": "FinSi"
+  },
+  "endIf.alias.en.0": {
+    "en": "end if",
+    "es": "FinSi"
+  },
+  "endIf.alias.es.0": {
+    "en": "endIf",
+    "es": "Fin Si"
+  },
+  "endMethod": {
+    "en": "endMethod",
+    "es": "FinMetodo"
+  },
+  "endMethod.alias.en.0": {
+    "en": "end method",
+    "es": "FinMetodo"
+  },
+  "endMethod.alias.es.0": {
+    "en": "endMethod",
+    "es": "Fin Metodo"
+  },
+  "endRecord": {
+    "en": "endRecord",
+    "es": "FinRegistro"
+  },
+  "endRecord.alias.en.0": {
+    "en": "end record",
+    "es": "FinRegistro"
+  },
+  "endRecord.alias.es.0": {
+    "en": "endRecord",
+    "es": "Fin Registro"
+  },
+  "endSelect": {
+    "en": "endSelect",
+    "es": "FinElegir"
+  },
+  "endSubroutine": {
+    "en": "endSubroutine",
+    "es": "FinSubProceso"
+  },
+  "endSubroutine.alias.en.0": {
+    "en": "end subroutine",
+    "es": "FinSubProceso"
+  },
+  "endSubroutine.alias.en.1": {
+    "en": "end procedure",
+    "es": "FinSubProceso"
+  },
+  "endSubroutine.alias.es.0": {
+    "en": "endSubroutine",
+    "es": "FinSubAlgoritmo"
+  },
+  "endSubroutine.alias.es.1": {
+    "en": "endSubroutine",
+    "es": "FinProcedimiento"
+  },
+  "endSubroutine.alias.es.2": {
+    "en": "endSubroutine",
+    "es": "Fin SubProceso"
+  },
+  "endSubroutine.alias.es.3": {
+    "en": "endSubroutine",
+    "es": "Fin SubAlgoritmo"
+  },
+  "endSubroutine.alias.es.4": {
+    "en": "endSubroutine",
+    "es": "Fin Procedimiento"
+  },
+  "endSwitch": {
+    "en": "endSwitch",
+    "es": "FinSegun"
+  },
+  "endSwitch.alias.en.0": {
+    "en": "end switch",
+    "es": "FinSegun"
+  },
+  "endSwitch.alias.es.0": {
+    "en": "endSwitch",
+    "es": "Fin Segun"
+  },
+  "endTasks": {
+    "en": "endTasks",
+    "es": "FinTareas"
+  },
+  "endWhile": {
+    "en": "endWhile",
+    "es": "FinMientras"
+  },
+  "endWhile.alias.en.0": {
+    "en": "end while",
+    "es": "FinMientras"
+  },
+  "endWhile.alias.es.0": {
+    "en": "endWhile",
+    "es": "Fin Mientras"
+  },
+  "enumKeyword": {
+    "en": "enum",
+    "es": "Enumerado"
+  },
+  "equal": {
+    "en": "=",
+    "es": "="
+  },
+  "errorVariant": {
+    "en": "failure",
+    "es": "Error"
+  },
+  "exportKeyword": {
+    "en": "export",
+    "es": "Exportar"
+  },
+  "forKeyword": {
+    "en": "for",
+    "es": "Para"
+  },
+  "function": {
+    "en": "function",
+    "es": "Funcion"
+  },
+  "function:absoluteValue": {
+    "en": "abs",
+    "es": "abs"
+  },
+  "function:arcCosine": {
+    "en": "acos",
+    "es": "acos"
+  },
+  "function:arcSine": {
+    "en": "asin",
+    "es": "asen"
+  },
+  "function:arcTangent": {
+    "en": "atan",
+    "es": "atan"
+  },
+  "function:arcTangent.alias.es.0": {
+    "en": "atan",
+    "es": "arctan"
+  },
+  "function:arcTangent2": {
+    "en": "atan2",
+    "es": "atan2"
+  },
+  "function:ceiling": {
+    "en": "ceil",
+    "es": "techo"
+  },
+  "function:characterAt": {
+    "en": "charAt",
+    "es": "CaracterEn"
+  },
+  "function:characterCode": {
+    "en": "charCode",
+    "es": "CodigoDe"
+  },
+  "function:characterFromCode": {
+    "en": "charFromCode",
+    "es": "CaracterDesde"
+  },
+  "function:concatenate": {
+    "en": "concat",
+    "es": "Concatenar"
+  },
+  "function:contains": {
+    "en": "contains",
+    "es": "Contiene"
+  },
+  "function:cosine": {
+    "en": "cos",
+    "es": "cos"
+  },
+  "function:endsWith": {
+    "en": "endsWith",
+    "es": "TerminaCon"
+  },
+  "function:exponential": {
+    "en": "exp",
+    "es": "exp"
+  },
+  "function:floor": {
+    "en": "floor",
+    "es": "piso"
+  },
+  "function:join": {
+    "en": "join",
+    "es": "Unir"
+  },
+  "function:length": {
+    "en": "length",
+    "es": "Longitud"
+  },
+  "function:logarithm10": {
+    "en": "log10",
+    "es": "log10"
+  },
+  "function:logarithm2": {
+    "en": "log2",
+    "es": "log2"
+  },
+  "function:maximum": {
+    "en": "max",
+    "es": "max"
+  },
+  "function:minimum": {
+    "en": "min",
+    "es": "min"
+  },
+  "function:naturalLogarithm": {
+    "en": "ln",
+    "es": "ln"
+  },
+  "function:naturalLogarithm.alias.en.0": {
+    "en": "log",
+    "es": "ln"
+  },
+  "function:positionOf": {
+    "en": "indexOf",
+    "es": "PosicionDe"
+  },
+  "function:random": {
+    "en": "random",
+    "es": "azar"
+  },
+  "function:random.alias.en.0": {
+    "en": "rand",
+    "es": "azar"
+  },
+  "function:randomBetween": {
+    "en": "randomBetween",
+    "es": "Aleatorio"
+  },
+  "function:randomUnit": {
+    "en": "randomReal",
+    "es": "AzarReal"
+  },
+  "function:replaceAll": {
+    "en": "replace",
+    "es": "Reemplazar"
+  },
+  "function:round": {
+    "en": "round",
+    "es": "redon"
+  },
+  "function:shallowCopy": {
+    "en": "copy",
+    "es": "Copiar"
+  },
+  "function:sine": {
+    "en": "sin",
+    "es": "sen"
+  },
+  "function:sine.alias.es.0": {
+    "en": "sin",
+    "es": "sin"
+  },
+  "function:snapshot": {
+    "en": "snapshot",
+    "es": "Instantanea"
+  },
+  "function:split": {
+    "en": "split",
+    "es": "Dividir"
+  },
+  "function:squareRoot": {
+    "en": "sqrt",
+    "es": "rc"
+  },
+  "function:squareRoot.alias.es.0": {
+    "en": "sqrt",
+    "es": "raiz"
+  },
+  "function:startsWith": {
+    "en": "startsWith",
+    "es": "EmpiezaCon"
+  },
+  "function:substring": {
+    "en": "substring",
+    "es": "Subcadena"
+  },
+  "function:tangent": {
+    "en": "tan",
+    "es": "tan"
+  },
+  "function:textToInteger": {
+    "en": "toInteger",
+    "es": "AEntero"
+  },
+  "function:textToReal": {
+    "en": "toReal",
+    "es": "AReal"
+  },
+  "function:textToReal.alias.es.0": {
+    "en": "toReal",
+    "es": "ConvertirANumero"
+  },
+  "function:toText": {
+    "en": "toText",
+    "es": "ATexto"
+  },
+  "function:toText.alias.es.0": {
+    "en": "toText",
+    "es": "ConvertirATexto"
+  },
+  "function:trim": {
+    "en": "trim",
+    "es": "Recortar"
+  },
+  "function:truncate": {
+    "en": "trunc",
+    "es": "trunc"
+  },
+  "greaterThan": {
+    "en": ">",
+    "es": ">"
+  },
+  "greaterThanOrEqual": {
+    "en": ">=",
+    "es": ">="
+  },
+  "ifKeyword": {
+    "en": "if",
+    "es": "Si"
+  },
+  "importKeyword": {
+    "en": "import",
+    "es": "Importar"
+  },
+  "inheritsFrom": {
+    "en": "inherits from",
+    "es": "Hereda De"
+  },
+  "inheritsFrom.alias.en.0": {
+    "en": "inheritsFrom",
+    "es": "Hereda De"
+  },
+  "inheritsFrom.alias.en.1": {
+    "en": "extends",
+    "es": "Hereda De"
+  },
+  "inheritsFrom.alias.es.0": {
+    "en": "inherits from",
+    "es": "HeredaDe"
+  },
+  "integerDivide": {
+    "en": "div",
+    "es": "div"
+  },
+  "integerDivide.alias.es.0": {
+    "en": "div",
+    "es": "DIV"
+  },
+  "integerType": {
+    "en": "integer",
+    "es": "Entero"
+  },
+  "jsonErrorCodeType": {
+    "en": "JsonErrorCode",
+    "es": "CodigoErrorJson"
+  },
+  "jsonErrorColumnField": {
+    "en": "jsonColumn",
+    "es": "JsonColumna"
+  },
+  "jsonErrorLineField": {
+    "en": "jsonLine",
+    "es": "JsonLinea"
+  },
+  "jsonErrorType": {
+    "en": "JsonError",
+    "es": "ErrorJson"
+  },
+  "jsonKindType": {
+    "en": "JsonKind",
+    "es": "TipoJson"
+  },
+  "jsonValueType": {
+    "en": "JsonValue",
+    "es": "ValorJson"
+  },
+  "leftBracket": {
+    "en": "[",
+    "es": "["
+  },
+  "leftParenthesis": {
+    "en": "(",
+    "es": "("
+  },
+  "lessThan": {
+    "en": "<",
+    "es": "<"
+  },
+  "lessThanOrEqual": {
+    "en": "<=",
+    "es": "<="
+  },
+  "method": {
+    "en": "method",
+    "es": "Metodo"
+  },
+  "minus": {
+    "en": "-",
+    "es": "-"
+  },
+  "modulo": {
+    "en": "mod",
+    "es": "mod"
+  },
+  "modulo.alias.en.0": {
+    "en": "%",
+    "es": "mod"
+  },
+  "modulo.alias.es.0": {
+    "en": "mod",
+    "es": "MOD"
+  },
+  "modulo.alias.es.1": {
+    "en": "mod",
+    "es": "%"
+  },
+  "multiply": {
+    "en": "*",
+    "es": "*"
+  },
+  "newInstance": {
+    "en": "new",
+    "es": "Nuevo"
+  },
+  "noneVariant": {
+    "en": "none",
+    "es": "Nada"
+  },
+  "not": {
+    "en": "not",
+    "es": "NO"
+  },
+  "not.alias.en.0": {
+    "en": "!",
+    "es": "NO"
+  },
+  "not.alias.es.0": {
+    "en": "not",
+    "es": "~"
+  },
+  "not.alias.es.1": {
+    "en": "not",
+    "es": "!"
+  },
+  "notEqual": {
+    "en": "<>",
+    "es": "<>"
+  },
+  "notEqual.alias.en.0": {
+    "en": "!=",
+    "es": "<>"
+  },
+  "notEqual.alias.es.0": {
+    "en": "<>",
+    "es": "!="
+  },
+  "optionalType": {
+    "en": "optional",
+    "es": "Opcional"
+  },
+  "or": {
+    "en": "or",
+    "es": "O"
+  },
+  "or.alias.en.0": {
+    "en": "|",
+    "es": "O"
+  },
+  "or.alias.es.0": {
+    "en": "or",
+    "es": "|"
+  },
+  "plus": {
+    "en": "+",
+    "es": "+"
+  },
+  "power": {
+    "en": "^",
+    "es": "^"
+  },
+  "power.alias.en.0": {
+    "en": "**",
+    "es": "^"
+  },
+  "power.alias.es.0": {
+    "en": "^",
+    "es": "**"
+  },
+  "privateVisibility": {
+    "en": "private",
+    "es": "Privado"
+  },
+  "propagateKeyword": {
+    "en": "propagate",
+    "es": "Propagar"
+  },
+  "publicVisibility": {
+    "en": "public",
+    "es": "Publico"
+  },
+  "quote": {
+    "en": "\"",
+    "es": "\""
+  },
+  "read": {
+    "en": "read",
+    "es": "Leer"
+  },
+  "realType": {
+    "en": "real",
+    "es": "Real"
+  },
+  "recordKeyword": {
+    "en": "record",
+    "es": "Registro"
+  },
+  "repeat": {
+    "en": "repeat",
+    "es": "Repetir"
+  },
+  "resultType": {
+    "en": "result",
+    "es": "Resultado"
+  },
+  "returnKeyword": {
+    "en": "return",
+    "es": "Retornar"
+  },
+  "rightBracket": {
+    "en": "]",
+    "es": "]"
+  },
+  "rightParenthesis": {
+    "en": ")",
+    "es": ")"
+  },
+  "selectKeyword": {
+    "en": "select",
+    "es": "Elegir"
+  },
+  "semicolon": {
+    "en": ";",
+    "es": ";"
+  },
+  "someVariant": {
+    "en": "some",
+    "es": "Algo"
+  },
+  "spawnKeyword": {
+    "en": "spawn",
+    "es": "Lanzar"
+  },
+  "step": {
+    "en": "step",
+    "es": "Con Paso"
+  },
+  "step.alias.en.0": {
+    "en": "with step",
+    "es": "Con Paso"
+  },
+  "step.alias.es.0": {
+    "en": "step",
+    "es": "ConPaso"
+  },
+  "stringType": {
+    "en": "string",
+    "es": "Cadena"
+  },
+  "subroutine": {
+    "en": "subroutine",
+    "es": "SubProceso"
+  },
+  "subroutine.alias.en.0": {
+    "en": "procedure",
+    "es": "SubProceso"
+  },
+  "subroutine.alias.es.0": {
+    "en": "subroutine",
+    "es": "SubAlgoritmo"
+  },
+  "subroutine.alias.es.1": {
+    "en": "subroutine",
+    "es": "Procedimiento"
+  },
+  "successVariant": {
+    "en": "success",
+    "es": "Exito"
+  },
+  "superClass": {
+    "en": "super",
+    "es": "Super"
+  },
+  "switchKeyword": {
+    "en": "switch",
+    "es": "Segun"
+  },
+  "taskType": {
+    "en": "task",
+    "es": "Tarea"
+  },
+  "tasksKeyword": {
+    "en": "tasks",
+    "es": "Tareas"
+  },
+  "then": {
+    "en": "then",
+    "es": "Entonces"
+  },
+  "thisObject": {
+    "en": "this",
+    "es": "Este"
+  },
+  "to": {
+    "en": "to",
+    "es": "Hasta"
+  },
+  "typeConnector": {
+    "en": "as",
+    "es": "Como"
+  },
+  "until": {
+    "en": "until",
+    "es": "Hasta Que"
+  },
+  "until.alias.es.0": {
+    "en": "until",
+    "es": "HastaQue"
+  },
+  "whileKeyword": {
+    "en": "while",
+    "es": "Mientras"
+  },
+  "withoutNewline": {
+    "en": "without newline",
+    "es": "Sin Saltar"
+  },
+  "withoutNewline.alias.en.0": {
+    "en": "withoutNewline",
+    "es": "Sin Saltar"
+  },
+  "withoutNewline.alias.es.0": {
+    "en": "without newline",
+    "es": "SinSaltar"
+  },
+  "write": {
+    "en": "write",
+    "es": "Escribir"
+  },
+  "write.alias.en.0": {
+    "en": "print",
+    "es": "Escribir"
+  },
+  "write.alias.es.0": {
+    "en": "write",
+    "es": "Mostrar"
+  }
+}

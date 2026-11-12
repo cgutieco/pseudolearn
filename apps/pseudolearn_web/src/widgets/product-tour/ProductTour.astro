@@ -1,0 +1,141 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import SectionHeading from '@widgets/section-heading/SectionHeading.astro';
+import ProductShot from '@widgets/product-preview/ProductShot.astro';
+import { TOUR_STOPS } from './tour-stops';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+<section class="tour pl-field">
+  <div class="pl-container">
+    <SectionHeading
+      tone="field"
+      overline={t('home.tour.overline')}
+      title={t('home.tour.title')}
+      lead={t('home.tour.lead')}
+    />
+    <ol class="tour__stops">
+      {TOUR_STOPS.map((stop, index) => (
+        <li class="tour__stop">
+          <div class="tour__copy">
+            <p class="tour__numeral pl-mono">{String(index + 1).padStart(2, '0')}</p>
+            <h3 class="tour__title">{t(stop.titleKey)}</h3>
+            <ul class="tour__points">
+              {stop.points.map((point) => (
+                <li>
+                  <b>{t(point.titleKey)}</b>
+                  <span>{t(point.textKey)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <ProductShot
+            locale={locale}
+            scene={stop.scene}
+            alt={t(stop.altKey)}
+            class:list={['tour__shot', `tour__shot--${stop.scene}`]}
+          />
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .tour {
+    padding-top: 72px;
+    padding-bottom: 72px;
+    background: radial-gradient(70% 40% at 80% 0%, rgb(110 187 191 / 18%), transparent 70%), var(--pl-field);
+  }
+
+  .tour__stops {
+    display: grid;
+    gap: 72px;
+    margin-top: var(--pl-space-2xl);
+  }
+
+  .tour__stop {
+    display: grid;
+    gap: var(--pl-space-xl);
+  }
+
+  .tour__numeral {
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--pl-on-field-3);
+  }
+
+  .tour__title {
+    margin: var(--pl-space-sm) 0 var(--pl-space-lg);
+    font-size: 26px;
+    line-height: 1.2;
+    color: var(--pl-on-field);
+  }
+
+  .tour__points {
+    display: grid;
+    gap: var(--pl-space-md);
+  }
+
+  .tour__points li {
+    display: grid;
+    gap: 2px;
+    padding-left: var(--pl-space-md);
+    border-left: 3px solid var(--pl-on-field-3);
+  }
+
+  .tour__points b {
+    color: var(--pl-on-field);
+  }
+
+  .tour__points span {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--pl-on-field-2);
+  }
+
+  .tour :global(.tour__shot--editor) {
+    display: none;
+  }
+
+  @media (min-width: 900px) {
+    .tour :global(.tour__shot--editor) {
+      display: block;
+    }
+
+    .tour {
+      padding-top: 128px;
+      padding-bottom: 128px;
+    }
+
+    .tour__stops {
+      gap: 128px;
+    }
+
+    .tour__stop {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+      gap: 56px;
+      align-items: center;
+    }
+
+    .tour__stop:nth-child(even) {
+      grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    }
+
+    .tour__stop:nth-child(even) .tour__copy {
+      order: 2;
+    }
+
+    .tour__title {
+      font-size: 34px;
+    }
+  }
+</style>

@@ -1,0 +1,9 @@
+rust_input: crate::api
+rust_root: native
+rust_output: native/src/frb_generated.rs
+dart_output: lib/engine/bridge
+dart_root: .
+dart_entrypoint_class_name: RustLib
+default_dart_async: false
+add_mod_to_lib: false
+web: true

@@ -1,0 +1,53 @@
+Registro Punto
+Definir x, z Como Entero;
+FinRegistro
+Interfaz Medible<T>
+Metodo medir() Como T;
+FinInterfaz
+Clase Caja<T> Realiza Medible<T>
+Definir dato Como T;
+Definir origen Como Punto;
+Metodo Constructor(d Como T)
+Este.dato <- d;
+Este.origen <- Punto(1, 2);
+FinMetodo
+Metodo medir() Como T
+Retornar Este.dato;
+FinMetodo
+Metodo desplazar(p Como Punto) Como Punto
+Retornar Punto(p.x + Este.origen.x, p.z + Este.origen.z);
+FinMetodo
+FinClase
+Variante Forma
+Alternativa Circulo(radio Como Entero)
+Alternativa Vacia
+FinVariante
+SubProceso mover(p Como Punto Por Referencia)
+p.x <- p.x + 10;
+FinSubProceso
+SubProceso area(f Como Forma) Como Entero
+Definir total Como Entero <- 0;
+Segun f Hacer
+Forma.Circulo(r): total <- 3 * r * r;
+Forma.Vacia: total <- 0;
+FinSegun
+Retornar total;
+FinSubProceso
+Algoritmo Aceptacion
+Dimension puntos[2] Como Punto;
+puntos[0] <- Punto(3, 4);
+puntos[1] <- Punto(5, 6);
+mover(puntos[1]);
+Escribir puntos[0].x, ":", puntos[1].x;
+Definir c Como Caja<Entero> <- Nuevo Caja<Entero>(7);
+Escribir c.medir();
+Definir q Como Punto <- c.desplazar(puntos[0]);
+Escribir q.x, ":", q.z;
+Escribir area(Forma.Circulo(2)), ":", area(Forma.Vacia);
+Definir suma Como Entero <- 0;
+Para i <- 1 Hasta 100 Con Paso 1 Hacer
+Definir b Como Caja<Entero> <- Nuevo Caja<Entero>(i);
+suma <- suma + b.medir();
+FinPara
+Escribir suma;
+FinAlgoritmo

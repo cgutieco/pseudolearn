@@ -1,0 +1,120 @@
+---
+{
+  "formato": "see/1",
+  "id": "LANG.DECL.UNUSED",
+  "titulo": "Higiene de variables",
+  "dominio": "lenguaje",
+  "estado": "estable",
+  "version": "1.0.0",
+  "duenos": [
+    "responsable-lenguaje"
+  ],
+  "revisado_por": [
+    "César Antonio Gutiérrez Contreras"
+  ],
+  "sujetos": [
+    "engine",
+    "app"
+  ],
+  "resumen": "Higiene de variables.",
+  "edicion": {
+    "introducida_en": "2027"
+  },
+  "depende_de": [
+    {
+      "id": "LANG.DECL.VARIABLE",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "requiere"
+    }
+  ]
+}
+---
+
+# Higiene de variables
+
+```regla
+{
+  "id": "R1",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Variable declarada y nunca usada produce variableDeclaredNeverUsed; asignada y nunca leída produce variableAssignedNeverRead. Parámetros y subprogramas no usados tienen códigos propios. Todos son advertencias; no impiden ejecutar programas correctos.",
+  "verificacion": [
+    "C1",
+    "C2",
+    "C3"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C1",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir x Como Entero <- 0;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- 0;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "variableDeclaredNeverUsed",
+        "severidad": "warning"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C2",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir x Como Entero <- 0;\nx <- 1;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- 0;\nx <- 1;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "variableAssignedNeverRead",
+        "severidad": "warning"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir x Como Entero <- 0;\nx <- 1;\nEscribir x;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine x as integer <- 0;\nx <- 1;\nwrite x;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": []
+  }
+}
+```

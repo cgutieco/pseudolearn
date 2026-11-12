@@ -1,0 +1,16 @@
+enum CreditFailure {
+  unauthenticated,
+  subscriptionRequired,
+  creditsExhausted,
+  requestCap,
+  rateLimited,
+  modelUnconfigured,
+  purchasesDisabled,
+  trialUsed,
+  alreadySubscribed,
+  purchaseOwnedElsewhere,
+  invalidPurchase,
+  purchaseNotApplied,
+  offline,
+  upstream,
+}

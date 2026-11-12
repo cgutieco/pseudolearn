@@ -7,6 +7,6 @@ final class FakeLocalAccountDataPurger implements LocalAccountDataPurger {
   @override
   Future<void> purgeAccountData() async {
     purgeCalls++;
-    if (throwOnPurge) throw StateError('Simulated purge error');
+    if (throwOnPurge) throw StateError('Injected purge error');
   }
 }

@@ -1,0 +1,5 @@
+algorithm Loop
+write "start";
+while true do
+endWhile
+endAlgorithm

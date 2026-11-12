@@ -1,0 +1,15 @@
+[package]
+name = "pseudolearn_math_probe"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "math-probe"
+path = "src/main.rs"
+
+[dependencies]
+pseudolearn_library = { path = "../pseudolearn_library", version = "=0.1.0" }
+
+[lints]
+workspace = true

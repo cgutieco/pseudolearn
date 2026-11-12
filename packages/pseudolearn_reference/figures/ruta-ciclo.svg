@@ -1,0 +1,17 @@
+<svg viewBox="0 0 340 230">
+  <caja x="120" y="13" ancho="100" alto="34" rol="acento-estructurado" fondo="0.16" texto="{{t:entender}}" tamano="13" negrita=""/>
+  <caja x="210" y="72" ancho="100" alto="34" rol="hueco" fondo="0.16" texto="{{t:planear}}" tamano="13" negrita=""/>
+  <caja x="180" y="167" ancho="100" alto="34" rol="acento-procedimental" fondo="0.16" texto="{{t:escribir}}" tamano="13" negrita=""/>
+  <caja x="60" y="167" ancho="100" alto="34" rol="acento-objetos" fondo="0.16" texto="{{t:probar}}" tamano="13" negrita=""/>
+  <caja x="30" y="72" ancho="100" alto="34" rol="exito" fondo="0.16" texto="{{t:mejorar}}" tamano="13" negrita=""/>
+  <flecha puntos="220,34 250,70" rol="tinta"/>
+  <flecha puntos="262,108 242,165" rol="tinta"/>
+  <flecha puntos="180,184 162,184" rol="tinta"/>
+  <flecha puntos="98,165 84,108" rol="tinta"/>
+  <flecha puntos="72,70 118,34" rol="atenuado" discontinua=""/>
+  <flecha puntos="140,165 218,108" rol="error" discontinua=""/>
+  <text x="196" y="146" font-size="12" text-anchor="middle" fill="@error">{{t:fallo}}</text>
+  <text x="60" y="30" font-size="12" text-anchor="middle" fill="@atenuado">{{t:siguiente-1}}</text>
+  <text x="60" y="45" font-size="12" text-anchor="middle" fill="@atenuado">{{t:siguiente-2}}</text>
+  <text x="170" y="224" font-size="12" text-anchor="middle" fill="@atenuado">{{t:vuelta}}</text>
+</svg>

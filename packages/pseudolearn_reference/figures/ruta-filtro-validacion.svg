@@ -1,0 +1,14 @@
+<svg viewBox="0 0 340 170">
+  <caja x="4" y="20" ancho="64" alto="34" rol="hueco" fondo="0.16" texto="{{t:texto}}" tamano="12"/>
+  <flecha puntos="68,37 88,37" rol="tinta"/>
+  <caja x="92" y="16" ancho="84" alto="42" rol="acento-procedimental" fondo="0.14" texto="{{t:numero-1}}¶{{t:numero-2}}" tamano="12"/>
+  <flecha puntos="176,37 196,37" rol="tinta"/>
+  <caja x="200" y="16" ancho="76" alto="42" rol="acento-procedimental" fondo="0.14" texto="{{t:rango-1}}¶{{t:rango-2}}" tamano="12"/>
+  <flecha puntos="276,37 294,37" rol="exito"/>
+  <caja x="296" y="20" ancho="40" alto="34" rol="exito" fondo="0.18" texto="{{t:ok}}" tamano="12"/>
+  <flecha puntos="134,58 134,96" rol="error"/>
+  <caja x="80" y="100" ancho="108" alto="40" rol="error" fondo="0.14" texto="{{t:motivo-1a}}¶{{t:motivo-1b}}" tamano="12"/>
+  <flecha puntos="238,58 238,96" rol="error"/>
+  <caja x="196" y="100" ancho="84" alto="40" rol="error" fondo="0.14" texto="{{t:motivo-2a}}¶{{t:motivo-2b}}" tamano="12"/>
+  <text x="170" y="162" font-size="12" text-anchor="middle" fill="@atenuado">{{t:pie}}</text>
+</svg>

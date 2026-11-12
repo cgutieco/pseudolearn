@@ -1,0 +1,41 @@
+---
+import type { Locale } from '@shared/i18n/locales';
+import type { RouteLesson } from '@entities/learning-route/model/route';
+import { phaseList, summaryPoints } from '@entities/learning-route/model/route-phases';
+import { attemptAnswer, paragraphRuns, problemBlocks } from '@entities/learning-route/model/route-samples';
+import ProductShot from '@widgets/product-preview/ProductShot.astro';
+import { useTranslations } from '@shared/i18n/translator';
+import ProblemCard from './ProblemCard.astro';
+import PlanNote from './PlanNote.astro';
+import BugHunt from './BugHunt.astro';
+import AnswerReveal from './AnswerReveal.astro';
+import Takeaways from './Takeaways.astro';
+
+export interface Props {
+  locale: Locale;
+  lesson: RouteLesson;
+  phase: number;
+}
+
+const { locale, lesson, phase } = Astro.props;
+const { t } = useTranslations(locale);
+const TAKEAWAY_LIMIT = 3;
+---
+
+{phase === 1 && (
+  <div class="artifact-stack">
+    <ProblemCard locale={locale} paragraphs={paragraphRuns(problemBlocks(lesson.blocks))} />
+    <AnswerReveal locale={locale} paragraphs={paragraphRuns(attemptAnswer(lesson.blocks))} />
+  </div>
+)}
+{phase === 2 && <PlanNote locale={locale} steps={phaseList(lesson.blocks, 2)} />}
+{phase === 3 && <ProductShot locale={locale} scene="editor" layout="phone" alt={t('home.preview.alt')} />}
+{phase === 4 && <BugHunt locale={locale} />}
+{phase === 5 && <Takeaways locale={locale} points={summaryPoints(lesson.blocks).slice(0, TAKEAWAY_LIMIT)} />}
+
+<style>
+  .artifact-stack {
+    display: grid;
+    gap: var(--pl-space-sm);
+  }
+</style>

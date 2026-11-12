@@ -1,6 +1,8 @@
+import '../../fakes/native_test_engine.dart';
 import 'dart:ui';
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:cupertino_ui/cupertino_ui.dart' show GlobalCupertinoLocalizations;
+import 'package:material_ui/material_ui.dart';
+import 'package:flutter_localizations/flutter_localizations.dart' show GlobalWidgetsLocalizations;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/diagram/diagram_state.dart';
 import 'package:pseudolearn_app/domain/model/analysis/program_node_id.dart';
@@ -9,9 +11,6 @@ import 'package:pseudolearn_app/domain/model/diagram/diagram_program.dart';
 import 'package:pseudolearn_app/domain/model/diagram/diagram_scene.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/classdiagram/core_class_diagram_builder.dart';
-import 'package:pseudolearn_app/engine/diagram/flowchart_layout.dart';
-import 'package:pseudolearn_app/engine/structogram/structogram_layout.dart';
 import 'package:pseudolearn_app/presentation/diagram/class_box_painter.dart';
 import 'package:pseudolearn_app/presentation/diagram/class_execution_overlay_painter.dart';
 import 'package:pseudolearn_app/presentation/diagram/flowchart_painter.dart';
@@ -23,45 +22,46 @@ import 'package:pseudolearn_app/presentation/theme/app_theme.dart';
 
 const String _vehicles = '''
 Clase Vehiculo
-    Publico Definir marca Como Cadena
-    Privado Definir velocidad Como Entero
+    Publico Definir marca Como Cadena;
+    Privado Definir velocidad Como Entero;
 
     Publico Metodo Acelerar(delta Como Entero)
-        Este.velocidad <- Este.velocidad + delta
+        Este.velocidad <- Este.velocidad + delta;
     FinMetodo
 FinClase
 
 Clase Motocicleta Hereda De Vehiculo
-    Publico Definir cilindrada Como Entero
+    Publico Definir cilindrada Como Entero;
 FinClase
 
 Proceso Principal
-    Definir moto Como Motocicleta
-    Escribir 1
+    Definir moto Como Motocicleta <- Nuevo Motocicleta();
+    Escribir 1;
 FinProceso
 ''';
 
 const String _noClasses = '''
 Proceso Principal
-    Definir n Como Entero
+    Definir n Como Entero <- 0
     Escribir n
 FinProceso
 ''';
 
 DiagramScene _classSceneOf(String source) =>
-    CoreClassDiagramBuilder().buildDiagram(
+    nativeTestEngine.classDiagramBuilder.buildDiagram(
       sourceCode: source,
       profileId: SyntaxProfileId.classicSpanish,
     );
 
-DiagramProgram _flowchartOf(String source) => FlowchartLayout().buildDiagram(
+DiagramProgram _flowchartOf(String source) =>
+    nativeTestEngine.flowchartBuilder.buildDiagram(
       sourceCode: source,
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
     );
 
 DiagramProgram _structogramOf(String source) =>
-    StructogramLayout().buildDiagram(
+    nativeTestEngine.structogramBuilder.buildDiagram(
       sourceCode: source,
       profileId: SyntaxProfileId.classicSpanish,
       languageId: UiLanguageId.spanish,
@@ -71,15 +71,14 @@ DiagramState _stateOf(
   String source, {
   DiagramNotation notation = DiagramNotation.classDiagram,
   ProgramNodeId? focusedMemberNodeId,
-}) =>
-    DiagramState(
-      flowchart: _flowchartOf(source),
-      structogram: _structogramOf(source),
-      classDiagram: _classSceneOf(source),
-      notation: notation,
-      focusedMemberNodeId: focusedMemberNodeId,
-      hasValidAst: true,
-    );
+}) => DiagramState(
+  flowchart: _flowchartOf(source),
+  structogram: _structogramOf(source),
+  classDiagram: _classSceneOf(source),
+  notation: notation,
+  focusedMemberNodeId: focusedMemberNodeId,
+  hasValidAst: true,
+);
 
 ProgramNodeId _rowIdSaying(DiagramScene scene, String text) {
   for (final node in scene.nodes) {
@@ -112,7 +111,9 @@ Future<void> _pump(
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: Scaffold(body: DesignCanvas(child: FlowchartTabView(state: state))),
+      home: Scaffold(
+        body: DesignCanvas(child: FlowchartTabView(state: state)),
+      ),
     ),
   );
   await tester.pumpAndSettle();
@@ -155,12 +156,15 @@ void main() {
     testWidgets('says the document declares no class', (tester) async {
       await _pump(tester, _stateOf(_noClasses));
 
-      expect(find.text('Este documento no declara ninguna clase.'),
-          findsOneWidget);
+      expect(
+        find.text('Este documento no declara ninguna clase.'),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('says the code has errors when there is no ast',
-        (tester) async {
+    testWidgets('says the code has errors when there is no ast', (
+      tester,
+    ) async {
       await _pump(
         tester,
         const DiagramState(
@@ -217,11 +221,13 @@ void main() {
       );
 
       expect(
-        painter.shouldRepaint(ClassExecutionOverlayPainter(
-          scene: scene,
-          memberNodeId: null,
-          colors: colors,
-        )),
+        painter.shouldRepaint(
+          ClassExecutionOverlayPainter(
+            scene: scene,
+            memberNodeId: null,
+            colors: colors,
+          ),
+        ),
         isTrue,
       );
     });
@@ -236,17 +242,20 @@ void main() {
       );
 
       expect(
-        painter.shouldRepaint(ClassExecutionOverlayPainter(
-          scene: scene,
-          memberNodeId: member,
-          colors: colors,
-        )),
+        painter.shouldRepaint(
+          ClassExecutionOverlayPainter(
+            scene: scene,
+            memberNodeId: member,
+            colors: colors,
+          ),
+        ),
         isFalse,
       );
     });
 
-    testWidgets('paints the highlight of a method without failing',
-        (tester) async {
+    testWidgets('paints the highlight of a method without failing', (
+      tester,
+    ) async {
       final scene = _classSceneOf(_vehicles);
 
       await _pump(

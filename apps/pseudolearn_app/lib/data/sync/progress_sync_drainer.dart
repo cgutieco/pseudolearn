@@ -11,12 +11,10 @@ final class ProgressSyncDrainer {
   final SyncMetadataStore _metadataStore;
 
   const ProgressSyncDrainer({
-    required RemoteProgressStore remoteStore,
-    required ProgressSyncStore syncStore,
-    required SyncMetadataStore metadataStore,
-  })  : _remoteStore = remoteStore,
-        _syncStore = syncStore,
-        _metadataStore = metadataStore;
+    required this._remoteStore,
+    required this._syncStore,
+    required this._metadataStore,
+  });
 
   Future<bool> drainPull() async {
     final state = await _metadataStore.getGlobalState();

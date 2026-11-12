@@ -1,11 +1,13 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'app_localization_delegates.dart';
+import '../application/agent/reply_link_policy.dart';
 import '../application/settings/settings_cubit.dart';
 import '../application/settings/settings_state.dart';
 import '../domain/model/settings/app_theme_mode.dart';
 import '../domain/model/settings/ui_language_id.dart';
+import '../presentation/agent/agent_credits_refresher.dart';
 import '../presentation/l10n/generated/app_localizations.dart';
 import '../presentation/routing/app_router.dart';
 import '../presentation/settings/account/local_account_data_refresher.dart';
@@ -13,6 +15,8 @@ import '../presentation/shell/design_canvas.dart';
 import '../presentation/theme/app_theme.dart';
 import 'app_dependencies.dart';
 import 'app_providers.dart';
+import 'app_scope.dart';
+import '../application/agent/screen_context_board.dart';
 
 const Map<AppThemeMode, ThemeMode> _themeModes = {
   AppThemeMode.system: ThemeMode.system,
@@ -37,9 +41,16 @@ final class CubitScope extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: buildAppProviders(dependencies),
-      child: LocalAccountDataRefresher(child: _CubitScopeApp(router: router)),
+    final scope = AppScope.withRouter(() => router);
+    return RepositoryProvider<ScreenContextBoard>.value(
+      value: scope.board,
+      child: RepositoryProvider<ReplyLinkOpener>.value(
+        value: ReplyLinkOpener(dependencies.agent.externalLinks),
+        child: MultiBlocProvider(
+          providers: buildAppProviders(dependencies, scope: scope),
+          child: LocalAccountDataRefresher(child: AgentCreditsRefresher(child: _CubitScopeApp(router: router))),
+        ),
+      ),
     );
   }
 }
@@ -62,12 +73,7 @@ final class _CubitScopeApp extends StatelessWidget {
           themeMode: _themeModes[state.themeMode] ?? ThemeMode.system,
           locale: _locales[state.language],
           scrollBehavior: const AppScrollBehavior(),
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
+          localizationsDelegates: appLocalizationDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           routerConfig: router,
           builder: (context, child) => DesignCanvas(child: child ?? const SizedBox.shrink()),

@@ -1,5 +1,9 @@
+import 'package:pseudolearn_app/domain/model/execution/effect_settlement.dart';
+import 'package:pseudolearn_app/domain/model/execution/effect_tape.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
 import 'package:pseudolearn_app/domain/model/execution/output_line.dart';
+import 'package:pseudolearn_app/domain/model/execution/input_wait.dart';
+import 'package:pseudolearn_app/domain/model/execution/execution_configuration.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/domain/ports/program_execution.dart';
@@ -9,6 +13,7 @@ base class FakeProgramExecution implements ProgramExecution {
   List<ExecutionStep> steps;
   int currentStepIndex = 0;
   bool isStopped = false;
+  ExecutionConfiguration? lastConfiguration;
 
   FakeProgramExecution({
     this.outputLinesList = const [],
@@ -23,7 +28,10 @@ base class FakeProgramExecution implements ProgramExecution {
     required String sourceCode,
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
+    ExecutionConfiguration configuration = const ExecutionConfiguration(),
+    EffectTape? replayTape,
   }) {
+    lastConfiguration = configuration;
     currentStepIndex = 0;
     isStopped = false;
     if (steps.isEmpty) {
@@ -51,7 +59,16 @@ base class FakeProgramExecution implements ProgramExecution {
   }
 
   @override
-  ExecutionStep provideInput(String rawInput) {
+  ExecutionStep provideInput(InputWait request, String rawInput) {
+    return step();
+  }
+
+  @override
+  ExecutionStep settleEffect(EffectSettlement settlement) {
+    if (settlement == EffectSettlement.cancel) {
+      isStopped = true;
+      return const ExecutionStep.unstarted();
+    }
     return step();
   }
 

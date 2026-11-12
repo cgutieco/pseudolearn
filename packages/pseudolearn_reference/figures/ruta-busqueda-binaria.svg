@@ -1,0 +1,87 @@
+<svg viewBox="0 0 340 120">
+  <rect x="6" y="24" width="20" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="16" y="39" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">2</text>
+  <rect x="28" y="24" width="20" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="38" y="39" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">5</text>
+  <rect x="50" y="24" width="20" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="60" y="39" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">8</text>
+  <rect x="72" y="24" width="20" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="82" y="39" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">11</text>
+  <rect x="94" y="24" width="20" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="104" y="39" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">14</text>
+  <rect x="116" y="24" width="20" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="126" y="39" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">17</text>
+  <rect x="138" y="24" width="20" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="148" y="39" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">20</text>
+  <rect x="160" y="24" width="20" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="170" y="39" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">23</text>
+  <rect x="182" y="24" width="20" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="192" y="39" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">26</text>
+  <rect x="204" y="24" width="20" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="214" y="39" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">29</text>
+  <rect x="226" y="24" width="20" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="236" y="39" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">32</text>
+  <rect x="248" y="24" width="20" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="258" y="39" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">35</text>
+  <rect x="270" y="24" width="20" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="280" y="39" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">38</text>
+  <rect x="292" y="24" width="20" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="302" y="39" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">41</text>
+  <rect x="314" y="24" width="20" height="22" rx="3" fill="@superficie" stroke="@atenuado"/>
+  <text x="324" y="39" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">44</text>
+  <text x="6" y="16" font-size="12" fill="@atenuado">{{t:buscado}}</text>
+  <g data-paso="1" data-hasta="1">
+    <rect x="160" y="24" width="20" height="22" rx="3" fill="@acento-estructurado" fill-opacity="0.35"/>
+    <flecha puntos="170,80 170,52" rol="tinta"/>
+    <text x="170" y="106" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-1}}</text>
+  </g>
+  <g data-paso="2" data-hasta="2">
+    <rect x="6" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="28" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="50" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="72" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="94" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="116" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="138" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="160" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="248" y="24" width="20" height="22" rx="3" fill="@acento-estructurado" fill-opacity="0.35"/>
+    <flecha puntos="258,80 258,52" rol="tinta"/>
+    <text x="170" y="106" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-2}}</text>
+  </g>
+  <g data-paso="3" data-hasta="3">
+    <rect x="6" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="28" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="50" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="72" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="94" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="116" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="138" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="160" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="248" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="270" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="292" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="314" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="204" y="24" width="20" height="22" rx="3" fill="@acento-estructurado" fill-opacity="0.35"/>
+    <flecha puntos="214,80 214,52" rol="tinta"/>
+    <text x="170" y="106" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-3}}</text>
+  </g>
+  <g data-paso="4">
+    <rect x="6" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="28" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="50" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="72" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="94" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="116" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="138" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="160" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="204" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="226" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="248" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="270" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="292" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="314" y="24" width="20" height="22" rx="3" fill="@atenuado" fill-opacity="0.35"/>
+    <rect x="182" y="24" width="20" height="22" rx="3" fill="@exito" fill-opacity="0.35"/>
+    <flecha puntos="192,80 192,52" rol="tinta"/>
+    <text x="170" y="106" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-4}}</text>
+  </g>
+</svg>

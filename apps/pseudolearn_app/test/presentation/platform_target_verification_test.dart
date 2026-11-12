@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 import 'package:yaml/yaml.dart';
@@ -66,7 +66,7 @@ List<String> validatePlatformQueries({
 }
 
 void main() {
-  group('CIE-F2 · Platform Target and Window Resizing Verification', () {
+  group('Platform Target and Window Resizing Verification', () {
     testWidgets(
         'Narrowing macOS window below 600 dp dynamically produces compact tree and bottom bar',
         (tester) async {

@@ -1,0 +1,295 @@
+#[path = "codegen/function_metadata.rs"]
+mod function_metadata;
+#[path = "codegen/perfect_hash.rs"]
+mod perfect_hash;
+use std::path::Path;
+
+fn main() {
+    println!("cargo:rerun-if-changed=../../../pseudolearn_spec/specifications/export.json");
+    if let Err(error) = generate() {
+        eprintln!("Failed to generate lexicon: {error}");
+        std::process::exit(1);
+    }
+}
+
+fn generate() -> Result<(), Box<dyn std::error::Error>> {
+    let manifest_dir = std::env::var("CARGO_MANIFEST_DIR")?;
+    let export_path =
+        Path::new(&manifest_dir).join("../../../pseudolearn_spec/specifications/export.json");
+    let export_text = std::fs::read_to_string(export_path)?;
+    let parsed: serde_json::Value = serde_json::from_str(&export_text)?;
+    let vocabulary = parsed
+        .get("resources")
+        .and_then(|resource_tree| resource_tree.get("vocabulary"))
+        .and_then(serde_json::Value::as_object)
+        .ok_or("Missing vocabulary in export.json")?;
+    let functions = parsed
+        .get("resources")
+        .and_then(|resource_tree| resource_tree.get("functions"))
+        .and_then(serde_json::Value::as_object)
+        .ok_or("Missing functions in export.json")?;
+
+    let out_dir = std::env::var("OUT_DIR")?;
+    let destination = Path::new(&out_dir).join("generated_lexicon.rs");
+    let mut code = String::new();
+    code.push_str(&generate_enums(vocabulary, functions));
+    code.push_str(&generate_keywords(vocabulary));
+    code.push_str(&generate_builtins(functions));
+    code.push_str(&function_metadata::signatures(functions)?);
+    code.push_str(&function_metadata::canonical_words(vocabulary)?);
+    code.push_str(&function_metadata::canonical_builtin_words(functions)?);
+    code.push_str(&function_metadata::compound_prefixes(vocabulary));
+    let openers = parsed
+        .pointer("/resources/cliConventions/aperturas")
+        .and_then(serde_json::Value::as_array)
+        .ok_or("Missing top-level openers in export.json")?;
+    let contextual = parsed
+        .pointer("/resources/contextualVocabulary")
+        .and_then(serde_json::Value::as_object)
+        .ok_or("Missing contextual vocabulary in export.json")?;
+    code.push_str(&generate_openers(openers, [vocabulary, contextual]));
+
+    std::fs::write(destination, code)?;
+    Ok(())
+}
+
+fn generate_enums(
+    vocabulary: &serde_json::Map<String, serde_json::Value>,
+    functions: &serde_json::Map<String, serde_json::Value>,
+) -> String {
+    let mut code = String::new();
+    append_enum(&mut code, "KeywordKind", vocabulary);
+    append_enum(&mut code, "BuiltinKind", functions);
+    append_enum_tables(&mut code, "KeywordKind", "KEYWORD", vocabulary);
+    append_enum_tables(&mut code, "BuiltinKind", "BUILTIN", functions);
+    code
+}
+
+fn append_enum(
+    code: &mut String,
+    enum_name: &str,
+    entries: &serde_json::Map<String, serde_json::Value>,
+) {
+    code.push_str("#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]\n");
+    code.push_str(&format!("pub enum {enum_name} {{\n"));
+    for identity in entries.keys() {
+        code.push_str(&format!("    {},\n", to_pascal_case(identity)));
+    }
+    code.push_str("}\n\n");
+}
+
+fn append_enum_tables(
+    code: &mut String,
+    enum_name: &str,
+    prefix: &str,
+    entries: &serde_json::Map<String, serde_json::Value>,
+) {
+    code.push_str(&format!("static {prefix}_KINDS: &[{enum_name}] = &[\n"));
+    for identity in entries.keys() {
+        code.push_str(&format!("    {enum_name}::{},\n", to_pascal_case(identity)));
+    }
+    code.push_str("];\n");
+    code.push('\n');
+}
+
+fn generate_keywords(vocabulary: &serde_json::Map<String, serde_json::Value>) -> String {
+    let mut code = String::new();
+    code.push_str(&enum_methods("KeywordKind", "KEYWORD", vocabulary));
+
+    code.push_str(&perfect_hash::generate(
+        "keyword",
+        "KeywordKind",
+        collect_pairs(vocabulary),
+    ));
+    append_identity_helpers(&mut code, "KeywordKind", "keyword", vocabulary);
+
+    code
+}
+
+fn generate_builtins(functions: &serde_json::Map<String, serde_json::Value>) -> String {
+    let mut code = String::new();
+    code.push_str(&enum_methods("BuiltinKind", "BUILTIN", functions));
+
+    code.push_str(&perfect_hash::generate(
+        "builtin",
+        "BuiltinKind",
+        collect_pairs(functions),
+    ));
+    append_identity_helpers(&mut code, "BuiltinKind", "builtin", functions);
+
+    code
+}
+
+fn enum_methods(
+    enum_name: &str,
+    prefix: &str,
+    entries: &serde_json::Map<String, serde_json::Value>,
+) -> String {
+    let helper_count = entries.len().div_ceil(32);
+    let identity_prefix = prefix.to_lowercase();
+    let parts = (0..helper_count)
+        .map(|part| format!("{identity_prefix}_identity_part_{part}(self)"))
+        .collect::<Vec<_>>();
+    let lookup = parts
+        .into_iter()
+        .reduce(|first, next| format!("{first}.or_else(|| {next})"))
+        .unwrap_or_else(|| "None".to_owned());
+    format!(
+        "impl {enum_name} {{\n    pub fn all() -> &'static [{enum_name}] {{ {prefix}_KINDS }}\n    pub fn as_str(&self) -> &'static str {{ {lookup}.unwrap_or(\"\") }}\n}}\n\n"
+    )
+}
+
+fn append_identity_helpers(
+    code: &mut String,
+    enum_name: &str,
+    prefix: &str,
+    entries: &serde_json::Map<String, serde_json::Value>,
+) {
+    for (part, identities) in entries.keys().collect::<Vec<_>>().chunks(32).enumerate() {
+        code.push_str(&format!(
+            "fn {prefix}_identity_part_{part}(kind: &{enum_name}) -> Option<&'static str> {{\n    match kind {{\n"
+        ));
+        for identity in identities {
+            code.push_str(&format!(
+                "        {enum_name}::{} => Some({identity:?}),\n",
+                to_pascal_case(identity)
+            ));
+        }
+        if entries.len() > 32 {
+            code.push_str("        _ => None,\n");
+        }
+        code.push_str("    }\n}\n\n");
+    }
+}
+
+type FormPair = (String, String);
+type ProfilePairs = (Vec<FormPair>, Vec<FormPair>);
+
+fn collect_pairs(dictionary: &serde_json::Map<String, serde_json::Value>) -> ProfilePairs {
+    let mut spanish_pairs = Vec::new();
+    let mut english_pairs = Vec::new();
+    for (identity, definition) in dictionary {
+        let pascal = to_pascal_case(identity);
+        for form in collect_forms(definition, "es") {
+            spanish_pairs.push((form, pascal.clone()));
+        }
+        for form in collect_forms(definition, "en") {
+            english_pairs.push((form, pascal.clone()));
+        }
+    }
+    spanish_pairs.sort_by(|left_pair, right_pair| left_pair.0.cmp(&right_pair.0));
+    spanish_pairs.dedup_by(|left_pair, right_pair| left_pair.0 == right_pair.0);
+    english_pairs.sort_by(|left_pair, right_pair| left_pair.0.cmp(&right_pair.0));
+    english_pairs.dedup_by(|left_pair, right_pair| left_pair.0 == right_pair.0);
+    (spanish_pairs, english_pairs)
+}
+
+fn generate_openers(
+    openers: &[serde_json::Value],
+    sources: [&serde_json::Map<String, serde_json::Value>; 2],
+) -> String {
+    let mut code = String::new();
+    let (spanish_openers, english_openers) = collect_openers(openers, sources);
+
+    code.push_str(&format_opener_array("OPENERS_ES", &spanish_openers));
+    code.push_str(&format_opener_array("OPENERS_EN", &english_openers));
+
+    code.push_str(
+        "pub fn detect_profile_from_opener(folded_word: &str) -> Option<&'static str> {\n",
+    );
+    code.push_str("    if OPENERS_ES.binary_search(&folded_word).is_ok() {\n");
+    code.push_str("        Some(\"es\")\n");
+    code.push_str("    } else if OPENERS_EN.binary_search(&folded_word).is_ok() {\n");
+    code.push_str("        Some(\"en\")\n");
+    code.push_str("    } else {\n");
+    code.push_str("        None\n");
+    code.push_str("    }\n");
+    code.push_str("}\n");
+    code
+}
+
+fn collect_openers(
+    openers: &[serde_json::Value],
+    sources: [&serde_json::Map<String, serde_json::Value>; 2],
+) -> (Vec<String>, Vec<String>) {
+    let mut spanish = Vec::new();
+    let mut english = Vec::new();
+    for opener in openers.iter().filter_map(serde_json::Value::as_str) {
+        if let Some(keyword_definition) = sources.iter().find_map(|source| source.get(opener)) {
+            spanish.extend(collect_forms(keyword_definition, "es"));
+            english.extend(collect_forms(keyword_definition, "en"));
+        }
+    }
+    spanish.sort();
+    spanish.dedup();
+    english.sort();
+    english.dedup();
+    (spanish, english)
+}
+
+fn format_opener_array(name: &str, items: &[String]) -> String {
+    let length = items.len();
+    let mut code = format!("const {name}: [&str; {length}] = [\n");
+    for form in items {
+        let escaped = form.replace('\\', "\\\\").replace('"', "\\\"");
+        code.push_str(&format!("    \"{escaped}\",\n"));
+    }
+    code.push_str("];\n\n");
+    code
+}
+
+fn collect_forms(definition: &serde_json::Value, profile: &str) -> Vec<String> {
+    let mut forms = Vec::new();
+    if let Some(lex) = definition
+        .get("lexemas")
+        .and_then(|lexemes_map| lexemes_map.get(profile))
+        .and_then(serde_json::Value::as_str)
+    {
+        forms.push(folded(lex));
+    }
+    if let Some(aliases) = definition
+        .get("alias")
+        .and_then(|alias_map| alias_map.get(profile))
+        .and_then(serde_json::Value::as_array)
+    {
+        for alias in aliases {
+            if let Some(alias_text) = alias.as_str() {
+                forms.push(folded(alias_text));
+            }
+        }
+    }
+    forms.sort();
+    forms.dedup();
+    forms
+}
+
+fn folded(text: &str) -> String {
+    text.chars()
+        .flat_map(char::to_lowercase)
+        .map(|character| match character {
+            'á' | 'à' | 'ä' | 'â' => 'a',
+            'é' | 'è' | 'ë' | 'ê' => 'e',
+            'í' | 'ì' | 'ï' | 'î' => 'i',
+            'ó' | 'ò' | 'ö' | 'ô' => 'o',
+            'ú' | 'ù' | 'ü' | 'û' => 'u',
+            'ñ' => 'n',
+            other => other,
+        })
+        .collect()
+}
+
+fn to_pascal_case(text: &str) -> String {
+    let mut outcome = String::new();
+    let mut capitalize_next = true;
+    for character in text.chars() {
+        if character == '_' || character == '-' || character == '.' {
+            capitalize_next = true;
+        } else if capitalize_next {
+            outcome.extend(character.to_uppercase());
+            capitalize_next = false;
+        } else {
+            outcome.push(character);
+        }
+    }
+    outcome
+}

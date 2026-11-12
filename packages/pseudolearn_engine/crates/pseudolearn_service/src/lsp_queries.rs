@@ -1,0 +1,281 @@
+use crate::completion::{CompletionAction, CompletionEntry, CompletionTextEdit};
+use crate::document_session::DocumentSession;
+use crate::formatter::{FormatOptions, format_checked};
+use crate::help_catalog::HelpLocale;
+use crate::insertion::build_insertion;
+use crate::lsp_protocol::{
+    completion_kind_code, lsp_range, lsp_range_from_offsets, lsp_range_from_offsets_with_index,
+    lsp_range_with_index, position_from_request, success, text_document_uri,
+};
+use crate::lsp_session::LspServer;
+use crate::navigation::{HighlightKind, SymbolCategory};
+use crate::on_type::on_type;
+use crate::positions::offset_at;
+use pseudolearn_lexicon::Profile;
+use pseudolearn_source::LineIndex;
+use serde_json::{Value, json};
+
+struct CompletionPresentation {
+    rank: usize,
+    snippets: bool,
+}
+
+impl LspServer {
+    pub(crate) fn handle_completion(&self, message: &Value) -> Value {
+        let uri = text_document_uri(message);
+        let items: Vec<Value> = self
+            .service
+            .session(uri)
+            .map(|session| {
+                let position = position_from_request(session.text(), message);
+                let result = session.queries().complete_with_edit(position);
+                result
+                    .entries
+                    .iter()
+                    .enumerate()
+                    .map(|(rank, entry)| {
+                        completion_row(
+                            session,
+                            entry,
+                            &result.text_edit,
+                            CompletionPresentation {
+                                rank,
+                                snippets: self.client_snippets,
+                            },
+                        )
+                    })
+                    .collect()
+            })
+            .unwrap_or_default();
+        success(message, json!({ "isIncomplete": false, "items": items }))
+    }
+
+    pub(crate) fn handle_on_type_formatting(&self, message: &Value) -> Value {
+        let edits = self
+            .service
+            .session(text_document_uri(message))
+            .and_then(|session| {
+                let typed = message
+                    .pointer("/params/ch")
+                    .and_then(Value::as_str)
+                    .and_then(|value| value.chars().next())?;
+                let position = position_from_request(session.text(), message);
+                let cursor = offset_at(session.text(), position);
+                let outcome = on_type(session, cursor, typed);
+                let text = session.text();
+                let index = LineIndex::build(text);
+                Some(
+                    outcome
+                        .edits
+                        .iter()
+                        .map(|change| {
+                            json!({
+                                "range": lsp_range_from_offsets_with_index(text, change.start_utf8, change.end_utf8, &index),
+                                "newText": change.text
+                            })
+                        })
+                        .collect::<Vec<Value>>(),
+                )
+            })
+            .unwrap_or_default();
+        success(message, json!(edits))
+    }
+
+    pub(crate) fn handle_signature_help(&self, message: &Value) -> Value {
+        let result = self
+            .service
+            .session(text_document_uri(message))
+            .and_then(|session| {
+                let position = position_from_request(session.text(), message);
+                let help = session.queries().signature_help(position)?;
+                let parameters: Vec<Value> = help
+                    .parameters
+                    .iter()
+                    .map(|label| json!({ "label": label }))
+                    .collect();
+                Some(json!({
+                    "signatures": [{ "label": help.signature, "parameters": parameters }],
+                    "activeSignature": 0,
+                    "activeParameter": help.active_parameter
+                }))
+            });
+        success(message, result.unwrap_or(Value::Null))
+    }
+
+    pub(crate) fn handle_definition(&self, message: &Value) -> Value {
+        let uri = text_document_uri(message);
+        if self.workspace_session.is_some()
+            && let Some(response) = self.project_definition(uri, message)
+        {
+            return response;
+        }
+        let result = self.service.session(uri).and_then(|session| {
+            let position = position_from_request(session.text(), message);
+            let range = session.queries().definition(position)?;
+            Some(json!({ "uri": uri, "range": lsp_range(session.text(), range) }))
+        });
+        success(message, result.unwrap_or(Value::Null))
+    }
+
+    pub(crate) fn handle_references(&self, message: &Value) -> Value {
+        let uri = text_document_uri(message);
+        let include_declaration = message
+            .pointer("/params/context/includeDeclaration")
+            .and_then(Value::as_bool)
+            .unwrap_or(true);
+        if self.workspace_session.is_some()
+            && let Some(response) = self.project_references(uri, message, include_declaration)
+        {
+            return response;
+        }
+        let locations: Vec<Value> = self
+            .service
+            .session(uri)
+            .map(|session| {
+                let position = position_from_request(session.text(), message);
+                let declaration = session.queries().definition(position);
+                let index = LineIndex::build(session.text());
+                session
+                    .queries()
+                    .references(position)
+                    .into_iter()
+                    .filter(|range| include_declaration || Some(*range) != declaration)
+                    .map(|range| {
+                        json!({ "uri": uri, "range": lsp_range_with_index(session.text(), range, &index) })
+                    })
+                    .collect()
+            })
+            .unwrap_or_default();
+        success(message, Value::Array(locations))
+    }
+
+    pub(crate) fn handle_highlight(&self, message: &Value) -> Value {
+        let highlights: Vec<Value> = self
+            .service
+            .session(text_document_uri(message))
+            .map(|session| {
+                let position = position_from_request(session.text(), message);
+                let index = LineIndex::build(session.text());
+                session
+                    .queries()
+                    .highlights(position)
+                    .into_iter()
+                    .map(|entry| {
+                        let kind = match entry.kind {
+                            HighlightKind::Read => 2,
+                            HighlightKind::Write => 3,
+                        };
+                        json!({ "range": lsp_range_with_index(session.text(), entry.range, &index), "kind": kind })
+                    })
+                    .collect()
+            })
+            .unwrap_or_default();
+        success(message, Value::Array(highlights))
+    }
+
+    pub(crate) fn handle_document_symbols(&self, message: &Value) -> Value {
+        let uri = text_document_uri(message);
+        let symbols: Vec<Value> = self
+            .service
+            .session(uri)
+            .map(|session| {
+                let index = LineIndex::build(session.text());
+                session
+                    .queries()
+                    .symbols()
+                    .into_iter()
+                    .map(|entry| {
+                        let kind = match entry.category {
+                            SymbolCategory::Class => 5,
+                            SymbolCategory::Method => 6,
+                            SymbolCategory::Field => 8,
+                            SymbolCategory::Function => 12,
+                            SymbolCategory::Variable => 13,
+                        };
+                        json!({
+                            "name": entry.name,
+                            "kind": kind,
+                            "containerName": entry.container,
+                            "location": { "uri": uri, "range": lsp_range_with_index(session.text(), entry.range, &index) }
+                        })
+                    })
+                    .collect()
+            })
+            .unwrap_or_default();
+        success(message, Value::Array(symbols))
+    }
+
+    pub(crate) fn handle_formatting(&self, message: &Value) -> Value {
+        let edits = self
+            .service
+            .session(text_document_uri(message))
+            .and_then(|session| {
+                let formatted = format_checked(
+                    session.text(),
+                    FormatOptions {
+                        profile: session.profile,
+                        indent_size: 2,
+                    },
+                )?;
+                if formatted == session.text() {
+                    return None;
+                }
+                let end = session.text().len();
+                Some(json!([{
+                    "range": lsp_range_from_offsets(session.text(), 0, end),
+                    "newText": formatted
+                }]))
+            });
+        success(message, edits.unwrap_or_else(|| json!([])))
+    }
+}
+
+fn completion_row(
+    session: &DocumentSession,
+    entry: &CompletionEntry,
+    replace: &CompletionTextEdit,
+    presentation: CompletionPresentation,
+) -> Value {
+    let structured = !matches!(entry.action, CompletionAction::Plain);
+    let (text, format) = if structured {
+        let insertion = build_insertion(entry, replace, session.text(), session.profile);
+        match (presentation.snippets, insertion.lsp_snippet) {
+            (true, Some(snippet)) => (snippet, 2),
+            _ => (insertion.edit.text, 1),
+        }
+    } else {
+        (
+            entry
+                .insert_text
+                .clone()
+                .unwrap_or_else(|| entry.label.clone()),
+            1,
+        )
+    };
+    let row = json!({
+        "label": entry.label,
+        "kind": completion_kind_code(entry.kind),
+        "detail": entry.detail,
+        "insertText": text,
+        "insertTextFormat": format,
+        "sortText": format!("{:05}", presentation.rank)
+    });
+    with_documentation(row, entry, session.profile)
+}
+
+fn with_documentation(mut row: Value, entry: &CompletionEntry, profile: Profile) -> Value {
+    if let (Some(documentation), Some(object)) =
+        (catalog_documentation(entry, profile), row.as_object_mut())
+    {
+        object.insert(
+            "documentation".to_owned(),
+            json!({ "kind": "plaintext", "value": documentation }),
+        );
+    }
+    row
+}
+
+fn catalog_documentation(entry: &CompletionEntry, profile: Profile) -> Option<&'static str> {
+    let identity = entry.identity.as_deref()?;
+    crate::help_catalog::token_description(identity, HelpLocale::from_profile(profile))
+}

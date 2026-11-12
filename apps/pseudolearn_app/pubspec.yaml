@@ -4,28 +4,29 @@ publish_to: 'none'
 version: 1.1.1
 
 environment:
-  sdk: '^3.5.0'
-  flutter: 3.47.5
+  sdk: '^3.14.0'
+  flutter: 3.50.0
 
 dependencies:
   flutter:
     sdk: flutter
+  flutter_rust_bridge: 2.13.0
+  flutter_rust_bridge_hooks: 2.13.0
+  hooks: 2.2.0
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.3
-  pseudolearn_core:
-    path: ../../packages/pseudolearn_core
   bloc: ^9.2.1
   flutter_bloc: ^9.1.1
   equatable: ^3.0.0
-  go_router: ^18.0.2
-  sqflite: ^2.4.4+2
-  sqflite_common_ffi: ^2.4.4
+  go_router: ^18.1.4
+  sqflite: ^2.4.6
+  sqflite_common_ffi: ^2.4.7
   path: ^1.9.1
   path_provider: ^2.1.6
   markdown: ^7.3.1
   supabase: ^2.16.5
-  crypto: ^3.0.7
+  crypto: ^3.0.8
   sign_in_with_apple: ^8.2.0
   google_sign_in: ^7.2.0
   flutter_secure_storage: ^11.2.0
@@ -33,11 +34,16 @@ dependencies:
   url_launcher: ^6.3.3
   package_info_plus: ^10.2.2
   in_app_review: ^2.0.12
-
+  flutter_svg: ^2.3.4
+  in_app_purchase: ^3.3.1
+  material_ui: ^1.11.0
+  cupertino_ui: ^1.1.6
 dev_dependencies:
+  integration_test:
+    sdk: flutter
   flutter_test:
     sdk: flutter
-  analyzer: ^14.5.0
+  analyzer: ^14.7.0
   http: ^1.6.0
   flutter_lints: ^6.0.0
   lints: ^6.1.0
@@ -52,12 +58,31 @@ flutter:
   generate: true
   assets:
     - assets/fonts/
-    - assets/knowledge/
-    - assets/knowledge/examples/
-    - assets/knowledge/exercises/
-    - assets/knowledge/modules/
-    - assets/knowledge/specification/
-    - assets/knowledge/support/
+    - assets/demo/
+    - assets/agent/es/
+    - assets/agent/en/
+    - assets/manual/es/
+    - assets/manual/en/
+    - assets/reference/es/es/
+    - assets/reference/es/es/sections/
+    - assets/reference/es/en/
+    - assets/reference/es/en/sections/
+    - assets/reference/en/es/
+    - assets/reference/en/es/sections/
+    - assets/reference/en/en/
+    - assets/reference/en/en/sections/
+    - assets/route/es/es/
+    - assets/route/es/es/lessons/
+    - assets/route/es/es/exercises/
+    - assets/route/es/en/
+    - assets/route/es/en/lessons/
+    - assets/route/es/en/exercises/
+    - assets/route/en/es/
+    - assets/route/en/es/lessons/
+    - assets/route/en/es/exercises/
+    - assets/route/en/en/
+    - assets/route/en/en/lessons/
+    - assets/route/en/en/exercises/
 
   fonts:
     - family: IBMPlexSans
@@ -94,7 +119,7 @@ msix_config:
   logo_path: windows/runner/resources/app_icon.png
   store: true
   sign_msix: false
-  capabilities: internetClient
+  capabilities: internetClient,privateNetworkClientServer
   protocol_activation: pseudolearn
   file_extension: .pseudo
   languages: es-ES, en-US

@@ -1,0 +1,56 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import type { RouteRuns } from '@entities/learning-route/model/route';
+import { Icon } from '@shared/ui/icon';
+import { routeRunsHtml } from './route-html';
+
+export interface Props {
+  locale: Locale;
+  points: readonly RouteRuns[];
+}
+
+const { locale, points } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+<div class="takeaways">
+  <p class="pl-overline pl-overline--field">{t('home.story.takeaway')}</p>
+  <ul class="takeaways__list">
+    {points.map((runs) => (
+      <li>
+        <Icon name="check" size={18} />
+        <span set:html={routeRunsHtml(runs, locale)} />
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .takeaways {
+    display: grid;
+    gap: var(--pl-space-md);
+    padding: var(--pl-space-lg);
+    border-radius: var(--pl-radius-card);
+    background: var(--pl-field);
+    color: var(--pl-on-field-2);
+    box-shadow: var(--pl-shadow-3);
+  }
+
+  .takeaways__list {
+    display: grid;
+    gap: var(--pl-space-sm);
+  }
+
+  .takeaways__list li {
+    display: flex;
+    gap: var(--pl-space-sm);
+    line-height: 1.55;
+  }
+
+  .takeaways__list :global(svg) {
+    flex: none;
+    margin-top: 3px;
+    color: var(--pl-on-field-3);
+  }
+</style>

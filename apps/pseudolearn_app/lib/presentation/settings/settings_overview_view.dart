@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../domain/model/settings/app_theme_mode.dart';
 import '../../domain/model/settings/ui_language_id.dart';
 import '../components/layout/app_page.dart';
@@ -13,26 +13,32 @@ final class SettingsOverviewView extends StatelessWidget {
   final UiLanguageId currentLanguage;
   final AppThemeMode currentThemeMode;
   final bool assistedDiagramZoom;
+  final bool editorAssistance;
   final String appVersion;
   final VoidCallback onNavigateAccount;
   final VoidCallback onNavigateLanguage;
   final VoidCallback onNavigateTheme;
   final VoidCallback onNavigateDiagram;
+  final VoidCallback onNavigateEditor;
   final VoidCallback onRestartOnboarding;
   final VoidCallback onNavigateContact;
+  final VoidCallback? onNavigateAgent;
 
   const SettingsOverviewView({
     super.key,
     required this.currentLanguage,
     required this.currentThemeMode,
     required this.assistedDiagramZoom,
+    required this.editorAssistance,
     required this.appVersion,
     required this.onNavigateAccount,
     required this.onNavigateLanguage,
     required this.onNavigateTheme,
     required this.onNavigateDiagram,
+    required this.onNavigateEditor,
     required this.onRestartOnboarding,
     required this.onNavigateContact,
+    this.onNavigateAgent,
   });
 
   @override
@@ -68,13 +74,15 @@ final class _SettingsOverviewBody extends StatelessWidget {
               language: view.currentLanguage,
               themeMode: view.currentThemeMode,
               assistedDiagramZoom: view.assistedDiagramZoom,
+              editorAssistance: view.editorAssistance,
               onNavigateAccount: view.onNavigateAccount,
               onNavigateLanguage: view.onNavigateLanguage,
               onNavigateTheme: view.onNavigateTheme,
               onNavigateDiagram: view.onNavigateDiagram,
+              onNavigateEditor: view.onNavigateEditor,
               onRestartOnboarding: view.onRestartOnboarding,
             ),
-            secondary: InformationSection(onNavigateContact: view.onNavigateContact),
+            secondary: InformationSection(onNavigateContact: view.onNavigateContact, onNavigateAgent: view.onNavigateAgent),
           ),
           SizedBox(height: canvas.scaled(SpacingTokens.space8)),
           VersionFooter(version: view.appVersion),

@@ -1,0 +1,72 @@
+---
+import BaseLayout from '@app/layouts/BaseLayout.astro';
+import { sectionPath } from '@entities/specification/model/section-address';
+import { runsText } from '@entities/specification/model/plain-text';
+import type { Locale } from '@shared/i18n/locales';
+import { useTranslations } from '@shared/i18n/translator';
+import SpecificationArticle from '@widgets/specification-reader/SpecificationArticle.astro';
+import SpecificationPager from '@widgets/specification-contents/SpecificationPager.astro';
+import SpecificationSidebar from '@widgets/specification-contents/SpecificationSidebar.astro';
+import SpecSectionHero from '@widgets/spec-section-hero/SpecSectionHero.astro';
+import { sectionContext, sectionMarkdownPath } from './specification-pages';
+
+export interface Props {
+  locale: Locale;
+  sectionId: string;
+}
+
+const { locale, sectionId } = Astro.props;
+const { t } = useTranslations(locale);
+const { section, part, previous, next } = sectionContext(locale, sectionId);
+const markdownPath = sectionMarkdownPath(locale, sectionId);
+const title = t('specification.sectionSeoTitle', { number: section.number, title: runsText(section.title) });
+---
+
+<BaseLayout
+  locale={locale}
+  path={sectionPath(sectionId)}
+  title={title}
+  description={runsText(section.phrase)}
+>
+  <link slot="head" rel="alternate" type="text/markdown" href={markdownPath} />
+  <SpecSectionHero section={section} part={part} locale={locale} markdownHref={markdownPath} />
+  <div class="pl-container reader">
+    <SpecificationSidebar part={part} currentId={sectionId} locale={locale} />
+    <div class="reader__main">
+      <SpecificationArticle section={section} locale={locale} />
+      <SpecificationPager previous={previous} next={next} locale={locale} />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .reader {
+    display: grid;
+    gap: var(--pl-space-xl);
+    padding-top: var(--pl-space-2xl);
+    padding-bottom: var(--pl-space-4xl);
+  }
+
+  .reader__main {
+    min-width: 0;
+  }
+
+  .reader > :global(:first-child) {
+    order: 2;
+  }
+
+  @media (min-width: 900px) {
+    .reader {
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: var(--pl-space-3xl);
+    }
+
+    .reader > :global(:first-child) {
+      order: 0;
+      position: sticky;
+      top: var(--pl-space-lg);
+      max-height: calc(100vh - var(--pl-space-2xl));
+      overflow-y: auto;
+    }
+  }
+</style>

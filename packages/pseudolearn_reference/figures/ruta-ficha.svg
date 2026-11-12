@@ -1,0 +1,7 @@
+<svg viewBox="0 0 340 220">
+  <rect x="4" y="4" width="332" height="212" rx="8" fill="@superficie" stroke="@atenuado"/>
+  <caja x="14" y="14" ancho="150" alto="70" rol="acento-estructurado" fondo="0.12" texto="{{t:entra}}¶{{t:entra-1}}¶{{t:entra-2}}" tamano="12"/>
+  <caja x="176" y="14" ancho="150" alto="70" rol="exito" fondo="0.12" texto="{{t:sale}}¶{{t:sale-1}}" tamano="12"/>
+  <caja x="14" y="94" ancho="312" alto="52" rol="acento-procedimental" fondo="0.12" texto="{{t:relacion}}¶{{t:relacion-1}}" tamano="12"/>
+  <caja x="14" y="156" ancho="312" alto="50" rol="acento-objetos" fondo="0.12" texto="{{t:ejemplos}}¶120, 4 → 33 · 100, 3 → 37 · 100, 1 → 110" tamano="12"/>
+</svg>

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../domain/model/completion/completion_item.dart';
 import '../../domain/model/editor/editor_key.dart';
 import '../l10n/generated/app_localizations.dart';
@@ -6,18 +6,23 @@ import '../theme/app_theme.dart';
 import '../theme/tokens/border_metrics.dart';
 import '../theme/tokens/component_metrics.dart';
 import 'components/editor_key_cap.dart';
+import 'components/editor_stop_row.dart';
 import 'components/editor_template_row.dart';
 
 final class EditorKeyBar extends StatefulWidget {
   final List<EditorKey> keys;
   final List<CompletionItem> templates;
   final ValueChanged<EditorKey> onKeyPressed;
+  final bool alwaysShowsCandidates;
+  final bool templateActive;
 
   const EditorKeyBar({
     super.key,
     required this.keys,
     required this.templates,
     required this.onKeyPressed,
+    this.alwaysShowsCandidates = false,
+    this.templateActive = false,
   });
 
   @override
@@ -29,13 +34,8 @@ final class _EditorKeyBarState extends State<EditorKeyBar> {
 
   void _toggleTemplates() => setState(() => _showsTemplates = !_showsTemplates);
 
-  void _pressTemplate(CompletionItem item) {
-    widget.onKeyPressed(EditorKey.template(
-      label: item.label,
-      insertion: item.template,
-      caretOffset: item.caretOffset,
-    ));
-  }
+  void _pressTemplate(CompletionItem item) =>
+      widget.onKeyPressed(EditorKey.ofCompletion(item));
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,10 @@ final class _EditorKeyBarState extends State<EditorKeyBar> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (_showsTemplates && widget.templates.isNotEmpty)
+          if (widget.templateActive)
+            EditorStopRow(onKeyPressed: widget.onKeyPressed)
+          else if ((_showsTemplates || widget.alwaysShowsCandidates) &&
+              widget.templates.isNotEmpty)
             EditorTemplateRow(
               templates: widget.templates,
               onTemplateSelected: _pressTemplate,
@@ -104,11 +107,17 @@ final class _KeyRow extends StatelessWidget {
       child: Row(
         children: [
           _TemplatesToggle(
-              isOpen: showsTemplates, onPressed: onToggleTemplates),
-          ...keys.map((key) => Expanded(
-                child: EditorKeyCap(
-                    editorKey: key, onPressed: () => onKeyPressed(key)),
-              )),
+            isOpen: showsTemplates,
+            onPressed: onToggleTemplates,
+          ),
+          ...keys.map(
+            (key) => Expanded(
+              child: EditorKeyCap(
+                editorKey: key,
+                onPressed: () => onKeyPressed(key),
+              ),
+            ),
+          ),
         ],
       ),
     );

@@ -1,0 +1,299 @@
+{
+  "format": "manual/1",
+  "entries": [
+    {
+      "id": "onboarding",
+      "anchor": "feature:onboarding",
+      "route": "/onboarding",
+      "title": "Bienvenida",
+      "body": "La bienvenida presenta PseudoLearn, deja elegir idioma y perfil de sintaxis y ofrece una demostración guiada de ejecución paso a paso. Se muestra la primera vez que abres la app.",
+      "keywords": [
+        "bienvenida",
+        "inicio",
+        "demostración",
+        "perfil"
+      ]
+    },
+    {
+      "id": "library",
+      "anchor": "feature:library",
+      "route": "/biblioteca",
+      "title": "Biblioteca",
+      "body": "La Biblioteca reúne tus algoritmos y tus ejercicios en dos pestañas, cada una con su número de elementos y su botón «+» para crear. En «Algoritmos» busca por título, abre un algoritmo para editarlo, o usa el menú de cada tarjeta para renombrarlo o eliminarlo. Los algoritmos se guardan en el dispositivo y se sincronizan si inicias sesión.",
+      "keywords": [
+        "biblioteca",
+        "algoritmos",
+        "documentos",
+        "buscar",
+        "renombrar",
+        "eliminar"
+      ]
+    },
+    {
+      "id": "new-document",
+      "anchor": "feature:new-document",
+      "route": "/biblioteca",
+      "title": "Nuevo algoritmo",
+      "body": "«Nuevo algoritmo» crea un documento vacío. Eliges un título único y el perfil de sintaxis: español clásico o inglés. El perfil decide las palabras clave del programa y se puede traducir después.",
+      "keywords": [
+        "nuevo",
+        "crear",
+        "algoritmo",
+        "perfil",
+        "título"
+      ]
+    },
+    {
+      "id": "user-exercises",
+      "anchor": "feature:user-exercises",
+      "route": "/biblioteca",
+      "title": "Ejercicios",
+      "body": "La pestaña «Ejercicios» lista los ejercicios que creaste y ofrece «Nuevo ejercicio». «Resolver» abre tu intento como un algoritmo con la franja del ejercicio; «Editar» abre el editor del ejercicio y «Eliminar» lo borra sin borrar tus intentos.",
+      "keywords": [
+        "ejercicios",
+        "mis ejercicios",
+        "resolver",
+        "practicar"
+      ]
+    },
+    {
+      "id": "user-exercise-editor",
+      "anchor": "feature:user-exercise-editor",
+      "route": "/biblioteca/ejercicio/nuevo",
+      "title": "Editor de ejercicios",
+      "body": "El editor de ejercicios define título, narrativa opcional, enunciado, restricciones, pistas graduadas, casos visibles y ocultos (una línea por caso: entradas separadas por punto y coma, luego => y las salidas), aserciones estructurales y la solución de referencia. Solo se publica si la solución de referencia pasa todos los casos y aserciones.",
+      "keywords": [
+        "crear ejercicio",
+        "casos",
+        "pistas",
+        "solución de referencia",
+        "aserciones",
+        "publicar"
+      ]
+    },
+    {
+      "id": "editor",
+      "anchor": "feature:editor",
+      "route": "/biblioteca/documento/:id",
+      "title": "Editor de algoritmos",
+      "body": "El editor analiza el programa mientras escribes y muestra diagnósticos con su explicación. Desde la barra inferior ejecutas de golpe o paso a paso, ves la salida, la traza de variables, el ordinograma, el estructograma y el diagrama de clases, y exportas el código equivalente en Python o Rust. El documento se guarda solo.",
+      "keywords": [
+        "editor",
+        "ejecutar",
+        "paso a paso",
+        "diagnósticos",
+        "traza",
+        "ordinograma",
+        "estructograma",
+        "exportar",
+        "guardar"
+      ]
+    },
+    {
+      "id": "execution-options",
+      "anchor": "feature:execution-options",
+      "route": "/biblioteca/documento/:id",
+      "title": "Opciones de ejecución",
+      "body": "Las opciones de ejecución guardan con el documento los argumentos que recibe tu programa (separados por espacios; usa comillas para incluir espacios), permiten repetir la última cinta de ejecución para reproducir exactamente los mismos efectos y muestran la carpeta de archivos donde el programa lee y escribe.",
+      "keywords": [
+        "argumentos",
+        "opciones de ejecución",
+        "repetir",
+        "cinta",
+        "carpeta",
+        "archivos"
+      ]
+    },
+    {
+      "id": "knowledge",
+      "anchor": "feature:knowledge",
+      "route": "/conocimiento",
+      "title": "Conocimiento",
+      "body": "Conocimiento reúne la ruta de aprendizaje, con lecciones y ejercicios graduados, y la especificación ilustrada del lenguaje. Tu avance se marca en cada lección.",
+      "keywords": [
+        "conocimiento",
+        "ruta",
+        "lecciones",
+        "especificación",
+        "aprender"
+      ]
+    },
+    {
+      "id": "route-lesson",
+      "anchor": "feature:route-lesson",
+      "route": "/conocimiento/ruta/:leccion",
+      "title": "Lección de la ruta",
+      "body": "Una lección explica un concepto con ejemplos ejecutables, enlaces a la especificación y ejercicios de práctica. Al abrirla queda «En curso»; pasa a «Completada» cuando resuelves todos sus ejercicios obligatorios, o al abrirla si no tiene ninguno. Los ejercicios opcionales no cuentan para completarla.",
+      "keywords": [
+        "lección",
+        "ruta",
+        "concepto",
+        "ejemplos"
+      ]
+    },
+    {
+      "id": "route-exercise",
+      "anchor": "feature:route-exercise",
+      "route": "/conocimiento/ruta/:leccion/:ejercicio",
+      "title": "Ejercicio de la ruta",
+      "body": "Los ejercicios de la ruta son de varios tipos: resolver, predecir la salida, completar una traza, ordenar, romper un programa, diseñar casos o clasificar. Los de resolver abren un algoritmo con la franja del ejercicio y se comprueban contra casos visibles y ocultos.",
+      "keywords": [
+        "ejercicio",
+        "resolver",
+        "predecir",
+        "traza",
+        "comprobar",
+        "pistas"
+      ]
+    },
+    {
+      "id": "specification",
+      "anchor": "feature:specification",
+      "route": "/conocimiento/especificacion/:id",
+      "title": "Especificación",
+      "body": "La especificación ilustrada describe cada construcción del lenguaje con su regla, ejemplos en tu perfil y enlaces de vuelta a la ruta.",
+      "keywords": [
+        "especificación",
+        "referencia",
+        "reglas",
+        "sintaxis"
+      ]
+    },
+    {
+      "id": "progress",
+      "anchor": "feature:progress",
+      "route": "/progreso",
+      "title": "Progreso",
+      "body": "El panel de progreso mide cobertura con gráficos: anillos de lecciones completadas, ejercicios resueltos y conceptos usados; el recorrido de la ruta lección a lección; los ejercicios obligatorios que faltan en la lección sugerida; el avance por nivel y un radar por tipo de ejercicio; la actividad semanal y tu biblioteca. No mide rendimiento ni compara con otras personas. Los ejercicios resueltos con ayuda del agente se distinguen.",
+      "keywords": [
+        "progreso",
+        "panel",
+        "cobertura",
+        "resueltos",
+        "asistido"
+      ]
+    },
+    {
+      "id": "settings",
+      "anchor": "feature:settings",
+      "route": "/ajustes",
+      "title": "Ajustes",
+      "body": "Ajustes agrupa cuenta, idioma, tema, editor, diagramas, el agente Nodo y contacto, y muestra la versión instalada.",
+      "keywords": [
+        "ajustes",
+        "configuración",
+        "preferencias"
+      ]
+    },
+    {
+      "id": "settings-account",
+      "anchor": "feature:settings-account",
+      "route": "/ajustes/cuenta",
+      "title": "Cuenta",
+      "body": "Inicia sesión con Apple, Google o enlace por correo para sincronizar algoritmos, ejercicios y progreso. Al cerrar sesión puedes conservar o borrar los datos locales; también puedes eliminar la cuenta.",
+      "keywords": [
+        "cuenta",
+        "iniciar sesión",
+        "sincronizar",
+        "cerrar sesión",
+        "eliminar cuenta"
+      ]
+    },
+    {
+      "id": "settings-language",
+      "anchor": "feature:settings-language",
+      "route": "/ajustes/idioma",
+      "title": "Idioma",
+      "body": "Elige el idioma de la interfaz (sistema, español o inglés). El perfil de sintaxis de cada algoritmo es independiente del idioma de la interfaz.",
+      "keywords": [
+        "idioma",
+        "lenguaje",
+        "español",
+        "inglés"
+      ]
+    },
+    {
+      "id": "settings-theme",
+      "anchor": "feature:settings-theme",
+      "route": "/ajustes/tema",
+      "title": "Tema",
+      "body": "Elige tema claro, oscuro o el del sistema.",
+      "keywords": [
+        "tema",
+        "oscuro",
+        "claro",
+        "apariencia"
+      ]
+    },
+    {
+      "id": "settings-editor",
+      "anchor": "feature:settings-editor",
+      "route": "/ajustes/editor",
+      "title": "Ajustes del editor",
+      "body": "Configura la asistencia de escritura del editor, como el completado y las plantillas de estructuras.",
+      "keywords": [
+        "editor",
+        "completado",
+        "plantillas",
+        "escritura"
+      ]
+    },
+    {
+      "id": "settings-diagrams",
+      "anchor": "feature:settings-diagrams",
+      "route": "/ajustes/diagramas",
+      "title": "Ajustes de diagramas",
+      "body": "Elige cómo se presentan el ordinograma, el estructograma y el diagrama de clases.",
+      "keywords": [
+        "diagramas",
+        "ordinograma",
+        "estructograma",
+        "clases"
+      ]
+    },
+    {
+      "id": "settings-contact",
+      "anchor": "feature:settings-contact",
+      "route": "/ajustes/contacto",
+      "title": "Contacto",
+      "body": "Escribe al equipo de PseudoLearn para informar de un problema o proponer una mejora.",
+      "keywords": [
+        "contacto",
+        "soporte",
+        "ayuda",
+        "problema"
+      ]
+    },
+    {
+      "id": "agent",
+      "anchor": "feature:agent",
+      "route": "/biblioteca",
+      "title": "Nodo, el asistente de IA",
+      "body": "Con una cuenta que tenga Nodo activo, el botón flotante con el nodo y el destello abre Nodo, un asistente de IA que ve la pantalla en la que estás, explica, comprueba y ejecuta programas con el motor, y puede crear o editar algoritmos y ejercicios con tu confirmación. En los ejercicios hace de tutor: da pistas graduadas y solo muestra la solución tras tres intentos fallidos y si la pides. Todo código que muestra va marcado como Verificado o Con errores. En Ajustes → Nodo ves tus créditos, recargas, gestionas la suscripción y puedes ocultar el botón para practicar sin ayuda.",
+      "keywords": [
+        "nodo",
+        "ia",
+        "asistente",
+        "chat",
+        "ayuda",
+        "tutor",
+        "pistas"
+      ]
+    },
+    {
+      "id": "agent-settings",
+      "anchor": "feature:agent-settings",
+      "route": "/ajustes/nodo",
+      "title": "Ajustes de Nodo",
+      "body": "Muestra los créditos que te quedan, la fecha de renovación, lo que gastó la última petición y permite recargar o retirar el consentimiento. El plan mensual trae 300 créditos, la prueba de 7 días trae 40 y las recargas de 150 no caducan.",
+      "keywords": [
+        "créditos",
+        "saldo",
+        "recarga",
+        "consentimiento",
+        "plan",
+        "prueba"
+      ]
+    }
+  ]
+}

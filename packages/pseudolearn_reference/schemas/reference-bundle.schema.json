@@ -1,0 +1,561 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pseudolearn-reference/1",
+  "title": "Paquete de la especificación ilustrada",
+  "description": "Contrato de los archivos de assets/reference/<idioma>/<perfil>/. El archivo raíz describe una sección; $defs describe el índice, la búsqueda, los enlaces y el manifiesto.",
+  "$ref": "#/$defs/section",
+  "$defs": {
+    "category": {
+      "enum": [
+        "keywordStructured",
+        "keywordProcedural",
+        "keywordOop",
+        "identifier",
+        "type",
+        "literalNumber",
+        "literalString",
+        "literalBoolean",
+        "operator",
+        "punctuation",
+        "comment"
+      ]
+    },
+    "token": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "prefixItems": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/category"
+        }
+      ]
+    },
+    "run": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "text",
+            "strong",
+            "emphasis",
+            "code",
+            "slot",
+            "link",
+            "term"
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "tokens": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/token"
+          }
+        },
+        "section": {
+          "type": "string"
+        },
+        "term": {
+          "type": "string"
+        }
+      }
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/run"
+      }
+    },
+    "kind": {
+      "enum": [
+        "concepto",
+        "construccion",
+        "tipo",
+        "motor",
+        "apendice"
+      ]
+    },
+    "section": {
+      "type": "object",
+      "required": [
+        "id",
+        "number",
+        "kind",
+        "title",
+        "phrase",
+        "blocks"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "number": {
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/kind"
+        },
+        "title": {
+          "$ref": "#/$defs/runs"
+        },
+        "phrase": {
+          "$ref": "#/$defs/runs"
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/block"
+          }
+        }
+      }
+    },
+    "diagnostic": {
+      "type": "object",
+      "required": [
+        "code",
+        "severity",
+        "line",
+        "column",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string"
+        },
+        "line": {
+          "type": "integer"
+        },
+        "column": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "block": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "heading",
+            "paragraph",
+            "list",
+            "table",
+            "form",
+            "anatomy",
+            "program",
+            "figure",
+            "callout",
+            "summary",
+            "see_also",
+            "diagnostic",
+            "intermediate",
+            "trace"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "number": {
+          "type": "string"
+        },
+        "runs": {
+          "$ref": "#/$defs/runs"
+        },
+        "ordered": {
+          "type": "boolean"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/runs"
+          }
+        },
+        "header": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/runs"
+          }
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/runs"
+            }
+          }
+        },
+        "lines": {
+          "type": "array"
+        },
+        "parts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "tokens",
+              "label"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "tokens": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "$ref": "#/$defs/token"
+                }
+              },
+              "label": {
+                "$ref": "#/$defs/runs"
+              }
+            }
+          }
+        },
+        "svg": {
+          "type": "string"
+        },
+        "alt": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "caption": {
+          "$ref": "#/$defs/runs"
+        },
+        "layers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "from_step",
+              "svg"
+            ],
+            "properties": {
+              "from_step": {
+                "type": "integer"
+              },
+              "until_step": {
+                "type": "integer"
+              },
+              "svg": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "runs"
+            ],
+            "properties": {
+              "runs": {
+                "$ref": "#/$defs/runs"
+              }
+            }
+          }
+        },
+        "panels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "zone",
+              "from_step",
+              "runs"
+            ],
+            "properties": {
+              "zone": {
+                "type": "string"
+              },
+              "from_step": {
+                "type": "integer"
+              },
+              "runs": {
+                "$ref": "#/$defs/runs"
+              }
+            }
+          }
+        },
+        "title": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "executed": {
+          "type": "boolean"
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "output": {
+          "type": "string"
+        },
+        "termination": {
+          "type": "string"
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/diagnostic"
+          }
+        },
+        "kind": {
+          "enum": [
+            "phrase",
+            "limit",
+            "inside",
+            "analogy",
+            "note",
+            "parts",
+            "errors",
+            "summary",
+            "see_also"
+          ]
+        },
+        "collapsible": {
+          "type": "boolean"
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/block"
+          }
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/runs"
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "section",
+              "number",
+              "title"
+            ],
+            "properties": {
+              "section": {
+                "type": "string"
+              },
+              "number": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "program": {
+          "type": "string"
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "line",
+              "class",
+              "detail"
+            ],
+            "properties": {
+              "line": {
+                "type": "integer"
+              },
+              "class": {
+                "type": "string"
+              },
+              "detail": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "code": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "toc": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "number",
+          "title",
+          "summary",
+          "sections"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "number",
+                "kind",
+                "title",
+                "phrase"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "number": {
+                  "type": "string"
+                },
+                "kind": {
+                  "$ref": "#/$defs/kind"
+                },
+                "title": {
+                  "$ref": "#/$defs/runs"
+                },
+                "phrase": {
+                  "$ref": "#/$defs/runs"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "search": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "text",
+          "kind",
+          "section"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "title",
+              "heading",
+              "term",
+              "card",
+              "diagnostic"
+            ]
+          },
+          "section": {
+            "type": "string"
+          },
+          "anchor": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "links": {
+      "type": "object",
+      "required": [
+        "cards",
+        "diagnostics"
+      ],
+      "properties": {
+        "cards": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "diagnostics": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "manifest": {
+      "type": "object",
+      "required": [
+        "format",
+        "language",
+        "profile",
+        "corpus",
+        "engine",
+        "files"
+      ],
+      "properties": {
+        "format": {
+          "const": "pseudolearn-reference/1"
+        },
+        "language": {
+          "enum": [
+            "es",
+            "en"
+          ]
+        },
+        "profile": {
+          "enum": [
+            "es",
+            "en"
+          ]
+        },
+        "corpus": {
+          "type": "string"
+        },
+        "engine": {
+          "type": "string"
+        },
+        "files": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

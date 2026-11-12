@@ -6,15 +6,19 @@ packages/*/pubspec.lock
 *.dill
 *.js_*
 doc/api/
+.pnpm-store
 
 # Coverage
 coverage/
+!apps/pseudolearn_app/lib/domain/model/diagram/coverage/
 lcov.info
 
 # IDE
 .idea/
 *.iml
 .vscode/
+!apps/pseudolearn_vscode/.vscode/
+!apps/pseudolearn_vscode/.vscode/**
 .junie/
 
 # macOS
@@ -26,7 +30,26 @@ dart_define.local.json
 
 # Salida del motor de marca
 packages/pseudolearn_brand/out/
+packages/pseudolearn_store_media/src/compose/brand.generated.ts
 
 # Python
 __pycache__/
 *.pyc
+
+# Rust
+target/
+
+# Local measurements and generated contract export
+**/results/
+packages/pseudolearn_spec/specifications/export.json
+
+# Node.js
+node_modules/
+apps/pseudolearn_vscode/dist/
+apps/pseudolearn_vscode/bin/
+apps/pseudolearn_vscode/*.vsix
+apps/pseudolearn_vscode/.artifacts/
+apps/pseudolearn_vscode/third-party-notices.md
+apps/pseudolearn_vscode/.vscode-test-web/
+apps/pseudolearn_vscode/test-results/
+apps/pseudolearn_vscode/media/icon.png

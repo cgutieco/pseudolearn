@@ -1,0 +1,44 @@
+interface Readable
+method getValue(value as integer) as result<integer, string>;
+endInterface
+
+class Reader implements Readable
+    public method getValue(value as integer) as result<integer, string>
+        return success(value + 1);
+    endMethod
+endClass
+
+class Writer implements Readable
+    public method getValue(value as integer) as result<integer, string>
+        return failure("blocked");
+    endMethod
+endClass
+
+subroutine createIncrementer(base as integer) as subroutine(integer) as integer
+    define captured as integer <- base;
+    return subroutine(input as integer) as integer
+        return captured + input;
+    endSubroutine;
+endSubroutine
+
+algorithm Main
+    define reader as Reader <- new Reader();
+    define writer as Writer <- new Writer();
+    define reading as result<integer, string> <- reader.getValue(4);
+    switch reading do
+        success(value): write value;
+        failure(problem): write problem;
+    endSwitch
+    define writing as result<integer, string> <- writer.getValue(4);
+    switch writing do
+        success(value): write value;
+        failure(problem): write problem;
+    endSwitch
+    define incrementer as subroutine(integer) as integer <- createIncrementer(3);
+    define values as vector<integer> <- vector();
+    values.append(2);
+    values.append(4);
+    for each value in values do
+        write incrementer(value);
+    endFor
+endAlgorithm

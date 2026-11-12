@@ -1,0 +1,116 @@
+{
+  "violation": "form longer than the declared limit",
+  "expect": "oversized form",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/form",
+      "value": [
+        {
+          "indent": 0,
+          "segments": [
+            {
+              "ellipsis": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "segments": [
+            {
+              "ellipsis": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "segments": [
+            {
+              "ellipsis": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "segments": [
+            {
+              "ellipsis": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "segments": [
+            {
+              "ellipsis": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "segments": [
+            {
+              "ellipsis": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "segments": [
+            {
+              "ellipsis": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "segments": [
+            {
+              "ellipsis": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "segments": [
+            {
+              "ellipsis": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "segments": [
+            {
+              "ellipsis": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "segments": [
+            {
+              "ellipsis": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "segments": [
+            {
+              "ellipsis": true
+            }
+          ]
+        },
+        {
+          "indent": 0,
+          "segments": [
+            {
+              "ellipsis": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

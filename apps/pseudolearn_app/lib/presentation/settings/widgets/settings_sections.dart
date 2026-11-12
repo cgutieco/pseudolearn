@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../../domain/model/settings/app_theme_mode.dart';
 import '../../../domain/model/settings/ui_language_id.dart';
 import '../../brand/brand_lockup.dart';
@@ -21,6 +21,9 @@ String _themeName(AppThemeMode themeMode, AppLocalizations l10n) => switch (them
       AppThemeMode.dark => l10n.settingsThemeDark,
     };
 
+String _editorAssistName(bool isAssisted, AppLocalizations l10n) =>
+    isAssisted ? l10n.settingsEditorAssistOn : l10n.settingsEditorAssistOff;
+
 String _diagramAssistName(bool isAssisted, AppLocalizations l10n) =>
     isAssisted ? l10n.settingsDiagramAssistOn : l10n.settingsDiagramAssistOff;
 
@@ -28,10 +31,12 @@ final class GeneralSection extends StatelessWidget {
   final UiLanguageId language;
   final AppThemeMode themeMode;
   final bool assistedDiagramZoom;
+  final bool editorAssistance;
   final VoidCallback onNavigateAccount;
   final VoidCallback onNavigateLanguage;
   final VoidCallback onNavigateTheme;
   final VoidCallback onNavigateDiagram;
+  final VoidCallback onNavigateEditor;
   final VoidCallback onRestartOnboarding;
 
   const GeneralSection({
@@ -39,10 +44,12 @@ final class GeneralSection extends StatelessWidget {
     required this.language,
     required this.themeMode,
     required this.assistedDiagramZoom,
+    required this.editorAssistance,
     required this.onNavigateAccount,
     required this.onNavigateLanguage,
     required this.onNavigateTheme,
     required this.onNavigateDiagram,
+    required this.onNavigateEditor,
     required this.onRestartOnboarding,
   });
 
@@ -57,6 +64,7 @@ final class GeneralSection extends StatelessWidget {
         AppListItem(icon: Icons.language, label: l10n.settingsLanguage, trailing: AppListItemTrailingKind.value, trailingValueText: _languageName(language, l10n), onTap: onNavigateLanguage),
         AppListItem(icon: Icons.palette_outlined, label: l10n.settingsTheme, trailing: AppListItemTrailingKind.value, trailingValueText: _themeName(themeMode, l10n), onTap: onNavigateTheme),
         AppListItem(icon: Icons.center_focus_strong, label: l10n.settingsDiagramAssist, trailing: AppListItemTrailingKind.value, trailingValueText: _diagramAssistName(assistedDiagramZoom, l10n), onTap: onNavigateDiagram),
+        AppListItem(icon: Icons.keyboard_outlined, label: l10n.settingsEditorAssist, trailing: AppListItemTrailingKind.value, trailingValueText: _editorAssistName(editorAssistance, l10n), onTap: onNavigateEditor),
         AppListItem(icon: Icons.restart_alt, label: l10n.settingsRestartOnboarding, trailing: AppListItemTrailingKind.chevron, onTap: onRestartOnboarding),
       ],
     );
@@ -65,8 +73,9 @@ final class GeneralSection extends StatelessWidget {
 
 final class InformationSection extends StatelessWidget {
   final VoidCallback onNavigateContact;
+  final VoidCallback? onNavigateAgent;
 
-  const InformationSection({super.key, required this.onNavigateContact});
+  const InformationSection({super.key, required this.onNavigateContact, this.onNavigateAgent});
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +84,8 @@ final class InformationSection extends StatelessWidget {
     return SettingsGroup(
       title: l10n.settingsSectionInformation,
       items: [
+        if (onNavigateAgent != null)
+          AppListItem(icon: Icons.auto_awesome_outlined, label: l10n.settingsAgent, trailing: AppListItemTrailingKind.chevron, onTap: onNavigateAgent),
         AppListItem(icon: Icons.help_outline, label: l10n.settingsContact, trailing: AppListItemTrailingKind.chevron, onTap: onNavigateContact),
       ],
     );

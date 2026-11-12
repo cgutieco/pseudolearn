@@ -1,0 +1,342 @@
+{
+  "name": "pseudolearn-vscode",
+  "displayName": "PseudoLearn",
+  "publisher": "pseudolearn",
+  "version": "0.1.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "engines": {
+    "node": "26.13.1",
+    "vscode": "^1.144.0"
+  },
+  "packageManager": "pnpm@12.18.0",
+  "icon": "media/icon.png",
+  "main": "./dist/extension.js",
+  "extensionKind": [
+    "workspace"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onLanguage:pseudolearn",
+    "onDebug:pseudolearn"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "PseudoLearn provides declarative highlighting in Restricted Mode. Executable overrides require a trusted development workspace.",
+      "restrictedConfigurations": [
+        "pseudolearn.server.path"
+      ]
+    }
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "pseudolearn",
+        "aliases": [
+          "PseudoLearn",
+          "pseudolearn"
+        ],
+        "extensions": [
+          ".pseudo"
+        ],
+        "configuration": "./media/language-configuration.json",
+        "icon": {
+          "light": "./media/icons/pseudo-file.svg",
+          "dark": "./media/icons/pseudo-file.svg"
+        }
+      }
+    ],
+    "iconThemes": [
+      {
+        "id": "pseudolearn-icons",
+        "label": "PseudoLearn Icons",
+        "path": "./media/icons/pseudolearn-icon-theme.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "pseudolearn",
+        "scopeName": "source.pseudolearn",
+        "path": "./media/pseudolearn.tmLanguage.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "pseudolearn.runFile",
+        "title": "Run File",
+        "category": "PseudoLearn",
+        "icon": "$(play)"
+      },
+      {
+        "command": "pseudolearn.runProject",
+        "title": "Run Project",
+        "category": "PseudoLearn",
+        "icon": "$(run-all)"
+      },
+      {
+        "command": "pseudolearn.stopRun",
+        "title": "Stop Run",
+        "category": "PseudoLearn",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "pseudolearn.selectEntry",
+        "title": "Select Project Entry",
+        "category": "PseudoLearn",
+        "icon": "$(target)"
+      },
+      {
+        "command": "pseudolearn.explainAtCursor",
+        "title": "Explain at Cursor",
+        "category": "PseudoLearn",
+        "icon": "$(question)"
+      },
+      {
+        "command": "pseudolearn.translate",
+        "title": "Translate Vocabulary",
+        "category": "PseudoLearn",
+        "icon": "$(globe)"
+      },
+      {
+        "command": "pseudolearn.restartServer",
+        "title": "Restart Language Server",
+        "category": "PseudoLearn",
+        "icon": "$(debug-restart)"
+      },
+      {
+        "command": "pseudolearn.debugFile",
+        "title": "Debug File",
+        "category": "PseudoLearn",
+        "icon": "$(debug-alt)"
+      },
+      {
+        "command": "pseudolearn.debugProject",
+        "title": "Debug Project",
+        "category": "PseudoLearn",
+        "icon": "$(debug-alt-small)"
+      },
+      {
+        "command": "pseudolearn.createAgentInstructions",
+        "title": "Create Agent Instructions",
+        "category": "PseudoLearn",
+        "icon": "$(sparkle)"
+      }
+    ],
+    "menus": {
+      "editor/title/run": [
+        {
+          "command": "pseudolearn.runFile",
+          "group": "navigation@1",
+          "when": "resourceLangId == pseudolearn && !pseudolearn.running"
+        },
+        {
+          "command": "pseudolearn.debugFile",
+          "group": "navigation@2",
+          "when": "resourceLangId == pseudolearn && !pseudolearn.running"
+        },
+        {
+          "command": "pseudolearn.runProject",
+          "group": "navigation@3",
+          "when": "resourceLangId == pseudolearn && workspaceFolderCount > 0 && !pseudolearn.running"
+        },
+        {
+          "command": "pseudolearn.debugProject",
+          "group": "navigation@4",
+          "when": "resourceLangId == pseudolearn && workspaceFolderCount > 0 && !pseudolearn.running"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "pseudolearn.stopRun",
+          "group": "navigation@1",
+          "when": "pseudolearn.running"
+        },
+        {
+          "command": "pseudolearn.selectEntry",
+          "group": "pseudolearn@1",
+          "when": "resourceLangId == pseudolearn && workspaceFolderCount > 0"
+        },
+        {
+          "command": "pseudolearn.translate",
+          "group": "pseudolearn@2",
+          "when": "resourceLangId == pseudolearn"
+        },
+        {
+          "command": "pseudolearn.restartServer",
+          "group": "pseudolearn@3",
+          "when": "resourceLangId == pseudolearn"
+        },
+        {
+          "command": "pseudolearn.createAgentInstructions",
+          "group": "pseudolearn@4",
+          "when": "resourceLangId == pseudolearn && workspaceFolderCount > 0"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "pseudolearn.explainAtCursor",
+          "group": "pseudolearn@1",
+          "when": "editorLangId == pseudolearn"
+        },
+        {
+          "command": "pseudolearn.runFile",
+          "group": "pseudolearn@2",
+          "when": "editorLangId == pseudolearn && !pseudolearn.running"
+        },
+        {
+          "command": "pseudolearn.translate",
+          "group": "pseudolearn@3",
+          "when": "editorLangId == pseudolearn"
+        }
+      ]
+    },
+    "mcpServerDefinitionProviders": [
+      {
+        "id": "pseudolearn.mcp",
+        "label": "PseudoLearn"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "pseudolearn.explainAtCursor",
+        "key": "ctrl+k ctrl+e",
+        "mac": "cmd+k cmd+e",
+        "when": "editorLangId == pseudolearn"
+      }
+    ],
+    "configuration": {
+      "title": "PseudoLearn",
+      "properties": {
+        "pseudolearn.profile": {
+          "type": "string",
+          "enum": [
+            "es",
+            "en"
+          ],
+          "default": "es",
+          "scope": "window",
+          "description": "Fallback vocabulary profile for workspace analyses."
+        },
+        "pseudolearn.interfaceLanguage": {
+          "type": "string",
+          "enum": [
+            "es",
+            "en"
+          ],
+          "default": "es",
+          "scope": "machine",
+          "description": "Personal language for PseudoLearn diagnostics and extension messages."
+        },
+        "pseudolearn.server.path": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Absolute user-only path to a development server executable."
+        }
+      }
+    },
+    "breakpoints": [
+      {
+        "language": "pseudolearn"
+      }
+    ],
+    "debuggers": [
+      {
+        "type": "pseudolearn",
+        "label": "PseudoLearn",
+        "languages": [
+          "pseudolearn"
+        ],
+        "configurationAttributes": {
+          "launch": {
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "Saved source URI path."
+              },
+              "project": {
+                "type": "string",
+                "description": "Project root."
+              },
+              "entry": {
+                "type": "string"
+              },
+              "stopOnEntry": {
+                "type": "boolean",
+                "default": true
+              },
+              "profile": {
+                "enum": [
+                  "es",
+                  "en"
+                ]
+              },
+              "seed": {
+                "type": "string",
+                "default": "42"
+              }
+            }
+          }
+        },
+        "initialConfigurations": [
+          {
+            "type": "pseudolearn",
+            "request": "launch",
+            "name": "PseudoLearn: Debug File",
+            "program": "${file}",
+            "stopOnEntry": true
+          }
+        ]
+      }
+    ]
+  },
+  "files": [
+    "LICENSE.md",
+    "NOTICE",
+    "third-party-notices.md",
+    "package.json",
+    "dist/**",
+    "bin/**",
+    "media/**"
+  ],
+  "scripts": {
+    "check:types": "tsc --noEmit",
+    "check:architecture": "node scripts/check-architecture.mjs",
+    "check:comments": "node scripts/check-comments.mjs",
+    "check:size": "node scripts/check-size.mjs",
+    "check:package": "node scripts/check-package.mjs",
+    "generate:icon": "node scripts/generate-icon.mjs",
+    "generate:grammar": "node scripts/generate-grammar.mjs",
+    "check:grammar": "node scripts/generate-grammar.mjs --check",
+    "test": "vitest run",
+    "build:cli": "node scripts/build-cli.mjs",
+    "build": "pnpm check:grammar && node scripts/build.mjs",
+    "package": "pnpm build:cli && pnpm generate:icon && pnpm build && node scripts/package.mjs",
+    "build:wasm": "bash ../../packages/pseudolearn_engine/tool/wasm.sh build",
+    "build:web": "pnpm check:grammar && pnpm generate:icon && node scripts/build-web.mjs",
+    "package:web": "pnpm build:wasm && pnpm build:web && node scripts/package-web.mjs",
+    "check:web": "node scripts/check-web.mjs",
+    "test:web": "node tests/web/run-web.mjs",
+    "bench:web": "node scripts/bench-web.mjs",
+    "kit:web": "node scripts/physical-kit.mjs",
+    "test:lsp:contrast": "node tests/web/lsp-contrast.mjs",
+    "test:dap:stdio": "node tests/dap/run-stdio.mjs",
+    "test:dap:history": "node tests/dap/history_physical.mjs"
+  },
+  "dependencies": {
+    "vscode-languageclient": "11.0.0",
+    "vscode-languageserver-protocol": "3.18.5"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "@types/vscode": "1.146.0",
+    "@vscode/vsce": "4.1.0",
+    "esbuild": "0.28.2",
+    "sharp": "0.35.5",
+    "typescript": "6.0.3",
+    "vitest": "5.1.0",
+    "vscode-oniguruma": "2.0.1",
+    "vscode-textmate": "9.3.2"
+  }
+}

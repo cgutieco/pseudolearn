@@ -1,0 +1,27 @@
+[package]
+name = "see_cli"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+see_model = { version = "0.1.0", path = "../see_model" }
+see_format = { version = "0.1.0", path = "../see_format" }
+see_graph = { version = "0.1.0", path = "../see_graph" }
+see_change = { version = "0.1.0", path = "../see_change" }
+see_validation = { version = "0.1.0", path = "../see_validation" }
+see_conformance = { version = "0.1.0", path = "../see_conformance" }
+see_report = { version = "0.1.0", path = "../see_report" }
+see_export = { version = "0.1.0", path = "../see_export" }
+see_translation = { version = "0.1.0", path = "../see_translation" }
+serde_json = "1"
+serde-saphyr = "2"
+
+serde = "1"
+
+[[bin]]
+name = "see"
+path = "src/main.rs"

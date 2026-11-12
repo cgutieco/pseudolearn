@@ -1,0 +1,14 @@
+<svg viewBox="0 0 340 180">
+  <caja x="120" y="10" ancho="100" alto="40" rol="acento-objetos" fondo="0.2" texto="{{t:caja}}" tamano="13" negrita=""/>
+  <rect x="160" y="50" width="20" height="16" rx="2" fill="@acento-objetos"/>
+  <flecha puntos="170,66 60,108" rol="atenuado" discontinua=""/>
+  <flecha puntos="170,66 170,108" rol="atenuado" discontinua=""/>
+  <flecha puntos="170,66 280,108" rol="atenuado" discontinua=""/>
+  <rect x="50" y="110" width="20" height="10" rx="2" fill="@acento-objetos"/>
+  <rect x="160" y="110" width="20" height="10" rx="2" fill="@acento-objetos"/>
+  <rect x="270" y="110" width="20" height="10" rx="2" fill="@acento-objetos"/>
+  <caja x="10" y="120" ancho="100" alto="34" rol="exito" fondo="0.16" texto="{{t:efectivo}}" tamano="12"/>
+  <caja x="120" y="120" ancho="100" alto="34" rol="exito" fondo="0.16" texto="{{t:tarjeta}}" tamano="12"/>
+  <caja x="230" y="120" ancho="100" alto="34" rol="exito" fondo="0.16" texto="{{t:vale}}" tamano="12"/>
+  <text x="170" y="174" font-size="12" text-anchor="middle" fill="@atenuado">{{t:pie}}</text>
+</svg>

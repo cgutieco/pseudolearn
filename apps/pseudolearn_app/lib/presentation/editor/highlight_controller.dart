@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../domain/model/analysis/highlight_span.dart';
 import '../../domain/model/analysis/source_range.dart';
 import '../theme/tokens/syntax_colors.dart';
+import 'syntax_category_color.dart';
 
 final class HighlightController extends TextEditingController {
   List<HighlightSpan> highlightSpans;
@@ -58,7 +59,7 @@ final class HighlightController extends TextEditingController {
         _addSegments(children, start: currentOffset, end: start, style: style, color: null);
       }
       if (start < end) {
-        _addSegments(children, start: start, end: end, style: style, color: _getColorForCategory(span.category, syntaxColors!));
+        _addSegments(children, start: start, end: end, style: style, color: syntaxCategoryColor(span.category, syntaxColors!));
         currentOffset = end;
       }
     }
@@ -113,21 +114,5 @@ final class HighlightController extends TextEditingController {
   bool _isFocused(int offset) {
     final range = focusRange;
     return range != null && offset >= range.startOffset && offset < range.endOffset;
-  }
-
-  Color _getColorForCategory(HighlightCategory category, AppSyntaxColors colors) {
-    return switch (category) {
-      HighlightCategory.keywordStructured => colors.keywordStructured,
-      HighlightCategory.keywordProcedural => colors.keywordProcedural,
-      HighlightCategory.keywordOop => colors.keywordOop,
-      HighlightCategory.type => colors.keywordStructured,
-      HighlightCategory.literalNumber => colors.literalNumber,
-      HighlightCategory.literalString => colors.literalText,
-      HighlightCategory.literalBoolean => colors.literalBoolean,
-      HighlightCategory.operator => colors.ink,
-      HighlightCategory.punctuation => colors.ink,
-      HighlightCategory.comment => colors.comment,
-      HighlightCategory.identifier => colors.identifier,
-    };
   }
 }

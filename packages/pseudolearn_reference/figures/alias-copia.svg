@@ -1,0 +1,18 @@
+<svg viewBox="0 0 340 190">
+  <text x="40" y="34" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:a}}</text>
+  <text x="40" y="84" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:alias}}</text>
+  <caja x="150" y="14" ancho="170" alto="76" rol="acento-objetos" fondo="0.14" fuente="mono" tamano="12" texto="#1¶{{codigo:dueno = &quot;Ana&quot;}}¶{{codigo:libros = 3}}"/>
+  <flecha puntos="60,30 146,40" rol="acento-objetos"/>
+  <flecha puntos="70,80 146,64" rol="acento-objetos"/>
+  <g data-paso="2">
+    <text x="40" y="150" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:copia}}</text>
+    <caja x="150" y="104" ancho="170" alto="76" rol="acento-objetos" fondo="0.08" fuente="mono" tamano="12" texto="#2¶{{codigo:dueno = &quot;Ana&quot;}}¶{{codigo:libros = 3}}"/>
+    <flecha puntos="66,146 146,142" rol="acento-objetos"/>
+  </g>
+  <g data-paso="3">
+    <rect x="150" y="14" width="170" height="76" rx="6" fill="@superficie"/>
+    <caja x="150" y="14" ancho="170" alto="76" rol="acento-objetos" fondo="0.14" fuente="mono" tamano="12" texto="#1¶{{codigo:dueno = &quot;Ana&quot;}}¶{{codigo:libros = 5}}"/>
+    <rect x="150" y="104" width="170" height="76" rx="6" fill="@superficie"/>
+    <caja x="150" y="104" ancho="170" alto="76" rol="acento-objetos" fondo="0.08" fuente="mono" tamano="12" texto="#2¶{{codigo:dueno = &quot;Ana&quot;}}¶{{codigo:libros = 9}}"/>
+  </g>
+</svg>

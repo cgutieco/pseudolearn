@@ -1,0 +1,14 @@
+<svg viewBox="0 0 340 200">
+  <text x="85" y="20" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:notas}}</text>
+  <caja x="20" y="30" ancho="40" alto="36" rol="numero" fondo="0.14" fuente="mono" texto="7"/>
+  <caja x="64" y="30" ancho="40" alto="36" rol="acento-procedimental" fondo="0.16" fuente="mono" texto="9"/>
+  <text x="130" y="54" font-size="12" fill="@acento-procedimental">{{t:despues}}</text>
+  <flecha puntos="40,66 40,110" rol="atenuado" discontinua=""/>
+  <text x="48" y="94" font-size="12" fill="@atenuado">{{codigo:Instantanea}}</text>
+  <rect x="10" y="110" width="160" height="60" rx="10" fill="@tipo" fill-opacity="0.08" stroke="@tipo" stroke-width="2"/>
+  <caja x="20" y="122" ancho="40" alto="36" rol="numero" fondo="0.14" fuente="mono" texto="7"/>
+  <text x="74" y="146" font-size="13" fill="@tipo" font-weight="600">🔒 {{codigo:foto}}</text>
+  <text x="250" y="132" font-size="12" text-anchor="middle" fill="@tinta">{{t:lectura}}</text>
+  <text x="250" y="152" font-size="12" text-anchor="middle" fill="@error">{{t:escritura}}</text>
+  <text x="170" y="192" font-size="12" text-anchor="middle" fill="@atenuado">{{t:nota}}</text>
+</svg>

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../../domain/model/execution/output_line.dart';
 import '../../components/button/app_button.dart';
 import '../../components/button/app_icon_button.dart';
@@ -7,12 +7,17 @@ import '../../l10n/generated/app_localizations.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/tokens/spacing.dart';
 import '../../theme/tokens/component_metrics.dart';
+import 'run_outcome.dart';
+import 'run_outcome_note.dart';
+import 'run_result_pill.dart';
 
 final class OutputPanel extends StatelessWidget {
   final List<OutputLine> outputLines;
   final bool isExpanded;
   final bool isStale;
   final VoidCallback onToggle;
+  final RunOutcome? outcome;
+  final VoidCallback? onOutcomeTap;
 
   const OutputPanel({
     super.key,
@@ -20,6 +25,8 @@ final class OutputPanel extends StatelessWidget {
     required this.isExpanded,
     this.isStale = false,
     required this.onToggle,
+    this.outcome,
+    this.onOutcomeTap,
   });
 
   @override
@@ -41,8 +48,11 @@ final class OutputPanel extends StatelessWidget {
             isExpanded: isExpanded,
             isStale: isStale,
             onToggle: onToggle,
+            outcome: outcome,
+            onOutcomeTap: onOutcomeTap,
           ),
-          if (isExpanded) _OutputContentBox(outputLines: outputLines),
+          if (isExpanded)
+            _OutputContentBox(outputLines: outputLines, outcome: outcome),
         ],
       ),
     );
@@ -54,17 +64,22 @@ final class _OutputPanelHeader extends StatelessWidget {
   final bool isExpanded;
   final bool isStale;
   final VoidCallback onToggle;
+  final RunOutcome? outcome;
+  final VoidCallback? onOutcomeTap;
 
   const _OutputPanelHeader({
     required this.lineCount,
     required this.isExpanded,
     required this.isStale,
     required this.onToggle,
+    required this.outcome,
+    required this.onOutcomeTap,
   });
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final result = outcome;
 
     return Container(
       height: 32,
@@ -74,7 +89,9 @@ final class _OutputPanelHeader extends StatelessWidget {
           Expanded(
               child:
                   _OutputPanelSummary(lineCount: lineCount, isStale: isStale)),
-          const SizedBox(width: SpacingTokens.space2),
+          if (result != null)
+            RunResultPill(outcome: result, onTap: onOutcomeTap),
+          const SizedBox(width: SpacingTokens.space1),
           AppIconButton(
             icon: isExpanded
                 ? Icons.keyboard_arrow_down
@@ -146,8 +163,9 @@ final class _EllipsizedLabel extends StatelessWidget {
 
 final class _OutputContentBox extends StatelessWidget {
   final List<OutputLine> outputLines;
+  final RunOutcome? outcome;
 
-  const _OutputContentBox({required this.outputLines});
+  const _OutputContentBox({required this.outputLines, required this.outcome});
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +174,7 @@ final class _OutputContentBox extends StatelessWidget {
 
     return SizedBox(
       height: ComponentMetricsTokens.outputPanelBodyHeight,
-      child: outputLines.isEmpty
+      child: outputLines.isEmpty && outcome?.note == null
           ? Center(
               child: AppText(l10n.outputEmpty,
                   variant: AppTextVariant.caption,
@@ -166,9 +184,10 @@ final class _OutputContentBox extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                   horizontal: SpacingTokens.space4,
                   vertical: SpacingTokens.space2),
-              itemCount: outputLines.length,
-              itemBuilder: (context, index) =>
-                  _OutputLineRow(line: outputLines[index]),
+              itemCount: outputLines.length + (outcome?.note == null ? 0 : 1),
+              itemBuilder: (context, index) => index < outputLines.length
+                  ? _OutputLineRow(line: outputLines[index])
+                  : RunOutcomeNote(outcome: outcome!),
             ),
     );
   }
@@ -183,7 +202,7 @@ final class _OutputLineRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppThemeExtension.of(context);
     final isInput = line.kind == OutputLineKind.userInputEcho;
-
+    final isError = line.kind == OutputLineKind.programError;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: SpacingTokens.spaceHalf),
       child: Row(
@@ -198,13 +217,21 @@ final class _OutputLineRow extends StatelessWidget {
             child: AppText(
               line.text,
               variant: AppTextVariant.codeEditor,
-              color: isInput
-                  ? theme.colors.text.secondary
-                  : theme.colors.text.primary,
+              color: _colorOf(theme, isError: isError, isInput: isInput),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Color _colorOf(
+    AppThemeExtension theme, {
+    required bool isError,
+    required bool isInput,
+  }) {
+    if (isError) return theme.colors.severities.error.fg;
+    if (isInput) return theme.colors.text.secondary;
+    return theme.colors.text.primary;
   }
 }

@@ -4,23 +4,23 @@ import 'package:pseudolearn_app/domain/model/knowledge/ast_construct.dart';
 import 'dashboard_fixtures.dart';
 
 void main() {
-  group('projectSpecificationCoverage (PANT-06-F5)', () {
+  group('projectSpecificationCoverage', () {
     final sections = [
-      specificationEntry('esp-i-lexico', order: 1),
-      specificationEntry('esp-i-control', order: 2),
-      specificationEntry('esp-i-arreglos', order: 3),
-      specificationEntry('esp-i-subprogramas', order: 4),
-      specificationEntry('esp-o-clases', order: 5),
+      specificationEntry('lexico.palabras-reservadas', order: 1),
+      specificationEntry('control.si', order: 2),
+      specificationEntry('tipos.arreglos', order: 3),
+      specificationEntry('subprogramas.declaracion', order: 4),
+      specificationEntry('objetos.clase', order: 5),
     ];
 
     test('marks as exercised the section of every construct written', () {
       final coverage = projectSpecificationCoverage(
         sections: sections,
-        exercisedConstructs: {AstConstruct.countedLoop},
+        exercisedConstructs: {AstConstruct.conditional},
       );
       final control = coverage.sections.first;
 
-      expect(control.sectionId, 'esp-i-control');
+      expect(control.sectionId, 'control.si');
       expect(control.isExercised, isTrue);
       expect(coverage.count.done, 1);
     });
@@ -33,7 +33,7 @@ void main() {
 
       expect(
         coverage.sections.map((section) => section.sectionId),
-        isNot(contains('esp-i-lexico')),
+        isNot(contains('lexico.palabras-reservadas')),
       );
       expect(coverage.count.total, 4);
     });

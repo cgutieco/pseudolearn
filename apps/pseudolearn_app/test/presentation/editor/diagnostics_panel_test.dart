@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:cupertino_ui/cupertino_ui.dart' show GlobalCupertinoLocalizations;
+import 'package:material_ui/material_ui.dart';
+import 'package:flutter_localizations/flutter_localizations.dart' show GlobalWidgetsLocalizations;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/analysis/app_diagnostic.dart';
 import 'package:pseudolearn_app/domain/model/analysis/source_range.dart';
@@ -62,7 +63,7 @@ void main() {
     ));
     await tester.pumpAndSettle();
 
-    expect(find.text('Sin problemas'), findsOneWidget);
+    expect(find.text('Sin problemas'), findsNothing);
     expect(find.byType(IconButton), findsNothing);
     expect(find.byIcon(Icons.play_arrow), findsOneWidget);
   });

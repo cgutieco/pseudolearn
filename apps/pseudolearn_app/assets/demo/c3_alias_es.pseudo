@@ -1,0 +1,11 @@
+Clase Caja
+    Publico Definir contenido Como Entero;
+FinClase
+
+Proceso ProbarAlias
+    Definir a Como Caja <- Nuevo Caja();
+    a.contenido <- 10;
+    Definir b Como Caja <- a;
+    b.contenido <- 99;
+    Escribir a.contenido;
+FinProceso

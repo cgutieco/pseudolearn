@@ -16,6 +16,8 @@ final class AppPreferences {
   bool get showLineNumbers => device.showLineNumbers;
   bool get showIndentGuides => device.showIndentGuides;
   bool get hasSeenOnboarding => device.hasSeenOnboarding;
+  bool get editorAssistance => device.editorAssistance;
+  bool get agentLauncherShown => device.agentLauncherShown;
 
   const AppPreferences({
     required this.account,
@@ -37,6 +39,8 @@ final class AppPreferences {
     bool? showIndentGuides,
     bool? assistedDiagramZoom,
     bool? hasSeenOnboarding,
+    bool? editorAssistance,
+    bool? agentLauncherShown,
   }) {
     final effectiveAccount = account ??
         this.account.copyWith(
@@ -51,6 +55,8 @@ final class AppPreferences {
               showLineNumbers: showLineNumbers,
               showIndentGuides: showIndentGuides,
               hasSeenOnboarding: hasSeenOnboarding,
+              editorAssistance: editorAssistance,
+              agentLauncherShown: agentLauncherShown,
             );
     return AppPreferences(
       account: effectiveAccount,

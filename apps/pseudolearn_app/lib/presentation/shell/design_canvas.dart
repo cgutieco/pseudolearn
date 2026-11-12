@@ -16,6 +16,7 @@ final class DesignCanvasData {
   final LayoutMetrics metrics;
   final bool reduceMotion;
   final bool isKeyboardVisible;
+  final double keyboardInset;
 
   const DesignCanvasData({
     required this.deviceClass,
@@ -23,6 +24,7 @@ final class DesignCanvasData {
     required this.metrics,
     required this.reduceMotion,
     this.isKeyboardVisible = false,
+    this.keyboardInset = 0,
   });
 
   double scaled(double value) => value * metrics.densityScale;
@@ -35,7 +37,8 @@ final class DesignCanvasData {
       deviceClass == other.deviceClass &&
       size == other.size &&
       reduceMotion == other.reduceMotion &&
-      isKeyboardVisible == other.isKeyboardVisible;
+      isKeyboardVisible == other.isKeyboardVisible &&
+      keyboardInset == other.keyboardInset;
 }
 
 final class DesignCanvasScope extends InheritedWidget {
@@ -79,13 +82,7 @@ final class DesignCanvas extends StatelessWidget {
     );
 
     return DesignCanvasScope(
-      data: DesignCanvasData(
-        deviceClass: deviceClass,
-        size: size,
-        metrics: _canvasMetricsByClass[deviceClass]!,
-        reduceMotion: mediaQuery.disableAnimations,
-        isKeyboardVisible: mediaQuery.viewInsets.bottom > 0,
-      ),
+      data: _canvasDataOf(mediaQuery, deviceClass),
       child: MediaQuery(
         data: mediaQuery.copyWith(textScaler: clampedTextScaler, size: size),
         child: child,
@@ -94,3 +91,12 @@ final class DesignCanvas extends StatelessWidget {
   }
 }
 
+DesignCanvasData _canvasDataOf(MediaQueryData mediaQuery, DeviceClass deviceClass) =>
+    DesignCanvasData(
+      deviceClass: deviceClass,
+      size: mediaQuery.size,
+      metrics: _canvasMetricsByClass[deviceClass]!,
+      reduceMotion: mediaQuery.disableAnimations,
+      isKeyboardVisible: mediaQuery.viewInsets.bottom > 0,
+      keyboardInset: mediaQuery.viewInsets.bottom,
+    );

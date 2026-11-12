@@ -2,6 +2,7 @@ import '../../domain/model/diagram/class_diagram_metrics.dart';
 import '../../domain/model/diagram/class_model.dart';
 import '../../domain/model/diagram/diagram_scene.dart';
 import 'class_box_placement.dart';
+import 'class_box_sizing.dart';
 
 final class ClassBoxNodes {
   const ClassBoxNodes();
@@ -57,7 +58,10 @@ final class ClassBoxNodes {
   DiagramNode _header(PlacedClassBox placed) => DiagramNode(
         id: '${frameIdOf(placed)}_header',
         shape: DiagramShape.classHeader,
-        lines: [placed.box.name],
+        lines: [
+          ?ClassBoxSizing.stereotypeOf(placed.box.kind),
+          placed.box.title,
+        ],
         x: placed.left,
         y: placed.top,
         width: placed.size.width,
@@ -106,7 +110,9 @@ final class ClassBoxNodes {
     }
   }
 
-  String _rowTextOf(ClassMemberRow row) => switch (row.visibility) {
+  String _rowTextOf(ClassMemberRow row) => row.role != ClassRowRole.member
+      ? row.text
+      : switch (row.visibility) {
         ClassMemberVisibility.public => '+ ${row.text}',
         ClassMemberVisibility.private => '- ${row.text}',
       };

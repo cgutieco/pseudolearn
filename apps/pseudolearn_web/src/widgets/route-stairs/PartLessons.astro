@@ -1,0 +1,69 @@
+---
+import type { RouteLessonEntry } from '@entities/learning-route/model/route';
+import { plainRouteText } from '@entities/learning-route/model/route-runs';
+
+export interface Props {
+  lessons: readonly RouteLessonEntry[];
+  label: string;
+}
+
+const { lessons, label } = Astro.props;
+---
+
+<details class="lessons">
+  <summary class="lessons__summary">{label}</summary>
+  <ol class="lessons__list">
+    {lessons.map((lesson) => (
+      <li class:list={['lessons__item', { 'lessons__item--project': lesson.kind === 'proyecto' }]}>
+        <span class="lessons__number pl-mono">{lesson.number}</span>
+        <span>
+          <b>{plainRouteText(lesson.title)}</b>
+          <span class="lessons__problem">{lesson.brief_problem}</span>
+        </span>
+      </li>
+    ))}
+  </ol>
+</details>
+
+<style>
+  .lessons {
+    margin-top: var(--pl-space-sm);
+    border-top: 1px solid var(--pl-line-soft);
+  }
+
+  .lessons__summary {
+    padding-top: var(--pl-space-sm);
+    color: var(--pl-brand);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .lessons__list {
+    display: grid;
+    gap: 2px;
+    margin-top: var(--pl-space-sm);
+  }
+
+  .lessons__item {
+    display: flex;
+    gap: var(--pl-space-sm);
+    padding: var(--pl-space-xs);
+    border-radius: var(--pl-radius-control);
+    font-size: 14px;
+  }
+
+  .lessons__item--project {
+    background: var(--pl-brand-faint);
+  }
+
+  .lessons__number {
+    flex: none;
+    width: 36px;
+    color: var(--pl-ink-3);
+  }
+
+  .lessons__problem {
+    display: block;
+    color: var(--pl-ink-2);
+  }
+</style>

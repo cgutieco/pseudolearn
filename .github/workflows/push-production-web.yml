@@ -13,21 +13,46 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: apps/fe-pseudolearn
+        working-directory: apps/pseudolearn_web
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: apps/pseudolearn_app/pubspec.yaml
+          cache: true
+      - run: flutter pub get
+        working-directory: apps/pseudolearn_app
+      - uses: ./.github/actions/setup-rust-bridge
+        with:
+          targets: x86_64-unknown-linux-gnu
+      - run: cargo build --release --locked --lib --manifest-path native/Cargo.toml
+        working-directory: apps/pseudolearn_app
+      - run: flutter test tool/generate_product_shot.dart
+        env:
+          FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR: ${{ github.workspace }}/apps/pseudolearn_app/native/target/release
+        working-directory: apps/pseudolearn_app
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.15'
+      - run: python3 -m pip install fonttools
+      - run: python3 -m pseudolearn_brand build
+        working-directory: packages/pseudolearn_brand
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:
-          node-version-file: apps/fe-pseudolearn/.nvmrc
+          node-version-file: apps/pseudolearn_web/.nvmrc
           cache: pnpm
-          cache-dependency-path: apps/fe-pseudolearn/pnpm-lock.yaml
+          cache-dependency-path: apps/pseudolearn_web/pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
         env:
           PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY }}
+          PUBLIC_PADDLE_CLIENT_TOKEN: ${{ vars.PUBLIC_PADDLE_CLIENT_TOKEN }}
+          PUBLIC_PADDLE_ENVIRONMENT: ${{ vars.PUBLIC_PADDLE_ENVIRONMENT }}
       - uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: apps/fe-pseudolearn
+          workingDirectory: apps/pseudolearn_web

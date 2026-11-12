@@ -1,10 +1,8 @@
 import 'package:pseudolearn_app/domain/model/documents/document.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/exercise_kind.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/exercise_level.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/knowledge_entry.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/knowledge_entry_type.dart';
-import 'package:pseudolearn_app/domain/model/knowledge/learning_track.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
+import 'package:pseudolearn_app/domain/model/reference/reference_index.dart';
+import 'package:pseudolearn_app/domain/model/reference/reference_run.dart';
+import 'package:pseudolearn_app/domain/model/reference/reference_section_kind.dart';
 import 'package:pseudolearn_app/domain/model/progress/progress_entry.dart';
 import 'package:pseudolearn_app/domain/model/sync/outbox_entry.dart';
 
@@ -22,49 +20,6 @@ DocumentSummary summaryOf(
     revision: 1,
     createdAt: moment,
     updatedAt: moment,
-  );
-}
-
-KnowledgeEntry moduleEntry(
-  String id, {
-  required LearningTrack track,
-  int order = 1,
-  String title = 'Módulo',
-}) {
-  return KnowledgeEntry(
-    id: id,
-    type: KnowledgeEntryType.module,
-    title: title,
-    summary: '',
-    track: track,
-    order: order,
-  );
-}
-
-KnowledgeEntry exerciseEntry(
-  String id, {
-  required String moduleId,
-  ExerciseLevel level = ExerciseLevel.reproduce,
-  ExerciseKind kind = ExerciseKind.create,
-}) {
-  return KnowledgeEntry(
-    id: id,
-    type: KnowledgeEntryType.exercise,
-    title: id,
-    summary: '',
-    level: level,
-    kind: kind,
-    moduleId: moduleId,
-  );
-}
-
-KnowledgeEntry specificationEntry(String id, {int order = 1, String? title}) {
-  return KnowledgeEntry(
-    id: id,
-    type: KnowledgeEntryType.specificationSection,
-    title: title ?? id,
-    summary: '',
-    order: order,
   );
 }
 
@@ -94,5 +49,15 @@ OutboxEntry outboxEntry(String id, {required DateTime enqueuedAt}) {
     entityId: id,
     operation: 'upsert',
     enqueuedAt: enqueuedAt,
+  );
+}
+
+ReferenceIndexEntry specificationEntry(String id, {int order = 1, String? title}) {
+  return ReferenceIndexEntry(
+    id: id,
+    number: '$order',
+    kind: ReferenceSectionKind.concept,
+    title: [ReferenceTextRun(title ?? id)],
+    phrase: const [],
   );
 }

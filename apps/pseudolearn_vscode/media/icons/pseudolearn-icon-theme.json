@@ -1,0 +1,15 @@
+{
+  "iconDefinitions": {
+    "pseudoFile": { "iconPath": "./pseudo-file.svg" },
+    "genericFile": { "iconPath": "./file.svg" },
+    "genericFolder": { "iconPath": "./folder.svg" },
+    "genericFolderOpen": { "iconPath": "./folder-open.svg" }
+  },
+  "file": "genericFile",
+  "folder": "genericFolder",
+  "folderExpanded": "genericFolderOpen",
+  "rootFolder": "genericFolder",
+  "rootFolderExpanded": "genericFolderOpen",
+  "fileExtensions": { "pseudo": "pseudoFile" },
+  "languageIds": { "pseudolearn": "pseudoFile" }
+}

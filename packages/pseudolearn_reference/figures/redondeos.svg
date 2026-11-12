@@ -1,0 +1,16 @@
+<svg viewBox="0 0 340 170">
+  <path d="M 20 90 H 320" fill="none" stroke="@tinta" stroke-width="2"/>
+  <text x="50" y="112" font-size="12" text-anchor="middle" fill="@numero">-3</text>
+  <text x="150" y="112" font-size="12" text-anchor="middle" fill="@numero">-2</text>
+  <text x="250" y="112" font-size="12" text-anchor="middle" fill="@numero">-1</text>
+  <rect x="49" y="84" width="2" height="12" fill="@tinta"/>
+  <rect x="149" y="84" width="2" height="12" fill="@tinta"/>
+  <rect x="249" y="84" width="2" height="12" fill="@tinta"/>
+  <circle cx="100" cy="90" r="6" fill="@acento-procedimental"/>
+  <text x="100" y="130" font-size="12" text-anchor="middle" fill="@acento-procedimental">-2.5</text>
+  <flecha puntos="96,80 54,60" rol="exito"/>
+  <text x="50" y="52" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">{{codigo:piso}} · {{codigo:redon}}</text>
+  <flecha puntos="104,80 146,60" rol="acento-estructurado"/>
+  <text x="170" y="52" font-size="12" text-anchor="middle" font-family="mono" fill="@acento-estructurado">{{codigo:techo}} · {{codigo:trunc}}</text>
+  <text x="170" y="156" font-size="12" text-anchor="middle" fill="@atenuado">{{t:nota}}</text>
+</svg>

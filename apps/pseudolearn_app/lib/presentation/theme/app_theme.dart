@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../shell/design_canvas.dart';
 import '../shell/device_class.dart';
 import 'app_color_scheme.dart';

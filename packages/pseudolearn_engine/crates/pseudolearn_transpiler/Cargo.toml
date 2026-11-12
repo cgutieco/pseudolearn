@@ -1,0 +1,16 @@
+[package]
+name = "pseudolearn_transpiler"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+pseudolearn_source = { path = "../pseudolearn_source", version = "=0.1.0" }
+pseudolearn_lexicon = { path = "../pseudolearn_lexicon", version = "=0.1.0" }
+pseudolearn_semantic = { path = "../pseudolearn_semantic", version = "=0.1.0" }
+
+[dev-dependencies]
+pseudolearn_syntax = { path = "../pseudolearn_syntax", version = "=0.1.0" }
+
+[lints]
+workspace = true

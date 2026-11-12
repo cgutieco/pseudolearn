@@ -33,12 +33,10 @@ final class ClassDiagramLayout {
   final TextMetrics _text;
 
   const ClassDiagramLayout({
-    ClassBoxPlacement placement = const ClassBoxPlacement(),
-    ClassBoxNodes nodes = const ClassBoxNodes(),
-    TextMetrics text = const TextMetrics(),
-  })  : _placement = placement,
-        _nodes = nodes,
-        _text = text;
+    this._placement = const ClassBoxPlacement(),
+    this._nodes = const ClassBoxNodes(),
+    this._text = const TextMetrics(),
+  });
 
   DiagramScene of(ClassModel model) {
     if (model.isEmpty) return const DiagramScene.empty();

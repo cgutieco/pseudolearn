@@ -1,0 +1,65 @@
+---
+import type { Runs } from '@entities/specification/model/specification';
+import type { Locale } from '@shared/i18n/locales';
+import SpecRuns from './SpecRuns.astro';
+
+export interface Props {
+  block: { readonly header: readonly Runs[]; readonly rows: readonly (readonly Runs[])[] };
+  locale: Locale;
+}
+
+const { block, locale } = Astro.props;
+---
+
+<div class="spec-table" tabindex="0">
+  <table class="spec-table__table">
+    <thead>
+      <tr>
+        {block.header.map((cell) => (
+          <th scope="col">
+            <SpecRuns runs={cell} locale={locale} />
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {block.rows.map((row) => (
+        <tr>
+          {row.map((cell) => (
+            <td>
+              <SpecRuns runs={cell} locale={locale} />
+            </td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .spec-table {
+    margin-top: var(--pl-space-lg);
+    overflow-x: auto;
+    border: 1px solid var(--pl-line);
+    border-radius: var(--pl-radius-control);
+  }
+
+  .spec-table__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+
+  .spec-table__table th,
+  .spec-table__table td {
+    padding: var(--pl-space-xs) var(--pl-space-sm);
+    border-bottom: 1px solid var(--pl-line-soft);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .spec-table__table th {
+    background: var(--pl-sunken);
+    font-weight: 600;
+  }
+</style>

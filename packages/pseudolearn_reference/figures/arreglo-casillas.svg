@@ -1,0 +1,15 @@
+<svg viewBox="0 0 340 170">
+  <text x="12" y="22" font-size="13" font-family="mono" fill="@tinta">{{t:notas}}</text>
+  <caja x="20" y="36" ancho="64" alto="50" rol="numero" fondo="0.12" fuente="mono" tamano="18" negrita="" texto="7"/>
+  <caja x="88" y="36" ancho="64" alto="50" rol="numero" fondo="0.12" fuente="mono" tamano="18" negrita="" texto="9"/>
+  <caja x="156" y="36" ancho="64" alto="50" rol="numero" fondo="0.12" fuente="mono" tamano="18" negrita="" texto="6"/>
+  <caja x="224" y="36" ancho="64" alto="50" rol="numero" fondo="0.12" fuente="mono" tamano="18" negrita="" texto="8"/>
+  <caja x="292" y="36" ancho="40" alto="50" rol="error" fondo="0.05" discontinua="" fuente="mono" tamano="16" colortexto="error" texto="✕"/>
+  <text x="52" y="106" font-size="13" font-family="mono" text-anchor="middle" fill="@atenuado">[0]</text>
+  <text x="120" y="106" font-size="13" font-family="mono" text-anchor="middle" fill="@atenuado">[1]</text>
+  <text x="188" y="106" font-size="13" font-family="mono" text-anchor="middle" fill="@atenuado">[2]</text>
+  <text x="256" y="106" font-size="13" font-family="mono" text-anchor="middle" fill="@atenuado">[3]</text>
+  <text x="312" y="106" font-size="13" font-family="mono" text-anchor="middle" fill="@error">[4]</text>
+  <text x="170" y="140" font-size="13" text-anchor="middle" fill="@tinta">{{t:tamano}}</text>
+  <text x="170" y="160" font-size="12" text-anchor="middle" fill="@error">{{t:fuera}}</text>
+</svg>

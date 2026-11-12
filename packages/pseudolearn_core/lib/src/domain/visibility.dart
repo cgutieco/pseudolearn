@@ -1,4 +1,0 @@
-enum Visibility {
-  public,
-  private;
-}

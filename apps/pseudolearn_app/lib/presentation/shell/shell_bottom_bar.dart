@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 import '../components/typography/app_text.dart';
 import '../l10n/generated/app_localizations.dart';
@@ -44,9 +44,11 @@ final class ShellBottomBar extends StatelessWidget {
       decoration: _decoration(theme),
       child: SafeArea(
         top: false,
-        child: SizedBox(
-          height: ComponentMetricsTokens.bottomBarHeight,
-          child: Row(children: items),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: ComponentMetricsTokens.bottomBarHeight),
+          child: IntrinsicHeight(
+            child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: items),
+          ),
         ),
       ),
     );

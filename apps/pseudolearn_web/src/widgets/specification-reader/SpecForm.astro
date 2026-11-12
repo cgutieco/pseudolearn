@@ -1,0 +1,76 @@
+---
+import type { CodeToken, FormPiece, Runs } from '@entities/specification/model/specification';
+import type { Locale } from '@shared/i18n/locales';
+import SpecRuns from './SpecRuns.astro';
+import { codeLinesHtml, formLineHtml, tokensHtml } from './token-html';
+
+type FormLike =
+  | { readonly type: 'form'; readonly lines: readonly (readonly FormPiece[])[] }
+  | {
+      readonly type: 'anatomy';
+      readonly parts: readonly { readonly tokens: readonly CodeToken[]; readonly label: Runs }[];
+    };
+
+export interface Props {
+  block: FormLike;
+  locale: Locale;
+}
+
+const { block, locale } = Astro.props;
+---
+
+{block.type === 'form' && <pre
+  class="spec-form"
+  tabindex="0"
+><code set:html={codeLinesHtml(block.lines.map(formLineHtml))} /></pre>}
+{block.type === 'anatomy' && (
+  <ol class="spec-anatomy">
+    {block.parts.map((part) => (
+      <li class="spec-anatomy__part">
+        <code class="spec-anatomy__code" set:html={tokensHtml(part.tokens)} />
+        <span class="spec-anatomy__label">
+          <SpecRuns runs={part.label} locale={locale} />
+        </span>
+      </li>
+    ))}
+  </ol>
+)}
+
+<style>
+  .spec-form {
+    margin-top: var(--pl-space-lg);
+    padding: var(--pl-space-md);
+    overflow-x: auto;
+    border-radius: var(--pl-radius-control);
+    background: var(--pl-sunken);
+    font-family: var(--pl-font-code);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+  }
+
+  .spec-anatomy {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--pl-space-sm);
+    margin-top: var(--pl-space-lg);
+    list-style: none;
+  }
+
+  .spec-anatomy__part {
+    display: grid;
+    gap: var(--pl-space-2xs);
+    max-width: 220px;
+    padding: var(--pl-space-sm);
+    border: 1px solid var(--pl-line);
+    border-radius: var(--pl-radius-control);
+  }
+
+  .spec-anatomy__code {
+    font-family: var(--pl-font-code);
+  }
+
+  .spec-anatomy__label {
+    color: var(--pl-ink-2);
+    font-size: 0.875rem;
+  }
+</style>

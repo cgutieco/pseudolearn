@@ -1,0 +1,74 @@
+---
+import SectionHeading from '@widgets/section-heading/SectionHeading.astro';
+
+export interface Props {
+  id: string;
+  overline: string;
+  title: string;
+  lead?: string;
+  tone?: 'canvas' | 'surface' | 'field';
+}
+
+const { id, overline, title, lead, tone = 'canvas' } = Astro.props;
+---
+
+<section class:list={['page-section', `page-section--${tone}`]} id={id}>
+  <div class="pl-container">
+    <SectionHeading
+      overline={overline}
+      title={title}
+      lead={lead}
+      tone={tone === 'field' ? 'field' : 'canvas'}
+    />
+    <div class="page-section__body">
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-section {
+    padding-top: 72px;
+    padding-bottom: 72px;
+    scroll-margin-top: 56px;
+  }
+
+  .page-section--surface {
+    background: var(--pl-surface);
+    border-block: 1px solid var(--pl-line);
+  }
+
+  .page-section--field {
+    background: radial-gradient(70% 40% at 80% 0%, rgb(110 187 191 / 18%), transparent 70%), var(--pl-field);
+    color: var(--pl-on-field-2);
+
+    --pl-ink: var(--pl-on-field);
+    --pl-ink-2: var(--pl-on-field-2);
+    --pl-ink-3: var(--pl-on-field-2);
+    --pl-brand: var(--pl-on-field-3);
+    --pl-brand-deep: var(--pl-on-field);
+    --pl-brand-tint: var(--pl-on-field-line-strong);
+    --pl-brand-faint: var(--pl-on-field-hover);
+    --pl-surface: var(--pl-on-field-card);
+    --pl-line: var(--pl-on-field-line);
+    --pl-line-soft: var(--pl-on-field-line);
+  }
+
+  .page-section__body {
+    display: grid;
+    gap: var(--pl-space-xl);
+    margin-top: var(--pl-space-xl);
+  }
+
+  @media (min-width: 900px) {
+    .page-section {
+      padding-top: 128px;
+      padding-bottom: 128px;
+    }
+
+    .page-section__body {
+      gap: var(--pl-space-2xl);
+      margin-top: var(--pl-space-2xl);
+    }
+  }
+</style>

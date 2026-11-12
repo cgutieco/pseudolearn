@@ -1,0 +1,142 @@
+[
+  {
+    "id": "parte-0",
+    "numero": "0",
+    "prefijo": "0",
+    "titulo": "Cómo leer esta especificación",
+    "resumen": "Convenciones, figuras y perfiles: lo que conviene saber antes de empezar."
+  },
+  {
+    "id": "parte-1",
+    "numero": "I",
+    "prefijo": "1",
+    "titulo": "Visión general",
+    "resumen": "Qué es PseudoLearn y qué le pasa a un programa desde que lo escribes hasta que termina."
+  },
+  {
+    "id": "parte-2",
+    "numero": "II",
+    "prefijo": "2",
+    "titulo": "Estructura léxica",
+    "resumen": "Las piezas más pequeñas del texto: palabras, números, textos, signos y comentarios."
+  },
+  {
+    "id": "parte-3",
+    "numero": "III",
+    "prefijo": "3",
+    "titulo": "Tipos y valores",
+    "resumen": "Qué clases de datos existen, cuánto caben y cómo se relacionan."
+  },
+  {
+    "id": "parte-4",
+    "numero": "IV",
+    "prefijo": "4",
+    "titulo": "Expresiones y operadores",
+    "resumen": "Cómo se calcula: aritmética, comparaciones, lógica y el orden de las operaciones."
+  },
+  {
+    "id": "parte-5",
+    "numero": "V",
+    "prefijo": "5",
+    "titulo": "Declaraciones y sentencias",
+    "resumen": "Crear variables y constantes, darles valor y terminar cada instrucción."
+  },
+  {
+    "id": "parte-6",
+    "numero": "VI",
+    "prefijo": "6",
+    "titulo": "Control del flujo",
+    "resumen": "Decidir, repetir, salir antes y dejar tareas de limpieza para el final."
+  },
+  {
+    "id": "parte-7",
+    "numero": "VII",
+    "prefijo": "7",
+    "titulo": "Subprogramas",
+    "resumen": "Dar nombre a un trozo de programa, pasarle datos y recibir un resultado."
+  },
+  {
+    "id": "parte-8",
+    "numero": "VIII",
+    "prefijo": "8",
+    "titulo": "Programas y módulos",
+    "resumen": "Cómo se organiza un programa en unidades, archivos y paquetes."
+  },
+  {
+    "id": "parte-9",
+    "numero": "IX",
+    "prefijo": "9",
+    "titulo": "Objetos",
+    "resumen": "Clases, atributos, métodos, herencia e interfaces."
+  },
+  {
+    "id": "parte-10",
+    "numero": "X",
+    "prefijo": "10",
+    "titulo": "Errores y diagnósticos",
+    "resumen": "Cómo avisa el motor de que algo va mal, y por qué."
+  },
+  {
+    "id": "parte-11",
+    "numero": "XI",
+    "prefijo": "11",
+    "titulo": "Concurrencia y asincronía",
+    "resumen": "Varias tareas que avanzan por turnos, se comunican y esperan al mundo exterior."
+  },
+  {
+    "id": "parte-12",
+    "numero": "XII",
+    "prefijo": "12",
+    "titulo": "Biblioteca",
+    "resumen": "Funciones listas para usar: texto, matemáticas, archivos, JSON, red y tiempo."
+  },
+  {
+    "id": "parte-13",
+    "numero": "XIII",
+    "prefijo": "13",
+    "titulo": "El motor por dentro",
+    "resumen": "Las piezas del motor que analiza, traduce y ejecuta cada programa."
+  },
+  {
+    "id": "parte-a",
+    "numero": "A",
+    "prefijo": "A",
+    "titulo": "Apéndice A — Gramática",
+    "resumen": "La gramática completa, generada desde el corpus."
+  },
+  {
+    "id": "parte-b",
+    "numero": "B",
+    "prefijo": "B",
+    "titulo": "Apéndice B — Palabras reservadas",
+    "resumen": "Cada palabra en español y en inglés, generada desde el corpus."
+  },
+  {
+    "id": "parte-c",
+    "numero": "C",
+    "prefijo": "C",
+    "titulo": "Apéndice C — Diagnósticos",
+    "resumen": "El catálogo completo de mensajes del motor."
+  },
+  {
+    "id": "parte-d",
+    "numero": "D",
+    "prefijo": "D",
+    "titulo": "Apéndice D — Funciones incorporadas",
+    "resumen": "Todas las funciones y operaciones de la biblioteca."
+  },
+  {
+    "id": "parte-e",
+    "numero": "E",
+    "prefijo": "E",
+    "titulo": "Apéndice E — Glosario",
+    "resumen": "Las palabras técnicas de esta especificación, explicadas."
+  },
+  {
+    "id": "parte-f",
+    "numero": "F",
+    "prefijo": "F",
+    "titulo": "Apéndice F — Índice alfabético",
+    "resumen": "Todo lo que aparece en la especificación, ordenado de la A a la Z."
+  }
+]

@@ -1,0 +1,28 @@
+<svg viewBox="0 0 340 130">
+  <text x="60" y="20" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:a}}</text>
+  <text x="170" y="20" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:b}}</text>
+  <text x="280" y="20" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:auxiliar}}</text>
+  <caja x="20" y="28" ancho="80" alto="50" rol="numero" fondo="0.16" fuente="mono" tamano="20" texto="1"/>
+  <caja x="130" y="28" ancho="80" alto="50" rol="numero" fondo="0.16" fuente="mono" tamano="20" texto="2"/>
+  <caja x="240" y="28" ancho="80" alto="50" rol="hueco" discontinua="" fondo="0.06" texto=""/>
+  <g data-paso="2">
+    <rect x="240" y="28" width="80" height="50" rx="6" fill="@superficie"/>
+    <caja x="240" y="28" ancho="80" alto="50" rol="numero" fondo="0.16" fuente="mono" tamano="20" texto="1"/>
+  </g>
+  <g data-paso="2" data-hasta="2">
+    <flecha puntos="60,80 60,100 280,100 280,80" rol="acento-procedimental"/>
+  </g>
+  <g data-paso="3">
+    <rect x="20" y="28" width="80" height="50" rx="6" fill="@superficie"/>
+    <caja x="20" y="28" ancho="80" alto="50" rol="numero" fondo="0.16" fuente="mono" tamano="20" texto="2"/>
+  </g>
+  <g data-paso="3" data-hasta="3">
+    <flecha puntos="170,80 170,100 60,100 60,80" rol="acento-procedimental"/>
+  </g>
+  <g data-paso="4">
+    <rect x="130" y="28" width="80" height="50" rx="6" fill="@superficie"/>
+    <caja x="130" y="28" ancho="80" alto="50" rol="numero" fondo="0.16" fuente="mono" tamano="20" texto="1"/>
+    <flecha puntos="280,80 280,100 170,100 170,80" rol="acento-procedimental"/>
+    <text x="170" y="122" font-size="12" text-anchor="middle" fill="@exito">{{t:hecho}}</text>
+  </g>
+</svg>

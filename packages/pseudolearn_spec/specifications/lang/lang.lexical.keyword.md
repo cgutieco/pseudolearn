@@ -1,0 +1,197 @@
+---
+{
+  "formato": "see/1",
+  "id": "LANG.LEXICAL.KEYWORD",
+  "titulo": "Palabras reservadas",
+  "dominio": "lenguaje",
+  "estado": "estable",
+  "version": "1.0.0",
+  "duenos": [
+    "responsable-lenguaje"
+  ],
+  "revisado_por": [
+    "César Antonio Gutiérrez Contreras"
+  ],
+  "sujetos": [
+    "engine",
+    "aot"
+  ],
+  "resumen": "Palabras reservadas.",
+  "edicion": {
+    "introducida_en": "2027"
+  },
+  "depende_de": [
+    {
+      "id": "LANG.SOURCE.ENCODING",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "requiere"
+    }
+  ]
+}
+---
+
+# Palabras reservadas
+
+```regla
+{
+  "id": "R1",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Los lexemas de tokens del vocabulario oficial, incluidos alias, son reservados bajo las políticas del perfil. Español ignora caja y acentos del vocabulario; inglés ignora caja y conserva acentos. Y/O y and/or son operadores reservados. Las grafías de Importar y Exportar del perfil activo son contextuales únicamente en un texto suelto: en posición de unidad superior introducen sintaxis de módulo y producen moduleSyntaxOutsideProject, y dentro de un programa suelto pueden ser nombres. En un proyecto siguen siendo palabras reservadas. Suspendible y suspendable son contextuales en posiciones de modificador de cabecera reconocidas por la gramática; solo SubProceso o subroutine admite semánticamente esa marca. En cualquier otra posición son identificadores ordinarios. Aguardar y await son reservadas. No hay otras palabras contextuales ni escape general de nombres en la edición vigente. Las funciones incorporadas no son reservadas. Un lexema reservado en una posición de nombre inequívoca produce reservedLexemeUsedAsName; en una expresión incompleta se informa el error de expresión.",
+  "verificacion": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6"
+  ]
+}
+```
+
+```definicion
+{
+  "id": "D1",
+  "termino": "textmateAccentFold",
+  "texto": "Variantes ortográficas españolas que el resaltador puede plegar al grafema base; este dato no decide la validez léxica.",
+  "valor": {
+    "a": ["á", "à", "ä", "â"],
+    "e": ["é", "è", "ë", "ê"],
+    "i": ["í", "ì", "ï", "î"],
+    "o": ["ó", "ò", "ö", "ô"],
+    "u": ["ú", "ù", "ü", "û"],
+    "n": ["ñ"]
+  }
+}
+```
+
+```caso
+{
+  "id": "C1",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir Mientras Como Entero <- 0;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine while as integer <- 0;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "reservedLexemeUsedAsName",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C2",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir sen Como Entero <- 4;\nEscribir sen;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine sen as integer <- 4;\nwrite sen;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "4\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Verdadero Y NO Falso;\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite true and not false;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:booleanTrue}}\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir Importar Como Entero <- 1;\nDefinir Exportar Como Entero <- 0;\nExportar <- 2;\nEscribir Importar, Exportar;\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine import as integer <- 1;\ndefine export as integer <- 0;\nexport <- 2;\nwrite import, export;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": []
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": []
+  },
+  "programas": {
+    "es": "SubProceso Suspendible Worker()\nFinSubProceso\nAlgoritmo P\nDefinir Suspendible Como Entero <- 1;\nEscribir Suspendible;\nAguardar Worker();\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Worker()\nendSubroutine\nalgorithm P\ndefine suspendable as integer <- 1;\nwrite suspendable;\nawait Worker();\nendAlgorithm\n"
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "ALGORITMO P\nDefinir valor Como LÓGICO <- VERDADERO;\nEscribir valor;\nFIN ALGORITMO\n",
+    "en": "ALGORITHM P\ndefine value as BOOLEAN <- TRUE;\nwrite value;\nEND ALGORITHM\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:booleanTrue}}\n",
+    "terminacion": "completed"
+  }
+}
+```

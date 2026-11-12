@@ -1,0 +1,31 @@
+[package]
+name = "pseudolearn_native_probe"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[features]
+telemetry = ["pseudolearn_aot_rt/telemetry"]
+
+[dependencies]
+pseudolearn_api = { path = "../pseudolearn_api", version = "=0.1.0" }
+pseudolearn_aot_rt = { path = "../pseudolearn_aot_rt", version = "=0.1.0" }
+ceiling_kernels = { path = "../../../pseudolearn_benchmarks/ceiling/crates/ceiling_kernels", version = "=0.1.0" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[lints.rust]
+unsafe_code = "allow"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+unimplemented = "deny"
+unreachable = "deny"
+indexing_slicing = "deny"
+arithmetic_side_effects = "deny"
+as_conversions = "deny"
+too_many_arguments = "deny"
+too_many_lines = "deny"

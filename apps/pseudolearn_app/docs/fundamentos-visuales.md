@@ -752,6 +752,16 @@ la regla de emparejamiento con el texto tampoco. En consecuencia no sustituye a 
 sitio: ni destino de navegación, ni ilustración de estado vacío, ni ícono de botón. Las superficies
 donde sí aparece, y por qué solo esas, están en el `README.md` del paquete.
 
+**Excepción acotada: el glifo de Nodo.** El glifo del agente de IA («nodo con destello») sigue la rejilla de 24,
+el trazo de 1.5 (1.25 a 16), las terminaciones y uniones redondas del set, y rompe dos reglas a propósito: el
+destello de cuatro puntas es **relleno** y sus lados son **curvos**. Es la única marca de «esto es una IA» en la
+interfaz y tiene que leerse a 24 dentro de un botón de 56 (compacto) o 48 (resto) sobre `actions.primary`
+(`brand-600`), con el glifo en `text.onBrand`. El círculo terminal con dos ojos mínimos y el conector en ángulo
+recto mantienen el lenguaje de la marca. La excepción no se extiende a ningún otro ícono. Estados:
+reposo (destello relleno), pensando (el destello gira un cuarto de vuelta en bucle; sin giro con movimiento
+reducido), respuesta nueva (punto relleno abajo a la derecha) y sin créditos (destello solo en trazo). Vive en
+`lib/presentation/agent/agent_glyph_painter.dart`; no es un `Icon` ni un activo cargado.
+
 ### 6.3 Color de ícono
 
 Un ícono nunca lleva un valor de color propio. Toma uno de estos tokens, según el contexto:

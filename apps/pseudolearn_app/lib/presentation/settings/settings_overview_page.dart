@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../application/onboarding/onboarding_cubit.dart';
@@ -18,12 +18,15 @@ final class SettingsOverviewPage extends StatelessWidget {
           currentLanguage: state.language,
           currentThemeMode: state.themeMode,
           assistedDiagramZoom: state.assistedDiagramZoom,
+          editorAssistance: state.editorAssistance,
           appVersion: context.watch<AppVersionCubit>().state,
           onNavigateAccount: () => context.push('/ajustes/cuenta'),
           onNavigateLanguage: () => context.push('/ajustes/idioma'),
           onNavigateTheme: () => context.push('/ajustes/tema'),
           onNavigateDiagram: () => context.push('/ajustes/diagramas'),
+          onNavigateEditor: () => context.push('/ajustes/editor'),
           onNavigateContact: () => context.push('/ajustes/contacto'),
+          onNavigateAgent: () => context.push('/ajustes/nodo'),
           onRestartOnboarding: () {
             context.read<OnboardingCubit>().restart();
             context.go('/onboarding');

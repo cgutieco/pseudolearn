@@ -1,22 +1,17 @@
+import '../../test/fakes/native_test_engine.dart';
 import 'dart:io';
 
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:pseudolearn_app/composition/agent_services.dart';
 import 'package:pseudolearn_app/composition/app_dependencies.dart';
-import 'package:pseudolearn_app/data/knowledge/bundled_knowledge_repository.dart';
-import 'package:pseudolearn_app/data/knowledge/marker_resolver.dart';
+import 'package:pseudolearn_app/data/demo/bundled_demo_program_source.dart';
+import 'package:pseudolearn_app/data/reference/bundled_reference_repository.dart';
+import 'package:pseudolearn_app/data/route/bundled_route_repository.dart';
 import 'package:pseudolearn_app/domain/model/documents/document.dart';
 import 'package:pseudolearn_app/domain/model/settings/app_preferences.dart';
 import 'package:pseudolearn_app/domain/model/settings/app_theme_mode.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
-import 'package:pseudolearn_app/engine/analysis/analysis_cache.dart';
-import 'package:pseudolearn_app/engine/analysis/core_program_analyzer.dart';
-import 'package:pseudolearn_app/engine/analysis/core_program_construct_reader.dart';
-import 'package:pseudolearn_app/engine/execution/core_program_execution.dart';
-import 'package:pseudolearn_app/engine/exercise/behaviour_checker.dart';
-import 'package:pseudolearn_app/engine/exercise/exercise_check_runner.dart';
-import 'package:pseudolearn_app/engine/exercise/structural_assertion_checker.dart';
-import 'package:pseudolearn_app/engine/export/core_program_exporter.dart';
-import 'package:pseudolearn_app/engine/knowledge/syntax_reference_generator.dart';
+import 'package:pseudolearn_app/domain/ports/auth_gateway.dart';
 
 import '../../test/fakes/in_memory_document_repository.dart';
 import '../../test/fakes/in_memory_preferences_store.dart';
@@ -25,33 +20,32 @@ import 'product_documents.dart';
 
 final DateTime productClockInstant = DateTime(2026, 8, 15, 12, 0);
 
-const SyntaxReferenceGenerator _syntaxReference = SyntaxReferenceGenerator();
-
 AppDependencies buildProductDependencies({
   required UiLanguageId language,
   required AppThemeMode themeMode,
+  AgentServices? agent,
+  AuthGateway? authGateway,
 }) {
-  final analyses = AnalysisCache();
+  final engine = nativeTestEngine;
   return buildTestDependencies(
     repository: _seededRepository(language),
     preferences: InMemoryPreferencesStore(
-      const AppPreferences.defaults()
-          .copyWith(themeMode: themeMode, language: language),
+      const AppPreferences.defaults().copyWith(
+        themeMode: themeMode,
+        language: language,
+      ),
     ),
-    syntaxReferenceSource: _syntaxReference,
-    knowledgeRepository: BundledKnowledgeRepository(
-      markers: const MarkerResolver(reference: _syntaxReference),
+    referenceRepository: BundledReferenceRepository(
       assetLoader: rootBundle.loadString,
     ),
-    programExporter: CoreProgramExporter(analyses: analyses),
-    programConstructReader: CoreProgramConstructReader(analyses: analyses),
-    exerciseChecker: ExerciseCheckRunner(
-      behaviour: BehaviourChecker(
-        execution: CoreProgramExecution(analyses: analyses),
-        analyzer: CoreProgramAnalyzer(analyses: analyses),
-      ),
-      structure: StructuralAssertionChecker(analyses: analyses),
+    routeRepository: BundledRouteRepository(assetLoader: rootBundle.loadString),
+    demoProgramSource: BundledDemoProgramSource(
+      assetLoader: rootBundle.loadString,
     ),
+    engine: engine,
+    createObservableExecutionSession: engine.createObservableExecutionSession,
+    agent: agent,
+    authGateway: authGateway,
   );
 }
 

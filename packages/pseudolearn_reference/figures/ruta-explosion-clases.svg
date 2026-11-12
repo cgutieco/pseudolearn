@@ -1,0 +1,26 @@
+<svg viewBox="0 0 340 210">
+  <g data-paso="1" data-hasta="1">
+    <caja x="120" y="6" ancho="100" alto="26" rol="acento-objetos" fondo="0.2" texto="{{t:producto}}" tamano="12"/>
+    <caja x="4" y="60" ancho="78" alto="26" rol="acento-objetos" fondo="0.1" texto="{{t:vence}}" tamano="12"/>
+    <caja x="88" y="60" ancho="78" alto="26" rol="acento-objetos" fondo="0.1" texto="{{t:oferta}}" tamano="12"/>
+    <caja x="172" y="60" ancho="78" alto="26" rol="acento-objetos" fondo="0.1" texto="{{t:envase}}" tamano="12"/>
+    <caja x="256" y="60" ancho="80" alto="26" rol="error" fondo="0.12" texto="{{t:vence-oferta}}" tamano="12"/>
+    <caja x="4" y="110" ancho="104" alto="26" rol="error" fondo="0.12" texto="{{t:vence-envase}}" tamano="12"/>
+    <caja x="116" y="110" ancho="108" alto="26" rol="error" fondo="0.12" texto="{{t:oferta-envase}}" tamano="12"/>
+    <caja x="232" y="110" ancho="104" alto="26" rol="error" fondo="0.12" texto="{{t:los-tres}}" tamano="12"/>
+    <flecha puntos="150,32 43,56" rol="atenuado"/>
+    <flecha puntos="170,32 170,56" rol="atenuado"/>
+    <flecha puntos="190,32 296,56" rol="atenuado"/>
+    <text x="170" y="170" font-size="12" text-anchor="middle" fill="@error">{{t:ocho}}</text>
+  </g>
+  <g data-paso="2">
+    <caja x="100" y="20" ancho="140" alto="60" rol="exito" fondo="0.16" texto="{{t:producto}}¶{{t:tiene}}" tamano="12"/>
+    <caja x="4" y="120" ancho="100" alto="30" rol="exito" fondo="0.1" texto="{{t:vence}}" tamano="12"/>
+    <caja x="120" y="120" ancho="100" alto="30" rol="exito" fondo="0.1" texto="{{t:oferta}}" tamano="12"/>
+    <caja x="236" y="120" ancho="100" alto="30" rol="exito" fondo="0.1" texto="{{t:envase}}" tamano="12"/>
+    <flecha puntos="140,80 60,116" rol="exito"/>
+    <flecha puntos="170,80 170,116" rol="exito"/>
+    <flecha puntos="200,80 282,116" rol="exito"/>
+    <text x="170" y="190" font-size="12" text-anchor="middle" fill="@exito">{{t:tres}}</text>
+  </g>
+</svg>

@@ -11,4 +11,12 @@ abstract interface class SourceEditor {
     required SyntaxProfileId profileId,
     required int revision,
   });
+
+  SourceEdit? afterTyping({
+    required String sourceCode,
+    required int cursorUtf16,
+    required String character,
+    required SyntaxProfileId profileId,
+    required int revision,
+  });
 }

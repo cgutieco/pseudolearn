@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import '../../../domain/model/dashboard/next_module.dart';
+import 'package:material_ui/material_ui.dart';
+import '../../../domain/model/dashboard/next_lesson.dart';
 import '../../components/button/app_button.dart';
 import '../../components/typography/app_text.dart';
 import '../../l10n/generated/app_localizations.dart';
@@ -7,22 +7,22 @@ import '../../shell/design_canvas.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/tokens/spacing.dart';
 import 'dashboard_card.dart';
-import 'dashboard_labels.dart';
+import 'required_exercises_strip.dart';
 
 final class NextStepCard extends StatelessWidget {
-  final NextModule? nextModule;
+  final NextLesson? nextLesson;
   final ValueChanged<String> onOpenModule;
 
   const NextStepCard({
     super.key,
-    required this.nextModule,
+    required this.nextLesson,
     required this.onOpenModule,
   });
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final module = nextModule;
+    final module = nextLesson;
 
     return DashboardCard(
       title: l10n.dashboardNextStepTitle,
@@ -50,7 +50,7 @@ final class _RouteCompleted extends StatelessWidget {
 }
 
 final class _NextModuleContent extends StatelessWidget {
-  final NextModule module;
+  final NextLesson module;
   final ValueChanged<String> onOpenModule;
 
   const _NextModuleContent({required this.module, required this.onOpenModule});
@@ -58,29 +58,49 @@ final class _NextModuleContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final canvas = DesignCanvasScope.of(context);
-    final theme = AppThemeExtension.of(context);
     final l10n = AppLocalizations.of(context)!;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        AppText(
-          trackLabelOf(module.track, l10n),
-          variant: AppTextVariant.caption,
-          color: theme.colors.text.tertiary,
-        ),
-        SizedBox(height: canvas.scaled(SpacingTokens.space1)),
-        AppText(
-          module.title,
-          variant: AppTextVariant.heading3,
-          color: theme.colors.text.primary,
-        ),
+        _LessonHeading(module: module),
+        SizedBox(height: canvas.scaled(SpacingTokens.space3)),
+        RequiredExercisesStrip(count: module.requiredExercises),
         SizedBox(height: canvas.scaled(SpacingTokens.space4)),
         AppButton(
           label: l10n.dashboardNextStepOpen,
-          variant: AppButtonVariant.secondary,
+          variant: AppButtonVariant.primary,
           icon: Icons.arrow_forward_rounded,
           onPressed: () => onOpenModule(module.id),
+        ),
+      ],
+    );
+  }
+}
+
+final class _LessonHeading extends StatelessWidget {
+  final NextLesson module;
+
+  const _LessonHeading({required this.module});
+
+  @override
+  Widget build(BuildContext context) {
+    final canvas = DesignCanvasScope.of(context);
+    final text = AppThemeExtension.of(context).colors.text;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        AppText(
+          module.partTitle,
+          variant: AppTextVariant.caption,
+          color: text.tertiary,
+        ),
+        SizedBox(height: canvas.scaled(SpacingTokens.space1)),
+        AppText(
+          '${module.number} · ${module.title}',
+          variant: AppTextVariant.heading3,
+          color: text.primary,
         ),
       ],
     );

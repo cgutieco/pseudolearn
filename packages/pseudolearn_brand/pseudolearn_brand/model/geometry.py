@@ -97,5 +97,11 @@ def flag_path(geometry):
         geometry.pennant_radius)
 
 
+def centerline_path(geometry):
+    first, *rest = geometry.corners()
+    moves = " ".join(f"L {_number(x)},{_number(y)}" for x, y in rest)
+    return f"M {_number(first[0])},{_number(first[1])} {moves}".rstrip()
+
+
 def symbol_path(geometry):
     return f"{route_path(geometry)} {flag_path(geometry)}"

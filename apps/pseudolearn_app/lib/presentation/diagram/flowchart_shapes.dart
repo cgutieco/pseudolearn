@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../domain/model/diagram/diagram_metrics.dart';
 import '../../domain/model/diagram/diagram_scene.dart';
 import '../theme/tokens/editor_metrics.dart';
@@ -16,7 +16,8 @@ final class FlowchartShapes {
       DiagramShape.decision => _diamond(rect),
       DiagramShape.inputOutput => _parallelogram(rect),
       DiagramShape.preparation => _hexagon(rect),
-      DiagramShape.connector => Path()..addOval(rect),
+      DiagramShape.connector ||
+      DiagramShape.exitConnector => Path()..addOval(rect),
       DiagramShape.cellProcess ||
       DiagramShape.cellCall ||
       DiagramShape.cellExit ||

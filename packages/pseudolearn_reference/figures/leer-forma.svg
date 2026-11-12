@@ -1,0 +1,16 @@
+<svg viewBox="0 0 340 262">
+  <text x="12" y="20" font-size="13" fill="@atenuado" font-weight="600">{{t:forma}}</text>
+  <caja x="12" y="30" ancho="56" alto="28" esquina="14" rol="acento-estructurado" fondo="0.14" fuente="mono" negrita="" texto="{{lex:ifKeyword}}"/>
+  <caja x="80" y="30" ancho="124" alto="28" esquina="5" rol="hueco" fondo="0.10" discontinua="" cursiva="" tamano="13" texto="{{t:condicion}}"/>
+  <caja x="216" y="30" ancho="112" alto="28" esquina="14" rol="acento-estructurado" fondo="0.14" fuente="mono" negrita="" texto="{{lex:then}}"/>
+  <text x="40" y="76" font-size="12" text-anchor="middle" fill="@atenuado">{{t:fija}}</text>
+  <text x="142" y="76" font-size="12" text-anchor="middle" fill="@atenuado">{{t:hueco}}</text>
+  <text x="272" y="76" font-size="12" text-anchor="middle" fill="@atenuado">{{t:fija}}</text>
+  <flecha puntos="142,84 142,116"/>
+  <text x="12" y="106" font-size="13" fill="@atenuado" font-weight="600">{{t:rellenada}}</text>
+  <caja x="12" y="116" ancho="316" alto="36" rol="tinta" fondo="0.04" fuente="mono" tamano="13" texto="{{codigo:Si n &gt; 0 Entonces}}"/>
+  <text x="12" y="192" font-size="13" fill="@atenuado" font-weight="600">{{t:opcional}}</text>
+  <caja x="12" y="202" ancho="120" alto="28" esquina="5" rol="atenuado" fondo="0.06" fuente="mono" tamano="13" texto="⟦ {{lex:elseKeyword}} ⟧"/>
+  <text x="144" y="221" font-size="12" fill="@atenuado">{{t:se-omite}}</text>
+  <text x="12" y="252" font-size="12" fill="@atenuado">{{t:sin-sino}}</text>
+</svg>

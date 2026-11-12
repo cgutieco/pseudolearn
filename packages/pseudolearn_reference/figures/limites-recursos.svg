@@ -1,0 +1,16 @@
+<svg viewBox="0 0 340 180">
+  <text x="10" y="26" font-size="12" fill="@tinta">{{t:profundidad}}</text>
+  <rect x="120" y="14" width="200" height="16" rx="8" fill="@atenuado" fill-opacity="0.15"/>
+  <rect x="120" y="14" width="200" height="16" rx="8" fill="@error" fill-opacity="0.6"/>
+  <text x="10" y="66" font-size="12" fill="@tinta">{{t:celdas}}</text>
+  <rect x="120" y="54" width="200" height="16" rx="8" fill="@atenuado" fill-opacity="0.15"/>
+  <rect x="120" y="54" width="90" height="16" rx="8" fill="@numero" fill-opacity="0.6"/>
+  <text x="10" y="106" font-size="12" fill="@tinta">{{t:sentencias}}</text>
+  <rect x="120" y="94" width="200" height="16" rx="8" fill="@atenuado" fill-opacity="0.15"/>
+  <rect x="120" y="94" width="130" height="16" rx="8" fill="@numero" fill-opacity="0.6"/>
+  <text x="10" y="146" font-size="12" fill="@tinta">{{t:tiempo}}</text>
+  <rect x="120" y="134" width="200" height="16" rx="8" fill="@atenuado" fill-opacity="0.15"/>
+  <rect x="120" y="134" width="60" height="16" rx="8" fill="@numero" fill-opacity="0.6"/>
+  <text x="220" y="44" font-size="12" text-anchor="middle" fill="@error">{{t:agotada}}</text>
+  <text x="170" y="174" font-size="12" text-anchor="middle" fill="@atenuado">{{t:nota}}</text>
+</svg>

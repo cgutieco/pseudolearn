@@ -1,0 +1,54 @@
+---
+import type { SpecificationBlock } from '@entities/specification/model/specification';
+import { CALLOUT_KEYS } from '@entities/specification/model/label-keys';
+import type { Locale } from '@shared/i18n/locales';
+import { useTranslations } from '@shared/i18n/translator';
+import SpecBlock from './SpecBlock.astro';
+
+export interface Props {
+  blocks: readonly SpecificationBlock[];
+  locale: Locale;
+}
+
+const { blocks, locale } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+{blocks.map((block) =>
+  block.type === 'callout' ? (
+    <aside class={`spec-callout spec-callout--${block.kind}`}>
+      <p class="spec-callout__label pl-overline">{t(CALLOUT_KEYS[block.kind])}</p>
+      <Astro.self blocks={block.blocks} locale={locale} />
+    </aside>
+  ) : (
+    <SpecBlock block={block} locale={locale} />
+  ),
+)}
+
+<style>
+  .spec-callout {
+    margin-top: var(--pl-space-lg);
+    padding: var(--pl-space-md) var(--pl-space-lg);
+    border-left: 3px solid var(--pl-brand);
+    border-radius: 0 var(--pl-radius-control) var(--pl-radius-control) 0;
+    background: var(--pl-brand-faint);
+  }
+
+  .spec-callout--limit,
+  .spec-callout--errors {
+    border-left-color: var(--pl-danger);
+    background: var(--pl-sunken);
+  }
+
+  .spec-callout--inside,
+  .spec-callout--note,
+  .spec-callout--parts,
+  .spec-callout--analogy {
+    border-left-color: var(--pl-line-strong);
+    background: var(--pl-sunken);
+  }
+
+  .spec-callout > :global(:nth-child(2)) {
+    margin-top: var(--pl-space-xs);
+  }
+</style>

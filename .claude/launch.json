@@ -2,10 +2,30 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "fe-pseudolearn",
+      "name": "pseudolearn-web",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--dir", "apps/fe-pseudolearn", "dev"],
+      "runtimeArgs": [
+        "--dir",
+        "apps/pseudolearn_web",
+        "exec",
+        "astro",
+        "dev",
+        "--port",
+        "4321"
+      ],
       "port": 4321
+    },
+    {
+      "name": "pseudolearn-web-dist",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4322",
+        "--directory",
+        "apps/pseudolearn_web/dist/client"
+      ],
+      "port": 4322
     }
   ]
 }

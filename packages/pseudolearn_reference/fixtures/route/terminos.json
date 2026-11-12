@@ -1,0 +1,6 @@
+{
+  "problema": {"etiqueta": "problema", "formas": ["problema", "problemas"], "estricto": false, "receta": false},
+  "variable": {"etiqueta": "variable", "formas": ["variable", "variables"], "estricto": true, "receta": false},
+  "arreglo": {"etiqueta": "arreglo", "formas": ["arreglo", "arreglos"], "estricto": true, "receta": true},
+  "acumulador": {"etiqueta": "acumulador", "formas": ["acumulador"], "estricto": true, "receta": true}
+}

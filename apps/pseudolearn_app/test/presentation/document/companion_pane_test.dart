@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pseudolearn_app/composition/cubit_scope.dart';
@@ -12,7 +12,7 @@ import '../../fakes/pump_app.dart';
 import '../../fakes/test_dependencies.dart';
 
 const String _source = 'Proceso Conteo\n'
-    '\tDefinir i Como Entero;\n'
+    ' Definir i Como Entero <- 0;\n'
     '\ti <- 0;\n'
     '\tMientras i < 3 Hacer\n'
     '\t\ti <- i + 1;\n'

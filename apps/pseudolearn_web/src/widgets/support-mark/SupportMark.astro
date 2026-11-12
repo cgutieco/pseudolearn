@@ -1,0 +1,34 @@
+---
+import { Icon } from '@shared/ui/icon';
+---
+
+<span class="support-mark" aria-hidden="true">
+  <Icon name="send" size={64} strokeWidth={1.4} class="support-mark__icon" />
+</span>
+
+<style>
+  .support-mark {
+    display: inline-flex;
+    padding: var(--pl-space-lg);
+    border: 1px solid var(--pl-on-field-line-strong);
+    border-radius: 36px;
+    background: rgb(7 45 47 / 45%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .support-mark :global(.support-mark__icon) {
+      animation: support-fly 3.2s ease-in-out infinite;
+    }
+  }
+
+  @keyframes support-fly {
+    0%,
+    100% {
+      transform: none;
+    }
+
+    50% {
+      transform: translate(4px, -6px) rotate(-6deg);
+    }
+  }
+</style>

@@ -14,11 +14,11 @@ import 'package:pseudolearn_app/domain/model/onboarding/guided_demo_surface.dart
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 
 import '../../../fakes/fake_diagram_builders.dart';
-import '../../../fakes/fake_knowledge_repository.dart';
+import '../../../fakes/fake_demo_program_source.dart';
 import '../../../fakes/fake_program_execution.dart';
 
-const String _spanishPath = 'examples/guided_demo_es.pseudo';
-const String _englishPath = 'examples/guided_demo_en.pseudo';
+const String _spanishPath = 'guided_demo_es.pseudo';
+const String _englishPath = 'guided_demo_en.pseudo';
 const String _demoCode = 'Proceso Demo\n  Escribir 1;\nFinProceso';
 
 ExecutionStep _statementAt(int line, {Map<String, String> variables = const {}}) {
@@ -68,9 +68,8 @@ GuidedDemoCubit _cubitWith({
 }) {
   return GuidedDemoCubit(
     loader: GuidedDemoLoader(
-      repository: FakeKnowledgeRepository(
-        rawContentByPath: rawContent,
-        shouldThrow: repositoryThrows,
+      source: FakeDemoProgramSource(
+        programs: repositoryThrows ? const {} : rawContent,
       ),
     ),
     execution: execution,

@@ -38,6 +38,17 @@
     "vertical": { "plate": 2.4, "gap": 0.32 },
     "clear_space": 0.23
   },
+  "card": {
+    "span": 0.62,
+    "margin": 0.08,
+    "plate_opacity": 0.12,
+    "plate_outline_opacity": 0.32,
+    "plate_outline": 1.2,
+    "watermark_opacity": 0.07,
+    "watermark_side": 1.3,
+    "watermark_center_x": 0.8,
+    "watermark_center_y": 0.53
+  },
   "variants": [
     {
       "name": "symbol",
@@ -149,12 +160,57 @@
       "rounded": true,
       "gradient_id": "ground",
       "ink": "#FFFFFF",
-      "copies": ["apps/fe-pseudolearn/public/favicon.svg"]
+      "copies": [
+        "apps/pseudolearn_web/public/favicon.svg",
+        "apps/pseudolearn_vscode/media/icons/pseudo-file.svg"
+      ]
+    },
+    {
+      "name": "social-card",
+      "composition": "card",
+      "master": "social-card.svg",
+      "title": "PseudoLearn social card",
+      "canvas": 1200,
+      "canvas_height": 630,
+      "gradient_id": "ground",
+      "ink": "#FFFFFF",
+      "copies": ["apps/pseudolearn_web/src/assets/brand/social-card.svg"]
     }
   ],
+  "nodo_glyph": {
+    "grid": 24.0,
+    "stroke": 1.5,
+    "node_x": 9.0,
+    "node_y": 15.0,
+    "node_radius": 5.0,
+    "eye_left_x": 7.25,
+    "eye_right_x": 10.75,
+    "eye_y": 14.5,
+    "eye_radius": 0.9,
+    "wire_start_x": 9.0,
+    "wire_start_y": 10.0,
+    "wire_bend_y": 6.5,
+    "wire_end_x": 13.5,
+    "sparkle_x": 18.0,
+    "sparkle_y": 6.5,
+    "sparkle_reach": 4.0,
+    "sparkle_pinch": 0.6
+  },
   "emitters": {
+    "typescript_nodo_glyph": {
+      "path": "apps/pseudolearn_web/src/widgets/nodo-preview/nodo-glyph.generated.ts",
+      "mode": "write"
+    },
+    "dart_nodo_glyph": {
+      "path": "apps/pseudolearn_app/lib/presentation/agent/agent_glyph_painter.dart",
+      "mode": "verify"
+    },
     "typescript_symbol_path": {
-      "path": "apps/fe-pseudolearn/src/shared/ui/brand-mark/symbol-path.generated.ts",
+      "path": "apps/pseudolearn_web/src/shared/ui/brand-mark/symbol-path.generated.ts",
+      "mode": "write"
+    },
+    "typescript_store_media": {
+      "path": "packages/pseudolearn_store_media/src/compose/brand.generated.ts",
       "mode": "write"
     },
     "dart_brand_metrics": {

@@ -1,0 +1,12 @@
+{
+  "violation": "card without English content",
+  "expect": "uncovered role identity primary",
+  "edits": [
+    {
+      "op": "remove_id_field",
+      "path": "/cards",
+      "id": "help.snapshot_builtin",
+      "field": "/content/en"
+    }
+  ]
+}

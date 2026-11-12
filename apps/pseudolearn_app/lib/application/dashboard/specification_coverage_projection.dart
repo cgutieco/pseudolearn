@@ -1,23 +1,21 @@
 import '../../domain/model/dashboard/specification_coverage.dart';
 import '../../domain/model/knowledge/ast_construct.dart';
 import '../../domain/model/knowledge/construct_specification_sections.dart';
-import '../../domain/model/knowledge/knowledge_entry.dart';
+import '../../domain/model/reference/reference_index.dart';
+import '../../domain/model/reference/reference_run.dart';
 
 SpecificationCoverage projectSpecificationCoverage({
-  required List<KnowledgeEntry> sections,
+  required List<ReferenceIndexEntry> sections,
   required Set<AstConstruct> exercisedConstructs,
 }) {
   final measurable = measurableSpecificationSectionIds();
   final covered = _coveredSectionIds(exercisedConstructs);
-  final ordered = List<KnowledgeEntry>.from(sections)
-    ..sort((a, b) => a.order.compareTo(b.order));
-
   return SpecificationCoverage.of([
-    for (final section in ordered)
+    for (final section in sections)
       if (measurable.contains(section.id))
         SpecificationSectionCoverage(
           sectionId: section.id,
-          title: section.title,
+          title: plainTextOf(section.title),
           isExercised: covered.contains(section.id),
         ),
   ]);

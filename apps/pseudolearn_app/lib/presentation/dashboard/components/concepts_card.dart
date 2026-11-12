@@ -1,13 +1,13 @@
 import 'package:flutter/widgets.dart';
 import '../../../domain/model/dashboard/concept_coverage.dart';
-import '../../components/typography/app_text.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../shell/design_canvas.dart';
-import '../../theme/app_theme.dart';
 import '../../theme/tokens/spacing.dart';
+import 'chip_cloud.dart';
+import 'coverage_chip.dart';
+import 'coverage_meter.dart';
 import 'dashboard_card.dart';
 import 'dashboard_labels.dart';
-import 'dashboard_state_mark.dart';
 
 final class ConceptsCard extends StatelessWidget {
   final ConceptCoverage coverage;
@@ -17,7 +17,6 @@ final class ConceptsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final canvas = DesignCanvasScope.of(context);
-    final theme = AppThemeExtension.of(context);
     final l10n = AppLocalizations.of(context)!;
 
     return DashboardCard(
@@ -26,54 +25,39 @@ final class ConceptsCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          AppText(
-            l10n.dashboardCoverageRatio(
-              coverage.count.done,
-              coverage.count.total,
-            ),
-            variant: AppTextVariant.heading3,
-            color: theme.colors.text.primary,
+          CoverageMeter(
+            label: l10n.dashboardOverviewConcepts,
+            count: coverage.count,
           ),
           SizedBox(height: canvas.scaled(SpacingTokens.space3)),
-          for (final concept in coverage.concepts)
-            _ConceptRow(concept: concept),
+          _ConceptChips(coverage: coverage),
         ],
       ),
     );
   }
 }
 
-final class _ConceptRow extends StatelessWidget {
-  final ConceptUsage concept;
+final class _ConceptChips extends StatelessWidget {
+  final ConceptCoverage coverage;
 
-  const _ConceptRow({required this.concept});
+  const _ConceptChips({required this.coverage});
 
   @override
   Widget build(BuildContext context) {
-    final canvas = DesignCanvasScope.of(context);
-    final theme = AppThemeExtension.of(context);
     final l10n = AppLocalizations.of(context)!;
 
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: canvas.scaled(SpacingTokens.space1)),
-      child: Row(
-        children: [
-          Expanded(
-            child: DashboardStateMark(
-              isDone: concept.isExercised,
+    return ChipCloud(
+      chips: [
+        for (final concept in coverage.concepts)
+          Semantics(
+            label: l10n.dashboardConceptDocuments(concept.documentCount),
+            child: CoverageChip(
               label: conceptLabelOf(concept.construct, l10n),
+              isDone: concept.isExercised,
+              badge: concept.isExercised ? '${concept.documentCount}' : null,
             ),
           ),
-          SizedBox(width: canvas.scaled(SpacingTokens.space2)),
-          AppText(
-            l10n.dashboardConceptDocuments(concept.documentCount),
-            variant: AppTextVariant.caption,
-            color: theme.colors.text.secondary,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
+      ],
     );
   }
 }

@@ -1,0 +1,133 @@
+---
+{
+  "formato": "see/1",
+  "id": "LANG.LEXICAL.TEXT-LITERAL",
+  "titulo": "Literales de texto",
+  "dominio": "lenguaje",
+  "estado": "estable",
+  "version": "1.0.0",
+  "duenos": [
+    "responsable-lenguaje"
+  ],
+  "revisado_por": [
+    "César Antonio Gutiérrez Contreras"
+  ],
+  "sujetos": [
+    "engine",
+    "aot"
+  ],
+  "resumen": "Literales de texto.",
+  "edicion": {
+    "introducida_en": "2027"
+  },
+  "depende_de": [
+    {
+      "id": "LANG.SOURCE.ENCODING",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "requiere"
+    }
+  ]
+}
+---
+
+# Literales de texto
+
+```regla
+{
+  "id": "R1",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Comillas simples o dobles delimitan literales. Un literal vacío o con más de un punto de código es cadena; exactamente uno es carácter. Se admiten escapes n, t, r, barra invertida y ambas comillas. El contenido conserva sus puntos de código, sin NFC. Escape desconocido y literal sin cierre tienen diagnósticos específicos; la recuperación no absorbe la siguiente sentencia.",
+  "verificacion": [
+    "C1",
+    "C2",
+    "C3"
+  ]
+}
+```
+
+```definicion
+{
+  "id": "D1",
+  "termino": "textmateTextLiteral",
+  "texto": "Delimitadores y escapes de literales para la proyección tolerante del editor.",
+  "valor": {
+    "delimiters": ["\"", "'"],
+    "escapeCodes": ["n", "t", "r", "\\", "\"", "'"],
+    "lineBreaksAllowed": false
+  }
+}
+```
+
+```caso
+{
+  "id": "C1",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir \"\", \"ab\", \"\\n\", \"é\";\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite \"\", \"ab\", \"\\n\", \"é\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "ab\né\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C2",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir \"abc;\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite \"abc;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "unterminatedString",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir \"\\q\";\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite \"\\q\";\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "invalidEscapeSequence",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
