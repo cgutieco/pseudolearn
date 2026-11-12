@@ -16,6 +16,13 @@ pub(crate) fn unused(session: &mut AnalysisSession<'_>) {
 }
 
 fn unused_locals(session: &mut AnalysisSession<'_>) {
+    let components: std::collections::BTreeSet<LocalId> = session
+        .module
+        .record_locals
+        .values()
+        .flatten()
+        .copied()
+        .collect();
     for index in 0..session.module.locals.len() {
         let Some(local) = session.module.locals.get(index).cloned() else {
             continue;
@@ -24,12 +31,7 @@ fn unused_locals(session: &mut AnalysisSession<'_>) {
         if local.name.starts_with('$') {
             continue;
         }
-        if session
-            .module
-            .record_locals
-            .values()
-            .any(|components| components.contains(&identifier))
-        {
+        if components.contains(&identifier) {
             continue;
         }
         if session.invalid.contains(&identifier)
@@ -47,6 +49,8 @@ fn unused_locals(session: &mut AnalysisSession<'_>) {
 }
 
 fn unused_functions(session: &mut AnalysisSession<'_>) {
+    let exported: std::collections::BTreeSet<FunctionId> =
+        session.module.units.exported.iter().copied().collect();
     for index in 0..session.module.functions.len() {
         let identifier = FunctionId(u32::try_from(index).unwrap_or(u32::MAX));
         session.enter_function(index);
@@ -60,7 +64,7 @@ fn unused_functions(session: &mut AnalysisSession<'_>) {
             function.kind,
             FunctionKind::Procedure | FunctionKind::Function
         ) || session.called.contains(&identifier)
-            || session.module.units.exported.contains(&identifier)
+            || exported.contains(&identifier)
         {
             continue;
         }

@@ -55,6 +55,7 @@ pub(crate) struct AssignmentState {
     pub obligations: Vec<OutputObligation>,
     pub call_edges: BTreeSet<(FunctionId, FunctionId)>,
     pub exits: Vec<Vec<(FlowPoint, Span)>>,
+    pub locals: crate::local_indexes::LocalIndexes,
 }
 
 #[derive(Clone, Debug)]
@@ -139,10 +140,13 @@ pub(crate) fn after_loop(session: &mut AnalysisSession<'_>, before: FlowPoint, o
 
 pub(crate) fn terminate(session: &mut AnalysisSession<'_>) {
     let current = session.current;
-    for (index, local) in session.module.locals.iter().enumerate() {
-        if local.scope != current {
-            continue;
-        }
+    let owned = session
+        .assignment
+        .locals
+        .scopes
+        .owned_by(&session.module.locals, current)
+        .to_vec();
+    for index in owned {
         if let Some(assigned) = session.initialized.get_mut(index) {
             *assigned = true;
         }

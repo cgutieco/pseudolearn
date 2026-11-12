@@ -46,6 +46,7 @@ impl FlowBindings {
             .record_locals
             .retain(|local, _| usize::try_from(local.0).is_ok_and(|index| index < locals.len()));
         session.module.local_visibility.clear();
+        session.assignment.locals.scopes.forget_from(0);
         session.module.locals = locals;
         session.module.pure_locals.clone_from(&self.pure_locals);
         session.constants.clone_from(&self.constants);

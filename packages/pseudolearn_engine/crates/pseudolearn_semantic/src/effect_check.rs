@@ -13,6 +13,8 @@ mod effect_interface_realizations;
 mod effect_pure_values;
 
 pub(crate) fn check(session: &mut AnalysisSession<'_>) {
+    session.assignment.locals.assignments =
+        crate::effect_calls::local_assignments(&session.module.statements.kinds);
     let mut direct_effects = BTreeSet::new();
     let mut call_edges: BTreeMap<usize, BTreeSet<usize>> = BTreeMap::new();
     for (index, function) in session.module.functions.iter().enumerate() {

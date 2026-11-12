@@ -27,6 +27,7 @@ pub(crate) struct ExportResolver<'catalog> {
     memo: Vec<Option<BTreeMap<String, Origin>>>,
     active: Vec<bool>,
     profiles: Vec<Profile>,
+    modules: BTreeMap<(PackageId, Vec<String>), Option<usize>>,
     pub reports: Vec<Report>,
 }
 
@@ -43,6 +44,7 @@ impl<'catalog> ExportResolver<'catalog> {
             memo: vec![None; count],
             active: vec![false; count],
             profiles,
+            modules: module_index(catalog),
             reports: Vec::new(),
         }
     }
@@ -189,12 +191,26 @@ impl<'catalog> ExportResolver<'catalog> {
         if relative.is_empty() {
             return None;
         }
-        self.catalog
-            .modules()
-            .iter()
-            .find(|module| module.package == package && same_segments(&module.segments, relative))
-            .and_then(|module| usize::try_from(module.id.0).ok())
+        self.modules
+            .get(&(package, relative.to_vec()))
+            .copied()
+            .flatten()
     }
+}
+
+fn module_index(catalog: &ProjectCatalog) -> BTreeMap<(PackageId, Vec<String>), Option<usize>> {
+    let mut index = BTreeMap::new();
+    for module in catalog.modules() {
+        let segments = module
+            .segments
+            .iter()
+            .map(|segment| IdentifierNormalizer::normalize(segment))
+            .collect();
+        index
+            .entry((module.package, segments))
+            .or_insert_with(|| usize::try_from(module.id.0).ok());
+    }
+    index
 }
 
 fn admit(
@@ -217,14 +233,6 @@ fn admit(
             Some((DiagnosticCode::UnresolvedModule, segments.join(".")))
         }
     }
-}
-
-fn same_segments(declared: &[String], requested: &[String]) -> bool {
-    declared.len() == requested.len()
-        && declared
-            .iter()
-            .zip(requested)
-            .all(|(left, right)| IdentifierNormalizer::normalize(left) == *right)
 }
 
 pub(crate) fn is_function(origin: &Origin) -> bool {

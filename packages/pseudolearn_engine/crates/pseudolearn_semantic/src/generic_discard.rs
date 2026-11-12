@@ -54,6 +54,7 @@ impl Snapshot {
     fn truncate_columns(&self, session: &mut AnalysisSession<'_>) {
         session.module.functions.truncate(self.functions);
         session.module.locals.truncate(self.locals);
+        session.assignment.locals.scopes.forget_from(self.locals);
         session.initialized.truncate(self.locals);
         let expressions = &mut session.module.expressions;
         expressions.kinds.truncate(self.expressions);

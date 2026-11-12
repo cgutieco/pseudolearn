@@ -79,6 +79,10 @@ mod interface_registry;
 mod interface_signatures;
 mod interface_uses;
 mod json_types;
+mod local_indexes;
+#[cfg(test)]
+#[path = "local_indexes_tests.rs"]
+mod local_indexes_tests;
 mod local_registry;
 mod module_calls;
 mod module_cycles;

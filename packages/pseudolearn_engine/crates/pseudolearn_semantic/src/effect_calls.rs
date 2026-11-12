@@ -2,7 +2,7 @@ use crate::expression_model::{HirExpression, HirPlace};
 use crate::identities::{ExpressionId, LocalId};
 use crate::session::AnalysisSession;
 use crate::statement_model::HirStatement;
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 pub(crate) fn collect(
     session: &AnalysisSession<'_>,
@@ -90,16 +90,25 @@ fn collect_target(
 }
 
 fn collect_local(session: &AnalysisSession<'_>, local: LocalId, pending: &mut Vec<ExpressionId>) {
-    for statement in &session.module.statements.kinds {
+    if let Some(values) = session.assignment.locals.assignments.get(&local) {
+        pending.extend(values.iter().copied());
+    }
+}
+
+pub(crate) fn local_assignments(
+    statements: &[HirStatement],
+) -> BTreeMap<LocalId, Vec<ExpressionId>> {
+    let mut assignments = BTreeMap::<LocalId, Vec<ExpressionId>>::new();
+    for statement in statements {
         if let HirStatement::Assign {
             destination: HirPlace::Local(target),
             value,
         } = statement
-            && *target == local
         {
-            pending.push(*value);
+            assignments.entry(*target).or_default().push(*value);
         }
     }
+    assignments
 }
 
 fn collect_virtual(
