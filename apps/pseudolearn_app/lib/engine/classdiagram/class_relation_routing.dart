@@ -25,13 +25,11 @@ final class ClassRelationRouting {
         );
 
   ClassRelationRouting._({
-    required Map<String, PlacedClassBox> byName,
-    required Map<int, PlacedClassBox> byNode,
+    required this._byName,
+    required this._byNode,
     required RoutingCorridors corridors,
     required RoutingReservations reservations,
-  })  : _byName = byName,
-        _byNode = byNode,
-        _corridors = corridors,
+  })  : _corridors = corridors,
         _reservations = reservations,
         _search = RelationRouteSearch(
           corridors: corridors,

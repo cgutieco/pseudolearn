@@ -25,26 +25,17 @@ final class RoutingCorridors {
   final double _boxGap;
 
   RoutingCorridors._({
-    required List<PlacedClassBox> boxes,
-    required List<double> columnRights,
-    required List<double> columnLefts,
-    required List<double> levelBottoms,
-    required List<double> levelTops,
-    required double minLeft,
-    required double maxRight,
-    required double minTop,
-    required double maxBottom,
-    required double boxGap,
-  })  : _boxes = boxes,
-        _columnRights = columnRights,
-        _columnLefts = columnLefts,
-        _levelBottoms = levelBottoms,
-        _levelTops = levelTops,
-        _minLeft = minLeft,
-        _maxRight = maxRight,
-        _minTop = minTop,
-        _maxBottom = maxBottom,
-        _boxGap = boxGap;
+    required this._boxes,
+    required this._columnRights,
+    required this._columnLefts,
+    required this._levelBottoms,
+    required this._levelTops,
+    required this._minLeft,
+    required this._maxRight,
+    required this._minTop,
+    required this._maxBottom,
+    required this._boxGap,
+  });
 
   factory RoutingCorridors.of(List<PlacedClassBox> boxes,
       {double boxGap = ClassDiagramMetrics.boxGapFloor}) {

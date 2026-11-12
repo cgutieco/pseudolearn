@@ -25,9 +25,9 @@ const validListing = [
 ];
 const validProvenance = {
   revision: "abc",
-  rustc: "rustc 1.99.0",
-  cargo: "cargo 1.99.0",
-  node: "v22.23.3",
+  rustc: "rustc 1.99.1",
+  cargo: "cargo 1.99.1",
+  node: "v26.13.1",
   cargoTarget: contract.target.cargoTarget,
   binarySha256: "b1",
   grammarSha256: "g1",

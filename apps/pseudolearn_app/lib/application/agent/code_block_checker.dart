@@ -19,10 +19,9 @@ final class CodeBlockChecker {
   final ProgramAnalyzer _analyzer;
 
   const CodeBlockChecker({
-    required ReplyMarkdownReader reader,
-    required ProgramAnalyzer analyzer,
-  }) : _reader = reader,
-       _analyzer = analyzer;
+    required this._reader,
+    required this._analyzer,
+  });
 
   CheckedReply check(
     String reply, {

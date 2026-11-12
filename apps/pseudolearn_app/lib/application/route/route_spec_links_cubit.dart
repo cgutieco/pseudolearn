@@ -8,9 +8,8 @@ import 'route_spec_links_state.dart';
 final class RouteSpecLinksCubit extends Cubit<RouteSpecLinksState> {
   final RouteRepository _repository;
 
-  RouteSpecLinksCubit({required RouteRepository repository})
-    : _repository = repository,
-      super(const RouteSpecLinksState());
+  RouteSpecLinksCubit({required this._repository})
+    : super(const RouteSpecLinksState());
 
   Future<void> load(ReferenceEdition edition) async {
     if (state.edition == edition) return;

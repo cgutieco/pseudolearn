@@ -8,9 +8,8 @@ import 'reference_section_state.dart';
 final class ReferenceSectionCubit extends Cubit<ReferenceSectionState> {
   final ReferenceRepository _repository;
 
-  ReferenceSectionCubit({required ReferenceRepository repository})
-    : _repository = repository,
-      super(const ReferenceSectionState());
+  ReferenceSectionCubit({required this._repository})
+    : super(const ReferenceSectionState());
 
   Future<void> load(ReferenceEdition edition, String sectionId) async {
     final current = state.edition == edition

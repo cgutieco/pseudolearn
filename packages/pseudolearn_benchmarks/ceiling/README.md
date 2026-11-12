@@ -83,6 +83,6 @@ la semilla del bootstrap es 42.
 | Comparar recolectores de memoria       | `cargo run --release -p ceiling_runner -- collect-memory <directorio>`                                      |
 | Resumir una captura existente          | `cargo run --release -p ceiling_runner -- summarize <directorio>` (`summarize-remanso`, `summarize-memory`) |
 
-Requisitos: Rust 1.99.0 con rustfmt y Clippy (`rust-toolchain.toml`), `cargo-deny`, `git`, y macOS para recolectar
+Requisitos: Rust 1.99.1 con rustfmt y Clippy (`rust-toolchain.toml`), `cargo-deny`, `git`, y macOS para recolectar
 (`/usr/bin/time -lp` y `sysctl`). Sin directorio, los comandos usan `../results/e02`, `../results/e02r` y
 `../results/e12` respectivamente.

@@ -80,5 +80,5 @@ flowchart LR
 | Tests del xtask                      | `cargo test -p xtask`                                    |
 | Solo los tests del servidor          | `cargo test -p xtask http_test_server`                   |
 
-Requisitos: Rust `1.99.0` (`rust-toolchain.toml`), `cargo-deny` para `verify` y permiso para abrir sockets en loopback.
+Requisitos: Rust `1.99.1` (`rust-toolchain.toml`), `cargo-deny` para `verify` y permiso para abrir sockets en loopback.
 Los comandos se ejecutan desde `apps/pseudolearn_cli`.

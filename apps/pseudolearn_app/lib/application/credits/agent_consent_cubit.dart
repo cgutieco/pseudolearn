@@ -6,9 +6,8 @@ enum AgentConsentStatus { unknown, granted, notGranted }
 final class AgentConsentCubit extends Cubit<AgentConsentStatus> {
   final AgentConsentStore _store;
 
-  AgentConsentCubit({required AgentConsentStore store})
-    : _store = store,
-      super(AgentConsentStatus.unknown);
+  AgentConsentCubit({required this._store})
+    : super(AgentConsentStatus.unknown);
 
   Future<void> load() async {
     final granted = await _store.hasConsented();

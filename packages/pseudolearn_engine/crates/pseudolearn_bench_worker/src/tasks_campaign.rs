@@ -62,8 +62,9 @@ pub fn check_seed(subject: &mut dyn TaskSubject, seed: u64) -> Result<Vec<String
 }
 
 pub fn collect(arguments: &[String]) -> Result<(), String> {
-    let usage =
-        || "Usage: tasks-campaign <directory> <first-seed> <last-seed> [vm | aot <pseudo>]".to_owned();
+    let usage = || {
+        "Usage: tasks-campaign <directory> <first-seed> <last-seed> [vm | aot <pseudo>]".to_owned()
+    };
     let [directory, first, last, subject_arguments @ ..] = arguments else {
         return Err(usage());
     };

@@ -124,7 +124,7 @@ Desde esta carpeta.
 | Depuración por stdio                  | `pnpm test:dap:stdio`                                               |
 | Prueba en VS Code real                | `node tests/host/run-host.mjs trusted` (o `restricted`)             |
 
-Requisitos: Node 22.23.3, pnpm 12.8.1; `build:cli` y `package` necesitan Cargo y un host `darwin-arm64` o `win32-x64`;
+Requisitos: Node 26.13.1, pnpm 12.18.0; `build:cli` y `package` necesitan Cargo y un host `darwin-arm64` o `win32-x64`;
 `package:web`
 necesita además la cadena del motor para el Wasm.
 

@@ -14,7 +14,7 @@ export function collectPackageViolations(root) {
   if (!manifest.private || manifest.publisher !== "pseudolearn" || manifest.version !== "0.1.0") {
     violations.push("extension identity or local-only publication settings are invalid");
   }
-  if (manifest.engines?.node !== "22.23.3" || manifest.packageManager !== "pnpm@12.8.1") {
+  if (manifest.engines?.node !== "26.13.1" || manifest.packageManager !== "pnpm@12.18.0") {
     violations.push("runtime toolchain versions do not match the declared release");
   }
   if (manifest.engines?.vscode !== "^1.144.0" || manifest.license !== "Apache-2.0") {

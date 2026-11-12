@@ -9,12 +9,10 @@ final class UserExerciseSyncDrainer {
   final UserExerciseSyncState _state;
 
   const UserExerciseSyncDrainer({
-    required RemoteUserExerciseStore remote,
-    required UserExerciseRepository repository,
-    required UserExerciseSyncState state,
-  }) : _remote = remote,
-       _repository = repository,
-       _state = state;
+    required this._remote,
+    required this._repository,
+    required this._state,
+  });
 
   Future<bool> drainPull() async {
     final pulled = await _remote.pullSince(await _state.cursor());

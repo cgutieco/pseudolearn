@@ -90,5 +90,5 @@ configuración o lectura inválida.
 | Tests                                                                                   | `cargo test --workspace`                                                      |
 | Binario de release                                                                      | `cargo build --release` (salida en `target/release/rust-checks`)              |
 
-Requisitos: Rust 1.99.0 con rustfmt y Clippy (`rust-toolchain.toml`) y `cargo-deny`
+Requisitos: Rust 1.99.1 con rustfmt y Clippy (`rust-toolchain.toml`) y `cargo-deny`
 (`cargo install cargo-deny --locked`). `all` no incluye `toolchain`.

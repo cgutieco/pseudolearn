@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/credits/agent_product.dart';
 import 'package:pseudolearn_app/domain/model/credits/credit_balance.dart';

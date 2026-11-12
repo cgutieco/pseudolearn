@@ -106,5 +106,5 @@ flowchart LR
 | Regenerar la imagen de previsualización     | `pnpm generate:og-image` (tras el comando de marca)                              |
 | Regenerar las capturas de producto          | `flutter test tool/generate_product_shot.dart` (en `apps/pseudolearn_app`)       |
 
-Requisitos: Node 22.23.3 (`.nvmrc`) y pnpm; Wrangler con cuenta de Cloudflare solo para desplegar. Las variables de
+Requisitos: Node 26.13.1 (`.nvmrc`) y pnpm; Wrangler con cuenta de Cloudflare solo para desplegar. Las variables de
 entorno están en `.env.example`.

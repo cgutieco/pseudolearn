@@ -48,5 +48,5 @@ del monorepo y `reference check` falla si hay violaciones o paquetes obsoletos.
 | Verificación completa | `cargo xtask verify`  |
 | Probar este crate     | `cargo test -p xtask` |
 
-Requisitos: Rust 1.99.0 con rustfmt y Clippy, `cargo-deny` y las cadenas de `pseudolearn_spec` y
+Requisitos: Rust 1.99.1 con rustfmt y Clippy, `cargo-deny` y las cadenas de `pseudolearn_spec` y
 `pseudolearn_rust_checks`.

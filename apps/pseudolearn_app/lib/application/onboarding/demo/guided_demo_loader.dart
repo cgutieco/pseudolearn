@@ -9,7 +9,7 @@ const String _englishDemoPath = 'guided_demo_en.pseudo';
 final class GuidedDemoLoader {
   final DemoProgramSource _source;
 
-  const GuidedDemoLoader({required DemoProgramSource source}) : _source = source;
+  const GuidedDemoLoader({required this._source});
 
   Future<GuidedDemoSource?> load(UiLanguageId languageId) async {
     final isEnglish = languageId == UiLanguageId.english;

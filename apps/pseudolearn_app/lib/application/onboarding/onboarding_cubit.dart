@@ -19,16 +19,12 @@ final class OnboardingCubit extends Cubit<OnboardingState> {
   final KnowledgeHighlightsProjection _highlights;
 
   OnboardingCubit({
-    required PreferencesStore preferences,
-    required RouteRepository routeRepository,
-    required ReferenceRepository referenceRepository,
-    KnowledgeHighlightsProjection highlights =
+    required this._preferences,
+    required this._routeRepository,
+    required this._referenceRepository,
+    this._highlights =
         const KnowledgeHighlightsProjection(),
-  })  : _preferences = preferences,
-        _routeRepository = routeRepository,
-        _referenceRepository = referenceRepository,
-        _highlights = highlights,
-        super(const OnboardingState());
+  })  : super(const OnboardingState());
 
   Future<void> init() async {
     final prefs = await _preferences.read();

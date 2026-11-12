@@ -13,14 +13,11 @@ final class CreateUserExercise {
   final Clock _clock;
 
   const CreateUserExercise({
-    required UserExerciseRepository repository,
-    required ValidateUserExercise validate,
-    required IdentifierGenerator identifiers,
-    required Clock clock,
-  }) : _repository = repository,
-       _validate = validate,
-       _identifiers = identifiers,
-       _clock = clock;
+    required this._repository,
+    required this._validate,
+    required this._identifiers,
+    required this._clock,
+  });
 
   Future<UserExerciseCommandResult> call(UserExerciseDraft draft) async {
     final publication = _validate(draft);

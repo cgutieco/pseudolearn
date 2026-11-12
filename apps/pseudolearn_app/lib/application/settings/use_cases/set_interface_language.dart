@@ -8,10 +8,9 @@ final class SetInterfaceLanguage {
   final PreferenceUpdates _updates;
 
   const SetInterfaceLanguage({
-    required PreferencesStore preferences,
-    required PreferenceUpdates updates,
-  }) : _preferences = preferences,
-       _updates = updates;
+    required this._preferences,
+    required this._updates,
+  });
 
   Future<AppPreferences> call(UiLanguageId language) async {
     final updated = (await _preferences.read()).copyWith(language: language);

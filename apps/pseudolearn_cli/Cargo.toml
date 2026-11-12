@@ -19,9 +19,9 @@ pseudolearn_api = { path = "../../packages/pseudolearn_engine/crates/pseudolearn
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 cap-std = "4.0.3"
-object = { version = "0.40", default-features = false, features = ["read"] }
-flate2 = { version = "=1.1.10", default-features = false, features = ["rust_backend"] }
-sha2 = "=0.10.9"
+object = { version = "0.41", default-features = false, features = ["read"] }
+flate2 = { version = "=1.1.11", default-features = false, features = ["rust_backend"] }
+sha2 = "=0.11.1"
 
 [workspace]
 members = [
@@ -47,4 +47,4 @@ workspace = true
 
 [build-dependencies]
 serde_json = "1"
-object = { version = "0.40", default-features = false, features = ["read"] }
+object = { version = "0.41", default-features = false, features = ["read"] }

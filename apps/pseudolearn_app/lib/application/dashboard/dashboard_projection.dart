@@ -14,8 +14,8 @@ final class DashboardProjection {
   final ConflictProjection _conflicts;
 
   const DashboardProjection({
-    ConflictProjection conflicts = const ConflictProjection(),
-  }) : _conflicts = conflicts;
+    this._conflicts = const ConflictProjection(),
+  });
 
   DashboardState project(DashboardInputs inputs) {
     final progress = inputs.contentProgress;

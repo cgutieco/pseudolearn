@@ -17,13 +17,10 @@ final class RouteExerciseCubit extends Cubit<RouteExerciseState> {
   final Map<RouteExerciseKind, RouteAnswerEvaluator> _evaluators;
 
   RouteExerciseCubit({
-    required RouteRepository repository,
-    required LocalProgressStore progressStore,
-    required Map<RouteExerciseKind, RouteAnswerEvaluator> evaluators,
-  }) : _repository = repository,
-       _progressStore = progressStore,
-       _evaluators = evaluators,
-       super(const RouteExerciseState());
+    required this._repository,
+    required this._progressStore,
+    required this._evaluators,
+  }) : super(const RouteExerciseState());
 
   Future<void> load(ReferenceEdition edition, String exerciseId) async {
     emit(const RouteExerciseState(status: RouteExerciseStatus.loading));

@@ -4,8 +4,7 @@ import '../../../domain/ports/document_repository.dart';
 final class ListDocuments {
   final DocumentRepository _repository;
 
-  const ListDocuments({required DocumentRepository repository})
-    : _repository = repository;
+  const ListDocuments({required this._repository});
 
   Future<List<DocumentSummary>?> call() async {
     try {

@@ -11,10 +11,9 @@ final class LocalAccountDataPurgerAdapter implements LocalAccountDataPurger {
   final Directory _documentsDirectory;
 
   const LocalAccountDataPurgerAdapter({
-    required Database database,
-    required Directory documentsDirectory,
-  })  : _database = database,
-        _documentsDirectory = documentsDirectory;
+    required this._database,
+    required this._documentsDirectory,
+  });
 
   @override
   Future<void> purgeAccountData() async {

@@ -63,5 +63,5 @@ Desde `packages/pseudolearn_spec`.
 | Verificación completa del paquete | `cargo xtask verify`  |
 | Tests de este miembro             | `cargo test -p xtask` |
 
-Requisitos: Rust `1.99.0` con rustfmt y Clippy (`rust-toolchain.toml`), `cargo-deny`, `git` en el `PATH` (lo usan
+Requisitos: Rust `1.99.1` con rustfmt y Clippy (`rust-toolchain.toml`), `cargo-deny`, `git` en el `PATH` (lo usan
 `documentation` y `eradication`) y la cadena de `pseudolearn_rust_checks` y `pseudolearn_engine`.

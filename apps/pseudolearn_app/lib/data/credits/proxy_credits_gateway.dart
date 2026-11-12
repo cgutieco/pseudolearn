@@ -14,12 +14,10 @@ final class ProxyCreditsGateway implements CreditsGateway {
   final JsonHttpSender _send;
 
   const ProxyCreditsGateway({
-    required String functionsUrl,
-    required AccessTokenSource tokens,
-    JsonHttpSender send = sendJson,
-  }) : _functionsUrl = functionsUrl,
-       _tokens = tokens,
-       _send = send;
+    required this._functionsUrl,
+    required this._tokens,
+    this._send = sendJson,
+  });
 
   @override
   Future<CreditsOutcome> balance() => _call('GET', 'agent-credits', failureOf: creditFailureOf, unreachable: CreditFailure.offline);

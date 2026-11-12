@@ -9,8 +9,7 @@ final class RustExecutionApi {
   final RustTransport _transport;
   final RustExecutionResource? _resource;
 
-  const RustExecutionApi(this._transport, {RustExecutionResource? resource})
-    : _resource = resource;
+  const RustExecutionApi(this._transport, {this._resource});
 
   int start(
     RustAnalysisHandle handle,

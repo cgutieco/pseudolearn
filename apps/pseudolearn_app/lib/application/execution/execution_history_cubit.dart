@@ -28,11 +28,9 @@ final class ExecutionHistoryCubit extends Cubit<ExecutionHistoryState> {
   ExecutionHistoryCubit({
     required Stream<ExecutionState> executionStates,
     required ProgramExecutionObserver? observer,
-    required TaskFlowProjector flowProjector,
-    required TaskStructureProjector structureProjector,
-  }) : _flowProjector = flowProjector,
-       _structureProjector = structureProjector,
-       super(const ExecutionHistoryState.initial()) {
+    required this._flowProjector,
+    required this._structureProjector,
+  }) : super(const ExecutionHistoryState.initial()) {
     _windows = ExecutionHistoryWindowController(
       observer: observer,
       currentState: () => state,

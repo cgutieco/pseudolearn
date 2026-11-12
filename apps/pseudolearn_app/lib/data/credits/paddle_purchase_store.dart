@@ -11,9 +11,7 @@ final class PaddlePurchaseStore implements PurchaseStore {
   final CheckoutGateway _checkouts;
   final ExternalUrlLauncher _launcher;
 
-  const PaddlePurchaseStore({required CheckoutGateway checkouts, required ExternalUrlLauncher launcher})
-    : _checkouts = checkouts,
-      _launcher = launcher;
+  const PaddlePurchaseStore({required this._checkouts, required this._launcher});
 
   @override
   PurchaseChannel get channel => PurchaseChannel.paddle;

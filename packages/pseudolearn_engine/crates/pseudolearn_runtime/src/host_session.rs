@@ -199,7 +199,7 @@ fn record_requested(
     let digest = secret
         .as_ref()
         .map(|secret| secret.value_hmac.clone())
-        .unwrap_or_else(|| format!("{:x}", sha2::Sha256::digest(arguments)));
+        .unwrap_or_else(|| crate::tape_codec::lowercase_hex(sha2::Sha256::digest(arguments)));
     let count = session.tape.entries.len();
     session.tape.append(crate::TapeEntry {
         effect_seq: request.effect_seq,

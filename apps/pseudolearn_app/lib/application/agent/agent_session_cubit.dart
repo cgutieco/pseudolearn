@@ -28,15 +28,11 @@ final class AgentSessionCubit extends Cubit<AgentSessionState> {
   CreditBalance? _balanceBeforeTurn;
 
   AgentSessionCubit({
-    required AgentLoop loop,
-    required AgentConsentStore consent,
-    required CodeBlockChecker checker,
-    required AgentEditorial editorial,
-  }) : _loop = loop,
-       _consent = consent,
-       _checker = checker,
-       _editorial = editorial,
-       super(const AgentSessionState());
+    required this._loop,
+    required this._consent,
+    required this._checker,
+    required this._editorial,
+  }) : super(const AgentSessionState());
 
   Future<void> send(String text) async {
     final message = text.trim();

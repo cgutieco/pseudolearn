@@ -6,7 +6,7 @@
   },
   "engines": {
     "vscode": "^1.144.0",
-    "node": "22.23.3"
+    "node": "26.13.1"
   },
   "targets": {
     "darwin-arm64": {

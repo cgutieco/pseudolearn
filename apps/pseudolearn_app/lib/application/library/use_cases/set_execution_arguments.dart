@@ -7,10 +7,9 @@ final class SetExecutionArguments {
   final Clock _clock;
 
   const SetExecutionArguments({
-    required DocumentRepository repository,
-    required Clock clock,
-  }) : _repository = repository,
-       _clock = clock;
+    required this._repository,
+    required this._clock,
+  });
 
   Future<DocumentCommandResult> call({
     required String documentId,

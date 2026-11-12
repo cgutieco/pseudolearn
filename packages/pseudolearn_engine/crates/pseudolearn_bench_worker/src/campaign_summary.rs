@@ -97,8 +97,7 @@ fn bootstrap(pairs: &[(f64, f64)]) -> (f64, f64) {
 
 fn workload_result(experiment: &str, directory: &str, name: &str) -> Result<Value, String> {
     let processes = load_processes(directory, name)?;
-    let campaign =
-        json!({"protocol": "capability-campaign/1", "experiment": experiment, "processes": processes});
+    let campaign = json!({"protocol": "capability-campaign/1", "experiment": experiment, "processes": processes});
     let problems = invalidations(&campaign);
     if !problems.is_empty() {
         return Err(format!("{name}: invalid campaign\n{}", problems.join("\n")));

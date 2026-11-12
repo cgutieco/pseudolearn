@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../domain/model/analysis/program_node_id.dart';
 import '../../domain/model/diagram/diagram_scene.dart';
 import '../theme/tokens/color_semantic.dart';

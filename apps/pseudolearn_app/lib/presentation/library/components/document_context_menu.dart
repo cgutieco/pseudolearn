@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../components/list/app_list_item.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../theme/app_theme.dart';

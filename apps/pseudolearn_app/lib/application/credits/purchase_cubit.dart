@@ -27,15 +27,12 @@ final class PurchaseCubit extends Cubit<PurchaseState> {
   PurchaseCubit({
     required PurchaseStore store,
     required PendingPurchases pending,
-    required CreditsGateway gateway,
-    required CreditsCubit credits,
-    required ExternalUrlLauncher links,
+    required this._gateway,
+    required this._credits,
+    required this._links,
     Stream<Uri> returns = const Stream.empty(),
   }) : _store = store,
        _pendingPurchases = pending,
-       _gateway = gateway,
-       _credits = credits,
-       _links = links,
        super(PurchaseState(channel: store.channel)) {
     _pending = _pendingPurchases.pendingReceipts().listen(_redeemPending);
     _returns = returns.where(_isPurchaseReturn).listen((_) => _onReturn());

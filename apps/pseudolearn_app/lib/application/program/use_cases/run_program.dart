@@ -8,10 +8,9 @@ final class RunProgram {
   final ProgramBatchRunner _runner;
 
   const RunProgram({
-    required ProgramAnalyzer analyzer,
-    required ProgramBatchRunner runner,
-  }) : _analyzer = analyzer,
-       _runner = runner;
+    required this._analyzer,
+    required this._runner,
+  });
 
   ProgramRunReport call(ProgramRunRequest request) {
     final report = _analyzer.analyze(

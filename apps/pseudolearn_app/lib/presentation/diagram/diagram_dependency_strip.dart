@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../domain/model/analysis/program_dependency.dart';
 import '../../domain/model/analysis/source_range.dart';
 import '../components/typography/app_text.dart';

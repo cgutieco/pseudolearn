@@ -5,8 +5,7 @@ import '../../../domain/ports/program_formatter.dart';
 final class FormatProgram {
   final ProgramFormatter _formatter;
 
-  const FormatProgram({required ProgramFormatter formatter})
-    : _formatter = formatter;
+  const FormatProgram({required this._formatter});
 
   ProgramTextResult call({
     required String sourceCode,

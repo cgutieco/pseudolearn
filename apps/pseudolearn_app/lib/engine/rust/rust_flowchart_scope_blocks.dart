@@ -22,10 +22,9 @@ final class RustFlowchartScopeBlocks {
 
   RustFlowchartScopeBlocks({
     required RustProgramView view,
-    required NodeFactory nodes,
+    required this._nodes,
     required DiagramVocabulary vocabulary,
-  }) : _nodes = nodes,
-       _words = vocabulary.exits,
+  }) : _words = vocabulary.exits,
        _exits = RustControlExits(view);
 
   LayoutBlock closeScope(RustViewNode body, LayoutBlock sequence) {

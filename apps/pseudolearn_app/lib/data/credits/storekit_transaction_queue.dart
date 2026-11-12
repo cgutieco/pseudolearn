@@ -15,9 +15,7 @@ final class StoreKitTransactionQueue implements PendingPurchases {
   Completer<PurchaseAttempt>? _inFlight;
   AgentProduct? _inFlightProduct;
 
-  StoreKitTransactionQueue({required StoreKitClient client, required String? Function() accountToken})
-    : _client = client,
-      _accountToken = accountToken;
+  StoreKitTransactionQueue({required this._client, required this._accountToken});
 
   Future<PurchaseAttempt> track(AgentProduct product, Future<bool> Function() start) async {
     _listen();

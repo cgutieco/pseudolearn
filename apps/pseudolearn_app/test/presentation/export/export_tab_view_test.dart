@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/application/export/export_state.dart';
 import 'package:pseudolearn_app/domain/model/analysis/program_node_id.dart';
@@ -10,6 +10,7 @@ import 'package:pseudolearn_app/presentation/components/empty/app_empty_state.da
 import 'package:pseudolearn_app/presentation/editor/code_field.dart';
 import 'package:pseudolearn_app/presentation/export/components/target_language_selector.dart';
 import 'package:pseudolearn_app/presentation/export/export_tab_view.dart';
+import 'package:pseudolearn_app/composition/app_localization_delegates.dart';
 import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.dart';
 import 'package:pseudolearn_app/presentation/shell/design_canvas.dart';
 import 'package:pseudolearn_app/presentation/theme/app_theme.dart';
@@ -17,7 +18,7 @@ import 'package:pseudolearn_app/presentation/theme/app_theme.dart';
 Widget _buildWrapper(Widget child, [Locale locale = const Locale('es')]) {
   return MaterialApp(
     locale: locale,
-    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    localizationsDelegates: appLocalizationDelegates,
     supportedLocales: AppLocalizations.supportedLocales,
     theme: AppTheme.light(),
     home: Scaffold(

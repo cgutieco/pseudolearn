@@ -55,7 +55,9 @@ impl EffectSession {
         let request_digest = secret
             .as_ref()
             .map(|secret| secret.value_hmac.clone())
-            .unwrap_or_else(|| format!("{:x}", Sha256::digest(&request.arguments)));
+            .unwrap_or_else(|| {
+                crate::tape_codec::lowercase_hex(Sha256::digest(&request.arguments))
+            });
         let payload = if self.replay.is_some() {
             self.replay_payload(sequence, (&request, &request_digest), outcome)?
         } else {

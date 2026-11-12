@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../domain/model/analysis/app_diagnostic.dart';
 import '../components/button/app_button.dart';
 import '../components/button/app_icon_button.dart';

@@ -11,8 +11,7 @@ import '../exercise/output_normalizer.dart';
 final class TraceEvaluator implements RouteAnswerEvaluator {
   final OutputNormalizer _normalizer;
 
-  const TraceEvaluator({OutputNormalizer normalizer = const OutputNormalizer()})
-    : _normalizer = normalizer;
+  const TraceEvaluator({this._normalizer = const OutputNormalizer()});
 
   @override
   RouteVerdict evaluate({

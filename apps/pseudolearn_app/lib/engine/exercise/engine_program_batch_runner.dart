@@ -11,10 +11,9 @@ final class EngineProgramBatchRunner implements ProgramBatchRunner {
   final ProgramAnalyzer _analyzer;
 
   const EngineProgramBatchRunner({
-    required ProgramExecution Function() createExecution,
-    required ProgramAnalyzer analyzer,
-  }) : _createExecution = createExecution,
-       _analyzer = analyzer;
+    required this._createExecution,
+    required this._analyzer,
+  });
 
   @override
   ProgramRunReport run(ProgramRunRequest request) {

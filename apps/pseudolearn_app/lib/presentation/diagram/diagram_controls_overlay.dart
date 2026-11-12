@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../domain/model/diagram/diagram_notation.dart';
 import '../../domain/model/diagram/diagram_unit.dart';
 import '../theme/tokens/component_metrics.dart';

@@ -22,8 +22,8 @@ require_generator() {
   require_tool wasm-bindgen
   local generator_version
   generator_version="$(wasm-bindgen --version)"
-  if [[ "$generator_version" != "wasm-bindgen 0.2.129" ]]; then
-    printf 'Expected wasm-bindgen 0.2.129, found %s\n' "$generator_version" >&2
+  if [[ "$generator_version" != "wasm-bindgen 0.2.130" ]]; then
+    printf 'Expected wasm-bindgen 0.2.130, found %s\n' "$generator_version" >&2
     exit 1
   fi
 }

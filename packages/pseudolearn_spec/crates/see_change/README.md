@@ -50,4 +50,4 @@ Desde `packages/pseudolearn_spec`.
 | Comparar contra una revisión de Git | `cargo run -p see_cli --bin see -- diff REV`                              |
 | Verificación completa del paquete   | `cargo xtask verify`                                                      |
 
-Requisitos: Rust `1.99.0` con rustfmt y Clippy (`rust-toolchain.toml`).
+Requisitos: Rust `1.99.1` con rustfmt y Clippy (`rust-toolchain.toml`).

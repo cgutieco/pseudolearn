@@ -57,4 +57,4 @@ Desde `packages/pseudolearn_spec`.
 | Tests de este crate               | `cargo test -p see_model` |
 | Verificación completa del paquete | `cargo xtask verify`      |
 
-Requisitos: Rust `1.99.0` con rustfmt y Clippy (`rust-toolchain.toml`).
+Requisitos: Rust `1.99.1` con rustfmt y Clippy (`rust-toolchain.toml`).

@@ -44,6 +44,7 @@ mod fault_injection;
 mod lock_digest;
 mod lock_operations;
 mod lock_wire;
+mod lowercase_hex;
 mod manifest_operations;
 mod manifest_wire;
 mod probes;

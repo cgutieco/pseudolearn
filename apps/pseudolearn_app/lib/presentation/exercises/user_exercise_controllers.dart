@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../application/exercises/user_exercise_form.dart';
 import '../../domain/model/exercises/user_exercise_draft.dart';
 import '../../domain/model/profiles/syntax_profile_id.dart';

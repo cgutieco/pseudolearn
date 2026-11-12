@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../domain/model/reference/reference_token.dart';
 import '../components/typography/app_text.dart';
 import '../editor/syntax_category_color.dart';

@@ -11,8 +11,7 @@ import '../exercise/output_normalizer.dart';
 final class PredictionEvaluator implements RouteAnswerEvaluator {
   final OutputNormalizer _normalizer;
 
-  const PredictionEvaluator({OutputNormalizer normalizer = const OutputNormalizer()})
-    : _normalizer = normalizer;
+  const PredictionEvaluator({this._normalizer = const OutputNormalizer()});
 
   @override
   RouteVerdict evaluate({

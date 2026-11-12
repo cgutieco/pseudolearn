@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../application/diagram/diagram_state.dart';
 import '../../application/diagram/focus_frame_projection.dart';
 import '../../domain/model/analysis/source_range.dart';

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/settings/app_theme_mode.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';

@@ -16,13 +16,10 @@ final class RustFlowchartNodes {
 
   RustFlowchartNodes({
     required RustProgramView view,
-    required NodeFactory nodes,
-    required DiagramVocabulary vocabulary,
-    required RustDiagramCaptions captions,
+    required this._nodes,
+    required this._vocabulary,
+    required this._captions,
   }) : _view = view,
-       _nodes = nodes,
-       _vocabulary = vocabulary,
-       _captions = captions,
        _exits = RustControlExits(view);
 
   DiagramNode decision(RustViewNode owner, RustViewNode? condition) =>

@@ -14,13 +14,10 @@ final class UserExerciseEditorCubit extends Cubit<UserExerciseEditorState> {
   final UpdateUserExercise _update;
 
   UserExerciseEditorCubit({
-    required UserExerciseRepository repository,
-    required CreateUserExercise create,
-    required UpdateUserExercise update,
-  }) : _repository = repository,
-       _create = create,
-       _update = update,
-       super(UserExerciseEditorState.blank(SyntaxProfileId.classicSpanish));
+    required this._repository,
+    required this._create,
+    required this._update,
+  }) : super(UserExerciseEditorState.blank(SyntaxProfileId.classicSpanish));
 
   Future<void> open(String? exerciseId, {required SyntaxProfileId profileId}) async {
     if (exerciseId == null) {

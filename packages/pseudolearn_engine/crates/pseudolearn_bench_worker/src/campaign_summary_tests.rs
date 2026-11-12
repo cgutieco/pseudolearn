@@ -3,7 +3,8 @@ use serde_json::{Value, json};
 use std::path::{Path, PathBuf};
 
 fn scratch(label: &str) -> PathBuf {
-    let path = std::env::temp_dir().join(format!("campaign_summary_{label}_{}", std::process::id()));
+    let path =
+        std::env::temp_dir().join(format!("campaign_summary_{label}_{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&path);
     path
 }

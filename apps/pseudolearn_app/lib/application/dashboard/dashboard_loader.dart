@@ -26,20 +26,14 @@ final class DashboardLoader {
   final Clock _clock;
 
   const DashboardLoader({
-    required DocumentRepository documents,
-    required RouteRepository route,
-    required ReferenceRepository reference,
-    required ProgressHistory progressHistory,
-    required SyncQueue syncQueue,
-    required ProgramConstructReader constructReader,
-    required Clock clock,
-  })  : _documents = documents,
-        _route = route,
-        _reference = reference,
-        _progressHistory = progressHistory,
-        _syncQueue = syncQueue,
-        _constructReader = constructReader,
-        _clock = clock;
+    required this._documents,
+    required this._route,
+    required this._reference,
+    required this._progressHistory,
+    required this._syncQueue,
+    required this._constructReader,
+    required this._clock,
+  });
 
   Future<ContentLoadResult<DashboardInputs>> load(UiLanguageId language) async {
     final edition = ReferenceEdition(

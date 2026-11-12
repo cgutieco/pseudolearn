@@ -22,14 +22,11 @@ final class RustStructogramCellBuilder {
   );
 
   RustStructogramCellBuilder({
-    required RustProgramView view,
-    required DiagramVocabulary vocabulary,
-    required RustDiagramCaptions captions,
-    TextMetrics text = const TextMetrics(),
-  }) : _view = view,
-       _vocabulary = vocabulary,
-       _captions = captions,
-       _text = text;
+    required this._view,
+    required this._vocabulary,
+    required this._captions,
+    this._text = const TextMetrics(),
+  });
 
   StructogramCell buildBody(RustViewNode body) {
     final statements = rustStatementsOf(_view, body);

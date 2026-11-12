@@ -84,7 +84,7 @@ Map<String, Object?> _manifest() => {
   'working_tree_diff_sha256': 'd',
   'harness_sources_sha256': 'h',
   'fixtures_sha256': 'f',
-  'flutter': '3.47.5',
+  'flutter': '3.50.0',
   'dart': '3.13.4',
   'build_mode': 'test',
   'operating_system': 'macOS',

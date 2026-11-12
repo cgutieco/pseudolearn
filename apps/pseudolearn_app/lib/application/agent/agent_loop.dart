@@ -21,16 +21,12 @@ final class AgentLoop {
   final ConfirmationPolicy _policy;
 
   const AgentLoop({
-    required AgentModelGateway gateway,
-    required ToolRegistry registry,
-    required PromptAssembler assembler,
-    required IdentifierGenerator identifiers,
-    ConfirmationPolicy policy = const ConfirmationPolicy(),
-  }) : _gateway = gateway,
-       _registry = registry,
-       _assembler = assembler,
-       _identifiers = identifiers,
-       _policy = policy;
+    required this._gateway,
+    required this._registry,
+    required this._assembler,
+    required this._identifiers,
+    this._policy = const ConfirmationPolicy(),
+  });
 
   AgentTurn start(List<ModelItem> conversation, String text) => AgentTurn(
     turnId: _identifiers.generate(),

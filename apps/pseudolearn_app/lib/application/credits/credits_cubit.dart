@@ -14,10 +14,9 @@ final class CreditsCubit extends Cubit<CreditsState> {
   SessionCredits? _lastSession;
 
   CreditsCubit({
-    required CreditsGateway gateway,
+    required this._gateway,
     Stream<SessionCredits> sessionBalances = const Stream.empty(),
-  }) : _gateway = gateway,
-       super(const CreditsState()) {
+  }) : super(const CreditsState()) {
     _session = sessionBalances.listen(_onSessionBalance);
   }
 

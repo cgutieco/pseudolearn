@@ -14,11 +14,9 @@ final class RouteLessonCubit extends Cubit<RouteLessonState> {
   final LocalProgressStore _progressStore;
 
   RouteLessonCubit({
-    required RouteRepository repository,
-    required LocalProgressStore progressStore,
-  }) : _repository = repository,
-       _progressStore = progressStore,
-       super(const RouteLessonState());
+    required this._repository,
+    required this._progressStore,
+  }) : super(const RouteLessonState());
 
   Future<void> load(ReferenceEdition edition, String lessonId) async {
     emit(const RouteLessonState(status: RouteLessonStatus.loading));

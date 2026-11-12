@@ -7,8 +7,7 @@ import 'markdown_block_converter.dart';
 final class MarkdownReplyReader implements ReplyMarkdownReader {
   final FlowchartParser _parseFlowchart;
 
-  const MarkdownReplyReader({FlowchartParser parseFlowchart = parseMermaidFlowchart})
-    : _parseFlowchart = parseFlowchart;
+  const MarkdownReplyReader({this._parseFlowchart = parseMermaidFlowchart});
 
   @override
   ReplyDocument read(String markdown) {

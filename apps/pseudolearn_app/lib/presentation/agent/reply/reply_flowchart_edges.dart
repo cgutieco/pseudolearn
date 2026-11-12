@@ -1,5 +1,5 @@
 import 'dart:math' as math;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../../application/agent/flowchart/flowchart_layout_model.dart';
 import '../../../domain/model/agent/flowchart.dart';
 import 'reply_metrics.dart';

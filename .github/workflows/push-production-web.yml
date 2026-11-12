@@ -33,9 +33,9 @@ jobs:
         env:
           FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR: ${{ github.workspace }}/apps/pseudolearn_app/native/target/release
         working-directory: apps/pseudolearn_app
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
-          python-version: '3.12'
+          python-version: '3.15'
       - run: python3 -m pip install fonttools
       - run: python3 -m pseudolearn_brand build
         working-directory: packages/pseudolearn_brand

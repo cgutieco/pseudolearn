@@ -9,4 +9,4 @@ workspace = true
 
 [dependencies]
 reference_model = { path = "../reference_model", version = "=0.1.0" }
-roxmltree = "0.20"
+roxmltree = "0.21"

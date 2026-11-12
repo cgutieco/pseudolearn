@@ -112,7 +112,7 @@ impl PhysicalHost {
 
 pub fn entropy_seed() -> Result<i64, String> {
     let mut bytes = [0_u8; 8];
-    getrandom::getrandom(&mut bytes).map_err(|error| error.to_string())?;
+    getrandom::fill(&mut bytes).map_err(|error| error.to_string())?;
     Ok(i64::from_le_bytes(bytes))
 }
 

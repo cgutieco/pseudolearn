@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'app_localization_delegates.dart';
 import '../application/agent/reply_link_policy.dart';
 import '../application/settings/settings_cubit.dart';
 import '../application/settings/settings_state.dart';
@@ -73,12 +73,7 @@ final class _CubitScopeApp extends StatelessWidget {
           themeMode: _themeModes[state.themeMode] ?? ThemeMode.system,
           locale: _locales[state.language],
           scrollBehavior: const AppScrollBehavior(),
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
+          localizationsDelegates: appLocalizationDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           routerConfig: router,
           builder: (context, child) => DesignCanvas(child: child ?? const SizedBox.shrink()),

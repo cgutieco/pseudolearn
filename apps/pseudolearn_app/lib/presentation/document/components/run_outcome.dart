@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../../application/execution/execution_state.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../theme/tokens/color_semantic_severity.dart';

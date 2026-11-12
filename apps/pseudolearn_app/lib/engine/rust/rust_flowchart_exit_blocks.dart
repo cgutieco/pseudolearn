@@ -18,10 +18,9 @@ final class RustFlowchartExitBlocks {
 
   RustFlowchartExitBlocks({
     required RustProgramView view,
-    required NodeFactory nodes,
+    required this._nodes,
     required DiagramVocabulary vocabulary,
   }) : _view = view,
-       _nodes = nodes,
        _words = vocabulary.exits,
        _exits = RustControlExits(view);
 

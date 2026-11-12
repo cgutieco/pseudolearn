@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../application/credits/credit_plan_summary.dart';
 import '../components/card/app_card_surface.dart';
 import '../components/typography/app_text.dart';

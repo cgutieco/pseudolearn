@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../../domain/model/reference/reference_callout_kind.dart';
 import '../../../domain/model/reference/reference_run.dart';
 import '../../../domain/model/route/lesson_block.dart';

@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/presentation/dashboard/dashboard_view.dart';
+import 'package:pseudolearn_app/composition/app_localization_delegates.dart';
 import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.dart';
 import 'package:pseudolearn_app/presentation/shell/design_canvas.dart';
 import 'package:pseudolearn_app/presentation/theme/app_theme.dart';
@@ -20,7 +21,7 @@ Future<void> _pumpDashboard(
     MaterialApp(
       theme: theme,
       locale: const Locale('es'),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      localizationsDelegates: appLocalizationDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       builder: (context, child) =>
           DesignCanvas(child: child ?? const SizedBox.shrink()),

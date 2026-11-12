@@ -27,11 +27,10 @@ final class StepSettlement {
       _afterEventIndex = null,
       _taskId = null;
 
-  StepSettlement.afterEvent({required int eventIndex, int? taskId})
+  StepSettlement.afterEvent({required int eventIndex, this._taskId})
     : maxDepth = _noDepth,
       excludedNodeId = null,
-      _afterEventIndex = eventIndex,
-      _taskId = taskId;
+      _afterEventIndex = eventIndex;
 
   factory StepSettlement.forTask({
     required int taskId,

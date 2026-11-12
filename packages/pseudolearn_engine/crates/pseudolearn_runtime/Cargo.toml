@@ -11,8 +11,8 @@ test-host = []
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0", features = ["arbitrary_precision", "preserve_order"] }
-sha2 = "0.10"
-hmac = "0.12.1"
+sha2 = "0.11"
+hmac = "0.13.0"
 pseudolearn_abi = { path = "../pseudolearn_abi", version = "=0.1.0" }
 pseudolearn_diagnostics = { path = "../pseudolearn_diagnostics", version = "=0.1.0" }
 

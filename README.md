@@ -147,7 +147,7 @@ persona. La clasificación depende de la responsabilidad y no del lenguaje.
 | `apps/pseudolearn_cli`             | Órdenes de usuario y adaptadores de conformidad                                                         | Cargo y rustup                 |
 | `apps/pseudolearn_backend`         | Backend Supabase                                                                                        | Deno y CLI de Supabase         |
 | `apps/pseudolearn_web`             | Sitio web Astro                                                                                         | Node y pnpm                    |
-| `apps/pseudolearn_vscode`          | Extensión local de escritorio para VS Code                                                              | Node 22.23.3 y pnpm 12.8.1     |
+| `apps/pseudolearn_vscode`          | Extensión local de escritorio para VS Code                                                              | Node 26.13.1 y pnpm 12.18.0    |
 
 El sujeto histórico `reference` está retirado y no tiene relación con `packages/pseudolearn_reference`, que es el libro
 de la especificación. Su manifiesto y sus resultados pertenecen al sistema de especificaciones; el repositorio no

@@ -10,12 +10,10 @@ final class ClassColumnGrid {
   final Map<ClassBox, int> _boxColumns;
 
   const ClassColumnGrid._({
-    required List<double> columnWidths,
-    required List<double> columnLefts,
-    required Map<ClassBox, int> boxColumns,
-  })  : _columnWidths = columnWidths,
-        _columnLefts = columnLefts,
-        _boxColumns = boxColumns;
+    required this._columnWidths,
+    required this._columnLefts,
+    required this._boxColumns,
+  });
 
   factory ClassColumnGrid.of({
     required List<List<ClassBox>> levels,

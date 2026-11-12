@@ -13,10 +13,9 @@ final class SupabaseAccountDeletionGateway implements AccountDeletionGateway {
   final NativeCredentialSource _credentialSource;
 
   const SupabaseAccountDeletionGateway({
-    required SupabaseClient client,
-    required NativeCredentialSource credentialSource,
-  })  : _client = client,
-        _credentialSource = credentialSource;
+    required this._client,
+    required this._credentialSource,
+  });
 
   @override
   Future<AccountDeletionOutcome> deleteAccount() async {

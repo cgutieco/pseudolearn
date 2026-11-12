@@ -14,11 +14,10 @@ final class RustStructogramExitCells {
   RustStructogramExitCells({
     required RustProgramView view,
     required DiagramVocabulary vocabulary,
-    required List<String> Function(String text) wrap,
+    required this._wrap,
   }) : _view = view,
        _words = vocabulary.exits,
-       _exits = RustControlExits(view),
-       _wrap = wrap;
+       _exits = RustControlExits(view);
 
   String caption(RustViewNode node) {
     final propagation = rustFirstPropagation(_view, node);

@@ -7,10 +7,9 @@ final class PublishingProgressStore implements LocalProgressStore {
   final ProgressUpdates _updates;
 
   const PublishingProgressStore({
-    required LocalProgressStore inner,
-    required ProgressUpdates updates,
-  })  : _inner = inner,
-        _updates = updates;
+    required this._inner,
+    required this._updates,
+  });
 
   @override
   Future<bool> isModuleVisited(String moduleId) =>

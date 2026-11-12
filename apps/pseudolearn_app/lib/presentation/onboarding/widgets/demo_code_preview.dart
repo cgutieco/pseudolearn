@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../editor/components/code_preview.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/tokens/border_metrics.dart';

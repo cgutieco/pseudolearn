@@ -146,4 +146,4 @@ flowchart LR
 La conformidad compara con evidencia local de `../pseudolearn_spec/results/`, que no se versiona. Tras editar una
 especificación, `SEE-STALE` se resuelve regenerando con `see conform --subject engine --operation properties`.
 Requisitos: toolchain de `rust-toolchain.toml` y `cargo-deny`; para Wasm, el target `wasm32-unknown-unknown`,
-`wasm-bindgen-cli` 0.2.129 y, para `tool/wasm.sh test`, `pnpm`.
+`wasm-bindgen-cli` 0.2.130 y, para `tool/wasm.sh test`, `pnpm`.

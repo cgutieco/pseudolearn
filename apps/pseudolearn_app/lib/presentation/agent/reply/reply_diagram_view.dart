@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../../domain/model/agent/reply_block.dart';
 import '../../components/button/app_button.dart';
 import '../../components/button/app_copy_button.dart';

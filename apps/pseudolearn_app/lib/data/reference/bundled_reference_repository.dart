@@ -16,8 +16,7 @@ const String referenceAssetRoot = 'assets/reference/';
 final class BundledReferenceRepository implements ReferenceRepository {
   final ReferenceAssetLoader _assetLoader;
 
-  const BundledReferenceRepository({required ReferenceAssetLoader assetLoader})
-    : _assetLoader = assetLoader;
+  const BundledReferenceRepository({required this._assetLoader});
 
   @override
   Future<ContentLoadResult<ReferenceIndex>> loadIndex(

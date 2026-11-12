@@ -21,12 +21,10 @@ final class RustExecutionEventProgress {
   int eventIndex = -1;
 
   RustExecutionEventProgress({
-    required RustExecutionEventConsumer consumer,
-    required RustExecutionReproduction reproduction,
-    required RustExecutionStepBuilder stepBuilder,
-  }) : _consumer = consumer,
-       _reproduction = reproduction,
-       _stepBuilder = stepBuilder;
+    required this._consumer,
+    required this._reproduction,
+    required this._stepBuilder,
+  });
 
   RustBatch drain(RustEffectGate gate, int execution, int batchSize) {
     final collected = <RustEvent>[];

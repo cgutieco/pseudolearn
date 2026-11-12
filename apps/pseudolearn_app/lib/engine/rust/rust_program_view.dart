@@ -100,15 +100,14 @@ final class RustProgramView {
 
   const RustProgramView._({
     required this.revision,
-    required Map<String, RustViewNode> byIdentifier,
-    required Map<int, String> identifiers,
+    required this._byIdentifier,
+    required this._identifiers,
     required this.units,
     required this.members,
     required this.superclasses,
     required this.staticData,
     required this.dependencies,
-  }) : _byIdentifier = byIdentifier,
-       _identifiers = identifiers;
+  });
 
   static RustProgramViewReadResult decode(
     Map<String, Object?> json,

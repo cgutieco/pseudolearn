@@ -6,7 +6,7 @@ import '../../../domain/ports/program_analyzer.dart';
 final class CheckProgram {
   final ProgramAnalyzer _analyzer;
 
-  const CheckProgram({required ProgramAnalyzer analyzer}) : _analyzer = analyzer;
+  const CheckProgram({required this._analyzer});
 
   AnalysisReport call({
     required String sourceCode,

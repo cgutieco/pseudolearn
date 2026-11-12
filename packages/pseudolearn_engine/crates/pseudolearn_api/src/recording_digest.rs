@@ -50,7 +50,7 @@ impl EventDigest {
     }
 
     pub(crate) fn finish(self) -> Value {
-        json!({"count":self.count,"sha256":format!("{:x}", self.digest.finalize())})
+        json!({"count":self.count,"sha256":crate::lowercase_hex::lowercase_hex(self.digest.finalize())})
     }
 }
 

@@ -45,4 +45,4 @@ monorepo.
 | Verificación completa | `cargo xtask verify`  |
 | Probar este crate     | `cargo test -p xtask` |
 
-Requisitos: Rust 1.99.0 con rustfmt y Clippy y `cargo-deny`.
+Requisitos: Rust 1.99.1 con rustfmt y Clippy y `cargo-deny`.

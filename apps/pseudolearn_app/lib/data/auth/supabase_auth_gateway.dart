@@ -20,13 +20,11 @@ final class SupabaseAuthGateway implements AuthGateway {
   final ExternalUrlLauncher _externalUrlLauncher;
 
   SupabaseAuthGateway({
-    required SupabaseClient client,
-    required SupabaseSessionPersistence sessionPersistence,
+    required this._client,
+    required this._sessionPersistence,
     NativeCredentialSource? credentialSource,
     ExternalUrlLauncher? externalUrlLauncher,
-  })  : _client = client,
-        _sessionPersistence = sessionPersistence,
-        _credentialSource =
+  })  : _credentialSource =
             credentialSource ?? PlatformNativeCredentialSource(),
         _externalUrlLauncher =
             externalUrlLauncher ?? const PlatformExternalUrlLauncher();

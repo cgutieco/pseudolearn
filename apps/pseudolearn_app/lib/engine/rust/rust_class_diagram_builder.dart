@@ -16,9 +16,8 @@ final class RustClassDiagramBuilder implements ClassDiagramBuilder {
 
   RustClassDiagramBuilder(
     RustTransport transport, {
-    ClassDiagramLayout layout = const ClassDiagramLayout(),
-  }) : _views = RustProgramViewSource(transport),
-       _layout = layout;
+    this._layout = const ClassDiagramLayout(),
+  }) : _views = RustProgramViewSource(transport);
 
   @override
   DiagramScene buildDiagram({

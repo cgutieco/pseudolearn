@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../application/execution/execution_history_state.dart';
 import '../components/typography/app_text.dart';
 import '../l10n/generated/app_localizations.dart';

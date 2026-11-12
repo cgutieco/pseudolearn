@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../components/navigation/app_section_tabs.dart';
 import '../../l10n/generated/app_localizations.dart';
 

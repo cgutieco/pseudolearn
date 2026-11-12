@@ -26,7 +26,7 @@ final class SyncDrainer implements SyncCoordinator {
   final Clock _clock;
 
   SyncDrainer({
-    required AuthGateway authGateway,
+    required this._authGateway,
     required RemoteDocumentStore remoteStore,
     required SyncQueue queue,
     required SyncMetadataStore metadataStore,
@@ -35,14 +35,10 @@ final class SyncDrainer implements SyncCoordinator {
     required Clock clock,
     RemoteProgressStore? remoteProgressStore,
     ProgressSyncStore? progressSyncStore,
-    UserExerciseSyncDrainer? exerciseDrainer,
-    LocalAccountDataPurger? accountDataPurger,
-    SyncOwnerStore? ownerStore,
-  })  : _authGateway = authGateway,
-        _accountDataPurger = accountDataPurger,
-        _ownerStore = ownerStore,
-        _exerciseDrainer = exerciseDrainer,
-        _metadataStore = metadataStore,
+    this._exerciseDrainer,
+    this._accountDataPurger,
+    this._ownerStore,
+  })  : _metadataStore = metadataStore,
         _clock = clock,
         _documentDrainer = DocumentSyncDrainer(
           remoteStore: remoteStore,

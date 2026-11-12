@@ -15,10 +15,9 @@ final class ExportCubit extends Cubit<ExportState> {
   ExportedProgram? _program;
 
   ExportCubit({
-    required ProgramExporter exporter,
+    required this._exporter,
     required Stream<ExecutionState> executionStates,
-  })  : _exporter = exporter,
-        super(const ExportState()) {
+  })  : super(const ExportState()) {
     _subscription = executionStates.listen(_onExecutionState);
   }
 

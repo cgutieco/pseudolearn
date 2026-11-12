@@ -13,14 +13,11 @@ final class SyncingDocumentRepository implements DocumentRepository {
   final Clock _clock;
 
   const SyncingDocumentRepository({
-    required DocumentRepository inner,
-    required SyncQueue queue,
-    required IdentifierGenerator identifiers,
-    required Clock clock,
-  })  : _inner = inner,
-        _queue = queue,
-        _identifiers = identifiers,
-        _clock = clock;
+    required this._inner,
+    required this._queue,
+    required this._identifiers,
+    required this._clock,
+  });
 
   @override
   Future<List<DocumentSummary>> listDocuments() => _inner.listDocuments();

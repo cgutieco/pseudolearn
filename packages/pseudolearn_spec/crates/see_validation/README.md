@@ -70,4 +70,4 @@ Desde `packages/pseudolearn_spec`.
 | Validar el corpus                 | `cargo run -p see_cli --bin see -- validate` |
 | Verificación completa del paquete | `cargo xtask verify`                         |
 
-Requisitos: Rust `1.99.0` con rustfmt y Clippy (`rust-toolchain.toml`).
+Requisitos: Rust `1.99.1` con rustfmt y Clippy (`rust-toolchain.toml`).

@@ -18,14 +18,11 @@ final class DocumentSourceWriter {
   final UiLanguageId Function() _language;
 
   const DocumentSourceWriter({
-    required LoadDocument load,
-    required SaveDocumentSource save,
-    required CheckProgram check,
-    required UiLanguageId Function() language,
-  }) : _load = load,
-       _save = save,
-       _check = check,
-       _language = language;
+    required this._load,
+    required this._save,
+    required this._check,
+    required this._language,
+  });
 
   Future<Document?> load(String id) async {
     final result = await _load(id);

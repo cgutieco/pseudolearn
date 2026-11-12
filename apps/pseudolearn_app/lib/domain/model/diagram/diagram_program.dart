@@ -10,10 +10,9 @@ final class DiagramProgram {
 
   const DiagramProgram({
     required this.units,
-    required Map<String, DiagramScene> scenes,
+    required this._scenes,
     this.dependencies = const [],
-  })  : _scenes = scenes,
-        unsupportedKinds = const [];
+  })  : unsupportedKinds = const [];
 
   const DiagramProgram.empty()
       : units = const [],

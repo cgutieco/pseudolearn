@@ -64,7 +64,11 @@ fn calculate_entry_hash(previous: &str, entry: &Value) -> Result<String, String>
     if let Some(delivery) = entry.get("delivery_seq").and_then(Value::as_u64) {
         digest.update(delivery.to_be_bytes());
     }
-    Ok(format!("{:x}", digest.finalize()))
+    Ok(digest
+        .finalize()
+        .iter()
+        .map(|octet| format!("{octet:02x}"))
+        .collect())
 }
 
 fn entry_hash_fields(entry: &Value) -> Result<TapeEntryHashFields, String> {

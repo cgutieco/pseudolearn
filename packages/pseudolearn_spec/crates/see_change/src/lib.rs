@@ -18,7 +18,10 @@ pub fn hash(specification: &Specification) -> Result<String, String> {
     blocks.sort_by_key(|block| (block.kind.as_str(), field(block, "id")));
     let normative = serde_json::json!({"id": metadata.id, "dominio": metadata.dominio, "edicion": metadata.edicion, "sujetos": metadata.sujetos, "depende_de": metadata.depende_de, "reemplaza": metadata.reemplaza, "blocks": blocks});
     let bytes = serde_json::to_vec(&normative).map_err(|error| error.to_string())?;
-    Ok(format!("{:x}", Sha256::digest(bytes)))
+    Ok(Sha256::digest(bytes)
+        .iter()
+        .map(|octet| format!("{octet:02x}"))
+        .collect())
 }
 
 pub fn elements(specification: &Specification) -> std::collections::BTreeMap<String, String> {

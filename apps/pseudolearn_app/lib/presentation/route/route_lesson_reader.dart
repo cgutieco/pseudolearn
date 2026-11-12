@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../domain/model/route/route_lesson.dart';
 import '../components/layout/app_content_column.dart';
 import '../components/typography/app_text.dart';

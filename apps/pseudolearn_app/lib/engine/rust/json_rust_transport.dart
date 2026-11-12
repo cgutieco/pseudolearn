@@ -9,9 +9,7 @@ final class JsonRustTransport implements RustTransport {
   final void Function() _release;
   bool _closed = false;
 
-  JsonRustTransport({required RustSend send, required void Function() release})
-    : _send = send,
-      _release = release;
+  JsonRustTransport({required this._send, required this._release});
 
   @override
   Object? call(String operation, Map<String, Object?> arguments) {

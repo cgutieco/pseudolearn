@@ -12,10 +12,9 @@ final class RustExerciseChecker implements ExerciseChecker {
   final RustStructuralAssertionChecker _structure;
 
   const RustExerciseChecker({
-    required BehaviourChecker behaviour,
-    required RustStructuralAssertionChecker structure,
-  }) : _behaviour = behaviour,
-       _structure = structure;
+    required this._behaviour,
+    required this._structure,
+  });
 
   @override
   ExerciseCheckResult check({

@@ -27,11 +27,9 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
   int _fromRevision = 0;
 
   ExecutionCubit({
-    required ProgramExecution execution,
-    StepBatchRunner runner = const StepBatchRunner(),
-  }) : _execution = execution,
-       _runner = runner,
-       super(const ExecutionState.initial());
+    required this._execution,
+    this._runner = const StepBatchRunner(),
+  }) : super(const ExecutionState.initial());
 
   Future<void> advance({
     required StepPace pace,

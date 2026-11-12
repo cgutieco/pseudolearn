@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../../application/editor/editor_state.dart';
 import '../../../application/execution/step_pace.dart';
 import '../../shell/design_canvas.dart';

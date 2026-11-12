@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../../domain/model/account/account_session.dart';
 import '../../../domain/model/account/private_relay_email.dart';
 import '../../components/typography/app_text.dart';

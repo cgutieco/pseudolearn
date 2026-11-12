@@ -11,8 +11,7 @@ import '../exercise/behaviour_checker.dart';
 final class OrderEvaluator implements RouteAnswerEvaluator {
   final BehaviourChecker _behaviour;
 
-  const OrderEvaluator({required BehaviourChecker behaviour})
-    : _behaviour = behaviour;
+  const OrderEvaluator({required this._behaviour});
 
   @override
   RouteVerdict evaluate({

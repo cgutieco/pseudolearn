@@ -8,10 +8,9 @@ final class SaveDocumentSource {
   final Clock _clock;
 
   const SaveDocumentSource({
-    required DocumentRepository repository,
-    required Clock clock,
-  }) : _repository = repository,
-       _clock = clock;
+    required this._repository,
+    required this._clock,
+  });
 
   Future<DocumentCommandResult> call({
     required Document document,

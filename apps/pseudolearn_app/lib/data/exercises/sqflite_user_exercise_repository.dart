@@ -13,8 +13,7 @@ final class SqfliteUserExerciseRepository implements UserExerciseRepository {
   final StreamController<UserExerciseChange> _changes =
       StreamController<UserExerciseChange>.broadcast();
 
-  SqfliteUserExerciseRepository(this._database, {required Clock clock})
-    : _clock = clock;
+  SqfliteUserExerciseRepository(this._database, {required this._clock});
 
   @override
   Stream<UserExerciseChange> get changes => _changes.stream;

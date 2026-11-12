@@ -7,8 +7,7 @@ import 'user_exercise_codec.dart';
 final class SupabaseUserExerciseStore implements RemoteUserExerciseStore {
   final SupabaseClient _client;
 
-  const SupabaseUserExerciseStore({required SupabaseClient client})
-    : _client = client;
+  const SupabaseUserExerciseStore({required this._client});
 
   @override
   Future<bool> push(List<UserExerciseSnapshot> batch) async {

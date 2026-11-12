@@ -14,12 +14,10 @@ final class ProxyCheckoutGateway implements CheckoutGateway {
   final JsonHttpSender _send;
 
   const ProxyCheckoutGateway({
-    required String functionsUrl,
-    required AccessTokenSource tokens,
-    JsonHttpSender send = sendJson,
-  }) : _functionsUrl = functionsUrl,
-       _tokens = tokens,
-       _send = send;
+    required this._functionsUrl,
+    required this._tokens,
+    this._send = sendJson,
+  });
 
   @override
   Future<CheckoutLink> checkout(AgentProduct product) =>

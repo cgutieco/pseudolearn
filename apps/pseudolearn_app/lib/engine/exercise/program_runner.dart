@@ -18,14 +18,11 @@ final class ProgramRunner {
   final int _stepLimit;
 
   ProgramRunner({
-    required ProgramExecution execution,
-    required ProgramAnalyzer analyzer,
-    OutputNormalizer normalizer = const OutputNormalizer(),
-    int stepLimit = defaultStepLimit,
-  }) : _execution = execution,
-       _analyzer = analyzer,
-       _normalizer = normalizer,
-       _stepLimit = stepLimit;
+    required this._execution,
+    required this._analyzer,
+    this._normalizer = const OutputNormalizer(),
+    this._stepLimit = defaultStepLimit,
+  });
 
   bool parses({
     required String sourceCode,

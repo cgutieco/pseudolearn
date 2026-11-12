@@ -75,5 +75,5 @@ Desde `packages/pseudolearn_spec`. `see` es `cargo run -p see_cli --bin see --`.
 | Contrastar sus propiedades        | `see conform --subject engine --operation properties`                |
 | Verificación completa del paquete | `cargo xtask verify`                                                 |
 
-Requisitos: Rust `1.99.0` con rustfmt y Clippy (`rust-toolchain.toml`); cada sujeto necesita lo que pida su propio
+Requisitos: Rust `1.99.1` con rustfmt y Clippy (`rust-toolchain.toml`); cada sujeto necesita lo que pida su propio
 miembro.

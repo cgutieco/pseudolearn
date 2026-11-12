@@ -3,8 +3,7 @@ import '../../../domain/ports/user_exercise_repository.dart';
 final class DeleteUserExercise {
   final UserExerciseRepository _repository;
 
-  const DeleteUserExercise({required UserExerciseRepository repository})
-    : _repository = repository;
+  const DeleteUserExercise({required this._repository});
 
   Future<bool> call(String exerciseId) async {
     try {

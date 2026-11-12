@@ -11,8 +11,8 @@ final class SecureSessionStorage implements SessionStorage {
   final FlutterSecureStorage _storage;
 
   const SecureSessionStorage({
-    FlutterSecureStorage storage = const FlutterSecureStorage(),
-  }) : _storage = storage;
+    this._storage = const FlutterSecureStorage(),
+  });
 
   @override
   Future<String?> read(String key) => _storage.read(key: key);

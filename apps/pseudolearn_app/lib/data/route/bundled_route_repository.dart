@@ -17,8 +17,7 @@ const String routeAssetRoot = 'assets/route/';
 final class BundledRouteRepository implements RouteRepository {
   final ReferenceAssetLoader _assetLoader;
 
-  const BundledRouteRepository({required ReferenceAssetLoader assetLoader})
-    : _assetLoader = assetLoader;
+  const BundledRouteRepository({required this._assetLoader});
 
   @override
   Future<ContentLoadResult<RouteToc>> loadToc(ReferenceEdition edition) =>

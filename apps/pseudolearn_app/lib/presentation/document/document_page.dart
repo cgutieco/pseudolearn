@@ -1,6 +1,6 @@
 import '../../domain/model/exercises/exercise_reference.dart';
 import '../../domain/model/execution/execution_configuration.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../application/diagram/diagram_cubit.dart';
 import '../../application/editor/editor_cubit.dart';

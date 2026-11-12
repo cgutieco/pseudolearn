@@ -21,9 +21,8 @@ final class RustEffectGate {
     this._transport,
     this._environment,
     this._autoResolve, {
-    RustEffectPolicy policy = const RustEffectPolicy.unrestricted(),
-  }) : _policy = policy,
-       _execution = RustExecutionApi(_transport);
+    this._policy = const RustEffectPolicy.unrestricted(),
+  }) : _execution = RustExecutionApi(_transport);
 
   void reset(ExecutionConfiguration configuration, {required bool replaying}) {
     close();

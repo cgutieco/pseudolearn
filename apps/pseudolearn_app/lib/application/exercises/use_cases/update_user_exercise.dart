@@ -10,12 +10,10 @@ final class UpdateUserExercise {
   final Clock _clock;
 
   const UpdateUserExercise({
-    required UserExerciseRepository repository,
-    required ValidateUserExercise validate,
-    required Clock clock,
-  }) : _repository = repository,
-       _validate = validate,
-       _clock = clock;
+    required this._repository,
+    required this._validate,
+    required this._clock,
+  });
 
   Future<UserExerciseCommandResult> call({
     required String exerciseId,

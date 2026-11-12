@@ -29,19 +29,13 @@ final class GuidedDemoCubit extends Cubit<GuidedDemoState> {
   int _tracedRevision = 0;
 
   GuidedDemoCubit({
-    required GuidedDemoLoader loader,
-    required ProgramExecution execution,
-    required DiagramProjection diagrams,
-    TraceRowsProjection traceRows = const TraceRowsProjection(),
-    DemoOutputLines outputLines = const DemoOutputLines(),
-    StepBatchRunner runner = const StepBatchRunner(),
-  })  : _loader = loader,
-        _execution = execution,
-        _diagrams = diagrams,
-        _traceRows = traceRows,
-        _outputLines = outputLines,
-        _runner = runner,
-        super(const GuidedDemoState());
+    required this._loader,
+    required this._execution,
+    required this._diagrams,
+    this._traceRows = const TraceRowsProjection(),
+    this._outputLines = const DemoOutputLines(),
+    this._runner = const StepBatchRunner(),
+  })  : super(const GuidedDemoState());
 
   Future<void> start({required UiLanguageId languageId}) async {
     if (state.status == GuidedDemoStatus.loading) return;

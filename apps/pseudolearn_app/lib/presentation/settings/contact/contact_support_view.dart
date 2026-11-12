@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../components/card/app_card_surface.dart';
 import '../../components/layout/app_page.dart';
 import '../../l10n/generated/app_localizations.dart';

@@ -8,8 +8,8 @@ final class SupabaseProgressStore implements RemoteProgressStore {
   final SupabaseClient _client;
 
   const SupabaseProgressStore({
-    required SupabaseClient client,
-  }) : _client = client;
+    required this._client,
+  });
 
   @override
   Future<PushProgressResult> pushProgress(List<ProgressEntry> entries) async {

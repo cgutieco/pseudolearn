@@ -142,6 +142,6 @@ Se ejecutan desde `apps/pseudolearn_cli`.
 | Conformidad del sujeto `cli`           | `cargo run -p see_cli --bin see -- conform --subject cli` (desde `packages/pseudolearn_spec`) |
 | Conformidad del sujeto `aot`           | `cargo run -p see_cli --bin see -- conform --subject aot` (desde `packages/pseudolearn_spec`) |
 
-Requisitos: Rust `1.99.0` (`rust-toolchain.toml`), `cargo-deny` y la exportación del corpus generada antes de
+Requisitos: Rust `1.99.1` (`rust-toolchain.toml`), `cargo-deny` y la exportación del corpus generada antes de
 compilar (`see export --root .` en `packages/pseudolearn_spec`; `cargo xtask verify` ya la ejecuta). En Linux, el
 destino `x86_64-unknown-linux-musl` y `musl-gcc`. La primera compilación nativa descarga el enlazador y necesita red.

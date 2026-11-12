@@ -14,12 +14,10 @@ final class RouteIndexCubit extends Cubit<RouteIndexState> {
   late final StreamSubscription<void> _progressChanges;
 
   RouteIndexCubit({
-    required RouteRepository repository,
-    required LocalProgressStore progressStore,
+    required this._repository,
+    required this._progressStore,
     Stream<void> progressChanges = const Stream.empty(),
-  }) : _repository = repository,
-       _progressStore = progressStore,
-       super(const RouteIndexState()) {
+  }) : super(const RouteIndexState()) {
     _progressChanges = progressChanges.listen((_) => refresh());
   }
 

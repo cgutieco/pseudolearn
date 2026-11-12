@@ -17,13 +17,13 @@ fn package_graph_digest(request: &ExecuteRequest, source_digest: &str) -> String
             identity.project_id, identity.revision_id, identity.source_id
         ));
     }
-    format!("{:x}", hasher.finalize())
+    crate::lowercase_hex::lowercase_hex(hasher.finalize())
 }
 
 pub fn build_identity(request: &ExecuteRequest) -> ExecutionIdentity {
     let mut hasher = Sha256::new();
     hasher.update(request.program.as_bytes());
-    let source_digest = format!("{:x}", hasher.finalize());
+    let source_digest = crate::lowercase_hex::lowercase_hex(hasher.finalize());
     let limits = identity_limits(request);
     ExecutionIdentity {
         limits,

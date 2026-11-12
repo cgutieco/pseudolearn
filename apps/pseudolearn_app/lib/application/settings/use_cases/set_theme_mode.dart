@@ -8,10 +8,9 @@ final class SetThemeMode {
   final PreferenceUpdates _updates;
 
   const SetThemeMode({
-    required PreferencesStore preferences,
-    required PreferenceUpdates updates,
-  }) : _preferences = preferences,
-       _updates = updates;
+    required this._preferences,
+    required this._updates,
+  });
 
   Future<AppPreferences> call(AppThemeMode mode) async {
     final updated = (await _preferences.read()).copyWith(themeMode: mode);

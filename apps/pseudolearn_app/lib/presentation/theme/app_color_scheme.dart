@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'tokens/color_primitives.dart';
 import 'tokens/color_semantic.dart';
 

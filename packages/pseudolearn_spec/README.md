@@ -131,5 +131,5 @@ Se ejecutan desde `packages/pseudolearn_spec`. `see` es `cargo run -p see_cli --
 `pseudolearn_rust_checks`, `see validate`, `export --check`, `agent-sheet --check` y la conformidad del
 motor. Todas las órdenes de `see` admiten `--root <directorio>`.
 
-Requisitos: Rust `1.99.0` con rustfmt y Clippy (`rust-toolchain.toml`) y `cargo-deny`. Los sujetos `cli`,
+Requisitos: Rust `1.99.1` con rustfmt y Clippy (`rust-toolchain.toml`) y `cargo-deny`. Los sujetos `cli`,
 `aot` y `app` necesitan además lo que pida su propio miembro (Dart y su biblioteca nativa para `app`).

@@ -11,10 +11,9 @@ final class ValidateUserExercise {
   final ExerciseChecker _checker;
 
   const ValidateUserExercise({
-    required ProgramAnalyzer analyzer,
-    required ExerciseChecker checker,
-  }) : _analyzer = analyzer,
-       _checker = checker;
+    required this._analyzer,
+    required this._checker,
+  });
 
   ExercisePublication call(UserExerciseDraft draft, {UiLanguageId languageId = UiLanguageId.spanish}) {
     final shape = _shapeProblem(draft);

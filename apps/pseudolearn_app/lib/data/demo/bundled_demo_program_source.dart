@@ -6,8 +6,7 @@ const String demoAssetRoot = 'assets/demo/';
 final class BundledDemoProgramSource implements DemoProgramSource {
   final ReferenceAssetLoader _assetLoader;
 
-  const BundledDemoProgramSource({required ReferenceAssetLoader assetLoader})
-    : _assetLoader = assetLoader;
+  const BundledDemoProgramSource({required this._assetLoader});
 
   @override
   Future<String> load(String fileName) => _assetLoader('$demoAssetRoot$fileName');

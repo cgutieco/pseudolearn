@@ -40,7 +40,7 @@ Importa solo `pseudolearn_api`; las externas son `serde_json` y `wasm-bindgen`.
 - Para `wasm32`, `architecture.yaml` prohíbe `pseudolearn_codegen`, `pseudolearn_aot_rt`, `cranelift-*`, la
   característica `test-host` y las bibliotecas de red nativa (`hyper`, `reqwest`, `rustls`…). `tool/wasm.sh build` lo
   comprueba con `cargo tree` antes de compilar.
-- `wasm-bindgen` debe ser exactamente la versión 0.2.129 y el perfil es `wasm-release` (`opt-level = "z"`, LTO fat,
+- `wasm-bindgen` debe ser exactamente la versión 0.2.130 y el perfil es `wasm-release` (`opt-level = "z"`, LTO fat,
   `panic = "abort"`).
 - Un JSON de argumentos inválido se rechaza con un error de JavaScript (`Result<String, JsValue>`).
 
@@ -53,4 +53,4 @@ Importa solo `pseudolearn_api`; las externas son `serde_json` y `wasm-bindgen`.
 | Tests del crate        | `cargo test -p pseudolearn_wasm` |
 
 Se ejecutan desde `packages/pseudolearn_engine`. Requisitos: target `wasm32-unknown-unknown`, `wasm-bindgen-cli`
-0.2.129 y, para `test`, `pnpm`.
+0.2.130 y, para `test`, `pnpm`.

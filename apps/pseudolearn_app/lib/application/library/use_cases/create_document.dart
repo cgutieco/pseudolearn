@@ -26,12 +26,10 @@ final class CreateDocument {
   final Clock _clock;
 
   const CreateDocument({
-    required DocumentRepository repository,
-    required IdentifierGenerator identifiers,
-    required Clock clock,
-  }) : _repository = repository,
-       _identifiers = identifiers,
-       _clock = clock;
+    required this._repository,
+    required this._identifiers,
+    required this._clock,
+  });
 
   Future<DocumentCommandResult> call(CreateDocumentCommand command) async {
     try {

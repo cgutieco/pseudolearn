@@ -15,14 +15,11 @@ final class PromptAssembler {
   final Map<String, Future<String>> _stableParts = {};
 
   PromptAssembler({
-    required AgentPromptSource prompts,
-    required KnowledgeIndex knowledge,
-    required ScreenContextSource screen,
-    required AmbientContext Function() ambient,
-  }) : _prompts = prompts,
-       _knowledge = knowledge,
-       _screen = screen,
-       _ambient = ambient;
+    required this._prompts,
+    required this._knowledge,
+    required this._screen,
+    required this._ambient,
+  });
 
   Future<ModelRequest> build(List<ModelItem> history, List<ToolDefinition> tools) async {
     final ambient = _ambient();

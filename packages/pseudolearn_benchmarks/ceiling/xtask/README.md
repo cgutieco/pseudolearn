@@ -49,5 +49,5 @@ versiones sobre la raíz del monorepo.
 | Verificar todo el workspace | `cargo xtask verify`  |
 | Probar este crate           | `cargo test -p xtask` |
 
-Requisitos: Rust 1.99.0 con rustfmt y Clippy, `cargo-deny` y las toolchains de `pseudolearn_spec` y
+Requisitos: Rust 1.99.1 con rustfmt y Clippy, `cargo-deny` y las toolchains de `pseudolearn_spec` y
 `pseudolearn_rust_checks`.

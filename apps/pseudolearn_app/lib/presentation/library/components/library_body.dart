@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../../application/library/library_state.dart';
 import '../../../domain/model/documents/document.dart';
 import '../../components/empty/app_empty_state.dart';

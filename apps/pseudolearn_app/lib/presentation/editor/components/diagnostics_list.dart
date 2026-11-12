@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../reference/reference_link_button.dart';
 import '../../../domain/model/analysis/app_diagnostic.dart';
 import '../../components/typography/app_text.dart';

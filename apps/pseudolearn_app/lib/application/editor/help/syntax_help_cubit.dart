@@ -12,11 +12,9 @@ final class SyntaxHelpCubit extends Cubit<SyntaxHelpState> {
   final HelpProgramHighlighter _highlighter;
 
   SyntaxHelpCubit({
-    required SyntaxHelpSource source,
-    required HelpProgramHighlighter highlighter,
-  }) : _source = source,
-       _highlighter = highlighter,
-       super(const SyntaxHelpState());
+    required this._source,
+    required this._highlighter,
+  }) : super(const SyntaxHelpState());
 
   void documentChanged(int revision) {
     if (revision <= state.documentRevision &&

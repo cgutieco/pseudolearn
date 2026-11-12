@@ -113,7 +113,7 @@ flowchart LR
 | Regenerar las capturas de la web             | `flutter test tool/generate_product_shot.dart`                                                        |
 | Compilar                                     | `flutter build macos --release`, `flutter build ipa --no-codesign`, `flutter build windows --release` |
 
-Requisitos: Flutter 3.47.5 (fijado en `pubspec.yaml`), Dart `^3.9.0` y Rust según `native/rust-toolchain.toml` para
+Requisitos: Flutter 3.50.0 (fijado en `pubspec.yaml`), Dart `^3.14.0` y Rust según `native/rust-toolchain.toml` para
 compilar el puente. El inicio de sesión y la sincronización leen `SUPABASE_URL`, `SUPABASE_ANON_KEY` y
 `GOOGLE_IOS_CLIENT_ID` de `dart_define.local.json`, que no se versiona.
 

@@ -30,15 +30,11 @@ final class ExerciseSessionCubit extends Cubit<ExerciseSessionState>
   ReferenceEdition? _loadedEdition;
 
   ExerciseSessionCubit({
-    required RouteRepository repository,
-    required ExerciseChecker checker,
-    required LocalProgressStore progressStore,
-    required UserExerciseRepository userExercises,
-  })  : _repository = repository,
-        _checker = checker,
-        _progressStore = progressStore,
-        _userExercises = userExercises,
-        super(const ExerciseSessionState());
+    required this._repository,
+    required this._checker,
+    required this._progressStore,
+    required this._userExercises,
+  })  : super(const ExerciseSessionState());
 
   @override
   ActiveExercise? get activeExercise {

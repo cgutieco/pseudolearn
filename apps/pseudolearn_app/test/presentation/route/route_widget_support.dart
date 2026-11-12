@@ -1,7 +1,8 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:cupertino_ui/cupertino_ui.dart' show GlobalCupertinoLocalizations;
+import 'package:material_ui/material_ui.dart';
+import 'package:flutter_localizations/flutter_localizations.dart' show GlobalWidgetsLocalizations;
 import 'package:pseudolearn_app/data/route/bundled_route_repository.dart';
 import 'package:pseudolearn_app/domain/model/knowledge/content_load_result.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../../domain/model/help/help_part.dart';
 import '../../../domain/model/help/help_program.dart';
 import '../../../domain/model/help/syntax_help.dart';

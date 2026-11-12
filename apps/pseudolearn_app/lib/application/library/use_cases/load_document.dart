@@ -4,8 +4,7 @@ import '../../../domain/ports/document_repository.dart';
 final class LoadDocument {
   final DocumentRepository _repository;
 
-  const LoadDocument({required DocumentRepository repository})
-    : _repository = repository;
+  const LoadDocument({required this._repository});
 
   Future<DocumentCommandResult> call(String documentId) async {
     try {

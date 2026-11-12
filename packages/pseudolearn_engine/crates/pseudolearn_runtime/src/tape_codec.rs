@@ -17,13 +17,21 @@ pub(crate) fn encoded_size(tape: &EffectTape) -> usize {
     encode_effect_tape(tape).map_or(usize::MAX, |bytes| bytes.len())
 }
 
+pub(crate) fn lowercase_hex(bytes: impl AsRef<[u8]>) -> String {
+    bytes
+        .as_ref()
+        .iter()
+        .map(|octet| format!("{octet:02x}"))
+        .collect()
+}
+
 pub(crate) fn identity_hash(identity: &ExecutionIdentity) -> String {
     let mut digest = Sha256::new();
     digest.update(TAPE_SCHEMA_V1.as_bytes());
     if let Ok(bytes) = serde_json::to_vec(identity) {
         digest.update(bytes);
     }
-    format!("{:x}", digest.finalize())
+    lowercase_hex(digest.finalize())
 }
 
 pub fn tape_entry_hash(previous: &str, entry: &TapeEntry) -> String {
@@ -46,7 +54,7 @@ pub fn tape_entry_hash(previous: &str, entry: &TapeEntry) -> String {
     if let Some(delivery) = entry.delivery_seq {
         digest.update(delivery.to_be_bytes());
     }
-    format!("{:x}", digest.finalize())
+    lowercase_hex(digest.finalize())
 }
 
 fn exceeds_budget(tape: &EffectTape) -> bool {

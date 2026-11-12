@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../domain/model/diagram/class_diagram_metrics.dart';
 import '../../domain/model/diagram/diagram_metrics.dart';
 import '../../domain/model/diagram/diagram_scene.dart';

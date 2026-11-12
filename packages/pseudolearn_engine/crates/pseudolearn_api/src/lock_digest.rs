@@ -33,8 +33,8 @@ pub(crate) fn package_digest(files: &BTreeMap<String, String>) -> String {
 
 fn render(hasher: Sha256) -> String {
     format!(
-        "{}{:x}",
+        "{}{}",
         pseudolearn_project::DIGEST_PREFIX,
-        hasher.finalize()
+        crate::lowercase_hex::lowercase_hex(hasher.finalize())
     )
 }

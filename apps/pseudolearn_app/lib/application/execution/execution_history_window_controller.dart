@@ -16,14 +16,11 @@ final class ExecutionHistoryWindowController {
   final ExecutionHistoryCache _cache = ExecutionHistoryCache();
 
   ExecutionHistoryWindowController({
-    required ProgramExecutionObserver? observer,
-    required ExecutionHistoryState Function() currentState,
-    required void Function(ExecutionHistoryState) emit,
-    required void Function(ExecutionHistoryEvent, bool) onEventSelected,
-  }) : _observer = observer,
-       _currentState = currentState,
-       _emit = emit,
-       _onEventSelected = onEventSelected;
+    required this._observer,
+    required this._currentState,
+    required this._emit,
+    required this._onEventSelected,
+  });
 
   void reset() => _cache.clear();
 

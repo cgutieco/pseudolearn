@@ -20,12 +20,10 @@ final class UserExerciseLibraryCubit extends Cubit<UserExerciseLibraryState> {
 
   UserExerciseLibraryCubit({
     required UserExerciseRepository repository,
-    required ListDocuments listDocuments,
-    required CreateDocument createDocument,
+    required this._listDocuments,
+    required this._createDocument,
   }) : _repository = repository,
        _delete = DeleteUserExercise(repository: repository),
-       _listDocuments = listDocuments,
-       _createDocument = createDocument,
        super(const UserExerciseLibraryState()) {
     _changes = repository.changes.listen((_) {
       if (!isClosed && state.status == UserExerciseLibraryStatus.ready) load();

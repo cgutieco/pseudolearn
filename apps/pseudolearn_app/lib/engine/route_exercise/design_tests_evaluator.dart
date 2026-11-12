@@ -14,10 +14,9 @@ final class DesignTestsEvaluator implements RouteAnswerEvaluator {
   final OutputNormalizer _normalizer;
 
   const DesignTestsEvaluator({
-    required ProgramRunner runner,
-    OutputNormalizer normalizer = const OutputNormalizer(),
-  }) : _runner = runner,
-       _normalizer = normalizer;
+    required this._runner,
+    this._normalizer = const OutputNormalizer(),
+  });
 
   @override
   RouteVerdict evaluate({

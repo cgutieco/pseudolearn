@@ -23,18 +23,13 @@ final class DocumentSyncDrainer {
   final Clock _clock;
 
   const DocumentSyncDrainer({
-    required RemoteDocumentStore remoteStore,
-    required SyncQueue queue,
-    required SyncMetadataStore metadataStore,
-    required DocumentRepository repository,
-    required IdentifierGenerator identifiers,
-    required Clock clock,
-  }) : _remoteStore = remoteStore,
-       _queue = queue,
-       _metadataStore = metadataStore,
-       _repository = repository,
-       _identifiers = identifiers,
-       _clock = clock;
+    required this._remoteStore,
+    required this._queue,
+    required this._metadataStore,
+    required this._repository,
+    required this._identifiers,
+    required this._clock,
+  });
 
   Future<bool> drainPull() async {
     final state = await _metadataStore.getGlobalState();

@@ -8,11 +8,11 @@ fn accepts_identical_exact_versions() -> Result<(), Box<dyn std::error::Error>> 
     let _source = fixture.source()?;
     std::fs::write(
         fixture.root.join("rust-toolchain.toml"),
-        "channel = \"1.99.0\"",
+        "channel = \"1.99.1\"",
     )?;
     std::fs::write(
         fixture.root.join("subject/rust-toolchain.toml"),
-        "channel = \"1.99.0\"",
+        "channel = \"1.99.1\"",
     )?;
     assert!(pseudolearn_checks::toolchain::verify_versions(&fixture.root).is_ok());
     Ok(())
@@ -23,7 +23,7 @@ fn rejects_divergent_versions() -> Result<(), Box<dyn std::error::Error>> {
     let fixture = fixture::Fixture::create()?;
     std::fs::write(
         fixture.root.join("rust-toolchain.toml"),
-        "channel = \"1.99.0\"",
+        "channel = \"1.99.1\"",
     )?;
     std::fs::write(
         fixture.root.join("subject/rust-toolchain.toml"),

@@ -4,9 +4,8 @@ import '../../domain/ports/preferences_store.dart';
 final class AgentLauncherCubit extends Cubit<bool> {
   final PreferencesStore _preferences;
 
-  AgentLauncherCubit({required PreferencesStore preferences})
-    : _preferences = preferences,
-      super(true);
+  AgentLauncherCubit({required this._preferences})
+    : super(true);
 
   Future<void> load() async {
     final stored = await _preferences.read();

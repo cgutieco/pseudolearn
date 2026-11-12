@@ -19,15 +19,11 @@ final class AccountCubit extends Cubit<AccountState> {
   StreamSubscription<Uri>? _linkSubscription;
 
   AccountCubit({
-    required AuthGateway authGateway,
-    required IncomingLinkSource incomingLinks,
-    required AccountDeletionGateway accountDeletionGateway,
-    required LocalAccountDataPurger localAccountDataPurger,
-  })  : _authGateway = authGateway,
-        _incomingLinks = incomingLinks,
-        _accountDeletionGateway = accountDeletionGateway,
-        _localAccountDataPurger = localAccountDataPurger,
-        super(const AccountUnauthenticated());
+    required this._authGateway,
+    required this._incomingLinks,
+    required this._accountDeletionGateway,
+    required this._localAccountDataPurger,
+  })  : super(const AccountUnauthenticated());
 
   Future<void> init() async {
     _sessionSubscription ??= _authGateway.sessionChanges().listen(_onSession);

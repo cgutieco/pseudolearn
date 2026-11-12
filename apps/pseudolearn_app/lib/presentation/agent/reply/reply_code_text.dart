@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../../domain/model/analysis/highlight_span.dart';
 import '../../components/typography/app_text.dart';
 import '../../editor/help/help_code_spans.dart';

@@ -17,14 +17,11 @@ final class StoreKitPurchaseStore implements PurchaseStore {
   final ExternalUrlLauncher _launcher;
 
   const StoreKitPurchaseStore({
-    required StoreKitClient client,
-    required StoreKitTransactionQueue queue,
-    required String? Function() accountToken,
-    required ExternalUrlLauncher launcher,
-  }) : _client = client,
-       _queue = queue,
-       _accountToken = accountToken,
-       _launcher = launcher;
+    required this._client,
+    required this._queue,
+    required this._accountToken,
+    required this._launcher,
+  });
 
   @override
   PurchaseChannel get channel => PurchaseChannel.appStore;

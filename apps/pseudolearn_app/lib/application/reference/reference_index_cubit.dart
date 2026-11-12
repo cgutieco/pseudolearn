@@ -10,9 +10,8 @@ import 'reference_index_state.dart';
 final class ReferenceIndexCubit extends Cubit<ReferenceIndexState> {
   final ReferenceRepository _repository;
 
-  ReferenceIndexCubit({required ReferenceRepository repository})
-    : _repository = repository,
-      super(const ReferenceIndexState());
+  ReferenceIndexCubit({required this._repository})
+    : super(const ReferenceIndexState());
 
   Future<void> load(ReferenceEdition edition) async {
     if (state.edition == edition &&

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../../domain/model/completion/completion_item.dart';
 import '../../theme/tokens/component_metrics.dart';
 import 'editor_completion_popup.dart';

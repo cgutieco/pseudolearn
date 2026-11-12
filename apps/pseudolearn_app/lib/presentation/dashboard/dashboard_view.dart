@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../application/dashboard/dashboard_state.dart';
 import '../components/empty/app_empty_state.dart';
 import '../components/layout/app_page.dart';

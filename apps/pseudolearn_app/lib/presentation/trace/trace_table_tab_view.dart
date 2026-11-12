@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../application/trace/trace_state.dart';
 import '../components/empty/app_empty_state.dart';
 import '../l10n/generated/app_localizations.dart';

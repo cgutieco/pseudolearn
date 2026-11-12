@@ -16,12 +16,10 @@ final class RouteBankCubit extends Cubit<RouteBankState> {
   late final StreamSubscription<void> _progressChanges;
 
   RouteBankCubit({
-    required RouteRepository repository,
-    required LocalProgressStore progressStore,
+    required this._repository,
+    required this._progressStore,
     Stream<void> progressChanges = const Stream.empty(),
-  }) : _repository = repository,
-       _progressStore = progressStore,
-       super(const RouteBankState()) {
+  }) : super(const RouteBankState()) {
     _progressChanges = progressChanges.listen((_) => refresh());
   }
 

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../../domain/model/knowledge/exercise_case_failure.dart';
 import '../../../domain/model/knowledge/exercise_check_outcome.dart';
 import '../../../domain/model/knowledge/exercise_check_result.dart';

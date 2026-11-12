@@ -5,8 +5,7 @@ import '../../../domain/ports/program_translator.dart';
 final class TranslateProgram {
   final ProgramTranslator _translator;
 
-  const TranslateProgram({required ProgramTranslator translator})
-    : _translator = translator;
+  const TranslateProgram({required this._translator});
 
   ProgramTextResult call({
     required String sourceCode,

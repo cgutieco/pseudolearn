@@ -14,7 +14,7 @@ impl SecretHandle {
         key: &[u8],
         value: &[u8],
     ) -> Result<Self, crate::ReplayError> {
-        use hmac::Mac;
+        use hmac::{KeyInit, Mac};
         let mut authenticator = hmac::Hmac::<sha2::Sha256>::new_from_slice(key)
             .map_err(|_| crate::ReplayError::CorruptedTape)?;
         authenticator.update(value);

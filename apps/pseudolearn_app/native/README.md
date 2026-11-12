@@ -77,5 +77,5 @@ flowchart LR
 | Dependencias                                       | `cargo deny check`                                                                                                                       |
 | Verificadores del monorepo                         | `cargo run --manifest-path ../../../packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command --bin rust-checks -- all .` |
 
-Requisitos: Rust `1.99.0` con los destinos de `rust-toolchain.toml`, `cargo-deny`, `cargo-expand` `1.0.127` y
+Requisitos: Rust `1.99.1` con los destinos de `rust-toolchain.toml`, `cargo-deny`, `cargo-expand` `1.0.127` y
 `flutter_rust_bridge_codegen` `2.13.0` (`.github/actions/setup-rust-bridge` los instala con esas versiones).

@@ -45,20 +45,15 @@ final class EditorCubit extends Cubit<EditorState>
   int _completionRevision = 0;
   EditorCubit({
     required DocumentRepository repository,
-    required ProgramAnalyzer analyzer,
-    required CompletionSource completionSource,
-    ContextualCompletionSource? contextualCompletionSource,
-    required EditorKeySource keySource,
-    required SourceEditor sourceEditor,
+    required this._analyzer,
+    required this._completionSource,
+    this._contextualCompletionSource,
+    required this._keySource,
+    required this._sourceEditor,
     required TextEntryModality textEntry,
     required Clock clock,
   }) : _repository = repository,
        _saveSource = SaveDocumentSource(repository: repository, clock: clock),
-       _analyzer = analyzer,
-       _completionSource = completionSource,
-       _contextualCompletionSource = contextualCompletionSource,
-       _keySource = keySource,
-       _sourceEditor = sourceEditor,
        super(EditorState.initial(showsKeyBar: textEntry.hasOnscreenTextEntry)) {
     followDocumentChanges(repository.changes, _onDocumentChanged);
   }

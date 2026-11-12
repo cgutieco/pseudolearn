@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../application/onboarding/demo/guided_demo_state.dart';
 import '../../application/onboarding/onboarding_state.dart';
 import '../../domain/model/diagram/diagram_notation.dart';
