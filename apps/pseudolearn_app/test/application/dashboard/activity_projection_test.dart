@@ -3,7 +3,7 @@ import 'package:pseudolearn_app/application/dashboard/activity_projection.dart';
 import 'dashboard_fixtures.dart';
 
 void main() {
-  group('projectActivityWeeks (PANT-06-F5)', () {
+  group('projectActivityWeeks', () {
     final now = DateTime(2026, 9, 2, 10);
 
     test('places each event in the week that contains its first mark', () {

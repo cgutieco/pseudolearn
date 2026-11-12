@@ -35,7 +35,7 @@ Future<void> _pumpDashboard(
 }
 
 void main() {
-  group('Dashboard render checks (PANT-06-F5) — eight widths, two themes', () {
+  group('Dashboard render checks — eight widths, two themes', () {
     final widths = <String, double>{
       'compact': 360,
       'compact_wide': 480,

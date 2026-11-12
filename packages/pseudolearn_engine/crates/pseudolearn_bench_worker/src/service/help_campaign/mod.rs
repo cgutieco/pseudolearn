@@ -33,7 +33,7 @@ fn run_functional(directory: &str) -> Result<(), String> {
     let folder = format!("{directory}/functional");
     std::fs::create_dir_all(&folder).map_err(|error| error.to_string())?;
     let summary = json!({
-        "format": "e-pg-11-functional/1",
+        "format": "help-campaign-functional/1",
         "programs": report.programs,
         "dataset_digest": report.digest,
         "seed": documents::SEED,

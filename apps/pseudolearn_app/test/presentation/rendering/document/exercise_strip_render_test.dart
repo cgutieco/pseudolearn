@@ -101,7 +101,7 @@ Future<void> _pumpExerciseStrip(
 
 void main() {
   group(
-    'ExerciseStrip render checks (CON-F15) — expanded strip across three widths and two themes',
+    'ExerciseStrip render checks — expanded strip across three widths and two themes',
     () {
       final widths = <String, double>{
         'compact': 360,
@@ -137,7 +137,7 @@ void main() {
     },
   );
 
-  group('ExerciseStrip render checks (CON-F15) — collapsed strip', () {
+  group('ExerciseStrip render checks — collapsed strip', () {
     testWidgets('collapsed · medium · light', (tester) async {
       await _pumpExerciseStrip(
         tester,
@@ -164,7 +164,7 @@ void main() {
   });
 
   group(
-    'ExerciseStrip render checks (CON-F15) — solved state with check result feedback',
+    'ExerciseStrip render checks — solved state with check result feedback',
     () {
       testWidgets('solved · medium · light', (tester) async {
         await _pumpExerciseStrip(

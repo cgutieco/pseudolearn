@@ -30,15 +30,15 @@ Aquí la flecha final es de uso: los scripts `collect_execution.dart`, `collect_
 Importa `api`, `bytecode`, `timeline` y `vm`; la externa es `serde_json`. Es un binario con subcomandos, declarados en
 `main.rs`.
 
-| Subcomando                                          | Mide                                                       |
-|-----------------------------------------------------|------------------------------------------------------------|
-| `execute`, `bridge`, `frontend`, `frontend-profile` | Ejecución en proceso, puente y análisis                    |
-| `e06`, `e06-rss`                                    | Línea temporal (observador, deltas, retención, memoria)    |
-| `robust`, `robust-child`                            | Robustez de las mediciones                                 |
-| `aot`, `paired`, `paired-probe`, `paired-summary`   | Backend nativo frente a la referencia, en parejas          |
-| `service`                                           | Herramientas de edición (autocompletado, ayuda, proyectos) |
-| `pg-collect`, `pg-tape`, `pg-tasks`, `pg-http`      | Campañas por familia de cargas                             |
-| `pg-summary`, `pg-http-summary`, `pg-verify`        | Resumen y verificación de campañas                         |
+| Subcomando                                                            | Mide                                                       |
+|-----------------------------------------------------------------------|------------------------------------------------------------|
+| `execute`, `bridge`, `frontend`, `frontend-profile`                   | Ejecución en proceso, puente y análisis                    |
+| `e06`, `e06-rss`                                                      | Línea temporal (observador, deltas, retención, memoria)    |
+| `robust`, `robust-child`                                              | Robustez de las mediciones                                 |
+| `aot`, `paired`, `paired-probe`, `paired-summary`                     | Backend nativo frente a la referencia, en parejas          |
+| `service`                                                             | Herramientas de edición (autocompletado, ayuda, proyectos) |
+| `campaign-collect`, `tape-collect`, `tasks-campaign`, `http-campaign` | Campañas por familia de cargas                             |
+| `campaign-summary`, `http-summary`, `campaign-verify`                 | Resumen y verificación de campañas                         |
 
 ## Reglas que conviene saber
 

@@ -112,7 +112,7 @@ pub fn body(directory: &Path) -> Result<Value, String> {
         series.insert(name.to_owned(), series_summary(directory, name, metrics)?);
     }
     Ok(json!({
-        "experiment": "E-PG-01 and project part of E-PG-02",
+        "experiment": "project-campaign",
         "protocol": PROTOCOL,
         "seed": SEED,
         "bootstrap_resamples": RESAMPLES,
@@ -133,7 +133,7 @@ pub fn body(directory: &Path) -> Result<Value, String> {
 pub fn write(directory: &str) -> Result<(), String> {
     let path = Path::new(directory);
     let summary = json!({
-        "format": "e-pg-13-summary/1",
+        "format": "project-campaign-summary/1",
         "raw_digests": raw_digests(path)?,
         "body": body(path)?,
     });

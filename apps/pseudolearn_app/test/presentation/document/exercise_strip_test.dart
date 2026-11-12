@@ -56,7 +56,7 @@ void main() {
     ],
   );
 
-  group('ExerciseStrip Component Tests (CON-F15)', () {
+  group('ExerciseStrip Component Tests', () {
     testWidgets(
         'Renders ready state with statement and visible cases, without a check button',
         (tester) async {

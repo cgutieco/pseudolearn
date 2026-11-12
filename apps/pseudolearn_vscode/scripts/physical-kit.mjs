@@ -15,12 +15,12 @@ function combinations() {
 }
 
 function instructions() {
-  return ["# E-PG-08 · Kit físico", "",
+  return ["# Kit físico del dispositivo", "",
     "Material preparado; no acredita ensayos físicos. La instalación requiere un mecanismo de carga permitido por cada host; no se publica ni se usan cuentas ajenas.", "",
     "Registrar dispositivo, SO, navegador/build, host/proveedor y método de teclado. Para cada combinación completar veinte ciclos: abrir, escribir el texto final previsto, formatear, guardar y comprobar contenido, ejecutar, entregar entrada y detener.", "",
     "Conservar textos y hashes, salida, terminación, red normal/pérdida y recuperaciones. La confirmación del proveedor no acredita persistencia tras cierre, expulsión u offline. Registrar esas observaciones por separado.", "",
     "Medir edición y cancelación en milisegundos. Ejecutar el control con el mismo teléfono, carga y Wasm. RAM total: null cuando no exista método fiable; la memoria lineal de Wasm no es RAM del editor.", "",
-    "Exportar filas reales en results.json; no completar resultados con los formularios vacíos. Ejecutar node scripts/physical-kit.mjs analyze <results.json>. La ausencia física conserva el diferimiento autorizado y CF-14 pendiente.", ""].join("\n");
+    "Exportar filas reales en results.json; no completar resultados con los formularios vacíos. Ejecutar node scripts/physical-kit.mjs analyze <results.json>.", ""].join("\n");
 }
 
 function sources() {

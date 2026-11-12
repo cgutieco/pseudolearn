@@ -3,7 +3,7 @@ use serde_json::{Value, json};
 use std::path::{Path, PathBuf};
 
 fn scratch(label: &str) -> PathBuf {
-    let path = std::env::temp_dir().join(format!("pg_summary_{label}_{}", std::process::id()));
+    let path = std::env::temp_dir().join(format!("campaign_summary_{label}_{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&path);
     path
 }
@@ -38,7 +38,7 @@ fn write_workload(root: &Path, name: &str, candidate: u64, candidate_output: &st
 }
 
 fn run(root: &Path) -> Result<Value, String> {
-    summarize(&["E-PG-04".to_owned(), root.display().to_string()])?;
+    summarize(&["closures".to_owned(), root.display().to_string()])?;
     let text =
         std::fs::read_to_string(root.join("summary.json")).map_err(|error| error.to_string())?;
     serde_json::from_str(&text).map_err(|error| error.to_string())

@@ -8,7 +8,7 @@ void main() {
     sqfliteFfiInit();
   });
 
-  group('SqliteLocalProgressStore (CON-F8)', () {
+  group('SqliteLocalProgressStore', () {
     late Database db;
     late SqliteLocalProgressStore store;
 

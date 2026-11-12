@@ -48,7 +48,7 @@ Finder _inOverviewRings(String text) =>
     find.descendant(of: find.byType(OverviewRings), matching: find.text(text));
 
 void main() {
-  group('DashboardView (PANT-06-F5)', () {
+  group('DashboardView', () {
     testWidgets('shows the nine cards with local data and no session', (tester) async {
       await _pump(tester, _appWith(state: populatedDashboardState()));
 

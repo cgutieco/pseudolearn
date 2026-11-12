@@ -11,7 +11,7 @@ void main() {
     sqfliteFfiInit();
   });
 
-  group('IndexSchema Migration (v1 -> v2) (CON-F8)', () {
+  group('IndexSchema Migration (v1 -> v2)', () {
     late Database db;
 
     setUp(() async {
@@ -79,7 +79,7 @@ void main() {
     });
   });
 
-  group('IndexSchema Migration (v2 -> v3) (Phase F0)', () {
+  group('IndexSchema Migration (v2 -> v3)', () {
     late Database db;
 
     setUp(() async {

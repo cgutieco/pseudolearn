@@ -4,7 +4,7 @@ import 'package:pseudolearn_app/domain/model/knowledge/ast_construct.dart';
 import 'dashboard_fixtures.dart';
 
 void main() {
-  group('projectSpecificationCoverage (PANT-06-F5)', () {
+  group('projectSpecificationCoverage', () {
     final sections = [
       specificationEntry('lexico.palabras-reservadas', order: 1),
       specificationEntry('control.si', order: 2),

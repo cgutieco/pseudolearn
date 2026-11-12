@@ -18,22 +18,22 @@ struct Prepared {
 pub fn collect(arguments: &[String]) -> Result<(), String> {
     let [experiment, directory, process, machine] = arguments else {
         return Err(
-            "Usage: pg-collect <E-PG-03|E-PG-04|E-PG-05> <directory> <process> <machine>"
+            "Usage: campaign-collect <generics|closures|inactive-effects> <directory> <process> <machine>"
                 .to_owned(),
         );
     };
     let process: u64 = process.parse().map_err(|_| "Invalid process".to_owned())?;
     let workloads = match experiment.as_str() {
-        "E-PG-03" => generics(),
-        "E-PG-04" => closures(),
-        "E-PG-05" => inactive_effects(),
+        "generics" => generics(),
+        "closures" => closures(),
+        "inactive-effects" => inactive_effects(),
         _ => return Err("Unknown experiment".to_owned()),
     };
     for workload in &workloads {
         let record = measure(workload, process, machine)?;
         write_record(directory, &workload.name, process, &record)?;
     }
-    if experiment == "E-PG-03" && process == 0 {
+    if experiment == "generics" && process == 0 {
         write_record(directory, "expansive", 0, &expansive_record())?;
     }
     Ok(())

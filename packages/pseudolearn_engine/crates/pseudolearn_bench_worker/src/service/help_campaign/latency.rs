@@ -199,7 +199,7 @@ pub fn run(series: &str, output: &str, process: &str) -> Result<(), String> {
     let before = resident_kibibytes();
     let documents = measure_documents(series, &oracle)?;
     let report = json!({
-        "format": "e-pg-11-process/1",
+        "format": "help-campaign-process/1",
         "series": series,
         "process": process,
         "seed": SEED,

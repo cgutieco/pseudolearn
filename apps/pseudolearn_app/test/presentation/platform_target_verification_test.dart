@@ -66,7 +66,7 @@ List<String> validatePlatformQueries({
 }
 
 void main() {
-  group('CIE-F2 · Platform Target and Window Resizing Verification', () {
+  group('Platform Target and Window Resizing Verification', () {
     testWidgets(
         'Narrowing macOS window below 600 dp dynamically produces compact tree and bottom bar',
         (tester) async {

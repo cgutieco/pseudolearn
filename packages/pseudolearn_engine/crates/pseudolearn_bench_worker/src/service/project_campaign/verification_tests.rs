@@ -4,7 +4,7 @@ use serde_json::{Value, json};
 use std::path::{Path, PathBuf};
 
 fn directory(name: &str) -> Result<PathBuf, String> {
-    let path = std::env::temp_dir().join(format!("e-pg-13-{}-{name}", std::process::id()));
+    let path = std::env::temp_dir().join(format!("project-campaign-{}-{name}", std::process::id()));
     let _ = std::fs::remove_dir_all(&path);
     std::fs::create_dir_all(path.join("functional")).map_err(|error| error.to_string())?;
     Ok(path)
@@ -26,7 +26,7 @@ fn process(series: &str, metrics: &[&str], index: usize, samples: usize) -> Valu
         })
         .collect();
     json!({
-        "format": "e-pg-13-process/1", "protocol": "e-pg-13/1", "machine": "test-machine",
+        "format": "project-campaign-process/1", "protocol": "project-campaign/1", "machine": "test-machine",
         "dataset_digest": "digest", "series": series, "process": index.to_string(),
         "seed": 42, "iterations": 30, "clock_resolution_ns": "41", "documents": documents,
     })
@@ -37,7 +37,7 @@ fn put(path: &Path, value: &Value) -> Result<(), String> {
 }
 
 fn write_campaign(path: &Path, processes: usize) -> Result<(), String> {
-    let summary = json!({"protocol": "e-pg-13/1", "programs": 3, "dataset_digest": "digest", "failure_count": 0});
+    let summary = json!({"protocol": "project-campaign/1", "programs": 3, "dataset_digest": "digest", "failure_count": 0});
     put(&path.join("functional/summary.json"), &summary)?;
     put(&path.join("functional/failures.json"), &json!([]))?;
     for (series, metrics) in SERIES {
@@ -117,7 +117,7 @@ fn mixed_machines_and_protocols_are_invalid() -> Result<(), String> {
         value["machine"] = json!("other-machine")
     })?;
     edit(&path, "resolution-process-02.json", |value| {
-        value["protocol"] = json!("e-pg-13/2")
+        value["protocol"] = json!("project-campaign/2")
     })?;
     let message = reasons(&path)?;
     assert!(message.contains("mix machines") && message.contains("protocol differs"));

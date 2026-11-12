@@ -14,17 +14,17 @@ dirigida a quien implementa el motor, no material publicable.
 |--------------------------------------------|-----------------------------------------------------|------------------------------------------------------|
 | 1. Convenciones de la especificación       | Especificado                                        | No se proyecta — metanotación interna                |
 | 2. Modelo de perfil                        | Especificado                                        | No se proyecta — dato de perfil, no de contenido     |
-| 3. Estructura léxica                       | Especificado                                        | `esp-i-lexico` · publicada (CON-F18)                 |
-| 4. Tipos primitivos                        | Especificado                                        | `esp-i-tipos-primitivos` · publicada (CON-F6)        |
-| 5. Operadores, precedencia y asociatividad | Especificado                                        | `esp-i-operadores` · publicada (CON-F6)              |
-| 6. Declaración y asignación                | Especificado                                        | `esp-i-declaracion` · publicada (CON-F6)             |
-| 7. Entrada y salida                        | Especificado                                        | `esp-i-entrada-salida` · publicada (CON-F18)         |
-| 8. Estructuras de control                  | Especificado                                        | `esp-i-control` · publicada (CON-F18)                |
-| 9. Arreglos                                | Especificado                                        | `esp-i-arreglos` · publicada (CON-F18)               |
-| 10. Subprocesos y funciones                | Especificado                                        | `esp-i-subprogramas` · publicada (CON-F18)           |
-| 11. Orientación a objetos                  | Especificado                                        | `esp-o-clases` · publicada (CON-F19)                 |
-| 12. Sistema de tipos y política de rigor   | Especificado                                        | `esp-i-sistema-de-tipos` · publicada (CON-F18)       |
-| 13. Funciones incorporadas                 | Especificado                                             | `esp-i-funciones-incorporadas` · publicada (CON-F18) |
+| 3. Estructura léxica                       | Especificado                                        | `esp-i-lexico` · publicada                 |
+| 4. Tipos primitivos                        | Especificado                                        | `esp-i-tipos-primitivos` · publicada        |
+| 5. Operadores, precedencia y asociatividad | Especificado                                        | `esp-i-operadores` · publicada              |
+| 6. Declaración y asignación                | Especificado                                        | `esp-i-declaracion` · publicada             |
+| 7. Entrada y salida                        | Especificado                                        | `esp-i-entrada-salida` · publicada         |
+| 8. Estructuras de control                  | Especificado                                        | `esp-i-control` · publicada                |
+| 9. Arreglos                                | Especificado                                        | `esp-i-arreglos` · publicada               |
+| 10. Subprocesos y funciones                | Especificado                                        | `esp-i-subprogramas` · publicada           |
+| 11. Orientación a objetos                  | Especificado                                        | `esp-o-clases` · publicada                 |
+| 12. Sistema de tipos y política de rigor   | Especificado                                        | `esp-i-sistema-de-tipos` · publicada       |
+| 13. Funciones incorporadas                 | Especificado                                             | `esp-i-funciones-incorporadas` · publicada |
 | 14. Gramática formal                       | Especificado | No se proyecta — gramática interna, no se publica    |
 
 

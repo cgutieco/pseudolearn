@@ -4,7 +4,7 @@ use serde_json::{Value, json};
 use std::path::{Path, PathBuf};
 
 fn directory(name: &str) -> Result<PathBuf, String> {
-    let path = std::env::temp_dir().join(format!("e-pg-11-{}-{name}", std::process::id()));
+    let path = std::env::temp_dir().join(format!("help-campaign-{}-{name}", std::process::id()));
     let _ = std::fs::remove_dir_all(&path);
     std::fs::create_dir_all(path.join("functional")).map_err(|error| error.to_string())?;
     Ok(path)
@@ -25,7 +25,7 @@ fn process(series: &str, index: usize, samples: usize, resolution: &str) -> Valu
         document.insert((*metric).to_owned(), json!(values));
     }
     json!({
-        "format": "e-pg-11-process/1", "series": series, "process": index.to_string(),
+        "format": "help-campaign-process/1", "series": series, "process": index.to_string(),
         "seed": 42, "iterations": 30, "clock_resolution_ns": resolution,
         "documents": [document.clone(), document],
     })

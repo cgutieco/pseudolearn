@@ -33,11 +33,11 @@ void main() {
 
     testWidgets('after a run it shows the selectable folder path', (tester) async {
       await tester.pumpWidget(
-        _wrap(const WorkingDirectoryNote(directory: '/docs/execution/doc-1')),
+        _wrap(const WorkingDirectoryNote(directory: '/workspace/execution/doc-1')),
       );
 
       expect(find.text(_explanation), findsOneWidget);
-      expect(find.text('/docs/execution/doc-1'), findsOneWidget);
+      expect(find.text('/workspace/execution/doc-1'), findsOneWidget);
       expect(find.byType(SelectableText), findsOneWidget);
     });
 

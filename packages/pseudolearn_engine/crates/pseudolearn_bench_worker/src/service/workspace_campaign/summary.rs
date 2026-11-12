@@ -114,7 +114,7 @@ pub fn summarize(records: &[Value], selection: &Selection) -> Result<Value, Stri
         .iter()
         .all(|group| group.get("within_threshold") != Some(&Value::Bool(false)));
     Ok(json!({
-        "protocol": "pg-service/1",
+        "protocol": "workspace-campaign/1",
         "partial": selection.is_partial(),
         "included_groups": included,
         "groups": summaries,

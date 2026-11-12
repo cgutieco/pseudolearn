@@ -11,7 +11,7 @@ fn sample(duration: u64, output: &str) -> Value {
 
 fn process(identity: u64, samples: Vec<Value>) -> Value {
     json!({
-        "protocol": "pg-http/1",
+        "protocol": "http-campaign/1",
         "process": identity,
         "machine": "reference",
         "clock_resolution_nanoseconds": 1,

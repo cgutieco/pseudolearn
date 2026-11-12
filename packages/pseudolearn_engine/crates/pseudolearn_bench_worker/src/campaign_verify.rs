@@ -1,10 +1,10 @@
 use serde_json::Value;
 use std::collections::BTreeSet;
 
-pub const PROTOCOL: &str = "e-pg-2/1";
+pub const PROTOCOL: &str = "capability-campaign/1";
 pub const MINIMUM_PROCESSES: usize = 10;
 pub const SAMPLES_PER_PROCESS: usize = 30;
-const EXPERIMENTS: [&str; 2] = ["E-PG-03", "E-PG-04"];
+const EXPERIMENTS: [&str; 2] = ["generics", "closures"];
 
 pub fn verify(path: &str) -> Result<(), String> {
     let text = std::fs::read_to_string(path).map_err(|error| error.to_string())?;
@@ -23,7 +23,7 @@ pub fn invalidations(campaign: &Value) -> Vec<String> {
         problems.push(format!("protocol is not {PROTOCOL}"));
     }
     if !EXPERIMENTS.contains(&text_of(campaign, "experiment").as_str()) {
-        problems.push("experiment is not E-PG-03 or E-PG-04".to_owned());
+        problems.push("experiment is not generics or closures".to_owned());
     }
     let processes = campaign
         .get("processes")

@@ -10,7 +10,6 @@
     "responsable-motor"
   ],
   "sujetos": [
-    "reference",
     "engine",
     "aot"
   ],

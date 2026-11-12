@@ -62,7 +62,7 @@ const ExportState _withheld = ExportState(
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  group('ExportTabView Presentation Tests (PANT-02D-F2)', () {
+  group('ExportTabView Presentation Tests', () {
     testWidgets('renders unavailable state when exporter status is unavailable', (tester) async {
       const state = ExportState(
         status: ExportStatus.unavailable,

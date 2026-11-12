@@ -9,7 +9,7 @@ import 'package:pseudolearn_app/domain/model/settings/device_preferences.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 
 void main() {
-  group('FilePreferencesStore Tests (CIM-F4)', () {
+  group('FilePreferencesStore Tests', () {
     late Directory tempDir;
     late FilePreferencesStore store;
 

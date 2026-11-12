@@ -1,7 +1,7 @@
 use crate::service::project_campaign::datasets::{Dataset, Edit, GraphPlan, graph};
 use crate::service::project_campaign::shapes::Shape;
 
-pub const PROTOCOL: &str = "e-pg-13/1";
+pub const PROTOCOL: &str = "project-campaign/1";
 pub const COUNTS: [usize; 3] = [10, 100, 1000];
 pub const FIXED_TOTAL_LINES: usize = 10_000;
 pub const GROWING_LINES_PER_FILE: usize = 100;

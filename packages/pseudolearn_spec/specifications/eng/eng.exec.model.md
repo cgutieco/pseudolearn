@@ -10,7 +10,6 @@
     "responsable-motor"
   ],
   "sujetos": [
-    "reference",
     "engine"
   ],
   "resumen": "Ejecución determinista y sus cinco terminaciones.",

@@ -43,6 +43,6 @@
   "criterio_de_terminado": [
     "Las treinta y cinco especificaciones están en estable.",
     "see validate acepta la cobertura regla → instrucciones sin huecos.",
-    "ENG.EXEC.MODEL, ENG.TRACE.EVENTS y ENG.INPUT están contrastadas con reference."
+    "ENG.EXEC.MODEL, ENG.TRACE.EVENTS y ENG.INPUT están contrastadas con los sujetos activos."
   ]
 }

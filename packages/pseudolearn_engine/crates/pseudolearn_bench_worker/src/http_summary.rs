@@ -5,14 +5,14 @@ use serde_json::{Value, json};
 use std::collections::BTreeSet;
 use std::path::{Path, PathBuf};
 
-const PROTOCOL: &str = "pg-http/1";
+const PROTOCOL: &str = "http-campaign/1";
 const MINIMUM_PROCESSES: usize = 10;
 const SAMPLES_PER_PROCESS: usize = 30;
 const BOOTSTRAP_DRAWS: usize = 2000;
 
 pub fn summarize(arguments: &[String]) -> Result<(), String> {
     let [directory] = arguments else {
-        return Err("Usage: pg-http-summary <directory>".to_owned());
+        return Err("Usage: http-summary <directory>".to_owned());
     };
     let output = Path::new(directory).join("summary.json");
     if output.exists() {
@@ -134,7 +134,7 @@ pub(super) fn invalidations(processes: &[Value], name: &str) -> Vec<String> {
 fn process_invalidations(process: &Value, name: &str) -> Vec<String> {
     let mut problems = Vec::new();
     if text_of(process, "protocol") != PROTOCOL {
-        problems.push("protocol does not match pg-http/1".to_owned());
+        problems.push("protocol does not match http-campaign/1".to_owned());
     }
     if text_of(process, "workload") != name {
         problems.push(format!("workload is not {name}"));

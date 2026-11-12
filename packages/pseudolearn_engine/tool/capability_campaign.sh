@@ -2,7 +2,7 @@ set -eu
 
 cd "$(dirname "$0")/.."
 
-experiment="${1:?usage: bash tool/capability_campaign.sh <E-PG-03|E-PG-04> <new-campaign-directory> <machine-label>}"
+experiment="${1:?usage: bash tool/capability_campaign.sh <generics|closures> <new-campaign-directory> <machine-label>}"
 campaign="${2:?missing campaign directory}"
 machine="${3:?missing machine label}"
 if [ -e "$campaign" ]; then
@@ -42,6 +42,6 @@ shasum -a 256 target/release/pseudolearn_bench_worker > "$campaign/provenance/bi
 
 worker=target/release/pseudolearn_bench_worker
 for process in 0 1 2 3 4 5 6 7 8 9; do
-  run "$worker" pg-collect "$experiment" "$campaign" "$process" "$machine"
+  run "$worker" campaign-collect "$experiment" "$campaign" "$process" "$machine"
 done
-run "$worker" pg-summary "$experiment" "$campaign"
+run "$worker" campaign-summary "$experiment" "$campaign"

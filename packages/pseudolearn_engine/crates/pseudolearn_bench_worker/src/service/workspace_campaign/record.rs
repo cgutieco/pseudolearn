@@ -5,7 +5,7 @@ use crate::service::workspace_campaign::scenario::Scenario;
 use serde_json::{Value, json};
 use std::path::Path;
 
-pub const PROTOCOL: &str = "pg-service/1";
+pub const PROTOCOL: &str = "workspace-campaign/1";
 pub const BOUNDARY: &str = "pseudo-lsp-stdio";
 pub const SEED: u64 = 42;
 

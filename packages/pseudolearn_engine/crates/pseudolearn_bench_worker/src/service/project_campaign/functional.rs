@@ -97,7 +97,7 @@ pub fn write(directory: &str) -> Result<(), String> {
     let folder = format!("{directory}/functional");
     std::fs::create_dir_all(&folder).map_err(|error| error.to_string())?;
     let summary = json!({
-        "format": "e-pg-13-functional/1",
+        "format": "project-campaign-functional/1",
         "protocol": PROTOCOL,
         "programs": report.programs,
         "dataset_digest": report.digest,

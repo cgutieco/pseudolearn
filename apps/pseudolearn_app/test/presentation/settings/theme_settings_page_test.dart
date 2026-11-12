@@ -37,7 +37,7 @@ Widget _buildThemeSettingsTestApp({
 }
 
 void main() {
-  group('ThemeSettingsView Interaction Tests (PANT-05-F3)', () {
+  group('ThemeSettingsView Interaction Tests', () {
     testWidgets('Renders theme options', (tester) async {
       await tester.pumpWidget(_buildThemeSettingsTestApp());
       await tester.pumpAndSettle();

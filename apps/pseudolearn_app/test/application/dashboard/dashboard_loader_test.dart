@@ -31,7 +31,7 @@ Document _documentOf(String id, String content) {
 }
 
 void main() {
-  group('DashboardLoader (PANT-06-F5)', () {
+  group('DashboardLoader', () {
     late InMemoryDocumentRepository documents;
     late FakeRouteRepository route;
     late InMemoryProgressHistory history;

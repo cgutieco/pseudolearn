@@ -10,7 +10,6 @@
     "responsable-lenguaje"
   ],
   "sujetos": [
-    "reference",
     "engine",
     "aot"
   ],
@@ -38,7 +37,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Azar(n) recibe un entero n y produce un entero uniforme en [0, n); un límite n menor o igual que cero termina con el fallo invalidRandomBound. Aleatorio(a, b) recibe dos enteros y produce un entero uniforme en [a, b], ambos incluidos; un inicio mayor que el final termina con invalidRandomRange. AzarReal() no recibe argumentos y produce un real en [0,1). Las tres leen la misma fuente, inyectada con semilla explícita: una secuencia es reproducible para la misma fuente y semilla. La reducción de una palabra de la fuente a un intervalo descarta las palabras del resto final del rango y reduce las demás por módulo, de modo que ningún entero tiene más probabilidad que otro. El núcleo no consulta reloj ni azar global del anfitrión. El algoritmo de fuente y su compatibilidad pertenecen al contrato del runtime; no se deducen de una captura de reference. La cantidad y el tipo de los argumentos se comprueban estáticamente.",
+  "texto": "Azar(n) recibe un entero n y produce un entero uniforme en [0, n); un límite n menor o igual que cero termina con el fallo invalidRandomBound. Aleatorio(a, b) recibe dos enteros y produce un entero uniforme en [a, b], ambos incluidos; un inicio mayor que el final termina con invalidRandomRange. AzarReal() no recibe argumentos y produce un real en [0,1). Las tres leen la misma fuente, inyectada con semilla explícita: una secuencia es reproducible para la misma fuente y semilla. La reducción de una palabra de la fuente a un intervalo descarta las palabras del resto final del rango y reduce las demás por módulo, de modo que ningún entero tiene más probabilidad que otro. El núcleo no consulta reloj ni azar global del anfitrión. El algoritmo de fuente y su compatibilidad pertenecen al contrato del runtime; no se deducen de una captura de un sujeto. La cantidad y el tipo de los argumentos se comprueban estáticamente.",
   "verificacion": [
     "C1",
     "C2",

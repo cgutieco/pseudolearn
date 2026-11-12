@@ -42,7 +42,7 @@ void main() {
     sqfliteFfiInit();
   });
 
-  group('CIE-F1 · Transversal Integration and Edge Cases', () {
+  group('Transversal Integration and Edge Cases', () {
     late InMemoryPreferencesStore preferences;
     late InMemoryDocumentRepository docRepo;
     late FakeIdentifierGenerator idGen;

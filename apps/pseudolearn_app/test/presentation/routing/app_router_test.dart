@@ -186,7 +186,7 @@ Widget _appWith(GoRouter router, [AppDependencies? deps]) {
 }
 
 void main() {
-  group('buildAppRouter (CIM-F5)', () {
+  group('buildAppRouter', () {
     testWidgets('starts at the first destination and shows its label', (tester) async {
       await tester.pumpWidget(_appWith(buildAppRouter()));
       await tester.pumpAndSettle();

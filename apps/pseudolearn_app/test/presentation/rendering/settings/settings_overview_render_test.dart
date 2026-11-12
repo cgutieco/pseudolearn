@@ -54,7 +54,7 @@ Future<void> _pumpSettingsOverviewView(
 
 void main() {
   group(
-    'SettingsOverviewPage render checks (PANT-05-F3) — three widths, two themes',
+    'SettingsOverviewPage render checks — three widths, two themes',
     () {
       final widths = <String, double>{
         'compact': 360,

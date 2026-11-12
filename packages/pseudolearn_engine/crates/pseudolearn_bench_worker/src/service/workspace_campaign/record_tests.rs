@@ -43,7 +43,7 @@ fn records_missing_provenance_or_samples_are_rejected() {
 
 #[test]
 fn writing_never_overwrites_an_existing_record() -> Result<(), String> {
-    let directory = std::env::temp_dir().join(format!("pg-service-record-{}", std::process::id()));
+    let directory = std::env::temp_dir().join(format!("workspace-campaign-record-{}", std::process::id()));
     let path = directory.join("record.json");
     let _ = std::fs::remove_dir_all(&directory);
     write_new(&path, &sample_record())?;

@@ -42,7 +42,7 @@ Widget _buildLanguageSettingsTestApp({
 }
 
 void main() {
-  group('LanguageSettingsView Interaction Tests (PANT-05-F3)', () {
+  group('LanguageSettingsView Interaction Tests', () {
     testWidgets('Renders language options and notice', (tester) async {
       await tester.pumpWidget(_buildLanguageSettingsTestApp());
       await tester.pumpAndSettle();

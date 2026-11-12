@@ -201,7 +201,7 @@ pub fn run(series: &str, directory: &str, process: &str) -> Result<(), String> {
         }
     };
     let report = json!({
-        "format": "e-pg-13-process/1",
+        "format": "project-campaign-process/1",
         "protocol": PROTOCOL,
         "machine": machine(),
         "dataset_digest": dataset_digest(),

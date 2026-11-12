@@ -4,7 +4,7 @@ import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/presentation/l10n/generated/app_localizations.dart';
 
 void main() {
-  group('Language Resolution and Localizations Tests (CIM-F3)', () {
+  group('Language Resolution and Localizations Tests', () {
     test('Direct language selection resolves correct locale code', () {
       expect(UiLanguageId.spanish.resolveLocaleCode('en'), 'es');
       expect(UiLanguageId.spanish.resolveLocaleCode(null), 'es');

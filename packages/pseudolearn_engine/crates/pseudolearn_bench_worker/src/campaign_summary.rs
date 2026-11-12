@@ -10,20 +10,20 @@ const INDIRECT_CALL_THRESHOLD: f64 = 1.25;
 
 pub fn summarize(arguments: &[String]) -> Result<(), String> {
     let [experiment, directory] = arguments else {
-        return Err("Usage: pg-summary <E-PG-03|E-PG-04> <directory>".to_owned());
+        return Err("Usage: campaign-summary <generics|closures> <directory>".to_owned());
     };
     let names = workload_names(experiment)?;
     let mut results = Vec::new();
     for name in &names {
         results.push(workload_result(experiment, directory, name)?);
     }
-    let growth = if experiment == "E-PG-03" {
+    let growth = if experiment == "generics" {
         growth(directory, &results)?
     } else {
         Value::Null
     };
     let summary = json!({
-        "protocol": "e-pg-2/1",
+        "protocol": "capability-campaign/1",
         "experiment": experiment,
         "workloads": results,
         "growth": growth,
@@ -36,11 +36,11 @@ pub fn summarize(arguments: &[String]) -> Result<(), String> {
 
 fn workload_names(experiment: &str) -> Result<Vec<String>, String> {
     match experiment {
-        "E-PG-03" => Ok(COMBINATIONS
+        "generics" => Ok(COMBINATIONS
             .iter()
             .map(|count| format!("generic-{count}"))
             .collect()),
-        "E-PG-04" => Ok(vec!["closure-call".to_owned(), "closure-create".to_owned()]),
+        "closures" => Ok(vec!["closure-call".to_owned(), "closure-create".to_owned()]),
         _ => Err("Unknown experiment".to_owned()),
     }
 }
@@ -98,7 +98,7 @@ fn bootstrap(pairs: &[(f64, f64)]) -> (f64, f64) {
 fn workload_result(experiment: &str, directory: &str, name: &str) -> Result<Value, String> {
     let processes = load_processes(directory, name)?;
     let campaign =
-        json!({"protocol": "e-pg-2/1", "experiment": experiment, "processes": processes});
+        json!({"protocol": "capability-campaign/1", "experiment": experiment, "processes": processes});
     let problems = invalidations(&campaign);
     if !problems.is_empty() {
         return Err(format!("{name}: invalid campaign\n{}", problems.join("\n")));

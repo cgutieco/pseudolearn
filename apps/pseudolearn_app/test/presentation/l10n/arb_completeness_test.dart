@@ -81,7 +81,7 @@ List<ArbDifference> compareArbMaps(
 }
 
 void main() {
-  group('ARB Completeness and Parity Checks (CIM-F3)', () {
+  group('ARB Completeness and Parity Checks', () {
     final packageRoot = Directory.current.path;
 
     test('app_es.arb and app_en.arb have exact key and placeholder parity', () {

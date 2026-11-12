@@ -85,7 +85,7 @@ Future<void> _pumpShell(WidgetTester tester, Size size, ThemeData theme) async {
 
 void main() {
   group(
-    'Empty adaptive shell render checks (CIM-F5) — three widths, two themes',
+    'Empty adaptive shell render checks — three widths, two themes',
     () {
       final widths = <String, double>{
         'compact': 360,

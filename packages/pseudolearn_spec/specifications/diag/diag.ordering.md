@@ -10,7 +10,6 @@
     "responsable-lenguaje"
   ],
   "sujetos": [
-    "reference",
     "engine"
   ],
   "resumen": "Orden de diagnósticos.",

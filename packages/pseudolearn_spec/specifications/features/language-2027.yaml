@@ -1,7 +1,7 @@
 {
   "caracteristica": "language-2027",
   "titulo": "Lenguaje vigente completo",
-  "estado_agregado": "experimental",
+  "estado_agregado": "estable",
   "edicion": "2027",
   "especificaciones": [
     "DIAG.CATALOG",
@@ -91,9 +91,9 @@
     "LIB.MODEL"
   ],
   "criterio_de_terminado": [
-    "Todos los contratos del lenguaje, diagnósticos y biblioteca en experimental.",
+    "Todos los contratos del lenguaje, diagnósticos y biblioteca en estable.",
     "Casos derivados bilingües.",
-    "Divergencias específicas clasificadas sin modificar reference.",
+    "Divergencias específicas clasificadas en los sujetos activos.",
     "Gramática y recursos normativos completos y verificables."
   ]
 }

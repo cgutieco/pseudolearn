@@ -152,7 +152,7 @@ pub fn body(directory: &Path) -> Result<Value, String> {
         .and_then(|document| document.pointer("/core_ms/p95_ms"))
         .and_then(Value::as_f64);
     Ok(json!({
-        "experiment": "E-PG-11",
+        "experiment": "help-campaign",
         "seed": SEED,
         "bootstrap_resamples": crate::service::help_campaign::bootstrap::RESAMPLES,
         "candidate_criterion_p95_ms": CRITERION_P95_MS,
@@ -167,7 +167,7 @@ pub fn body(directory: &Path) -> Result<Value, String> {
 pub fn write(directory: &str) -> Result<(), String> {
     let path = Path::new(directory);
     let summary = json!({
-        "format": "e-pg-11-summary/1",
+        "format": "help-campaign-summary/1",
         "raw_digests": raw_digests(path)?,
         "body": body(path)?,
     });

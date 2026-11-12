@@ -21,7 +21,7 @@ fn process(identity: u64, machine: &str) -> Value {
 }
 
 fn campaign(processes: Vec<Value>) -> Value {
-    json!({"protocol": PROTOCOL, "experiment": "E-PG-03", "processes": processes})
+    json!({"protocol": PROTOCOL, "experiment": "generics", "processes": processes})
 }
 
 fn set(campaign: &mut Value, pointer: &str, value: Value) {
@@ -125,7 +125,7 @@ fn rejects_zero_clock_resolution_and_repeated_process_identity() {
 #[test]
 fn rejects_an_unknown_experiment_and_protocol() {
     let mut campaign = valid();
-    set(&mut campaign, "/experiment", json!("E-PG-99"));
+    set(&mut campaign, "/experiment", json!("unknown-experiment"));
     set(&mut campaign, "/protocol", json!("other/1"));
     assert_eq!(invalidations(&campaign).len(), 2);
 }

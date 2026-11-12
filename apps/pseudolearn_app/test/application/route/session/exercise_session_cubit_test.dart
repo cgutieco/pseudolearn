@@ -19,7 +19,7 @@ import '../../../fakes/route_fixtures.dart';
 import '../../../fakes/in_memory_user_exercise_repository.dart';
 
 void main() {
-  group('ExerciseSessionCubit (CON-F9)', () {
+  group('ExerciseSessionCubit', () {
     late FakeRouteRepository repository;
     late FakeExerciseChecker checker;
     late InMemoryLocalProgressStore progressStore;

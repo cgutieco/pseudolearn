@@ -47,15 +47,15 @@ fn main() -> std::process::ExitCode {
         "paired" => paired::collect(&std::env::args().nth(2).unwrap_or_default()),
         "aot" => collect_aot(&std::env::args().skip(2).collect::<Vec<_>>()),
         "service" => service::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
-        "pg-collect" => campaign_collect::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
-        "pg-tape" => tape_collect::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
-        "pg-tasks" => tasks_campaign::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
-        "pg-summary" => campaign_summary::summarize(&std::env::args().skip(2).collect::<Vec<_>>()),
-        "pg-http" => http_campaign::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
-        "pg-http-summary" => {
+        "campaign-collect" => campaign_collect::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
+        "tape-collect" => tape_collect::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
+        "tasks-campaign" => tasks_campaign::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
+        "campaign-summary" => campaign_summary::summarize(&std::env::args().skip(2).collect::<Vec<_>>()),
+        "http-campaign" => http_campaign::collect(&std::env::args().skip(2).collect::<Vec<_>>()),
+        "http-summary" => {
             http_summary::summarize(&std::env::args().skip(2).collect::<Vec<_>>())
         }
-        "pg-verify" => campaign_verify::verify(&std::env::args().nth(2).unwrap_or_default()),
+        "campaign-verify" => campaign_verify::verify(&std::env::args().nth(2).unwrap_or_default()),
         "frontend" => frontend::collect(),
         "frontend-profile" => frontend::profile(),
         _ => Err("Usage: pseudolearn_bench_worker frontend|frontend-profile|aot <output> <ceiling-raw.json> <vm-summary.json>".to_owned()),

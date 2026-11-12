@@ -4,7 +4,7 @@ use serde_json::{Value, json};
 use std::path::{Path, PathBuf};
 use std::time::Instant;
 
-const PROTOCOL: &str = "pg-http/1";
+const PROTOCOL: &str = "http-campaign/1";
 const SAMPLES_PER_PROCESS: usize = 30;
 
 struct PreparedWorkload {
@@ -21,7 +21,7 @@ struct ProcessIdentity<'identity> {
 
 pub fn collect(arguments: &[String]) -> Result<(), String> {
     let [directory, process, machine] = arguments else {
-        return Err("Usage: pg-http <new-directory> <process> <machine>".to_owned());
+        return Err("Usage: http-campaign <new-directory> <process> <machine>".to_owned());
     };
     let process = process
         .parse::<u64>()

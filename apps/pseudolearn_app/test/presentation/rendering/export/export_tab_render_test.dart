@@ -55,7 +55,7 @@ if __name__ == "__main__":
   );
 
   group(
-    'ExportTabView render checks (PANT-02D-F2) — three widths, two themes',
+    'ExportTabView render checks — three widths, two themes',
     () {
       testWidgets('compact · light', (tester) async {
         await _pumpExportTab(

@@ -7,7 +7,7 @@ use std::time::Instant;
 
 pub fn collect(arguments: &[String]) -> Result<(), String> {
     let [directory, process, machine] = arguments else {
-        return Err("Usage: pg-tape <directory> <process> <machine>".to_owned());
+        return Err("Usage: tape-collect <directory> <process> <machine>".to_owned());
     };
     let process: u64 = process.parse().map_err(|_| "Invalid process".to_owned())?;
     let mut records = Vec::new();

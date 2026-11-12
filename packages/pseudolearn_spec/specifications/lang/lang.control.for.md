@@ -13,7 +13,6 @@
     "César Antonio Gutiérrez Contreras"
   ],
   "sujetos": [
-    "reference",
     "engine",
     "aot"
   ],

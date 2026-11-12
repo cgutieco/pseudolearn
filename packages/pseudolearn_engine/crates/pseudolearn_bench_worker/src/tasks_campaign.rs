@@ -63,7 +63,7 @@ pub fn check_seed(subject: &mut dyn TaskSubject, seed: u64) -> Result<Vec<String
 
 pub fn collect(arguments: &[String]) -> Result<(), String> {
     let usage =
-        || "Usage: pg-tasks <directory> <first-seed> <last-seed> [vm | aot <pseudo>]".to_owned();
+        || "Usage: tasks-campaign <directory> <first-seed> <last-seed> [vm | aot <pseudo>]".to_owned();
     let [directory, first, last, subject_arguments @ ..] = arguments else {
         return Err(usage());
     };

@@ -7,7 +7,7 @@ import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 
 void main() {
-  group('CIE-F2 · Execution Performance Benchmark (Mid-Range Device Budget)', () {
+  group('Execution Performance Benchmark (Mid-Range Device Budget)', () {
     const calculationLoop = '''
 Proceso Benchmark
   Definir i Como Entero <- 0;

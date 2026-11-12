@@ -35,7 +35,7 @@ FinAlgoritmo
 ''';
 
 void main() {
-  group('RustProgramConstructReader (PANT-06-F5)', () {
+  group('RustProgramConstructReader', () {
     final reader = nativeTestEngine.programConstructReader;
 
     test('reports every construct the program actually uses', () {
