@@ -96,20 +96,16 @@ fn run_bindings(
     let (session, arguments) = input;
     let mut reports = Vec::new();
     for binding in bindings {
-        if status.property_is_exempt(context.corpus, &binding.reference) {
-            continue;
-        }
-        if status.property_is_pending(context.corpus, &binding.reference) {
-            reports.push(crate::native_properties::pending_report(binding)?);
+        let report = if status.property_is_pending(context.corpus, &binding.reference) {
+            crate::native_properties::pending_report(binding)?
         } else if crate::native_properties::supports(binding.executor) {
-            reports.push(crate::native_properties::run(
-                binding,
-                arguments,
-                context.corpus,
-                session,
-            )?);
+            crate::native_properties::run(binding, arguments, context.corpus, session)?
         } else {
-            reports.push(properties::run(binding, context, session)?);
+            properties::run(binding, context, session)?
+        };
+        let unavailable = report.verdict == "pendiente";
+        if !(unavailable && status.property_is_exempt(context.corpus, &binding.reference)) {
+            reports.push(report);
         }
     }
     Ok(reports)
