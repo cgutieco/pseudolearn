@@ -492,7 +492,7 @@ Los valores esperados de R3 se calculan con el oráculo independiente de see_ora
   "id": "R6",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El anfitrión de memoria es exclusivamente un doble de prueba del corpus, no distribuible ni accesible desde CLI, extensión o app. Acepta respuestas HTTP declaradas en anfitrion.http, indexadas por método y URL, con estado, cabeceras repetidas, cuerpo textual o bytes, fallo e incertidumbre. Nunca abre sockets ni resuelve nombres. La configuración de prueba no admite permissions, requested_permissions, network_origins ni local_origins.",
+  "texto": "El anfitrión de memoria es exclusivamente un doble de prueba del corpus, no distribuible ni accesible desde CLI, extensión o app. Acepta respuestas HTTP declaradas en anfitrion.http, indexadas por método y URL, con estado, cabeceras repetidas, cuerpo textual o bytes, fallo e incertidumbre. Nunca abre sockets ni resuelve nombres. La configuración de prueba rechaza cualquier clave que no declare.",
   "verificacion": [
     "C9"
   ]

@@ -12,19 +12,9 @@ impl DetachedHostProvider {
 
     pub fn from_value(value: &serde_json::Value) -> Result<Self, IoError> {
         if value.as_object().is_none_or(|fields| {
-            fields.keys().any(|key| {
-                matches!(
-                    key.as_str(),
-                    "files"
-                        | "http"
-                        | "clock"
-                        | "faults"
-                        | "permissions"
-                        | "requested_permissions"
-                        | "network_origins"
-                        | "local_origins"
-                )
-            })
+            fields
+                .keys()
+                .any(|key| matches!(key.as_str(), "files" | "http" | "clock" | "faults"))
         }) {
             return Err(IoError::from_kind(
                 pseudolearn_abi::IoErrorKind::InvalidRequest,

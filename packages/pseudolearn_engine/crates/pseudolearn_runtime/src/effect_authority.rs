@@ -33,11 +33,11 @@ pub(crate) fn prepare(
         None => root_rights(operation.result)?,
     };
     if let Some(kind) = capability_kind(operation.result) {
-        let network_origins = (kind == CapabilityKind::Network)
+        let restricted_network = (kind == CapabilityKind::Network)
             .then(|| network_capability_origins(authority, operation, request))
             .transpose()?;
         let token = authority.table.allocate(kind, rights);
-        if let Some(origins) = network_origins {
+        if let Some(origins) = restricted_network {
             authority.network_capabilities.insert(token.slot, origins);
         }
         request.result_capability = Some(token.into());

@@ -177,17 +177,12 @@ fn an_empty_effect_list_is_accepted() {
 }
 
 #[test]
-fn host_schema_rejects_retired_authority_configuration() -> Result<(), String> {
+fn host_schema_rejects_undeclared_configuration() -> Result<(), String> {
     let schema: Value = serde_json::from_str(include_str!("../../../schemas/see-1.schema.json"))
         .map_err(|error| error.to_string())?;
     let host_schema = schema.pointer("/$defs/host").ok_or("missing host schema")?;
     assert!(crate::schema_engine::check(&json!({}), host_schema, &schema, 0).is_ok());
-    for key in [
-        "permissions",
-        "requested_permissions",
-        "network_origins",
-        "local_origins",
-    ] {
+    for key in ["permissions", "undeclared", "z"] {
         assert!(crate::schema_engine::check(&json!({key: []}), host_schema, &schema, 0).is_err());
     }
     Ok(())

@@ -3434,7 +3434,7 @@
 {
   "id": "V133",
   "regla": "LANG.CAPABILITY.MODEL#R2",
-  "sin_ri": "La denegación por defecto y la autoridad de capacidades se resuelven en el anfitrión."
+  "sin_ri": "La autoridad plena de las capacidades y su atenuación voluntaria se resuelven en el anfitrión."
 }
 ```
 

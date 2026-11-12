@@ -14,22 +14,11 @@ fn an_empty_host_configuration_needs_no_authority_declaration() {
 }
 
 #[test]
-fn retired_authority_keys_are_rejected_by_the_test_host() {
-    for key in [
-        "permissions",
-        "requested_permissions",
-        "network_origins",
-        "local_origins",
-    ] {
-        let host = json!({ key: [] });
+fn unknown_host_keys_are_still_rejected() {
+    for key in ["unknown_directive", "permissions", "x"] {
+        let host = json!({ key: 1 });
         assert!(MemoryHostProvider::from_value(&host).is_err(), "{key}");
     }
-}
-
-#[test]
-fn unknown_host_keys_are_still_rejected() {
-    let host = json!({ "unknown_directive": 1});
-    assert!(MemoryHostProvider::from_value(&host).is_err());
 }
 
 #[test]
