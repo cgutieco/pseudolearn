@@ -1,0 +1,23 @@
+term allowedOrigins
+term BrowserGrants
+term network_origins
+term requested_permissions
+term local_origins
+term SimulatedScenario
+term simulatedScenario
+term simulated_scenario
+term simulated_capabilities
+term RustSimulatedHost
+term rust_simulated
+term retiredAuthorityOption
+term nativeTasksUnsupported
+term HTTP simulado
+term denegación por defecto
+term deny by default
+term denied by default
+allowed docs/
+allowed packages/pseudolearn_spec/xtask/eradicated-terms.txt
+allowed packages/pseudolearn_spec/xtask/fixtures/eradication/
+allowed apps/pseudolearn_app/tool/execution_host_checks.dart
+allowed apps/pseudolearn_app/tool/fixtures/retired_execution_host.fixture
+allowed apps/pseudolearn_app/test/tool/task_projection_summary_test.dart

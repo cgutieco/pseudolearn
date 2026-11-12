@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 mod documentation;
+mod eradication;
 mod retirement;
 
 fn main() -> std::process::ExitCode {
@@ -20,6 +21,10 @@ fn verify() -> Result<(), String> {
     export()?;
     retirement::check(std::path::Path::new("../.."))?;
     documentation::check(std::path::Path::new("../.."))?;
+    eradication::check(
+        std::path::Path::new("../.."),
+        std::path::Path::new("xtask/eradicated-terms.txt"),
+    )?;
     for arguments in commands() {
         let status = std::process::Command::new("cargo")
             .args(&arguments)
