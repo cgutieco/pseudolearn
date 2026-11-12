@@ -4,7 +4,8 @@ use std::collections::BTreeMap;
 use std::path::Path;
 
 const PENDING: &str = "pendiente";
-const UNMEASURED: [&str; 2] = [PENDING, "exento"];
+const EXEMPT: &str = "exento";
+const UNMEASURED: [&str; 2] = [PENDING, EXEMPT];
 
 pub(crate) struct RuleStatus {
     subject: String,
@@ -61,6 +62,11 @@ impl RuleStatus {
 
     pub(crate) fn property_is_pending(&self, corpus: &Corpus, reference: &str) -> bool {
         property_rule(corpus, reference).is_some_and(|rule| self.is_pending(&rule))
+    }
+
+    pub(crate) fn property_is_exempt(&self, corpus: &Corpus, reference: &str) -> bool {
+        property_rule(corpus, reference)
+            .is_some_and(|rule| self.states.get(&rule).is_some_and(|state| state == EXEMPT))
     }
 }
 

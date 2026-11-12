@@ -78,3 +78,15 @@ fn malformed_or_unknown_property_references_are_not_pending() -> Result<(), Stri
     assert!(!pending.property_is_pending(&corpus, ""));
     Ok(())
 }
+
+#[test]
+fn a_property_of_an_exempt_rule_is_exempt_and_not_pending() -> Result<(), String> {
+    let corpus = corpus()?;
+    let exempt = status("exento");
+    assert!(exempt.property_is_exempt(&corpus, "LANG.TEST.SAMPLE@1.0.0#P1"));
+    assert!(!exempt.property_is_pending(&corpus, "LANG.TEST.SAMPLE@1.0.0#P1"));
+    assert!(!status("cumple").property_is_exempt(&corpus, "LANG.TEST.SAMPLE@1.0.0#P1"));
+    assert!(!exempt.property_is_exempt(&corpus, "LANG.TEST.SAMPLE@1.0.0#P9"));
+    assert!(!exempt.property_is_exempt(&corpus, ""));
+    Ok(())
+}

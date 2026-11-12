@@ -96,6 +96,9 @@ fn run_bindings(
     let (session, arguments) = input;
     let mut reports = Vec::new();
     for binding in bindings {
+        if status.property_is_exempt(context.corpus, &binding.reference) {
+            continue;
+        }
         if status.property_is_pending(context.corpus, &binding.reference) {
             reports.push(crate::native_properties::pending_report(binding)?);
         } else if crate::native_properties::supports(binding.executor) {
