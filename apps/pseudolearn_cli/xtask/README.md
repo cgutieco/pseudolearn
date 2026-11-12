@@ -1,56 +1,84 @@
 # xtask
 
-## 1. Qué es y qué no es
+Herramientas de desarrollo del workspace de `pseudolearn_cli`: la puerta de verificación `cargo xtask verify`, la
+comprobación de `Cargo.lock` y un servidor HTTP/HTTPS local para las pruebas de red de la CLI.
 
-Tooling de verificación de pseudolearn_cli; no implementa la lógica de la CLI.
+**No hace:** implementar la CLI (no se enlaza al ejecutable `pseudo`), salir de loopback ni publicarse.
 
-## 2. Guía operativa y ciclo de vida
+## Dónde encaja
 
-Desde el workspace: `cargo test -p xtask`, `cargo test -p xtask http_test_server` y `cargo xtask verify`.
-Rust se fija en el archivo de cadena del workspace. No se publica.
+```mermaid
+flowchart BT
+    checks["packages/pseudolearn_rust_checks"] --> xtask["apps/pseudolearn_cli/xtask"]
+    spec["packages/pseudolearn_spec"] --> xtask
+    xtask --> cli["apps/pseudolearn_cli (tests)"]
+```
 
-El servidor de integración se ejecuta con `cargo xtask http-test-server`. Escucha en loopback y
-puertos efímeros, genera certificados bajo `target/http-test-server/<pid>/` y escribe sus direcciones
-y la raíz PEM como JSON en stdout. `--bind` solo acepta loopback; `--tls-certificate` permite
-seleccionar `valid`, `expired`, `wrong-host` o `self-signed`. El proceso permanece en primer plano.
+- `pseudolearn_rust_checks` y `pseudolearn_spec` no son dependencias de Cargo: `verify` los invoca como comandos
+  (`rust-checks all`, `rust-checks toolchain` y `see export`).
+- La CLI usa `cargo xtask http-test-server` desde `tests/network_adapter_contract.rs`.
+- Dependencias de Cargo: `flate2`, `rcgen`, `rustls` y `serde_json`.
 
-## 3. Arquitectura y modelo del sistema
+## Arquitectura
 
-`src/` contiene las tareas operativas de la CLI. `http_test_server` inicia los listeners y coordina
-el estado compartido; los módulos `http_test_server_certificates`, `http_test_server_listener` y
-`http_test_server_routes` generan certificados, atienden conexiones y describen rutas. Sus
-dependencias están declaradas en `architecture.yaml` del workspace y no se enlazan al ejecutable
-`pseudo`.
+Un solo crate declarado como `tooling` en `architecture.yaml`, sin `unsafe`. Las flechas van de la pieza usada a quien
+la usa.
 
-## 4. Decisiones de diseño y fundamentos técnicos
+```mermaid
+flowchart BT
+    certificates["certificates"] --> server["http_test_server"]
+    routes["routes"] --> listener["listener"]
+    listener --> server
+    server --> main["main"]
+    lockfile["lockfile"] --> main
+```
 
-Problema: automatizar la verificación integral de formato, linter, tests y conformidad.
-Elección: subcomando `cargo xtask verify`.
-Alternativa descartada: scripts de shell no portables entre plataformas.
+| Pieza                           | Qué hace                                                                            |
+|:--------------------------------|:------------------------------------------------------------------------------------|
+| `main`                          | Despacha `verify`, `check-lock` y `http-test-server`; `verify` ejecuta cada paso    |
+| `lockfile`                      | Falla si `cargo metadata --locked` indica un `Cargo.lock` desactualizado            |
+| `http_test_server`              | Lee las opciones, abre los listeners y anuncia sus direcciones en JSON              |
+| `http_test_server_certificates` | Genera con `rcgen` los certificados `valid`, `expired`, `wrong-host`, `self-signed` |
+| `http_test_server_listener`     | Atiende las conexiones HTTP y TLS, cada una en su hilo                              |
+| `http_test_server_routes`       | Tabla de rutas y respuestas de prueba (`/texto`, `/eco`, `/lento`, `/contador`…)    |
 
-Problema: las pruebas de transporte necesitan respuestas reproducibles sin acceder a Internet.
-Elección: un servidor HTTP/1 y TLS en Rust, limitado a direcciones loopback y con puertos efímeros;
-`rcgen` crea certificados sintéticos al arrancar. El servidor declara las rutas, los fallos y los
-cuerpos de límite; no sigue redirecciones ni depende de proxies ambientales.
+`http_test_server_listener` también importa de `certificates` y `routes`; el diagrama omite esas aristas.
 
-## 5. Reglas de legibilidad, estilo y estructura de código
+## Flujo principal
 
-Código en inglés, cero comentarios, sin unsafe ni pánicos explícitos. Límites en las reglas del workspace.
+Orden de ejecución de `cargo xtask verify`, no dependencias:
 
-## 6. Decisiones de producto que condicionan el código
+```mermaid
+flowchart LR
+    lock["check-lock"] --> export["see export"]
+    export --> fmt["fmt --check"]
+    fmt --> clippy["clippy -D warnings"]
+    clippy --> test["test --workspace"]
+    test --> host["test --features test-host"]
+    host --> rust["rust-checks all"]
+    rust --> toolchain["rust-checks toolchain"]
+    toolchain --> deny["deny check"]
+```
 
-Habilita el front-end de la CLI y sus verificadores asociados.
+## Reglas que conviene saber
 
-## 7. Verificación, testing y aseguramiento de calidad
+- `--bind` solo acepta direcciones loopback y los puertos son efímeros; cualquier otra interfaz se rechaza.
+- `--tls-certificate` admite `valid` (por defecto), `expired`, `wrong-host` y `self-signed`.
+- El servidor imprime en stdout un JSON con `http_address`, `https_address`, `certificate_directory`,
+  `root_certificate` y `tls_certificate`, y sigue en primer plano. Los certificados van a
+  `target/http-test-server/<pid>/`.
+- Sin `unsafe`, sin comentarios, nombres completos y límites de tamaño del `architecture.yaml` del workspace.
 
-El test `cargo test -p xtask http_test_server` verifica la matriz de rutas, loopback, certificados y
-rechazo de otras interfaces. El modo de prueba requiere poder abrir sockets en loopback. Formato,
-Clippy estricto, verificadores mecánicos y chequeo de dependencias siguen disponibles mediante
-`cargo xtask verify`.
+## Comandos útiles
 
-## 8. Fuentes consultadas y genealogía conceptual
+| Para qué                             | Comando                                                  |
+|:-------------------------------------|:---------------------------------------------------------|
+| Verificación completa del workspace  | `cargo xtask verify`                                     |
+| Solo el estado de `Cargo.lock`       | `cargo xtask check-lock [directorio]`                    |
+| Servidor de pruebas de red           | `cargo xtask http-test-server --bind 127.0.0.1`          |
+| Servidor con un certificado concreto | `cargo xtask http-test-server --tls-certificate expired` |
+| Tests del xtask                      | `cargo test -p xtask`                                    |
+| Solo los tests del servidor          | `cargo test -p xtask http_test_server`                   |
 
-Patrón `xtask` estándar de Rust para automatización. La generación de certificados usa
-[`rcgen` 0.14.10](https://docs.rs/rcgen/0.14.10/rcgen/struct.CertificateParams.html): se toma su
-generación y firma de certificados X.509 en Rust, y se descarta invocar `openssl` o guardar claves
-de prueba versionadas.
+Requisitos: Rust `1.99.0` (`rust-toolchain.toml`), `cargo-deny` para `verify` y permiso para abrir sockets en loopback.
+Los comandos se ejecutan desde `apps/pseudolearn_cli`.
