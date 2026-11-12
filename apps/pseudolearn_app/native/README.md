@@ -34,7 +34,7 @@ flowchart BT
 | `src/api.rs`                     | `create_session`, `call_session` y `close_session`; valida el sobre y guarda el registro de sesiones en un `thread_local` |
 | `src/bridge_session.rs`          | Una `ApiSession` más un `HostWorker` por recurso; atiende `host_open`, `host_submit`, `host_poll` y `host_close`          |
 | `src/frb_generated.rs`           | Salida de `flutter_rust_bridge_codegen`; no se versiona ni se edita                                                       |
-| `lib/engine/bridge/` (en la app) | Lado Dart generado; sí se versiona y no se edita                                                                          |
+| `lib/engine/bridge/` (en la app) | Lado Dart generado; no se versiona ni se edita                                                                            |
 
 ## Flujo principal
 
