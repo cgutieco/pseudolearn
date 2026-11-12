@@ -80,7 +80,7 @@ Desde `packages/pseudolearn_spec`. `see` es `cargo run -p see_cli --bin see --`;
 | Tests de este crate                        | `cargo test -p see_cli`                                              |
 | Validar el corpus                          | `see validate`                                                       |
 | Crear un borrador de especificación        | `see new <ID> --domain <dominio>`                                    |
-| Ver o comprobar los anclajes               | `see lock --check` · `see lock --refresh ID,ID`                      |
+| Ver o comprobar los anclajes               | `see lock` · `see lock --check`                      |
 | Comparar contra una revisión de Git        | `see diff <rev>`                                                     |
 | Contrastar un sujeto                       | `see conform --subject <engine\|aot\|service\|cli\|app> [--only ID]` |
 | Matriz regla × sujeto                      | `see matrix [--subject SUJETO]`                                      |

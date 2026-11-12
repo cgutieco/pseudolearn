@@ -33,7 +33,7 @@ fn preserves_counterexample_and_reproduction_without_running_it() -> Result<(), 
 
 #[test]
 fn reads_historical_evidence_without_property_runs() -> Result<(), String> {
-    let evidence: see_model::evidence::Evidence = serde_json::from_value(json!({"protocol": "see-protocol/1", "subject": "reference", "subject_version": "1", "corpus_hashes": {}, "observations": [], "stderr": ""})).map_err(|error| error.to_string())?;
+    let evidence: see_model::evidence::Evidence = serde_json::from_value(json!({"protocol": "see-protocol/1", "subject": "engine", "subject_version": "1", "corpus_hashes": {}, "observations": [], "stderr": ""})).map_err(|error| error.to_string())?;
     assert!(evidence.properties.is_empty());
     assert!(
         serde_json::to_value(evidence)

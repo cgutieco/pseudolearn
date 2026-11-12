@@ -15,7 +15,6 @@ const ALLOWED_OPTIONS: &[&str] = &[
     "subject",
     "only",
     "check",
-    "refresh",
     "dot",
     "operation",
     "property",

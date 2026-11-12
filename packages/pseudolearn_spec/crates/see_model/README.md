@@ -41,8 +41,8 @@ Un `Block` guarda sus campos como JSON (`BTreeMap<String, Value>`): el crate due
   `serde_json`.
 - `Metadata`, `Dependency`, `Change`, `Lock`, `Anchor` y `Manifest` rechazan campos desconocidos al leer
   (`deny_unknown_fields`).
-- `Metadata.cambio` se omite al serializar cuando no hay clasificación: bajo el congelamiento de versiones su
-  presencia sería una declaración de cambio.
+- `Metadata.cambio` se omite al serializar cuando no hay clasificación; su presencia es la declaración
+  de un cambio de versión.
 - La evidencia de propiedades vive en `PropertyRun`; el vínculo entre una propiedad y su algoritmo, en
   `PropertyRegistry`, que se carga de `property-conformance.json`, nunca de código.
 - Sin comentarios, sin `unsafe`; 300 líneas por archivo, 40 por función, 4 parámetros posicionales y 3 niveles de

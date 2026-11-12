@@ -60,23 +60,12 @@ fn command_corpus(arguments: &Arguments) -> Result<see_model::Corpus, String> {
     if arguments.command == "diff" {
         return storage::valid_for_diff(&arguments.root);
     }
-    let refreshing = arguments.command == "lock"
-        && arguments.options.contains_key("refresh")
-        && !arguments.options.contains_key("check");
-    if refreshing {
-        storage::valid_for_refresh(&arguments.root, &refresh_ids(arguments))
-    } else {
-        storage::valid(&arguments.root)
-    }
+    storage::valid(&arguments.root)
 }
 
 fn lock(arguments: &Arguments, corpus: &see_model::Corpus) -> Result<String, String> {
-    let previous = storage::local_lock(&arguments.root)?;
-    let lock = if arguments.options.contains_key("refresh") {
-        see_change::locking::refresh(corpus, &previous, &refresh_ids(arguments))?
-    } else {
-        see_change::locking::generate(corpus, &previous)?
-    };
+    let previous = storage::lock(&arguments.root)?;
+    let lock = see_change::locking::generate(corpus, &previous)?;
     storage::artifact(
         &arguments.root.join("specifications/specifications.lock"),
         &json!(lock),
@@ -177,12 +166,4 @@ fn domain<'arguments>(
         return Err("SEE-IDENTITY: domain/namespace mismatch".to_owned());
     }
     Ok(domain)
-}
-
-fn refresh_ids(arguments: &Arguments) -> Vec<String> {
-    arguments
-        .options
-        .get("refresh")
-        .map(|value| value.split(',').map(str::to_owned).collect())
-        .unwrap_or_default()
 }

@@ -8,7 +8,7 @@ fn exemptions_need_reason_and_pending_needs_open_phase() -> Result<(), String> {
     let corpus = vec![specification];
     let mut conformance = Conformance {
         estado: "activo".to_owned(),
-        sujeto: "reference".to_owned(),
+        sujeto: "engine".to_owned(),
         paquete: "core".to_owned(),
         activadas: vec![],
         fases_cerradas: vec!["R1".to_owned()],
@@ -22,7 +22,7 @@ fn exemptions_need_reason_and_pending_needs_open_phase() -> Result<(), String> {
     };
     assert!(!see_validation::bindings::check(&corpus, &conformance).is_empty());
     let binding = conformance.vinculos.first_mut().ok_or("Missing binding")?;
-    binding.justificacion = Some("Sujeto congelado".to_owned());
+    binding.justificacion = Some("Sujeto sin ejecutor".to_owned());
     assert!(see_validation::bindings::check(&corpus, &conformance).is_empty());
     let binding = conformance.vinculos.first_mut().ok_or("Missing binding")?;
     binding.estado = "pendiente".to_owned();
@@ -57,7 +57,7 @@ fn subject_state_defaults_to_active_and_rejects_unknown_states() -> Result<(), S
 fn retired_subject_cannot_count_towards_language_stability() -> Result<(), String> {
     let mut specification = support::specification()?;
     specification.metadata.estado = "estable".to_owned();
-    specification.metadata.sujetos = vec!["engine".to_owned(), "reference".to_owned()];
+    specification.metadata.sujetos = vec!["engine".to_owned(), "aot".to_owned()];
     let corpus = vec![specification];
     assert!(
         !see_validation::lifecycle::active_subjects(&corpus, &["engine".to_owned()]).is_empty()
@@ -65,7 +65,7 @@ fn retired_subject_cannot_count_towards_language_stability() -> Result<(), Strin
     assert!(
         see_validation::lifecycle::active_subjects(
             &corpus,
-            &["engine".to_owned(), "reference".to_owned()]
+            &["engine".to_owned(), "aot".to_owned()]
         )
         .is_empty()
     );

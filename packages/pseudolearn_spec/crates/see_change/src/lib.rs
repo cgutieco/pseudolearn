@@ -3,8 +3,6 @@
 pub mod classification;
 pub mod locking;
 
-pub const VERSIONING_FROZEN: bool = true;
-
 use see_model::{Specification, field};
 use sha2::{Digest, Sha256};
 

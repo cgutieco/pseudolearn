@@ -2,7 +2,7 @@ mod support;
 use see_model::contract::Lock;
 
 #[test]
-fn anchor_preserves_history_and_reanchors_frozen_edits_explicitly() -> Result<(), String> {
+fn anchor_preserves_history_and_rejects_unversioned_edits() -> Result<(), String> {
     let original = support::specification()?;
     let lock = see_change::locking::generate(&vec![original.clone()], &Lock::default())?;
     assert!(see_change::locking::check(&vec![original.clone()], &lock)?.is_empty());
@@ -13,14 +13,12 @@ fn anchor_preserves_history_and_reanchors_frozen_edits_explicitly() -> Result<()
         .ok_or("Missing rule")?
         .fields
         .insert("texto".to_owned(), serde_json::json!("Otro contrato"));
-    assert!(see_change::locking::check(&vec![modified.clone()], &lock)?.is_empty());
+    assert!(
+        see_change::locking::check(&vec![modified.clone()], &lock)?
+            .iter()
+            .any(|error| error.starts_with("SEE-HASH: content changed without version"))
+    );
     assert!(see_change::locking::generate(&vec![modified.clone()], &lock).is_err());
-    let refreshed = see_change::locking::refresh(
-        &vec![modified.clone()],
-        &lock,
-        &[modified.metadata.id.clone()],
-    )?;
-    assert!(see_change::locking::check(&vec![modified.clone()], &refreshed)?.is_empty());
     modified.metadata.version = "0.2.0".to_owned();
     let next = see_change::locking::generate(&vec![modified], &lock)?;
     assert_eq!(next.history.len(), 2);
@@ -85,29 +83,5 @@ fn removed_candidate_identity_is_allowed_but_stable_identity_requires_tombstone(
             .iter()
             .any(|error| error.starts_with("SEE-IDENTITY"))
     );
-    Ok(())
-}
-
-#[test]
-fn refresh_requires_explicit_identity_and_rejects_terminal_contracts() -> Result<(), String> {
-    let original = support::specification()?;
-    let lock = see_change::locking::generate(&vec![original.clone()], &Lock::default())?;
-    let mut modified = original;
-    modified
-        .blocks
-        .first_mut()
-        .ok_or("Missing rule")?
-        .fields
-        .insert("texto".to_owned(), serde_json::json!("Contrato corregido"));
-    let authorized = vec![modified.metadata.id.clone()];
-    let corpus = vec![modified.clone()];
-    assert!(see_change::locking::refresh(&corpus, &lock, &[]).is_err());
-    assert!(
-        see_change::locking::refresh(&corpus, &lock, &["UNKNOWN.IDENTITY".to_owned()]).is_err()
-    );
-    let refreshed = see_change::locking::refresh(&corpus, &lock, &authorized)?;
-    assert!(see_change::locking::check(&corpus, &refreshed)?.is_empty());
-    modified.metadata.estado = "retirada".to_owned();
-    assert!(see_change::locking::refresh(&vec![modified], &lock, &authorized).is_err());
     Ok(())
 }

@@ -19,7 +19,7 @@ fn requires_a_registry_when_the_corpus_declares_properties() -> Result<(), Strin
     let registry = fixture.root.join("property-conformance.json");
     std::fs::write(
         &registry,
-        "{\"format\":\"see-properties/1\",\"subjects\":[\"reference\"],\"entries\":[{\"reference\":\"SEE.TEST.SAMPLE@1.0.0#P1\",\"executor\":\"determinism\",\"seed\":42,\"samples\":1}]}",
+        "{\"format\":\"see-properties/1\",\"subjects\":[\"see\"],\"entries\":[{\"reference\":\"SEE.TEST.SAMPLE@1.0.0#P1\",\"executor\":\"determinism\",\"seed\":42,\"samples\":1}]}",
     )
     .map_err(|error| error.to_string())?;
     let valid = fixture.execute(&["validate"])?;

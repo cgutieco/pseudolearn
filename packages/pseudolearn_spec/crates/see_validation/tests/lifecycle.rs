@@ -64,12 +64,12 @@ fn new_specifications_start_at_the_stable_baseline_without_change() -> Result<()
         clase: "editorial".to_owned(),
         impacto_usuarios: "ninguno".to_owned(),
         impacto_implementaciones: "ninguno".to_owned(),
-        justificacion: "No permitido durante el congelamiento".to_owned(),
+        justificacion: "Cambio de prueba".to_owned(),
         revisado_por: "independent-reviewer".to_owned(),
     });
     expect_lifecycle_error(
         &specification,
-        "SEE-CLASSIFICATION: change field is forbidden while versioning is frozen",
+        "SEE-CLASSIFICATION: new specification cannot carry a change field",
     )?;
     Ok(())
 }
@@ -84,7 +84,7 @@ fn expect_lifecycle_error(
 }
 
 #[test]
-fn frozen_contracts_allow_official_text_edits_at_the_same_anchor() -> Result<(), String> {
+fn text_edits_at_the_same_version_are_left_to_the_lock_check() -> Result<(), String> {
     let mut specification = support::specification()?;
     let lock = see_change::locking::generate(&vec![specification.clone()], &Lock::default())?;
     specification
@@ -101,41 +101,45 @@ fn frozen_contracts_allow_official_text_edits_at_the_same_anchor() -> Result<(),
 }
 
 #[test]
-fn frozen_contracts_reject_state_version_and_change_updates() -> Result<(), String> {
+fn version_changes_require_an_increase_and_a_matching_classification() -> Result<(), String> {
     let mut specification = support::specification()?;
     let lock = see_change::locking::generate(&vec![specification.clone()], &Lock::default())?;
-    specification.metadata.estado = "obsoleta".to_owned();
-    assert!(
-        see_validation::lifecycle::check(&specification, &lock)
-            .iter()
-            .any(|error| error == "SEE-STATE: lifecycle state is frozen")
-    );
-    specification.metadata.estado = "estable".to_owned();
     specification.metadata.version = "1.0.1".to_owned();
     assert!(
         see_validation::lifecycle::check(&specification, &lock)
             .iter()
-            .any(|error| error == "SEE-VERSION: version is frozen")
+            .any(|error| error.starts_with("SEE-CLASSIFICATION"))
     );
-    specification.metadata.version = "1.0.0".to_owned();
+    specification.metadata.version = "0.9.0".to_owned();
+    assert!(
+        see_validation::lifecycle::check(&specification, &lock)
+            .iter()
+            .any(|error| error == "SEE-VERSION: version must increase")
+    );
+    specification.metadata.version = "1.0.1".to_owned();
     specification.metadata.cambio = Some(see_model::Change {
-        clase: "editorial".to_owned(),
+        clase: "restriccion".to_owned(),
         impacto_usuarios: "ninguno".to_owned(),
         impacto_implementaciones: "ninguno".to_owned(),
-        justificacion: "No permitido durante el congelamiento".to_owned(),
+        justificacion: "Cambio de prueba".to_owned(),
         revisado_por: "independent-reviewer".to_owned(),
     });
     assert!(
         see_validation::lifecycle::check(&specification, &lock)
             .iter()
-            .any(|error| error
-                == "SEE-CLASSIFICATION: change field is forbidden while versioning is frozen")
+            .any(|error| error == "SEE-VERSION: bump does not match classification")
+    );
+    specification.metadata.version = "2.0.0".to_owned();
+    assert!(
+        !see_validation::lifecycle::check(&specification, &lock)
+            .iter()
+            .any(|error| error.starts_with("SEE-VERSION") || error.starts_with("SEE-CLASSIFICATION"))
     );
     Ok(())
 }
 
 #[test]
-fn frozen_contracts_require_retired_identities_to_keep_their_tombstones() -> Result<(), String> {
+fn retired_identities_keep_their_tombstones() -> Result<(), String> {
     let mut specification = support::specification()?;
     let lock = see_change::locking::generate(&vec![specification.clone()], &Lock::default())?;
     specification.blocks.pop();
@@ -148,7 +152,7 @@ fn frozen_contracts_require_retired_identities_to_keep_their_tombstones() -> Res
 }
 
 #[test]
-fn frozen_contracts_reject_transitions_from_terminal_states() -> Result<(), String> {
+fn terminal_states_reject_transitions() -> Result<(), String> {
     let mut specification = support::specification()?;
     let mut lock = see_change::locking::generate(&vec![specification.clone()], &Lock::default())?;
     lock.specifications
@@ -163,7 +167,7 @@ fn frozen_contracts_reject_transitions_from_terminal_states() -> Result<(), Stri
     assert!(
         see_validation::lifecycle::check(&specification, &lock)
             .iter()
-            .any(|error| error == "SEE-STATE: lifecycle state is frozen")
+            .any(|error| error == "SEE-STATE: invalid lifecycle transition")
     );
     Ok(())
 }

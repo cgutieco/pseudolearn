@@ -33,7 +33,7 @@ flowchart BT
 ```
 
 `validate(corpus, lock)` reúne los errores de todas esas piezas, los ordena y quita duplicados. `see_cli` invoca
-además, fuera de `validate`, las comprobaciones de `bindings`, `migration`, `property_registry` y `schema_engine`.
+además, fuera de `validate`, las comprobaciones de `bindings`, `property_registry` y `schema_engine`.
 
 | Módulo                                | Qué comprueba                                                                                                                                                       |
 |---------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -47,7 +47,6 @@ además, fuera de `validate`, las comprobaciones de `bindings`, `migration`, `pr
 | `trace`, `cli`, `messages`, `openers` | Alfabeto de trazas, convenciones y mensajes de la CLI, y aperturas de bloque por perfil (`SEE-TRACE-CLASS`, `SEE-CLI-EXIT`, `SEE-MESSAGE-*`, `SEE-PROFILE-OPENERS`) |
 | `resources/*`                         | Gramática, léxico, gramática TextMate, límites de análisis, términos de diagnóstico, catálogo de ayuda, biblioteca y neutralidad del español                        |
 | `bindings`                            | Vínculos regla–código de un sujeto contra el corpus (`SEE-BINDING`, `SEE-SUBJECT-STATE`)                                                                            |
-| `migration`                           | Correspondencia entre las secciones del manifiesto de migración, su índice y el corpus (`SEE-COVERAGE`)                                                             |
 | `property_registry`                   | Registro de propiedades contra el corpus (`SEE-PROPERTY`)                                                                                                           |
 | `host_cases`                          | Casos de anfitrión dentro de `schema` (`SEE-HOST`)                                                                                                                  |
 

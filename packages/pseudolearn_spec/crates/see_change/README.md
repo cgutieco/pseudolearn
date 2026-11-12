@@ -1,10 +1,10 @@
 # see_change
 
 Calcula el hash canónico de una especificación, clasifica sus cambios entre dos versiones y gestiona el archivo de
-anclaje (`specifications.lock`): lo genera, lo comprueba y lo refresca.
+anclaje (`specifications.lock`): lo genera y lo comprueba. El archivo se versiona con el corpus y es el ancla de la última publicación: cualquier cambio normativo posterior exige subir la versión y declarar `cambio`.
 
-**No hace:** leer ni escribir el archivo; eso lo hace `see_cli`. Mientras el versionado esté congelado
-(`VERSIONING_FROZEN = true`) la comprobación no exige que cambie la versión cuando cambia el contenido.
+**No hace:** leer ni escribir el archivo; eso lo hace `see_cli`. La comprobación rechaza (`SEE-HASH`) el contenido que
+cambia sin cambiar la versión.
 
 ## Dónde encaja
 
@@ -28,8 +28,7 @@ La línea punteada es una `dev-dependency`: `see_format` solo se usa en los test
 | `elements`                 | Mapa de id de bloque a tipo de bloque, que se guarda en el anclaje                                                                                                                                          |
 | `classification::classify` | Clases de cambio entre dos versiones: `deprecacion`, `verificacion_anadida`, `ampliacion_candidata`, `cambio_significado_candidato`, `restriccion_candidata`, `retirada`, `editorial` y `requiere_revision` |
 | `locking::generate`        | Construye el anclaje del corpus conservando el historial; falla con `SEE-HASH` si una versión ya registrada cambia de hash                                                                                  |
-| `locking::check`           | Detecta `SEE-HASH` (contenido cambiado sin versión, solo con el versionado reabierto) y `SEE-IDENTITY` (especificación quitada sin lápida)                                                                  |
-| `locking::refresh`         | Reancla las identidades autorizadas; rechaza las retiradas o rechazadas con `SEE-IDENTITY`                                                                                                                  |
+| `locking::check`           | Detecta `SEE-HASH` (contenido cambiado sin versión) y `SEE-IDENTITY` (especificación quitada sin lápida)                                                                  |
 
 ## Reglas que conviene saber
 
@@ -46,7 +45,7 @@ Desde `packages/pseudolearn_spec`.
 | Para qué                            | Comando                                                                   |
 |-------------------------------------|---------------------------------------------------------------------------|
 | Tests de este crate                 | `cargo test -p see_change`                                                |
-| Comprobar o reanclar                | `cargo run -p see_cli --bin see -- lock --check` · `lock --refresh ID,ID` |
+| Generar o comprobar el ancla        | `cargo run -p see_cli --bin see -- lock` · `lock --check`                 |
 | Comparar contra una revisión de Git | `cargo run -p see_cli --bin see -- diff REV`                              |
 | Verificación completa del paquete   | `cargo xtask verify`                                                      |
 

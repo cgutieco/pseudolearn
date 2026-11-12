@@ -22,7 +22,7 @@ pub fn check(specification: &Specification, lock: &Lock) -> Vec<String> {
     }
     if let Some(previous) = lock.specifications.get(&metadata.id) {
         check_previous(specification, previous, &mut errors);
-    } else if see_change::VERSIONING_FROZEN {
+    } else {
         check_initial(specification, &mut errors);
     }
     errors
@@ -38,7 +38,7 @@ fn check_initial(specification: &Specification, errors: &mut Vec<String>) {
     }
     if metadata.cambio.is_some() {
         errors.push(
-            "SEE-CLASSIFICATION: change field is forbidden while versioning is frozen".to_owned(),
+            "SEE-CLASSIFICATION: new specification cannot carry a change field".to_owned(),
         );
     }
 }
@@ -53,11 +53,7 @@ fn check_previous(
         errors.push("SEE-STATE: invalid lifecycle transition".to_owned());
     }
     check_elements(specification, previous, errors);
-    if see_change::VERSIONING_FROZEN {
-        check_frozen(specification, previous, errors);
-    } else {
-        check_versioned_change(specification, previous, errors);
-    }
+    check_versioned_change(specification, previous, errors);
 }
 
 fn check_elements(
@@ -78,24 +74,6 @@ fn check_elements(
     }
 }
 
-fn check_frozen(
-    specification: &Specification,
-    previous: &see_model::contract::Anchor,
-    errors: &mut Vec<String>,
-) {
-    if previous.state != specification.metadata.estado {
-        errors.push("SEE-STATE: lifecycle state is frozen".to_owned());
-    }
-    if previous.version != specification.metadata.version {
-        errors.push("SEE-VERSION: version is frozen".to_owned());
-    }
-    if specification.metadata.cambio.is_some() {
-        errors.push(
-            "SEE-CLASSIFICATION: change field is forbidden while versioning is frozen".to_owned(),
-        );
-    }
-}
-
 fn check_versioned_change(
     specification: &Specification,
     previous: &see_model::contract::Anchor,
@@ -111,9 +89,7 @@ fn check_versioned_change(
     if !increased {
         errors.push("SEE-VERSION: version must increase".to_owned());
     }
-    if specification.metadata.cambio.is_some() {
-        check_change(specification, errors);
-    }
+    check_change(specification, errors);
     version_step(specification, previous, errors);
 }
 

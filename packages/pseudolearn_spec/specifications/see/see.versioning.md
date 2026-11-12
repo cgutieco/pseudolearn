@@ -27,7 +27,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Hasta que la persona autorice explícitamente iniciar la publicación de una versión del lenguaje, las especificaciones existentes conservan estado, identidad y versión. Una identidad nueva se crea directamente estable en 1.0.0, sin campo cambio y sin completar revisado_por automáticamente. Las ediciones oficiales se escriben en la misma especificación, conservan estado e identidad, omiten cambio y actualizan el anclaje de esa versión. Al reabrirse el versionado, cada cambio de versión declara clase, impactos, justificación y revisor.",
+  "texto": "Una identidad nueva se crea estable en 1.0.0, sin campo cambio y sin completar revisado_por automáticamente. Todo cambio de versión de una especificación existente declara clase, impactos, justificación y revisor, y actualiza el anclaje de esa versión.",
   "verificacion": [
     "estructural"
   ],
@@ -40,7 +40,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Con el versionado reabierto, los cambios editoriales y la verificación añadida incrementan revisión; aclaración, ampliación y deprecación incrementan menor; restricción, cambio de significado y retirada incrementan mayor. Durante el congelamiento no se cambia la versión.",
+  "texto": "Los cambios editoriales y la verificación añadida incrementan revisión; aclaración, ampliación y deprecación incrementan menor; restricción, cambio de significado y retirada incrementan mayor. Una versión nunca disminuye.",
   "verificacion": [
     "estructural"
   ],
@@ -50,4 +50,4 @@
 
 ## Alcance
 
-Contrato piloto de R1; no introduce construcciones ni cambia el sujeto congelado.
+Contrato piloto de R1; no introduce construcciones.

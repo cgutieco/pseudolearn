@@ -88,8 +88,7 @@ flowchart LR
 ```
 
 Los sujetos activos son `engine`, `aot`, `service`, `cli` y `app`; cada uno se lanza como un proceso aparte
-(`subject_adapters.rs`). El sujeto `reference` está retirado: conserva su manifiesto en `subjects/reference/`
-y pedir su ejecución produce `SEE-SUBJECT-RETIRED`.
+(`subject_adapters.rs`). Un sujeto cuyo manifiesto declara `estado: retirado` conserva su historial, no se lanza y pedir su ejecución produce `SEE-SUBJECT-RETIRED`.
 
 ## Reglas que conviene saber
 
@@ -101,6 +100,10 @@ y pedir su ejecución produce `SEE-SUBJECT-RETIRED`.
   indexado y aritmética implícita y conversiones con `as`.
 - Un artefacto generado desde el corpus (`export.json`, las fichas de agente, la gramática del editor)
   se regenera, nunca se edita a mano. Las verificaciones fallan con `SEE-STALE` o `SEE-HASH` si hay desfase.
+- `specifications/specifications.lock` se versiona con el corpus y ancla la última publicación, no el commit anterior:
+  así la protección de versionado no depende del historial de Git, que puede reescribirse. Un cambio normativo sin
+  subir la versión y declarar `cambio` falla con `SEE-HASH`; se subirá una vez por especificación y publicación, y
+  `see lock` actualiza el ancla al publicar.
 - Los sujetos solo se alcanzan por proceso: un sujeto bloqueado es un error operativo, nunca cumplimiento.
 - Las propiedades `LIB.TIME#P1` (ida y vuelta ISO de `FechaHora`) y `LIB.CORE.CONVERSION#P1` (ida y vuelta de
   `Decimales` sobre reales diádicos sembrados) tienen generador propio (`time_iso_roundtrip` y `decimals_roundtrip`) y
@@ -117,7 +120,7 @@ Se ejecutan desde `packages/pseudolearn_spec`. `see` es `cargo run -p see_cli --
 | Verificación completa del paquete          | `cargo xtask verify`                                                 |
 | Validar el corpus                          | `see validate`                                                       |
 | Crear un borrador de especificación        | `see new <ID> --domain <dominio>`                                    |
-| Ver o comprobar los anclajes               | `see lock --check` · `see lock --refresh ID,ID`                      |
+| Ver o comprobar los anclajes               | `see lock` · `see lock --check`                      |
 | Comparar contra una revisión de Git        | `see diff <rev>`                                                     |
 | Ver el impacto de una especificación       | `see impact <ID>`                                                    |
 | Grafo de dependencias                      | `see graph [--focus ID] [--dot]`                                     |

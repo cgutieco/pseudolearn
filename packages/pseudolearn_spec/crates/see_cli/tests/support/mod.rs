@@ -12,20 +12,18 @@ impl Fixture {
         let root = std::env::temp_dir().join(format!("see-cli-{}-{sequence}", std::process::id()));
         std::fs::create_dir_all(root.join("specifications/see"))
             .map_err(|error| error.to_string())?;
-        std::fs::create_dir_all(root.join("subjects/reference"))
-            .map_err(|error| error.to_string())?;
         let sample = include_str!("../../../../fixtures/valid/specifications/sample.md")
             .replace(
                 "\"id\": \"LANG.TEST.SAMPLE\"",
                 "\"id\": \"SEE.TEST.SAMPLE\"",
             )
             .replace("\"dominio\": \"lenguaje\"", "\"dominio\": \"proceso\"")
-            .replace("\"engine\",\n    \"aot\"", "\"reference\"");
+            .replace("\"engine\",\n    \"aot\"", "\"see\"");
         std::fs::write(root.join("specifications/see/sample.md"), sample)
             .map_err(|error| error.to_string())?;
         std::fs::write(
-            root.join("subjects/reference/conformance.yaml"),
-            r#"{"sujeto":"reference","estado":"retirado","paquete":"historical","activadas":[],"fases_cerradas":[],"vinculos":[]}"#,
+            root.join("conformance.yaml"),
+            r#"{"sujeto":"see","estado":"retirado","paquete":"historical","activadas":[],"fases_cerradas":[],"vinculos":[]}"#,
         )
         .map_err(|error| error.to_string())?;
         Ok(Self { root })

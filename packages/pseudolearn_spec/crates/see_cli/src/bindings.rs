@@ -35,7 +35,6 @@ pub fn check(root: &Path, corpus: &Corpus) -> Result<Vec<String>, String> {
 pub fn manifest_path(root: &Path, subject: &str) -> Option<PathBuf> {
     let relative = match subject {
         "see" => "conformance.yaml",
-        "reference" => "subjects/reference/conformance.yaml",
         "engine" => "../pseudolearn_engine/conformance.yaml",
         "aot" => "../pseudolearn_engine/conformance-aot.yaml",
         "service" => "../pseudolearn_engine/conformance-service.yaml",

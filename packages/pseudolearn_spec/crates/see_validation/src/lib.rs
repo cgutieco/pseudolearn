@@ -8,7 +8,6 @@ pub mod identity;
 pub mod lifecycle;
 pub mod measurement;
 pub mod messages;
-pub mod migration;
 pub mod openers;
 pub mod property_registry;
 pub mod references;

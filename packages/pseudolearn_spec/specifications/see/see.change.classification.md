@@ -27,7 +27,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "El hash SHA-256 del contenido normativo canónico excluye prosa y presentación. Durante el congelamiento de versiones, una edición oficial conserva la identidad y la versión, omite cambio y requiere reanclar su hash. Al reabrirse el versionado, un cambio normativo sin el incremento y la clasificación requeridos se rechaza.",
+  "texto": "El hash SHA-256 del contenido normativo canónico excluye prosa y presentación. Un cambio normativo sin el incremento de versión y la clasificación requeridos se rechaza.",
   "verificacion": [
     "estructural"
   ],
@@ -40,7 +40,7 @@
   "id": "R2",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Diff propone clases editoriales, de ampliación, retirada, verificación añadida, restricción o significado para cuando se reabra el versionado. Durante el congelamiento no se registra campo cambio ni se interpreta una edición oficial como una nueva versión publicada.",
+  "texto": "Diff propone clases editoriales, de ampliación, retirada, verificación añadida, restricción o significado.",
   "verificacion": [
     "estructural"
   ],
@@ -50,4 +50,4 @@
 
 ## Alcance
 
-Contrato piloto de R1; no introduce construcciones ni cambia el sujeto congelado.
+Contrato piloto de R1; no introduce construcciones.

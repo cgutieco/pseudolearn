@@ -50,4 +50,4 @@
 
 ## Alcance
 
-Contrato piloto de R1; no introduce construcciones ni cambia el sujeto congelado.
+Contrato piloto de R1; no introduce construcciones.

@@ -124,17 +124,10 @@ fn select(arguments: &Arguments, corpus: &Corpus, subject: &str) -> Result<Corpu
 }
 
 fn artifact_paths(subject: &str) -> (String, String) {
-    if subject == "reference" {
-        (
-            "results/reference.json".to_owned(),
-            "results/matrix.json".to_owned(),
-        )
-    } else {
-        (
-            format!("results/{subject}.json"),
-            format!("results/matrix-{subject}.json"),
-        )
-    }
+    (
+        format!("results/{subject}.json"),
+        format!("results/matrix-{subject}.json"),
+    )
 }
 
 fn with_properties(

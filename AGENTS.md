@@ -52,10 +52,9 @@ Cada regla tiene un ID estable. Úsalo para reportar una violación o justificar
 | `SPEC-FIRST`                | Especificación → casos → tests → código; sin motor Rust antes del hito de R3                                                                                                                                                                                   | Revisión y conformidad                                                                                                                                       |
 | `SPEC-NO-ORPHAN-RULE`       | Cada regla tiene casos o propiedades que la cubren                                                                                                                                                                                                             | `see validate` desde R1                                                                                                                                      |
 | `SPEC-BINDING-AS-DATA`      | Los vínculos regla–código viven en archivos de conformidad, nunca en código                                                                                                                                                                                    | Revisión                                                                                                                                                     |
-| `SPEC-CHANGE-CLASSIFIED`    | Con el versionado reabierto, cada cambio declara clasificación e impacto; durante el congelamiento rige `SPEC-VERSION-FREEZE`                                                                                                                                  | `see validate` desde R1                                                                                                                                      |
+| `SPEC-CHANGE-CLASSIFIED`    | Cada cambio de versión de una especificación declara clasificación e impacto                                                                                                                                                                                   | `see validate` desde R1                                                                                                                                      |
 | `SPEC-INDEPENDENT-ORACLE`   | Los resultados esperados se derivan de la regla; las capturas requieren revisión                                                                                                                                                                               | Revisión del corpus                                                                                                                                          |
 | `SPEC-SELF-CONTAINED`       | El corpus no enlaza ni cita documentación externa; puede enlazar identidades internas del propio corpus                                                                                                                                                        | `see validate` y caso negativo                                                                                                                               |
-| `SPEC-VERSION-FREEZE`       | Hasta autorización explícita, estados y versiones permanecen congelados; el texto oficial se edita en la misma especificación, sin `cambio`, y se reancla                                                                                                      | Revisión y validación del corpus                                                                                                                             |
 | `QUALITY-SEMANTIC-NAMES`    | En Rust, nombres por papel, mínimo tres caracteres salvo id/io/ir/vm/gc/os; sin abreviaturas, relleno ni archivos utils/helpers/common/misc                                                                                                                    | `rust-checks names`                                                                                                                                          |
 | `QUALITY-NO-PANIC`          | En Rust, sin unwrap/expect, panic/todo/unimplemented/unreachable, índices inseguros, aritmética implícita ni conversiones numéricas con pérdida                                                                                                                | Clippy estricto                                                                                                                                              |
 
@@ -145,10 +144,8 @@ En `.agents/skills/`:
 
 ## 8. Entorno
 
-- **Núcleo:** Rust. El sujeto `reference` está retirado; su manifiesto y resultados históricos se conservan en el
-  sistema
-  de especificaciones, sin ejecutor instalado. El corpus es el oráculo normativo y todo cambio observable sigue
-  especificación → casos → tests → código.
+- **Núcleo:** Rust. El corpus es el oráculo normativo y todo cambio observable sigue especificación → casos → tests
+  → código.
 - **Cadenas de herramientas** (cada miembro usa solo la suya, todas en el `PATH`; los comandos se documentan sin rutas
   absolutas):
     - `dart` y `flutter`: recolectores de métricas y app.
@@ -158,10 +155,10 @@ En `.agents/skills/`:
       pnpm 12.18.0) y motor de assets de tienda (`packages/pseudolearn_store_media`), que además requiere `ffmpeg` y
       `ffprobe` como dependencia del sistema.
     - `cargo` y `rustup`: verificadores Rust, `pseudolearn_spec`, `pseudolearn_engine`, `pseudolearn_cli`,
-      `pseudolearn_reference` y los puentes. Cada miembro Rust fija la misma versión exacta en `rust-toolchain.toml`; no
+      `pseudolearn_reference`, `pseudolearn_benchmarks` y los puentes. Cada miembro Rust fija la misma versión exacta en `rust-toolchain.toml`; no
       hay workspace Cargo raíz.
 - **Ubicación:** `packages/` aloja lo reutilizable que no se despliega; `apps/`, lo que se despliega. El criterio es el
-  papel del miembro, no su lenguaje (`README.md` raíz §3.1 y §4.5).
+  papel del miembro, no su lenguaje.
 - **Git:** monorepo. Los paquetes de librería no versionan su `pubspec.lock`; las aplicaciones sí. La salida de un
   generador no se versiona salvo que un build ajeno la consuma.
 - **Fases:** cada fase resuelve sus observaciones pertinentes, informa implementación, pruebas, verificadores y
@@ -172,13 +169,3 @@ En `.agents/skills/`:
 - **CI:** GitHub Actions se reserva para despliegues productivos y comprobaciones manuales puntuales; no verifica cada
   push ni PR.
 - **Comandos:** los de cada paquete están en la sección «Cómo se verifica» de su README.
-
----
-
-## 9. Congelamiento de versiones de especificación
-
-Versiones y estados del corpus permanecen congelados hasta que la persona autorice explícitamente iniciar la publicación
-de una versión del lenguaje. Mientras tanto, las ediciones se redactan como texto oficial en la especificación
-existente,
-conservan su identidad, estado y versión, no añaden campos `cambio` y, cuando corresponda, actualizan el anclaje
-normativo de esa misma versión. El versionado y la clasificación estrictos solo se reactivan con autorización explícita.

@@ -27,7 +27,7 @@
   "id": "R1",
   "fuerza": "DEBE",
   "clase": "semantica",
-  "texto": "Lock conserva versión exacta y hash canónico por especificación e historial de identidades; --check rechaza anclajes desactualizados. Durante el congelamiento, la actualización explícita --refresh recibe identificadores separados por comas y permite reanclar ediciones oficiales manteniendo identidad, estado y versión, sin campo cambio. Solo la autorización explícita reabre el versionado. No se actualizan otros identificadores ni identidades terminales. La validación ordinaria y --check rechazan hashes divergentes.",
+  "texto": "Lock conserva versión exacta y hash canónico por especificación e historial de identidades; --check rechaza anclajes desactualizados. El archivo se versiona con el corpus y ancla la última publicación. La validación ordinaria y --check rechazan hashes divergentes: un cambio normativo solo se acepta con la versión y la clasificación requeridas.",
   "verificacion": [
     "estructural"
   ],
@@ -37,4 +37,4 @@
 
 ## Alcance
 
-Contrato piloto de R1; no introduce construcciones ni cambia el sujeto congelado.
+Contrato piloto de R1; no introduce construcciones.
