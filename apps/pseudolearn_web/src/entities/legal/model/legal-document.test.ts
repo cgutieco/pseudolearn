@@ -13,15 +13,16 @@ describe('legal-document models', () => {
   it('defines unique section ids in terms of service', () => {
     const ids = TERMS_SECTIONS.map((section) => section.id);
     expect(new Set(ids).size).toBe(ids.length);
-    expect(ids.length).toBe(12);
+    expect(ids.length).toBe(13);
     expect(ids).toContain('nodo');
+    expect(ids).toContain('reembolsos');
   });
 
   it('provides sequential section numbering', () => {
     expect(PRIVACY_SECTIONS[0]?.number).toBe('01');
     expect(PRIVACY_SECTIONS[PRIVACY_SECTIONS.length - 1]?.number).toBe('08');
     expect(TERMS_SECTIONS[0]?.number).toBe('01');
-    expect(TERMS_SECTIONS[TERMS_SECTIONS.length - 1]?.number).toBe('12');
+    expect(TERMS_SECTIONS[TERMS_SECTIONS.length - 1]?.number).toBe('13');
     for (const sections of [PRIVACY_SECTIONS, TERMS_SECTIONS]) {
       sections.forEach((section, index) => expect(section.number).toBe(String(index + 1).padStart(2, '0')));
     }
