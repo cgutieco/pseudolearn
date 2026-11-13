@@ -12,12 +12,21 @@ concurrency:
 
 jobs:
   apple:
-    runs-on: macos-15
+    runs-on: macos-26
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
         with:
           fetch-depth: 2
+
+      - name: Require Xcode 26 or later
+        run: |
+          XCODE_MAJOR=$(xcodebuild -version | sed -n 's/^Xcode \([0-9]*\).*/\1/p')
+          xcodebuild -version
+          if [ "${XCODE_MAJOR:-0}" -lt 26 ]; then
+            echo "App Store Connect only accepts builds made with Xcode 26 or later; this runner has Xcode $XCODE_MAJOR" >&2
+            exit 1
+          fi
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
