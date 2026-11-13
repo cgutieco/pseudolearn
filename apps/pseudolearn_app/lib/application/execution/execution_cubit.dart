@@ -1,7 +1,5 @@
 import '../../domain/model/execution/replay_rejection.dart';
-import '../../domain/ports/execution_context.dart';
 import '../../domain/model/execution/effect_tape.dart';
-import '../../domain/ports/execution_reproduction.dart';
 import 'package:bloc/bloc.dart';
 import '../../domain/model/execution/execution_step.dart';
 import '../../domain/model/execution/input_wait.dart';
@@ -9,8 +7,10 @@ import '../../domain/model/profiles/syntax_profile_id.dart';
 import '../../domain/model/settings/ui_language_id.dart';
 import '../../domain/model/execution/execution_configuration.dart';
 import '../../domain/ports/program_execution.dart';
+import '../../domain/ports/variable_observation.dart';
 import 'execution_state.dart';
-import 'execution_status_from_step.dart';
+import 'execution_state_publisher.dart';
+import 'execution_step_projection.dart';
 import 'step_batch_runner.dart';
 import 'step_pace.dart';
 import 'step_settlement.dart';
@@ -25,6 +25,8 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
   int _runCounter = 0;
   StepSettlement _settlement = const StepSettlement.atAnyFocusChange();
   int _fromRevision = 0;
+  StepPace _pace = StepPace.nextStatement;
+  late final ExecutionStatePublisher _publisher = ExecutionStatePublisher(emit);
 
   ExecutionCubit({
     required this._execution,
@@ -53,8 +55,9 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
     if (!_hasStarted || state.status != ExecutionStatus.pausedAtStatement) {
       return;
     }
-    if (!_canAdvanceTask(taskId)) return;
+    if (!state.canAdvanceTask(taskId)) return;
     _stopRequested = false;
+    _adoptPace(StepPace.nextEvent);
     final from = state.currentStep;
     _settlement = StepSettlement.forTask(taskId: taskId, from: from);
     _fromRevision = from.focusRevision;
@@ -70,6 +73,7 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
     bool replay = false,
   }) async {
     _stopRequested = false;
+    _adoptPace(pace);
     final tape = replay ? state.recordedTape : null;
     if (replay && tape == null) {
       emit(state.copyWith(replayRejection: ReplayRejection.missingTape));
@@ -118,21 +122,42 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
     _stopRequested = true;
     _execution.stop();
     _hasStarted = false;
+    final current = _publisher.latest(state);
+    _publisher.discard();
     emit(
-      state.copyWith(
+      current.copyWith(
         status: ExecutionStatus.idle,
-        currentStep: const ExecutionStep(
-          stepNumber: 0,
-          scopeName: 'global',
-          scopeDepth: 1,
-        ),
-        isOutputStale: state.outputLines.isNotEmpty,
+        currentStep: const ExecutionState.initial().currentStep,
+        isOutputStale: current.outputLines.isNotEmpty,
       ),
     );
   }
 
-  void applyViewAction(ExecutionViewAction action) =>
-      emit(state.applyViewAction(action));
+  void applyViewAction(ExecutionViewAction action) {
+    final current = _publisher.latest(state);
+    _publisher.discard();
+    emit(current.applyViewAction(action));
+    _adoptPace(_pace);
+  }
+
+  void _adoptPace(StepPace pace) {
+    _pace = pace;
+    final continuous = pace == StepPace.toEnd;
+    final observes = state.isTraceVisible || !continuous;
+    if (_execution case final VariableObservation observation) {
+      observation.observesVariables = observes;
+    }
+    if (observes == state.observesVariables &&
+        continuous == state.isContinuous) {
+      return;
+    }
+    emit(
+      state.withVisibility(
+        observesVariables: observes,
+        isContinuous: continuous,
+      ),
+    );
+  }
 
   Future<void> _drain() async {
     await _runner.runUntilSettled(
@@ -142,15 +167,14 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
       shouldStop: () => _stopRequested,
       onStep: _processStep,
     );
+    _publisher.flush();
     _settle();
   }
 
   void _settle() {
     if (!_hasStarted || _stopRequested) return;
-    if (state.currentStep.isAwaitingInput ||
-        state.currentStep.isAwaitingEffect) {
-      return;
-    }
+    final step = state.currentStep;
+    if (step.isAwaitingInput || step.isAwaitingEffect) return;
     emit(state.copyWith(status: ExecutionStatus.pausedAtStatement));
   }
 
@@ -165,14 +189,6 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
       onError: (Object error, StackTrace stackTrace) {},
     );
     return pending;
-  }
-
-  bool _canAdvanceTask(int taskId) {
-    for (final task in state.currentStep.taskContexts) {
-      if (task.taskId != taskId) continue;
-      return !task.status.isTerminal;
-    }
-    return false;
   }
 
   ExecutionStep _startNew({
@@ -200,6 +216,10 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
         statementNumber: 0,
         isOutputPanelExpanded: state.isOutputPanelExpanded,
         userCollapsedOutput: state.userCollapsedOutput,
+        isTraceVisible: state.isTraceVisible,
+        isTasksVisible: state.isTasksVisible,
+        observesVariables: state.observesVariables,
+        isContinuous: state.isContinuous,
         configuration: configuration,
         recordedTape: replayTape,
       ),
@@ -209,35 +229,10 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
 
   void _processStep(ExecutionStep step) {
     if (step.isTerminal) _hasStarted = false;
-    final lines = _execution.outputLines;
-    final shouldAutoExpand =
-        lines.isNotEmpty &&
-        !state.isOutputPanelExpanded &&
-        !state.userCollapsedOutput;
-
-    final advanced = step.focusRevision != state.currentStep.focusRevision;
-    emit(
-      state.copyWith(
-        status: executionStatusFromStep(step),
-        currentStep: step,
-        outputLines: lines,
-        workingDirectory: _execution is ExecutionContext
-            ? (_execution as ExecutionContext).workingDirectory
-            : null,
-        recordedTape: _execution is ExecutionReproduction
-            ? (_execution as ExecutionReproduction).recordedTape
-            : null,
-        replayRejection: _execution is ExecutionReproduction
-            ? (_execution as ExecutionReproduction).replayRejection
-            : null,
-        statementNumber: advanced
-            ? state.statementNumber + 1
-            : state.statementNumber,
-        isOutputPanelExpanded: shouldAutoExpand
-            ? true
-            : state.isOutputPanelExpanded,
-        haltMessage: step.haltReason,
-      ),
+    final current = _publisher.latest(state);
+    _publisher.publish(
+      stateAfterStep(current, step, _execution),
+      throttled: current.isContinuous && !current.observesVariables,
     );
   }
 }

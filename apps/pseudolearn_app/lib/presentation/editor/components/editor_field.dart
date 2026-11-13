@@ -76,7 +76,7 @@ final class _FieldCode extends StatelessWidget {
       controller: field.controller,
       focusNode: field.focusNode,
       highlightSpans: field.editorState.report.highlightSpans,
-      focus: execution.isInFlight ? execution.currentStep.focus : null,
+      focus: execution.isInFlight ? execution.followedFocus : null,
       isReadOnly: execution.isInFlight,
       onChanged: field.onCodeChanged,
       onExplain: field.onHelpRequested,

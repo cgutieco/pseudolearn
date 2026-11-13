@@ -89,6 +89,14 @@ flowchart LR
   (`Switch.adaptive` y similares) están prohibidos y `MediaQuery` solo se consulta en `presentation/shell/`.
 - `composition` no admite condicionales; `presentation` no filtra, ordena ni agrega datos (`where`, `fold`, `sort`…) ni
   usa `await`; los campos de estado de `application` son `final`.
+- Ejecutar (y Continuar o Reproducir) es una ejecución continua, no un paso a paso acelerado: el editor, el diagrama y
+  el código equivalente no siguen el foco hasta que la ejecución pide una entrada o termina, la barra solo ofrece
+  Detener, y el estado se publica como mucho cada 100 ms. Tampoco lee las variables de cada evento salvo que la tabla de
+  prueba de escritorio esté visible: cada lectura reconstruye en el motor un instante pasado y bloqueaba la interfaz.
+  Con la tabla visible se publica cada paso para no perder filas. El historial de la pestaña Tareas tampoco se consulta
+  durante la ejecución continua salvo que esa pestaña esté visible (como mucho cada 100 ms): cada consulta también
+  reconstruye el pasado en el motor y frenaba la salida. Se carga al detenerse la ejecución. Paso a paso no cambia. El bucle cede el hilo cada
+  8 ms y muestra una sola vez la espera de un efecto.
 - Los colores y las duraciones literales solo existen en los archivos dueños que declara `architecture.yaml`.
 - Límites: 250 líneas por archivo, 40 por función, 30 por `build`, 3 parámetros posicionales, anidación 3 y 5 métodos
   públicos por clase. Sin comentarios; `lib/engine/bridge/` y `lib/presentation/l10n/generated/` son generados.

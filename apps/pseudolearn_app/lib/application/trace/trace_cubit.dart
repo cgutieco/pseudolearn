@@ -37,6 +37,7 @@ final class TraceCubit extends Cubit<TraceState> {
       return;
     }
 
+    if (!executionState.observesVariables) return;
     final focus = step.focus;
     if (focus == null || step.focusRevision == _focusRevision) return;
     _focusRevision = step.focusRevision;

@@ -12,6 +12,7 @@ import '../../domain/ports/task_structure_projector.dart';
 import 'execution_history_command.dart';
 import 'execution_history_patch.dart';
 import 'execution_history_inspection_controller.dart';
+import 'execution_history_load_gate.dart';
 import 'execution_history_state.dart';
 import 'execution_history_task_pin.dart';
 import 'execution_history_window_controller.dart';
@@ -24,6 +25,7 @@ final class ExecutionHistoryCubit extends Cubit<ExecutionHistoryState> {
   late final ExecutionHistoryInspectionController _inspections;
   late final ExecutionHistoryWindowController _windows;
   late final StreamSubscription<ExecutionState> _subscription;
+  final ExecutionHistoryLoadGate _loadGate = ExecutionHistoryLoadGate();
 
   ExecutionHistoryCubit({
     required Stream<ExecutionState> executionStates,
@@ -144,7 +146,9 @@ final class ExecutionHistoryCubit extends Cubit<ExecutionHistoryState> {
       if (!executionState.isInFlight) _clearRun(executionState.runId);
       return;
     }
+    if (!_loadGate.admits(executionState)) return;
     _windows.loadNewEvents(event);
+    _loadGate.loaded();
   }
 
   void _beginRun(ExecutionState executionState) {

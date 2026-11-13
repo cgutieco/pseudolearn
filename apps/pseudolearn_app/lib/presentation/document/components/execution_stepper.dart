@@ -114,7 +114,7 @@ final class _PaceControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!state.isInFlight) {
+    if (!state.isInFlight || state.isContinuousRun) {
       return IdleControls(
         canExecute: isExecutable && state.canStart,
         onPace: onPace,

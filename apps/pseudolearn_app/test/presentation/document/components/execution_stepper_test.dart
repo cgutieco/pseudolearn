@@ -121,6 +121,34 @@ void main() {
       expect(find.text('Sin ejecución'), findsNothing);
     });
 
+    testWidgets('a continuous run shows the starting commands and Detener', (
+      tester,
+    ) async {
+      final running = _paused(kind: ExecutionFocusKind.statement).copyWith(
+        status: ExecutionStatus.running,
+        isContinuous: true,
+      );
+      await _pumpStepper(tester, state: running);
+
+      expect(find.text('Ejecutar'), findsOneWidget);
+      expect(_pressOf(tester, 'Ejecutar'), isNull);
+      expect(find.text('Detener'), findsOneWidget);
+      expect(find.text('Continuar'), findsNothing);
+      expect(find.text('Saltar bloque'), findsNothing);
+    });
+
+    testWidgets('a stepping run keeps the debugging commands while running', (
+      tester,
+    ) async {
+      final running = _paused(
+        kind: ExecutionFocusKind.statement,
+      ).copyWith(status: ExecutionStatus.running);
+      await _pumpStepper(tester, state: running);
+
+      expect(find.text('Continuar'), findsOneWidget);
+      expect(find.text('Ejecutar'), findsNothing);
+    });
+
     testWidgets(
       'a paused session replaces the bar with the debugging commands',
       (tester) async {

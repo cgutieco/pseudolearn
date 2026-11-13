@@ -48,6 +48,18 @@ final class _DocumentPageState extends State<DocumentPage> {
   void initState() {
     super.initState();
     context.read<EditorCubit>().loadDocument(widget.documentId);
+    context.read<ExecutionCubit>().applyViewAction(
+      ExecutionViewAction.showOtherTab,
+    );
+  }
+
+  void _onTabSelected(DocumentTabKind tab) {
+    setState(() => _activeTab = tab);
+    context.read<ExecutionCubit>().applyViewAction(switch (tab) {
+      DocumentTabKind.trace => ExecutionViewAction.showTrace,
+      DocumentTabKind.tasks => ExecutionViewAction.showTasks,
+      _ => ExecutionViewAction.showOtherTab,
+    });
   }
 
   void _onPace(BuildContext context, EditorState editorState, StepPace pace) {
@@ -144,7 +156,7 @@ final class _DocumentPageState extends State<DocumentPage> {
       activeTab: _activeTab,
       isAccompanying: _isAccompanying,
       exerciseStripExpansion: _exerciseStripExpansion,
-      onTabSelected: (tab) => setState(() => _activeTab = tab),
+      onTabSelected: _onTabSelected,
       onToggleCompanion: () =>
           setState(() => _isAccompanying = !_isAccompanying),
       onToggleExerciseStrip: (expanded) =>
@@ -193,9 +205,9 @@ final class _EditorListeners extends StatelessWidget {
           listener: onInputRequested,
         ),
         BlocListener<ExecutionCubit, ExecutionState>(
-          listenWhen: (p, c) => p.currentStep.focus != c.currentStep.focus,
+          listenWhen: (p, c) => p.followedFocus != c.followedFocus,
           listener: (ctx, s) =>
-              ctx.read<DiagramCubit>().syncWithFocus(s.currentStep.focus),
+              ctx.read<DiagramCubit>().syncWithFocus(s.followedFocus),
         ),
         BlocListener<ExerciseSessionCubit, ExerciseSessionState>(
           listenWhen: (p, c) => p.exercise != c.exercise && c.exercise != null,

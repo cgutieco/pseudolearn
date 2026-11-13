@@ -129,6 +129,7 @@ void main() {
     test(
       'running the loop returns the focus to the body line more than once',
       () async {
+        execution.applyViewAction(ExecutionViewAction.showTrace);
         await execution.advance(
           pace: StepPace.toEnd,
           sourceCode: _factorial,
@@ -145,7 +146,20 @@ void main() {
       },
     );
 
+    test('running with the trace hidden leaves the table empty', () async {
+      await execution.advance(
+        pace: StepPace.toEnd,
+        sourceCode: _factorial,
+        profileId: SyntaxProfileId.classicSpanish,
+        languageId: UiLanguageId.spanish,
+      );
+
+      expect(execution.state.status, ExecutionStatus.finishedSuccess);
+      expect(trace.state.rows, isEmpty);
+    });
+
     test('a second run starts the table from scratch', () async {
+      execution.applyViewAction(ExecutionViewAction.showTrace);
       await execution.advance(
         pace: StepPace.toEnd,
         sourceCode: _factorial,
@@ -161,6 +175,7 @@ void main() {
         languageId: UiLanguageId.spanish,
       );
 
+      expect(first, greaterThan(5));
       expect(trace.state.rows.length, first);
     });
   });

@@ -118,7 +118,7 @@ final class _FlowchartTabItem extends StatelessWidget {
           BlocBuilder<DiagramCubit, DiagramState>(
             builder: (context, diagState) => FlowchartTabView(
               state: diagState,
-              focus: execState.currentStep.focus,
+              focus: execState.followedFocus,
               framesSceneOnLayout: isSharingScreen,
               followsExecutionFocus: settingsState.assistedDiagramZoom,
               onUnitSelected: (unitId) =>

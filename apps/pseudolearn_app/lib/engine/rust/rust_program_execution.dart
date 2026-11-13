@@ -12,6 +12,7 @@ import '../../domain/model/profiles/syntax_profile_id.dart';
 import '../../domain/model/settings/ui_language_id.dart';
 import '../../domain/ports/execution_reproduction.dart';
 import '../../domain/ports/program_execution.dart';
+import '../../domain/ports/variable_observation.dart';
 import 'rust_analysis_api.dart';
 import 'rust_effect_gate.dart';
 import 'rust_effect_policy.dart';
@@ -30,7 +31,11 @@ import 'rust_wire_models.dart';
 part 'rust_program_execution_start.dart';
 
 final class RustProgramExecution
-    implements ProgramExecution, ExecutionReproduction, ExecutionContext {
+    implements
+        ProgramExecution,
+        ExecutionReproduction,
+        ExecutionContext,
+        VariableObservation {
   static const int batchSize = 25;
   final RustAnalysisApi _analysis;
   final RustExecutionApi _execution;
@@ -85,6 +90,13 @@ final class RustProgramExecution
     output: _events.outputLines,
     failure: _failureReason,
   );
+
+  @override
+  bool get observesVariables => _events.observesEnvironment;
+
+  @override
+  set observesVariables(bool enabled) =>
+      _events.observesEnvironment = enabled;
 
   @override
   ExecutionStep startExecution({

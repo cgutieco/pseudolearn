@@ -26,6 +26,7 @@ ExecutionState _stateWith({
   String scopeName = 'Principal',
   ExecutionFocusKind kind = ExecutionFocusKind.statement,
   bool isFinished = false,
+  bool observesVariables = true,
 }) {
   return ExecutionState(
     status: ExecutionStatus.pausedAtStatement,
@@ -45,6 +46,7 @@ ExecutionState _stateWith({
     outputLines: const [],
     runId: runId,
     statementNumber: revision,
+    observesVariables: observesVariables,
   );
 }
 
@@ -179,6 +181,31 @@ void main() {
 
       expect(cubit.state.openRow, isNull);
       expect(cubit.state.rows.single.cells['x']?.formattedValue, '10');
+    });
+
+    test('a run without variable observation writes no row', () async {
+      await push(_stateWith(
+        revision: 1,
+        line: 2,
+        variables: const [],
+        observesVariables: false,
+      ));
+
+      expect(cubit.state.rows, isEmpty);
+    });
+
+    test('an unobserved end still closes the last observed row', () async {
+      await push(_stateWith(revision: 1, line: 2, variables: const [_x1]));
+      await push(_stateWith(
+        revision: 2,
+        line: 3,
+        variables: const [_x1],
+        isFinished: true,
+        observesVariables: false,
+      ));
+
+      expect(cubit.state.openRow, isNull);
+      expect(cubit.state.rows.single.cells['x']?.formattedValue, '1');
     });
 
     test('a step where nothing is focused yet writes no row', () async {

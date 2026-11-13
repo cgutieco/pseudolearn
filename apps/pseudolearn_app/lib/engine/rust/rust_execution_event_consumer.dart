@@ -15,6 +15,7 @@ final class RustExecutionEventConsumer {
   final RustWatchRows _watch;
   final RustEditorVocabulary _vocabulary;
   final RustExecutionEventEffects _effects = RustExecutionEventEffects();
+  bool observesEnvironment = true;
 
   RustExecutionEventConsumer(RustTransport transport)
     : _watch = RustWatchRows(RustStateApi(transport)),
@@ -46,6 +47,7 @@ final class RustExecutionEventConsumer {
       return 'invalid_event';
     }
     _effects.record(event, view, offsets, errorRanges: errorRanges);
+    if (!observesEnvironment) return null;
     if (!rustEventRequiresEnvironment(event.eventClass)) return null;
     final result = _watch.at(
       execution: execution,

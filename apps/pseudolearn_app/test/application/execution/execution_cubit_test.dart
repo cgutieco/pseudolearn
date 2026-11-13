@@ -387,6 +387,100 @@ void main() {
       expect(cubit.state.userCollapsedOutput, isTrue);
     });
 
+    test('running to the end with the trace hidden reads no variables', () async {
+      await cubit.runToEnd(_loop);
+
+      expect(cubit.state.status, ExecutionStatus.finishedSuccess);
+      expect(cubit.state.outputLines.single.text, '6');
+      expect(cubit.state.observesVariables, isFalse);
+      expect(cubit.state.currentStep.variables, isEmpty);
+    });
+
+    test('running to the end with the trace shown reads variables', () async {
+      cubit.applyViewAction(ExecutionViewAction.showTrace);
+      await cubit.runToEnd(_loop);
+
+      expect(cubit.state.status, ExecutionStatus.finishedSuccess);
+      expect(cubit.state.isTraceVisible, isTrue);
+      expect(cubit.state.observesVariables, isTrue);
+      expect(cubit.state.currentStep.variables, isNotEmpty);
+    });
+
+    test('a manual step reads variables with the trace hidden', () async {
+      await cubit.step();
+
+      expect(cubit.state.isTraceVisible, isFalse);
+      expect(cubit.state.observesVariables, isTrue);
+    });
+
+    test('showing the trace mid-run starts reading variables', () async {
+      await cubit.runToEnd(_readsInput);
+      expect(cubit.state.status, ExecutionStatus.pausedAwaitingInput);
+      expect(cubit.state.observesVariables, isFalse);
+
+      cubit.applyViewAction(ExecutionViewAction.showTrace);
+
+      expect(cubit.state.observesVariables, isTrue);
+      expect(cubit.state.status, ExecutionStatus.pausedAwaitingInput);
+    });
+
+    test('running to the end publishes far fewer states than steps', () async {
+      final published = <ExecutionState>[];
+      final subscription = cubit.stream.listen(published.add);
+
+      await cubit.runToEnd(_loop);
+      await Future<void>.delayed(Duration.zero);
+      await subscription.cancel();
+
+      expect(cubit.state.status, ExecutionStatus.finishedSuccess);
+      expect(cubit.state.isContinuous, isTrue);
+      expect(
+        published.length,
+        lessThan(cubit.state.currentStep.stepNumber ~/ 2),
+      );
+    });
+
+    test('a throttled run counts the same statements as a traced one', () async {
+      await cubit.runToEnd(_loop);
+      final throttledCount = cubit.state.statementNumber;
+
+      cubit.applyViewAction(ExecutionViewAction.showTrace);
+      await cubit.runToEnd(_loop);
+
+      expect(throttledCount, greaterThan(0));
+      expect(cubit.state.statementNumber, throttledCount);
+    });
+
+    test('a manual step after a run is no longer continuous', () async {
+      await cubit.runToEnd(_loop);
+      await cubit.step();
+
+      expect(cubit.state.isContinuous, isFalse);
+      expect(cubit.state.followedFocus, isNotNull);
+    });
+
+    test('stopping a continuous run keeps the output it produced', () async {
+      final running = cubit.runToEnd(_endless);
+      await Future<void>.delayed(const Duration(milliseconds: 20));
+      cubit.stop();
+      await running;
+
+      expect(cubit.state.status, ExecutionStatus.idle);
+      expect(cubit.state.isContinuous, isTrue);
+      expect(cubit.state.isContinuousRun, isFalse);
+    });
+
+    test('switching the trace keeps the halt message', () async {
+      await cubit.runToEnd(_broken);
+      final haltMessage = cubit.state.haltMessage;
+
+      cubit.applyViewAction(ExecutionViewAction.showTrace);
+      cubit.applyViewAction(ExecutionViewAction.showOtherTab);
+
+      expect(cubit.state.status, ExecutionStatus.haltedWithError);
+      expect(cubit.state.haltMessage, haltMessage);
+    });
+
   });
 
   group('ExecutionCubit paces', () {

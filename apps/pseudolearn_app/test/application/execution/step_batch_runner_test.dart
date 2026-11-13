@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:pseudolearn_app/domain/ports/program_execution.dart';
 import '../../fakes/native_test_engine.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -232,6 +234,68 @@ void main() {
         );
       },
     );
+
+    test('a pending effect is shown once while the host answers', () async {
+      final execution = _ScriptedExecution([
+        _eventStep(0, 0),
+        _waitingForEffect(1),
+        _waitingForEffect(1),
+        _waitingForEffect(1),
+        _eventStep(2, 0),
+      ]);
+      final steps = <ExecutionStep>[];
+
+      await const StepBatchRunner(maxSteps: 3).runUntilSettled(
+        execution,
+        settlement: _toEnd,
+        fromRevision: 0,
+        shouldStop: () => false,
+        onStep: steps.add,
+      );
+
+      expect(steps.where((step) => step.isAwaitingEffect), hasLength(1));
+      expect(steps.map((step) => step.eventIndex), [0, 1, 2, 2]);
+      expect(steps.last.isUiSafetyLimitReached, isTrue);
+    });
+
+    test('a spent time budget yields before the batch is full', () async {
+      final steps = <ExecutionStep>[];
+      var stopRequested = false;
+      Timer.run(() => stopRequested = true);
+
+      await const StepBatchRunner(
+        batchSize: 1000,
+        yieldBudget: Duration.zero,
+      ).runUntilSettled(
+        _started(_counted),
+        settlement: _toEnd,
+        fromRevision: 0,
+        shouldStop: () => stopRequested,
+        onStep: steps.add,
+      );
+
+      expect(steps, hasLength(1));
+      expect(steps.last.isFinished, isFalse);
+    });
+
+    test('an unspent time budget keeps the batch running', () async {
+      final steps = <ExecutionStep>[];
+      var stopRequested = false;
+      Timer.run(() => stopRequested = true);
+
+      await const StepBatchRunner(
+        batchSize: 1000,
+        yieldBudget: Duration(hours: 1),
+      ).runUntilSettled(
+        _started(_counted),
+        settlement: _toEnd,
+        fromRevision: 0,
+        shouldStop: () => stopRequested,
+        onStep: steps.add,
+      );
+
+      expect(steps.last.isFinished, isTrue);
+    });
   });
 }
 

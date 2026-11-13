@@ -1,6 +1,7 @@
 import '../../domain/model/execution/effect_tape.dart';
 import '../../domain/model/execution/replay_rejection.dart';
 import 'package:equatable/equatable.dart';
+import '../../domain/model/execution/execution_focus.dart';
 import '../../domain/model/execution/execution_step.dart';
 import '../../domain/model/execution/output_line.dart';
 import '../../domain/model/execution/execution_configuration.dart';
@@ -18,7 +19,7 @@ enum ExecutionStatus {
   finishedSuccess,
 }
 
-enum ExecutionViewAction { toggleOutputPanel }
+enum ExecutionViewAction { toggleOutputPanel, showTrace, showTasks, showOtherTab }
 
 final class ExecutionState extends Equatable {
   final ExecutionStatus status;
@@ -29,6 +30,10 @@ final class ExecutionState extends Equatable {
   final bool isOutputStale;
   final bool isOutputPanelExpanded;
   final bool userCollapsedOutput;
+  final bool isTraceVisible;
+  final bool isTasksVisible;
+  final bool observesVariables;
+  final bool isContinuous;
   final String? haltMessage;
   final String? workingDirectory;
   final EffectTape? recordedTape;
@@ -44,6 +49,10 @@ final class ExecutionState extends Equatable {
     this.isOutputStale = false,
     this.isOutputPanelExpanded = false,
     this.userCollapsedOutput = false,
+    this.isTraceVisible = false,
+    this.isTasksVisible = false,
+    this.observesVariables = true,
+    this.isContinuous = false,
     this.haltMessage,
     this.workingDirectory,
     this.recordedTape,
@@ -64,6 +73,10 @@ final class ExecutionState extends Equatable {
       isOutputStale = false,
       isOutputPanelExpanded = false,
       userCollapsedOutput = false,
+      isTraceVisible = false,
+      isTasksVisible = false,
+      observesVariables = true,
+      isContinuous = false,
       haltMessage = null,
       workingDirectory = null,
       recordedTape = null,
@@ -85,9 +98,24 @@ final class ExecutionState extends Equatable {
       status == ExecutionStatus.pausedAtStatement ||
       status == ExecutionStatus.pausedAwaitingInput;
 
+  bool get isContinuousRun => isContinuous && isInFlight;
+
+  ExecutionFocus? get followedFocus =>
+      isContinuousRun && status != ExecutionStatus.pausedAwaitingInput
+      ? null
+      : currentStep.focus;
+
   bool get canStepOverBlock => currentStep.focus?.isDecision ?? false;
 
   bool get canStepOutOfBlock => currentStep.blockPosition.hasEnclosingBlock;
+
+  bool canAdvanceTask(int taskId) {
+    for (final task in currentStep.taskContexts) {
+      if (task.taskId != taskId) continue;
+      return !task.status.isTerminal;
+    }
+    return false;
+  }
 
   ExecutionState applyViewAction(ExecutionViewAction action) {
     switch (action) {
@@ -97,8 +125,28 @@ final class ExecutionState extends Equatable {
           isOutputPanelExpanded: expanded,
           userCollapsedOutput: !expanded,
         );
+      case ExecutionViewAction.showTrace:
+        return withVisibility(isTraceVisible: true, isTasksVisible: false);
+      case ExecutionViewAction.showTasks:
+        return withVisibility(isTraceVisible: false, isTasksVisible: true);
+      case ExecutionViewAction.showOtherTab:
+        return withVisibility(isTraceVisible: false, isTasksVisible: false);
     }
   }
+
+  ExecutionState withVisibility({
+    bool? isTraceVisible,
+    bool? isTasksVisible,
+    bool? observesVariables,
+    bool? isContinuous,
+  }) => copyWith(
+    isTraceVisible: isTraceVisible,
+    isTasksVisible: isTasksVisible,
+    observesVariables: observesVariables,
+    isContinuous: isContinuous,
+    haltMessage: haltMessage,
+    replayRejection: replayRejection,
+  );
 
   ExecutionState copyWith({
     ExecutionStatus? status,
@@ -109,6 +157,10 @@ final class ExecutionState extends Equatable {
     bool? isOutputStale,
     bool? isOutputPanelExpanded,
     bool? userCollapsedOutput,
+    bool? isTraceVisible,
+    bool? isTasksVisible,
+    bool? observesVariables,
+    bool? isContinuous,
     String? haltMessage,
     String? workingDirectory,
     EffectTape? recordedTape,
@@ -125,6 +177,10 @@ final class ExecutionState extends Equatable {
       isOutputPanelExpanded:
           isOutputPanelExpanded ?? this.isOutputPanelExpanded,
       userCollapsedOutput: userCollapsedOutput ?? this.userCollapsedOutput,
+      isTraceVisible: isTraceVisible ?? this.isTraceVisible,
+      isTasksVisible: isTasksVisible ?? this.isTasksVisible,
+      observesVariables: observesVariables ?? this.observesVariables,
+      isContinuous: isContinuous ?? this.isContinuous,
       haltMessage: haltMessage,
       workingDirectory: workingDirectory ?? this.workingDirectory,
       recordedTape: recordedTape ?? this.recordedTape,
@@ -143,6 +199,10 @@ final class ExecutionState extends Equatable {
     isOutputStale,
     isOutputPanelExpanded,
     userCollapsedOutput,
+    isTraceVisible,
+    isTasksVisible,
+    observesVariables,
+    isContinuous,
     haltMessage,
     workingDirectory,
     recordedTape,

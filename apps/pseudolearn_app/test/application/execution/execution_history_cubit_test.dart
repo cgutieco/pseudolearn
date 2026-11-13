@@ -94,6 +94,37 @@ void main() {
       },
     );
 
+    test('a continuous run with the tasks hidden reads history once at the end', () {
+      executionStates.add(_executionState(1, -1));
+      final before = observer.historyRequests.length;
+      for (final event in [2, 4, 6]) {
+        executionStates.add(_continuous(1, event));
+      }
+      expect(observer.historyRequests.length, before);
+
+      executionStates.add(
+        _executionState(1, 8).copyWith(
+          status: ExecutionStatus.finishedSuccess,
+          isContinuous: true,
+        ),
+      );
+
+      expect(observer.historyRequests.length, before + 1);
+      expect(cubit.state.liveEvent, 8);
+    });
+
+    test('a continuous run with the tasks shown keeps reading history', () {
+      executionStates.add(_executionState(1, -1));
+      final before = observer.historyRequests.length;
+
+      executionStates.add(
+        _continuous(1, 3).copyWith(isTasksVisible: true),
+      );
+
+      expect(observer.historyRequests.length, before + 1);
+      expect(cubit.state.liveEvent, 3);
+    });
+
     test('moves a requested range and rejects a 4097 event read', () {
       executionStates.add(_executionState(1, -1));
       executionStates.add(_executionState(1, 5));
@@ -224,6 +255,11 @@ ExecutionState _executionState(int runId, int event) => ExecutionState(
   outputLines: const [],
   runId: runId,
 );
+
+ExecutionState _continuous(int runId, int event) => _executionState(
+  runId,
+  event,
+).copyWith(status: ExecutionStatus.running, isContinuous: true);
 
 List<ExecutionHistoryEvent> _events(int count) => [
   for (var index = 0; index < count; index++)

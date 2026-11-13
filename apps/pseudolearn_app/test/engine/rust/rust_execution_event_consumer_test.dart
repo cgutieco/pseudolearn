@@ -100,6 +100,41 @@ void main() {
     expect(failure, 'task_state_unavailable');
   });
 
+  test('without variable observation a resumed task reads no state', () {
+    final transport = FakeRustTransport({});
+    final consumer = RustExecutionEventConsumer(transport)
+      ..observesEnvironment = false;
+    final view = _emptyView();
+    final tracker = RustFocusTracker(view);
+
+    final failure = _consumeAll(consumer, tracker, view, [
+      ..._spawnedChild,
+      _taskEvent('task_resumed', const {'task': 1}),
+    ]);
+
+    expect(failure, isNull);
+    expect(tracker.currentTaskId, 1);
+    expect(transport.calls, isNot(contains('query_frame')));
+  });
+
+  test('without variable observation output is still recorded', () {
+    final consumer = RustExecutionEventConsumer(FakeRustTransport({}))
+      ..observesEnvironment = false;
+    final view = _emptyView();
+
+    final failure = consumer.consume(
+      event: _outputEvent(),
+      eventIndex: 0,
+      execution: 3,
+      view: view,
+      offsets: SourceOffsetIndex(''),
+      tracker: RustFocusTracker(view),
+    );
+
+    expect(failure, isNull);
+    expect(consumer.outputLines.map((line) => line.text), ['hola']);
+  });
+
   test('records output after applying a valid event', () {
     final consumer = RustExecutionEventConsumer(FakeRustTransport({}));
     final view = _emptyView();

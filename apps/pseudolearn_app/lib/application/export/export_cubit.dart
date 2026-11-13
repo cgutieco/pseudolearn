@@ -28,7 +28,7 @@ final class ExportCubit extends Cubit<ExportState> {
   }
 
   void _onExecutionState(ExecutionState executionState) {
-    final lines = _program?.linesFor(executionState.currentStep.focus?.nodeId) ?? const <int>[];
+    final lines = _program?.linesFor(executionState.followedFocus?.nodeId) ?? const <int>[];
     final focused = lines.toSet();
     if (focused.length == state.focusedLines.length &&
         focused.containsAll(state.focusedLines)) {
