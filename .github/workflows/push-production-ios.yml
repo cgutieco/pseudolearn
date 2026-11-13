@@ -75,7 +75,7 @@ jobs:
             echo "pubspec.yaml has no version field" >&2
             exit 1
           fi
-          BUILD_NUMBER=$(ruby "$GITHUB_WORKSPACE/.github/scripts/app_store_connect.rb" next-build-number "$APP_VERSION")
+          BUILD_NUMBER=$(ruby "$GITHUB_WORKSPACE/.github/scripts/app_store_connect.rb" next-build-number IOS)
           echo "Releasing iOS $APP_VERSION build $BUILD_NUMBER"
           echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
           echo "BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_ENV"

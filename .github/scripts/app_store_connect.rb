@@ -11,6 +11,7 @@ class AppStoreConnect
   EDITABLE_STATES = %w[PREPARE_FOR_SUBMISSION DEVELOPER_REJECTED REJECTED METADATA_REJECTED INVALID_BINARY].freeze
   PROCESSING_TIMEOUT_SECONDS = 40 * 60
   WHATS_NEW_LIMIT = 4000
+  PLATFORMS = %w[IOS MAC_OS].freeze
 
   def initialize(bundle_identifier)
     @bundle_identifier = bundle_identifier
@@ -19,9 +20,9 @@ class AppStoreConnect
     @private_key = OpenSSL::PKey::EC.new(File.read(ENV.fetch('ASC_KEY_PATH')))
   end
 
-  def next_build_number(version)
-    builds = collect("/v1/builds?filter[app]=#{app_id}&filter[preReleaseVersion.version]=#{version}" \
-                     '&filter[preReleaseVersion.platform]=IOS&limit=200')
+  def next_build_number(platform)
+    abort "Unknown platform #{platform}: use IOS or MAC_OS" unless PLATFORMS.include?(platform)
+    builds = collect("/v1/builds?filter[app]=#{app_id}&filter[preReleaseVersion.platform]=#{platform}&limit=200")
     (builds.map { |build| build.dig('attributes', 'version').to_i }.max || 0) + 1
   end
 
