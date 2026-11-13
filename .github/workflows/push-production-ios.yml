@@ -186,7 +186,7 @@ jobs:
           BRIDGE_FRAMEWORK="$APP_PATH/Frameworks/pseudolearn_bridge.framework"
           test -f "$APP_PATH/Assets.car"
           test -f "$BRIDGE_FRAMEWORK/pseudolearn_bridge"
-          lipo -verify_arch arm64 "$BRIDGE_FRAMEWORK/pseudolearn_bridge"
+          lipo "$BRIDGE_FRAMEWORK/pseudolearn_bridge" -verify_arch arm64
           codesign --verify --strict --verbose=2 "$BRIDGE_FRAMEWORK"
           codesign --verify --deep --strict --verbose=2 "$APP_PATH"
 

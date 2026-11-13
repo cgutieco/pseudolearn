@@ -55,8 +55,8 @@ jobs:
           BRIDGE_FRAMEWORK="$APP_PATH/Contents/Frameworks/pseudolearn_bridge.framework/Versions/A/pseudolearn_bridge"
           test -f "$APP_PATH/Contents/Resources/Assets.car"
           test -f "$BRIDGE_FRAMEWORK"
-          lipo -verify_arch arm64 x86_64 "$APP_PATH/Contents/MacOS/$APP_EXECUTABLE"
-          lipo -verify_arch arm64 x86_64 "$BRIDGE_FRAMEWORK"
+          lipo "$APP_PATH/Contents/MacOS/$APP_EXECUTABLE" -verify_arch arm64 x86_64
+          lipo "$BRIDGE_FRAMEWORK" -verify_arch arm64 x86_64
           FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR="$PWD/build/native_assets/macos" \
             flutter test --no-pub tool/native_bridge_test.dart tool/native_bridge_adapters_test.dart
 

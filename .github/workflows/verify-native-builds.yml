@@ -45,7 +45,7 @@ jobs:
           framework_path="$app_path/Frameworks/pseudolearn_bridge.framework/pseudolearn_bridge"
           test -f "$app_path/Assets.car"
           test -f "$framework_path"
-          lipo -verify_arch arm64 "$framework_path"
+          lipo "$framework_path" -verify_arch arm64
 
       - name: Run native engine smoke test in iOS Simulator
         working-directory: apps/pseudolearn_app
@@ -72,8 +72,8 @@ jobs:
           executable_path="$app_path/Contents/MacOS/$executable_name"
           framework_path="$app_path/Contents/Frameworks/pseudolearn_bridge.framework/Versions/A/pseudolearn_bridge"
           test -f "$app_path/Contents/Resources/Assets.car"
-          lipo -verify_arch arm64 x86_64 "$executable_path"
-          lipo -verify_arch arm64 x86_64 "$framework_path"
+          lipo "$executable_path" -verify_arch arm64 x86_64
+          lipo "$framework_path" -verify_arch arm64 x86_64
           FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR="$PWD/build/native_assets/macos" \
             flutter test --no-pub tool/native_bridge_test.dart tool/native_bridge_adapters_test.dart
 
