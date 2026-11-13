@@ -2,6 +2,7 @@
 import { useTranslations } from '@shared/i18n/translator';
 import type { Locale } from '@shared/i18n/locales';
 import { NODO_PLANS } from '@entities/nodo-plan/model/nodo-plans';
+import NodoPriceTable from './NodoPriceTable.astro';
 
 export interface Props {
   locale: Locale;
@@ -26,6 +27,7 @@ const PLANS = [
       </li>
     ))}
   </ul>
+  <NodoPriceTable locale={locale} />
   <p class="plans__note">{t('nodo.plans.price')}</p>
   <p class="plans__note">{t('nodo.plans.account')}</p>
 </div>

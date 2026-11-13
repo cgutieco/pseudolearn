@@ -1,0 +1,70 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { NODO_PRICES } from '@entities/nodo-plan/model/nodo-prices';
+import { formatPrice } from '@entities/nodo-plan/model/format-price';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+<div class="prices">
+  <table class="prices__table">
+    <caption class="prices__caption">{t('nodo.prices.caption')}</caption>
+    <thead>
+      <tr>
+        <th scope="col">{t('nodo.prices.marketHeader')}</th>
+        <th scope="col">{t('nodo.prices.monthlyHeader')}</th>
+        <th scope="col">{t('nodo.prices.topUpHeader')}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {NODO_PRICES.map((price) => (
+        <tr>
+          <th scope="row">{t(price.marketKey)}</th>
+          <td>{formatPrice(locale, price.currency, price.monthly)}</td>
+          <td>{formatPrice(locale, price.currency, price.topUp)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .prices {
+    overflow-x: auto;
+  }
+
+  .prices__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+
+  .prices__caption {
+    margin-bottom: var(--pl-space-xs);
+    font-weight: 700;
+    text-align: left;
+  }
+
+  .prices__table th,
+  .prices__table td {
+    padding: var(--pl-space-xs) var(--pl-space-sm);
+    border-bottom: 1px solid var(--pl-line);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .prices__table thead th {
+    color: var(--pl-ink-2);
+    font-weight: 600;
+  }
+
+  .prices__table tbody th {
+    font-weight: 600;
+  }
+</style>
