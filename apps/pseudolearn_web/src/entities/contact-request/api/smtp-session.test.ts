@@ -7,7 +7,7 @@ const credentials = { host: 'smtp.example.com', username: 'user', password: 'pas
 
 const message = {
   from: 'no-reply@pseudolearn.app',
-  to: 'support@pseudolearn.com',
+  to: 'support@pseudolearn.app',
   replyTo: 'ana@ejemplo.com',
   subject: 'Una duda',
   body: 'Cuerpo del mensaje',
@@ -33,7 +33,7 @@ describe('sendMailOverSmtp', () => {
     expect(conversation).toContain('STARTTLS');
     expect(conversation).toContain('AUTH PLAIN');
     expect(conversation).toContain('MAIL FROM:<no-reply@pseudolearn.app>');
-    expect(conversation).toContain('RCPT TO:<support@pseudolearn.com>');
+    expect(conversation).toContain('RCPT TO:<support@pseudolearn.app>');
     expect(conversation).toContain('Cuerpo del mensaje');
     expect(conversation).toContain('QUIT');
   });

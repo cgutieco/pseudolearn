@@ -6,7 +6,7 @@ export const SITE = {
   windowsInstallerUrl: 'https://downloads.pseudolearn.app/windows/PseudoLearn-Setup.exe',
   microsoftStoreUrl: 'https://apps.microsoft.com/store/detail/9MXZB1XDWP9J?cid=DevShareMCLPCS',
   agentSheetPath: '/llms.txt',
-  supportEmail: 'support@pseudolearn.com',
+  supportEmail: 'support@pseudolearn.app',
   authorHandle: '@cgutieco',
   authorUrl: 'https://www.linkedin.com/in/cgutieco',
   messageMaxLength: 2000,

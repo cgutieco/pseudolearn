@@ -2,7 +2,7 @@
 
 ## Reportar una vulnerabilidad
 
-Escribe a **support@pseudolearn.com** con el asunto `[security]`. No abras una issue pública.
+Escribe a **support@pseudolearn.app** con el asunto `[security]`. No abras una issue pública.
 
 Incluye, si puedes: qué encontraste, cómo reproducirlo, y qué impacto crees que tiene. Recibirás
 acuse en cuanto sea leído, y se te dirá qué se va a hacer y cuándo, aunque la respuesta sea que no

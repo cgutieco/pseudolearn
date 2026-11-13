@@ -39,7 +39,7 @@ void main() {
       await tester.pumpWidget(_buildContactSupportTestApp());
       await tester.pumpAndSettle();
 
-      expect(find.text('support@pseudolearn.com'), findsOneWidget);
+      expect(find.text('support@pseudolearn.app'), findsOneWidget);
       expect(find.text('https://pseudolearn.app'), findsOneWidget);
       expect(find.text('https://pseudolearn.app/contact'), findsOneWidget);
     });
@@ -49,7 +49,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Teaching suggestions'), findsOneWidget);
-      expect(find.text('support@pseudolearn.com'), findsOneWidget);
+      expect(find.text('support@pseudolearn.app'), findsOneWidget);
     });
 
     testWidgets('back affordance invokes onBack', (tester) async {

@@ -64,7 +64,7 @@ describe('SiteHeader', () => {
 describe('SiteFooter', () => {
   it('exposes the support address and the author link', async () => {
     const html = await container.renderToString(SiteFooter, { props: { locale: 'es', path: ROUTES.home } });
-    expect(html).toContain('mailto:support@pseudolearn.com');
+    expect(html).toContain('mailto:support@pseudolearn.app');
     expect(html).toContain('rel="noopener noreferrer"');
   });
 

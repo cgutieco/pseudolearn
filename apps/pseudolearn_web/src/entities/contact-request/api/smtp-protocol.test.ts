@@ -10,7 +10,7 @@ import {
 
 const message = {
   from: 'no-reply@pseudolearn.app',
-  to: 'support@pseudolearn.com',
+  to: 'support@pseudolearn.app',
   replyTo: 'ana@ejemplo.com',
   subject: 'Una duda',
   body: 'Primera línea\nSegunda línea',
