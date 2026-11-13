@@ -1,0 +1,34 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { sharesOnePrice, type NodoMarketPrice } from '@entities/nodo-plan/model/nodo-prices';
+import { formatPrice } from '@entities/nodo-plan/model/format-price';
+
+export interface Props {
+  locale: Locale;
+  price: NodoMarketPrice;
+  amount: 'monthly' | 'topUp';
+}
+
+const { locale, price, amount } = Astro.props;
+const { t } = useTranslations(locale);
+const appStore = formatPrice(locale, price.appStore.currency, price.appStore[amount]);
+const windows = formatPrice(locale, price.windows.currency, price.windows[amount]);
+---
+
+<td>
+  {sharesOnePrice(price) ? (
+    appStore
+  ) : (
+    <>
+      <span class="cell__line">{t('nodo.prices.onAppStore', { price: appStore })}</span>
+      <span class="cell__line">{t('nodo.prices.onWindows', { price: windows })}</span>
+    </>
+  )}
+</td>
+
+<style>
+  .cell__line {
+    display: block;
+  }
+</style>

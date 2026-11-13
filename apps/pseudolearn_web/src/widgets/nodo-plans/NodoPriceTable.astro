@@ -2,7 +2,7 @@
 import { useTranslations } from '@shared/i18n/translator';
 import type { Locale } from '@shared/i18n/locales';
 import { NODO_PRICES } from '@entities/nodo-plan/model/nodo-prices';
-import { formatPrice } from '@entities/nodo-plan/model/format-price';
+import NodoPriceCell from './NodoPriceCell.astro';
 
 export interface Props {
   locale: Locale;
@@ -26,12 +26,13 @@ const { t } = useTranslations(locale);
       {NODO_PRICES.map((price) => (
         <tr>
           <th scope="row">{t(price.marketKey)}</th>
-          <td>{formatPrice(locale, price.currency, price.monthly)}</td>
-          <td>{formatPrice(locale, price.currency, price.topUp)}</td>
+          <NodoPriceCell locale={locale} price={price} amount="monthly" />
+          <NodoPriceCell locale={locale} price={price} amount="topUp" />
         </tr>
       ))}
     </tbody>
   </table>
+  <p class="prices__note">{t('nodo.prices.conversionNote')}</p>
 </div>
 
 <style>
@@ -56,7 +57,14 @@ const { t } = useTranslations(locale);
     padding: var(--pl-space-xs) var(--pl-space-sm);
     border-bottom: 1px solid var(--pl-line);
     text-align: left;
+    vertical-align: top;
     white-space: nowrap;
+  }
+
+  .prices__note {
+    margin-top: var(--pl-space-xs);
+    font-size: 14px;
+    color: var(--pl-ink-2);
   }
 
   .prices__table thead th {
