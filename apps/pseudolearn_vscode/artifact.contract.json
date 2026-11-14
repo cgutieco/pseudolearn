@@ -20,6 +20,12 @@
       "platform": "win32",
       "architecture": "x64",
       "executable": "pseudo.exe"
+    },
+    "linux-x64": {
+      "cargoTarget": "x86_64-unknown-linux-musl",
+      "platform": "linux",
+      "architecture": "x64",
+      "executable": "pseudo"
     }
   },
   "readme": "marketplace/README.md",

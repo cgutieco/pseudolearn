@@ -4,8 +4,10 @@ Extensión de VS Code para escritorio y navegador. Trae al editor el resaltado, 
 ayuda, la ejecución y la depuración de los programas `.pseudo`, delegando todo el análisis en el binario `pseudo`
 (escritorio) o en el módulo Wasm del motor (navegador).
 
-**No hace:** analizar, ejecutar ni validar el lenguaje por su cuenta (eso es de Rust); publicarse en Marketplace ni Open
-VSX; actualizarse sola ni enviar telemetría.
+Se publica en Visual Studio Marketplace y en Open VSX como `pseudolearn.pseudolearn-vscode`, con un paquete por
+plataforma (`darwin-arm64`, `linux-x64`, `win32-x64` y `web`).
+
+**No hace:** analizar, ejecutar ni validar el lenguaje por su cuenta (eso es de Rust); enviar telemetría.
 
 > Este README es para quien desarrolla la extensión. Lo que ven los usuarios al instalarla es [
 > `marketplace/README.md`](marketplace/README.md): el empaquetado lo incluye en el VSIX como su `readme.md`.
@@ -117,16 +119,41 @@ Desde esta carpeta.
 | Tests                                 | `pnpm test`                                                         |
 | Compilar el binario `pseudo` incluido | `pnpm build:cli`                                                    |
 | Bundle de escritorio                  | `pnpm build`                                                        |
-| VSIX de escritorio del host           | `pnpm package` (`darwin-arm64` o `win32-x64`)                       |
+| VSIX de escritorio del host           | `pnpm package` (`darwin-arm64`, `linux-x64` o `win32-x64`)          |
 | VSIX web                              | `pnpm package:web`                                                  |
 | Escenarios en navegador               | `pnpm test:web`                                                     |
 | Contraste LSP escritorio/Wasm         | `pnpm test:lsp:contrast`                                            |
 | Depuración por stdio                  | `pnpm test:dap:stdio`                                               |
 | Prueba en VS Code real                | `node tests/host/run-host.mjs trusted` (o `restricted`)             |
 
-Requisitos: Node 26.13.1, pnpm 12.18.0; `build:cli` y `package` necesitan Cargo y un host `darwin-arm64` o `win32-x64`;
-`package:web`
-necesita además la cadena del motor para el Wasm.
+Requisitos: Node 26.13.1, pnpm 12.18.0; `build:cli` y `package` necesitan Cargo y un host `darwin-arm64`, `linux-x64`
+(con `musl-gcc`) o `win32-x64`; `package:web` necesita además la cadena del motor para el Wasm.
+
+## Publicación
+
+El workflow manual `Push Production VS Code Extension` (`.github/workflows/push-production-vscode.yml`) compila y
+empaqueta cada plataforma en su propio runner, ejecuta el `pseudo` extraído de cada VSIX y sube los cuatro VSIX como
+artefactos. Con la casilla `publish` marcada, además comprueba sus hashes y los publica.
+
+- **Por qué un runner por plataforma:** `package` solo empaqueta el target del host, porque el binario incluido se
+  compila y se ejecuta allí mismo; no hay compilación cruzada.
+- **Por qué `linux-x64` usa `x86_64-unknown-linux-musl`:** el binario estático no depende de la versión de glibc de la
+  distribución, así que el mismo VSIX sirve en cualquier Linux x64.
+- **Marketplace sin token:** se publica con *Trusted Publishing* (`vsce publish --oidc`). El Marketplace confía en este
+  repositorio, en este archivo de workflow y en el entorno `vscode-marketplace`; renombrar cualquiera de los tres rompe la
+  publicación hasta actualizar la política del publisher. Se eligió así porque los PAT globales de Azure DevOps dejan de
+  existir el 1 de diciembre de 2026.
+- **Open VSX con token:** usa el secreto `OVSX_PAT` del entorno `vscode-marketplace`, con `ovsx` fijado a una versión
+  exacta.
+- **Versiones:** ninguna tienda acepta volver a publicar una versión. Cada publicación sube la versión en todos los
+  sitios donde está fijada: `version` de `package.json`, `identity.version` y `web.artifactName` de
+  `artifact.contract.json`, la versión que exige `scripts/check-package.mjs` y los tests que nombran el VSIX. El
+  workflow no fija la versión.
+
+### Pendientes declarados
+
+- No hay paquete de escritorio para `darwin-x64` ni `linux-arm64`: en esas plataformas el editor no ofrece la
+  extensión de escritorio.
 
 `test:web` corre Chromium, Firefox y WebKit de Playwright. `PSEUDOLEARN_WEB_BROWSERS=firefox` (lista separada por comas)
 elige solo algunos.

@@ -40,6 +40,27 @@ describe("Extension manifest menu contributions", () => {
   });
 });
 
+describe("Extension manifest marketplace listing", () => {
+  const listedCategories = ["Programming Languages", "Debuggers", "Education", "Snippets", "Linters", "Formatters", "Other"];
+
+  it("describes the extension and points to its public repository", () => {
+    expect(manifest.description.length).toBeGreaterThan(0);
+    expect(manifest.repository.url).toMatch(/^https:\/\/github\.com\/.+\.git$/);
+    expect(manifest.bugs.url).toMatch(/^https:\/\/github\.com\/.+\/issues$/);
+  });
+
+  it("uses only categories the marketplace lists", () => {
+    expect(manifest.categories.length).toBeGreaterThan(0);
+    for (const category of manifest.categories) expect(listedCategories).toContain(category);
+  });
+
+  it("stays within the marketplace keyword limit without duplicates", () => {
+    expect(manifest.keywords.length).toBeGreaterThan(0);
+    expect(manifest.keywords.length).toBeLessThanOrEqual(30);
+    expect(new Set(manifest.keywords).size).toBe(manifest.keywords.length);
+  });
+});
+
 describe("Extension manifest editor API floor", () => {
   const versionParts = (version) => version.replace(/^\^/, "").split(".").map(Number);
   const exceeds = (candidate, floor) => {

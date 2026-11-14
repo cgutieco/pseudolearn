@@ -34,10 +34,11 @@ describe("extension source guards", () => {
     expect(violations.some((value) => value.includes("secret-bearing"))).toBe(true);
   });
 
-  it("accepts only the declared darwin arm64 and Windows x64 package targets", () => {
+  it("accepts only the declared darwin arm64, Windows x64 and Linux x64 package targets", () => {
     const extensionRoot = resolve(fixtureRoot, "../..");
     expect(assertQualifiedTarget(extensionRoot, "darwin-arm64").target.vscodeTarget).toBe("darwin-arm64");
     expect(assertQualifiedTarget(extensionRoot, "win32-x64").target.vscodeTarget).toBe("win32-x64");
+    expect(assertQualifiedTarget(extensionRoot, "linux-x64").target.vscodeTarget).toBe("linux-x64");
     expect(() => assertQualifiedTarget(extensionRoot, "linux-arm64")).toThrow("darwin-arm64");
     expect(() => assertQualifiedTarget(extensionRoot, "darwin-x64")).toThrow("win32-x64");
   });

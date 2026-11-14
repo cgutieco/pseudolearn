@@ -4,6 +4,26 @@
   "publisher": "pseudolearn",
   "version": "0.1.0",
   "private": true,
+  "description": "Write, check, run and debug PseudoLearn (.pseudo) programs in Spanish or English.",
+  "categories": [
+    "Programming Languages",
+    "Debuggers",
+    "Education"
+  ],
+  "keywords": [
+    "pseudolearn",
+    "pseudocode",
+    "pseudocódigo",
+    "education"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cgutieco/pseudolearn.git",
+    "directory": "apps/pseudolearn_vscode"
+  },
+  "bugs": {
+    "url": "https://github.com/cgutieco/pseudolearn/issues"
+  },
   "license": "Apache-2.0",
   "engines": {
     "node": "26.13.1",

@@ -1,0 +1,197 @@
+name: Push Production VS Code Extension
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publicar en Visual Studio Marketplace y Open VSX (sin marcar solo empaqueta y sube los VSIX)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: push-production-vscode
+  cancel-in-progress: false
+
+jobs:
+  desktop:
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - runner: macos-latest
+            target: darwin-arm64
+            cargo-target: aarch64-apple-darwin
+            executable: pseudo
+          - runner: ubuntu-latest
+            target: linux-x64
+            cargo-target: x86_64-unknown-linux-musl
+            executable: pseudo
+          - runner: windows-latest
+            target: win32-x64
+            cargo-target: x86_64-pc-windows-msvc
+            executable: pseudo.exe
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.15"
+
+      - name: Install musl tools
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y musl-tools
+
+      - name: Install the pinned Rust toolchain and target
+        run: rustup toolchain install 1.99.1 --profile minimal --target "${{ matrix.cargo-target }}"
+
+      - name: Resolve the unversioned library lockfiles and the corpus export
+        run: |
+          (cd packages/pseudolearn_engine && cargo generate-lockfile)
+          (cd packages/pseudolearn_spec && cargo generate-lockfile && cargo run --locked -p see_cli --bin see -- export --root .)
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: '12.18.0'
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '26.13.1'
+
+      - name: Test and package the ${{ matrix.target }} extension
+        working-directory: apps/pseudolearn_vscode
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm test
+          pnpm package
+
+      - name: Run the packaged binary from the VSIX
+        working-directory: apps/pseudolearn_vscode
+        run: |
+          mkdir -p unpacked
+          unzip -q -o .artifacts/pseudolearn-*-"${{ matrix.target }}".vsix -d unpacked
+          python -I ../pseudolearn_cli/tool/verify_system_paths.py "unpacked/extension/bin/${{ matrix.target }}/${{ matrix.executable }}"
+          cat .artifacts/pseudolearn-*-"${{ matrix.target }}".vsix.sha256
+
+      - name: Upload the VSIX and its record
+        uses: actions/upload-artifact@v7
+        with:
+          name: vsix-${{ matrix.target }}
+          include-hidden-files: true
+          path: |
+            apps/pseudolearn_vscode/.artifacts/*.vsix
+            apps/pseudolearn_vscode/.artifacts/*.vsix.json
+            apps/pseudolearn_vscode/.artifacts/*.vsix.sha256
+          if-no-files-found: error
+
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Install the pinned Rust toolchain and the Wasm target
+        run: rustup toolchain install 1.99.1 --profile minimal --target wasm32-unknown-unknown
+
+      - name: Install the pinned Wasm binding generator
+        run: cargo +1.99.1 install wasm-bindgen-cli --version 0.2.130 --locked
+
+      - name: Resolve the unversioned library lockfiles and the corpus export
+        run: |
+          (cd packages/pseudolearn_engine && cargo generate-lockfile)
+          (cd packages/pseudolearn_spec && cargo generate-lockfile && cargo run --locked -p see_cli --bin see -- export --root .)
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: '12.18.0'
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '26.13.1'
+
+      - name: Package the web extension
+        working-directory: apps/pseudolearn_vscode
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm package:web
+          cat .artifacts/pseudolearn-*-web.vsix.sha256
+
+      - name: Upload the VSIX and its record
+        uses: actions/upload-artifact@v7
+        with:
+          name: vsix-web
+          include-hidden-files: true
+          path: |
+            apps/pseudolearn_vscode/.artifacts/*.vsix
+            apps/pseudolearn_vscode/.artifacts/*.vsix.json
+            apps/pseudolearn_vscode/.artifacts/*.vsix.sha256
+          if-no-files-found: error
+
+  publish:
+    if: ${{ inputs.publish }}
+    needs: [desktop, web]
+    runs-on: ubuntu-latest
+    environment: vscode-marketplace
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: '12.18.0'
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '26.13.1'
+
+      - name: Download every VSIX
+        uses: actions/download-artifact@v7
+        with:
+          pattern: vsix-*
+          path: packages
+          merge-multiple: true
+
+      - name: Check the hashes of every VSIX
+        working-directory: packages
+        run: |
+          ls -l
+          test "$(ls *.vsix | wc -l)" -eq 4
+          cat *.vsix.sha256 | sha256sum --check
+
+      - name: Install the pinned publishing tool
+        working-directory: apps/pseudolearn_vscode
+        run: pnpm install --frozen-lockfile
+
+      - name: Publish to Visual Studio Marketplace
+        working-directory: apps/pseudolearn_vscode
+        run: pnpm exec vsce publish --oidc --packagePath ../../packages/*.vsix
+
+      - name: Publish to Open VSX
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
+        run: |
+          for vsix in packages/*.vsix; do
+            pnpm dlx ovsx@1.4.0 publish --packagePath "$vsix"
+          done

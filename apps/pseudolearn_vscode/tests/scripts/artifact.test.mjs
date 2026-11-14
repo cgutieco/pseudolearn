@@ -54,7 +54,8 @@ describe("artifact contract", () => {
   });
 
   it("rejects an undeclared target and names the host target", () => {
-    expect(() => loadContract(root, "linux-x64")).toThrow("darwin-arm64, win32-x64");
+    expect(() => loadContract(root, "linux-arm64")).toThrow("darwin-arm64, win32-x64, linux-x64");
+    expect(() => loadContract(root, "darwin-x64")).toThrow("Unsupported VSIX target darwin-x64");
     expect(() => loadContract(root, "")).toThrow("Unsupported VSIX target");
     expect(hostTargetName("win32", "x64")).toBe("win32-x64");
   });
@@ -66,6 +67,21 @@ describe("artifact contract", () => {
     expect(manifestViolations(manifest, contract)).toEqual([]);
     expect(manifestViolations({ ...manifest, version: "9.9.9" }, contract)).not.toEqual([]);
     expect(manifestViolations({ ...manifest, engines: { vscode: "^1.0.0" } }, contract)).not.toEqual([]);
+  });
+});
+
+describe("Linux x64 artifact contract", () => {
+  it("derives the static Linux x64 package with its own binary prefix", () => {
+    const linux = loadContract(root, "linux-x64");
+    expect(linux.target.cargoTarget).toBe("x86_64-unknown-linux-musl");
+    expect(linux.executable).toBe("bin/linux-x64/pseudo");
+    expect(linux.artifactName).toBe("pseudolearn-0.1.0-linux-x64.vsix");
+    expect(linux.required).toContain("bin/linux-x64/pseudo");
+    const listing = ["extension.vsixmanifest", ...linux.required.map((name) => `extension/${name}`)];
+    expect(listingViolations(listing, linux)).toEqual([]);
+    expect(listingViolations([...listing, "extension/bin/win32-x64/pseudo.exe"], linux).length).toBe(1);
+    expect(listingViolations(listing.filter((name) => !name.endsWith("/pseudo")), linux))
+      .toContain("VSIX is missing bin/linux-x64/pseudo");
   });
 });
 

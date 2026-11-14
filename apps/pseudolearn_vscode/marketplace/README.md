@@ -7,8 +7,7 @@
 Escribe, comprueba, ejecuta y depura programas de PseudoLearn (archivos `.pseudo`) sin salir del editor: resaltado de
 sintaxis, errores mientras escribes, ayuda en el cursor, ejecución con entrada por teclado y depuración.
 
-> Versión previa a producción para uso privado. Se instala desde un archivo VSIX; no se publica en Marketplace ni en
-> Open VSX, no envía telemetría y no se actualiza sola.
+> No envía telemetría. Se actualiza como cualquier extensión de la tienda de tu editor.
 
 ### Qué incluye
 
@@ -24,20 +23,23 @@ sintaxis, errores mientras escribes, ayuda en el cursor, ejecución con entrada 
 
 ### Requisitos e instalación
 
-| Paquete                                | Plataforma                         | Herramientas extra                    |
-|----------------------------------------|------------------------------------|---------------------------------------|
-| `pseudolearn-0.1.0-darwin-arm64.vsix`  | macOS con Apple silicon            | Ninguna: el VSIX trae `pseudo`        |
-| `pseudolearn-0.1.0-win32-x64.vsix`     | Windows x64                        | Ninguna: el VSIX trae `pseudo.exe`    |
-| `pseudolearn-0.1.0-web.vsix`           | VS Code para la Web                | Ninguna: la VM corre como Wasm        |
-
-Requiere VS Code Stable 1.144.0 o superior.
+Busca **PseudoLearn** en la vista «Extensiones» e instálala. VS Code la descarga del Visual Studio Marketplace; Cursor,
+VSCodium y otros editores compatibles, de Open VSX. También puedes instalarla desde la terminal:
 
 ```bash
-code --install-extension pseudolearn-0.1.0-darwin-arm64.vsix
+code --install-extension pseudolearn.pseudolearn-vscode
 ```
 
-También sirve «Extensions: Install from VSIX…» en la paleta de comandos. Para volver atrás, desinstala con
-`code --uninstall-extension pseudolearn.pseudolearn-vscode` e instala el VSIX anterior.
+Requiere VS Code Stable 1.144.0 o superior. El editor elige solo el paquete de tu plataforma:
+
+| Plataforma                         | Herramientas extra                        |
+|------------------------------------|-------------------------------------------|
+| macOS con Apple silicon            | Ninguna: el paquete trae `pseudo`         |
+| Windows x64                        | Ninguna: el paquete trae `pseudo.exe`     |
+| Linux x64                          | Ninguna: el paquete trae `pseudo` estático |
+| VS Code para la Web                | Ninguna: la VM corre como Wasm            |
+
+macOS con procesador Intel y Linux ARM aún no tienen paquete de escritorio.
 
 ### Primeros pasos
 
@@ -104,8 +106,7 @@ Apache-2.0. Los avisos de las dependencias incluidas están en `third-party-noti
 Write, check, run and debug PseudoLearn programs (`.pseudo` files) without leaving the editor: syntax highlighting,
 errors as you type, help at the cursor, runs with keyboard input and debugging.
 
-> Pre-production build for private use. It installs from a VSIX file; it is not published to the Marketplace or Open
-> VSX, sends no telemetry and never updates itself.
+> It sends no telemetry. It updates like any other extension from your editor's store.
 
 ### What it includes
 
@@ -121,20 +122,23 @@ errors as you type, help at the cursor, runs with keyboard input and debugging.
 
 ### Requirements and installation
 
-| Package                                | Platform                           | Extra tools                           |
-|----------------------------------------|------------------------------------|---------------------------------------|
-| `pseudolearn-0.1.0-darwin-arm64.vsix`  | macOS on Apple silicon             | None: the VSIX ships `pseudo`         |
-| `pseudolearn-0.1.0-win32-x64.vsix`     | Windows x64                        | None: the VSIX ships `pseudo.exe`     |
-| `pseudolearn-0.1.0-web.vsix`           | VS Code for the Web                | None: the VM runs as Wasm             |
-
-Requires VS Code Stable 1.144.0 or later.
+Search for **PseudoLearn** in the Extensions view and install it. VS Code downloads it from the Visual Studio
+Marketplace; Cursor, VSCodium and other compatible editors, from Open VSX. You can also install it from a terminal:
 
 ```bash
-code --install-extension pseudolearn-0.1.0-darwin-arm64.vsix
+code --install-extension pseudolearn.pseudolearn-vscode
 ```
 
-“Extensions: Install from VSIX…” in the command palette works too. To roll back, uninstall with
-`code --uninstall-extension pseudolearn.pseudolearn-vscode` and install the previous VSIX.
+Requires VS Code Stable 1.144.0 or later. The editor picks the package for your platform:
+
+| Platform                           | Extra tools                               |
+|------------------------------------|-------------------------------------------|
+| macOS on Apple silicon             | None: the package ships `pseudo`          |
+| Windows x64                        | None: the package ships `pseudo.exe`      |
+| Linux x64                          | None: the package ships a static `pseudo` |
+| VS Code for the Web                | None: the VM runs as Wasm                 |
+
+Intel macOS and Linux ARM have no desktop package yet.
 
 ### First steps
 
