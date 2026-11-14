@@ -18,10 +18,15 @@ fn edition_files() -> Bundle {
 }
 
 fn four_editions() -> BTreeMap<String, Bundle> {
-    ["es/es", "es/en", "en/es", "en/en"]
-        .into_iter()
-        .map(|edition| (edition.to_owned(), edition_files()))
-        .collect()
+    [
+        "es/keywords-es",
+        "es/keywords-en",
+        "en/keywords-es",
+        "en/keywords-en",
+    ]
+    .into_iter()
+    .map(|edition| (edition.to_owned(), edition_files()))
+    .collect()
 }
 
 #[test]

@@ -63,26 +63,26 @@ flutter:
     - assets/agent/en/
     - assets/manual/es/
     - assets/manual/en/
-    - assets/reference/es/es/
-    - assets/reference/es/es/sections/
-    - assets/reference/es/en/
-    - assets/reference/es/en/sections/
-    - assets/reference/en/es/
-    - assets/reference/en/es/sections/
-    - assets/reference/en/en/
-    - assets/reference/en/en/sections/
-    - assets/route/es/es/
-    - assets/route/es/es/lessons/
-    - assets/route/es/es/exercises/
-    - assets/route/es/en/
-    - assets/route/es/en/lessons/
-    - assets/route/es/en/exercises/
-    - assets/route/en/es/
-    - assets/route/en/es/lessons/
-    - assets/route/en/es/exercises/
-    - assets/route/en/en/
-    - assets/route/en/en/lessons/
-    - assets/route/en/en/exercises/
+    - assets/reference/es/keywords-es/
+    - assets/reference/es/keywords-es/sections/
+    - assets/reference/es/keywords-en/
+    - assets/reference/es/keywords-en/sections/
+    - assets/reference/en/keywords-es/
+    - assets/reference/en/keywords-es/sections/
+    - assets/reference/en/keywords-en/
+    - assets/reference/en/keywords-en/sections/
+    - assets/route/es/keywords-es/
+    - assets/route/es/keywords-es/lessons/
+    - assets/route/es/keywords-es/exercises/
+    - assets/route/es/keywords-en/
+    - assets/route/es/keywords-en/lessons/
+    - assets/route/es/keywords-en/exercises/
+    - assets/route/en/keywords-es/
+    - assets/route/en/keywords-es/lessons/
+    - assets/route/en/keywords-es/exercises/
+    - assets/route/en/keywords-en/
+    - assets/route/en/keywords-en/lessons/
+    - assets/route/en/keywords-en/exercises/
 
   fonts:
     - family: IBMPlexSans

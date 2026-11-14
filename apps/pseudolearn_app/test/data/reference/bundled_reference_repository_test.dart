@@ -59,7 +59,7 @@ void main() {
     });
 
     test('a malformed section is reported as malformed', () async {
-      final repository = _fromMap({'assets/reference/es/es/sections/mala.json': '{"id": 1}'});
+      final repository = _fromMap({'assets/reference/es/keywords-es/sections/mala.json': '{"id": 1}'});
       final result = await repository.loadSection(_spanish, 'mala');
       expect((result as ContentLoadFailed<ReferenceSection>).failure, ContentLoadFailure.malformedReference);
     });
@@ -68,8 +68,8 @@ void main() {
       const unknownBlock = '{"id":"a","number":"1","kind":"concepto","title":[],"phrase":[],"blocks":[{"type":"video"}]}';
       const unknownCategory = '{"id":"a","number":"1","kind":"concepto","title":[{"type":"code","tokens":[["x","color"]]}],"phrase":[],"blocks":[]}';
       final repository = _fromMap({
-        'assets/reference/es/es/sections/bloque.json': unknownBlock,
-        'assets/reference/es/es/sections/categoria.json': unknownCategory,
+        'assets/reference/es/keywords-es/sections/bloque.json': unknownBlock,
+        'assets/reference/es/keywords-es/sections/categoria.json': unknownCategory,
       });
       expect(await repository.loadSection(_spanish, 'bloque'), isA<ContentLoadFailed<ReferenceSection>>());
       expect(await repository.loadSection(_spanish, 'categoria'), isA<ContentLoadFailed<ReferenceSection>>());
@@ -80,7 +80,7 @@ void main() {
           '{"type":"program","id":"p","title":"P","source":"x","lines":[[["Si","keywordStructured"],[" "]]],"executed":true,"output":"1\\n","termination":"completed","diagnostics":[]},'
           '{"type":"figure","id":"f","number":"1-1","alt":"A","description":"D","caption":[],"svg":"<svg/>","layers":[{"from_step":1,"svg":"<g/>"}],"steps":[{"runs":[]}],"panels":[]},'
           '{"type":"callout","kind":"inside","collapsible":true,"blocks":[{"type":"intermediate","program":"p","lines":["ret"]}]}]}';
-      final loaded = await _fromMap({'assets/reference/es/es/sections/a.json': section}).loadSection(_spanish, 'a');
+      final loaded = await _fromMap({'assets/reference/es/keywords-es/sections/a.json': section}).loadSection(_spanish, 'a');
       final blocks = (loaded as ContentLoaded<ReferenceSection>).value.blocks;
       expect(blocks[0], isA<ReferenceProgramBlock>());
       expect((blocks[0] as ReferenceProgramBlock).program.completed, isTrue);
@@ -93,7 +93,7 @@ void main() {
           '{"type":"anatomy","parts":['
           '{"tokens":[["Dimension","keywordStructured"]],"label":[{"type":"text","text":"palabra"}]},'
           '{"tokens":[["notas","identifier"],["["],["4","literalNumber"],["]"]],"label":[{"type":"code","tokens":[["Como"]]}]}]}]}';
-      final loaded = await _fromMap({'assets/reference/es/es/sections/a.json': section}).loadSection(_spanish, 'a');
+      final loaded = await _fromMap({'assets/reference/es/keywords-es/sections/a.json': section}).loadSection(_spanish, 'a');
       final anatomy = (loaded as ContentLoaded<ReferenceSection>).value.blocks.single as ReferenceAnatomy;
       expect(anatomy.parts, hasLength(2));
       expect(anatomy.parts.first.tokens.single.text, 'Dimension');
@@ -105,8 +105,8 @@ void main() {
       const withoutParts = '{"id":"a","number":"1","kind":"tipo","title":[],"phrase":[],"blocks":[{"type":"anatomy"}]}';
       const withoutLabel = '{"id":"b","number":"1","kind":"tipo","title":[],"phrase":[],"blocks":[{"type":"anatomy","parts":[{"tokens":[["x"]]}]}]}';
       final repository = _fromMap({
-        'assets/reference/es/es/sections/a.json': withoutParts,
-        'assets/reference/es/es/sections/b.json': withoutLabel,
+        'assets/reference/es/keywords-es/sections/a.json': withoutParts,
+        'assets/reference/es/keywords-es/sections/b.json': withoutLabel,
       });
       for (final id in ['a', 'b']) {
         final result = await repository.loadSection(_spanish, id);
@@ -116,7 +116,7 @@ void main() {
 
     test('a rails block is no longer published and is malformed', () async {
       const section = '{"id":"a","number":"1","kind":"tipo","title":[],"phrase":[],"blocks":[{"type":"rails","svg":"<svg/>","alt":"A"}]}';
-      final result = await _fromMap({'assets/reference/es/es/sections/a.json': section}).loadSection(_spanish, 'a');
+      final result = await _fromMap({'assets/reference/es/keywords-es/sections/a.json': section}).loadSection(_spanish, 'a');
       expect(result, isA<ContentLoadFailed<ReferenceSection>>());
     });
 
@@ -124,7 +124,7 @@ void main() {
       const section = '{"id":"a","number":"1","kind":"concepto","title":[],"phrase":[],"blocks":['
           '{"type":"callout","kind":"teachers","collapsible":true,"blocks":[]},'
           '{"type":"callout","kind":"limit","collapsible":false,"blocks":[]}]}';
-      final loaded = await _fromMap({'assets/reference/es/es/sections/a.json': section}).loadSection(_spanish, 'a');
+      final loaded = await _fromMap({'assets/reference/es/keywords-es/sections/a.json': section}).loadSection(_spanish, 'a');
       final blocks = (loaded as ContentLoaded<ReferenceSection>).value.blocks;
       expect((blocks[0] as ReferenceCallout).kind, ReferenceCalloutKind.note);
       expect((blocks[1] as ReferenceCallout).kind, ReferenceCalloutKind.limit);

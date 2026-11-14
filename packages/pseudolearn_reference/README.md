@@ -78,7 +78,8 @@ flowchart LR
     write --> web["web: Especificación y ruta, es y en"]
 ```
 
-Las ediciones web contienen solo `es/es` y `en/en`. La de la Especificación lleva `toc.json` y las secciones; la de la
+Las ediciones de la app viven en `<idioma>/keywords-<perfil>/` y las web contienen solo `es/keywords-es` y
+`en/keywords-en`, publicadas como `es` y `en`. La de la Especificación lleva `toc.json` y las secciones; la de la
 ruta lleva `toc.json`, las lecciones y los ejercicios, porque la web muestra lecciones y ejercicios reales en vez de
 describirlos. `reference check` informa la segunda como `RUTA-WEB-BUNDLE-STALE`. Los esquemas de los paquetes están en
 `schemas/`.
@@ -92,6 +93,10 @@ describirlos. `reference check` informa la segunda como `RUTA-WEB-BUNDLE-STALE`.
 - Los paquetes de la app y de la web se generan con `reference build`; nunca se editan a mano (`GEN-NO-HAND-COPY`).
   `reference check` falla si están obsoletos.
 - Las figuras ocupan 340 unidades de ancho y usan roles de color, no colores fijos.
+- **El perfil lleva el prefijo `keywords-`** (`es/keywords-en`, nunca `es/en`): el empaquetado MSIX de Windows lee
+  cada carpeta con nombre de idioma como un calificador de recursos, y dos idiomas anidados hacen que `makepri` dé por
+  duplicados los archivos de ediciones distintas y aborte. `reference_cli/src/edition_key.rs` es el único lugar que
+  compone y separa esa ruta.
 - **`categories.json` es del libro**: la categoría de resaltado de cada palabra reservada es una decisión de presentación de los lectores, no comportamiento del lenguaje, así que no sube al corpus; `reference` la exige completa y la app la compara con su tabla en `keyword_highlight_categories_test.dart`.
 - **La comilla (`quote`) está excluida de la cobertura de vocabulario** (`coverage-exclusions.json`) porque el resaltado la incluye en el literal de texto y nunca aparece como ficha suelta.
 - **Programas de la edición inglesa de la ruta**: un `programa` vacío en `route/en` reutiliza el español, con el vocabulario del lenguaje traducido y los identificadores y textos entre comillas sin cambiar. Un `programa` con cuerpo en `route/en` es la versión propia de la edición inglesa: se escribe con las palabras clave del perfil español (el canal que ya traduce, ejecuta y verifica cada programa) pero con identificadores y textos en inglés, y la `salida`, los `casos` y la prosa que lo citan van en inglés. `RUTA-PARITY` exige que el esqueleto de ambas versiones coincida (palabras clave, números y signos iguales, identificadores y textos reducidos a marcadores), de modo que solo cambian los nombres y los mensajes; no compara las salidas porque la edición inglesa publica la suya, ejecutada por el motor y contrastada con su propia `salida`. Toda la ruta inglesa tiene programas propios. En el esqueleto solo cuentan como fijas las palabras reservadas y las funciones del léxico español, y las frases de varias palabras (`Por Valor`, `De Otro Modo`, `Con Paso`) se reconocen enteras, de modo que sus palabras sueltas (`valor`, `otro`, `paso`) siguen siendo nombres libres fuera de la frase; el nombre que sigue a `Algoritmo` también es un identificador, aunque coincida con una palabra reservada (`Exportar`). Las contextuales y los nombres de operación de la biblioteca se tratan como identificadores. Siguen en español los miembros y operaciones de la biblioteca que el motor ejecuta con el perfil español (`Claves`, `Estado()`, `CuerpoTexto()`) y las salidas del motor (`Verdadero`, `Falso`, `SintaxisInvalida`).

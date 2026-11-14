@@ -37,7 +37,7 @@ GateExercise _gateOf(File file) {
   return GateExercise(
     file.path,
     parseRouteExercise(jsonDecode(file.readAsStringSync())),
-    profile == 'en' ? SyntaxProfileId.english : SyntaxProfileId.classicSpanish,
+    profile == 'keywords-en' ? SyntaxProfileId.english : SyntaxProfileId.classicSpanish,
     language == 'en' ? UiLanguageId.english : UiLanguageId.spanish,
   );
 }

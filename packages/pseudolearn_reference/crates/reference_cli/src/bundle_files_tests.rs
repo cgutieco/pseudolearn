@@ -9,7 +9,7 @@ fn scratch(name: &str) -> std::path::PathBuf {
 
 fn bundles(text: &str) -> BTreeMap<String, Bundle> {
     BTreeMap::from([(
-        "es/es".to_owned(),
+        "es/keywords-es".to_owned(),
         Bundle {
             files: BTreeMap::from([("toc.json".to_owned(), text.to_owned())]),
         },
@@ -36,7 +36,7 @@ fn an_edited_missing_or_extra_file_is_stale() {
         edited.first().map(|violation| violation.rule),
         Some(RuleId::BundleStale)
     );
-    assert!(std::fs::write(directory.join("es/es/extra.json"), "{}").is_ok());
+    assert!(std::fs::write(directory.join("es/keywords-es/extra.json"), "{}").is_ok());
     assert_eq!(
         compare(&directory, &bundles("[]\n"), RuleId::BundleStale).map(|found| found.len()),
         Ok(1)

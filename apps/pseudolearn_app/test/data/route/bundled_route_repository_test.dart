@@ -86,10 +86,10 @@ void main() {
 
     test('malformed JSON or an unknown block is a malformed route', () async {
       final repository = _fromMap({
-        'assets/route/es/es/toc.json': '[{"id": 1}]',
-        'assets/route/es/es/lessons/x.json':
+        'assets/route/es/keywords-es/toc.json': '[{"id": 1}]',
+        'assets/route/es/keywords-es/lessons/x.json':
             '{"id":"x","number":"1","part":"p","kind":"leccion","title":[],"minutes":1,"needs":[],"introduces":[],"blocks":[{"type":"pelicula"}]}',
-        'assets/route/es/es/exercises/y.json': '{',
+        'assets/route/es/keywords-es/exercises/y.json': '{',
       });
       final toc = await repository.loadToc(_editions.first);
       final lesson = await repository.loadLesson(_editions.first, 'x');
@@ -101,7 +101,7 @@ void main() {
 
     test('an unknown exercise kind is rejected', () async {
       final repository = _fromMap({
-        'assets/route/es/es/toc.json':
+        'assets/route/es/keywords-es/toc.json':
             '[{"id":"p","number":"0","title":"T","motto":"","summary":"","lessons":[{"id":"l","number":"0.1","kind":"leccion","title":[],"brief_problem":"","minutes":1,"levels":[],"needs":[],"exercises":[{"id":"e","kind":"adivinar","level":"semilla","required":true,"title":[]}]}]}]',
       });
       final toc = await repository.loadToc(_editions.first);

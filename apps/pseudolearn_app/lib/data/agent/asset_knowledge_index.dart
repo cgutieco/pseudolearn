@@ -47,7 +47,7 @@ final class AssetKnowledgeIndex implements KnowledgeIndex {
     final code = languageCodes.contains(languageCode) ? languageCode : 'es';
     return [
       ...manualDocuments(await _loader(_manualPath(code)), code),
-      ...specificationDocuments(await _loader('assets/reference/$code/$code/search.json'), code),
+      ...specificationDocuments(await _loader('assets/reference/$code/keywords-$code/search.json'), code),
       ...sheetDocuments(await _loader('assets/agent/$code/language-sheet.md'), code),
     ];
   }

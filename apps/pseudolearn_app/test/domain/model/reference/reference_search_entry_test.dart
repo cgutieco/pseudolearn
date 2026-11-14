@@ -19,8 +19,8 @@ void main() {
   test('an edition names its bundle directory', () {
     const spanish = ReferenceEdition(language: UiLanguageId.spanish, profile: SyntaxProfileId.classicSpanish);
     const mixed = ReferenceEdition(language: UiLanguageId.english, profile: SyntaxProfileId.classicSpanish);
-    expect(spanish.directory, 'es/es');
-    expect(mixed.directory, 'en/es');
+    expect(spanish.directory, 'es/keywords-es');
+    expect(mixed.directory, 'en/keywords-es');
     expect(spanish, const ReferenceEdition(language: UiLanguageId.spanish, profile: SyntaxProfileId.classicSpanish));
     expect(spanish == mixed, isFalse);
   });

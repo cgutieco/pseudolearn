@@ -67,7 +67,7 @@ fn add_edition(
     let edition = edition(resolution, content, reuse);
     let fingerprint = resolution.engine.fingerprint();
     let bundle = bundle(workspace, &fingerprint, (content, &edition), links)?;
-    let key = format!("{}/{}", edition.language.code(), edition.profile.code());
+    let key = crate::edition_key::edition_key(edition.language, edition.profile);
     book.bundles.insert(key, bundle);
     book.editions.push(edition);
     Ok(())

@@ -10,7 +10,7 @@ final class ReferenceEdition {
   String get directory {
     final languageCode = language == UiLanguageId.english ? 'en' : 'es';
     final profileCode = profile == SyntaxProfileId.english ? 'en' : 'es';
-    return '$languageCode/$profileCode';
+    return '$languageCode/keywords-$profileCode';
   }
 
   @override

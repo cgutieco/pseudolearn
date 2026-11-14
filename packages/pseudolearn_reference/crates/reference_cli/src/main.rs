@@ -4,6 +4,7 @@ mod book;
 mod bundle_files;
 mod checks;
 mod commands;
+mod edition_key;
 mod links;
 mod route_book;
 mod route_checks;
@@ -29,6 +30,8 @@ fn main() -> std::process::ExitCode {
 mod bundle_files_tests;
 #[cfg(test)]
 mod commands_tests;
+#[cfg(test)]
+mod edition_key_tests;
 #[cfg(test)]
 mod web_bundles_tests;
 #[cfg(test)]

@@ -26,7 +26,7 @@ La línea punteada es indirecta: el motor llega por `reference_engine`.
 | `workspace`, `workspace_files`, `route_workspace`   | Lectura de `content/`, `route/`, `figures/`, `categories.json`, candado y exclusiones |
 | `book`, `route_book`                                | Compilación de ediciones y paquetes con el motor                                      |
 | `checks`, `route_checks`, `route_coverage`, `links` | Ejecución de verificadores y cobertura                                                |
-| `bundle_files`, `web_bundles`                       | Escritura y comparación de paquetes; ediciones web `es/es` y `en/en`                  |
+| `bundle_files`, `web_bundles`, `edition_key`        | Escritura y comparación de paquetes; ruta de cada edición; web `es` y `en`            |
 
 ## Flujo principal
 

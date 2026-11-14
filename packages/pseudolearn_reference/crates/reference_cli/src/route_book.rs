@@ -83,7 +83,7 @@ fn add_route_edition(
     (engine, route): (&dyn CodeEngine, &RouteLanguage),
     edition: RouteEdition,
 ) -> Result<(), String> {
-    let key = format!("{}/{}", edition.language.code(), edition.profile.code());
+    let key = crate::edition_key::edition_key(edition.language, edition.profile);
     let specification = book
         .bundles
         .get(&key)

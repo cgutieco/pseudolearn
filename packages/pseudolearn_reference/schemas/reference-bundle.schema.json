@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "pseudolearn-reference/1",
   "title": "Paquete de la especificación ilustrada",
-  "description": "Contrato de los archivos de assets/reference/<idioma>/<perfil>/. El archivo raíz describe una sección; $defs describe el índice, la búsqueda, los enlaces y el manifiesto.",
+  "description": "Contrato de los archivos de assets/reference/<idioma>/keywords-<perfil>/. El archivo raíz describe una sección; $defs describe el índice, la búsqueda, los enlaces y el manifiesto.",
   "$ref": "#/$defs/section",
   "$defs": {
     "category": {

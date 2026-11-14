@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "pseudolearn-route/1",
   "title": "Paquete de la ruta de aprendizaje",
-  "description": "Contrato de los archivos de assets/route/<idioma>/<perfil>/. El archivo raíz describe una lección; $defs describe el ejercicio, el índice, los términos, los enlaces inversos y el manifiesto.",
+  "description": "Contrato de los archivos de assets/route/<idioma>/keywords-<perfil>/. El archivo raíz describe una lección; $defs describe el ejercicio, el índice, los términos, los enlaces inversos y el manifiesto.",
   "$ref": "#/$defs/lesson",
   "$defs": {
     "runs": {

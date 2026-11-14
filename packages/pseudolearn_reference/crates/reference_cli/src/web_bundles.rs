@@ -20,7 +20,7 @@ fn profile_editions(
     bundles
         .iter()
         .filter_map(|(edition, bundle)| {
-            let (language, profile) = edition.split_once('/')?;
+            let (language, profile) = crate::edition_key::edition_codes(edition)?;
             (language == profile).then(|| (language.to_owned(), web_bundle(bundle, prefixes)))
         })
         .collect()
