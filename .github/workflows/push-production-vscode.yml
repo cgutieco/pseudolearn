@@ -113,9 +113,9 @@ jobs:
       - name: Install the pinned Wasm binding generator
         run: cargo +1.99.1 install wasm-bindgen-cli --version 0.2.130 --locked
 
-      - name: Resolve the unversioned library lockfiles and the corpus export
+      - name: Resolve the unversioned library lockfiles, the engine dependencies and the corpus export
         run: |
-          (cd packages/pseudolearn_engine && cargo generate-lockfile)
+          (cd packages/pseudolearn_engine && cargo generate-lockfile && cargo fetch --locked)
           (cd packages/pseudolearn_spec && cargo generate-lockfile && cargo run --locked -p see_cli --bin see -- export --root .)
 
       - uses: pnpm/action-setup@v6

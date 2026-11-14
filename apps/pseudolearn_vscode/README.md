@@ -137,6 +137,10 @@ artefactos. Con la casilla `publish` marcada, además comprueba sus hashes y los
 
 - **Por qué un runner por plataforma:** `package` solo empaqueta el target del host, porque el binario incluido se
   compila y se ejecuta allí mismo; no hay compilación cruzada.
+- **Por qué el job web ejecuta `cargo fetch` antes de empaquetar:** `scripts/web-notices.mjs` lee el grafo del motor con
+  `cargo metadata --offline` para que el empaquetado no dependa de la red, y Cargo necesita en caché los manifiestos de
+  todas las dependencias del motor, no solo las que compila el Wasm. En una caché vacía, como la de un runner nuevo,
+  sin ese paso falla con «--offline was specified».
 - **Por qué `linux-x64` usa `x86_64-unknown-linux-musl`:** el binario estático no depende de la versión de glibc de la
   distribución, así que el mismo VSIX sirve en cualquier Linux x64.
 - **Sin tokens guardados:** ambas tiendas se publican con *Trusted Publishing* por OIDC (`vsce publish --oidc` y
