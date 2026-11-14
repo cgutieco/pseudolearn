@@ -20,7 +20,7 @@ final class AgentOfferProducts extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final purchases = context.read<PurchaseCubit>();
     return BlocBuilder<PurchaseCubit, PurchaseState>(
-      builder: (context, purchase) => BlocBuilder<CreditsCubit, CreditsState>(
+      builder: (context, purchase) => !purchase.channel.sells ? const _SalesUnavailable() : BlocBuilder<CreditsCubit, CreditsState>(
         builder: (context, credits) {
           final ownTrial = purchase.channel.sellsOwnTrial && !credits.trialUsed;
           final busy = purchase.status == PurchaseStatus.purchasing;
@@ -90,4 +90,15 @@ final class _PurchaseNotice extends StatelessWidget {
       ],
     );
   }
+}
+
+final class _SalesUnavailable extends StatelessWidget {
+  const _SalesUnavailable();
+
+  @override
+  Widget build(BuildContext context) => AppText(
+    AppLocalizations.of(context)!.agentOfferUnavailable,
+    key: const ValueKey('agent-offer-unavailable'),
+    variant: AppTextVariant.bodyDefault,
+  );
 }

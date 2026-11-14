@@ -20,6 +20,11 @@ void main() {
     expect(PurchaseChannel.simulated.managesSubscriptions, isFalse);
   });
 
+  test('only the unavailable channel sells nothing', () {
+    expect(PurchaseChannel.values.where((channel) => !channel.sells), [PurchaseChannel.unavailable]);
+    expect(PurchaseChannel.unavailable.managesSubscriptions, isFalse);
+  });
+
   test('only Paddle quotes its price at its own checkout', () {
     expect(PurchaseChannel.values.where((channel) => channel.quotesPriceAtCheckout), [PurchaseChannel.paddle]);
   });

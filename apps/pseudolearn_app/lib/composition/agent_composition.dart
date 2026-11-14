@@ -17,6 +17,7 @@ import '../data/credits/proxy_checkout_gateway.dart';
 import '../data/credits/purchase_store_simulation.dart';
 import '../data/credits/storekit_purchase_store.dart';
 import '../data/credits/storekit_transaction_queue.dart';
+import '../data/credits/unavailable_purchase_store.dart';
 import '../data/platform/platform_external_url_launcher.dart';
 import '../data/platform/platform_name_source.dart';
 import '../data/progress/sqlite_assisted_progress_store.dart';
@@ -74,6 +75,7 @@ _purchaseAdapters = {
     ),
     pending: const NoPendingPurchases(),
   ),
+  'unavailable': (_, _) => (store: const UnavailablePurchaseStore(), pending: const NoPendingPurchases()),
 };
 
 PurchaseAdapters _storeKitAdapters(String? Function() accountToken) {

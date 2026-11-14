@@ -1,3 +1,4 @@
+import 'package:pseudolearn_app/data/credits/unavailable_purchase_store.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/domain/model/credits/agent_product.dart';
@@ -50,5 +51,12 @@ void main() {
     await harness.pump(tester, const AgentTopUpButton(keyPrefix: 'top-up'));
     expect(find.byKey(const ValueKey('top-up')), findsNothing);
     expect(find.byKey(const ValueKey('top-up-needs-plan')), findsOneWidget);
+  });
+
+  testWidgets('a build that cannot sell shows a note instead of the top-up button', (tester) async {
+    final harness = PurchaseWidgetHarness(store: const UnavailablePurchaseStore(), balance: _subscribed);
+    await harness.pump(tester, const AgentTopUpButton(keyPrefix: 'top-up'));
+    expect(find.byKey(const ValueKey('top-up-unavailable')), findsOneWidget);
+    expect(find.byKey(const ValueKey('top-up')), findsNothing);
   });
 }

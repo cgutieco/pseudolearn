@@ -1,3 +1,4 @@
+import 'package:pseudolearn_app/data/credits/unavailable_purchase_store.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pseudolearn_app/data/credits/purchase_store_simulation.dart';
@@ -74,5 +75,21 @@ void main() {
     expect(find.byKey(const ValueKey('agent-offer-price-at-checkout')), findsNothing);
     expect(find.byKey(const ValueKey('agent-offer-price')), findsNothing);
     expect(find.text('Suscribirme'), findsOneWidget);
+  });
+
+  testWidgets('a build that cannot sell explains how to use Nodo and offers no checkout', (tester) async {
+    final harness = PurchaseWidgetHarness(store: const UnavailablePurchaseStore(), balance: _noPlan);
+    await harness.pump(tester, const AgentOfferProducts());
+    expect(find.byKey(const ValueKey('agent-offer-unavailable')), findsOneWidget);
+    expect(find.textContaining('desde un iPhone o una Mac'), findsOneWidget);
+    expect(find.byKey(const ValueKey('agent-buy-monthly')), findsNothing);
+    expect(find.byKey(const ValueKey('agent-buy-trial')), findsNothing);
+    expect(find.byKey(const ValueKey('agent-offer-legal')), findsNothing);
+  });
+
+  testWidgets('a build that cannot sell says so in English too', (tester) async {
+    final harness = PurchaseWidgetHarness(store: const UnavailablePurchaseStore(), balance: _trialSpent);
+    await harness.pump(tester, const AgentOfferProducts(), locale: 'en');
+    expect(find.textContaining('cannot be purchased from this version'), findsOneWidget);
   });
 }

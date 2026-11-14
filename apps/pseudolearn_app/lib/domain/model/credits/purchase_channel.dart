@@ -1,9 +1,11 @@
 enum PurchaseChannel {
-  simulated('simulated', sellsOwnTrial: true, restoresPurchases: false, managesSubscriptions: false, quotesPriceAtCheckout: false),
-  appStore('app_store', sellsOwnTrial: false, restoresPurchases: true, managesSubscriptions: true, quotesPriceAtCheckout: false),
-  paddle('paddle', sellsOwnTrial: false, restoresPurchases: false, managesSubscriptions: true, quotesPriceAtCheckout: true);
+  simulated('simulated', sells: true, sellsOwnTrial: true, restoresPurchases: false, managesSubscriptions: false, quotesPriceAtCheckout: false),
+  appStore('app_store', sells: true, sellsOwnTrial: false, restoresPurchases: true, managesSubscriptions: true, quotesPriceAtCheckout: false),
+  paddle('paddle', sells: true, sellsOwnTrial: false, restoresPurchases: false, managesSubscriptions: true, quotesPriceAtCheckout: true),
+  unavailable('unavailable', sells: false, sellsOwnTrial: false, restoresPurchases: false, managesSubscriptions: false, quotesPriceAtCheckout: false);
 
   final String wireName;
+  final bool sells;
   final bool sellsOwnTrial;
   final bool restoresPurchases;
   final bool managesSubscriptions;
@@ -11,6 +13,7 @@ enum PurchaseChannel {
 
   const PurchaseChannel(
     this.wireName, {
+    required this.sells,
     required this.sellsOwnTrial,
     required this.restoresPurchases,
     required this.managesSubscriptions,

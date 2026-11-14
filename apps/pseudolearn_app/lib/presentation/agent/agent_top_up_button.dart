@@ -20,9 +20,13 @@ final class AgentTopUpButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final topUpNeedsPlan = context.select<CreditsCubit, bool>((cubit) => cubit.state.topUpNeedsPlan);
+    final sells = context.select<PurchaseCubit, bool>((cubit) => cubit.state.channel.sells);
     final price = context.select<PurchaseCubit, String?>((cubit) => cubit.state.priceOf(AgentProduct.topUp));
     final busy = context.select<PurchaseCubit, bool>((cubit) => cubit.state.status == PurchaseStatus.purchasing);
     final failure = context.select<PurchaseCubit, CreditFailure?>((cubit) => cubit.state.topUpFailure);
+    if (!sells) {
+      return AppText(l10n.agentCreditsTopUpUnavailable, key: ValueKey('$keyPrefix-unavailable'), variant: AppTextVariant.caption);
+    }
     if (topUpNeedsPlan) {
       return AppText(l10n.agentCreditsTopUpNeedsPlan, key: ValueKey('$keyPrefix-needs-plan'), variant: AppTextVariant.caption);
     }

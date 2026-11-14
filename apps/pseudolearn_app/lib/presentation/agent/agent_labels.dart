@@ -23,6 +23,7 @@ String agentStoreName(AppLocalizations l10n, PurchaseChannel channel) => switch 
   PurchaseChannel.simulated => l10n.agentStoreSimulated,
   PurchaseChannel.appStore => l10n.agentStoreAppStore,
   PurchaseChannel.paddle => l10n.agentStorePaddle,
+  PurchaseChannel.unavailable => l10n.agentStoreUnavailable,
 };
 
 String agentStepText(AppLocalizations l10n, String key) => switch (key) {

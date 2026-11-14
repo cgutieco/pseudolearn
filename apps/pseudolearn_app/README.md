@@ -98,6 +98,11 @@ flowchart LR
   reconstruye el pasado en el motor y frenaba la salida. Se carga al detenerse la ejecución. Paso a paso no cambia. El bucle cede el hilo cada
   8 ms y muestra una sola vez la espera de un efecto.
 - Los colores y las duraciones literales solo existen en los archivos dueños que declara `architecture.yaml`.
+- `AGENT_PURCHASES` elige cómo se venden los productos de Nodo: `storekit` (iOS y macOS), `paddle`, `simulated`
+  (desarrollo) o `unavailable`. Este último no vende nada: la oferta y la recarga muestran un aviso en lugar del
+  checkout, y quien ya tenga Nodo activo en su cuenta lo sigue usando. Las versiones de Windows salen con `unavailable`
+  porque Paddle no aprobó la cuenta para Nodo; cuando haya un proveedor aprobado se cambia el valor en los dos flujos
+  de Windows, sin tocar código.
 - Límites: 250 líneas por archivo, 40 por función, 30 por `build`, 3 parámetros posicionales, anidación 3 y 5 métodos
   públicos por clase. Sin comentarios; `lib/engine/bridge/` y `lib/presentation/l10n/generated/` son generados.
 
