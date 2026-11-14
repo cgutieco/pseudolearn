@@ -62,7 +62,7 @@ jobs:
             SUPABASE_ANON_KEY = "${{ secrets.SUPABASE_ANON_KEY }}"
             AGENT_BACKEND = "proxy"
             AGENT_PROXY_URL = "${{ secrets.SUPABASE_URL }}/functions/v1"
-            AGENT_PURCHASES = "paddle"
+            AGENT_PURCHASES = "unavailable"
           } | ConvertTo-Json
           Set-Content -Path dart_define.ci.json -Value $config
 
