@@ -39,3 +39,23 @@ describe("Extension manifest menu contributions", () => {
     for (const item of scoped) expect(item.when).toMatch(/(resource|editor)LangId == pseudolearn/);
   });
 });
+
+describe("Extension manifest editor API floor", () => {
+  const versionParts = (version) => version.replace(/^\^/, "").split(".").map(Number);
+  const exceeds = (candidate, floor) => {
+    const [left, right] = [versionParts(candidate), versionParts(floor)];
+    const difference = left.map((part, index) => part - right[index]).find((value) => value !== 0);
+    return (difference ?? 0) > 0;
+  };
+
+  it("compiles against editor types no newer than the minimum editor it promises", () => {
+    expect(exceeds(manifest.devDependencies["@types/vscode"], manifest.engines.vscode)).toBe(false);
+  });
+
+  it("detects types newer than the promised minimum editor", () => {
+    expect(exceeds("1.146.0", "^1.144.0")).toBe(true);
+    expect(exceeds("1.144.1", "^1.144.0")).toBe(true);
+    expect(exceeds("1.144.0", "^1.144.0")).toBe(false);
+    expect(exceeds("1.99.0", "^1.144.0")).toBe(false);
+  });
+});
