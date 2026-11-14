@@ -189,9 +189,7 @@ jobs:
         run: pnpm exec vsce publish --oidc --packagePath ../../packages/*.vsix
 
       - name: Publish to Open VSX
-        env:
-          OVSX_PAT: ${{ secrets.OVSX_PAT }}
         run: |
           for vsix in packages/*.vsix; do
-            pnpm dlx ovsx@1.4.0 publish --packagePath "$vsix"
+            pnpm dlx ovsx@1.4.0 publish --trusted-publishing --packagePath "$vsix"
           done

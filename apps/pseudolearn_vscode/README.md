@@ -139,12 +139,12 @@ artefactos. Con la casilla `publish` marcada, además comprueba sus hashes y los
   compila y se ejecuta allí mismo; no hay compilación cruzada.
 - **Por qué `linux-x64` usa `x86_64-unknown-linux-musl`:** el binario estático no depende de la versión de glibc de la
   distribución, así que el mismo VSIX sirve en cualquier Linux x64.
-- **Marketplace sin token:** se publica con *Trusted Publishing* (`vsce publish --oidc`). El Marketplace confía en este
-  repositorio, en este archivo de workflow y en el entorno `vscode-marketplace`; renombrar cualquiera de los tres rompe la
-  publicación hasta actualizar la política del publisher. Se eligió así porque los PAT globales de Azure DevOps dejan de
-  existir el 1 de diciembre de 2026.
-- **Open VSX con token:** usa el secreto `OVSX_PAT` del entorno `vscode-marketplace`, con `ovsx` fijado a una versión
-  exacta.
+- **Sin tokens guardados:** ambas tiendas se publican con *Trusted Publishing* por OIDC (`vsce publish --oidc` y
+  `ovsx publish --trusted-publishing`, con `ovsx` fijado a una versión exacta). Cada tienda confía en este repositorio,
+  en este archivo de workflow y en el entorno `vscode-marketplace`; renombrar cualquiera de los tres rompe la
+  publicación hasta actualizar la política en el publisher del Marketplace y en el namespace `pseudolearn` de Open VSX.
+  Se eligió así porque los PAT globales de Azure DevOps dejan de existir el 1 de diciembre de 2026 y porque un token de
+  larga duración es un secreto más que rotar y que puede filtrarse.
 - **Versiones:** ninguna tienda acepta volver a publicar una versión. Cada publicación sube la versión en todos los
   sitios donde está fijada: `version` de `package.json`, `identity.version` y `web.artifactName` de
   `artifact.contract.json`, la versión que exige `scripts/check-package.mjs` y los tests que nombran el VSIX. El
