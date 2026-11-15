@@ -1,0 +1,46 @@
+---
+import type { Locale } from '@shared/i18n/locales';
+import ProductShot from '@widgets/product-preview/ProductShot.astro';
+import LearningCycle from '@widgets/learning-cycle/LearningCycle.astro';
+
+export interface Props {
+  locale: Locale;
+  alt: string;
+  caption: string;
+}
+
+const { locale, alt, caption } = Astro.props;
+---
+
+<div class="method">
+  <ProductShot locale={locale} scene="lesson" layout="phone" alt={alt} />
+  <div class="method__cycle">
+    <LearningCycle locale={locale} />
+    <p class="method__caption">{caption}</p>
+  </div>
+</div>
+
+<style>
+  .method {
+    display: grid;
+    gap: var(--pl-space-2xl);
+    align-items: center;
+  }
+
+  .method__cycle {
+    display: grid;
+    gap: var(--pl-space-lg);
+  }
+
+  .method__caption {
+    font-size: 14px;
+    color: var(--pl-ink-3);
+  }
+
+  @media (min-width: 900px) {
+    .method {
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: 80px;
+    }
+  }
+</style>

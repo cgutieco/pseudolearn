@@ -1,0 +1,51 @@
+<svg viewBox="0 0 340 150">
+  <rect x="57" y="40" width="6" height="80" rx="2" fill="@atenuado"/>
+  <text x="60" y="142" font-size="12" text-anchor="middle" fill="@tinta">{{t:poste-a}}</text>
+  <rect x="167" y="40" width="6" height="80" rx="2" fill="@atenuado"/>
+  <text x="170" y="142" font-size="12" text-anchor="middle" fill="@tinta">{{t:poste-b}}</text>
+  <rect x="277" y="40" width="6" height="80" rx="2" fill="@atenuado"/>
+  <text x="280" y="142" font-size="12" text-anchor="middle" fill="@tinta">{{t:poste-c}}</text>
+  <rect x="10" y="120" width="320" height="6" rx="2" fill="@atenuado"/>
+  <g data-paso="1" data-hasta="1">
+    <rect x="16" y="106" width="88" height="14" rx="4" fill="@acento-objetos" fill-opacity="0.7"/>
+    <rect x="28" y="90" width="64" height="14" rx="4" fill="@acento-procedimental" fill-opacity="0.7"/>
+    <rect x="260" y="106" width="40" height="14" rx="4" fill="@acento-estructurado" fill-opacity="0.7"/>
+    <text x="170" y="22" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-1}}</text>
+  </g>
+  <g data-paso="2" data-hasta="2">
+    <rect x="16" y="106" width="88" height="14" rx="4" fill="@acento-objetos" fill-opacity="0.7"/>
+    <rect x="138" y="106" width="64" height="14" rx="4" fill="@acento-procedimental" fill-opacity="0.7"/>
+    <rect x="260" y="106" width="40" height="14" rx="4" fill="@acento-estructurado" fill-opacity="0.7"/>
+    <text x="170" y="22" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-2}}</text>
+  </g>
+  <g data-paso="3" data-hasta="3">
+    <rect x="16" y="106" width="88" height="14" rx="4" fill="@acento-objetos" fill-opacity="0.7"/>
+    <rect x="138" y="106" width="64" height="14" rx="4" fill="@acento-procedimental" fill-opacity="0.7"/>
+    <rect x="150" y="90" width="40" height="14" rx="4" fill="@acento-estructurado" fill-opacity="0.7"/>
+    <text x="170" y="22" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-3}}</text>
+  </g>
+  <g data-paso="4" data-hasta="4">
+    <rect x="138" y="106" width="64" height="14" rx="4" fill="@acento-procedimental" fill-opacity="0.7"/>
+    <rect x="150" y="90" width="40" height="14" rx="4" fill="@acento-estructurado" fill-opacity="0.7"/>
+    <rect x="236" y="106" width="88" height="14" rx="4" fill="@acento-objetos" fill-opacity="0.7"/>
+    <text x="170" y="22" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-4}}</text>
+  </g>
+  <g data-paso="5" data-hasta="5">
+    <rect x="40" y="106" width="40" height="14" rx="4" fill="@acento-estructurado" fill-opacity="0.7"/>
+    <rect x="138" y="106" width="64" height="14" rx="4" fill="@acento-procedimental" fill-opacity="0.7"/>
+    <rect x="236" y="106" width="88" height="14" rx="4" fill="@acento-objetos" fill-opacity="0.7"/>
+    <text x="170" y="22" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-5}}</text>
+  </g>
+  <g data-paso="6" data-hasta="6">
+    <rect x="40" y="106" width="40" height="14" rx="4" fill="@acento-estructurado" fill-opacity="0.7"/>
+    <rect x="236" y="106" width="88" height="14" rx="4" fill="@acento-objetos" fill-opacity="0.7"/>
+    <rect x="248" y="90" width="64" height="14" rx="4" fill="@acento-procedimental" fill-opacity="0.7"/>
+    <text x="170" y="22" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-6}}</text>
+  </g>
+  <g data-paso="7">
+    <rect x="236" y="106" width="88" height="14" rx="4" fill="@acento-objetos" fill-opacity="0.7"/>
+    <rect x="248" y="90" width="64" height="14" rx="4" fill="@acento-procedimental" fill-opacity="0.7"/>
+    <rect x="260" y="74" width="40" height="14" rx="4" fill="@acento-estructurado" fill-opacity="0.7"/>
+    <text x="170" y="22" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-7}}</text>
+  </g>
+</svg>

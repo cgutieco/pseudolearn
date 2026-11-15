@@ -1,0 +1,10 @@
+<svg viewBox="0 0 340 180">
+  <caja x="10" y="8" ancho="250" alto="28" rol="error" fondo="0.12" fuente="mono" tamano="12" texto="{{codigo:Definir a Como Entero &lt;- 1}}"/>
+  <caja x="10" y="44" ancho="250" alto="28" rol="exito" fondo="0.10" fuente="mono" tamano="12" texto="{{codigo:Escribir a;}}"/>
+  <caja x="10" y="80" ancho="250" alto="28" rol="error" fondo="0.12" fuente="mono" tamano="12" texto="{{codigo:Escribir (a + ;}}"/>
+  <caja x="10" y="116" ancho="250" alto="28" rol="exito" fondo="0.10" fuente="mono" tamano="12" texto="{{codigo:Escribir &quot;fin&quot;;}}"/>
+  <path d="M 266 22 Q 300 30 266 40" fill="none" stroke="@error" stroke-width="2"/>
+  <path d="M 266 94 Q 300 102 266 112" fill="none" stroke="@error" stroke-width="2"/>
+  <text x="300" y="66" font-size="12" text-anchor="middle" fill="@exito">{{t:sigue}}</text>
+  <text x="170" y="170" font-size="12" text-anchor="middle" fill="@atenuado">{{t:nota}}</text>
+</svg>

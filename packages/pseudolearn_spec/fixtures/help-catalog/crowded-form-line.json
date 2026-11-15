@@ -1,0 +1,80 @@
+{
+  "violation": "form line with more segments than the declared limit",
+  "expect": "oversized form",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/form",
+      "value": [
+        {
+          "indent": 0,
+          "segments": [
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            },
+            {
+              "ellipsis": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+---
+export interface Props {
+  size?: number;
+  label?: string;
+  ceremony?: boolean;
+}
+
+import {
+  NODO_GLYPH_EYES,
+  NODO_GLYPH_GRID,
+  NODO_GLYPH_NODE,
+  NODO_GLYPH_SPARKLE_ORIGIN,
+  NODO_GLYPH_SPARKLE_PATH,
+  NODO_GLYPH_STROKE,
+  NODO_GLYPH_WIRE_PATH,
+} from './nodo-glyph.generated';
+
+const { size = 24, label, ceremony = false } = Astro.props;
+---
+
+<svg
+  class:list={['nodo-glyph', { 'nodo-glyph--ceremony': ceremony }]}
+  viewBox={`0 0 ${NODO_GLYPH_GRID} ${NODO_GLYPH_GRID}`}
+  width={size}
+  height={size}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+>
+  <g
+    fill="none"
+    stroke="currentColor"
+    stroke-width={NODO_GLYPH_STROKE}
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <circle
+      class="nodo-glyph__node"
+      cx={NODO_GLYPH_NODE.cx}
+      cy={NODO_GLYPH_NODE.cy}
+      r={NODO_GLYPH_NODE.r}
+      pathLength="1"
+    ></circle>
+    <path class="nodo-glyph__wire" d={NODO_GLYPH_WIRE_PATH} pathLength="1"></path>
+  </g>
+  <g class="nodo-glyph__eyes">
+    {NODO_GLYPH_EYES.xs.map((x) => (
+      <circle cx={x} cy={NODO_GLYPH_EYES.y} r={NODO_GLYPH_EYES.r} fill="currentColor"></circle>
+    ))}
+  </g>
+  <g transform={`translate(${NODO_GLYPH_SPARKLE_ORIGIN.x} ${NODO_GLYPH_SPARKLE_ORIGIN.y})`}>
+    <path class="nodo-glyph__sparkle" d={NODO_GLYPH_SPARKLE_PATH} fill="currentColor"></path>
+  </g>
+</svg>
+
+<style>
+  .nodo-glyph {
+    flex: none;
+    overflow: visible;
+  }
+
+  .nodo-glyph__eyes {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .nodo-glyph__sparkle {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .nodo-glyph--ceremony .nodo-glyph__node,
+    .nodo-glyph--ceremony .nodo-glyph__wire {
+      stroke-dasharray: 1;
+      animation: nodo-draw 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.2s both;
+    }
+
+    .nodo-glyph--ceremony .nodo-glyph__wire {
+      animation-delay: 0.9s;
+      animation-duration: 0.5s;
+    }
+
+    .nodo-glyph--ceremony .nodo-glyph__eyes {
+      animation: nodo-blink 4s ease-in-out 1.2s infinite;
+    }
+
+    .nodo-glyph--ceremony .nodo-glyph__sparkle {
+      animation:
+        nodo-spark 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 1.3s both,
+        nodo-twinkle 3s ease-in-out 2s infinite;
+    }
+  }
+
+  @keyframes nodo-draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes nodo-blink {
+    0%,
+    92%,
+    100% {
+      transform: none;
+    }
+
+    96% {
+      transform: scaleY(0.1);
+    }
+  }
+
+  @keyframes nodo-spark {
+    from {
+      transform: scale(0) rotate(-90deg);
+    }
+
+    to {
+      transform: none;
+    }
+  }
+
+  @keyframes nodo-twinkle {
+    0%,
+    100% {
+      transform: none;
+    }
+
+    50% {
+      transform: scale(1.25) rotate(45deg);
+    }
+  }
+</style>

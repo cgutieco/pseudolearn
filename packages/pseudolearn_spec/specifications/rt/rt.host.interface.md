@@ -1,0 +1,601 @@
+---
+{
+  "formato": "see/1",
+  "id": "RT.HOST.INTERFACE",
+  "titulo": "Interfaz con el anfitrión",
+  "dominio": "motor",
+  "estado": "estable",
+  "version": "1.0.0",
+  "duenos": [
+    "responsable-motor"
+  ],
+  "sujetos": [
+    "engine",
+    "aot"
+  ],
+  "resumen": "Capacidades inyectadas, grabables y fuente aleatoria fijada.",
+  "depende_de": [
+    {
+      "id": "LIB.CORE.RANDOM",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "refina"
+    },
+    {
+      "id": "ENG.INPUT",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    }
+  ],
+  "titulo_en": "Host interface",
+  "revisado_por": [
+    "César Antonio Gutiérrez Contreras"
+  ]
+}
+---
+
+# Interfaz con el anfitrión
+
+```regla
+{
+  "id": "R1",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La salida y la entrada se inyectan al iniciar. Archivos, red, reloj, temporizador, argumentos y variables de entorno tienen autoridad plena por omisión, sin concesiones. Argumentos entrega los argumentos de ejecución en orden, sin el nombre del programa, conservando espacios, Unicode y argumentos vacíos. Entorno entrega el valor de una variable por nombre, de solo lectura, sin enumerar las demás ni heredar nada más del proceso. Los errores del sistema operativo o navegador son ErrorES tipados de plataforma.",
+  "verificacion": [
+    "C1",
+    "C11",
+    "C12",
+    "C13"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C1",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "{{lexema:booleanTrue}}\n",
+    "terminacion": "completed"
+  },
+  "programa": "Algoritmo P\nEscribir AzarReal() < 1.0;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C11",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "0\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir values Como Argumentos <- Propagar SolicitarArgumentos();\nDefinir list Como Vector<Cadena> <- Propagar values.Valores();\nRetornar Exito(list.Longitud());\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine values as Arguments <- propagate requestArguments();\ndefine list as vector<string> <- propagate values.values();\nreturn success(list.length());\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "args": []
+  }
+}
+```
+
+```caso
+{
+  "id": "C12",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "[uno dos][ñandú][日本]\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir values Como Argumentos <- Propagar SolicitarArgumentos();\nDefinir list Como Vector<Cadena> <- Propagar values.Valores();\nRetornar Exito(\"[\" + list[0] + \"][\" + list[1] + \"][\" + list[2] + \"]\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine values as Arguments <- propagate requestArguments();\ndefine list as vector<string> <- propagate values.values();\nreturn success(\"[\" + list[0] + \"][\" + list[1] + \"][\" + list[2] + \"]\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "args": [
+      "uno dos",
+      "ñandú",
+      "日本"
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C13",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "[][x]\n",
+    "terminacion": "completed"
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Cadena, ErrorES>\nDefinir values Como Argumentos <- Propagar SolicitarArgumentos();\nDefinir list Como Vector<Cadena> <- Propagar values.Valores();\nRetornar Exito(\"[\" + list[0] + \"][\" + list[1] + \"]\");\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<string, IoError>\ndefine values as Arguments <- propagate requestArguments();\ndefine list as vector<string> <- propagate values.values();\nreturn success(\"[\" + list[0] + \"][\" + list[1] + \"]\");\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "args": [
+      "",
+      "x"
+    ]
+  }
+}
+```
+
+```regla
+{
+  "id": "R2",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Toda capacidad del anfitrión, presente o futura, es grabable: su resultado se puede guardar en la cinta de la ejecución y reproducirse para obtener la misma ejecución sin volver a consultar al anfitrión.",
+  "verificacion": [
+    "P1"
+  ]
+}
+```
+
+```propiedad
+{
+  "id": "P1",
+  "regla": "R2",
+  "generador": {
+    "programas": "casos con entrada y azar del corpus"
+  },
+  "propiedad": "Reproducir una ejecución desde su cinta grabada produce las mismas observaciones.",
+  "oraculo": "Ejecución original con el anfitrión real.",
+  "justificacion": "La ejecuta el sujeto engine en R5."
+}
+```
+
+```regla
+{
+  "id": "R3",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "La fuente aleatoria es xoshiro256** cuyo estado inicial son las cuatro primeras salidas de SplitMix64 a partir de la semilla, un entero con signo de 64 bits reinterpretado en complemento a dos. Cada llamada a AzarReal toma la siguiente salida s de 64 bits y devuelve (s desplazado 11 bits a la derecha) × 2⁻⁵³; Azar y Aleatorio toman salidas enteras de la misma fuente con el rechazo que fija LIB.CORE.RANDOM. En vivo, si no se declara una semilla, el anfitrión obtiene entropía del sistema operativo; la semilla efectiva queda en la identidad de la cinta. Una semilla explícita prevalece. La reproducción usa la semilla grabada sin consultar entropía.",
+  "verificacion": [
+    "C2",
+    "C3",
+    "C4"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C2",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "5415695640260286\n6735350249106120\n927921571702396\n3752300831360421\n6602248042049669\n",
+    "terminacion": "completed"
+  },
+  "programa": "Algoritmo P\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "semilla": 0
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "755370490430936\n3413550631330343\n6125286505004179\n8328893607999084\n8933375477570955\n",
+    "terminacion": "completed"
+  },
+  "programa": "Algoritmo P\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "semilla": 42
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R3",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "5043065146658773\n6912440677258288\n4569322158181384\n6734172366359527\n5109097669343124\n",
+    "terminacion": "completed"
+  },
+  "programa": "Algoritmo P\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nEscribir trunc(AzarReal() * 9007199254740992.0);\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "semilla": -1
+}
+```
+
+```regla
+{
+  "id": "R4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Todo recurso asignado en la frontera del anfitrión se libera de manera forzosa e inmediata ante terminación cancelled, limit_reached o failed, incluida la desconexión o cancelación del anfitrión mientras una operación espera en awaiting_effect. En todas ellas ninguna capacidad del anfitrión permanece abierta tras finalizar la sesión y no se ejecutan nuevos efectos de usuario dentro de Diferir. Solo los cortes del anfitrión (cancelled y limit_reached) sellan la cinta como Incomplete; una terminación failed por trampa del programa conserva el estado de reproducibilidad de la cinta, porque la trampa es determinista y su reproducción produce la misma salida y la misma trampa.",
+  "verificacion": [
+    "C5",
+    "C6",
+    "C7"
+  ]
+}
+```
+
+
+## Oráculo
+
+Los valores esperados de R3 se calculan con el oráculo independiente de see_oracles, que implementa SplitMix64 y xoshiro256** desde su definición; multiplicar por 2⁵³ y truncar recupera exactamente los 53 bits superiores de cada salida.
+
+```caso
+{
+  "id": "C6",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "failed",
+    "fallo": {
+      "codigo": "divisionByZero"
+    },
+    "anfitrion_observado": {
+      "llamadas": 2,
+      "recursos_abiertos": 0,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "filesystem",
+          "operation": "request_directory",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "filesystem",
+          "operation": "file_open",
+          "outcome": "committed"
+        }
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe(directory Como DirectorioCap) Como Resultado<Entero, ErrorES>\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDiferir\nDescartar file.Cerrar();\nFinDiferir\nDefinir zero Como Entero <- 0;\nRetornar Exito(10 div zero);\nFinSubProceso\nAlgoritmo Main\nDefinir opened Como Resultado<DirectorioCap, ErrorES> <- SolicitarDirectorio(\"root\");\nSegun opened Hacer\nExito(root): Segun Probe(root) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe(directory as DirCap) as result<integer, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\ndefine zero as integer <- 0;\nreturn success(10 div zero);\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "files": {
+      "a": "hola"
+    }
+  }
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "cancelled",
+    "anfitrion_observado": {
+      "llamadas": 2,
+      "recursos_abiertos": 0,
+      "estado_cinta": "incomplete",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "filesystem",
+          "operation": "request_directory",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "filesystem",
+          "operation": "file_open",
+          "outcome": "committed"
+        }
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe(directory Como DirectorioCap) Como Resultado<Entero, ErrorES>\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDiferir\nDescartar file.Cerrar();\nFinDiferir\nDefinir n Como Entero <- 0;\nMientras Verdadero Hacer\nn <- n + 1;\nFinMientras\nRetornar Exito(n);\nFinSubProceso\nAlgoritmo Main\nDefinir opened Como Resultado<DirectorioCap, ErrorES> <- SolicitarDirectorio(\"root\");\nSegun opened Hacer\nExito(root): Segun Probe(root) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe(directory as DirCap) as result<integer, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\ndefine n as integer <- 0;\nwhile true do\nn <- n + 1;\nendWhile\nreturn success(n);\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "files": {
+      "a": "hola"
+    }
+  },
+  "cancelacion": 40,
+  "sujetos": [
+    "engine"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R4",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "cancelled",
+    "anfitrion_observado": {
+      "llamadas": 2,
+      "recursos_abiertos": 0,
+      "estado_cinta": "incomplete",
+      "efectos": [
+        {
+          "effect_seq": 1,
+          "capability_kind": "filesystem",
+          "operation": "request_directory",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 2,
+          "capability_kind": "filesystem",
+          "operation": "file_open",
+          "outcome": "committed"
+        },
+        {
+          "effect_seq": 3,
+          "capability_kind": "filesystem",
+          "operation": "file_read_text",
+          "outcome": "requested"
+        }
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe(directory Como DirectorioCap) Como Resultado<Cadena, ErrorES>\nDefinir file Como ArchivoCap <- Propagar directory.Abrir(\"a\", \"lectura\");\nDiferir\nDescartar file.Cerrar();\nFinDiferir\nRetornar file.LeerTexto();\nFinSubProceso\nAlgoritmo Main\nDefinir opened Como Resultado<DirectorioCap, ErrorES> <- SolicitarDirectorio(\"root\");\nSegun opened Hacer\nExito(root): Segun Probe(root) Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo;\nFinSegun\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe(directory as DirCap) as result<string, IoError>\ndefine file as FileCap <- propagate directory.open(\"a\", \"read\");\ndefer\ndiscard file.close();\nendDefer\nreturn file.readText();\nendSubroutine\nalgorithm Main\ndefine opened as result<DirCap, IoError> <- requestDirectory(\"root\");\nswitch opened do\nsuccess(root): switch Probe(root) do\nsuccess(value): write value;\nfailure(problem): write problem.code;\nendSwitch\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "files": {
+      "a": "hola"
+    },
+    "cancel_on_awaiting_effect": 3
+  }
+}
+```
+
+```regla
+{
+  "id": "R5",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El anfitrión recibe la lista de efectos pendientes solo cuando ninguna tarea puede avanzar y devuelve los resultados de uno en uno; el orden en que decide entregarlos es una entrada más de la ejecución y queda registrado en la cinta.",
+  "verificacion": [
+    "C8"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C8",
+  "regla": "R5",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "3\n1\n2\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 3,
+      "recursos_abiertos": 0,
+      "estado_cinta": "reproducible",
+      "efectos": [
+        {
+          "effect_seq": 3,
+          "task_id": 3,
+          "capability_kind": "timer",
+          "operation": "request_timer",
+          "outcome": "committed",
+          "delivery_seq": 1
+        },
+        {
+          "effect_seq": 1,
+          "task_id": 1,
+          "capability_kind": "timer",
+          "operation": "request_timer",
+          "outcome": "committed",
+          "delivery_seq": 3
+        },
+        {
+          "effect_seq": 2,
+          "task_id": 2,
+          "capability_kind": "timer",
+          "operation": "request_timer",
+          "outcome": "committed",
+          "delivery_seq": 5
+        }
+      ]
+    }
+  },
+  "programas": {
+    "es": "SubProceso Suspendible Pause(label Como Entero)\nDescartar Aguardar SolicitarTemporizador();\nEscribir label;\nFinSubProceso\nAlgoritmo Main\nTareas\nLanzar Pause(1);\nLanzar Pause(2);\nLanzar Pause(3);\nFinTareas\nFinAlgoritmo\n",
+    "en": "subroutine suspendable Pause(label as integer)\ndiscard await requestTimer();\nwrite label;\nendSubroutine\nalgorithm Main\ntasks\nspawn Pause(1);\nspawn Pause(2);\nspawn Pause(3);\nendTasks\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "grabar_y_reproducir": true,
+    "orden_entrega": [
+      3,
+      1,
+      2
+    ]
+  }
+}
+```
+
+```regla
+{
+  "id": "R6",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El anfitrión de memoria es exclusivamente un doble de prueba del corpus, no distribuible ni accesible desde CLI, extensión o app. Acepta respuestas HTTP declaradas en anfitrion.http, indexadas por método y URL, con estado, cabeceras repetidas, cuerpo textual o bytes, fallo e incertidumbre. Nunca abre sockets ni resuelve nombres. La configuración de prueba rechaza cualquier clave que no declare.",
+  "verificacion": [
+    "C9"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C9",
+  "regla": "R6",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "200\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 2
+    }
+  },
+  "programas": {
+    "es": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir net Como RedCap <- Propagar SolicitarRed();\nDefinir request Como PeticionHttp <- PeticionHttp(MetodoHttp.GET, \"https://fake.test/a\");\nDefinir response Como RespuestaHttp <- Propagar net.Enviar(request);\nRetornar Exito(response.Estado());\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Incierto;\nFinSegun\nFinAlgoritmo\n",
+    "en": "subroutine Probe() as result<integer, IoError>\ndefine net as NetworkCap <- propagate requestNetwork();\ndefine request as HttpRequest <- HttpRequest(HttpMethod.GET, \"https://fake.test/a\");\ndefine response as HttpResponse <- propagate net.send(request);\nreturn success(response.status());\nendSubroutine\nalgorithm Main\nswitch Probe() do\nsuccess(value): write value;\nfailure(problem): write problem.uncertain;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "http": {
+      "GET https://fake.test/a": {
+        "estado": 200
+      }
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R7",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "SolicitarRed concede autoridad sobre cualquier destino http o https, incluidos loopback y redes privadas. No existe lista de orígenes del anfitrión. Limitar es una atenuación voluntaria del programa y no puede amplificar una capacidad ya atenuada.",
+  "verificacion": [
+    "C10"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C10",
+  "regla": "R7",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "permiso_denegado\n",
+    "terminacion": "completed",
+    "anfitrion_observado": {
+      "llamadas": 1
+    }
+  },
+  "programas": {
+    "es": "Algoritmo Main\nSegun SolicitarRed() Hacer\nExito(net): Escribir \"concedida\";\nError(problem): Escribir problem.Codigo;\nFinSegun\nFinAlgoritmo\n",
+    "en": "algorithm Main\nswitch requestNetwork() do\nsuccess(net): write \"granted\";\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n"
+  },
+  "anfitrion": {
+    "faults": [
+      {
+        "operation": "request_network",
+        "code": "permiso_denegado"
+      }
+    ]
+  }
+}
+```
+
+```regla
+{
+  "id": "R8",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El adaptador nativo entrega las respuestas 3xx sin seguirlas, no añade ni persiste cookies, no consulta proxies ambientales o del sistema y valida siempre certificados TLS mediante las raíces de la plataforma. Solo el anfitrión puede añadir raíces de prueba. El navegador puede seguir redirecciones y entrega la URL final; CORS, contenido mixto y cabeceras prohibidas se informan como ErrorES con causa de plataforma. El programa nunca puede desactivar TLS.",
+  "verificacion": [
+    "revision_humana"
+  ],
+  "justificacion": "Los casos derivados verifican el contrato; las pruebas de transporte comprueban las diferencias físicas de plataforma."
+}
+```
+
+```regla
+{
+  "id": "R9",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El adaptador nativo resuelve cada host una sola vez y conecta a una dirección de esa respuesta. No filtra loopback, redes privadas ni otros rangos por política del lenguaje. Los fallos de resolución o conexión son errores tipados; no se heredan proxies ni credenciales ambientales.",
+  "verificacion": [
+    "revision_humana"
+  ],
+  "justificacion": "Los casos derivados verifican el contrato; las pruebas de transporte comprueban las diferencias físicas de plataforma."
+}
+```

@@ -1,0 +1,153 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { routeParts } from '@entities/learning-route/model/route-contents';
+import { firstLesson, loadLesson } from '@entities/learning-route/model/route-samples';
+import { CYCLE_PHASES } from '@widgets/learning-cycle/cycle-phases';
+import SectionHeading from '@widgets/section-heading/SectionHeading.astro';
+import StoryArtifact from './StoryArtifact.astro';
+import StoryWitness from './StoryWitness.astro';
+
+export interface Props {
+  locale: Locale;
+  id: string;
+}
+
+const { locale, id } = Astro.props;
+const { t } = useTranslations(locale);
+const lesson = await loadLesson(locale, firstLesson(routeParts(locale)).id);
+const BEAT_KEYS = [
+  'home.story.beat1',
+  'home.story.beat2',
+  'home.story.beat3',
+  'home.story.beat4',
+  'home.story.beat5',
+] as const;
+---
+
+<section class="story" id={id} aria-labelledby={`${id}-title`}>
+  <div class="pl-container">
+    <SectionHeading
+      id={`${id}-title`}
+      overline={t('home.story.overline')}
+      title={t('home.story.title')}
+      lead={t('home.story.lead', { number: lesson.number })}
+    />
+    <div class="story__stage">
+      <StoryWitness locale={locale} lesson={lesson} />
+      <ol class="story__beats">
+        {CYCLE_PHASES.map((phase, index) => (
+          <li class="story__beat">
+            <p class="story__numeral pl-mono">
+              <span>{String(phase.number).padStart(2, '0')}</span>
+              <span class="story__phase">{t(phase.titleKey)}</span>
+            </p>
+            <h3 class="story__tagline">{t(BEAT_KEYS[index] ?? BEAT_KEYS[0])}</h3>
+            <p class="story__text">{t(phase.textKey)}</p>
+            <StoryArtifact locale={locale} lesson={lesson} phase={phase.number} />
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .story {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+
+  .story :global(.section-heading) {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .story :global(.section-heading__lead) {
+    margin-inline: auto;
+  }
+
+  .story__stage {
+    view-timeline-name: --pl-story;
+    margin-top: var(--pl-space-2xl);
+  }
+
+  .story__beats {
+    display: grid;
+    gap: 88px;
+    padding-top: var(--pl-space-2xl);
+  }
+
+  .story__numeral {
+    display: flex;
+    align-items: baseline;
+    gap: var(--pl-space-sm);
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--pl-brand);
+  }
+
+  .story__phase {
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .story__tagline {
+    margin: var(--pl-space-md) 0 0;
+    font-size: 26px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .story__text {
+    margin: var(--pl-space-xs) 0 var(--pl-space-lg);
+    max-width: 52ch;
+    color: var(--pl-ink-2);
+    line-height: 1.6;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .story__beat {
+        animation: story-rise linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 45%;
+      }
+    }
+  }
+
+  @keyframes story-rise {
+    from {
+      transform: translateY(40px);
+    }
+
+    to {
+      transform: none;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .story {
+      padding-top: 128px;
+      padding-bottom: 128px;
+    }
+
+    .story__stage {
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+      gap: 96px;
+    }
+
+    .story__beats {
+      max-width: 720px;
+      gap: 160px;
+      padding-top: 0;
+    }
+
+    .story__tagline {
+      font-size: 34px;
+    }
+  }
+</style>

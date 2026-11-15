@@ -1,0 +1,83 @@
+{
+  "localesByLanguage": {
+    "app-store": { "es": ["es-MX"], "en": ["en-US"] },
+    "microsoft-store": { "es": ["es-ES"], "en": ["en-US"] }
+  },
+  "loudness": { "integratedLufs": -16, "toleranceLu": 1, "truePeakDb": -1 },
+  "codecProfiles": {
+    "apple-creative": {
+      "profile": "high", "rateControl": "vbr", "minBitrateMbps": null, "bitrateMbps": 40, "maxBitrateMbps": 50,
+      "containers": ["mp4", "m4v", "mov"],
+      "closedGopSeconds": null, "bFrames": null, "editLists": "allowed",
+      "audio": { "codec": "aac", "encoder": "native", "bitrateKbps": 256, "sampleRate": 48000, "channels": 2 }
+    },
+    "microsoft-trailer": {
+      "profile": "high", "rateControl": "cbr", "minBitrateMbps": 45, "bitrateMbps": 50, "maxBitrateMbps": 55,
+      "containers": ["mp4", "mov"],
+      "closedGopSeconds": 0.5, "bFrames": 2, "editLists": "forbidden",
+      "audio": { "codec": "aac", "encoder": "audiotoolbox", "bitrateKbps": 320, "sampleRate": 48000, "channels": 2 }
+    }
+  },
+  "devices": [
+    { "id": "iphone-large", "logicalWidth": 440, "logicalHeight": 956, "plateScale": 3, "cornerRadius": 62, "frame": "phone", "fold": "none" },
+    { "id": "iphone-duo-inner-portrait", "logicalWidth": 669, "logicalHeight": 951, "plateScale": 3, "cornerRadius": 40, "frame": "foldable", "fold": "horizontal" },
+    { "id": "iphone-duo-inner-landscape", "logicalWidth": 951, "logicalHeight": 669, "plateScale": 3, "cornerRadius": 40, "frame": "foldable", "fold": "vertical" },
+    { "id": "iphone-duo-outer-portrait", "logicalWidth": 466, "logicalHeight": 678, "plateScale": 3, "cornerRadius": 48, "frame": "phone", "fold": "none" },
+    { "id": "iphone-duo-outer-landscape", "logicalWidth": 678, "logicalHeight": 466, "plateScale": 3, "cornerRadius": 48, "frame": "phone", "fold": "none" },
+    { "id": "ipad-13", "logicalWidth": 1032, "logicalHeight": 1376, "plateScale": 2, "cornerRadius": 18, "frame": "tablet", "fold": "none" },
+    { "id": "mac", "logicalWidth": 1152, "logicalHeight": 720, "plateScale": 2.5, "cornerRadius": 10, "frame": "window", "fold": "none" },
+    { "id": "windows-desktop", "logicalWidth": 1280, "logicalHeight": 720, "plateScale": 3, "cornerRadius": 0, "frame": "none", "fold": "none" },
+    { "id": "windows-trailer", "logicalWidth": 1280, "logicalHeight": 720, "plateScale": 1.5, "cornerRadius": 0, "frame": "none", "fold": "none" }
+  ],
+  "slots": [
+    { "id": "apple.iphone.screenshot", "store": "app-store", "surface": "iphone-dynamic-island-large", "kind": "screenshot", "width": 1320, "height": 2868, "maxCount": 10,
+      "device": "iphone-large", "safeArea": { "x": 0.04, "y": 0.03, "width": 0.92, "height": 0.94 }, "rules": ["text-inside-margin"] },
+    { "id": "apple.iphone-duo-inner.screenshot.portrait", "store": "app-store", "surface": "iphone-duo-inner", "kind": "screenshot", "width": 2007, "height": 2853, "maxCount": 10,
+      "device": "iphone-duo-inner-portrait", "safeArea": { "x": 0.04, "y": 0.03, "width": 0.92, "height": 0.94 }, "rules": ["text-inside-margin"] },
+    { "id": "apple.iphone-duo-inner.screenshot.landscape", "store": "app-store", "surface": "iphone-duo-inner", "kind": "screenshot", "width": 2853, "height": 2007, "maxCount": 10,
+      "device": "iphone-duo-inner-landscape", "safeArea": { "x": 0.04, "y": 0.03, "width": 0.92, "height": 0.94 }, "rules": ["text-inside-margin"] },
+    { "id": "apple.iphone-duo-outer.screenshot.portrait", "store": "app-store", "surface": "iphone-duo-outer", "kind": "screenshot", "width": 1398, "height": 2034, "maxCount": 10,
+      "device": "iphone-duo-outer-portrait", "safeArea": { "x": 0.04, "y": 0.03, "width": 0.92, "height": 0.94 }, "rules": ["text-inside-margin"] },
+    { "id": "apple.iphone-duo-outer.screenshot.landscape", "store": "app-store", "surface": "iphone-duo-outer", "kind": "screenshot", "width": 2034, "height": 1398, "maxCount": 10,
+      "device": "iphone-duo-outer-landscape", "safeArea": { "x": 0.04, "y": 0.03, "width": 0.92, "height": 0.94 }, "rules": ["text-inside-margin"] },
+    { "id": "apple.ipad.screenshot", "store": "app-store", "surface": "ipad-13", "kind": "screenshot", "width": 2064, "height": 2752, "maxCount": 10,
+      "device": "ipad-13", "safeArea": { "x": 0.04, "y": 0.03, "width": 0.92, "height": 0.94 }, "rules": ["text-inside-margin"] },
+    { "id": "apple.mac.screenshot", "store": "app-store", "surface": "mac", "kind": "screenshot", "width": 2880, "height": 1800, "maxCount": 10,
+      "device": "mac", "safeArea": { "x": 0.04, "y": 0.03, "width": 0.92, "height": 0.94 }, "rules": ["text-inside-margin"] },
+    { "id": "apple.header.video", "store": "app-store", "surface": "any", "kind": "header-video", "width": 3840, "height": 1646, "maxCount": 1,
+      "safeArea": { "x": 0.285677, "y": 0.299514, "width": 0.428646, "height": 0.401580 }, "rules": ["key-info-centered", "seamless-loop"],
+      "viewportProfiles": [
+        { "name": "iPhone portrait, brand", "viewport": { "width": 329, "height": 207 },
+          "occlusions": [{ "x": 112, "y": 8, "width": 106, "height": 31 }, { "x": 13, "y": 49, "width": 41, "height": 42 }, { "x": 275, "y": 49, "width": 41, "height": 42 }] },
+        { "name": "iPhone portrait, tagline", "viewport": { "width": 343, "height": 217 },
+          "occlusions": [{ "x": 117, "y": 9, "width": 110, "height": 33 }, { "x": 13, "y": 52, "width": 42, "height": 44 }, { "x": 287, "y": 52, "width": 43, "height": 44 }] },
+        { "name": "iPhone Duo portrait", "viewport": { "width": 390, "height": 167 },
+          "occlusions": [{ "x": 335, "y": 24, "width": 30, "height": 30 }, { "x": 331, "y": 141, "width": 41, "height": 26 }] },
+        { "name": "iPhone Duo landscape", "viewport": { "width": 568, "height": 149 },
+          "occlusions": [{ "x": 507, "y": 21, "width": 42, "height": 42 }, { "x": 507, "y": 73, "width": 42, "height": 42 }] },
+        { "name": "iPad landscape", "viewport": { "width": 1089, "height": 278 },
+          "occlusions": [{ "x": 422, "y": 26, "width": 246, "height": 36 }, { "x": 12, "y": 24, "width": 39, "height": 39 }, { "x": 1038, "y": 24, "width": 40, "height": 40 }] },
+        { "name": "iPad portrait", "viewport": { "width": 618, "height": 222 },
+          "occlusions": [{ "x": 206, "y": 19, "width": 206, "height": 27 }, { "x": 9, "y": 18, "width": 29, "height": 30 }, { "x": 579, "y": 18, "width": 29, "height": 30 }] }
+      ],
+      "video": { "fps": 30, "acceptedFps": [30, 60], "duration": { "min": 10, "max": 30 }, "codecProfile": "apple-creative", "audio": "required" } },
+    { "id": "apple.search.video", "store": "app-store", "surface": "any", "kind": "search-video", "width": 3840, "height": 2560, "maxCount": 1,
+      "safeArea": { "x": 0.217708, "y": 0.298828, "width": 0.564583, "height": 0.402344 }, "rules": ["key-info-centered", "seamless-loop"],
+      "video": { "fps": 30, "acceptedFps": [30, 60], "duration": { "min": 15, "max": 30 }, "codecProfile": "apple-creative", "audio": "none" } },
+    { "id": "apple.universal.image", "store": "app-store", "surface": "any", "kind": "universal-image", "width": 5244, "height": 2950, "maxCount": 1,
+      "safeArea": { "x": 0.366323, "y": 0.223729, "width": 0.267353, "height": 0.326102 }, "rules": ["key-info-centered"] },
+    { "id": "microsoft.desktop.screenshot", "store": "microsoft-store", "surface": "desktop", "kind": "screenshot", "width": 3840, "height": 2160, "maxCount": 10, "maxBytes": 52428800,
+      "device": "windows-desktop", "labelLimits": { "caption": 200 },
+      "safeArea": { "x": 0, "y": 0, "width": 1, "height": 0.666667 }, "rules": ["critical-top-two-thirds", "no-added-text"] },
+    { "id": "microsoft.hero-art", "store": "microsoft-store", "surface": "desktop", "kind": "hero-art", "width": 3840, "height": 2160, "maxCount": 1, "maxBytes": 52428800,
+      "safeArea": { "x": 0.1, "y": 0.1, "width": 0.8, "height": 0.566667 }, "rules": ["critical-top-two-thirds", "key-info-centered", "no-text", "no-interface"] },
+    { "id": "microsoft.trailer", "store": "microsoft-store", "surface": "desktop", "kind": "trailer", "width": 1920, "height": 1080, "maxCount": 15, "maxBytes": 2147483648, "labelLimits": { "title": 255 }, "device": "windows-trailer",
+      "safeArea": { "x": 0, "y": 0.1, "width": 1, "height": 0.8 }, "rules": ["key-info-centered"],
+      "video": { "fps": 30, "acceptedFps": [30], "duration": { "min": 15, "max": 60 }, "codecProfile": "microsoft-trailer", "audio": "required" } },
+    { "id": "microsoft.trailer-thumbnail", "store": "microsoft-store", "surface": "desktop", "kind": "trailer-thumbnail", "width": 1920, "height": 1080, "maxCount": 15, "maxBytes": 52428800 },
+    { "id": "microsoft.poster-art", "store": "microsoft-store", "surface": "desktop", "kind": "poster-art", "width": 1440, "height": 2160, "maxCount": 1, "maxBytes": 52428800,
+      "safeArea": { "x": 0.08, "y": 0.06, "width": 0.84, "height": 0.606667 }, "rules": ["critical-top-two-thirds"] },
+    { "id": "microsoft.box-art", "store": "microsoft-store", "surface": "desktop", "kind": "box-art", "width": 2160, "height": 2160, "maxCount": 1, "maxBytes": 52428800,
+      "safeArea": { "x": 0.08, "y": 0.06, "width": 0.84, "height": 0.606667 }, "rules": ["critical-top-two-thirds"] }
+  ]
+}

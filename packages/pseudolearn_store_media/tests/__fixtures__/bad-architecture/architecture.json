@@ -1,0 +1,10 @@
+{
+  "layers": {
+    "catalog": { "directory": "src/catalog", "imports": ["catalog"] },
+    "pipeline": { "directory": "src/pipeline", "imports": ["pipeline"] },
+    "render": { "directory": "src/render", "imports": ["render", "pipeline"] }
+  },
+  "hostLayers": ["render"],
+  "hostImports": ["node:", "@hyperframes/"],
+  "forbiddenDirectories": ["src/utils"]
+}

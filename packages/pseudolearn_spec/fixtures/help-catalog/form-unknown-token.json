@@ -1,0 +1,13 @@
+{
+  "violation": "form token absent from every lexical source",
+  "expect": "unknown form token",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/form/0/segments/0",
+      "value": {
+        "token": "ghostToken"
+      }
+    }
+  ]
+}

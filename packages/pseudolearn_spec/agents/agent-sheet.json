@@ -1,0 +1,109 @@
+{
+  "outputs": {
+    "es": [
+      "../../apps/pseudolearn_app/assets/agent/es/language-sheet.md",
+      "../../apps/pseudolearn_web/src/shared/agent-sheet/generated/language-sheet.es.md",
+      "../../apps/pseudolearn_cli/generated/language-sheet.es.md"
+    ],
+    "en": [
+      "../../apps/pseudolearn_app/assets/agent/en/language-sheet.md",
+      "../../apps/pseudolearn_web/src/shared/agent-sheet/generated/language-sheet.en.md",
+      "../../apps/pseudolearn_cli/generated/language-sheet.en.md"
+    ]
+  },
+  "labels": {
+    "es": {
+      "title": "PseudoLearn: ficha del lenguaje para agentes",
+      "introduction": "Generada a partir del corpus de especificaciones de PseudoLearn. Es la referencia que un agente debe seguir al leer o escribir PseudoLearn: el lenguaje se parece a PSeInt, pero no es PSeInt. Cada afirmación normativa cita la regla del corpus que la sostiene.",
+      "principles": "Reglas de oro",
+      "vocabulary": "Vocabulario",
+      "vocabularyNote": "Lexemas canónicos por perfil. El perfil español ignora mayúsculas y acentos del vocabulario; el inglés distingue mayúsculas. Un programa usa un solo perfil.",
+      "identity": "Identidad",
+      "library": "Biblioteca",
+      "parameters": "Parámetros",
+      "result": "Resultado",
+      "operations": "Operaciones con capacidad",
+      "operationsNote": "Requieren una capacidad concedida por el anfitrión; por defecto no se conceden.",
+      "grammar": "Gramática",
+      "grammarNote": "Producciones en EBNF; `@nombre` es un token del vocabulario.",
+      "differences": "Diferencias con PSeInt",
+      "rule": "Regla",
+      "examples": "Ejemplos canónicos",
+      "examplesNote": "Casos de ejecución del corpus con su salida esperada; la conformidad del motor los ejecuta en cada verificación.",
+      "expectedOutput": "Salida esperada"
+    },
+    "en": {
+      "title": "PseudoLearn: language sheet for agents",
+      "introduction": "Generated from the PseudoLearn specification corpus. It is the reference an agent must follow when reading or writing PseudoLearn: the language looks like PSeInt, but it is not PSeInt. Every normative statement cites the corpus rule behind it; rule texts are quoted in Spanish, the corpus language.",
+      "principles": "Golden rules",
+      "vocabulary": "Vocabulary",
+      "vocabularyNote": "Canonical lexemes per profile. The Spanish profile ignores case and accents in the vocabulary; the English profile is case sensitive. A program uses a single profile.",
+      "identity": "Identity",
+      "library": "Library",
+      "parameters": "Parameters",
+      "result": "Result",
+      "operations": "Capability operations",
+      "operationsNote": "They need a capability granted by the host; none are granted by default.",
+      "grammar": "Grammar",
+      "grammarNote": "EBNF productions; `@name` is a vocabulary token.",
+      "differences": "Differences from PSeInt",
+      "rule": "Rule",
+      "examples": "Canonical examples",
+      "examplesNote": "Execution cases from the corpus with their expected output; engine conformance runs them on every verification.",
+      "expectedOutput": "Expected output"
+    }
+  },
+  "principles": {
+    "es": [
+      "Comprueba cada programa con la herramienta de análisis antes de mostrarlo; nunca enseñes código que no pase.",
+      "Escribe en el perfil del documento. Si generas en otro perfil, tradúcelo con la herramienta de traducción, no a mano.",
+      "Toda sentencia simple termina en punto y coma.",
+      "Los arreglos empiezan en 0.",
+      "Toda variable se declara con su tipo antes de usarla.",
+      "Ante la duda, busca en la especificación en lugar de suponer el comportamiento de PSeInt."
+    ],
+    "en": [
+      "Check every program with the analysis tool before showing it; never teach code that does not pass.",
+      "Write in the document profile. If you generate in another profile, translate it with the translation tool, not by hand.",
+      "Every simple statement ends with a semicolon.",
+      "Arrays start at 0.",
+      "Every variable is declared with its type before use.",
+      "When unsure, search the specification instead of assuming PSeInt behaviour."
+    ]
+  },
+  "differences": [
+    {"rule": "LANG.ARRAY.ACCESS#R1", "es": "Índices desde cero, no desde uno.", "en": "Indices start at zero, not one."},
+    {"rule": "LANG.STMT.TERMINATION#R1", "es": "El punto y coma es obligatorio en toda sentencia simple.", "en": "The semicolon is mandatory on every simple statement."},
+    {"rule": "LANG.DECL.VARIABLE#R1", "es": "No hay variables implícitas: se declaran con Definir y su tipo.", "en": "There are no implicit variables: declare them with Definir/define and a type."},
+    {"rule": "LANG.CONTROL.FOR#R6", "es": "El bucle contado usa enteros y Con Paso es opcional.", "en": "The counted loop uses integers and the step clause is optional."},
+    {"rule": "LANG.CONTROL.FOR#R5", "es": "Modificar la variable de control dentro del bucle es un error.", "en": "Modifying the control variable inside the loop is an error."},
+    {"rule": "LANG.SUBPROGRAM.PARAMETERS#R1", "es": "Los parámetros llevan tipo obligatorio; Por Referencia va después del tipo.", "en": "Parameters have a mandatory type; by-reference goes after the type."},
+    {"rule": "LANG.SUBPROGRAM.DECLARATION#R1", "es": "SubProceso exige paréntesis aunque no tenga parámetros.", "en": "A subprogram needs parentheses even without parameters."},
+    {"rule": "LANG.OPS.DIVISION#R1", "es": "/ siempre produce real; div y mod son enteros.", "en": "/ always yields a real; div and mod are integer operations."},
+    {"rule": "LANG.OPS.CONCATENATION#R1", "es": "+ no convierte números a texto al concatenar.", "en": "+ does not convert numbers to text when concatenating."},
+    {"rule": "LANG.LEXICAL.KEYWORD#R1", "es": "El perfil inglés distingue mayúsculas; el español no.", "en": "The English profile is case sensitive; the Spanish one is not."}
+  ],
+  "examples": [
+    "LANG.PROGRAM.STRUCTURE#C6",
+    "LANG.DECL.VARIABLE#C4",
+    "LANG.DECL.CONSTANT#C2",
+    "LANG.IO.OUTPUT#C1",
+    "LANG.CONTROL.IF#C1",
+    "LANG.CONTROL.SWITCH#C1",
+    "LANG.CONTROL.WHILE#C2",
+    "LANG.CONTROL.REPEAT#C1",
+    "LANG.CONTROL.FOR#C20",
+    "LANG.CONTROL.FOR-EACH#C1",
+    "LANG.ARRAY.ACCESS#C1",
+    "LANG.ARRAY.DIMENSION#C6",
+    "LANG.OPS.DIVISION#C1",
+    "LANG.OPS.CONCATENATION#C1",
+    "LANG.TYPES.TEXT#C1",
+    "LANG.TYPES.RECORD#C1",
+    "LANG.SUBPROGRAM.DECLARATION#C1",
+    "LANG.SUBPROGRAM.RETURN#C1",
+    "LANG.SUBPROGRAM.BY-REFERENCE#C4",
+    "LANG.SUBPROGRAM.RECURSION#C1",
+    "LANG.CLASS.DECLARATION#C4"
+  ]
+}

@@ -1,0 +1,44 @@
+Interfaz Legible
+Metodo Obtener(valor Como Entero) Como Resultado<Entero, Cadena>;
+FinInterfaz
+
+Clase Lector Realiza Legible
+    Publico Metodo Obtener(valor Como Entero) Como Resultado<Entero, Cadena>
+        Retornar Exito(valor + 1);
+    FinMetodo
+FinClase
+
+Clase Escritor Realiza Legible
+    Publico Metodo Obtener(valor Como Entero) Como Resultado<Entero, Cadena>
+        Retornar Error("bloqueado");
+    FinMetodo
+FinClase
+
+SubProceso CrearIncrementador(base Como Entero) Como SubProceso(Entero) Como Entero
+    Definir capturado Como Entero <- base;
+    Retornar SubProceso(entrada Como Entero) Como Entero
+        Retornar capturado + entrada;
+    FinSubProceso;
+FinSubProceso
+
+Algoritmo Main
+    Definir lector Como Lector <- Nuevo Lector();
+    Definir escritor Como Escritor <- Nuevo Escritor();
+    Definir lectura Como Resultado<Entero, Cadena> <- lector.Obtener(4);
+    Segun lectura Hacer
+        Exito(valor): Escribir valor;
+        Error(problema): Escribir problema;
+    FinSegun
+    Definir escritura Como Resultado<Entero, Cadena> <- escritor.Obtener(4);
+    Segun escritura Hacer
+        Exito(valor): Escribir valor;
+        Error(problema): Escribir problema;
+    FinSegun
+    Definir incrementador Como SubProceso(Entero) Como Entero <- CrearIncrementador(3);
+    Definir values Como Vector<Entero> <- Vector();
+    values.Agregar(2);
+    values.Agregar(4);
+    Para Cada value En values Hacer
+        Escribir incrementador(value);
+    FinPara
+FinAlgoritmo

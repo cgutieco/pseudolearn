@@ -1,0 +1,28 @@
+---
+import BaseLayout from '@app/layouts/BaseLayout.astro';
+import PaddleCheckout from '@features/paddle-checkout/PaddleCheckout.astro';
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { UNLISTED_ROUTES } from '@shared/i18n/routes';
+import PageHero from '@widgets/page-hero/PageHero.astro';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t } = useTranslations(locale);
+const token = import.meta.env.PUBLIC_PADDLE_CLIENT_TOKEN ?? '';
+const environment = import.meta.env.PUBLIC_PADDLE_ENVIRONMENT ?? 'production';
+---
+
+<BaseLayout
+  locale={locale}
+  path={UNLISTED_ROUTES.checkout}
+  title={t('checkout.seoTitle')}
+  description={t('checkout.seoDescription')}
+  noIndex
+>
+  <PageHero overline={t('checkout.overline')} title={t('checkout.title')} lead={t('checkout.lead')} />
+  <PaddleCheckout locale={locale} token={token} environment={environment} />
+</BaseLayout>

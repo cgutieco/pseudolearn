@@ -1,0 +1,19 @@
+Importar geo.tipos.Limite;
+Importar geo.tipos.Color;
+Importar geo.tipos.Punto;
+Importar geo.tipos.Medible;
+Importar geo.tipos.primero;
+Importar geo.tipos.Par;
+Clase Regla Realiza Medible
+Metodo medida() Como Entero
+Retornar Limite * 2;
+FinMetodo
+FinClase
+Algoritmo Principal
+Definir c Como Color <- Color.Verde;
+Definir p Como Punto <- Punto(Limite, 1);
+Definir r Como Regla <- Nuevo Regla();
+Definir par Como Par<Cadena> <- Nuevo Par<Cadena>("hola");
+Escribir Limite + 1, ":", c, ":", p.x + p.z, ":", r.medida();
+Escribir primero(4, 9), ":", par.obtener();
+FinAlgoritmo

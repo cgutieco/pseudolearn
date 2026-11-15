@@ -1,0 +1,28 @@
+<svg viewBox="0 0 340 170">
+  <g data-paso="1" data-hasta="1">
+    <text x="4" y="20" font-size="12" fill="@tinta">{{t:mapear}}</text>
+    <text x="40" y="60" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">3 5 2</text>
+    <caja x="120" y="38" ancho="100" alto="36" rol="acento-procedimental" fondo="0.16" texto="{{t:maquina}}" tamano="12"/>
+    <flecha puntos="70,56 116,56" rol="tinta"/>
+    <flecha puntos="220,56 266,56" rol="tinta"/>
+    <text x="300" y="60" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">4 6 3</text>
+  </g>
+  <g data-paso="2" data-hasta="2">
+    <text x="4" y="20" font-size="12" fill="@tinta">{{t:filtrar}}</text>
+    <text x="40" y="60" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">3 5 2</text>
+    <caja x="120" y="38" ancho="100" alto="36" rol="acento-objetos" fondo="0.16" texto="{{t:compuerta}}" tamano="12"/>
+    <flecha puntos="70,56 116,56" rol="tinta"/>
+    <flecha puntos="220,56 266,56" rol="tinta"/>
+    <text x="300" y="60" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">2</text>
+  </g>
+  <g data-paso="3">
+    <text x="4" y="20" font-size="12" fill="@tinta">{{t:reducir}}</text>
+    <text x="40" y="60" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">3 5 2</text>
+    <polygon points="120,38 220,38 185,74 155,74" fill="@acento-estructurado" fill-opacity="0.2"/>
+    <text x="170" y="60" font-size="12" text-anchor="middle" fill="@tinta">{{t:embudo}}</text>
+    <flecha puntos="70,56 116,56" rol="tinta"/>
+    <flecha puntos="190,62 266,62" rol="tinta"/>
+    <text x="300" y="66" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">10</text>
+  </g>
+  <text x="170" y="150" font-size="12" text-anchor="middle" fill="@atenuado">{{t:pie}}</text>
+</svg>

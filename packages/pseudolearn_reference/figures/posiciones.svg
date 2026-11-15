@@ -1,0 +1,18 @@
+<svg viewBox="0 0 340 210">
+  <text x="12" y="22" font-size="12" fill="@atenuado">{{t:columnas}}</text>
+  <text x="56" y="44" font-size="12" font-family="mono" fill="@atenuado">1</text>
+  <text x="92" y="44" font-size="12" font-family="mono" fill="@atenuado">5</text>
+  <text x="128" y="44" font-size="12" font-family="mono" fill="@atenuado">9</text>
+  <text x="155" y="44" font-size="12" font-family="mono" fill="@error" font-weight="600">12</text>
+  <text x="12" y="72" font-size="12" fill="@atenuado">1</text>
+  <text x="12" y="100" font-size="12" fill="@atenuado">2</text>
+  <text x="12" y="128" font-size="12" fill="@atenuado">3</text>
+  <text x="56" y="72" font-size="15" font-family="mono" fill="@acento-estructurado">{{codigo:Proceso P}}</text>
+  <text x="74" y="100" font-size="15" font-family="mono" fill="@acento-estructurado">{{codigo:Escribir}}</text>
+  <text x="155" y="100" font-size="15" font-family="mono" fill="@tinta">{{codigo:x;}}</text>
+  <text x="56" y="128" font-size="15" font-family="mono" fill="@acento-estructurado">{{codigo:FinProceso}}</text>
+  <rect x="153" y="84" width="12" height="22" fill="@error" fill-opacity="0.18" stroke="@error" stroke-width="1.5"/>
+  <flecha puntos="159,170 159,110" rol="error"/>
+  <caja x="60" y="170" ancho="260" alto="32" rol="error" fondo="0.08" tamano="12" texto="{{t:tramo}}"/>
+  <text x="12" y="150" font-size="12" fill="@atenuado">{{t:lineas}}</text>
+</svg>

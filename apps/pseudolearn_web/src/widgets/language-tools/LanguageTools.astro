@@ -1,0 +1,64 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t } = useTranslations(locale);
+const TOOLS = ['diagnostics', 'stepping', 'diagrams', 'equivalent', 'format', 'agents'] as const;
+---
+
+<ul class="tools">
+  {TOOLS.map((tool, index) => (
+    <li class="tools__item">
+      <span class="tools__index pl-mono">{String(index + 1).padStart(2, '0')}</span>
+      <div>
+        <h3 class="tools__title">{t(`language.tools.${tool}.title`)}</h3>
+        <p class="tools__text">{t(`language.tools.${tool}.text`)}</p>
+      </div>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .tools {
+    display: grid;
+  }
+
+  .tools__item {
+    display: flex;
+    gap: var(--pl-space-md);
+    padding: 20px 0;
+    border-top: 1px solid var(--pl-line);
+  }
+
+  .tools__index {
+    flex: none;
+    font-size: 12px;
+    color: var(--pl-brand);
+    font-weight: 600;
+    line-height: 26px;
+  }
+
+  .tools__title {
+    margin: 0;
+    font-size: 17px;
+  }
+
+  .tools__text {
+    margin-top: 4px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--pl-ink-2);
+  }
+
+  @media (min-width: 900px) {
+    .tools {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 80px;
+    }
+  }
+</style>

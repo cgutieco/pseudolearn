@@ -1,0 +1,25 @@
+{
+  "package": "pseudolearn_store_media",
+  "layers": {
+    "catalog": { "directory": "src/catalog", "imports": ["catalog"] },
+    "story": { "directory": "src/story", "imports": ["story", "catalog"] },
+    "layout": { "directory": "src/layout", "imports": ["layout", "catalog"] },
+    "audio": { "directory": "src/audio", "imports": ["audio", "catalog", "story"] },
+    "audit": { "directory": "src/audit", "imports": ["audit", "catalog", "layout"] },
+    "compose": { "directory": "src/compose", "imports": ["compose", "catalog", "story", "layout"] },
+    "pipeline": { "directory": "src/pipeline", "imports": ["pipeline", "catalog", "story", "layout", "audio", "audit", "compose"] },
+    "render": { "directory": "src/render", "imports": ["render", "catalog", "audit", "pipeline"] },
+    "cli": { "directory": "src/cli", "imports": ["cli", "catalog", "pipeline", "render"] }
+  },
+  "hostLayers": ["render", "cli"],
+  "hostImports": ["node:", "@hyperframes/", "hyperframes"],
+  "unlayeredDirectories": ["catalog", "stories", "scripts", "tests", "build"],
+  "forbiddenDirectories": ["src/common", "src/helpers", "src/misc", "src/utils", "src/shared"],
+  "size": {
+    "fileLines": 200,
+    "functionLines": 40,
+    "positionalParameters": 4,
+    "nestingDepth": 3,
+    "publicMethodsPerClass": 7
+  }
+}

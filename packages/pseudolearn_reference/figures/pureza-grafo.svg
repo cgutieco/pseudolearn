@@ -1,0 +1,11 @@
+<svg viewBox="0 0 340 180">
+  <caja x="110" y="10" ancho="120" alto="36" rol="acento-estructurado" fondo="0.10" fuente="mono" tamano="13" texto="{{codigo:Principal}}"/>
+  <flecha puntos="170,46 170,70"/>
+  <caja x="100" y="72" ancho="140" alto="36" rol="error" fondo="0.14" fuente="mono" tamano="13" texto="{{codigo:Funcion Triple}}"/>
+  <flecha puntos="170,108 170,132"/>
+  <caja x="100" y="134" ancho="140" alto="36" rol="acento-procedimental" fondo="0.12" fuente="mono" tamano="13" texto="{{codigo:SubProceso Avisar}}"/>
+  <caja x="270" y="138" ancho="64" alto="28" rol="acento-procedimental" fondo="0.20" fuente="mono" tamano="12" texto="{{codigo:Escribir}}"/>
+  <flecha puntos="240,152 268,152" rol="acento-procedimental"/>
+  <flecha puntos="96,152 40,152 40,90 96,90" rol="error" discontinua=""/>
+  <text x="8" y="70" font-size="12" fill="@error">{{t:sube}}</text>
+</svg>

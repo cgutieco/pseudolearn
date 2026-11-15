@@ -1,0 +1,120 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import type { Release } from '@entities/release/model/release';
+import ReleaseChanges from './ReleaseChanges.astro';
+
+export interface Props {
+  locale: Locale;
+  release: Release;
+}
+
+const { locale, release } = Astro.props;
+const { t, formatDate } = useTranslations(locale);
+---
+
+<li class="pl-card release-entry">
+  <div class="release-entry__head">
+    <span class="pl-mono release-entry__version">{release.version}</span>
+    <span class="release-entry__spacer"></span>
+    <span class="pl-tag">
+      <span class="pl-status-dot"></span>
+      <span>{t('versions.channelStable')}</span>
+    </span>
+    <time class="pl-mono release-entry__date" datetime={release.date}>
+      {formatDate(release.date)}
+    </time>
+  </div>
+
+  <div class="release-entry__body">
+    <h3 class="release-entry__headline">{release.headline[locale]}</h3>
+    <p class="release-entry__summary">{release.summary[locale]}</p>
+    <ReleaseChanges locale={locale} release={release} />
+  </div>
+</li>
+
+<style>
+  .release-entry {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .release-entry__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--pl-space-xs) 14px;
+    padding: var(--pl-space-md) 18px;
+    background: var(--pl-brand-faint);
+    border-bottom: 1px solid var(--pl-line-soft);
+  }
+
+  .release-entry__version {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .release-entry__date {
+    font-size: 13px;
+    color: var(--pl-ink-3);
+  }
+
+  .release-entry__spacer {
+    display: none;
+  }
+
+  .release-entry :global(.pl-tag) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--pl-space-xs);
+  }
+
+  .release-entry__body {
+    padding: 20px 18px 22px;
+  }
+
+  .release-entry__headline {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.012em;
+  }
+
+  .release-entry__summary {
+    margin-top: var(--pl-space-xs);
+    max-width: 780px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--pl-ink-2);
+  }
+
+  @media (min-width: 900px) {
+    .release-entry__head {
+      gap: 10px 20px;
+      padding: 22px 28px;
+    }
+
+    .release-entry__version {
+      font-size: 26px;
+    }
+
+    .release-entry__spacer {
+      display: block;
+      flex: 1;
+    }
+
+    .release-entry__body {
+      padding: 26px 28px 28px;
+    }
+
+    .release-entry__headline {
+      font-size: 21px;
+    }
+
+    .release-entry__summary {
+      margin-top: 10px;
+      font-size: 15px;
+    }
+  }
+</style>

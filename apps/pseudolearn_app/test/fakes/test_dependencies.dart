@@ -1,0 +1,147 @@
+import 'native_test_engine.dart';
+import 'package:pseudolearn_app/composition/app_dependencies.dart';
+import 'package:pseudolearn_app/domain/ports/account_deletion_gateway.dart';
+import 'package:pseudolearn_app/domain/ports/auth_gateway.dart';
+import 'package:pseudolearn_app/domain/ports/connectivity_monitor.dart';
+import 'package:pseudolearn_app/domain/ports/document_repository.dart';
+import 'package:pseudolearn_app/domain/ports/exercise_checker.dart';
+import 'package:pseudolearn_app/domain/ports/incoming_link_source.dart';
+import 'package:pseudolearn_app/domain/model/route/route_kinds.dart';
+import 'package:pseudolearn_app/domain/ports/demo_program_source.dart';
+import 'package:pseudolearn_app/domain/ports/route_answer_evaluator.dart';
+import 'package:pseudolearn_app/domain/ports/route_repository.dart';
+import 'package:pseudolearn_app/domain/ports/reference_repository.dart';
+import 'package:pseudolearn_app/domain/ports/local_account_data_purger.dart';
+import 'package:pseudolearn_app/domain/ports/local_progress_store.dart';
+import 'package:pseudolearn_app/domain/ports/preferences_store.dart';
+import 'package:pseudolearn_app/domain/ports/program_construct_reader.dart';
+import 'package:pseudolearn_app/domain/ports/program_exporter.dart';
+import 'package:pseudolearn_app/application/route/progress_updates.dart';
+import 'package:pseudolearn_app/domain/ports/progress_history.dart';
+import 'package:pseudolearn_app/domain/ports/remote_progress_store.dart';
+import 'package:pseudolearn_app/domain/ports/sync_coordinator.dart';
+import 'package:pseudolearn_app/domain/ports/sync_queue.dart';
+import 'package:pseudolearn_app/domain/ports/syntax_help_source.dart';
+import 'package:pseudolearn_app/composition/engine_services.dart';
+import 'package:pseudolearn_app/composition/program_execution_session.dart';
+import 'fake_account_deletion_gateway.dart';
+import 'fake_auth_gateway.dart';
+import 'fake_clock.dart';
+import 'fake_connectivity_monitor.dart';
+import 'fake_exercise_checker.dart';
+import 'fake_identifier_generator.dart';
+import 'fake_incoming_link_source.dart';
+import 'fake_demo_program_source.dart';
+import 'fake_route_repository.dart';
+import 'fake_reference_repository.dart';
+import 'fake_program_construct_reader.dart';
+import 'fake_program_exporter.dart';
+import 'fake_local_account_data_purger.dart';
+import 'fake_remote_progress_store.dart';
+import 'fake_sync_coordinator.dart';
+import 'fake_sync_queue.dart';
+import 'fake_syntax_help_source.dart';
+import 'fake_app_version_source.dart';
+import 'fake_text_entry_modality.dart';
+import 'in_memory_document_repository.dart';
+import 'in_memory_user_exercise_repository.dart';
+import 'fake_agent_services.dart';
+import 'package:pseudolearn_app/composition/agent_services.dart';
+import 'package:pseudolearn_app/domain/ports/user_exercise_repository.dart';
+import 'in_memory_local_progress_store.dart';
+import 'in_memory_preferences_store.dart';
+import 'in_memory_progress_history.dart';
+
+AppDependencies buildTestDependencies({
+  DocumentRepository? repository,
+  FakeIdentifierGenerator? identifiers,
+  FakeClock? clock,
+  RouteRepository? routeRepository,
+  DemoProgramSource? demoProgramSource,
+  Map<RouteExerciseKind, RouteAnswerEvaluator>? routeEvaluators,
+  ReferenceRepository? referenceRepository,
+  SyntaxHelpSource? syntaxHelpSource,
+  ProgramExporter? programExporter,
+  LocalProgressStore? localProgressStore,
+  ProgressUpdates? progressUpdates,
+  ProgressHistory? progressHistory,
+  ProgramConstructReader? programConstructReader,
+  ExerciseChecker? exerciseChecker,
+  PreferencesStore? preferences,
+  AuthGateway? authGateway,
+  IncomingLinkSource? incomingLinkSource,
+  AccountDeletionGateway? accountDeletionGateway,
+  LocalAccountDataPurger? localAccountDataPurger,
+  RemoteProgressStore? remoteProgressStore,
+  SyncQueue? syncQueue,
+  ConnectivityMonitor? connectivityMonitor,
+  SyncCoordinator? syncCoordinator,
+  FakeTextEntryModality? textEntryModality,
+  FakeAppVersionSource? appVersionSource,
+  EngineServices? engine,
+  ProgramExecutionSession Function()? createObservableExecutionSession,
+  UserExerciseRepository? userExerciseRepository,
+  AgentServices? agent,
+}) {
+  return AppDependencies(
+    clock: clock ?? FakeClock(DateTime(2026, 8, 15, 12, 0)),
+    identifiers: identifiers ?? FakeIdentifierGenerator(),
+    preferences: preferences ?? InMemoryPreferencesStore(),
+    documentRepository: repository ?? InMemoryDocumentRepository(),
+    authGateway: authGateway ?? FakeAuthGateway(),
+    incomingLinkSource: incomingLinkSource ?? FakeIncomingLinkSource(),
+    accountDeletionGateway:
+        accountDeletionGateway ?? FakeAccountDeletionGateway(),
+    localAccountDataPurger:
+        localAccountDataPurger ?? FakeLocalAccountDataPurger(),
+    remoteProgressStore: remoteProgressStore ?? FakeRemoteProgressStore(),
+    syncQueue: syncQueue ?? FakeSyncQueue(),
+    connectivityMonitor: connectivityMonitor ?? FakeConnectivityMonitor(),
+    syncCoordinator: syncCoordinator ?? FakeSyncCoordinator(),
+    programAnalyzer: engine?.analyzer ?? nativeTestEngine.analyzer,
+    createProgramExecution:
+        engine?.createProgramExecution ??
+        nativeTestEngine.createProgramExecution,
+    flowchartBuilder:
+        engine?.flowchartBuilder ?? nativeTestEngine.flowchartBuilder,
+    structogramBuilder:
+        engine?.structogramBuilder ?? nativeTestEngine.structogramBuilder,
+    classDiagramBuilder:
+        engine?.classDiagramBuilder ?? nativeTestEngine.classDiagramBuilder,
+    completionSource:
+        engine?.completionSource ?? nativeTestEngine.completionSource,
+    contextualCompletionSource: engine?.contextualCompletionSource,
+    sourceEditor: engine?.sourceEditor ?? nativeTestEngine.sourceEditor,
+    editorKeySource:
+        engine?.editorKeySource ?? nativeTestEngine.editorKeySource,
+    textEntryModality: textEntryModality ?? const FakeTextEntryModality(),
+    appVersionSource: appVersionSource ?? const FakeAppVersionSource(),
+    routeRepository: routeRepository ?? FakeRouteRepository(),
+    demoProgramSource: demoProgramSource ?? FakeDemoProgramSource(),
+    routeEvaluators:
+        routeEvaluators ??
+        engine?.routeEvaluators ??
+        nativeTestEngine.routeEvaluators,
+    referenceRepository: referenceRepository ?? FakeReferenceRepository(),
+    syntaxHelpSource:
+        syntaxHelpSource ??
+        engine?.syntaxHelpSource ??
+        FakeSyntaxHelpSource(),
+    programExporter:
+        programExporter ?? engine?.programExporter ?? FakeProgramExporter(),
+    localProgressStore: localProgressStore ?? InMemoryLocalProgressStore(),
+    progressUpdates: progressUpdates ?? ProgressUpdates(),
+    progressHistory: progressHistory ?? InMemoryProgressHistory(),
+    programConstructReader:
+        programConstructReader ??
+        engine?.programConstructReader ??
+        FakeProgramConstructReader(),
+    exerciseChecker:
+        exerciseChecker ?? engine?.exerciseChecker ?? FakeExerciseChecker(),
+    programTools: engine?.programTools ?? nativeTestEngine.programTools,
+    createObservableExecutionSession: createObservableExecutionSession,
+    userExerciseRepository:
+        userExerciseRepository ?? InMemoryUserExerciseRepository(),
+    agent: agent ?? buildFakeAgentServices(),
+  );
+}

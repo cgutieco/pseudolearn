@@ -1,0 +1,22 @@
+<svg viewBox="0 0 340 190">
+  <text x="4" y="16" font-size="12" fill="@atenuado">{{t:datos}}</text>
+  <text x="4" y="46" font-size="12" font-family="mono" fill="@numero">10</text>
+  <rect x="50" y="30" width="4" height="18" rx="2" fill="@error" fill-opacity="0.5"/>
+  <text x="60" y="44" font-size="12" fill="@error">10</text>
+  <rect x="50" y="52" width="16" height="18" rx="2" fill="@exito" fill-opacity="0.6"/>
+  <text x="72" y="66" font-size="12" fill="@exito">4</text>
+  <text x="4" y="100" font-size="12" font-family="mono" fill="@numero">100</text>
+  <rect x="50" y="84" width="24" height="18" rx="2" fill="@error" fill-opacity="0.5"/>
+  <text x="80" y="98" font-size="12" fill="@error">100</text>
+  <rect x="50" y="106" width="28" height="18" rx="2" fill="@exito" fill-opacity="0.6"/>
+  <text x="84" y="120" font-size="12" fill="@exito">7</text>
+  <text x="4" y="154" font-size="12" font-family="mono" fill="@numero">1000</text>
+  <rect x="50" y="138" width="240" height="18" rx="2" fill="@error" fill-opacity="0.5"/>
+  <text x="296" y="152" font-size="12" fill="@error">1000</text>
+  <rect x="50" y="160" width="40" height="18" rx="2" fill="@exito" fill-opacity="0.6"/>
+  <text x="96" y="174" font-size="12" fill="@exito">10</text>
+  <rect x="50" y="176" width="10" height="10" rx="2" fill="@error" fill-opacity="0.5"/>
+  <text x="64" y="185" font-size="12" fill="@tinta">{{t:uno-por-uno}}</text>
+  <rect x="190" y="176" width="10" height="10" rx="2" fill="@exito" fill-opacity="0.6"/>
+  <text x="204" y="185" font-size="12" fill="@tinta">{{t:mitades}}</text>
+</svg>

@@ -1,0 +1,12 @@
+<svg viewBox="0 0 340 170">
+  <caja x="6" y="20" ancho="100" alto="44" rol="acento-procedimental" fondo="0.12" fuente="mono" tamano="12" texto="{{codigo:DirectorioCap}}"/>
+  <caja x="120" y="20" ancho="100" alto="44" rol="acento-procedimental" fondo="0.18" fuente="mono" tamano="12" texto="{{codigo:ArchivoCap}}"/>
+  <caja x="234" y="20" ancho="100" alto="44" rol="texto" fondo="0.14" fuente="mono" tamano="12" texto="{{codigo:&quot;Comprar pan&quot;}}"/>
+  <flecha puntos="108,42 118,42" rol="acento-procedimental"/>
+  <flecha puntos="222,42 232,42" rol="acento-procedimental"/>
+  <text x="113" y="84" font-size="12" text-anchor="middle" fill="@acento-procedimental">{{codigo:Abrir}}</text>
+  <text x="227" y="84" font-size="12" text-anchor="middle" fill="@acento-procedimental">{{codigo:LeerTexto}}</text>
+  <flecha puntos="113,92 113,120" rol="error" discontinua=""/>
+  <flecha puntos="227,92 227,120" rol="error" discontinua=""/>
+  <caja x="70" y="124" ancho="200" alto="36" rol="error" fondo="0.10" fuente="mono" tamano="12" texto="{{codigo:Error(ErrorES)}}"/>
+</svg>

@@ -1,0 +1,10 @@
+<svg viewBox="0 0 340 120">
+  <text x="12" y="20" font-size="13" font-family="mono" fill="@tinta">{{t:lista}}</text>
+  <caja x="12" y="32" ancho="316" alto="56" rol="atenuado" fondo="0.04" discontinua=""/>
+  <g data-paso="2" data-hasta="2"><caja x="24" y="42" ancho="80" alto="36" rol="texto" fondo="0.14" fuente="mono" tamano="13" texto="{{t:pan}}"/><caja x="112" y="42" ancho="80" alto="36" rol="texto" fondo="0.14" fuente="mono" tamano="13" texto="{{t:leche}}"/></g>
+  <g data-paso="3" data-hasta="3"><caja x="24" y="42" ancho="80" alto="36" rol="exito" fondo="0.16" fuente="mono" tamano="13" texto="{{t:fruta}}"/><caja x="112" y="42" ancho="80" alto="36" rol="texto" fondo="0.14" fuente="mono" tamano="13" texto="{{t:pan}}"/><caja x="200" y="42" ancho="80" alto="36" rol="texto" fondo="0.14" fuente="mono" tamano="13" texto="{{t:leche}}"/></g>
+  <g data-paso="4"><caja x="24" y="42" ancho="80" alto="36" rol="texto" fondo="0.14" fuente="mono" tamano="13" texto="{{t:fruta}}"/><caja x="112" y="42" ancho="80" alto="36" rol="texto" fondo="0.14" fuente="mono" tamano="13" texto="{{t:leche}}"/><flecha puntos="190,96 140,96" rol="acento-procedimental"/></g>
+  <text x="64" y="112" font-size="12" text-anchor="middle" fill="@atenuado">0</text>
+  <text x="152" y="112" font-size="12" text-anchor="middle" fill="@atenuado">1</text>
+  <text x="240" y="112" font-size="12" text-anchor="middle" fill="@atenuado">2</text>
+</svg>

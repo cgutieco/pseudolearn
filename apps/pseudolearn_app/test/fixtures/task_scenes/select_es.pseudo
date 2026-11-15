@@ -1,0 +1,16 @@
+Algoritmo Eleccion
+Definir queue Como Canal<Entero> <- Canal(2);
+queue.Cerrar();
+Elegir
+Recibir first Desde queue:
+Segun first Hacer
+Nada: Escribir 81;
+Algo(value): Escribir value;
+FinSegun
+Recibir second Desde queue:
+Segun second Hacer
+Nada: Escribir 82;
+Algo(other): Escribir other;
+FinSegun
+FinElegir
+FinAlgoritmo

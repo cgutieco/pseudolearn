@@ -1,0 +1,10 @@
+<svg viewBox="0 0 340 230">
+  <caja x="10" y="10" ancho="320" alto="36" rol="acento-estructurado" fondo="0.08" fuente="mono" tamano="13" texto="{{codigo:Definir total Como Entero}}"/>
+  <flecha puntos="170,46 170,70"/>
+  <caja x="110" y="70" ancho="120" alto="50" rol="numero" fondo="0.06" discontinua=""/>
+  <text x="170" y="92" font-size="13" text-anchor="middle" fill="@tinta" font-family="mono">{{t:total}}</text>
+  <text x="170" y="112" font-size="12" text-anchor="middle" fill="@atenuado">{{t:sin-valor}}</text>
+  <flecha puntos="170,120 170,144"/>
+  <caja x="10" y="144" ancho="320" alto="36" rol="tinta" fondo="0.05" fuente="mono" tamano="13" texto="{{codigo:total &lt;- 10}}"/>
+  <text x="170" y="214" font-size="12" text-anchor="middle" fill="@error">{{t:prohibido}}</text>
+</svg>

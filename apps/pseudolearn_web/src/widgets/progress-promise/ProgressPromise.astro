@@ -1,0 +1,73 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { Icon } from '@shared/ui/icon';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t } = useTranslations(locale);
+const MEASURES = ['route', 'exercises', 'concepts', 'coverage', 'next'] as const;
+---
+
+<div class="progress-promise">
+  <ul class="progress-promise__list">
+    {MEASURES.map((measure) => (
+      <li class="progress-promise__item">
+        <Icon name="check" size={18} class="progress-promise__icon" />
+        <div>
+          <p class="progress-promise__title">{t(`learn.progress.${measure}.title`)}</p>
+          <p class="progress-promise__text">{t(`learn.progress.${measure}.text`)}</p>
+        </div>
+      </li>
+    ))}
+  </ul>
+  <p class="pl-card pl-card--tint progress-promise__promise">{t('learn.progress.promise')}</p>
+</div>
+
+<style>
+  .progress-promise {
+    display: grid;
+    gap: var(--pl-space-lg);
+  }
+
+  .progress-promise__list {
+    display: grid;
+    gap: var(--pl-space-md);
+  }
+
+  .progress-promise__item {
+    display: flex;
+    gap: var(--pl-space-sm);
+  }
+
+  .progress-promise :global(.progress-promise__icon) {
+    flex: none;
+    margin-top: 2px;
+    color: var(--pl-brand);
+  }
+
+  .progress-promise__title {
+    font-weight: 600;
+  }
+
+  .progress-promise__text {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--pl-ink-2);
+  }
+
+  .progress-promise__promise {
+    padding: var(--pl-space-md) var(--pl-space-lg);
+    line-height: 1.6;
+  }
+
+  @media (min-width: 900px) {
+    .progress-promise__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--pl-space-lg) var(--pl-space-2xl);
+    }
+  }
+</style>

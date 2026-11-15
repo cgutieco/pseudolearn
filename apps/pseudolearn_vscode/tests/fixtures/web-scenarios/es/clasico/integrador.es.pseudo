@@ -1,0 +1,44 @@
+Funcion r <- Mayor(a Como Real, b Como Real)
+Definir r Como Real;
+Si a > b Entonces
+r <- a;
+Sino
+r <- b;
+FinSi
+FinFuncion
+Algoritmo Integrador
+Definir nombre, resp, dato Como Cadena;
+Definir cantidad, i, opcion Como Entero;
+Definir notas Como Real;
+Definir suma, mejor Como Real;
+Dimension notas[3];
+Leer nombre;
+Escribir Concatenar("Hola, ", Mayusculas(nombre));
+Escribir "Letras: ", Longitud(nombre), " Inicio: ", Subcadena(nombre, 0, 2);
+cantidad <- 3;
+suma <- 0;
+i <- 0;
+Mientras i < cantidad Hacer
+Leer dato;
+notas[i] <- ConvertirANumero(dato);
+suma <- suma + notas[i];
+i <- i + 1;
+FinMientras
+mejor <- notas[0];
+Para k <- 1 Hasta 2 Hacer
+mejor <- Mayor(mejor, notas[k]);
+FinPara
+Escribir "Promedio: ", suma / cantidad, " Mejor: ", mejor;
+Leer opcion;
+Segun opcion Hacer
+1: Escribir "Aprobado";
+2: Escribir "Revisar";
+De Otro Modo: Escribir "Sin opcion";
+FinSegun
+Leer resp;
+Si resp = "s" Entonces
+Escribir "Fin";
+Sino
+Escribir "Continuar";
+FinSi
+FinAlgoritmo

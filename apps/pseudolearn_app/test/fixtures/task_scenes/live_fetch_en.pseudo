@@ -1,0 +1,23 @@
+subroutine suspendable Fetch(net as NetworkCap) as result<integer, string>
+switch await net.send(HttpRequest(HttpMethod.GET, "__ORIGIN__/")) do
+success(response): write response.status(); return success(response.status());
+failure(problem): return failure(problem.code);
+endSwitch
+endSubroutine
+subroutine suspendable Work()
+write "sibling";
+endSubroutine
+algorithm Main
+switch requestNetwork() do
+success(net):
+tasks report
+spawn Fetch(net);
+spawn Work();
+endTasks
+switch report do
+none: write "done";
+some(problem): write "task_error";
+endSwitch
+failure(problem): write problem.code;
+endSwitch
+endAlgorithm

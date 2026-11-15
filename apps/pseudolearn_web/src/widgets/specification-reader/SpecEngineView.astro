@@ -1,0 +1,88 @@
+---
+import type { TraceEvent } from '@entities/specification/model/specification';
+import type { Locale } from '@shared/i18n/locales';
+import { useTranslations } from '@shared/i18n/translator';
+
+type EngineView =
+  | { readonly type: 'intermediate'; readonly lines: readonly string[] }
+  | { readonly type: 'trace'; readonly events: readonly TraceEvent[] };
+
+export interface Props {
+  block: EngineView;
+  locale: Locale;
+}
+
+const { block, locale } = Astro.props;
+const { t } = useTranslations(locale);
+const label = block.type === 'intermediate' ? t('specification.intermediate') : t('specification.trace');
+---
+
+<section class="engine-view" aria-label={label}>
+  <p class="engine-view__label pl-overline">{label}</p>
+  {block.type === 'intermediate' && <pre
+    class="engine-view__code"
+    tabindex="0"
+  >{block.lines.join('\n')}</pre>}
+  {block.type === 'trace' && (
+    <div class="engine-view__scroll" tabindex="0">
+      <table class="engine-view__table">
+        <thead>
+          <tr>
+            <th scope="col">{t('specification.traceLine')}</th>
+            <th scope="col">{t('specification.traceEvent')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {block.events.map((event) => (
+            <tr>
+              <td class="pl-mono">{event.line}</td>
+              <td>{event.detail}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+</section>
+
+<style>
+  .engine-view {
+    margin-top: var(--pl-space-lg);
+    border: 1px solid var(--pl-line);
+    border-radius: var(--pl-radius-card);
+    overflow: hidden;
+  }
+
+  .engine-view__label {
+    padding: var(--pl-space-sm) var(--pl-space-md);
+    border-bottom: 1px solid var(--pl-line-soft);
+  }
+
+  .engine-view__code {
+    max-height: 420px;
+    margin: 0;
+    padding: var(--pl-space-md);
+    overflow: auto;
+    background: var(--pl-sunken);
+    font-family: var(--pl-font-code);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+
+  .engine-view__scroll {
+    overflow-x: auto;
+  }
+
+  .engine-view__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+
+  .engine-view__table th,
+  .engine-view__table td {
+    padding: var(--pl-space-xs) var(--pl-space-md);
+    border-bottom: 1px solid var(--pl-line-soft);
+    text-align: left;
+  }
+</style>

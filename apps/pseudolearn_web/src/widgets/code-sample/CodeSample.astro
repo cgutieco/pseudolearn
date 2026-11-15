@@ -1,0 +1,90 @@
+---
+import type { CodeToken } from '@entities/specification/model/specification';
+import { codeLinesHtml, tokensHtml } from '@widgets/specification-reader/token-html';
+
+export interface Props {
+  lines: readonly (readonly CodeToken[])[];
+  label: string;
+  output?: string;
+  outputLabel?: string;
+  tone?: 'surface' | 'field';
+}
+
+const { lines, label, output = '', outputLabel = '', tone = 'surface' } = Astro.props;
+const code = codeLinesHtml(lines.map(tokensHtml));
+---
+
+<div class:list={['code-sample', `code-sample--${tone}`]}>
+  <pre class="code-sample__code" tabindex="0" aria-label={label}><code set:html={code} /></pre>
+  {output !== '' && (
+    <div class="code-sample__output">
+      <p class="pl-overline code-sample__label">{outputLabel}</p>
+      <pre class="code-sample__text" tabindex="0">{output.trimEnd()}</pre>
+    </div>
+  )}
+</div>
+
+<style>
+  .code-sample {
+    border: 1px solid var(--pl-line);
+    border-radius: var(--pl-radius-card);
+    background: var(--pl-surface);
+    overflow: hidden;
+  }
+
+  .code-sample__code,
+  .code-sample__text {
+    margin: 0;
+    padding: var(--pl-space-md);
+    overflow-x: auto;
+    font-family: var(--pl-font-code);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--pl-syn-ink);
+  }
+
+  .code-sample__output {
+    border-top: 1px solid var(--pl-line-soft);
+    background: var(--pl-sunken);
+  }
+
+  .code-sample__label {
+    padding: var(--pl-space-sm) var(--pl-space-md) 0;
+  }
+
+  .code-sample__text {
+    padding-top: var(--pl-space-xs);
+    color: var(--pl-ink);
+  }
+
+  .code-sample :global(.code__token--structured) {
+    color: var(--pl-syn-struct);
+    font-weight: 600;
+  }
+
+  .code-sample :global(.code__token--procedural) {
+    color: var(--pl-syn-proc);
+    font-weight: 600;
+  }
+
+  .code-sample :global(.code__token--object) {
+    color: var(--pl-syn-oop);
+    font-weight: 600;
+  }
+
+  .code-sample :global(.code__token--identifier) {
+    color: var(--pl-syn-id);
+  }
+
+  .code-sample :global(.code__token--number) {
+    color: var(--pl-syn-num);
+  }
+
+  .code-sample :global(.code__token--string) {
+    color: var(--pl-syn-str);
+  }
+
+  .code-sample :global(.code__token--muted) {
+    color: var(--pl-ink-3);
+  }
+</style>

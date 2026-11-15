@@ -1,0 +1,146 @@
+use crate::expression_parser::parse_expression;
+use crate::parser_state::ParserState;
+use crate::tokens::TokenKind;
+use crate::tree::NodeKind;
+use pseudolearn_diagnostics::DiagnosticCode;
+use pseudolearn_lexicon::KeywordKind;
+
+pub(crate) fn parse_postfix(state: &mut ParserState<'_>, target: usize) -> Result<usize, ()> {
+    let mut held_levels = 0_u32;
+    let result = postfix_chain(state, target, &mut held_levels);
+    for _ in 0..held_levels {
+        state.leave();
+    }
+    result
+}
+
+fn postfix_chain(
+    state: &mut ParserState<'_>,
+    mut target: usize,
+    held_levels: &mut u32,
+) -> Result<usize, ()> {
+    let node = state.nodes.get(target).ok_or(())?;
+    let marker = target
+        .saturating_add(1)
+        .saturating_sub(usize::try_from(node.subtree_size).unwrap_or(1));
+    let start = node.first_token;
+    let mut indexed = false;
+    loop {
+        let operator = state.token();
+        if !matches!(
+            state.kind(),
+            TokenKind::LeftParenthesis | TokenKind::LeftBracket | TokenKind::Dot
+        ) {
+            break;
+        }
+        state.enter()?;
+        *held_levels = held_levels.saturating_add(1);
+        link(state, &mut indexed)?;
+        target = state.finish(NodeKind::Postfix, start, marker);
+        if let Some(slot) = state.operators.get_mut(target) {
+            *slot = Some(operator);
+        }
+    }
+    Ok(target)
+}
+
+fn link(state: &mut ParserState<'_>, indexed: &mut bool) -> Result<(), ()> {
+    match state.kind() {
+        TokenKind::LeftParenthesis => {
+            arguments_unguarded(state)?;
+        }
+        TokenKind::LeftBracket => {
+            index(state, *indexed)?;
+            *indexed = true;
+        }
+        _ => {
+            member(state)?;
+            *indexed = false;
+        }
+    }
+    Ok(())
+}
+
+pub(crate) fn arguments(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    state.enter()?;
+    let parsed = arguments_unguarded(state);
+    state.leave();
+    parsed
+}
+
+fn arguments_unguarded(state: &mut ParserState<'_>) -> Result<usize, ()> {
+    let start = state.token();
+    let marker = state.nodes.len();
+    parenthesized_arguments(state)?;
+    Ok(state.finish(NodeKind::Arguments, start, marker))
+}
+
+fn parenthesized_arguments(state: &mut ParserState<'_>) -> Result<(), ()> {
+    state.require(
+        TokenKind::LeftParenthesis,
+        DiagnosticCode::ExpectedExpression,
+    )?;
+    if state.eat(TokenKind::RightParenthesis) {
+        return Ok(());
+    }
+    expression_list(state)?;
+    state.require(
+        TokenKind::RightParenthesis,
+        DiagnosticCode::UnclosedParenthesis,
+    )
+}
+
+pub(crate) fn expression_list(state: &mut ParserState<'_>) -> Result<(), ()> {
+    parse_expression(state, 0)?;
+    while state.eat(TokenKind::Comma) {
+        parse_expression(state, 0)?;
+    }
+    Ok(())
+}
+
+fn index(state: &mut ParserState<'_>, indexed: bool) -> Result<(), ()> {
+    if indexed {
+        let span = state.span();
+        state.report(DiagnosticCode::ChainedArrayAccess, span);
+        return Err(());
+    }
+    let start = state.token();
+    let marker = state.nodes.len();
+    bracketed_indices(state)?;
+    state.finish(NodeKind::Expressions, start, marker);
+    Ok(())
+}
+
+fn bracketed_indices(state: &mut ParserState<'_>) -> Result<(), ()> {
+    state.advance();
+    if state.kind() == TokenKind::RightBracket {
+        let span = state.span();
+        state.report(DiagnosticCode::EmptyIndexList, span);
+        return Err(());
+    }
+    expression_list(state)?;
+    state.require(TokenKind::RightBracket, DiagnosticCode::UnclosedBracket)
+}
+
+fn member(state: &mut ParserState<'_>) -> Result<(), ()> {
+    state.advance();
+    if matches!(
+        state.kind(),
+        TokenKind::Keyword(
+            KeywordKind::Constructor
+                | KeywordKind::JsonErrorLineField
+                | KeywordKind::JsonErrorColumnField
+        )
+    ) {
+        let start = state.token();
+        let marker = state.nodes.len();
+        state.advance();
+        state.finish(NodeKind::Identifier, start, marker);
+    } else {
+        crate::declaration_parser::name(state, DiagnosticCode::ExpectedMemberNameAfterDot)?;
+    }
+    if state.kind() == TokenKind::LeftParenthesis {
+        arguments(state)?;
+    }
+    Ok(())
+}

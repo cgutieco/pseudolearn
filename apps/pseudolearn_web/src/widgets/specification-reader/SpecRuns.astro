@@ -1,0 +1,17 @@
+---
+import type { Runs } from '@entities/specification/model/specification';
+import { sectionPath } from '@entities/specification/model/section-address';
+import type { Locale } from '@shared/i18n/locales';
+import { localizePath } from '@shared/i18n/routes';
+import { runsHtml } from './runs-html';
+
+export interface Props {
+  runs: Runs;
+  locale: Locale;
+}
+
+const { runs, locale } = Astro.props;
+const html = runsHtml(runs, (sectionId) => localizePath(sectionPath(sectionId), locale));
+---
+
+<Fragment set:html={html} />

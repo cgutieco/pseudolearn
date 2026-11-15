@@ -1,0 +1,21 @@
+Algoritmo Main
+Escribir AMayusculas("straße"), ":", AMinusculas("ÉCOLE");
+Escribir min(3, 4), ":", max(2, 2.5), ":", piso(-0.5), ":", techo(-0.5);
+Escribir tan(0), ":", asen(0), ":", acos(1), ":", atan2(0, 1), ":", log10(1000), ":", log2(0.5);
+Escribir Decimales(0.125, 2), ":", Decimales(7, 2), ":", Decimales(-2.5, 0);
+Escribir RellenarIzquierda("7", 3, "0"), ":", RellenarDerecha("ab", 4, ".");
+Definir values Como Vector<Entero> <- Vector();
+values.Agregar(3); values.Agregar(-1); values.Agregar(2);
+values.Ordenar(); Escribir values[0], ":", values[1], ":", values[2];
+values.Invertir(); Escribir values[0], ":", values[2];
+Escribir values.Contiene(2);
+Segun values.PosicionDe(3) Hacer
+Nada: Escribir "none";
+Algo(index): Escribir index;
+FinSegun
+Definir dictionary Como Diccionario<Cadena,Entero> <- Diccionario();
+dictionary["bb"] <- 1; dictionary["aa"] <- 2;
+Definir names Como Vector<Cadena> <- dictionary.Claves();
+Escribir names[0], ":", names[1];
+Escribir FechaHoraUtc(0).FormatoIso();
+FinAlgoritmo

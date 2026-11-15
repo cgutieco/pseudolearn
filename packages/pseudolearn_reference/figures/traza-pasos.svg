@@ -1,0 +1,16 @@
+<svg viewBox="0 0 340 160">
+  <path d="M 20 50 H 320" fill="none" stroke="@tinta" stroke-width="2"/>
+  <circle cx="40" cy="50" r="8" fill="@acento-estructurado"/>
+  <circle cx="100" cy="50" r="8" fill="@acento-estructurado"/>
+  <circle cx="160" cy="50" r="8" fill="@acento-procedimental"/>
+  <circle cx="220" cy="50" r="8" fill="@acento-estructurado"/>
+  <circle cx="280" cy="50" r="8" fill="@exito"/>
+  <text x="40" y="30" font-size="12" text-anchor="middle" fill="@tinta">{{t:e1}}</text>
+  <text x="100" y="30" font-size="12" text-anchor="middle" fill="@tinta">{{t:e2}}</text>
+  <text x="160" y="30" font-size="12" text-anchor="middle" fill="@tinta">{{t:e3}}</text>
+  <text x="220" y="30" font-size="12" text-anchor="middle" fill="@tinta">{{t:e4}}</text>
+  <text x="280" y="30" font-size="12" text-anchor="middle" fill="@tinta">{{t:e5}}</text>
+  <path d="M 44 64 Q 70 84 96 64" fill="none" stroke="@acento-procedimental" stroke-width="2"/>
+  <text x="70" y="96" font-size="12" text-anchor="middle" fill="@acento-procedimental">{{t:paso}}</text>
+  <caja x="60" y="112" ancho="220" alto="34" rol="numero" fondo="0.10" fuente="mono" tamano="12" texto="{{t:cambio}}"/>
+</svg>

@@ -1,0 +1,14 @@
+<svg viewBox="0 0 340 200">
+  <text x="80" y="18" font-size="12" text-anchor="middle" fill="@acento-estructurado">{{t:puras}}</text>
+  <text x="255" y="18" font-size="12" text-anchor="middle" fill="@acento-procedimental">{{t:efectos}}</text>
+  <caja x="10" y="28" ancho="140" alto="30" rol="texto" fondo="0.12" tamano="12" texto="{{t:texto}}"/>
+  <caja x="10" y="64" ancho="140" alto="30" rol="numero" fondo="0.12" tamano="12" texto="{{t:numeros}}"/>
+  <caja x="10" y="100" ancho="140" alto="30" rol="tipo" fondo="0.12" tamano="12" texto="{{t:colecciones}}"/>
+  <caja x="10" y="136" ancho="140" alto="30" rol="logico" fondo="0.12" tamano="12" texto="{{t:json}}"/>
+  <caja x="10" y="172" ancho="140" alto="24" rol="atenuado" fondo="0.08" tamano="12" texto="{{t:bytes}}"/>
+  <caja x="190" y="28" ancho="140" alto="30" rol="acento-procedimental" fondo="0.12" tamano="12" texto="{{t:io}}"/>
+  <caja x="190" y="64" ancho="140" alto="30" rol="acento-procedimental" fondo="0.12" tamano="12" texto="{{t:tiempo}}"/>
+  <caja x="190" y="100" ancho="140" alto="30" rol="acento-procedimental" fondo="0.12" tamano="12" texto="{{t:red}}"/>
+  <caja x="190" y="136" ancho="140" alto="30" rol="acento-procedimental" fondo="0.12" tamano="12" texto="{{t:tareas}}"/>
+  <line x1="170" y1="26" x2="170" y2="196" fill="none" stroke="@atenuado" stroke-dasharray="4 3"/>
+</svg>

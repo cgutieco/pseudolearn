@@ -1,0 +1,10 @@
+<svg viewBox="0 0 340 170">
+  <caja x="6" y="40" ancho="96" alto="60" rol="acento-estructurado" fondo="0.10" tamano="12" texto="{{t:programa}}"/>
+  <caja x="238" y="40" ancho="96" alto="60" rol="atenuado" fondo="0.08" tamano="12" texto="{{t:servidor}}"/>
+  <flecha puntos="104,56 236,56" rol="acento-procedimental"/>
+  <flecha puntos="236,86 104,86" rol="exito"/>
+  <text x="170" y="48" font-size="12" text-anchor="middle" font-family="mono" fill="@acento-procedimental">{{t:get}}</text>
+  <text x="170" y="104" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">{{t:respuesta}}</text>
+  <text x="170" y="134" font-size="12" text-anchor="middle" fill="@tinta">{{t:exito}}</text>
+  <text x="170" y="156" font-size="12" text-anchor="middle" fill="@error">{{t:error}}</text>
+</svg>

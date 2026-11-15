@@ -1,0 +1,11 @@
+{
+  "violation": "Markdown link with an encoded active scheme",
+  "expect": "contains markup",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/content/es/summary",
+      "value": "Ver [aquí](javascript%3Aalert(1))"
+    }
+  ]
+}

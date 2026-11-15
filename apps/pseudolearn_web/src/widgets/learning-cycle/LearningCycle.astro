@@ -1,0 +1,90 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { CYCLE_PHASES } from './cycle-phases';
+
+export interface Props {
+  locale: Locale;
+  layout?: 'stack' | 'row';
+}
+
+const { locale, layout = 'stack' } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+<ol class:list={['cycle', `cycle--${layout}`]} aria-label={t('cycle.label')}>
+  {CYCLE_PHASES.map((phase) => (
+    <li class="cycle__phase">
+      <span class="cycle__number pl-mono" aria-hidden="true">
+        {phase.number}
+      </span>
+      <div>
+        <p class="cycle__title">{t(phase.titleKey)}</p>
+        <p class="cycle__text">{t(phase.textKey)}</p>
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .cycle {
+    display: grid;
+    gap: var(--pl-space-sm);
+    counter-reset: none;
+  }
+
+  .cycle__phase {
+    position: relative;
+    display: flex;
+    gap: var(--pl-space-sm);
+    align-items: flex-start;
+  }
+
+  .cycle__number {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: var(--pl-radius-pill);
+    background: var(--pl-brand-tint);
+    color: var(--pl-brand-deep);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .cycle__title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 30px;
+  }
+
+  .cycle__text {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--pl-ink-2);
+  }
+
+  @media (min-width: 900px) {
+    .cycle--row {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: var(--pl-space-lg);
+    }
+
+    .cycle--row .cycle__phase {
+      flex-direction: column;
+    }
+
+    .cycle--row .cycle__phase:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 40px;
+      right: calc(-1 * var(--pl-space-lg) + 8px);
+      height: 2px;
+      border-radius: var(--pl-radius-pill);
+      background: var(--pl-brand-tint);
+    }
+  }
+</style>

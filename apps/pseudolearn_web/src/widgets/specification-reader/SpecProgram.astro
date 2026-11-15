@@ -1,0 +1,127 @@
+---
+import type { ProgramBlock } from '@entities/specification/model/specification';
+import { TERMINATION_KEYS } from '@entities/specification/model/label-keys';
+import type { Locale } from '@shared/i18n/locales';
+import { useTranslations } from '@shared/i18n/translator';
+import { codeLinesHtml, tokensHtml } from './token-html';
+
+export interface Props {
+  block: ProgramBlock;
+  locale: Locale;
+}
+
+const { block, locale } = Astro.props;
+const { t } = useTranslations(locale);
+const inputs = block.inputs ?? [];
+---
+
+<section class="program" aria-label={`${t('specification.program')}: ${block.title}`}>
+  <h3 class="program__title">
+    <span class="pl-overline">{t('specification.program')}</span>
+    <span class="program__name">{block.title}</span>
+  </h3>
+  <pre class="program__code" tabindex="0"><code set:html={codeLinesHtml(block.lines.map(tokensHtml))} /></pre>
+  {inputs.length > 0 && (
+    <div class="program__panel">
+      <p class="program__label pl-overline">{t('specification.input')}</p>
+      <pre class="program__text" tabindex="0">{inputs.join('\n')}</pre>
+    </div>
+  )}
+  {block.output !== '' && (
+    <div class="program__panel">
+      <p class="program__label pl-overline">{t('specification.output')}</p>
+      <pre class="program__text" tabindex="0">{block.output}</pre>
+    </div>
+  )}
+  {block.diagnostics.length > 0 && (
+    <div class="program__panel">
+      <p class="program__label pl-overline">{t('specification.diagnostics')}</p>
+      <ul class="program__diagnostics">
+        {block.diagnostics.map((diagnostic) => (
+          <li>
+            <code class="pl-mono">{diagnostic.code}</code> · {diagnostic.severity} · {diagnostic.line}:
+            {diagnostic.column} · {diagnostic.message}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+  <p
+    class={`program__termination program__termination--${block.termination === 'failed' ? 'failed' : 'plain'}`}
+  >
+    {t(TERMINATION_KEYS[block.termination])}
+  </p>
+</section>
+
+<style>
+  .program {
+    margin-top: var(--pl-space-lg);
+    border: 1px solid var(--pl-line);
+    border-radius: var(--pl-radius-card);
+    background: var(--pl-surface);
+    overflow: hidden;
+  }
+
+  .program__title {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--pl-space-xs);
+    align-items: baseline;
+    padding: var(--pl-space-sm) var(--pl-space-md);
+    border-bottom: 1px solid var(--pl-line-soft);
+    font-size: 1rem;
+  }
+
+  .program__name {
+    font-weight: 600;
+  }
+
+  .program__code,
+  .program__text {
+    margin: 0;
+    padding: var(--pl-space-md);
+    overflow-x: auto;
+    font-family: var(--pl-font-code);
+    font-size: 0.875rem;
+    line-height: 1.65;
+  }
+
+  .program__code {
+    counter-reset: program-line;
+    background: var(--pl-sunken);
+  }
+
+  .program__code :global(.code__line)::before {
+    display: inline-block;
+    width: 2.5ch;
+    margin-right: 1.5ch;
+    color: var(--pl-ink-3);
+    text-align: right;
+    content: counter(program-line);
+    counter-increment: program-line;
+  }
+
+  .program__panel {
+    border-top: 1px solid var(--pl-line-soft);
+  }
+
+  .program__label {
+    padding: var(--pl-space-sm) var(--pl-space-md) 0;
+  }
+
+  .program__diagnostics {
+    padding: var(--pl-space-xs) var(--pl-space-md) var(--pl-space-md) var(--pl-space-xl);
+    font-size: 0.9375rem;
+  }
+
+  .program__termination {
+    padding: var(--pl-space-sm) var(--pl-space-md);
+    border-top: 1px solid var(--pl-line-soft);
+    color: var(--pl-ink-2);
+    font-size: 0.875rem;
+  }
+
+  .program__termination--failed {
+    color: var(--pl-danger);
+  }
+</style>

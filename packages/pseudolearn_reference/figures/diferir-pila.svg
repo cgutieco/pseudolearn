@@ -1,0 +1,17 @@
+<svg viewBox="0 0 340 190">
+  <path d="M 90 40 V 170 H 250 V 40" fill="none" stroke="@tinta" stroke-width="2"/>
+  <text x="170" y="24" font-size="12" text-anchor="middle" fill="@atenuado">{{t:pila}}</text>
+  <g data-paso="1">
+    <caja x="100" y="126" ancho="140" alto="36" rol="acento-procedimental" fondo="0.14" tamano="12" texto="{{t:puerta}}"/>
+  </g>
+  <g data-paso="2" data-hasta="2">
+    <caja x="100" y="84" ancho="140" alto="36" rol="acento-procedimental" fondo="0.22" tamano="12" texto="{{t:luz}}"/>
+  </g>
+  <g data-paso="3">
+    <caja x="100" y="84" ancho="140" alto="36" rol="atenuado" discontinua="" fondo="0.0" colortexto="atenuado" tamano="12" texto="{{t:luz}}"/>
+    <flecha puntos="240,102 290,102 290,60" rol="exito"/>
+    <text x="300" y="52" font-size="13" text-anchor="middle" fill="@exito" font-weight="bold">1</text>
+    <flecha puntos="240,144 310,144 310,60" rol="exito"/>
+    <text x="320" y="52" font-size="13" text-anchor="middle" fill="@exito" font-weight="bold">2</text>
+  </g>
+</svg>

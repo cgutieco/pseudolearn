@@ -1,0 +1,7 @@
+{
+  "layers": {
+    "contracts": { "directory": "src/contracts", "imports": ["contracts"] },
+    "application": { "directory": "src/application", "imports": ["application", "contracts"] }
+  },
+  "forbiddenDirectories": []
+}

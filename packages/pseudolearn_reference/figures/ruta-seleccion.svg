@@ -1,0 +1,67 @@
+<svg viewBox="0 0 340 120">
+  <g data-paso="1" data-hasta="1">
+    <rect x="20" y="30" width="54" height="40" rx="4" fill="@superficie" stroke="@atenuado"/>
+    <text x="47" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">5</text>
+    <rect x="82" y="30" width="54" height="40" rx="4" fill="@superficie" stroke="@atenuado"/>
+    <text x="109" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">3</text>
+    <rect x="144" y="30" width="54" height="40" rx="4" fill="@superficie" stroke="@atenuado"/>
+    <text x="171" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">8</text>
+    <rect x="206" y="30" width="54" height="40" rx="4" fill="@superficie" stroke="@atenuado"/>
+    <text x="233" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">1</text>
+    <rect x="268" y="30" width="54" height="40" rx="4" fill="@superficie" stroke="@atenuado"/>
+    <text x="295" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">9</text>
+    <text x="170" y="100" font-size="12" text-anchor="middle" fill="@atenuado">{{t:paso-1}}</text>
+  </g>
+  <g data-paso="2" data-hasta="2">
+    <rect x="20" y="30" width="54" height="40" rx="4" fill="@exito" fill-opacity="0.3" stroke="@atenuado"/>
+    <text x="47" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">1</text>
+    <rect x="82" y="30" width="54" height="40" rx="4" fill="@superficie" stroke="@atenuado"/>
+    <text x="109" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">3</text>
+    <rect x="144" y="30" width="54" height="40" rx="4" fill="@superficie" stroke="@atenuado"/>
+    <text x="171" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">8</text>
+    <rect x="206" y="30" width="54" height="40" rx="4" fill="@superficie" stroke="@atenuado"/>
+    <text x="233" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">5</text>
+    <rect x="268" y="30" width="54" height="40" rx="4" fill="@superficie" stroke="@atenuado"/>
+    <text x="295" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">9</text>
+    <text x="170" y="100" font-size="12" text-anchor="middle" fill="@atenuado">{{t:paso-2}}</text>
+  </g>
+  <g data-paso="3" data-hasta="3">
+    <rect x="20" y="30" width="54" height="40" rx="4" fill="@exito" fill-opacity="0.3" stroke="@atenuado"/>
+    <text x="47" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">1</text>
+    <rect x="82" y="30" width="54" height="40" rx="4" fill="@exito" fill-opacity="0.3" stroke="@atenuado"/>
+    <text x="109" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">3</text>
+    <rect x="144" y="30" width="54" height="40" rx="4" fill="@superficie" stroke="@atenuado"/>
+    <text x="171" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">8</text>
+    <rect x="206" y="30" width="54" height="40" rx="4" fill="@superficie" stroke="@atenuado"/>
+    <text x="233" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">5</text>
+    <rect x="268" y="30" width="54" height="40" rx="4" fill="@superficie" stroke="@atenuado"/>
+    <text x="295" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">9</text>
+    <text x="170" y="100" font-size="12" text-anchor="middle" fill="@atenuado">{{t:paso-3}}</text>
+  </g>
+  <g data-paso="4" data-hasta="4">
+    <rect x="20" y="30" width="54" height="40" rx="4" fill="@exito" fill-opacity="0.3" stroke="@atenuado"/>
+    <text x="47" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">1</text>
+    <rect x="82" y="30" width="54" height="40" rx="4" fill="@exito" fill-opacity="0.3" stroke="@atenuado"/>
+    <text x="109" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">3</text>
+    <rect x="144" y="30" width="54" height="40" rx="4" fill="@exito" fill-opacity="0.3" stroke="@atenuado"/>
+    <text x="171" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">5</text>
+    <rect x="206" y="30" width="54" height="40" rx="4" fill="@superficie" stroke="@atenuado"/>
+    <text x="233" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">8</text>
+    <rect x="268" y="30" width="54" height="40" rx="4" fill="@superficie" stroke="@atenuado"/>
+    <text x="295" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">9</text>
+    <text x="170" y="100" font-size="12" text-anchor="middle" fill="@atenuado">{{t:paso-4}}</text>
+  </g>
+  <g data-paso="5">
+    <rect x="20" y="30" width="54" height="40" rx="4" fill="@exito" fill-opacity="0.3" stroke="@atenuado"/>
+    <text x="47" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">1</text>
+    <rect x="82" y="30" width="54" height="40" rx="4" fill="@exito" fill-opacity="0.3" stroke="@atenuado"/>
+    <text x="109" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">3</text>
+    <rect x="144" y="30" width="54" height="40" rx="4" fill="@exito" fill-opacity="0.3" stroke="@atenuado"/>
+    <text x="171" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">5</text>
+    <rect x="206" y="30" width="54" height="40" rx="4" fill="@exito" fill-opacity="0.3" stroke="@atenuado"/>
+    <text x="233" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">8</text>
+    <rect x="268" y="30" width="54" height="40" rx="4" fill="@superficie" stroke="@atenuado"/>
+    <text x="295" y="56" font-size="14" text-anchor="middle" font-family="mono" fill="@numero">9</text>
+    <text x="170" y="100" font-size="12" text-anchor="middle" fill="@atenuado">{{t:paso-5}}</text>
+  </g>
+</svg>

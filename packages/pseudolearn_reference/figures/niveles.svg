@@ -1,0 +1,16 @@
+<svg viewBox="0 0 340 230">
+  <rect x="10" y="10" width="150" height="190" rx="12" fill="@acento-estructurado" fill-opacity="0.06" stroke="@acento-estructurado" stroke-width="1.5"/>
+  <text x="85" y="34" font-size="14" text-anchor="middle" fill="@acento-estructurado" font-weight="600">{{t:antes}}</text>
+  <text x="24" y="66" font-size="13" fill="@tinta">{{t:a1}}</text>
+  <text x="24" y="92" font-size="13" fill="@tinta">{{t:a2}}</text>
+  <text x="24" y="118" font-size="13" fill="@tinta">{{t:a3}}</text>
+  <text x="24" y="144" font-size="13" fill="@tinta">{{t:a4}}</text>
+  <rect x="180" y="10" width="150" height="190" rx="12" fill="@tipo" fill-opacity="0.08" stroke="@tipo" stroke-width="1.5"/>
+  <text x="255" y="34" font-size="14" text-anchor="middle" fill="@tipo" font-weight="600">{{t:durante}}</text>
+  <text x="194" y="66" font-size="13" fill="@tinta">{{t:d1}}</text>
+  <text x="194" y="92" font-size="13" fill="@tinta">{{t:d2}}</text>
+  <text x="194" y="118" font-size="13" fill="@tinta">{{t:d3}}</text>
+  <text x="194" y="144" font-size="13" fill="@tinta">{{t:d4}}</text>
+  <flecha puntos="160,105 178,105"/>
+  <text x="170" y="222" font-size="12" text-anchor="middle" fill="@atenuado">{{t:nota}}</text>
+</svg>

@@ -1,0 +1,10 @@
+<svg viewBox="0 0 340 200">
+  <caja x="20" y="10" ancho="160" alto="70" rol="acento-objetos" fondo="0.08" fuente="mono" tamano="12" texto="{{codigo:Animal}}¶{{codigo:Sonido()}}¶{{codigo:Presentarse()}}"/>
+  <caja x="20" y="120" ancho="160" alto="56" rol="acento-objetos" fondo="0.16" fuente="mono" tamano="12" texto="{{codigo:Perro}}¶{{codigo:Sonido()}}"/>
+  <flecha puntos="100,118 100,84" rol="acento-objetos"/>
+  <text x="108" y="104" font-size="12" fill="@acento-objetos">{{codigo:Hereda De}}</text>
+  <caja x="220" y="130" ancho="110" alto="40" rol="acento-objetos" fondo="0.22" negrita="" fuente="mono" tamano="12" texto="{{codigo:&quot;Toby&quot;}}"/>
+  <flecha puntos="218,150 184,150" rol="atenuado" discontinua=""/>
+  <text x="275" y="192" font-size="12" text-anchor="middle" fill="@atenuado">{{t:clasereal}}</text>
+  <text x="100" y="196" font-size="12" text-anchor="middle" fill="@exito">{{t:busca}}</text>
+</svg>

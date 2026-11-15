@@ -1,0 +1,20 @@
+<svg viewBox="0 0 340 130">
+  <line x1="16" y1="60" x2="324" y2="60" fill="none" stroke="@tinta"/>
+  <rect x="16" y="44" width="92" height="32" rx="4" fill="@error" fill-opacity="0.14"/>
+  <rect x="112" y="44" width="40" height="32" rx="4" fill="@hueco" fill-opacity="0.2"/>
+  <rect x="156" y="44" width="168" height="32" rx="4" fill="@exito" fill-opacity="0.14"/>
+  <text x="62" y="32" font-size="12" text-anchor="middle" fill="@error">{{t:raro}}</text>
+  <text x="132" y="32" font-size="12" text-anchor="middle" fill="@tinta">{{t:borde}}</text>
+  <text x="240" y="32" font-size="12" text-anchor="middle" fill="@exito">{{t:normal}}</text>
+  <text x="40" y="96" font-size="12" text-anchor="middle" fill="@numero">-1</text>
+  <text x="84" y="96" font-size="12" text-anchor="middle" fill="@numero">0</text>
+  <text x="132" y="96" font-size="12" text-anchor="middle" fill="@numero">1</text>
+  <text x="176" y="96" font-size="12" text-anchor="middle" fill="@numero">2</text>
+  <text x="220" y="96" font-size="12" text-anchor="middle" fill="@numero">3</text>
+  <text x="264" y="96" font-size="12" text-anchor="middle" fill="@numero">4</text>
+  <text x="308" y="96" font-size="12" text-anchor="middle" fill="@numero">5</text>
+  <circle cx="84" cy="60" r="6" fill="@error"/>
+  <circle cx="132" cy="60" r="6" fill="@tinta"/>
+  <circle cx="264" cy="60" r="6" fill="@exito"/>
+  <text x="170" y="120" font-size="12" text-anchor="middle" fill="@atenuado">{{t:pie}}</text>
+</svg>

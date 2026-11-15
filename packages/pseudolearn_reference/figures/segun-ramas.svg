@@ -1,0 +1,25 @@
+<svg viewBox="0 0 340 220">
+  <caja x="110" y="8" ancho="120" alto="34" rol="acento-estructurado" fondo="0.12" fuente="mono" texto="{{codigo:Segun dia}}"/>
+  <path d="M 170 42 V 60 M 57 60 H 283 M 57 60 V 82 M 170 60 V 82 M 283 60 V 82" fill="none" stroke="@atenuado" stroke-width="1.5"/>
+  <caja x="4" y="84" ancho="106" alto="30" rol="atenuado" fondo="0.04" fuente="mono" tamano="12" texto="1, 2, 3, 4, 5"/>
+  <caja x="117" y="84" ancho="106" alto="30" rol="atenuado" fondo="0.04" fuente="mono" tamano="12" texto="6, 7"/>
+  <caja x="230" y="84" ancho="106" alto="30" rol="atenuado" fondo="0.04" tamano="12" texto="{{codigo:De Otro Modo}}"/>
+  <caja x="4" y="124" ancho="106" alto="30" rol="atenuado" discontinua="" fondo="0.0" colortexto="atenuado" tamano="12" texto="{{t:clase}}"/>
+  <caja x="117" y="124" ancho="106" alto="30" rol="atenuado" discontinua="" fondo="0.0" colortexto="atenuado" tamano="12" texto="{{t:finde}}"/>
+  <caja x="230" y="124" ancho="106" alto="30" rol="atenuado" discontinua="" fondo="0.0" colortexto="atenuado" tamano="12" texto="{{t:noExiste}}"/>
+  <path d="M 57 154 V 180 H 283 V 154 M 170 154 V 180 M 170 180 V 196" fill="none" stroke="@atenuado" stroke-width="1.5"/>
+  <text x="170" y="214" font-size="12" text-anchor="middle" fill="@atenuado">{{codigo:FinSegun}}</text>
+  <g data-paso="1" data-hasta="1">
+    <caja x="240" y="8" ancho="60" alto="34" rol="numero" fondo="0.20" negrita="" fuente="mono" texto="6"/>
+  </g>
+  <g data-paso="2">
+    <path d="M 170 42 V 60 M 170 60 V 82" fill="none" stroke="@acento-estructurado" stroke-width="3"/>
+    <rect x="117" y="84" width="106" height="30" rx="6" fill="@superficie"/>
+    <caja x="117" y="84" ancho="106" alto="30" rol="acento-estructurado" fondo="0.20" negrita="" fuente="mono" tamano="12" texto="6, 7"/>
+    <rect x="117" y="124" width="106" height="30" rx="6" fill="@superficie"/>
+    <caja x="117" y="124" ancho="106" alto="30" rol="exito" fondo="0.16" tamano="12" texto="{{t:finde}}"/>
+  </g>
+  <g data-paso="3">
+    <path d="M 170 154 V 196" fill="none" stroke="@acento-estructurado" stroke-width="3"/>
+  </g>
+</svg>

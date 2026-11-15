@@ -1,0 +1,23 @@
+<svg viewBox="0 0 340 200">
+  <line x1="20" y1="80" x2="320" y2="80" fill="none" stroke="@atenuado"/>
+  <caja x="10" y="56" ancho="60" alto="24" rol="acento-estructurado" fondo="0.16" texto="{{t:salida}}" tamano="12"/>
+  <caja x="270" y="56" ancho="60" alto="24" rol="exito" fondo="0.16" texto="{{t:destino}}" tamano="12"/>
+  <g data-paso="1">
+    <caja x="10" y="96" ancho="100" alto="44" rol="error" fondo="0.14" texto="{{t:compilar-1}}¶{{t:compilar-2}}" tamano="12"/>
+    <text x="60" y="160" font-size="12" text-anchor="middle" fill="@atenuado">{{t:compilar-quien-1}}</text>
+    <text x="60" y="176" font-size="12" text-anchor="middle" fill="@atenuado">{{t:compilar-quien-2}}</text>
+  </g>
+  <g data-paso="2">
+    <caja x="120" y="96" ancho="100" alto="44" rol="error" fondo="0.14" texto="{{t:ejecutar-1}}¶{{t:ejecutar-2}}" tamano="12"/>
+    <text x="170" y="160" font-size="12" text-anchor="middle" fill="@atenuado">{{t:ejecutar-quien-1}}</text>
+    <text x="170" y="176" font-size="12" text-anchor="middle" fill="@atenuado">{{t:ejecutar-quien-2}}</text>
+    <circle cx="170" cy="80" r="6" fill="@error"/>
+  </g>
+  <g data-paso="3">
+    <caja x="230" y="96" ancho="100" alto="44" rol="error" fondo="0.14" texto="{{t:logica-1}}¶{{t:logica-2}}" tamano="12"/>
+    <text x="280" y="160" font-size="12" text-anchor="middle" fill="@atenuado">{{t:logica-quien-1}}</text>
+    <text x="280" y="176" font-size="12" text-anchor="middle" fill="@atenuado">{{t:logica-quien-2}}</text>
+    <flecha puntos="270,80 300,30" rol="error" discontinua=""/>
+    <text x="300" y="22" font-size="12" text-anchor="middle" fill="@error">{{t:otra-ciudad}}</text>
+  </g>
+</svg>

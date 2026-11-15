@@ -1,0 +1,151 @@
+use crate::expression_checker::ExpressionPurpose;
+use crate::expression_model::HirExpression;
+use crate::hir::{HirLocal, Passing};
+use crate::identities::{ExpressionId, LocalId};
+use crate::session::AnalysisSession;
+use crate::types::Type;
+use pseudolearn_diagnostics::DiagnosticCode;
+
+pub(crate) fn local(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+    purpose: ExpressionPurpose,
+) -> ExpressionId {
+    let name = session.name(node);
+    if let Some(reference) = named_reference(session, (node, &name), purpose) {
+        return reference;
+    }
+    let local = session
+        .local(&name)
+        .unwrap_or_else(|| implicit(session, node, &name, purpose));
+    let local = crate::capture_analysis::resolve(session, local, node);
+    let index = usize::try_from(local.0).unwrap_or(usize::MAX);
+    let Some(declaration) = session.module.locals.get(index).cloned() else {
+        return crate::expression_checker::invalid(session, node);
+    };
+    if !session.invalid.contains(&local) && session.span(node).start < declaration.span.start {
+        session.named_report(DiagnosticCode::VariableUsedBeforeDeclaration, node, &name);
+        session.invalid.insert(local);
+    }
+    let unassigned =
+        purpose != ExpressionPurpose::Destination && check_read(session, local, node, purpose);
+    let expression = session.emit(
+        HirExpression::Local(local),
+        declaration.type_id,
+        session.span(node),
+    );
+    if unassigned {
+        report_unassigned(session, (expression, local), (node, purpose));
+    }
+    expression
+}
+
+fn named_reference(
+    session: &mut AnalysisSession<'_>,
+    (node, name): (usize, &str),
+    purpose: ExpressionPurpose,
+) -> Option<ExpressionId> {
+    if session.local(name).is_some() {
+        return None;
+    }
+    if purpose != ExpressionPurpose::Destination
+        && let Some(function) = session.functions.get(name).copied()
+    {
+        return Some(crate::function_values::reference(session, function, node));
+    }
+    let index = crate::constant_registry::find_in(session, Some(session.current), name)?;
+    Some(crate::constant_use::reference(
+        session, index, node, purpose,
+    ))
+}
+
+fn report_unassigned(
+    session: &mut AnalysisSession<'_>,
+    (expression, local): (ExpressionId, LocalId),
+    (node, purpose): (usize, ExpressionPurpose),
+) {
+    if purpose == ExpressionPurpose::Argument {
+        crate::definite_assignment_report::defer_argument(session, expression, local);
+    } else {
+        let span = session.span(node);
+        crate::definite_assignment_report::unassigned_read(session, local, span);
+    }
+}
+
+fn check_read(
+    session: &mut AnalysisSession<'_>,
+    local: LocalId,
+    node: usize,
+    purpose: ExpressionPurpose,
+) -> bool {
+    session.reads.insert(local);
+    let index = usize::try_from(local.0).unwrap_or(usize::MAX);
+    let Some(declaration) = session.module.locals.get(index) else {
+        return false;
+    };
+    let name = declaration.name.clone();
+    let kind = session.module.types.get(declaration.type_id);
+    if matches!(kind, Type::Task(_)) && !session.control.awaiting_task_handle {
+        session.report(DiagnosticCode::TaskHandleEscape, node);
+    }
+    if matches!(kind, Type::Array { .. })
+        && matches!(
+            purpose,
+            ExpressionPurpose::Value | ExpressionPurpose::Receiver
+        )
+    {
+        session.named_report(DiagnosticCode::ArrayCannotBeUsedAsValue, node, &name);
+        return false;
+    }
+    if purpose == ExpressionPurpose::Receiver && matches!(kind, Type::Record(_)) {
+        return false;
+    }
+    !session.initialized.get(index).copied().unwrap_or(false) && !session.invalid.contains(&local)
+}
+
+fn implicit(
+    session: &mut AnalysisSession<'_>,
+    node: usize,
+    name: &str,
+    purpose: ExpressionPurpose,
+) -> LocalId {
+    let field = session
+        .owner()
+        .is_some_and(|owner| crate::hierarchy::find_field(session, owner, name).is_some());
+    if field {
+        session.named_report(
+            DiagnosticCode::IdentifierMatchesFieldWithoutThis,
+            node,
+            name,
+        );
+    }
+    let kind = session.module.types.intern(Type::Error);
+    let identifier = LocalId(u32::try_from(session.module.locals.len()).unwrap_or(u32::MAX));
+    session.module.locals.push(HirLocal {
+        name: name.to_owned(),
+        type_id: kind,
+        passing: Passing::Value,
+        span: session.span(node),
+        scope: session.current,
+        parameter: false,
+        reassignable: false,
+    });
+    session.initialized.push(false);
+    session.bindings.insert(
+        name.to_owned(),
+        crate::block_scopes::BindingTarget::Local(identifier),
+    );
+    if !field && !crate::scope_bindings::outside(session, node, name) {
+        session.named_report(DiagnosticCode::UndeclaredVariable, node, name);
+    }
+    classify_implicit(session, identifier, purpose);
+    identifier
+}
+
+fn classify_implicit(
+    session: &mut AnalysisSession<'_>,
+    identifier: LocalId,
+    _purpose: ExpressionPurpose,
+) {
+    session.invalid.insert(identifier);
+}

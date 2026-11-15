@@ -1,0 +1,78 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { ROUTES, localizePath } from '@shared/i18n/routes';
+import { Icon } from '@shared/ui/icon';
+import { NODO_PLANS } from '@entities/nodo-plan/model/nodo-plans';
+import SectionHeading from '@widgets/section-heading/SectionHeading.astro';
+import NodoChat from '@widgets/nodo-preview/NodoChat.astro';
+import NodoGlyph from '@widgets/nodo-preview/NodoGlyph.astro';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+<section class="nodo-teaser pl-field">
+  <div class="pl-container nodo-teaser__grid">
+    <div class="nodo-teaser__text">
+      <span class="nodo-teaser__glyph">
+        <NodoGlyph size={56} />
+      </span>
+      <SectionHeading
+        tone="field"
+        overline={t('home.nodo.overline')}
+        title={t('home.nodo.title')}
+        lead={t('home.nodo.lead', { days: NODO_PLANS.trial.days })}
+      />
+      <a class="pl-btn pl-btn--on-field" href={localizePath(ROUTES.nodo, locale)}>
+        <span>{t('home.nodo.cta')}</span>
+        <Icon name="arrowRight" size={17} />
+      </a>
+    </div>
+    <NodoChat locale={locale} />
+  </div>
+</section>
+
+<style>
+  .nodo-teaser {
+    padding-top: 72px;
+    padding-bottom: 72px;
+    background: radial-gradient(50% 50% at 85% 50%, rgb(110 187 191 / 20%), transparent 70%), var(--pl-field);
+  }
+
+  .nodo-teaser__glyph {
+    display: inline-flex;
+    padding: var(--pl-space-sm);
+    border: 1px solid var(--pl-on-field-line-strong);
+    border-radius: 20px;
+    color: var(--pl-on-field-3);
+  }
+
+  .nodo-teaser__grid {
+    display: grid;
+    gap: var(--pl-space-2xl);
+  }
+
+  .nodo-teaser__text {
+    display: grid;
+    gap: var(--pl-space-xl);
+    align-content: center;
+    justify-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .nodo-teaser {
+      padding-top: 128px;
+      padding-bottom: 128px;
+    }
+
+    .nodo-teaser__grid {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+      gap: 80px;
+    }
+  }
+</style>

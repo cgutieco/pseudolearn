@@ -1,0 +1,21 @@
+<svg viewBox="0 0 340 220">
+  <text x="85" y="16" font-size="13" text-anchor="middle" fill="@tinta" font-weight="bold">{{codigo:Mientras}}</text>
+  <text x="255" y="16" font-size="13" text-anchor="middle" fill="@tinta" font-weight="bold">{{codigo:Repetir}}</text>
+  <line x1="170" y1="8" x2="170" y2="212" fill="none" stroke="@atenuado" stroke-width="1"/>
+  <polygon points="85,30 130,56 85,82 40,56" fill="@acento-estructurado" fill-opacity="0.12" stroke="@acento-estructurado"/>
+  <text x="85" y="61" font-size="12" text-anchor="middle" fill="@tinta">{{t:pregunta}}</text>
+  <flecha puntos="85,82 85,110"/>
+  <caja x="35" y="112" ancho="100" alto="40" rol="atenuado" fondo="0.06" tamano="12" texto="{{t:cuerpo}}"/>
+  <flecha puntos="35,132 14,132 14,56 38,56"/>
+  <flecha puntos="130,56 150,56 150,196"/>
+  <text x="85" y="186" font-size="12" text-anchor="middle" fill="@atenuado">{{t:ceroOMas}}</text>
+  <caja x="205" y="30" ancho="100" alto="40" rol="acento-procedimental" fondo="0.12" tamano="12" texto="{{t:cuerpo}}"/>
+  <flecha puntos="255,70 255,96"/>
+  <polygon points="255,98 300,124 255,150 210,124" fill="@acento-estructurado" fill-opacity="0.12" stroke="@acento-estructurado"/>
+  <text x="255" y="129" font-size="12" text-anchor="middle" fill="@tinta">{{t:pregunta}}</text>
+  <flecha puntos="210,124 188,124 188,50 203,50"/>
+  <text x="194" y="142" font-size="12" fill="@logico">{{codigo:Falso}}</text>
+  <flecha puntos="255,150 255,196"/>
+  <text x="262" y="176" font-size="12" fill="@logico">{{codigo:Verdadero}}</text>
+  <text x="255" y="212" font-size="12" text-anchor="middle" fill="@atenuado">{{t:unaOMas}}</text>
+</svg>

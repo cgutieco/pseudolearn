@@ -1,0 +1,84 @@
+import 'package:material_ui/material_ui.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'app_localization_delegates.dart';
+import '../application/agent/reply_link_policy.dart';
+import '../application/settings/settings_cubit.dart';
+import '../application/settings/settings_state.dart';
+import '../domain/model/settings/app_theme_mode.dart';
+import '../domain/model/settings/ui_language_id.dart';
+import '../presentation/agent/agent_credits_refresher.dart';
+import '../presentation/l10n/generated/app_localizations.dart';
+import '../presentation/routing/app_router.dart';
+import '../presentation/settings/account/local_account_data_refresher.dart';
+import '../presentation/shell/design_canvas.dart';
+import '../presentation/theme/app_theme.dart';
+import 'app_dependencies.dart';
+import 'app_providers.dart';
+import 'app_scope.dart';
+import '../application/agent/screen_context_board.dart';
+
+const Map<AppThemeMode, ThemeMode> _themeModes = {
+  AppThemeMode.system: ThemeMode.system,
+  AppThemeMode.light: ThemeMode.light, AppThemeMode.dark: ThemeMode.dark,
+};
+
+const Map<UiLanguageId, Locale?> _locales = {
+  UiLanguageId.system: null,
+  UiLanguageId.spanish: Locale('es'),
+  UiLanguageId.english: Locale('en'),
+};
+
+final class CubitScope extends StatelessWidget {
+  final AppDependencies dependencies;
+  final GoRouter router;
+
+  CubitScope({
+    super.key,
+    required this.dependencies,
+    GoRouter? router,
+  }) : router = router ?? buildAppRouter();
+
+  @override
+  Widget build(BuildContext context) {
+    final scope = AppScope.withRouter(() => router);
+    return RepositoryProvider<ScreenContextBoard>.value(
+      value: scope.board,
+      child: RepositoryProvider<ReplyLinkOpener>.value(
+        value: ReplyLinkOpener(dependencies.agent.externalLinks),
+        child: MultiBlocProvider(
+          providers: buildAppProviders(dependencies, scope: scope),
+          child: LocalAccountDataRefresher(child: AgentCreditsRefresher(child: _CubitScopeApp(router: router))),
+        ),
+      ),
+    );
+  }
+}
+
+final class _CubitScopeApp extends StatelessWidget {
+  final GoRouter router;
+
+  const _CubitScopeApp({required this.router});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      buildWhen: (prev, curr) => prev.themeMode != curr.themeMode || prev.language != curr.language,
+      builder: (context, state) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
+          theme: AppTheme.light(),
+          darkTheme: AppTheme.dark(),
+          themeMode: _themeModes[state.themeMode] ?? ThemeMode.system,
+          locale: _locales[state.language],
+          scrollBehavior: const AppScrollBehavior(),
+          localizationsDelegates: appLocalizationDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routerConfig: router,
+          builder: (context, child) => DesignCanvas(child: child ?? const SizedBox.shrink()),
+        );
+      },
+    );
+  }
+}

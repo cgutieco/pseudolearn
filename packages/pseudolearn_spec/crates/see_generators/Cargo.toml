@@ -1,0 +1,15 @@
+[package]
+name = "see_generators"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+see_model = { version = "0.1.0", path = "../see_model" }
+see_translation = { version = "0.1.0", path = "../see_translation" }
+
+[dev-dependencies]
+serde_json = "1"

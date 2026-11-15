@@ -1,0 +1,245 @@
+use pseudolearn_lexicon::Profile;
+use pseudolearn_service::{FormatOptions, format_checked, format_source};
+
+#[test]
+fn formats_canonical_spanish() {
+    let unformatted =
+        "algoritmo Principal\ndefinir x como entero<-0;\nx<-1+2;\nescribir x;\nfinalgoritmo";
+    let options = FormatOptions {
+        profile: Profile::Spanish,
+        indent_size: 2,
+    };
+    let formatted = format_source(unformatted, options);
+    assert_eq!(
+        formatted,
+        "Algoritmo Principal\n  Definir x Como Entero <- 0;\n  x <- 1 + 2;\n  Escribir x;\nFinAlgoritmo\n"
+    );
+}
+
+#[test]
+fn formats_spanish_with_required_terminators() {
+    let unformatted = "Algoritmo Canonico\n  x := 1;\n  w <- 2;\nFinAlgoritmo\n";
+    let options = FormatOptions {
+        profile: Profile::Spanish,
+        indent_size: 2,
+    };
+    let formatted = format_source(unformatted, options);
+    assert_eq!(
+        formatted,
+        "Algoritmo Canonico\n  x <- 1;\n  w <- 2;\nFinAlgoritmo\n"
+    );
+}
+
+#[test]
+fn preserves_comments_and_normalizes_empty_lines() {
+    let unformatted = "// cabecera\n\n\nAlgoritmo Comentarios\n// comentario interior\n\n\nx <- 1; // fin de linea\nFinAlgoritmo\n";
+    let options = FormatOptions {
+        profile: Profile::Spanish,
+        indent_size: 2,
+    };
+    let formatted = format_source(unformatted, options);
+    assert_eq!(
+        formatted,
+        "// cabecera\nAlgoritmo Comentarios\n  // comentario interior\n  x <- 1;  // fin de linea\nFinAlgoritmo\n"
+    );
+}
+
+#[test]
+fn formats_english() {
+    let unformatted = "algorithm Main\ndefine x as integer <- 0;\nwrite x;\nendalgorithm";
+    let options = FormatOptions {
+        profile: Profile::English,
+        indent_size: 2,
+    };
+    let formatted = format_source(unformatted, options);
+    assert_eq!(
+        formatted,
+        "Algorithm Main\n  Define x As Integer <- 0;\n  Write x;\nEndAlgorithm\n"
+    );
+}
+
+#[test]
+fn is_idempotent_on_formatted_source() {
+    let source = "Algoritmo Idempotente\n  Definir valor Como Entero <- 0;\n  valor <- 10;\n  Escribir valor;\nFinAlgoritmo\n";
+    let options = FormatOptions {
+        profile: Profile::Spanish,
+        indent_size: 2,
+    };
+    let first = format_source(source, options);
+    let second = format_source(&first, options);
+    assert_eq!(first, second);
+}
+
+fn spanish() -> FormatOptions {
+    FormatOptions {
+        profile: Profile::Spanish,
+        indent_size: 2,
+    }
+}
+
+fn english() -> FormatOptions {
+    FormatOptions {
+        profile: Profile::English,
+        indent_size: 2,
+    }
+}
+
+#[test]
+fn indents_conditionals_loops_and_switch_cases() {
+    let source = "Algoritmo Estructuras
+Definir n Como Entero<-0;
+n<-3;
+Si n>2 Entonces
+Escribir n;
+Sino
+Escribir 0;
+FinSi
+Mientras n>0 Hacer
+n<-n-1;
+FinMientras
+Segun n Hacer
+1: Escribir 1;
+De Otro Modo:
+Escribir 2;
+FinSegun
+FinAlgoritmo
+";
+    let expected = "Algoritmo Estructuras\n  Definir n Como Entero <- 0;\n  n <- 3;\n  Si n > 2 Entonces\n    Escribir n;\n  Sino\n    Escribir 0;\n  FinSi\n  Mientras n > 0 Hacer\n    n <- n - 1;\n  FinMientras\n  Segun n Hacer\n    1: Escribir 1;\n    De Otro Modo:\n      Escribir 2;\n  FinSegun\nFinAlgoritmo\n";
+    assert_eq!(format_source(source, spanish()), expected);
+}
+
+#[test]
+fn separates_top_level_units_with_one_blank_line() {
+    let source = "SubProceso Uno()\nFinSubProceso\n\n\n\nAlgoritmo Dos\nFinAlgoritmo\n";
+    assert_eq!(
+        format_source(source, spanish()),
+        "SubProceso Uno()\nFinSubProceso\n\nAlgoritmo Dos\nFinAlgoritmo\n"
+    );
+    let glued = "SubProceso Uno()\nFinSubProceso\nAlgoritmo Dos\nFinAlgoritmo\n";
+    assert_eq!(
+        format_source(glued, spanish()),
+        "SubProceso Uno()\nFinSubProceso\n\nAlgoritmo Dos\nFinAlgoritmo\n"
+    );
+}
+
+#[test]
+fn spaces_unary_minus_calls_and_indexing_consistently() {
+    let source = "Algoritmo Operadores\nDefinir a Como Entero<-0;\na<- -3 +  2*( 4-1 );\nEscribir  Longitud ( \"hola\" ) ,a;\nFinAlgoritmo\n";
+    assert_eq!(
+        format_source(source, spanish()),
+        "Algoritmo Operadores\n  Definir a Como Entero <- 0;\n  a <- -3 + 2 * (4 - 1);\n  Escribir Longitud(\"hola\"), a;\nFinAlgoritmo\n"
+    );
+}
+
+#[test]
+fn keeps_block_comments_and_multiline_block_comment_bodies() {
+    let source = "/* cabecera\n   larga */\nAlgoritmo A\n/* nota */ Escribir 1;\nFinAlgoritmo\n";
+    assert_eq!(
+        format_source(source, spanish()),
+        "/* cabecera\n   larga */\nAlgoritmo A\n  /* nota */ Escribir 1;\nFinAlgoritmo\n"
+    );
+}
+
+#[test]
+fn canonicalizes_unshadowed_builtins_but_keeps_shadowed_names() {
+    let source = "Algoritmo A\nDefinir r Como Real<-0.0;\nr <- RAIZ(4.0);\nFinAlgoritmo\n";
+    assert_eq!(
+        format_source(source, spanish()),
+        "Algoritmo A\n  Definir r Como Real <- 0.0;\n  r <- rc(4.0);\nFinAlgoritmo\n"
+    );
+    let shadowed = "Algoritmo A\nDefinir rc Como Real<-0.0;\nrc <- 1.0;\nFinAlgoritmo\n";
+    assert_eq!(
+        format_source(shadowed, spanish()),
+        "Algoritmo A\n  Definir rc Como Real <- 0.0;\n  rc <- 1.0;\nFinAlgoritmo\n"
+    );
+}
+
+#[test]
+fn formats_classes_with_members() {
+    let source = "Clase Punto\nDefinir x Como Entero;\nMetodo Mover()\nx<-x+1;\nFinMetodo\nFinClase\nAlgoritmo A\nFinAlgoritmo\n";
+    assert_eq!(
+        format_source(source, spanish()),
+        "Clase Punto\n  Definir x Como Entero;\n  Metodo Mover()\n    x <- x + 1;\n  FinMetodo\nFinClase\n\nAlgoritmo A\nFinAlgoritmo\n"
+    );
+}
+
+#[test]
+fn returns_the_original_text_when_syntax_errors_exist() {
+    let broken = "Algoritmo A\n  Si x >\nFinAlgoritmo\n";
+    assert_eq!(format_checked(broken, spanish()), None);
+    assert_eq!(format_source(broken, spanish()), broken);
+}
+
+#[test]
+fn handles_empty_and_whitespace_only_input() {
+    assert_eq!(format_source("", spanish()), "");
+    assert_eq!(format_source("   \n\n  \n", spanish()), "");
+}
+
+#[test]
+fn normalizes_crlf_and_trailing_blank_lines() {
+    let source = "Algoritmo A\r\n  Escribir 1;\r\nFinAlgoritmo\r\n\r\n\r\n";
+    assert_eq!(
+        format_source(source, spanish()),
+        "Algoritmo A\n  Escribir 1;\nFinAlgoritmo\n"
+    );
+}
+
+#[test]
+fn preserves_required_statement_terminators() {
+    let source = "Algoritmo A\n  Escribir 1;\nFinAlgoritmo\n";
+    assert_eq!(format_source(source, spanish()), source);
+    assert_eq!(format_source(source, spanish()), source);
+}
+
+#[test]
+fn formats_english_control_flow() {
+    let source = "algorithm A\nif 1<2 then\nprint 1;\nelse\nwrite 2;\nendif\nendalgorithm\n";
+    assert_eq!(
+        format_source(source, english()),
+        "Algorithm A\n  If 1 < 2 Then\n    Write 1;\n  Else\n    Write 2;\n  EndIf\nEndAlgorithm\n"
+    );
+}
+
+#[test]
+fn keeps_member_keywords_in_their_canonical_lexeme() {
+    let english = "algorithm P\ndefine r as result<JsonValue, JsonError> <- parseJson('1');\nswitch r do\nsuccess(document): write 1;\nfailure(problem): write problem.code;\nendSwitch\nendAlgorithm\n";
+    let formatted = format_source(
+        english,
+        FormatOptions {
+            profile: Profile::English,
+            indent_size: 2,
+        },
+    );
+    assert!(formatted.contains("problem.code;"), "{formatted}");
+}
+
+#[test]
+fn capitalizes_keyword_at_statement_start_not_after_a_dot() {
+    let source = "algorithm P\nwrite 1;\nendAlgorithm\n";
+    let formatted = format_source(
+        source,
+        FormatOptions {
+            profile: Profile::English,
+            indent_size: 2,
+        },
+    );
+    assert!(formatted.contains("Write 1;"), "{formatted}");
+}
+
+#[test]
+fn spells_function_and_operation_aliases_canonically() {
+    let unformatted =
+        "Algoritmo P\nEscribir Mayusculas(\"a\"), ConvertirANumero(\"1\");\nFinAlgoritmo\n";
+    assert_eq!(
+        format_source(unformatted, spanish()),
+        "Algoritmo P\n  Escribir AMayusculas(\"a\"), AReal(\"1\");\nFinAlgoritmo\n"
+    );
+}
+
+#[test]
+fn keeps_a_user_subprogram_named_like_an_operation_alias() {
+    let unformatted =
+        "SubProceso Minusculas()\nFinSubProceso\nAlgoritmo P\nMinusculas();\nFinAlgoritmo\n";
+    assert!(format_source(unformatted, spanish()).contains("\n  Minusculas();\n"));
+}

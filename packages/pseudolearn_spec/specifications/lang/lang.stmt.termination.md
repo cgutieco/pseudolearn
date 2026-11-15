@@ -1,0 +1,142 @@
+---
+{
+  "formato": "see/1",
+  "id": "LANG.STMT.TERMINATION",
+  "titulo": "Terminación de sentencias",
+  "dominio": "lenguaje",
+  "estado": "estable",
+  "version": "1.0.0",
+  "duenos": [
+    "responsable-lenguaje"
+  ],
+  "revisado_por": [
+    "César Antonio Gutiérrez Contreras"
+  ],
+  "sujetos": [
+    "engine",
+    "aot"
+  ],
+  "resumen": "Terminación de sentencias.",
+  "edicion": {
+    "introducida_en": "2027"
+  },
+  "depende_de": [
+    {
+      "id": "LANG.LEXICAL.WHITESPACE",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "requiere"
+    }
+  ]
+}
+---
+
+# Terminación de sentencias
+
+```regla
+{
+  "id": "R1",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Las sentencias simples terminan obligatoriamente con punto y coma, incluso antes del cierre del bloque. Aperturas y cierres de bloques no lo exigen. Llamadas y retornos son simples. Líneas vacías no producen sentencias. Se admiten varias sentencias en una línea separadas por punto y coma.",
+  "verificacion": [
+    "C1",
+    "C2",
+    "C3",
+    "C4"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C1",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir 1; Escribir 2;\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite 1; write 2;\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "1\n2\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C2",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir 1\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite 1\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "missingStatementTerminator",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\n\n\nEscribir 1\nFinAlgoritmo\n",
+    "en": "algorithm P\n\n\nwrite 1\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "terminacion": "failed",
+    "diagnosticos": [
+      {
+        "codigo": "missingStatementTerminator",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo Pasos\n  Definir total Como Entero;\n  total <- 2 + 3;\n  Escribir \"Total:\"; Escribir total;\nFinAlgoritmo\n",
+    "en": "Algorithm Steps\n  Define total As Integer;\n  total <- 2 + 3;\n  Write \"Total:\"; Write total;\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "Total:\n5\n",
+    "terminacion": "completed"
+  }
+}
+```

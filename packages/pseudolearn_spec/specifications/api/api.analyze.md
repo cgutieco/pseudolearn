@@ -1,0 +1,369 @@
+---
+{
+  "formato": "see/1",
+  "id": "API.ANALYZE",
+  "titulo": "Análisis",
+  "dominio": "motor",
+  "estado": "estable",
+  "version": "1.0.0",
+  "duenos": [
+    "responsable-motor"
+  ],
+  "sujetos": [
+    "engine",
+    "app"
+  ],
+  "resumen": "Texto y vocabulario producen tokens, diagnósticos ordenados y un esquema.",
+  "depende_de": [
+    {
+      "id": "API.MODEL",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "DIAG.ORDERING",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    },
+    {
+      "id": "LANG.PROFILE.MODEL",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    }
+  ],
+  "titulo_en": "Analysis",
+  "revisado_por": [
+    "César Antonio Gutiérrez Contreras"
+  ]
+}
+---
+
+# Análisis
+
+```regla
+{
+  "id": "R1",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Analizar recibe texto y vocabulario explícito, y devuelve los diagnósticos en el orden de DIAG.ORDERING, la presencia del árbol y todos los tokens léxicos en orden de fuente con su identidad y tramo. La respuesta conserva comentarios y caracteres Unicode sin normalizar, incluso si el análisis encuentra errores. El vocabulario no se deduce en la API.",
+  "verificacion": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C1",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos_ordenados": [
+      {
+        "codigo": "unrecognizedCharacter",
+        "severidad": "error",
+        "clase": "lexical",
+        "argumentos": {
+          "lexeme": "@"
+        }
+      },
+      {
+        "codigo": "unrecognizedCharacter",
+        "severidad": "error",
+        "clase": "lexical",
+        "argumentos": {
+          "lexeme": "$"
+        }
+      }
+    ]
+  },
+  "programa": "Algoritmo P\nEscribir @;\nEscribir $;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C2",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": []
+  },
+  "programa": "Algoritmo P\nEscribir 1;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "tokens_include": [
+      {
+        "kind": "keyword",
+        "keyword": "algorithm"
+      },
+      {
+        "kind": "comment",
+        "span": {
+          "start": {
+            "line": 2,
+            "column": 1
+          },
+          "end": {
+            "line": 2,
+            "column": 5
+          }
+        }
+      },
+      {
+        "kind": "keyword",
+        "keyword": "integerType"
+      },
+      {
+        "kind": "operator",
+        "span": {
+          "start": {
+            "line": 3,
+            "column": 23
+          },
+          "end": {
+            "line": 3,
+            "column": 25
+          }
+        }
+      },
+      {
+        "kind": "integer_literal",
+        "span": {
+          "start": {
+            "line": 3,
+            "column": 26
+          },
+          "end": {
+            "line": 3,
+            "column": 27
+          }
+        }
+      },
+      {
+        "kind": "punctuation",
+        "span": {
+          "start": {
+            "line": 3,
+            "column": 27
+          },
+          "end": {
+            "line": 3,
+            "column": 28
+          }
+        }
+      }
+    ]
+  },
+  "programa": "Algoritmo P\n// ñ\nDefinir n Como Entero <- 4;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "tokens_include": [
+      {
+        "kind": "comment",
+        "span": {
+          "start": {
+            "line": 2,
+            "column": 1
+          },
+          "end": {
+            "line": 2,
+            "column": 5
+          }
+        }
+      },
+      {
+        "kind": "invalid_character",
+        "span": {
+          "start": {
+            "line": 4,
+            "column": 1
+          },
+          "end": {
+            "line": 4,
+            "column": 2
+          }
+        }
+      }
+    ]
+  },
+  "programa": "Algoritmo P\n// ñ\nFinAlgoritmo\n@\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [],
+    "tokens_include": [
+      {
+        "kind": "identifier",
+        "span": {
+          "start": {
+            "line": 2,
+            "column": 9
+          },
+          "end": {
+            "line": 2,
+            "column": 12
+          }
+        }
+      },
+      {
+        "kind": "identifier",
+        "span": {
+          "start": {
+            "line": 3,
+            "column": 1
+          },
+          "end": {
+            "line": 3,
+            "column": 5
+          }
+        }
+      }
+    ]
+  },
+  "programa": "Algoritmo P\nDefinir año Como Entero <- 0;\naño <- 5;\nEscribir año;\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "sujetos": [
+    "engine",
+    "app"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "expectedAlgorithmStart",
+        "severidad": "error"
+      }
+    ]
+  },
+  "programa": "",
+  "perfil_base": "es",
+  "sujetos": [
+    "engine",
+    "app"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R1",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "moduleSyntaxOutsideProject",
+        "severidad": "error"
+      },
+      {
+        "codigo": "expectedAlgorithmStart",
+        "severidad": "error"
+      }
+    ]
+  },
+  "programa": "Publico SubProceso Doble(n Como Entero) Como Entero\nRetornar n * 2;\nFinSubProceso\n",
+  "perfil_base": "es",
+  "sujetos": [
+    "engine",
+    "app"
+  ]
+}
+```
+
+```regla
+{
+  "id": "R2",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "El resultado incluye un esquema con las unidades de nivel superior (algoritmo, subprogramas y clases) con su nombre y tramo, en orden de aparición, también cuando hay errores recuperables.",
+  "verificacion": [
+    "P1"
+  ]
+}
+```
+
+```propiedad
+{
+  "id": "P1",
+  "regla": "R2",
+  "generador": {
+    "programas": "programas del corpus con y sin errores"
+  },
+  "propiedad": "El esquema lista cada unidad de nivel superior una vez en orden de aparición.",
+  "oraculo": "Recorrido del texto por unidades.",
+  "justificacion": "La ejecuta el sujeto engine en R4."
+}
+```

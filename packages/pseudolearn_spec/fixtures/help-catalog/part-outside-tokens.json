@@ -1,0 +1,11 @@
+{
+  "violation": "part whose identity is not a card token",
+  "expect": "part outside its tokens",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/content/es/parts/0/identity",
+      "value": "ghost"
+    }
+  ]
+}

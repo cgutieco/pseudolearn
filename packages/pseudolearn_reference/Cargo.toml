@@ -1,0 +1,31 @@
+[workspace]
+members = [
+    "crates/reference_model",
+    "crates/reference_format",
+    "crates/reference_corpus",
+    "crates/reference_engine",
+    "crates/reference_figures",
+    "crates/reference_resolve",
+    "crates/route_resolve",
+    "crates/reference_verify",
+    "crates/reference_export",
+    "crates/reference_cli",
+    "xtask",
+]
+resolver = "3"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+unimplemented = "deny"
+unreachable = "deny"
+indexing_slicing = "deny"
+arithmetic_side_effects = "deny"
+as_conversions = "deny"
+too_many_arguments = "deny"
+too_many_lines = "deny"

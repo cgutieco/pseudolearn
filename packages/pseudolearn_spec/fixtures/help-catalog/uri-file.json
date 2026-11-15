@@ -1,0 +1,11 @@
+{
+  "violation": "file URI in editorial text",
+  "expect": "active URI",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/content/es/summary",
+      "value": "Lee file:///etc/passwd ahora"
+    }
+  ]
+}

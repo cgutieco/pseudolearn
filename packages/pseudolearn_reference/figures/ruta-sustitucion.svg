@@ -1,0 +1,20 @@
+<svg viewBox="0 0 340 190">
+  <g data-paso="1">
+    <text x="10" y="24" font-size="12" font-family="mono" fill="@tinta">{{codigo:ConDescuento(Linea(3, 3) + Linea(5, 2))}}</text>
+  </g>
+  <g data-paso="2">
+    <text x="10" y="52" font-size="12" font-family="mono" fill="@tinta">{{codigo:ConDescuento(9 + 10)}}</text>
+  </g>
+  <g data-paso="3">
+    <text x="10" y="80" font-size="12" font-family="mono" fill="@tinta">{{codigo:ConDescuento(19)}}</text>
+  </g>
+  <g data-paso="4">
+    <text x="10" y="108" font-size="12" font-family="mono" fill="@tinta">{{codigo:19 - 19 div 10}}</text>
+  </g>
+  <g data-paso="5">
+    <text x="10" y="136" font-size="12" font-family="mono" fill="@tinta">{{codigo:19 - 1}}</text>
+  </g>
+  <g data-paso="6">
+    <text x="10" y="164" font-size="12" font-family="mono" fill="@exito">{{codigo:18}}</text>
+  </g>
+</svg>

@@ -1,0 +1,81 @@
+---
+import type { Locale } from '@shared/i18n/locales';
+import { shotPicture, type ShotLayout, type ShotScene } from './shot-sources';
+
+export interface Props {
+  locale: Locale;
+  scene: ShotScene;
+  alt: string;
+  layout?: ShotLayout;
+  class?: string;
+}
+
+const { locale, scene, alt, layout = 'responsive', class: className } = Astro.props;
+const picture = await shotPicture(locale, scene, layout);
+---
+
+<picture class:list={['product-shot', `product-shot--${layout}`, className]} data-product-preview>
+  {picture.sources.map((source) => (
+    <source
+      type={`image/${source.format}`}
+      media={source.media}
+      data-query={source.query}
+      data-scheme={source.scheme}
+      srcset={source.srcSet}
+      sizes={source.sizes}
+    />
+  ))}
+  <img
+    src={picture.fallback}
+    width={picture.width}
+    height={picture.height}
+    alt={alt}
+    loading="lazy"
+    decoding="async"
+  />
+</picture>
+
+<style>
+  .product-shot {
+    display: block;
+    overflow: hidden;
+    background: var(--pl-surface);
+  }
+
+  .product-shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .product-shot--responsive {
+    max-width: 390px;
+    margin-inline: auto;
+    border: 1px solid var(--pl-line);
+    border-radius: 28px;
+    box-shadow: var(--pl-shadow-3);
+  }
+
+  .product-shot--phone {
+    width: min(100%, 300px);
+    margin-inline: auto;
+    border: 9px solid var(--pl-field-deep);
+    border-radius: 38px;
+    box-shadow:
+      0 0 0 1px var(--pl-on-field-line),
+      var(--pl-shadow-3);
+  }
+
+  @media (min-width: 900px) {
+    .product-shot--responsive {
+      max-width: none;
+      border-radius: var(--pl-radius-card);
+    }
+  }
+</style>
+
+<script>
+  import { syncProductPictures } from './theme-sources';
+
+  syncProductPictures();
+</script>

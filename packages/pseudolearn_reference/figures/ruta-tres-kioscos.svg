@@ -1,0 +1,16 @@
+<svg viewBox="0 0 340 170">
+  <g data-paso="1" data-hasta="1">
+    <caja x="20" y="30" ancho="300" alto="90" rol="acento-estructurado" fondo="0.12" texto="{{t:imp-1}}¶{{t:imp-2}}¶{{t:imp-3}}" tamano="12" fuente="mono"/>
+    <text x="170" y="150" font-size="12" text-anchor="middle" fill="@atenuado">{{t:imperativa}}</text>
+  </g>
+  <g data-paso="2" data-hasta="2">
+    <caja x="20" y="30" ancho="140" alto="90" rol="acento-objetos" fondo="0.14" texto="{{t:caja}}¶{{t:obj-1}}¶{{t:obj-2}}" tamano="12"/>
+    <caja x="190" y="50" ancho="130" alto="50" rol="acento-objetos" fondo="0.08" texto="{{t:principal}}¶{{t:obj-3}}" tamano="12"/>
+    <flecha puntos="190,75 164,75" rol="acento-objetos"/>
+    <text x="170" y="150" font-size="12" text-anchor="middle" fill="@atenuado">{{t:objetos}}</text>
+  </g>
+  <g data-paso="3">
+    <caja x="20" y="30" ancho="300" alto="90" rol="exito" fondo="0.12" texto="{{t:fun-1}}¶{{t:fun-2}}" tamano="12" fuente="mono"/>
+    <text x="170" y="150" font-size="12" text-anchor="middle" fill="@atenuado">{{t:funcional}}</text>
+  </g>
+</svg>

@@ -1,0 +1,19 @@
+<svg viewBox="0 0 340 170">
+  <g data-paso="1" data-hasta="1">
+    <caja x="10" y="40" ancho="130" alto="50" rol="acento-procedimental" fondo="0.16" texto="{{codigo:CrearDescuento(20)}}" tamano="12" fuente="mono"/>
+    <flecha puntos="140,65 190,65" rol="tinta"/>
+    <caja x="194" y="30" ancho="130" alto="70" rol="exito" fondo="0.14" texto="{{t:funcion}}" tamano="12"/>
+    <rect x="290" y="70" width="30" height="24" rx="5" fill="@numero" fill-opacity="0.3"/>
+    <text x="305" y="87" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">20</text>
+    <text x="170" y="130" font-size="12" text-anchor="middle" fill="@atenuado">{{t:paso-1}}</text>
+  </g>
+  <g data-paso="2">
+    <text x="40" y="70" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">50</text>
+    <flecha puntos="60,66 190,66" rol="tinta"/>
+    <caja x="194" y="30" ancho="130" alto="70" rol="exito" fondo="0.14" texto="{{t:funcion}}" tamano="12"/>
+    <rect x="290" y="70" width="30" height="24" rx="5" fill="@numero" fill-opacity="0.3"/>
+    <text x="305" y="87" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">20</text>
+    <text x="259" y="120" font-size="12" text-anchor="middle" font-family="mono" fill="@exito">40</text>
+    <text x="170" y="150" font-size="12" text-anchor="middle" fill="@atenuado">{{t:paso-2}}</text>
+  </g>
+</svg>

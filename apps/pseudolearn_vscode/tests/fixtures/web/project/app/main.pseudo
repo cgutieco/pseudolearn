@@ -1,0 +1,5 @@
+Importar geo.vectores.Doble;
+Algoritmo Principal
+Definir numero Como Entero <- 21;
+Escribir Doble(numero);
+FinAlgoritmo

@@ -1,0 +1,13 @@
+[package]
+name = "reference_engine"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+reference_model = { path = "../reference_model", version = "=0.1.0" }
+pseudolearn_api = { path = "../../../pseudolearn_engine/crates/pseudolearn_api", version = "=0.1.0", features = ["test-host"] }
+serde_json = "1"

@@ -1,0 +1,22 @@
+<svg viewBox="0 0 340 120">
+  <caja x="10" y="20" ancho="28" alto="34" rol="texto" fondo="0.24" fuente="mono" texto="{{t:c0}}"/>
+  <caja x="40" y="20" ancho="28" alto="34" rol="texto" fondo="0.24" fuente="mono" texto="{{t:c1}}"/>
+  <caja x="70" y="20" ancho="28" alto="34" rol="texto" fondo="0.24" fuente="mono" texto="{{t:c2}}"/>
+  <caja x="100" y="20" ancho="28" alto="34" rol="texto" fondo="0.24" fuente="mono" texto="{{t:c3}}"/>
+  <caja x="130" y="20" ancho="28" alto="34" rol="atenuado" fondo="0.06" fuente="mono" texto=","/>
+  <caja x="160" y="20" ancho="28" alto="34" rol="atenuado" fondo="0.06" fuente="mono" texto=""/>
+  <caja x="190" y="20" ancho="28" alto="34" rol="atenuado" fondo="0.06" fuente="mono" texto="{{t:c6}}"/>
+  <caja x="220" y="20" ancho="28" alto="34" rol="atenuado" fondo="0.06" fuente="mono" texto="{{t:c7}}"/>
+  <caja x="250" y="20" ancho="28" alto="34" rol="atenuado" fondo="0.06" fuente="mono" texto="{{t:c8}}"/>
+  <caja x="280" y="20" ancho="28" alto="34" rol="atenuado" fondo="0.06" fuente="mono" texto="{{t:c9}}"/>
+  <caja x="310" y="20" ancho="28" alto="34" rol="atenuado" fondo="0.06" fuente="mono" texto="{{t:c10}}"/>
+  <text x="24" y="70" font-size="12" text-anchor="middle" fill="@numero">0</text>
+  <text x="54" y="70" font-size="12" text-anchor="middle" fill="@numero">1</text>
+  <text x="84" y="70" font-size="12" text-anchor="middle" fill="@numero">2</text>
+  <text x="114" y="70" font-size="12" text-anchor="middle" fill="@numero">3</text>
+  <text x="144" y="70" font-size="12" text-anchor="middle" fill="@numero">4</text>
+  <text x="324" y="70" font-size="12" text-anchor="middle" fill="@numero">10</text>
+  <path d="M 10 80 V 88 H 128 V 80" fill="none" stroke="@texto" stroke-width="2"/>
+  <text x="69" y="106" font-size="12" text-anchor="middle" font-family="mono" fill="@texto">{{codigo:Subcadena(t, 0, 3)}}</text>
+  <text x="250" y="106" font-size="12" text-anchor="middle" fill="@atenuado">{{codigo:Longitud(t) = 11}}</text>
+</svg>

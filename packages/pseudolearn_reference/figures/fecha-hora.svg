@@ -1,0 +1,8 @@
+<svg viewBox="0 0 340 170">
+  <caja x="10" y="14" ancho="150" alto="44" rol="numero" fondo="0.12" tamano="12" texto="{{t:instante}}"/>
+  <caja x="180" y="14" ancho="150" alto="44" rol="numero" fondo="0.12" tamano="12" texto="{{t:desplazamiento}}"/>
+  <flecha puntos="85,60 150,90" rol="tipo"/>
+  <flecha puntos="255,60 190,90" rol="tipo"/>
+  <caja x="80" y="92" ancho="180" alto="34" rol="tipo" fondo="0.16" tamano="12" texto="{{t:local}}"/>
+  <text x="170" y="150" font-size="12" text-anchor="middle" font-family="mono" fill="@tinta">{{t:iso}}</text>
+</svg>

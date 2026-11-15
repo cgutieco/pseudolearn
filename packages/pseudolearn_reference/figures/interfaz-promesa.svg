@@ -1,0 +1,9 @@
+<svg viewBox="0 0 340 190">
+  <caja x="110" y="8" ancho="120" alto="50" rol="acento-objetos" discontinua="" fondo="0.06" fuente="mono" tamano="12" texto="{{codigo:Interfaz Figura}}¶{{codigo:Area()}}"/>
+  <caja x="14" y="100" ancho="120" alto="40" rol="acento-objetos" fondo="0.16" fuente="mono" tamano="12" texto="{{codigo:Cuadrado}}"/>
+  <caja x="206" y="100" ancho="120" alto="40" rol="acento-objetos" fondo="0.16" fuente="mono" tamano="12" texto="{{codigo:Circulo}}"/>
+  <flecha puntos="74,98 140,62" rol="acento-objetos" discontinua=""/>
+  <flecha puntos="266,98 200,62" rol="acento-objetos" discontinua=""/>
+  <text x="170" y="86" font-size="12" text-anchor="middle" fill="@acento-objetos">{{codigo:Realiza}}</text>
+  <caja x="90" y="152" ancho="160" alto="32" rol="acento-procedimental" fondo="0.12" fuente="mono" tamano="12" texto="{{codigo:Describir&lt;T: Figura&gt;}}"/>
+</svg>

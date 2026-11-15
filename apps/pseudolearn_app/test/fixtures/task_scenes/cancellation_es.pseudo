@@ -1,0 +1,20 @@
+SubProceso Suspendible Wait()
+Diferir
+Escribir "cleanup";
+FinDiferir
+Escribir "before";
+Descartar Aguardar SolicitarTemporizador();
+FinSubProceso
+SubProceso Suspendible Parent()
+Diferir
+Escribir "parent-cleanup";
+FinDiferir
+Tareas
+Lanzar Wait();
+FinTareas
+FinSubProceso
+Algoritmo Cancelacion
+Tareas
+Lanzar Parent();
+FinTareas
+FinAlgoritmo

@@ -1,0 +1,10 @@
+{
+  "violation": "second card with the same identity",
+  "expect": "duplicate",
+  "edits": [
+    {
+      "op": "duplicate",
+      "path": "/cards/0"
+    }
+  ]
+}

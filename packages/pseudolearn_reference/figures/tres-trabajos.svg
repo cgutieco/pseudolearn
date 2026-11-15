@@ -1,0 +1,18 @@
+<svg viewBox="0 0 340 330">
+  <caja x="90" y="6" ancho="160" alto="40" rol="texto" fondo="0.10" texto="{{t:programa}}"/>
+  <flecha puntos="120,46 56,90"/>
+  <flecha puntos="170,46 170,90"/>
+  <flecha puntos="220,46 284,90"/>
+  <caja x="4" y="90" ancho="104" alto="44" rol="acento-estructurado" fondo="0.12" negrita="" texto="{{t:analizar}}"/>
+  <caja x="118" y="90" ancho="104" alto="44" rol="tipo" fondo="0.14" negrita="" texto="{{t:ejecutar}}"/>
+  <caja x="232" y="90" ancho="104" alto="44" rol="acento-objetos" fondo="0.12" negrita="" texto="{{t:observar}}"/>
+  <flecha puntos="56,134 56,168"/>
+  <flecha puntos="170,134 170,168"/>
+  <flecha puntos="284,134 284,168"/>
+  <caja x="4" y="168" ancho="104" alto="96" rol="atenuado" fondo="0.06" tamano="12" texto="{{t:a1}}¶{{t:a2}}¶{{t:a3}}"/>
+  <caja x="118" y="168" ancho="104" alto="96" rol="atenuado" fondo="0.06" tamano="12" texto="{{t:e1}}¶{{t:e2}}¶{{t:e3}}"/>
+  <caja x="232" y="168" ancho="104" alto="96" rol="atenuado" fondo="0.06" tamano="12" texto="{{t:o1}}¶{{t:o2}}¶{{t:o3}}"/>
+  <text x="56" y="292" font-size="12" text-anchor="middle" fill="@atenuado">{{t:sin-ejecutar}}</text>
+  <path d="M 118 300 H 336" fill="none" stroke="@exito" stroke-width="2"/>
+  <text x="227" y="320" font-size="12" text-anchor="middle" fill="@exito">{{t:recorren}}</text>
+</svg>

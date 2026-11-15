@@ -1,0 +1,133 @@
+---
+export interface Props {
+  overline: string;
+  title: string;
+  lead: string;
+  note?: string;
+  ceremony?: boolean;
+  compact?: boolean;
+}
+
+const { overline, title, lead, note, ceremony = false, compact = false } = Astro.props;
+---
+
+<section
+  class:list={[
+    'story-hero',
+    'pl-field',
+    { 'story-hero--ceremony': ceremony, 'story-hero--compact': compact },
+  ]}
+  aria-labelledby="hero-title"
+>
+  <div class="pl-container story-hero__inner">
+    <div class="story-hero__visual">
+      <slot name="visual" />
+    </div>
+    <p class="pl-overline pl-overline--field">{overline}</p>
+    <h1 id="hero-title" class="pl-display story-hero__title">
+      {title}
+    </h1>
+    <p class="pl-lede pl-lede--field pl-lede--hero story-hero__lead story-hero__reveal">{lead}</p>
+    <div class="story-hero__actions story-hero__reveal">
+      <slot name="actions" />
+    </div>
+    {note && <p class="story-hero__note pl-mono story-hero__reveal">{note}</p>}
+    <slot />
+  </div>
+</section>
+
+<style>
+  .story-hero {
+    position: relative;
+    overflow: clip;
+    background:
+      radial-gradient(60% 50% at 50% 30%, rgb(110 187 191 / 22%), transparent 70%),
+      radial-gradient(circle at 1px 1px, var(--pl-on-field-line) 1px, transparent 0) 0 0 / 28px 28px,
+      var(--pl-field);
+  }
+
+  .story-hero__inner {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    min-height: calc(88svh - 68px);
+    padding-top: var(--pl-space-3xl);
+    padding-bottom: var(--pl-space-3xl);
+    text-align: center;
+  }
+
+  .story-hero--compact .story-hero__inner {
+    min-height: 0;
+    padding-block: clamp(44px, 6vw, 72px);
+  }
+
+  .story-hero__visual {
+    margin-bottom: var(--pl-space-xl);
+    color: var(--pl-on-field-3);
+    filter: drop-shadow(0 12px 32px rgb(7 45 47 / 55%));
+  }
+
+  .story-hero__visual:empty {
+    display: none;
+  }
+
+  .story-hero__title {
+    max-width: 14ch;
+    margin-top: var(--pl-space-sm);
+    color: var(--pl-on-field);
+  }
+
+  .story-hero__lead {
+    max-width: 40ch;
+    margin-top: var(--pl-space-lg);
+  }
+
+  .story-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--pl-space-sm);
+    margin-top: var(--pl-space-xl);
+  }
+
+  .story-hero__actions:empty {
+    display: none;
+  }
+
+  .story-hero__note {
+    max-width: 52ch;
+    margin-top: var(--pl-space-lg);
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--pl-on-field-2);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .story-hero__reveal {
+      animation: story-hero-reveal 0.6s ease-out 0.15s both;
+    }
+
+    .story-hero--ceremony .story-hero__reveal {
+      animation-delay: 1.9s;
+    }
+  }
+
+  @keyframes story-hero-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .story-hero__title {
+      max-width: 17ch;
+      font-size: 72px;
+    }
+  }
+</style>

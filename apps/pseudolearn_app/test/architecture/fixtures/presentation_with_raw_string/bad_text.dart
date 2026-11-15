@@ -1,0 +1,1 @@
+const userMessage = 'nuevo documento';

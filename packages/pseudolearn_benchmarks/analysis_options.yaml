@@ -1,0 +1,27 @@
+include: package:lints/recommended.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  errors:
+    avoid_relative_lib_imports: error
+    avoid_empty_else: error
+    unrelated_type_equality_checks: error
+    valid_regexps: error
+    always_declare_return_types: error
+    cancel_subscriptions: error
+    close_sinks: error
+    dead_code: error
+    unused_element: error
+    unused_import: error
+    unused_local_variable: error
+
+linter:
+  rules:
+    always_declare_return_types: true
+    avoid_relative_lib_imports: true
+    prefer_final_fields: true
+    prefer_final_locals: true
+    unawaited_futures: true

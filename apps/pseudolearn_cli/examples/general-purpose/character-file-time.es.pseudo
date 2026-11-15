@@ -1,0 +1,34 @@
+SubProceso PrintField(document Como ValorJson, key Como Cadena)
+Segun document.Campo(key) Hacer
+Algo(value):
+Segun value.ComoCadena() Hacer
+Algo(content): Escribir content;
+Nada: Escribir "invalid_type";
+FinSegun
+Nada: Escribir "missing_field";
+FinSegun
+FinSubProceso
+SubProceso Fetch() Como Resultado<Entero, ErrorES>
+Definir directory Como DirectorioCap <- Propagar SolicitarDirectorio(".");
+Definir file Como ArchivoCap <- Propagar directory.Abrir("message.txt", "lectura");
+Definir message Como Cadena <- Propagar file.LeerTexto();
+Escribir message;
+Descartar file.Cerrar();
+Definir timer Como Temporizador <- Propagar SolicitarTemporizador();
+Definir waited Como Entero <- Propagar timer.Esperar(1000000000);
+Definir net Como RedCap <- Propagar SolicitarRed();
+Definir response Como RespuestaHttp <- Propagar net.Enviar(PeticionHttp(MetodoHttp.GET, "https://rickandmortyapi.com/api/character/1"));
+Escribir response.Estado();
+Definir body Como Cadena <- Propagar response.CuerpoTexto();
+Segun AnalizarJson(body) Hacer
+Exito(document): PrintField(document, "name"); PrintField(document, "status");
+Error(problem): Escribir problem.Codigo;
+FinSegun
+Retornar Exito(0);
+FinSubProceso
+Algoritmo Main
+Segun Fetch() Hacer
+Exito(value):
+Error(problem): Escribir problem.Codigo;
+FinSegun
+FinAlgoritmo

@@ -1,0 +1,130 @@
+use crate::program_view::ViewNode;
+use crate::program_view_annotations::AnnotationContext;
+use serde_json::json;
+
+pub(crate) fn annotate(
+    nodes: &mut [ViewNode],
+    context: &AnnotationContext<'_>,
+    revision: &str,
+    analysis: &pseudolearn_semantic::ServiceAnalysis,
+) -> serde_json::Value {
+    let identifiers: std::collections::BTreeMap<_, _> = nodes
+        .iter()
+        .enumerate()
+        .map(|(ordinal, node)| (node.syntax_index, identifier(node, revision, ordinal)))
+        .collect();
+    let interfaces: std::collections::BTreeMap<_, _> = analysis
+        .module
+        .interfaces
+        .iter()
+        .enumerate()
+        .filter_map(|(ordinal, interface)| {
+            Some((
+                u32::try_from(ordinal).ok()?,
+                identifiers.get(&interface.syntax)?.clone(),
+            ))
+        })
+        .collect();
+    interface_nodes(nodes, analysis, &identifiers);
+    realizations(nodes, analysis, &interfaces);
+    let projection = crate::program_view_static::StaticProjection {
+        nodes,
+        context,
+        analysis,
+        identifiers: &identifiers,
+    };
+    let relations = projection.project();
+    crate::program_view_values::annotate(nodes, analysis, &identifiers);
+    relations
+}
+
+fn identifier(node: &ViewNode, revision: &str, ordinal: usize) -> String {
+    crate::program_view::node_identifier(revision, node.source, ordinal)
+}
+
+pub(crate) fn child_role(
+    tree: &pseudolearn_syntax::SyntaxTree,
+    parent: usize,
+    child: usize,
+) -> Option<&'static str> {
+    crate::program_view_tasks::child_role(tree, parent, child)
+        .or_else(|| nominal_role(tree, parent, child))
+}
+
+fn nominal_role(
+    tree: &pseudolearn_syntax::SyntaxTree,
+    parent: usize,
+    child: usize,
+) -> Option<&'static str> {
+    use pseudolearn_syntax::NodeKind;
+    let parent_node = tree.node(parent)?;
+    let child_node = tree.node(child)?;
+    Some(match parent_node.kind {
+        NodeKind::InterfaceUnit => {
+            if child_node.kind == NodeKind::InterfaceSignature {
+                "method_signature"
+            } else {
+                "name"
+            }
+        }
+        NodeKind::Realization => "interface",
+        NodeKind::TypeParameters => "type_parameter",
+        NodeKind::TypeParameter => {
+            if child == *tree.child_indices(parent).first().unwrap_or(&usize::MAX) {
+                "name"
+            } else {
+                "constraint"
+            }
+        }
+        NodeKind::TypeArguments => "type_argument",
+        NodeKind::IterationBindings => "binding",
+        NodeKind::DeferStatement => "cleanup_body",
+        _ => return crate::program_view_values::child_role(parent_node.kind, child_node.kind),
+    })
+}
+
+fn realizations(
+    nodes: &mut [ViewNode],
+    analysis: &pseudolearn_semantic::ServiceAnalysis,
+    interfaces: &std::collections::BTreeMap<u32, String>,
+) {
+    for (class, realized) in &analysis.module.realizations {
+        let Some(model) = usize::try_from(class.0)
+            .ok()
+            .and_then(|slot| analysis.module.classes.get(slot))
+        else {
+            continue;
+        };
+        if let Some(node) = nodes
+            .iter_mut()
+            .find(|node| node.syntax_kind == "class_unit" && node.start_byte == model.span.start)
+        {
+            node.attributes.push((
+                "realized_interfaces",
+                json!(
+                    realized
+                        .iter()
+                        .filter_map(|interface| interfaces.get(&interface.0))
+                        .collect::<Vec<_>>()
+                ),
+            ));
+        }
+    }
+}
+
+fn interface_nodes(
+    nodes: &mut [ViewNode],
+    analysis: &pseudolearn_semantic::ServiceAnalysis,
+    identifiers: &std::collections::BTreeMap<usize, String>,
+) {
+    for interface in &analysis.module.interfaces {
+        if let Some(node) = nodes
+            .iter_mut()
+            .find(|node| node.syntax_index == interface.syntax)
+            && let Some(identity) = identifiers.get(&interface.syntax)
+        {
+            node.attributes
+                .push(("interface_identity", json!(identity)));
+        }
+    }
+}

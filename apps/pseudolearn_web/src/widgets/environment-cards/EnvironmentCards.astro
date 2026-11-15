@@ -1,0 +1,100 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { Icon } from '@shared/ui/icon';
+import { ENVIRONMENT_CARDS } from './environments';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+<ul class="env-cards">
+  {ENVIRONMENT_CARDS.map((card) => (
+    <li class:list={['pl-card', 'env-card', { 'env-card--soon': !card.available }]}>
+      <p class="env-card__head">
+        <Icon name={card.icon} size={22} strokeWidth={1.6} class="env-card__icon" />
+        <span class="pl-tag">{t(card.available ? 'common.available' : 'common.comingSoon')}</span>
+      </p>
+      <h3 class="env-card__title">{t(card.titleKey)}</h3>
+      <p class="env-card__text">{t(card.textKey)}</p>
+      <ul class="env-card__features">
+        {card.featureKeys.map((featureKey) => (
+          <li>
+            <Icon name="check" size={15} />
+            <span>{t(featureKey)}</span>
+          </li>
+        ))}
+      </ul>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .env-cards {
+    display: grid;
+    gap: var(--pl-space-md);
+  }
+
+  .env-card {
+    display: grid;
+    gap: var(--pl-space-xs);
+    align-content: start;
+    padding: var(--pl-space-lg);
+  }
+
+  .env-card--soon {
+    border-style: dashed;
+    box-shadow: none;
+  }
+
+  .env-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .env-card :global(.env-card__icon) {
+    color: var(--pl-brand);
+  }
+
+  .env-card__title {
+    margin: 0;
+    font-size: 19px;
+  }
+
+  .env-card__text {
+    color: var(--pl-ink-2);
+    line-height: 1.55;
+  }
+
+  .env-card__features {
+    display: grid;
+    gap: 6px;
+    margin-top: var(--pl-space-xs);
+    font-size: 14px;
+  }
+
+  .env-card__features li {
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    color: var(--pl-ink-2);
+  }
+
+  .env-card__features :global(svg) {
+    flex: none;
+    margin-top: 3px;
+    color: var(--pl-brand);
+  }
+
+  @media (min-width: 900px) {
+    .env-cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--pl-space-lg);
+    }
+  }
+</style>

@@ -1,0 +1,11 @@
+{
+  "violation": "English content with a different structure than Spanish",
+  "expect": "differs in structure between languages",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/content/en/parts",
+      "value": []
+    }
+  ]
+}

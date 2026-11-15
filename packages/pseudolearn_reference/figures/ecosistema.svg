@@ -1,0 +1,12 @@
+<svg viewBox="0 0 340 300">
+  <caja x="60" y="10" ancho="220" alto="44" rol="acento-estructurado" fondo="0.12" texto="{{t:lenguaje}}"/>
+  <flecha puntos="170,54 170,84"/>
+  <caja x="40" y="84" ancho="260" alto="60" rol="tipo" fondo="0.14" negrita="" texto="{{t:motor}}¶{{t:motor-sub}}"/>
+  <flecha puntos="80,144 50,196"/>
+  <flecha puntos="170,144 170,196"/>
+  <flecha puntos="260,144 290,196"/>
+  <caja x="6" y="196" ancho="100" alto="56" rol="tinta" fondo="0.05" tamano="13" texto="{{t:app}}¶{{t:app-sub}}"/>
+  <caja x="120" y="196" ancho="100" alto="56" rol="tinta" fondo="0.05" tamano="13" texto="{{t:cli}}¶{{t:cli-sub}}"/>
+  <caja x="234" y="196" ancho="100" alto="56" rol="tinta" fondo="0.05" tamano="13" texto="{{t:web}}¶{{t:web-sub}}"/>
+  <text x="170" y="284" font-size="12" text-anchor="middle" fill="@atenuado">{{t:nota}}</text>
+</svg>

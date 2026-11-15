@@ -1,0 +1,6 @@
+Algoritmo Saludo
+Definir nombre Como Cadena <- "";
+Escribir "¿Cómo te llamas? ñandú 🌍";
+Leer nombre;
+Escribir "Hola " + nombre;
+FinAlgoritmo

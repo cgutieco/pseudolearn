@@ -1,0 +1,16 @@
+<svg viewBox="0 0 340 150">
+  <text x="130" y="20" font-size="12" text-anchor="middle" fill="@atenuado">{{t:escribe}}</text>
+  <text x="200" y="20" font-size="12" text-anchor="middle" fill="@atenuado">{{t:lee}}</text>
+  <text x="10" y="50" font-size="13" font-family="mono" fill="@tinta">{{codigo:usada}}</text>
+  <circle cx="130" cy="45" r="10" fill="@exito" fill-opacity="0.8"/>
+  <circle cx="200" cy="45" r="10" fill="@exito" fill-opacity="0.8"/>
+  <text x="230" y="50" font-size="12" fill="@exito">{{t:bien}}</text>
+  <text x="10" y="90" font-size="13" font-family="mono" fill="@tinta">{{codigo:olvidada}}</text>
+  <circle cx="130" cy="85" r="10" fill="none" stroke="@atenuado" stroke-dasharray="3 3"/>
+  <circle cx="200" cy="85" r="10" fill="none" stroke="@atenuado" stroke-dasharray="3 3"/>
+  <text x="230" y="90" font-size="12" fill="@hueco">{{t:nuncaUsada}}</text>
+  <text x="10" y="130" font-size="13" font-family="mono" fill="@tinta">{{codigo:escrita}}</text>
+  <circle cx="130" cy="125" r="10" fill="@exito" fill-opacity="0.8"/>
+  <circle cx="200" cy="125" r="10" fill="none" stroke="@atenuado" stroke-dasharray="3 3"/>
+  <text x="230" y="130" font-size="12" fill="@hueco">{{t:nuncaLeida}}</text>
+</svg>

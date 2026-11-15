@@ -1,0 +1,15 @@
+<svg viewBox="0 0 340 250">
+  <caja x="110" y="6" ancho="120" alto="36" rol="numero" fondo="0.12" fuente="mono" negrita="" texto="{{t:semilla}}"/>
+  <flecha puntos="140,42 80,80"/>
+  <flecha puntos="200,42 260,80"/>
+  <caja x="10" y="80" ancho="140" alto="40" rol="tipo" fondo="0.10" texto="{{t:ejecucion-a}}"/>
+  <caja x="190" y="80" ancho="140" alto="40" rol="tipo" fondo="0.10" texto="{{t:ejecucion-b}}"/>
+  <flecha puntos="80,120 80,150"/>
+  <flecha puntos="260,120 260,150"/>
+  <caja x="10" y="150" ancho="140" alto="40" rol="tinta" fondo="0.05" fuente="mono" texto="1 · 1 · 6"/>
+  <caja x="190" y="150" ancho="140" alto="40" rol="tinta" fondo="0.05" fuente="mono" texto="1 · 1 · 6"/>
+  <path d="M 150 170 H 190" fill="none" stroke="@exito" stroke-width="3"/>
+  <text x="170" y="164" font-size="14" text-anchor="middle" fill="@exito" font-weight="600">=</text>
+  <text x="170" y="220" font-size="13" text-anchor="middle" fill="@atenuado">{{t:nota}}</text>
+  <text x="170" y="240" font-size="12" text-anchor="middle" fill="@atenuado">{{t:nota2}}</text>
+</svg>

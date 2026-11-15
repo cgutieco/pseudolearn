@@ -1,0 +1,49 @@
+<svg viewBox="0 0 340 150">
+  <text x="44" y="24" font-size="12" text-anchor="middle" fill="@tinta">{{t:algoritmo}}</text>
+  <text x="128" y="24" font-size="12" text-anchor="middle" fill="@tinta">{{t:jugos}}</text>
+  <text x="212" y="24" font-size="12" text-anchor="middle" fill="@tinta">{{t:sandwiches}}</text>
+  <text x="296" y="24" font-size="12" text-anchor="middle" fill="@tinta">{{t:frutas}}</text>
+  <text x="170" y="142" font-size="12" text-anchor="middle" fill="@atenuado">{{t:pie}}</text>
+  <g data-paso="1" data-hasta="1">
+    <caja x="8" y="36" ancho="72" alto="40" rol="exito" fondo="0.16" tamano="12" texto="{{t:avanza}}"/>
+    <caja x="92" y="36" ancho="72" alto="40" rol="acento-estructurado" fondo="0.16" tamano="12" texto="{{t:lista}}"/>
+    <caja x="176" y="36" ancho="72" alto="40" rol="acento-estructurado" fondo="0.16" tamano="12" texto="{{t:lista}}"/>
+    <caja x="260" y="36" ancho="72" alto="40" rol="acento-estructurado" fondo="0.16" tamano="12" texto="{{t:lista}}"/>
+    <text x="170" y="104" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-1}}</text>
+  </g>
+  <g data-paso="2" data-hasta="2">
+    <caja x="8" y="36" ancho="72" alto="40" rol="atenuado" fondo="0.16" tamano="12" texto="{{t:espera}}"/>
+    <caja x="92" y="36" ancho="72" alto="40" rol="exito" fondo="0.16" tamano="12" texto="{{t:avanza}}"/>
+    <caja x="176" y="36" ancho="72" alto="40" rol="acento-estructurado" fondo="0.16" tamano="12" texto="{{t:lista}}"/>
+    <caja x="260" y="36" ancho="72" alto="40" rol="acento-estructurado" fondo="0.16" tamano="12" texto="{{t:lista}}"/>
+    <text x="170" y="104" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-2}}</text>
+  </g>
+  <g data-paso="3" data-hasta="3">
+    <caja x="8" y="36" ancho="72" alto="40" rol="atenuado" fondo="0.16" tamano="12" texto="{{t:espera}}"/>
+    <caja x="92" y="36" ancho="72" alto="40" rol="tinta" fondo="0.16" tamano="12" texto="{{t:termino}}"/>
+    <caja x="176" y="36" ancho="72" alto="40" rol="exito" fondo="0.16" tamano="12" texto="{{t:avanza}}"/>
+    <caja x="260" y="36" ancho="72" alto="40" rol="acento-estructurado" fondo="0.16" tamano="12" texto="{{t:lista}}"/>
+    <text x="170" y="104" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-3}}</text>
+  </g>
+  <g data-paso="4" data-hasta="4">
+    <caja x="8" y="36" ancho="72" alto="40" rol="atenuado" fondo="0.16" tamano="12" texto="{{t:espera}}"/>
+    <caja x="92" y="36" ancho="72" alto="40" rol="tinta" fondo="0.16" tamano="12" texto="{{t:termino}}"/>
+    <caja x="176" y="36" ancho="72" alto="40" rol="tinta" fondo="0.16" tamano="12" texto="{{t:termino}}"/>
+    <caja x="260" y="36" ancho="72" alto="40" rol="exito" fondo="0.16" tamano="12" texto="{{t:avanza}}"/>
+    <text x="170" y="104" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-4}}</text>
+  </g>
+  <g data-paso="5" data-hasta="5">
+    <caja x="8" y="36" ancho="72" alto="40" rol="exito" fondo="0.16" tamano="12" texto="{{t:avanza}}"/>
+    <caja x="92" y="36" ancho="72" alto="40" rol="tinta" fondo="0.16" tamano="12" texto="{{t:termino}}"/>
+    <caja x="176" y="36" ancho="72" alto="40" rol="tinta" fondo="0.16" tamano="12" texto="{{t:termino}}"/>
+    <caja x="260" y="36" ancho="72" alto="40" rol="tinta" fondo="0.16" tamano="12" texto="{{t:termino}}"/>
+    <text x="170" y="104" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-5}}</text>
+  </g>
+  <g data-paso="6" data-hasta="6">
+    <caja x="8" y="36" ancho="72" alto="40" rol="exito" fondo="0.16" tamano="12" texto="{{t:avanza}}"/>
+    <caja x="92" y="36" ancho="72" alto="40" rol="tinta" fondo="0.16" tamano="12" texto="{{t:termino}}"/>
+    <caja x="176" y="36" ancho="72" alto="40" rol="tinta" fondo="0.16" tamano="12" texto="{{t:termino}}"/>
+    <caja x="260" y="36" ancho="72" alto="40" rol="tinta" fondo="0.16" tamano="12" texto="{{t:termino}}"/>
+    <text x="170" y="104" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-6}}</text>
+  </g>
+</svg>

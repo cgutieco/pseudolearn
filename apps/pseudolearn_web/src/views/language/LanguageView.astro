@@ -1,0 +1,122 @@
+---
+import BaseLayout from '@app/layouts/BaseLayout.astro';
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { SITE } from '@shared/config/site';
+import { ROUTES, localizePath } from '@shared/i18n/routes';
+import { Icon } from '@shared/ui/icon';
+import { findSection, orderedSections } from '@entities/specification/model/specification-catalog';
+import { VOCABULARY_SECTION, pickPairs, vocabularyPairs } from '@entities/specification/model/vocabulary';
+import { partStories } from '@entities/learning-route/model/route-showcase';
+import StoryHero from '@widgets/story-hero/StoryHero.astro';
+import PageSections from '@widgets/page-sections/PageSections.astro';
+import PageSection from '@widgets/page-section/PageSection.astro';
+import KeywordFlip from '@widgets/vocabulary/KeywordFlip.astro';
+import VocabularyGrid from '@widgets/vocabulary/VocabularyGrid.astro';
+import ParadigmGrid from '@widgets/paradigm-grid/ParadigmGrid.astro';
+import EnvironmentCards from '@widgets/environment-cards/EnvironmentCards.astro';
+import LanguageTools from '@widgets/language-tools/LanguageTools.astro';
+
+export interface Props {
+  locale: Locale;
+}
+
+const HERO_WORDS = ['Algoritmo', 'Mientras', 'Escribir'];
+const GRID_WORDS = ['Si', 'Sino', 'Mientras', 'Para', 'Repetir', 'Escribir', 'Leer', 'Funcion', 'Retornar'];
+const MORE_WORDS = [
+  'SubProceso',
+  'Clase',
+  'Nuevo',
+  'Hereda De',
+  'Interfaz',
+  'Tareas',
+  'Lanzar',
+  'Aguardar',
+  'Importar',
+];
+const { locale } = Astro.props;
+const { t } = useTranslations(locale);
+const pairs = vocabularyPairs(findSection(locale, VOCABULARY_SECTION));
+const shown = pickPairs(pairs, [...GRID_WORDS, ...MORE_WORDS]);
+const stories = await partStories(locale);
+const SECTIONS = ['paradigms', 'profiles', 'environments', 'tools'] as const;
+const sections = SECTIONS.map((id) => ({ id, label: t(`language.sections.${id}`) }));
+---
+
+<BaseLayout
+  locale={locale}
+  path={ROUTES.language}
+  title={t('language.seoTitle')}
+  description={t('language.seoDescription')}
+>
+  <StoryHero
+    overline={t('language.hero.overline')}
+    title={t('language.hero.title')}
+    lead={t('language.hero.lead')}
+  >
+    <KeywordFlip slot="visual" pairs={pickPairs(pairs, HERO_WORDS)} label={t('language.hero.flipLabel')} />
+    <Fragment slot="actions">
+      <a class="pl-btn pl-btn--on-field" href={localizePath(ROUTES.download, locale)}>
+        <Icon name="download" size={19} />
+        <span>{t('home.hero.ctaPrimary')}</span>
+      </a>
+      <a class="pl-btn pl-btn--outline-field" href={localizePath(ROUTES.specification, locale)}>
+        <span>{t('language.specCta', { sections: orderedSections(locale).length })}</span>
+        <Icon name="arrowRight" size={17} />
+      </a>
+    </Fragment>
+  </StoryHero>
+  <PageSections label={t('pageSections.label')} sections={sections} />
+
+  <PageSection
+    id="paradigms"
+    overline={t('language.sections.paradigms')}
+    title={t('language.paradigms.title')}
+    lead={t('language.paradigms.lead')}
+  >
+    <ParadigmGrid stories={stories} />
+  </PageSection>
+
+  <PageSection
+    id="profiles"
+    tone="surface"
+    overline={t('language.sections.profiles')}
+    title={t('language.profiles.title')}
+    lead={t('language.profiles.lead')}
+  >
+    <VocabularyGrid
+      pairs={shown}
+      spanishLabel={t('language.profiles.spanish')}
+      englishLabel={t('language.profiles.english')}
+      more={t('language.profiles.more', { count: pairs.length })}
+    />
+  </PageSection>
+
+  <PageSection
+    id="environments"
+    tone="field"
+    overline={t('language.sections.environments')}
+    title={t('language.environments.title')}
+    lead={t('language.environments.lead')}
+  >
+    <EnvironmentCards locale={locale} />
+  </PageSection>
+
+  <PageSection
+    id="tools"
+    overline={t('language.sections.tools')}
+    title={t('language.tools.title')}
+    lead={t('language.tools.lead')}
+  >
+    <LanguageTools locale={locale} />
+    <a class="pl-btn pl-btn--ghost language-agents" href={SITE.agentSheetPath}>
+      {t('language.agentsCta')}
+    </a>
+  </PageSection>
+</BaseLayout>
+
+<style>
+  .language-agents {
+    justify-self: start;
+  }
+</style>

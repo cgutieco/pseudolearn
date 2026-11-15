@@ -1,0 +1,14 @@
+<svg viewBox="0 0 340 120">
+  <rect x="16" y="40" width="136" height="30" rx="4" fill="@exito" fill-opacity="0.16"/>
+  <rect x="158" y="40" width="166" height="30" rx="4" fill="@acento-objetos" fill-opacity="0.16"/>
+  <line x1="155" y1="30" x2="155" y2="80" fill="none" stroke="@error"/>
+  <text x="84" y="28" font-size="12" text-anchor="middle" fill="@exito">{{t:paga-5}}</text>
+  <text x="241" y="28" font-size="12" text-anchor="middle" fill="@acento-objetos">{{t:paga-8}}</text>
+  <text x="20" y="96" font-size="12" text-anchor="middle" fill="@numero">0</text>
+  <text x="140" y="96" font-size="12" text-anchor="middle" fill="@numero">11</text>
+  <text x="170" y="96" font-size="12" text-anchor="middle" fill="@numero">12</text>
+  <text x="318" y="96" font-size="12" text-anchor="middle" fill="@numero">100</text>
+  <circle cx="140" cy="55" r="5" fill="@tinta"/>
+  <circle cx="170" cy="55" r="5" fill="@tinta"/>
+  <text x="155" y="114" font-size="12" text-anchor="middle" fill="@error">{{t:borde}}</text>
+</svg>

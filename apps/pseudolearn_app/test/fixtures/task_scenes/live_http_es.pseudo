@@ -1,0 +1,34 @@
+SubProceso Suspendible Fetch(net Como RedCap) Como Resultado<Entero, Cadena>
+Segun Aguardar net.Enviar(PeticionHttp(MetodoHttp.GET, "__ORIGIN__/")) Hacer
+Exito(response): Escribir response.Estado(); Retornar Exito(response.Estado());
+Error(problem): Retornar Error(problem.Codigo);
+FinSegun
+FinSubProceso
+SubProceso Suspendible Wait()
+Segun Aguardar SolicitarTemporizador() Hacer
+Exito(timer):
+Segun Aguardar timer.Esperar(50000000) Hacer
+Exito(instant): Escribir "timer";
+Error(problem): Escribir problem.Codigo;
+FinSegun
+Error(problem): Escribir problem.Codigo;
+FinSegun
+FinSubProceso
+SubProceso Suspendible Work()
+Escribir "sibling";
+FinSubProceso
+Algoritmo Main
+Segun SolicitarRed() Hacer
+Exito(net):
+Tareas report
+Lanzar Fetch(net);
+Lanzar Wait();
+Lanzar Work();
+FinTareas
+Segun report Hacer
+Nada: Escribir "done";
+Algo(problem): Escribir "task_error";
+FinSegun
+Error(problem): Escribir problem.Codigo;
+FinSegun
+FinAlgoritmo

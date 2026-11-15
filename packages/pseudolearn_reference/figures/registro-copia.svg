@@ -1,0 +1,17 @@
+<svg viewBox="0 0 340 200">
+  <text x="85" y="20" font-size="13" text-anchor="middle" fill="@tinta" font-family="mono">{{codigo:a}}</text>
+  <text x="255" y="20" font-size="13" text-anchor="middle" fill="@tinta" font-family="mono">{{codigo:b}}</text>
+  <rect x="10" y="30" width="150" height="100" rx="10" fill="@tipo" fill-opacity="0.08" stroke="@tipo" stroke-width="1.5"/>
+  <rect x="180" y="30" width="150" height="100" rx="10" fill="@tipo" fill-opacity="0.08" stroke="@tipo" stroke-width="1.5"/>
+  <text x="22" y="62" font-size="13" fill="@atenuado">{{t:fila}}</text>
+  <text x="140" y="62" font-size="15" font-family="mono" text-anchor="end" fill="@numero" font-weight="600">1</text>
+  <text x="22" y="102" font-size="13" fill="@atenuado">{{t:columna}}</text>
+  <text x="140" y="102" font-size="15" font-family="mono" text-anchor="end" fill="@numero" font-weight="600">2</text>
+  <text x="192" y="62" font-size="13" fill="@atenuado">{{t:fila}}</text>
+  <text x="310" y="62" font-size="15" font-family="mono" text-anchor="end" fill="@acento-procedimental" font-weight="600">10</text>
+  <text x="192" y="102" font-size="13" fill="@atenuado">{{t:columna}}</text>
+  <text x="310" y="102" font-size="15" font-family="mono" text-anchor="end" fill="@numero" font-weight="600">2</text>
+  <flecha puntos="160,80 178,80" rol="atenuado"/>
+  <text x="170" y="160" font-size="12" text-anchor="middle" fill="@tinta">{{t:copia}}</text>
+  <text x="170" y="182" font-size="12" text-anchor="middle" fill="@atenuado">{{t:separado}}</text>
+</svg>

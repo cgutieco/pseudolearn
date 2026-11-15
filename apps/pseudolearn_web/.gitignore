@@ -1,0 +1,44 @@
+# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# environment variables
+.env
+.env.production
+.dev.vars
+.dev.vars.*
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+
+# testing
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+coverage/
+
+# Generated brand and product assets
+public/favicon.svg
+src/shared/ui/brand-mark/symbol-path.generated.ts
+src/widgets/nodo-preview/nodo-glyph.generated.ts
+src/assets/brand/social-card.svg
+public/og-image.png
+src/assets/product/**/*.png
+
+# cloudflare
+.wrangler/

@@ -1,0 +1,18 @@
+[package]
+name = "pseudolearn_vm_tracer"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "vm-tracer"
+path = "src/main.rs"
+
+[dependencies]
+pseudolearn_api = { path = "../pseudolearn_api", version = "=0.1.0" }
+pseudolearn_bytecode = { path = "../pseudolearn_bytecode", version = "=0.1.0" }
+pseudolearn_vm = { path = "../pseudolearn_vm", version = "=0.1.0" }
+serde_json = "1.0"
+
+[lints]
+workspace = true

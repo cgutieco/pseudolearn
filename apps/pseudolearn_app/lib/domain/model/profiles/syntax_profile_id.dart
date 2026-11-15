@@ -1,0 +1,4 @@
+enum SyntaxProfileId {
+  classicSpanish,
+  english,
+}

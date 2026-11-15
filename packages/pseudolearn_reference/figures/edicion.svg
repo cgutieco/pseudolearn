@@ -1,0 +1,7 @@
+<svg viewBox="0 0 340 250">
+  <rect x="10" y="10" width="320" height="230" rx="14" fill="@acento-estructurado" fill-opacity="0.06" stroke="@acento-estructurado" stroke-width="1.5"/>
+  <text x="170" y="40" font-size="16" text-anchor="middle" font-weight="600" fill="@acento-estructurado">{{t:edicion}}</text>
+  <caja x="28" y="58" ancho="284" alto="44" rol="tinta" fondo="0.05" texto="{{t:gramatica}}"/>
+  <caja x="28" y="114" ancho="284" alto="44" rol="tinta" fondo="0.05" texto="{{t:tipos}}"/>
+  <caja x="28" y="170" ancho="284" alto="54" rol="numero" fondo="0.08" texto="{{t:preludio}}¶{{t:preludio-ejemplos}}"/>
+</svg>

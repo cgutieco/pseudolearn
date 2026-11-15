@@ -1,0 +1,17 @@
+SubProceso Suspendible Wait(queue Como Canal<Entero>)
+Segun Aguardar queue.Recibir() Hacer
+Nada: Escribir 0;
+Algo(value): Escribir value;
+FinSegun
+FinSubProceso
+SubProceso Suspendible Fail() Como Resultado<Entero, Cadena>
+Retornar Error("problem");
+FinSubProceso
+Algoritmo Fallo
+Definir queue Como Canal<Entero> <- Canal(1);
+Tareas failureReport
+Lanzar Wait(queue);
+Lanzar Fail();
+FinTareas
+Descartar failureReport;
+FinAlgoritmo

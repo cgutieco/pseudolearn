@@ -1,0 +1,4 @@
+Importar geo.vectores.Doble;
+Algoritmo Principal
+Escribir Doble(21);
+FinAlgoritmo

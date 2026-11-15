@@ -1,0 +1,90 @@
+import '../../fakes/native_test_engine.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:pseudolearn_app/domain/model/knowledge/ast_construct.dart';
+import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
+
+const _withLoopAndConditional = '''
+Algoritmo Conteo
+  Definir i Como Entero <- 0;
+  Para i <- 1 Hasta 3 Con Paso 1 Hacer
+    Si i > 1 Entonces
+      Escribir i;
+    FinSi
+  FinPara
+FinAlgoritmo
+''';
+
+const _withoutConstructs = '''
+Algoritmo Saludo
+  Escribir "hola";
+FinAlgoritmo
+''';
+
+const _brokenSource = '''
+Algoritmo Roto
+  x <-
+FinAlgoritmo
+''';
+
+const _withInterface = '''
+Interfaz Legible
+Metodo Obtener() Como Entero;
+FinInterfaz
+Algoritmo Probar
+FinAlgoritmo
+''';
+
+void main() {
+  group('RustProgramConstructReader', () {
+    final reader = nativeTestEngine.programConstructReader;
+
+    test('reports every construct the program actually uses', () {
+      final constructs = reader.constructsOf(
+        sourceCode: _withLoopAndConditional,
+        profileId: SyntaxProfileId.classicSpanish,
+      );
+
+      expect(constructs, contains(AstConstruct.countedLoop));
+      expect(constructs, contains(AstConstruct.conditional));
+      expect(constructs, isNot(contains(AstConstruct.classDeclaration)));
+    });
+
+    test('a program without control structures reports none', () {
+      final constructs = reader.constructsOf(
+        sourceCode: _withoutConstructs,
+        profileId: SyntaxProfileId.classicSpanish,
+      );
+
+      expect(constructs, isEmpty);
+    });
+
+    test('an interface declaration has its own curriculum construct', () {
+      final constructs = reader.constructsOf(
+        sourceCode: _withInterface,
+        profileId: SyntaxProfileId.classicSpanish,
+      );
+
+      expect(constructs, contains(AstConstruct.interfaceDeclaration));
+      expect(constructs, isNot(contains(AstConstruct.classDeclaration)));
+    });
+
+    test('a program that does not analyse contributes nothing', () {
+      final constructs = reader.constructsOf(
+        sourceCode: _brokenSource,
+        profileId: SyntaxProfileId.classicSpanish,
+      );
+
+      expect(constructs, isEmpty);
+    });
+
+    test('an empty source is read without failing', () {
+      expect(
+        reader.constructsOf(
+          sourceCode: '',
+          profileId: SyntaxProfileId.classicSpanish,
+        ),
+        isEmpty,
+      );
+    });
+  });
+}

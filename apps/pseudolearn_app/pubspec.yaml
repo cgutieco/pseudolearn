@@ -1,0 +1,129 @@
+name: pseudolearn_app
+description: Flutter application for PseudoLearn.
+publish_to: 'none'
+version: 2.0.0
+
+environment:
+  sdk: '^3.14.0'
+  flutter: 3.50.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_rust_bridge: 2.13.0
+  flutter_rust_bridge_hooks: 2.13.0
+  hooks: 2.2.0
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.3
+  bloc: ^9.2.1
+  flutter_bloc: ^9.1.1
+  equatable: ^3.0.0
+  go_router: ^18.1.4
+  sqflite: ^2.4.6
+  sqflite_common_ffi: ^2.4.7
+  path: ^1.9.1
+  path_provider: ^2.1.6
+  markdown: ^7.3.1
+  supabase: ^2.16.5
+  crypto: ^3.0.8
+  sign_in_with_apple: ^8.2.0
+  google_sign_in: ^7.2.0
+  flutter_secure_storage: ^11.2.0
+  app_links: ^7.2.2
+  url_launcher: ^6.3.3
+  package_info_plus: ^10.2.2
+  in_app_review: ^2.0.12
+  flutter_svg: ^2.3.4
+  in_app_purchase: ^3.3.1
+  material_ui: ^1.11.0
+  cupertino_ui: ^1.1.6
+dev_dependencies:
+  integration_test:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  analyzer: ^14.7.0
+  http: ^1.6.0
+  flutter_lints: ^6.0.0
+  lints: ^6.1.0
+  yaml: ^3.1.4
+  plugin_platform_interface: ^2.1.8
+  url_launcher_platform_interface: ^2.3.2
+  in_app_review_platform_interface: ^2.0.5
+  msix: ^3.18.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+  assets:
+    - assets/fonts/
+    - assets/demo/
+    - assets/agent/es/
+    - assets/agent/en/
+    - assets/manual/es/
+    - assets/manual/en/
+    - assets/reference/es/keywords-es/
+    - assets/reference/es/keywords-es/sections/
+    - assets/reference/es/keywords-en/
+    - assets/reference/es/keywords-en/sections/
+    - assets/reference/en/keywords-es/
+    - assets/reference/en/keywords-es/sections/
+    - assets/reference/en/keywords-en/
+    - assets/reference/en/keywords-en/sections/
+    - assets/route/es/keywords-es/
+    - assets/route/es/keywords-es/lessons/
+    - assets/route/es/keywords-es/exercises/
+    - assets/route/es/keywords-en/
+    - assets/route/es/keywords-en/lessons/
+    - assets/route/es/keywords-en/exercises/
+    - assets/route/en/keywords-es/
+    - assets/route/en/keywords-es/lessons/
+    - assets/route/en/keywords-es/exercises/
+    - assets/route/en/keywords-en/
+    - assets/route/en/keywords-en/lessons/
+    - assets/route/en/keywords-en/exercises/
+
+  fonts:
+    - family: IBMPlexSans
+      fonts:
+        - asset: assets/fonts/IBMPlexSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/IBMPlexSans-Italic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/IBMPlexSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/IBMPlexSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/IBMPlexSans-Bold.ttf
+          weight: 700
+    - family: IBMPlexMono
+      fonts:
+        - asset: assets/fonts/IBMPlexMono-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/IBMPlexMono-Italic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/IBMPlexMono-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/IBMPlexMono-SemiBold.ttf
+          weight: 600
+
+msix_config:
+  display_name: PseudoLearn
+  publisher_display_name: CESAR GUTIERREZ
+  identity_name: CESARGUTIERREZ.PseudoLearn
+  publisher: CN=EDFD3B2E-83F3-4BC3-9577-7798545994BB
+  msix_version: 2.0.0.0
+  logo_path: windows/runner/resources/app_icon.png
+  store: true
+  sign_msix: false
+  capabilities: internetClient,privateNetworkClientServer
+  protocol_activation: pseudolearn
+  file_extension: .pseudo
+  languages: es-ES, en-US
+  architecture: x64
+  output_path: packaging/windows/Output
+  output_name: PseudoLearn-Store
+

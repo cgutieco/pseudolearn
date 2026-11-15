@@ -1,0 +1,392 @@
+{
+  "sujeto": "service",
+  "paquete": "packages/pseudolearn_engine",
+  "activadas": [
+    "TOOL.FORMAT.STYLE",
+    "LANG.PROGRAM.CLASSIC",
+    "TOOL.LSP.CAPABILITIES",
+    "TOOL.SERVICE.CATALOG",
+    "TOOL.SERVICE.COMPLETION",
+    "TOOL.SERVICE.HOVER",
+    "TOOL.SERVICE.INCREMENTAL",
+    "TOOL.SERVICE.WORKSPACE",
+    "TOOL.SERVICE.LOSSLESS-TREE",
+    "TOOL.SERVICE.NAVIGATION",
+    "TOOL.SERVICE.NODE-IDENTITY",
+    "TOOL.SERVICE.ON-TYPE",
+    "TOOL.TRANSLATE.ROUND-TRIP"
+  ],
+  "fases_cerradas": [],
+  "vinculos": [
+    {
+      "regla": "TOOL.SERVICE.CATALOG@1.0.0#R1",
+      "verificacion": "estructural",
+      "estado": "cumple",
+      "justificacion": "see validate verifica el formato help-catalog/1, la cobertura de identidades y las exclusiones tipadas del catálogo; la conformidad conserva evidencia estructural con la huella del corpus."
+    },
+    {
+      "regla": "LANG.PROGRAM.CLASSIC@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto service no ejecuta programas; R1 la verifica el sujeto engine y R3 los mismos programas en el servicio."
+    },
+    {
+      "regla": "LANG.PROGRAM.CLASSIC@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "exento",
+      "justificacion": "El sujeto service no es la CLI; R2 la verifica el sujeto cli."
+    },
+    {
+      "regla": "LANG.PROGRAM.CLASSIC@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.CATALOG@1.0.0#R2",
+      "verificacion": "estructural",
+      "estado": "cumple",
+      "justificacion": "see validate verifica el formato help-catalog/1, la cobertura de identidades y las exclusiones tipadas del catálogo; la conformidad conserva evidencia estructural con la huella del corpus."
+    },
+    {
+      "regla": "TOOL.SERVICE.CATALOG@1.0.0#R3",
+      "verificacion": "estructural",
+      "estado": "cumple",
+      "justificacion": "see validate verifica el formato help-catalog/1, la cobertura de identidades y las exclusiones tipadas del catálogo; la conformidad conserva evidencia estructural con la huella del corpus."
+    },
+    {
+      "regla": "TOOL.SERVICE.CATALOG@1.0.0#R4",
+      "verificacion": "estructural",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.CATALOG@1.0.0#R6",
+      "verificacion": "estructural",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.CATALOG@1.0.0#R7",
+      "verificacion": "estructural",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.CATALOG@1.0.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.CATALOG@1.0.0#R9",
+      "verificacion": "estructural",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.CATALOG@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.FORMAT.STYLE@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.FORMAT.STYLE@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.FORMAT.STYLE@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.FORMAT.STYLE@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.LSP.CAPABILITIES@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.LSP.CAPABILITIES@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.LSP.CAPABILITIES@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.LSP.CAPABILITIES@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.LSP.CAPABILITIES@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.LSP.CAPABILITIES@1.0.0#R6",
+      "verificacion": "crates/pseudolearn_service/tests/lsp.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.LSP.CAPABILITIES@1.0.0#R7",
+      "verificacion": "crates/pseudolearn_service/tests/lsp_project_queries.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.LSP.CAPABILITIES@1.0.0#R8",
+      "verificacion": "crates/pseudolearn_service/tests/lsp_project_queries.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.LSP.CAPABILITIES@1.0.0#R9",
+      "verificacion": "crates/pseudolearn_service/tests/lsp_project_queries.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.LSP.CAPABILITIES@1.0.0#R10",
+      "verificacion": "crates/pseudolearn_service/tests/lsp_project_queries.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R10",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R11",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R12",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R13",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R14",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R15",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R16",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R7",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R8",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.COMPLETION@1.0.0#R9",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.HOVER@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.HOVER@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.HOVER@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.HOVER@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.INCREMENTAL@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.INCREMENTAL@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.INCREMENTAL@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.INCREMENTAL@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.WORKSPACE@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.WORKSPACE@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.WORKSPACE@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.WORKSPACE@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.LOSSLESS-TREE@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.LOSSLESS-TREE@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.NAVIGATION@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.NAVIGATION@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.NAVIGATION@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.NAVIGATION@1.0.0#R4",
+      "verificacion": "crates/pseudolearn_service/tests/lsp_project_queries.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.NODE-IDENTITY@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.NODE-IDENTITY@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.NODE-IDENTITY@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.ON-TYPE@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.ON-TYPE@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.ON-TYPE@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.ON-TYPE@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.ON-TYPE@1.0.0#R5",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.SERVICE.ON-TYPE@1.0.0#R6",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.TRANSLATE.ROUND-TRIP@1.0.0#R1",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.TRANSLATE.ROUND-TRIP@1.0.0#R2",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.TRANSLATE.ROUND-TRIP@1.0.0#R3",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "TOOL.TRANSLATE.ROUND-TRIP@1.0.0#R4",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    }
+  ]
+}

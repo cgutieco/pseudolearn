@@ -1,0 +1,16 @@
+<svg viewBox="0 0 340 300">
+  <caja x="10" y="6" ancho="210" alto="28" rol="acento-estructurado" fondo="0.30" fuente="mono" tamano="13" texto="{{t:postfijos}}"/>
+  <caja x="10" y="38" ancho="210" alto="28" rol="acento-estructurado" fondo="0.26" fuente="mono" tamano="13" texto="{{codigo:+ - NO}}"/>
+  <caja x="10" y="70" ancho="210" alto="28" rol="acento-estructurado" fondo="0.23" fuente="mono" tamano="13" texto="^"/>
+  <caja x="10" y="102" ancho="210" alto="28" rol="acento-estructurado" fondo="0.20" fuente="mono" tamano="13" texto="{{codigo:* / div mod}}"/>
+  <caja x="10" y="134" ancho="210" alto="28" rol="acento-estructurado" fondo="0.17" fuente="mono" tamano="13" texto="+ -"/>
+  <caja x="10" y="166" ancho="210" alto="28" rol="acento-estructurado" fondo="0.14" fuente="mono" tamano="13" texto="&lt; &lt;= &gt; &gt;="/>
+  <caja x="10" y="198" ancho="210" alto="28" rol="acento-estructurado" fondo="0.11" fuente="mono" tamano="13" texto="= &lt;&gt;"/>
+  <caja x="10" y="230" ancho="210" alto="28" rol="acento-estructurado" fondo="0.08" fuente="mono" tamano="13" texto="{{codigo:Y}}"/>
+  <caja x="10" y="262" ancho="210" alto="28" rol="acento-estructurado" fondo="0.05" fuente="mono" tamano="13" texto="{{codigo:O}}"/>
+  <text x="230" y="25" font-size="12" fill="@atenuado">{{t:postfijosNota}}</text>
+  <text x="230" y="57" font-size="12" fill="@acento-procedimental">{{t:derecha}}</text>
+  <text x="230" y="89" font-size="12" fill="@acento-procedimental">{{t:derecha}}</text>
+  <text x="230" y="153" font-size="12" fill="@atenuado">{{t:sumaNota}}</text>
+  <text x="230" y="281" font-size="12" fill="@atenuado">{{t:debil}}</text>
+</svg>

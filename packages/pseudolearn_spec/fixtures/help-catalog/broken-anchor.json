@@ -1,0 +1,11 @@
+{
+  "violation": "anchor to an element that does not exist",
+  "expect": "stale anchor",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/anchors/0/element",
+      "value": "R99"
+    }
+  ]
+}

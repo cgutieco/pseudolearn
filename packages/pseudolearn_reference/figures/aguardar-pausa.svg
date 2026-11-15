@@ -1,0 +1,13 @@
+<svg viewBox="0 0 340 150">
+  <text x="10" y="40" font-size="12" fill="@tinta">{{t:tareaA}}</text>
+  <text x="10" y="100" font-size="12" fill="@tinta">{{t:tareaB}}</text>
+  <rect x="80" y="28" width="90" height="18" rx="4" fill="@acento-procedimental" fill-opacity="0.6"/>
+  <rect x="170" y="28" width="80" height="18" rx="4" fill="none" stroke="@atenuado" stroke-dasharray="4 3"/>
+  <rect x="250" y="28" width="80" height="18" rx="4" fill="@acento-procedimental" fill-opacity="0.6"/>
+  <rect x="170" y="88" width="80" height="18" rx="4" fill="@acento-estructurado" fill-opacity="0.6"/>
+  <path d="M 170 20 V 120" fill="none" stroke="@acento-procedimental" stroke-width="2"/>
+  <text x="170" y="136" font-size="12" text-anchor="middle" fill="@acento-procedimental">{{codigo:Aguardar}}</text>
+  <text x="210" y="22" font-size="12" text-anchor="middle" fill="@atenuado">{{t:pausa}}</text>
+  <flecha puntos="250,88 260,50" rol="exito"/>
+  <text x="290" y="76" font-size="12" text-anchor="middle" fill="@exito">{{t:resultado}}</text>
+</svg>

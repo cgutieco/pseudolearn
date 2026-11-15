@@ -1,0 +1,26 @@
+SubProceso Suspendible Produce(queue Como Canal<Entero>)
+Definir first Como Logico <- Aguardar queue.Enviar(81);
+Definir second Como Logico <- Aguardar queue.Enviar(82);
+Definir third Como Logico <- Aguardar queue.Enviar(83);
+Si first Y second Y third Entonces
+queue.Cerrar();
+FinSi
+FinSubProceso
+Algoritmo CanalLleno
+Definir queue Como Canal<Entero> <- Canal(1);
+Tareas
+Lanzar Produce(queue);
+Segun Aguardar queue.Recibir() Hacer
+Nada: Escribir 0;
+Algo(value): Escribir value;
+FinSegun
+Segun Aguardar queue.Recibir() Hacer
+Nada: Escribir 0;
+Algo(other): Escribir other;
+FinSegun
+Segun Aguardar queue.Recibir() Hacer
+Nada: Escribir 0;
+Algo(last): Escribir last;
+FinSegun
+FinTareas
+FinAlgoritmo

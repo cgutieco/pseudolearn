@@ -1,0 +1,45 @@
+{
+  "id": "microsoft-store-screenshots",
+  "shots": [
+    {
+      "id": "run", "plate": "desk-run", "appTheme": "light", "palette": "mint",
+      "critical": { "focus": "diagram", "region": { "x": 0.15, "y": 0.3, "width": 0.7, "height": 0.3 } },
+      "caption": {
+        "es": "Código y ordinograma lado a lado: avanza paso a paso y mira cómo la ejecución recorre los dos.",
+        "en": "Code and flowchart side by side: step through and watch the run move across both."
+      }
+    },
+    {
+      "id": "trace", "plate": "desk-trace", "appTheme": "light", "palette": "sand",
+      "critical": { "focus": "trace", "region": { "x": 0, "y": 0, "width": 1, "height": 1 } },
+      "caption": {
+        "es": "Junto al código, la prueba de escritorio anota cada variable en cada paso.",
+        "en": "Next to the code, the trace table records every variable at every step."
+      }
+    },
+    {
+      "id": "nodo", "plate": "chapter-nodo", "appTheme": "dark", "palette": "deep",
+      "critical": { "focus": "verified-code", "region": { "x": 0, "y": 0, "width": 1, "height": 0.85 } },
+      "caption": {
+        "es": "Nodo · IA trabaja a tu lado: explica y propone código que el motor verifica. Requiere sesión y suscripción.",
+        "en": "Nodo · AI works beside you: it explains and suggests code the engine checks. Requires sign-in and a subscription."
+      }
+    },
+    {
+      "id": "code", "plate": "desk-code", "appTheme": "light", "palette": "peach",
+      "critical": { "focus": "export", "region": { "x": 0, "y": 0, "width": 1, "height": 0.5 } },
+      "caption": {
+        "es": "Tu pseudocódigo y su versión en Python, en la misma pantalla. También en Rust.",
+        "en": "Your pseudocode and its Python version on one screen. Rust too."
+      }
+    },
+    {
+      "id": "route", "plate": "chapter-route", "appTheme": "light", "palette": "mist",
+      "critical": { "focus": "lesson", "region": { "x": 0, "y": 0, "width": 1, "height": 1 } },
+      "caption": {
+        "es": "Una ruta de lecciones con ejercicios, desde cero.",
+        "en": "A path of lessons with exercises, from zero."
+      }
+    }
+  ]
+}

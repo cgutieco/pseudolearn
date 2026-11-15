@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "runner": "0.0.81",
+  "vscodeVersion": "1.144.0",
+  "vscodeCommit": "2c33b50b16c472efe58357d1d2a8a5414bc23fbf",
+  "quality": "stable",
+  "browsers": ["chromium", "firefox", "webkit"],
+  "provider": "test-web virtual filesystem; in-memory writes, no durable persistence claim",
+  "physicalEvidence": false
+}

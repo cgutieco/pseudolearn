@@ -1,0 +1,28 @@
+{
+  "violation": "example whose case has no program for every profile",
+  "expect": "stale example",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/content/es/examples/0",
+      "value": {
+        "specification": "TOOL.SERVICE.CATALOG",
+        "version": "1.0.0",
+        "case": "C1",
+        "kind": "diagnostic",
+        "note": "Nota."
+      }
+    },
+    {
+      "op": "set",
+      "path": "/cards/0/content/en/examples/0",
+      "value": {
+        "specification": "TOOL.SERVICE.CATALOG",
+        "version": "1.0.0",
+        "case": "C1",
+        "kind": "diagnostic",
+        "note": "Nota."
+      }
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+---
+import type { ContentsSection } from '@entities/specification/model/specification';
+import { sectionPath } from '@entities/specification/model/section-address';
+import { runsText } from '@entities/specification/model/plain-text';
+import type { Locale } from '@shared/i18n/locales';
+import { localizePath } from '@shared/i18n/routes';
+import { useTranslations } from '@shared/i18n/translator';
+
+export interface Props {
+  previous: ContentsSection | undefined;
+  next: ContentsSection | undefined;
+  locale: Locale;
+}
+
+const { previous, next, locale } = Astro.props;
+const { t } = useTranslations(locale);
+const neighbours = [
+  { entry: previous, label: t('specification.pager.previous'), modifier: 'previous' },
+  { entry: next, label: t('specification.pager.next'), modifier: 'next' },
+];
+---
+
+<nav class="pager" aria-label={t('specification.pager.label')}>
+  {neighbours.map(({ entry, label, modifier }) =>
+    entry === undefined ? (
+      <span />
+    ) : (
+      <a class={`pager__link pager__link--${modifier}`} href={localizePath(sectionPath(entry.id), locale)}>
+        <span class="pager__label pl-overline">{label}</span>
+        <span class="pager__title">
+          <span class="pl-mono">{entry.number}</span> {runsText(entry.title)}
+        </span>
+      </a>
+    ),
+  )}
+</nav>
+
+<style>
+  .pager {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--pl-space-md);
+    margin-top: var(--pl-space-3xl);
+    padding-top: var(--pl-space-lg);
+    border-top: 1px solid var(--pl-line);
+  }
+
+  .pager__link {
+    display: grid;
+    gap: var(--pl-space-2xs);
+    padding: var(--pl-space-md) var(--pl-space-lg);
+    border: 1px solid var(--pl-line);
+    border-radius: var(--pl-radius-card);
+    background: var(--pl-surface);
+    color: var(--pl-ink);
+    text-decoration: none;
+    box-shadow: var(--pl-shadow-2);
+  }
+
+  .pager__link--next {
+    border-color: transparent;
+    background: var(--pl-field);
+    color: var(--pl-on-field);
+    text-align: right;
+  }
+
+  .pager__link--next .pager__label {
+    color: var(--pl-on-field-3);
+  }
+
+  .pager__link:hover {
+    border-color: var(--pl-brand);
+  }
+
+  .pager__title {
+    font-weight: 600;
+  }
+</style>

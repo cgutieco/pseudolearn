@@ -1,0 +1,10 @@
+---
+import SpecificationSectionView from '@views/specification/SpecificationSectionView.astro';
+import { sectionStaticPaths, type SectionRouteProps } from '@views/specification/specification-pages';
+
+export const getStaticPaths = () => sectionStaticPaths('en');
+
+const { sectionId } = Astro.props as SectionRouteProps;
+---
+
+<SpecificationSectionView locale="en" sectionId={sectionId} />

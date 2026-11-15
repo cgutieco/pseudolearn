@@ -1,0 +1,109 @@
+---
+import BaseLayout from '@app/layouts/BaseLayout.astro';
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { ROUTES, localizePath } from '@shared/i18n/routes';
+import { Icon } from '@shared/ui/icon';
+import { NODO_PLANS } from '@entities/nodo-plan/model/nodo-plans';
+import StoryHero from '@widgets/story-hero/StoryHero.astro';
+import NodoGlyph from '@widgets/nodo-preview/NodoGlyph.astro';
+import PageSections from '@widgets/page-sections/PageSections.astro';
+import PageSection from '@widgets/page-section/PageSection.astro';
+import NodoWhat from '@widgets/nodo-what/NodoWhat.astro';
+import FeatureList from '@widgets/feature-list/FeatureList.astro';
+import NodoPlans from '@widgets/nodo-plans/NodoPlans.astro';
+import { NODO_PRIVACY, NODO_RULES } from '@widgets/nodo-capabilities/capabilities';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t } = useTranslations(locale);
+const SECTIONS = ['what', 'rules', 'plans', 'privacy'] as const;
+const sections = SECTIONS.map((id) => ({ id, label: t(`nodo.sections.${id}`) }));
+---
+
+<BaseLayout
+  locale={locale}
+  path={ROUTES.nodo}
+  title={t('nodo.seoTitle')}
+  description={t('nodo.seoDescription')}
+>
+  <StoryHero
+    overline={t('nodo.hero.overline')}
+    title={t('nodo.hero.title')}
+    lead={t('nodo.hero.lead')}
+    note={t('nodo.hero.note')}
+  >
+    <span slot="visual" class="nodo-mark">
+      <NodoGlyph size={132} ceremony />
+    </span>
+    <Fragment slot="actions">
+      <a class="pl-btn pl-btn--on-field" href={localizePath(ROUTES.download, locale)}>
+        <span>{t('nodo.hero.cta', { days: NODO_PLANS.trial.days })}</span>
+        <Icon name="arrowRight" size={17} />
+      </a>
+      <a class="pl-btn pl-btn--outline-field" href="#plans">
+        {t('nodo.sections.plans')}
+      </a>
+    </Fragment>
+  </StoryHero>
+  <PageSections label={t('pageSections.label')} sections={sections} />
+
+  <PageSection
+    id="what"
+    overline={t('nodo.sections.what')}
+    title={t('nodo.what.title')}
+    lead={t('nodo.what.lead')}
+  >
+    <NodoWhat locale={locale} />
+  </PageSection>
+
+  <PageSection
+    id="rules"
+    tone="field"
+    overline={t('nodo.sections.rules')}
+    title={t('nodo.rules.title')}
+    lead={t('nodo.rules.lead')}
+  >
+    <FeatureList locale={locale} items={NODO_RULES} numbered />
+  </PageSection>
+
+  <PageSection
+    id="plans"
+    overline={t('nodo.sections.plans')}
+    title={t('nodo.plans.title')}
+    lead={t('nodo.plans.lead')}
+  >
+    <NodoPlans locale={locale} />
+  </PageSection>
+
+  <PageSection
+    id="privacy"
+    tone="surface"
+    overline={t('nodo.sections.privacy')}
+    title={t('nodo.privacy.title')}
+    lead={t('nodo.privacy.lead', { age: NODO_PLANS.minimumAge })}
+  >
+    <FeatureList locale={locale} items={NODO_PRIVACY} />
+    <a class="pl-link-arrow nodo-privacy" href={localizePath(ROUTES.privacy, locale)}>
+      <span>{t('nodo.privacy.link')}</span>
+      <Icon name="arrowRight" size={16} />
+    </a>
+  </PageSection>
+</BaseLayout>
+
+<style>
+  .nodo-mark {
+    display: inline-flex;
+    padding: var(--pl-space-lg);
+    border: 1px solid var(--pl-on-field-line-strong);
+    border-radius: 36px;
+    background: rgb(7 45 47 / 45%);
+  }
+
+  .nodo-privacy {
+    justify-self: start;
+  }
+</style>

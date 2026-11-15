@@ -1,0 +1,13 @@
+<svg viewBox="0 0 340 170">
+  <text x="60" y="24" font-size="12" text-anchor="middle" fill="@acento-procedimental">{{t:programa-a}}</text>
+  <caja x="10" y="36" ancho="100" alto="56" rol="acento-procedimental" fondo="0.16" tamano="12" texto="{{t:registro}}"/>
+  <flecha puntos="112,64 128,64" rol="tinta"/>
+  <caja x="130" y="36" ancho="80" alto="56" rol="texto" fondo="0.14" tamano="12" texto="{{t:texto}}"/>
+  <text x="170" y="110" font-size="12" text-anchor="middle" font-family="mono" fill="@texto">{{t:json}}</text>
+  <flecha puntos="212,64 228,64" rol="tinta"/>
+  <text x="280" y="24" font-size="12" text-anchor="middle" fill="@acento-estructurado">{{t:programa-b}}</text>
+  <caja x="230" y="36" ancho="100" alto="56" rol="acento-estructurado" fondo="0.16" tamano="12" texto="{{t:registro}}"/>
+  <text x="120" y="132" font-size="12" text-anchor="middle" fill="@atenuado">{{t:serializa}}</text>
+  <text x="250" y="132" font-size="12" text-anchor="middle" fill="@atenuado">{{t:analiza}}</text>
+  <text x="170" y="162" font-size="12" text-anchor="middle" fill="@atenuado">{{t:pie}}</text>
+</svg>

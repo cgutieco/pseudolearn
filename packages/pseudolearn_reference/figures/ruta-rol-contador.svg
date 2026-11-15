@@ -1,0 +1,7 @@
+<svg viewBox="0 0 340 80">
+  <rect x="12" y="52" width="20" height="16" rx="2" fill="@acento-estructurado" fill-opacity="0.5"/>
+  <rect x="36" y="38" width="20" height="30" rx="2" fill="@acento-estructurado" fill-opacity="0.65"/>
+  <rect x="60" y="24" width="20" height="44" rx="2" fill="@acento-estructurado" fill-opacity="0.8"/>
+  <text x="96" y="36" font-size="13" font-weight="bold" fill="@tinta">{{t:nombre}}</text>
+  <text x="96" y="56" font-size="12" fill="@atenuado">{{t:frase}}</text>
+</svg>

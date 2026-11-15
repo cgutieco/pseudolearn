@@ -1,0 +1,20 @@
+SubProceso Suspendible Wait()
+Segun Aguardar SolicitarTemporizador() Hacer
+Exito(timer):
+Segun Aguardar timer.Esperar(50000000) Hacer
+Exito(instant): Escribir "timer";
+Error(problem): Escribir problem.Codigo;
+FinSegun
+Error(problem): Escribir problem.Codigo;
+FinSegun
+FinSubProceso
+SubProceso Suspendible Work()
+Escribir "sibling";
+FinSubProceso
+Algoritmo Main
+Tareas
+Lanzar Wait();
+Lanzar Work();
+FinTareas
+Escribir "done";
+FinAlgoritmo

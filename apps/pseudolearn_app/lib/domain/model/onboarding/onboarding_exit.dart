@@ -1,0 +1,4 @@
+enum OnboardingExit {
+  library,
+  learningRoute,
+}

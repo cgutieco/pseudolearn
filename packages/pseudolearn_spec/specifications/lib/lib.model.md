@@ -1,0 +1,2160 @@
+---
+{
+  "formato": "see/1",
+  "id": "LIB.MODEL",
+  "titulo": "Modelo de funciones incorporadas",
+  "dominio": "biblioteca",
+  "estado": "estable",
+  "version": "1.0.0",
+  "duenos": [
+    "responsable-lenguaje"
+  ],
+  "sujetos": [
+    "engine",
+    "aot"
+  ],
+  "resumen": "Modelo de funciones incorporadas.",
+  "edicion": {
+    "introducida_en": "2027"
+  },
+  "depende_de": [
+    {
+      "id": "LANG.TYPES.RELATIONS",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "requiere"
+    },
+    {
+      "id": "DIAG.MODEL",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "requiere"
+    },
+    {
+      "id": "LANG.PROFILE.VOCABULARY",
+      "version": ">=1.0.0, <2.0.0",
+      "tipo": "usa"
+    }
+  ],
+  "revisado_por": [
+    "César Antonio Gutiérrez Contreras"
+  ]
+}
+---
+
+# Modelo de funciones incorporadas
+
+```definicion
+{
+  "id": "D1",
+  "termino": "functions",
+  "texto": "Identidad, nombres, alias y firma de cada función incorporada.",
+  "valor": {
+    "squareRoot": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "rc",
+        "en": "sqrt"
+      },
+      "alias": {
+        "es": [
+          "raiz"
+        ],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "real"
+    },
+    "absoluteValue": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "abs",
+        "en": "abs"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "real"
+    },
+    "naturalLogarithm": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "ln",
+        "en": "ln"
+      },
+      "alias": {
+        "es": [],
+        "en": [
+          "log"
+        ]
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "real"
+    },
+    "exponential": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "exp",
+        "en": "exp"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "real"
+    },
+    "sine": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "sen",
+        "en": "sin"
+      },
+      "alias": {
+        "es": [
+          "sin"
+        ],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "real"
+    },
+    "cosine": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "cos",
+        "en": "cos"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "real"
+    },
+    "arcTangent": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "atan",
+        "en": "atan"
+      },
+      "alias": {
+        "es": [
+          "arctan"
+        ],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "real"
+    },
+    "truncate": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "trunc",
+        "en": "trunc"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "real"
+      ],
+      "retorno": "integer"
+    },
+    "round": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "redon",
+        "en": "round"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "real"
+      ],
+      "retorno": "integer"
+    },
+    "random": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "azar",
+        "en": "random"
+      },
+      "alias": {
+        "es": [],
+        "en": [
+          "rand"
+        ]
+      },
+      "parametros": [
+        "integer"
+      ],
+      "retorno": "integer"
+    },
+    "randomBetween": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "Aleatorio",
+        "en": "randomBetween"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "integer",
+        "integer"
+      ],
+      "retorno": "integer"
+    },
+    "randomUnit": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "AzarReal",
+        "en": "randomReal"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [],
+      "retorno": "real"
+    },
+    "toText": {
+      "family": "text",
+      "lexemas": {
+        "es": "ATexto",
+        "en": "toText"
+      },
+      "alias": {
+        "es": [
+          "ConvertirATexto"
+        ],
+        "en": []
+      },
+      "parametros": [
+        "anyPrimitive"
+      ],
+      "retorno": "string"
+    },
+    "textToInteger": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "AEntero",
+        "en": "toInteger"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string"
+      ],
+      "retorno": "integer"
+    },
+    "textToReal": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "AReal",
+        "en": "toReal"
+      },
+      "alias": {
+        "es": [
+          "ConvertirANumero"
+        ],
+        "en": []
+      },
+      "parametros": [
+        "string"
+      ],
+      "retorno": "real"
+    },
+    "length": {
+      "family": "text",
+      "lexemas": {
+        "es": "Longitud",
+        "en": "length"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string"
+      ],
+      "retorno": "integer"
+    },
+    "characterAt": {
+      "family": "text",
+      "lexemas": {
+        "es": "CaracterEn",
+        "en": "charAt"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string",
+        "integer"
+      ],
+      "retorno": "character"
+    },
+    "characterCode": {
+      "family": "text",
+      "lexemas": {
+        "es": "CodigoDe",
+        "en": "charCode"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "character"
+      ],
+      "retorno": "integer"
+    },
+    "characterFromCode": {
+      "family": "text",
+      "lexemas": {
+        "es": "CaracterDesde",
+        "en": "charFromCode"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "integer"
+      ],
+      "retorno": "character"
+    },
+    "snapshot": {
+      "family": "collections",
+      "lexemas": {
+        "es": "Instantanea",
+        "en": "snapshot"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "anySnapshot"
+      ],
+      "retorno": "immutableOfFirstArgument"
+    },
+    "substring": {
+      "family": "text",
+      "lexemas": {
+        "es": "Subcadena",
+        "en": "substring"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string",
+        "integer",
+        "integer"
+      ],
+      "retorno": "string"
+    },
+    "concatenate": {
+      "family": "text",
+      "lexemas": {
+        "es": "Concatenar",
+        "en": "concat"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string",
+        "string"
+      ],
+      "retorno": "string"
+    },
+    "contains": {
+      "family": "text",
+      "lexemas": {
+        "es": "Contiene",
+        "en": "contains"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string",
+        "string"
+      ],
+      "retorno": "boolean"
+    },
+    "positionOf": {
+      "family": "text",
+      "lexemas": {
+        "es": "PosicionDe",
+        "en": "indexOf"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string",
+        "string"
+      ],
+      "retorno": "optionalInteger"
+    },
+    "startsWith": {
+      "family": "text",
+      "lexemas": {
+        "es": "EmpiezaCon",
+        "en": "startsWith"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string",
+        "string"
+      ],
+      "retorno": "boolean"
+    },
+    "endsWith": {
+      "family": "text",
+      "lexemas": {
+        "es": "TerminaCon",
+        "en": "endsWith"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string",
+        "string"
+      ],
+      "retorno": "boolean"
+    },
+    "replaceAll": {
+      "family": "text",
+      "lexemas": {
+        "es": "Reemplazar",
+        "en": "replace"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string",
+        "string",
+        "string"
+      ],
+      "retorno": "string"
+    },
+    "split": {
+      "family": "text",
+      "lexemas": {
+        "es": "Dividir",
+        "en": "split"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string",
+        "string"
+      ],
+      "retorno": "stringVector"
+    },
+    "join": {
+      "family": "text",
+      "lexemas": {
+        "es": "Unir",
+        "en": "join"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "stringVector",
+        "string"
+      ],
+      "retorno": "string"
+    },
+    "trim": {
+      "family": "text",
+      "lexemas": {
+        "es": "Recortar",
+        "en": "trim"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "string"
+      ],
+      "retorno": "string"
+    },
+    "shallowCopy": {
+      "family": "collections",
+      "lexemas": {
+        "es": "Copiar",
+        "en": "copy"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "anyClass"
+      ],
+      "retorno": "sameAsFirstArgument"
+    },
+    "minimum": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "min",
+        "en": "min"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric",
+        "numeric"
+      ],
+      "retorno": "widestNumeric"
+    },
+    "maximum": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "max",
+        "en": "max"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric",
+        "numeric"
+      ],
+      "retorno": "widestNumeric"
+    },
+    "floor": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "piso",
+        "en": "floor"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "integer"
+    },
+    "ceiling": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "techo",
+        "en": "ceil"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "integer"
+    },
+    "tangent": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "tan",
+        "en": "tan"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "real"
+    },
+    "arcSine": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "asen",
+        "en": "asin"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "real"
+    },
+    "arcCosine": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "acos",
+        "en": "acos"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "real"
+    },
+    "arcTangent2": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "atan2",
+        "en": "atan2"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric",
+        "numeric"
+      ],
+      "retorno": "real"
+    },
+    "logarithm10": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "log10",
+        "en": "log10"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "real"
+    },
+    "logarithm2": {
+      "family": "numbers",
+      "lexemas": {
+        "es": "log2",
+        "en": "log2"
+      },
+      "alias": {
+        "es": [],
+        "en": []
+      },
+      "parametros": [
+        "numeric"
+      ],
+      "retorno": "real"
+    }
+  }
+}
+```
+
+```regla
+{
+  "id": "R1",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "D1 declara las cuarenta y una funciones incorporadas con lexemas canónicos, alias bilingües, firmas y familia; D2 declara las operaciones de capacidad y de biblioteca con su identidad, familia, receptor, formas, alias bilingües opcionales, parámetros, retorno y efecto. Un nombre tiene una sola semántica: una forma clásica conocida solo existe con el significado clásico, y un alias nombra la misma identidad con la misma firma. D3 declara el constructor contextual y Enviar, Recibir y Cerrar con sus tipos y necesidad de Aguardar; no son operaciones del anfitrión. Los nombres no son palabras reservadas; un subprograma homónimo oculta la función libre. La cantidad y los tipos de argumentos se comprueban estáticamente antes de la ejecución.",
+  "verificacion": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7"
+  ]
+}
+```
+
+```regla
+{
+  "id": "M1",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Cada símbolo de biblioteca tiene una identidad única y estable. Sus facetas es y en, incluidos sus alias, nombran esa identidad y conservan la misma firma, efecto y falibilidad.",
+  "verificacion": [
+    "estructural"
+  ],
+  "justificacion": "La estructura bilingüe y la identidad canónica se verifican desde el recurso generado y su fixture negativo."
+}
+```
+
+```regla
+{
+  "id": "M2",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Dentro de cada perfil, las funciones sin receptor tienen formas únicas; las operaciones con receptor tienen pares únicos de receptor y forma. Una forma no puede identificar dos símbolos distintos en el mismo contexto. Ninguna forma ni alias coincide, tras normalizar mayúsculas y tildes según el perfil, con un lexema o alias del vocabulario reservado de LANG.PROFILE.VOCABULARY D1, porque una palabra reservada no puede nombrar un símbolo en ninguna posición.",
+  "verificacion": [
+    "estructural"
+  ],
+  "justificacion": "La estructura bilingüe y la identidad canónica se verifican desde el recurso generado y su fixture negativo."
+}
+```
+
+```regla
+{
+  "id": "M3",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Cada identidad de biblioteca tiene una ficha de ayuda disponible en español e inglés. La ausencia de una faceta o de una ficha invalida el corpus.",
+  "verificacion": [
+    "estructural"
+  ],
+  "justificacion": "La estructura bilingüe y la identidad canónica se verifican desde el recurso generado y su fixture negativo."
+}
+```
+
+```regla
+{
+  "id": "M4",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "Cada fila de D1 y D2 declara una familia de biblioteca: text, bytes, numbers, collections, io, time, json, network o tasks. Las fichas de ayuda permiten auditar los símbolos por esa familia.",
+  "verificacion": [
+    "estructural"
+  ],
+  "justificacion": "La estructura bilingüe y la identidad canónica se verifican desde el recurso generado y su fixture negativo."
+}
+```
+
+```caso
+{
+  "id": "C1",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Longitud(\"ab\");\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite length(\"ab\");\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "2\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C2",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Longitud(1);\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite length(1);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "incompatibleArgumentType",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C3",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Longitud();\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite length();\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "argumentCountMismatch",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C4",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir b Como Bytes <- Bytes();\nEscribir b.Longitud();\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine b as Bytes <- Bytes();\nwrite b.length();\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "0\n",
+    "terminacion": "completed"
+  }
+}
+```
+
+```definicion
+{
+  "id": "D2",
+  "termino": "capabilityLibrary",
+  "texto": "Operaciones de biblioteca y de capacidades con identidad estable, familia, receptor, formas bilingües, parámetros, resultado y clasificación de efectos.",
+  "valor": {
+    "operations": [
+      {
+        "identity": "request_console",
+        "family": "io",
+        "receiver": null,
+        "es": "SolicitarConsola",
+        "en": "requestConsole",
+        "parameters": [],
+        "result": "console",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "request_arguments",
+        "family": "io",
+        "receiver": null,
+        "es": "SolicitarArgumentos",
+        "en": "requestArguments",
+        "parameters": [],
+        "result": "arguments",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "request_directory",
+        "family": "io",
+        "receiver": null,
+        "es": "SolicitarDirectorio",
+        "en": "requestDirectory",
+        "parameters": [
+          "text"
+        ],
+        "result": "directory",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "request_clock",
+        "family": "time",
+        "receiver": null,
+        "es": "SolicitarReloj",
+        "en": "requestClock",
+        "parameters": [],
+        "result": "clock",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "request_timer",
+        "family": "time",
+        "receiver": null,
+        "es": "SolicitarTemporizador",
+        "en": "requestTimer",
+        "parameters": [],
+        "result": "timer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "console_write",
+        "family": "io",
+        "receiver": "console",
+        "es": "EscribirTexto",
+        "en": "writeText",
+        "parameters": [
+          "text"
+        ],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "console_write_error",
+        "family": "io",
+        "receiver": "console",
+        "es": "EscribirError",
+        "en": "writeError",
+        "parameters": [
+          "text"
+        ],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "console_set_exit_code",
+        "family": "io",
+        "receiver": "console",
+        "es": "EstablecerCodigoSalida",
+        "en": "setExitCode",
+        "parameters": [
+          "integer"
+        ],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "arguments_values",
+        "family": "io",
+        "receiver": "arguments",
+        "es": "Valores",
+        "en": "values",
+        "parameters": [],
+        "result": "text_list",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "directory_derive",
+        "family": "io",
+        "receiver": "directory",
+        "es": "Subdirectorio",
+        "en": "subdirectory",
+        "parameters": [
+          "text",
+          "text"
+        ],
+        "result": "directory",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "file_open",
+        "family": "io",
+        "receiver": "directory",
+        "es": "Abrir",
+        "en": "open",
+        "parameters": [
+          "text",
+          "text"
+        ],
+        "result": "file",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "directory_close",
+        "family": "io",
+        "receiver": "directory",
+        "es": "Cerrar",
+        "en": "close",
+        "parameters": [],
+        "result": "boolean",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "file_read_bytes",
+        "family": "io",
+        "receiver": "file",
+        "es": "LeerBytes",
+        "en": "readBytes",
+        "parameters": [],
+        "result": "bytes",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "file_read_text",
+        "family": "io",
+        "receiver": "file",
+        "es": "LeerTexto",
+        "en": "readText",
+        "parameters": [],
+        "result": "text",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "file_write_bytes",
+        "family": "io",
+        "receiver": "file",
+        "es": "EscribirBytes",
+        "en": "writeBytes",
+        "parameters": [
+          "bytes"
+        ],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "file_write_text",
+        "family": "io",
+        "receiver": "file",
+        "es": "EscribirTexto",
+        "en": "writeText",
+        "parameters": [
+          "text"
+        ],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "file_close",
+        "family": "io",
+        "receiver": "file",
+        "es": "Cerrar",
+        "en": "close",
+        "parameters": [],
+        "result": "boolean",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "clock_now",
+        "family": "time",
+        "receiver": "clock",
+        "es": "Ahora",
+        "en": "now",
+        "parameters": [],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "timer_wait",
+        "family": "time",
+        "receiver": "timer",
+        "es": "Esperar",
+        "en": "wait",
+        "parameters": [
+          "integer"
+        ],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "bytes_new",
+        "family": "bytes",
+        "receiver": null,
+        "es": "Bytes",
+        "en": "Bytes",
+        "parameters": [],
+        "result": "bytes",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "bytes_length",
+        "family": "bytes",
+        "receiver": "bytes",
+        "es": "Longitud",
+        "en": "length",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "bytes_at",
+        "family": "bytes",
+        "receiver": "bytes",
+        "es": "En",
+        "en": "at",
+        "parameters": [
+          "integer"
+        ],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "bytes_utf8",
+        "family": "bytes",
+        "receiver": "bytes",
+        "es": "TextoUtf8",
+        "en": "utf8Text",
+        "parameters": [],
+        "result": "text",
+        "effect": false,
+        "fallible": true
+      },
+      {
+        "identity": "bytes_from_text",
+        "family": "bytes",
+        "receiver": null,
+        "es": "BytesDesdeTexto",
+        "en": "bytesFromText",
+        "parameters": [
+          "text"
+        ],
+        "result": "bytes",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "bytes_segment",
+        "family": "bytes",
+        "receiver": "bytes",
+        "es": "Segmento",
+        "en": "segment",
+        "parameters": [
+          "integer",
+          "integer"
+        ],
+        "result": "bytes",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "bytes_join",
+        "family": "bytes",
+        "receiver": "bytes",
+        "es": "Unir",
+        "en": "join",
+        "parameters": [
+          "bytes"
+        ],
+        "result": "bytes",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_parse",
+        "family": "json",
+        "receiver": null,
+        "es": "AnalizarJson",
+        "en": "parseJson",
+        "parameters": [
+          "text"
+        ],
+        "result": "json_result",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_text",
+        "family": "json",
+        "receiver": null,
+        "es": "TextoJson",
+        "en": "jsonText",
+        "parameters": [
+          "json_value"
+        ],
+        "result": "text",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_null",
+        "family": "json",
+        "receiver": null,
+        "es": "JsonNulo",
+        "en": "jsonNull",
+        "parameters": [],
+        "result": "json_value",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_boolean",
+        "family": "json",
+        "receiver": null,
+        "es": "JsonLogico",
+        "en": "jsonBoolean",
+        "parameters": [
+          "boolean"
+        ],
+        "result": "json_value",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_integer",
+        "family": "json",
+        "receiver": null,
+        "es": "JsonEntero",
+        "en": "jsonInteger",
+        "parameters": [
+          "integer"
+        ],
+        "result": "json_value",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_real",
+        "family": "json",
+        "receiver": null,
+        "es": "JsonReal",
+        "en": "jsonReal",
+        "parameters": [
+          "real"
+        ],
+        "result": "json_value",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_string",
+        "family": "json",
+        "receiver": null,
+        "es": "JsonCadena",
+        "en": "jsonString",
+        "parameters": [
+          "text"
+        ],
+        "result": "json_value",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_array",
+        "family": "json",
+        "receiver": null,
+        "es": "ArregloJson",
+        "en": "jsonArray",
+        "parameters": [],
+        "result": "json_value",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_object",
+        "family": "json",
+        "receiver": null,
+        "es": "ObjetoJson",
+        "en": "jsonObject",
+        "parameters": [],
+        "result": "json_value",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_kind",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "Tipo",
+        "en": "kind",
+        "parameters": [],
+        "result": "json_kind",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_as_boolean",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "ComoLogico",
+        "en": "asBoolean",
+        "parameters": [],
+        "result": "optional_boolean",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_as_integer",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "ComoEntero",
+        "en": "asInteger",
+        "parameters": [],
+        "result": "optional_integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_as_real",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "ComoReal",
+        "en": "asReal",
+        "parameters": [],
+        "result": "optional_real",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_as_text",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "ComoCadena",
+        "en": "asText",
+        "parameters": [],
+        "result": "optional_text",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_length",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "Longitud",
+        "en": "length",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_element",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "Elemento",
+        "en": "element",
+        "parameters": [
+          "integer"
+        ],
+        "result": "optional_json_value",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_field",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "Campo",
+        "en": "field",
+        "parameters": [
+          "text"
+        ],
+        "result": "optional_json_value",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_keys",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "Claves",
+        "en": "keys",
+        "parameters": [],
+        "result": "text_list",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_with_element",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "ConElemento",
+        "en": "withElement",
+        "parameters": [
+          "json_value"
+        ],
+        "result": "json_value",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "json_with_field",
+        "family": "json",
+        "receiver": "json_value",
+        "es": "ConCampo",
+        "en": "withField",
+        "parameters": [
+          "text",
+          "json_value"
+        ],
+        "result": "json_value",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "request_network",
+        "family": "network",
+        "receiver": null,
+        "es": "SolicitarRed",
+        "en": "requestNetwork",
+        "parameters": [],
+        "result": "network",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "network_restrict",
+        "family": "network",
+        "receiver": "network",
+        "es": "Limitar",
+        "en": "restrict",
+        "parameters": [
+          "text"
+        ],
+        "result": "network",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "network_send",
+        "family": "network",
+        "receiver": "network",
+        "es": "Enviar",
+        "en": "send",
+        "parameters": [
+          "http_request"
+        ],
+        "result": "http_response",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "network_close",
+        "family": "network",
+        "receiver": "network",
+        "es": "Cerrar",
+        "en": "close",
+        "parameters": [],
+        "result": "boolean",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "http_request_new",
+        "family": "network",
+        "receiver": null,
+        "es": "PeticionHttp",
+        "en": "HttpRequest",
+        "parameters": [
+          "http_method",
+          "text"
+        ],
+        "result": "http_request",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_with_header",
+        "family": "network",
+        "receiver": "http_request",
+        "es": "ConCabecera",
+        "en": "withHeader",
+        "parameters": [
+          "text",
+          "text"
+        ],
+        "result": "http_request",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_with_body",
+        "family": "network",
+        "receiver": "http_request",
+        "es": "ConCuerpo",
+        "en": "withBody",
+        "parameters": [
+          "bytes"
+        ],
+        "result": "http_request",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_with_text_body",
+        "family": "network",
+        "receiver": "http_request",
+        "es": "ConCuerpoTexto",
+        "en": "withTextBody",
+        "parameters": [
+          "text"
+        ],
+        "result": "http_request",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_with_response_limit",
+        "family": "network",
+        "receiver": "http_request",
+        "es": "ConLimiteRespuesta",
+        "en": "withResponseLimit",
+        "parameters": [
+          "integer"
+        ],
+        "result": "http_request",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_with_timeout",
+        "family": "network",
+        "receiver": "http_request",
+        "es": "ConTiempoMaximo",
+        "en": "withTimeout",
+        "parameters": [
+          "integer"
+        ],
+        "result": "http_request",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_redirected",
+        "family": "network",
+        "receiver": "http_request",
+        "es": "Redirigida",
+        "en": "redirected",
+        "parameters": [
+          "http_response"
+        ],
+        "result": "http_request",
+        "effect": false,
+        "fallible": true
+      },
+      {
+        "identity": "http_status",
+        "family": "network",
+        "receiver": "http_response",
+        "es": "Estado",
+        "en": "status",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_is_success",
+        "family": "network",
+        "receiver": "http_response",
+        "es": "EsExito",
+        "en": "isSuccess",
+        "parameters": [],
+        "result": "boolean",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_header",
+        "family": "network",
+        "receiver": "http_response",
+        "es": "Cabecera",
+        "en": "header",
+        "parameters": [
+          "text"
+        ],
+        "result": "optional_text",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_header_names",
+        "family": "network",
+        "receiver": "http_response",
+        "es": "NombresCabeceras",
+        "en": "headerNames",
+        "parameters": [],
+        "result": "text_list",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_body",
+        "family": "network",
+        "receiver": "http_response",
+        "es": "Cuerpo",
+        "en": "body",
+        "parameters": [],
+        "result": "bytes",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "http_text_body",
+        "family": "network",
+        "receiver": "http_response",
+        "es": "CuerpoTexto",
+        "en": "textBody",
+        "parameters": [],
+        "result": "text",
+        "effect": false,
+        "fallible": true
+      },
+      {
+        "identity": "http_final_url",
+        "family": "network",
+        "receiver": "http_response",
+        "es": "Url",
+        "en": "url",
+        "parameters": [],
+        "result": "text",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "text_to_upper",
+        "family": "text",
+        "receiver": null,
+        "es": "AMayusculas",
+        "en": "toUpper",
+        "parameters": [
+          "text"
+        ],
+        "result": "text",
+        "effect": false,
+        "fallible": false,
+        "alias": {
+          "es": [
+            "Mayusculas"
+          ],
+          "en": []
+        }
+      },
+      {
+        "identity": "text_to_lower",
+        "family": "text",
+        "receiver": null,
+        "es": "AMinusculas",
+        "en": "toLower",
+        "parameters": [
+          "text"
+        ],
+        "result": "text",
+        "effect": false,
+        "fallible": false,
+        "alias": {
+          "es": [
+            "Minusculas"
+          ],
+          "en": []
+        }
+      },
+      {
+        "identity": "text_decimals",
+        "family": "text",
+        "receiver": null,
+        "es": "Decimales",
+        "en": "decimals",
+        "parameters": [
+          "real",
+          "integer"
+        ],
+        "result": "text",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "text_pad_left",
+        "family": "text",
+        "receiver": null,
+        "es": "RellenarIzquierda",
+        "en": "padLeft",
+        "parameters": [
+          "text",
+          "integer",
+          "text"
+        ],
+        "result": "text",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "text_pad_right",
+        "family": "text",
+        "receiver": null,
+        "es": "RellenarDerecha",
+        "en": "padRight",
+        "parameters": [
+          "text",
+          "integer",
+          "text"
+        ],
+        "result": "text",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "directory_exists",
+        "family": "io",
+        "receiver": "directory",
+        "es": "Existe",
+        "en": "exists",
+        "parameters": [
+          "text"
+        ],
+        "result": "boolean",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "directory_is_directory",
+        "family": "io",
+        "receiver": "directory",
+        "es": "EsDirectorio",
+        "en": "isDirectory",
+        "parameters": [
+          "text"
+        ],
+        "result": "boolean",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "directory_list",
+        "family": "io",
+        "receiver": "directory",
+        "es": "Listar",
+        "en": "list",
+        "parameters": [
+          "text"
+        ],
+        "result": "text_list",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "directory_delete",
+        "family": "io",
+        "receiver": "directory",
+        "es": "Borrar",
+        "en": "delete",
+        "parameters": [
+          "text"
+        ],
+        "result": "boolean",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "directory_rename",
+        "family": "io",
+        "receiver": "directory",
+        "es": "Renombrar",
+        "en": "rename",
+        "parameters": [
+          "text",
+          "text"
+        ],
+        "result": "boolean",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "directory_create",
+        "family": "io",
+        "receiver": "directory",
+        "es": "CrearDirectorio",
+        "en": "createDirectory",
+        "parameters": [
+          "text"
+        ],
+        "result": "boolean",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "file_append_bytes",
+        "family": "io",
+        "receiver": "file",
+        "es": "AgregarBytes",
+        "en": "appendBytes",
+        "parameters": [
+          "bytes"
+        ],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "file_append_text",
+        "family": "io",
+        "receiver": "file",
+        "es": "AgregarTexto",
+        "en": "appendText",
+        "parameters": [
+          "text"
+        ],
+        "result": "integer",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "request_environment",
+        "family": "io",
+        "receiver": null,
+        "es": "SolicitarEntorno",
+        "en": "requestEnvironment",
+        "parameters": [],
+        "result": "environment",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "environment_get",
+        "family": "io",
+        "receiver": "environment",
+        "es": "Obtener",
+        "en": "get",
+        "parameters": [
+          "text"
+        ],
+        "result": "optional_text",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "clock_local_now",
+        "family": "time",
+        "receiver": "clock",
+        "es": "AhoraLocal",
+        "en": "localNow",
+        "parameters": [],
+        "result": "date_time",
+        "effect": true,
+        "fallible": true
+      },
+      {
+        "identity": "date_time_utc",
+        "family": "time",
+        "receiver": null,
+        "es": "FechaHoraUtc",
+        "en": "dateTimeUtc",
+        "parameters": [
+          "integer"
+        ],
+        "result": "date_time",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_of",
+        "family": "time",
+        "receiver": null,
+        "es": "FechaHoraDe",
+        "en": "dateTimeOf",
+        "parameters": [
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer",
+          "integer"
+        ],
+        "result": "optional_date_time",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_parse",
+        "family": "time",
+        "receiver": null,
+        "es": "AnalizarFechaHora",
+        "en": "parseDateTime",
+        "parameters": [
+          "text"
+        ],
+        "result": "optional_date_time",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_year",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "Anio",
+        "en": "year",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_month",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "Mes",
+        "en": "month",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_day",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "Dia",
+        "en": "day",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_hour",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "Hora",
+        "en": "hour",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_minute",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "Minuto",
+        "en": "minute",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_second",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "Segundo",
+        "en": "second",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_nanosecond",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "Nanosegundo",
+        "en": "nanosecond",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_weekday",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "DiaDeLaSemana",
+        "en": "weekday",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_utc_offset",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "DesplazamientoUtc",
+        "en": "utcOffset",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_instant",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "Instante",
+        "en": "instant",
+        "parameters": [],
+        "result": "integer",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_iso_format",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "FormatoIso",
+        "en": "isoFormat",
+        "parameters": [],
+        "result": "text",
+        "effect": false,
+        "fallible": false
+      },
+      {
+        "identity": "date_time_iso_format_precise",
+        "family": "time",
+        "receiver": "date_time",
+        "es": "FormatoIsoPreciso",
+        "en": "isoFormatPrecise",
+        "parameters": [],
+        "result": "text",
+        "effect": false,
+        "fallible": false
+      }
+    ]
+  }
+}
+```
+
+
+Las solicitudes de consola, argumentos, directorio identificado por nombre, reloj y temporizador
+devuelven Resultado del tipo de capacidad y ErrorES; no construyen capacidades sin solicitarlas al anfitrión.
+Los métodos de capacidad definidos en capabilityLibrary también devuelven Resultado. Abrir y
+Subdirectorio reciben un modo lectura, escritura o lectura_escritura (read, write o read_write en
+inglés); la apertura en escritura crea o trunca, la apertura en lectura_escritura crea o conserva el
+contenido, y una derivación nunca amplía los derechos.
+LeerBytes y LeerTexto leen el contenido completo del archivo. EscribirBytes y EscribirTexto
+devuelven la cantidad de bytes escritos; Valores devuelve Vector<Cadena>. Ahora devuelve el
+instante grabado en nanosegundos y Esperar recibe una duración no negativa en nanosegundos y devuelve
+el instante lógico de resolución. Cerrar devuelve Verdadero al cerrar y CapacidadCerrada al repetir.
+Bytes() construye la secuencia vacía; Longitud y En consultan longitud y un octeto con índice
+comprobado. BytesDesdeTexto codifica UTF-8, Segmento copia un intervalo de octetos y Unir concatena
+dos secuencias inmutables. TextoUtf8 devuelve Resultado<Cadena,ErrorES> y rechaza UTF-8 inválido. ErrorES contiene
+Codigo y Incierto (code y uncertain): el código es la variante portable, y la bandera informa
+incertidumbre de una operación con potencial de escritura.
+
+AMayusculas y AMinusculas son operaciones puras de texto sin receptor que devuelven una cadena nueva.
+
+Decimales, RellenarIzquierda y RellenarDerecha son operaciones puras de texto sin receptor que devuelven una cadena nueva. El primer parámetro de Decimales es real y admite un entero, que se amplía a real; sus trampas son decimalPlacesOutOfRange, invalidPaddingText, paddingWidthOutOfRange y cellLimitExceeded según LIB.CORE.CONVERSION#R2 y LIB.CORE.TEXT#T5.
+
+SolicitarEntorno crea la capacidad Entorno y Obtener lee una variable por nombre; ambas son operaciones de efecto falibles de la familia io, y Obtener devuelve Opcional<Cadena> según LIB.IO#R12 a R14.
+
+FechaHora es un valor opaco inmutable que combina un instante en nanosegundos desde la época Unix y un desplazamiento UTC en segundos; todas sus operaciones, salvo AhoraLocal, son puras, usan la familia time y se definen en LIB.TIME#R3 a R8. AhoraLocal es una operación de efecto falible del receptor reloj.
+
+Existe, EsDirectorio, Listar, Borrar, Renombrar y CrearDirectorio son operaciones de efecto del receptor directorio y AgregarTexto y AgregarBytes del receptor archivo; todas son falibles, usan la familia io y devuelven lógico, vector de cadenas o entero según LIB.IO#R5 a R11.
+
+Los parámetros text admiten Cadena o Caracter; un carácter se convierte sin pérdida a una cadena
+de un punto de código antes de emitir la solicitud. Esto conserva rutas de un solo carácter sin
+alterar las reglas generales de asignación entre ambos tipos.
+
+```definicion
+{
+  "id": "D3",
+  "termino": "channelLibrary",
+  "texto": "Canal(n) con contexto Canal<T> crea capacidad positiva explícita, como máximo 65 536 por omisión. Aguardar canal.Enviar(T) retorna Logico; Aguardar canal.Recibir() retorna Opcional<T>; canal.Cerrar() no retorna valor, no suspende y es idempotente. Son operaciones internas del runtime, nunca del anfitrión."
+}
+```
+
+```caso
+{
+  "id": "C5",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nDefinir stream Como Canal<Entero> <- Canal(1);\nstream.Cerrar();\nElegir\nRecibir first Desde stream:\nRecibir second Desde stream:\nFinElegir\nFinAlgoritmo\n",
+    "en": "algorithm P\ndefine stream as channel<integer> <- channel(1);\nstream.close();\nselect\nreceive first from stream:\nreceive second from stream:\nendSelect\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "execute",
+  "espera": {
+    "salida": "",
+    "terminacion": "completed"
+  }
+}
+```
+
+```caso
+{
+  "id": "C6",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\n  Escribir Concatenar(\"a\");\nFinAlgoritmo\n",
+    "en": "Algorithm P\n  Write concat(\"a\");\nEndAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "argumentCountMismatch",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```
+
+```caso
+{
+  "id": "C7",
+  "regla": "R1",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "programas": {
+    "es": "Algoritmo P\nEscribir Concatenar(\"a\", 1);\nFinAlgoritmo\n",
+    "en": "algorithm P\nwrite concat(\"a\", 1);\nendAlgorithm\n"
+  },
+  "origen": "derivado",
+  "operacion": "analyze",
+  "espera": {
+    "arbol": "presente",
+    "diagnosticos": [
+      {
+        "codigo": "incompatibleArgumentType",
+        "severidad": "error"
+      }
+    ]
+  }
+}
+```

@@ -1,0 +1,42 @@
+SubProceso Suspendible Produce(stream Como Canal<Entero>)
+Definir firstAccepted Como Logico <- Aguardar stream.Enviar(1);
+Si firstAccepted Entonces
+FinSi
+Definir secondAccepted Como Logico <- Aguardar stream.Enviar(2);
+Si secondAccepted Entonces
+FinSi
+stream.Cerrar();
+FinSubProceso
+SubProceso Suspendible Consume(stream Como Canal<Entero>)
+Repetir
+Segun Aguardar stream.Recibir() Hacer
+Algo(receivedValue): Escribir receivedValue;
+Nada: Salir;
+FinSegun
+Hasta Que Falso
+FinSubProceso
+SubProceso Suspendible Fetch(net Como RedCap, url Como Cadena)
+Segun Aguardar net.Enviar(PeticionHttp(MetodoHttp.GET, url)) Hacer
+Exito(response):
+Escribir response.Estado();
+Segun response.CuerpoTexto() Hacer
+Exito(body): Escribir body;
+Error(problem): Escribir problem.Codigo;
+FinSegun
+Error(problem): Escribir problem.Codigo;
+FinSegun
+FinSubProceso
+Algoritmo Main
+Definir base Como Cadena;
+Leer base;
+Definir stream Como Canal<Entero> <- Canal(1);
+Segun SolicitarRed() Hacer
+Exito(net):
+Tareas
+Lanzar Produce(stream);
+Lanzar Consume(stream);
+Lanzar Fetch(net, Concatenar(base, "/greeting.txt"));
+FinTareas
+Error(problem): Escribir problem.Codigo;
+FinSegun
+FinAlgoritmo

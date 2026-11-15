@@ -1,0 +1,23 @@
+<svg viewBox="0 0 340 170">
+  <text x="30" y="20" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">20</text>
+  <text x="74" y="20" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">23</text>
+  <text x="118" y="20" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">19</text>
+  <text x="162" y="20" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">25</text>
+  <text x="206" y="20" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">22</text>
+  <text x="250" y="20" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">18</text>
+  <text x="294" y="20" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">26</text>
+  <rect x="10" y="28" width="306" height="28" rx="4" fill="@superficie" stroke="@atenuado"/>
+  <g data-paso="1" data-hasta="1">
+    <flecha puntos="20,66 300,66" rol="acento-procedimental"/>
+    <caja x="100" y="84" ancho="140" alto="34" rol="acento-procedimental" fondo="0.14" texto="{{t:promedio}}" tamano="12"/>
+    <flecha puntos="170,70 170,80" rol="acento-procedimental"/>
+  </g>
+  <g data-paso="2">
+    <caja x="100" y="84" ancho="140" alto="34" rol="acento-procedimental" fondo="0.08" texto="{{t:promedio}}" tamano="12"/>
+    <rect x="56" y="30" width="36" height="24" rx="3" fill="@exito" fill-opacity="0.3"/>
+    <rect x="144" y="30" width="36" height="24" rx="3" fill="@exito" fill-opacity="0.3"/>
+    <rect x="188" y="30" width="36" height="24" rx="3" fill="@exito" fill-opacity="0.3"/>
+    <rect x="276" y="30" width="36" height="24" rx="3" fill="@exito" fill-opacity="0.3"/>
+    <text x="170" y="150" font-size="12" text-anchor="middle" fill="@exito">{{t:superan}}</text>
+  </g>
+</svg>

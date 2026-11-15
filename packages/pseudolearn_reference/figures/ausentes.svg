@@ -1,0 +1,14 @@
+<svg viewBox="0 0 340 200">
+  <caja x="10" y="10" ancho="150" alto="40" rol="atenuado" discontinua="" fondo="0.0" colortexto="atenuado" tamano="12" texto="{{t:abstracta}}"/>
+  <caja x="10" y="58" ancho="150" alto="40" rol="atenuado" discontinua="" fondo="0.0" colortexto="atenuado" tamano="12" texto="{{t:estatico}}"/>
+  <caja x="10" y="106" ancho="150" alto="40" rol="atenuado" discontinua="" fondo="0.0" colortexto="atenuado" tamano="12" texto="{{t:protegido}}"/>
+  <caja x="10" y="154" ancho="150" alto="40" rol="atenuado" discontinua="" fondo="0.0" colortexto="atenuado" tamano="12" texto="{{t:excepciones}}"/>
+  <flecha puntos="162,30 176,30" rol="exito"/>
+  <flecha puntos="162,78 176,78" rol="exito"/>
+  <flecha puntos="162,126 176,126" rol="exito"/>
+  <flecha puntos="162,174 176,174" rol="exito"/>
+  <caja x="180" y="10" ancho="150" alto="40" rol="exito" fondo="0.12" tamano="12" texto="{{t:interfaces}}"/>
+  <caja x="180" y="58" ancho="150" alto="40" rol="exito" fondo="0.12" tamano="12" texto="{{t:parametros}}"/>
+  <caja x="180" y="106" ancho="150" alto="40" rol="exito" fondo="0.12" tamano="12" texto="{{t:publicoPrivado}}"/>
+  <caja x="180" y="154" ancho="150" alto="40" rol="exito" fondo="0.12" tamano="12" texto="{{t:resultado}}"/>
+</svg>

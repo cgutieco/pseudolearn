@@ -1,0 +1,27 @@
+subroutine PrintField(document as JsonValue, key as string)
+switch document.field(key) do
+some(value):
+switch value.asText() do
+some(content): write content;
+none: write "invalid_type";
+endSwitch
+none: write "missing_field";
+endSwitch
+endSubroutine
+subroutine Fetch() as result<integer, IoError>
+define net as NetworkCap <- propagate requestNetwork();
+define response as HttpResponse <- propagate net.send(HttpRequest(HttpMethod.GET, "https://rickandmortyapi.com/api/character/1"));
+write response.status();
+define body as string <- propagate response.textBody();
+switch parseJson(body) do
+success(document): PrintField(document, "name"); PrintField(document, "status");
+failure(problem): write problem.code;
+endSwitch
+return success(0);
+endSubroutine
+algorithm Main
+switch Fetch() do
+success(value):
+failure(problem): write problem.code;
+endSwitch
+endAlgorithm

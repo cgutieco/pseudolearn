@@ -1,0 +1,227 @@
+import '../host/local_execution_environment.dart';
+import 'dart:io';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:supabase/supabase.dart' show SupabaseClient;
+import '../application/review/review_prompting_progress_store.dart';
+import '../application/route/progress_updates.dart';
+import '../application/route/publishing_progress_store.dart';
+import '../data/auth/native_credential_source.dart';
+import '../data/auth/session_storage.dart';
+import '../data/auth/supabase_account_deletion_gateway.dart';
+import '../data/auth/supabase_auth_gateway.dart';
+import '../data/auth/supabase_session_persistence.dart';
+import '../data/index/metadata_index.dart';
+import '../data/demo/bundled_demo_program_source.dart';
+import '../data/route/bundled_route_repository.dart';
+import '../data/reference/bundled_reference_repository.dart';
+import '../data/platform/app_links_incoming_link_source.dart';
+import '../data/platform/platform_app_version_source.dart';
+import '../data/platform/platform_store_review_prompt.dart';
+import '../data/platform/platform_text_entry_modality.dart';
+import '../data/platform/random_identifier_generator.dart';
+import '../data/platform/system_clock.dart';
+import '../data/preferences/file_preferences_store.dart';
+import '../data/progress/sqlite_progress_history.dart';
+import '../domain/ports/account_deletion_gateway.dart';
+import '../domain/ports/auth_gateway.dart';
+import '../domain/ports/clock.dart';
+import '../domain/ports/identifier_generator.dart';
+import '../domain/ports/incoming_link_source.dart';
+import '../domain/ports/local_progress_store.dart';
+import '../domain/ports/preferences_store.dart';
+import '../domain/ports/progress_history.dart';
+import 'agent_composition.dart';
+import 'agent_services.dart';
+import 'app_dependencies.dart';
+import '../engine/rust/rust_transport.dart';
+import 'engine_services.dart';
+import 'rust_engine_services.dart';
+import 'sync_composition.dart';
+
+final class _LocalStores {
+  final PreferencesStore preferences;
+  final LocalProgressStore progress;
+  final ProgressUpdates progressUpdates;
+  final ProgressHistory history;
+
+  const _LocalStores({
+    required this.preferences,
+    required this.progress,
+    required this.progressUpdates,
+    required this.history,
+  });
+}
+
+final class _AccountServices {
+  final AuthGateway authGateway;
+  final AccountDeletionGateway deletionGateway;
+  final IncomingLinkSource incomingLinks;
+
+  const _AccountServices({
+    required this.authGateway,
+    required this.deletionGateway,
+    required this.incomingLinks,
+  });
+}
+
+final class _DependencyAssembly {
+  final Clock clock;
+  final IdentifierGenerator identifiers;
+  final _LocalStores stores;
+  final SyncServices sync;
+  final _AccountServices account;
+  final EngineServices engine;
+  final AgentServices agent;
+
+  const _DependencyAssembly({
+    required this.clock,
+    required this.identifiers,
+    required this.stores,
+    required this.sync,
+    required this.account,
+    required this.engine,
+    required this.agent,
+  });
+}
+
+_AccountServices _buildAccountServices(SupabaseClient client) {
+  final credentialSource = PlatformNativeCredentialSource();
+  final sessionPersistence = SupabaseSessionPersistence(
+    auth: client.auth,
+    storage: const SecureSessionStorage(),
+  )..start();
+  return _AccountServices(
+    authGateway: SupabaseAuthGateway(
+      client: client,
+      sessionPersistence: sessionPersistence,
+      credentialSource: credentialSource,
+    ),
+    deletionGateway: SupabaseAccountDeletionGateway(
+      client: client,
+      credentialSource: credentialSource,
+    ),
+    incomingLinks: AppLinksIncomingLinkSource(),
+  );
+}
+
+AppDependencies buildLocalDependencies({
+  required Directory documentsDirectory,
+  required MetadataIndex index,
+  required LocalProgressStore progressStore,
+  required RustTransport transport,
+}) => _buildLocalDependencies(
+  documentsDirectory: documentsDirectory,
+  index: index,
+  progressStore: progressStore,
+  engine: buildRustEngineServices(
+    transport,
+    environment: LocalExecutionEnvironment(documentsDirectory.path),
+  ),
+);
+
+AppDependencies _buildLocalDependencies({
+  required Directory documentsDirectory,
+  required MetadataIndex index,
+  required LocalProgressStore progressStore,
+  required EngineServices engine,
+}) {
+  final identifierGenerator = RandomIdentifierGenerator();
+  final supabaseClient = buildSupabaseClient();
+  final account = _buildAccountServices(supabaseClient);
+  const clock = SystemClock();
+  return _assembleDependencies(
+    _DependencyAssembly(
+      clock: clock,
+      identifiers: identifierGenerator,
+      stores: _localStores(documentsDirectory, progressStore, index),
+      sync: buildSyncServices(
+        index: index,
+        documentsDirectory: documentsDirectory,
+        client: supabaseClient,
+        authGateway: account.authGateway,
+        identifiers: identifierGenerator,
+        clock: clock,
+      ),
+      account: account,
+      engine: engine,
+      agent: buildAgentServices(
+        client: supabaseClient,
+        documentsDirectory: documentsDirectory,
+        database: index.database,
+        identifiers: identifierGenerator,
+      ),
+    ),
+  );
+}
+
+_LocalStores _localStores(
+  Directory documentsDirectory,
+  LocalProgressStore progressStore,
+  MetadataIndex index,
+) {
+  final updates = ProgressUpdates();
+  return _LocalStores(
+    preferences: FilePreferencesStore(directory: documentsDirectory),
+    progress: PublishingProgressStore(
+      inner: ReviewPromptingProgressStore(
+        inner: progressStore,
+        prompt: const PlatformStoreReviewPrompt(),
+      ),
+      updates: updates,
+    ),
+    progressUpdates: updates,
+    history: SqliteProgressHistory(index.database),
+  );
+}
+
+AppDependencies _assembleDependencies(_DependencyAssembly assembly) {
+  return AppDependencies(
+    clock: assembly.clock,
+    identifiers: assembly.identifiers,
+    preferences: assembly.stores.preferences,
+    documentRepository: assembly.sync.repository,
+    authGateway: assembly.account.authGateway,
+    incomingLinkSource: assembly.account.incomingLinks,
+    accountDeletionGateway: assembly.account.deletionGateway,
+    localAccountDataPurger: assembly.sync.accountDataPurger,
+    remoteProgressStore: assembly.sync.remoteProgressStore,
+    syncQueue: assembly.sync.queue,
+    connectivityMonitor: assembly.sync.connectivity,
+    syncCoordinator: assembly.sync.coordinator,
+    programAnalyzer: assembly.engine.analyzer,
+    createProgramExecution: assembly.engine.createProgramExecution,
+    createObservableExecutionSession: assembly.engine.createObservableExecutionSession,
+    flowchartBuilder: assembly.engine.flowchartBuilder,
+    structogramBuilder: assembly.engine.structogramBuilder,
+    classDiagramBuilder: assembly.engine.classDiagramBuilder,
+    completionSource: assembly.engine.completionSource,
+    contextualCompletionSource: assembly.engine.contextualCompletionSource,
+    sourceEditor: assembly.engine.sourceEditor,
+    editorKeySource: assembly.engine.editorKeySource,
+    textEntryModality: const PlatformTextEntryModality(), appVersionSource: const PlatformAppVersionSource(),
+    routeRepository: _routeRepository, demoProgramSource: _demoProgramSource,
+    routeEvaluators: assembly.engine.routeEvaluators,
+    referenceRepository: _referenceRepository,
+    syntaxHelpSource: assembly.engine.syntaxHelpSource,
+    programExporter: assembly.engine.programExporter,
+    localProgressStore: assembly.stores.progress,
+    progressUpdates: assembly.stores.progressUpdates,
+    progressHistory: assembly.stores.history,
+    programConstructReader: assembly.engine.programConstructReader,
+    exerciseChecker: assembly.engine.exerciseChecker,
+    programTools: assembly.engine.programTools,
+    userExerciseRepository: assembly.sync.userExercises,
+    agent: assembly.agent,
+  );
+}
+
+final BundledReferenceRepository _referenceRepository =
+    BundledReferenceRepository(assetLoader: rootBundle.loadString);
+
+final BundledRouteRepository _routeRepository = BundledRouteRepository(
+  assetLoader: rootBundle.loadString,
+);
+
+final BundledDemoProgramSource _demoProgramSource = BundledDemoProgramSource(
+  assetLoader: rootBundle.loadString,
+);

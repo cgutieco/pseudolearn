@@ -1,0 +1,6 @@
+Importar geo.vectores.Doble;
+Algoritmo Principal
+Definir numero Como Entero <- 21;
+Escribir "ñandú 🌍";
+Escribir Doble(numero);
+FinAlgoritmo

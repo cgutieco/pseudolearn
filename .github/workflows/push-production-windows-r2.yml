@@ -1,0 +1,191 @@
+name: Push Production Windows R2
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (e.g. 1.0.0); defaults to the version in pubspec.yaml"
+        required: false
+        default: ""
+
+jobs:
+  build-package-upload:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: apps/pseudolearn_app
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: apps/pseudolearn_app/pubspec.yaml
+
+      - name: Install app dependencies
+        run: flutter pub get
+
+      - name: Set up Rust bridge
+        uses: ./.github/actions/setup-rust-bridge
+        with:
+          targets: x86_64-pc-windows-msvc
+
+      - name: Resolve release version
+        id: resolve-version
+        shell: pwsh
+        run: |
+          $ver = "${{ github.event.inputs.version }}"
+          if ([string]::IsNullOrWhiteSpace($ver)) {
+            $line = Select-String -Path pubspec.yaml -Pattern '^version:\s*(\S+)' | Select-Object -First 1
+            if ($null -eq $line) {
+              Write-Error "pubspec.yaml has no version field"
+              exit 1
+            }
+            $ver = $line.Matches[0].Groups[1].Value
+          }
+          if ($ver.StartsWith("v")) {
+            $ver = $ver.Substring(1)
+          }
+          $ver = $ver.Split("+")[0]
+          Write-Host "Resolved version: $ver"
+          echo "VERSION=$ver" >> $env:GITHUB_ENV
+
+      - name: Write build-time auth configuration
+        shell: pwsh
+        run: |
+          $config = @{
+            SUPABASE_URL = "${{ secrets.SUPABASE_URL }}"
+            SUPABASE_ANON_KEY = "${{ secrets.SUPABASE_ANON_KEY }}"
+            AGENT_BACKEND = "proxy"
+            AGENT_PROXY_URL = "${{ secrets.SUPABASE_URL }}/functions/v1"
+            AGENT_PURCHASES = "unavailable"
+          } | ConvertTo-Json
+          Set-Content -Path dart_define.ci.json -Value $config
+
+      - name: Build Windows release bundle
+        shell: pwsh
+        run: |
+          flutter build windows --release `
+            --dart-define-from-file=dart_define.ci.json `
+            --build-name=$env:VERSION `
+            --build-number=$env:GITHUB_RUN_NUMBER
+
+      - name: Verify and exercise bundled Rust asset
+        shell: pwsh
+        run: |
+          $nativeAsset = "build\native_assets\windows\pseudolearn_bridge.dll"
+          $bundleAsset = "build\windows\x64\runner\Release\pseudolearn_bridge.dll"
+          if (-not (Test-Path $nativeAsset) -or -not (Test-Path $bundleAsset)) {
+            throw "The Rust native asset is missing from the Windows build or application bundle."
+          }
+          $env:FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR = (Resolve-Path "build\native_assets\windows").Path
+          flutter test --no-pub tool/native_bridge_test.dart tool/native_bridge_adapters_test.dart
+          Remove-Item Env:FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR
+          flutter test --no-pub --device-id windows integration_test/native_engine_smoke_test.dart
+
+      - name: Verify bundled Visual C++ runtime
+        shell: pwsh
+        run: |
+          $bundle = "build\windows\x64\runner\Release"
+          $missing = @("msvcp140.dll", "vcruntime140.dll", "vcruntime140_1.dll") |
+            Where-Object { -not (Test-Path (Join-Path $bundle $_)) }
+          if ($missing.Count -gt 0) {
+            Write-Error "Visual C++ runtime missing from the bundle: $($missing -join ', ')"
+            exit 1
+          }
+
+      - name: Compile Inno Setup installer
+        shell: pwsh
+        run: |
+          iscc "/DAppVersion=$env:VERSION" packaging/windows/inno_setup.iss
+
+      - name: Create portable ZIP archive
+        shell: pwsh
+        run: |
+          Compress-Archive `
+            -Path "build\windows\x64\runner\Release\*" `
+            -DestinationPath "packaging\windows\Output\PseudoLearn-Windows-Portable.zip" `
+            -Force
+
+      - name: Verify the Rust asset in the installer and portable ZIP
+        shell: pwsh
+        run: |
+          $installPath = Join-Path $env:RUNNER_TEMP "pseudolearn-installer-smoke"
+          $installerPath = (Resolve-Path "packaging\windows\Output\PseudoLearn-Setup.exe").Path
+          $installer = Start-Process -FilePath $installerPath `
+            -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /DIR=`"$installPath`"" `
+            -Wait -PassThru
+          if ($installer.ExitCode -ne 0 -or -not (Test-Path (Join-Path $installPath "pseudolearn_bridge.dll"))) {
+            throw "The Windows installer did not install pseudolearn_bridge.dll."
+          }
+          $uninstaller = Join-Path $installPath "unins000.exe"
+          Start-Process -FilePath $uninstaller -ArgumentList "/VERYSILENT" -Wait
+          $portablePath = Join-Path $env:RUNNER_TEMP "pseudolearn-portable-smoke"
+          Expand-Archive -Path "packaging\windows\Output\PseudoLearn-Windows-Portable.zip" -DestinationPath $portablePath -Force
+          if (-not (Test-Path (Join-Path $portablePath "pseudolearn_bridge.dll"))) {
+            throw "The portable ZIP does not contain pseudolearn_bridge.dll."
+          }
+
+      - name: Upload build artifacts to GitHub Actions
+        uses: actions/upload-artifact@v7
+        with:
+          name: pseudolearn-windows-${{ env.VERSION }}
+          path: |
+            apps/pseudolearn_app/packaging/windows/Output/PseudoLearn-Setup.exe
+            apps/pseudolearn_app/packaging/windows/Output/PseudoLearn-Windows-Portable.zip
+
+      - name: Check Cloudflare R2 secrets configuration
+        id: check-r2-secrets
+        shell: pwsh
+        env:
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+        run: |
+          $missing = @()
+          if ([string]::IsNullOrWhiteSpace($env:R2_ACCOUNT_ID)) { $missing += "R2_ACCOUNT_ID" }
+          if ([string]::IsNullOrWhiteSpace($env:R2_ACCESS_KEY_ID)) { $missing += "R2_ACCESS_KEY_ID" }
+          if ([string]::IsNullOrWhiteSpace($env:R2_SECRET_ACCESS_KEY)) { $missing += "R2_SECRET_ACCESS_KEY" }
+          if ([string]::IsNullOrWhiteSpace($env:R2_BUCKET_NAME)) { $missing += "R2_BUCKET_NAME" }
+          if ($env:R2_ACCESS_KEY_ID.Length -ne 0 -and $env:R2_ACCESS_KEY_ID.Length -ne 32) {
+            throw "R2_ACCESS_KEY_ID must be the 32-character Access Key ID of the R2 API token, not the token value."
+          }
+          if ($missing.Count -gt 0) {
+            Write-Warning "Missing R2 secrets: $($missing -join ', '). Artifacts are saved in GitHub Actions run."
+            echo "CONFIGURED=false" >> $env:GITHUB_ENV
+          } else {
+            echo "CONFIGURED=true" >> $env:GITHUB_ENV
+          }
+
+      - name: Upload release binaries to Cloudflare R2
+        if: env.CONFIGURED == 'true'
+        shell: pwsh
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+        run: |
+          $PSNativeCommandUseErrorActionPreference = $true
+          $ErrorActionPreference = "Stop"
+          $endpoint = "https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com"
+          $bucket = "${{ secrets.R2_BUCKET_NAME }}"
+          $version = $env:VERSION
+
+          Write-Host "Uploading latest installer..."
+          aws s3 cp packaging/windows/Output/PseudoLearn-Setup.exe "s3://$bucket/windows/PseudoLearn-Setup.exe" --endpoint-url $endpoint
+
+          Write-Host "Uploading versioned installer (v$version)..."
+          aws s3 cp packaging/windows/Output/PseudoLearn-Setup.exe "s3://$bucket/windows/v$version/PseudoLearn-Setup-v$version.exe" --endpoint-url $endpoint
+
+          Write-Host "Uploading latest portable ZIP..."
+          aws s3 cp packaging/windows/Output/PseudoLearn-Windows-Portable.zip "s3://$bucket/windows/PseudoLearn-Windows-Portable.zip" --endpoint-url $endpoint
+
+          Write-Host "Uploading versioned portable ZIP (v$version)..."
+          aws s3 cp packaging/windows/Output/PseudoLearn-Windows-Portable.zip "s3://$bucket/windows/v$version/PseudoLearn-Windows-Portable-v$version.zip" --endpoint-url $endpoint
+
+          Write-Host "Cloudflare R2 distribution completed successfully."

@@ -1,0 +1,22 @@
+{
+  "protocol": "RR-01-profile-selection",
+  "trainingWorkloads": [
+    "mandelbrot-8",
+    "recursive-fibonacci-18"
+  ],
+  "validationWorkloads": [
+    "integer-loop-10000"
+  ],
+  "minimumTrainingPairs": 100,
+  "candidates": [
+    {
+      "id": "compareBranch",
+      "trainingPairs": 10891,
+      "validationPairs": 10002,
+      "selected": true
+    }
+  ],
+  "selected": [
+    "compareBranch"
+  ]
+}

@@ -1,0 +1,43 @@
+<svg viewBox="0 0 340 140">
+  <path d="M 20 70 H 320" fill="none" stroke="@tinta" stroke-width="2"/>
+  <circle cx="40" cy="70" r="14" fill="@superficie" stroke="@numero" stroke-width="2"/>
+  <circle cx="90" cy="70" r="14" fill="@superficie" stroke="@numero" stroke-width="2"/>
+  <circle cx="140" cy="70" r="14" fill="@superficie" stroke="@numero" stroke-width="2"/>
+  <circle cx="190" cy="70" r="14" fill="@superficie" stroke="@numero" stroke-width="2"/>
+  <circle cx="240" cy="70" r="14" fill="@superficie" stroke="@numero" stroke-width="2"/>
+  <circle cx="290" cy="70" r="14" fill="@superficie" stroke="@atenuado" stroke-dasharray="3 3"/>
+  <text x="40" y="75" font-size="13" text-anchor="middle" font-family="mono" fill="@numero">1</text>
+  <text x="90" y="75" font-size="13" text-anchor="middle" font-family="mono" fill="@numero">2</text>
+  <text x="140" y="75" font-size="13" text-anchor="middle" font-family="mono" fill="@numero">3</text>
+  <text x="190" y="75" font-size="13" text-anchor="middle" font-family="mono" fill="@numero">4</text>
+  <text x="240" y="75" font-size="13" text-anchor="middle" font-family="mono" fill="@numero">5</text>
+  <text x="290" y="75" font-size="13" text-anchor="middle" font-family="mono" fill="@atenuado">6</text>
+  <text x="40" y="106" font-size="12" text-anchor="middle" fill="@atenuado">{{t:inicial}}</text>
+  <text x="240" y="106" font-size="12" text-anchor="middle" fill="@atenuado">{{t:final}}</text>
+  <g data-paso="1" data-hasta="1">
+    <polygon points="40,40 32,26 48,26" fill="@acento-procedimental"/>
+    <text x="40" y="20" font-size="12" text-anchor="middle" font-family="mono" fill="@acento-procedimental">{{codigo:i}}</text>
+  </g>
+  <g data-paso="2" data-hasta="2">
+    <circle cx="40" cy="70" r="14" fill="@exito" fill-opacity="0.25"/>
+    <circle cx="90" cy="70" r="14" fill="@exito" fill-opacity="0.25"/>
+    <circle cx="140" cy="70" r="14" fill="@exito" fill-opacity="0.25"/>
+    <polygon points="190,40 182,26 198,26" fill="@acento-procedimental"/>
+    <path d="M 48 50 Q 65 36 82 50 M 98 50 Q 115 36 132 50 M 148 50 Q 165 36 182 50" fill="none" stroke="@acento-procedimental"/>
+  </g>
+  <g data-paso="3">
+    <circle cx="40" cy="70" r="14" fill="@exito" fill-opacity="0.25"/>
+    <circle cx="90" cy="70" r="14" fill="@exito" fill-opacity="0.25"/>
+    <circle cx="140" cy="70" r="14" fill="@exito" fill-opacity="0.25"/>
+    <circle cx="190" cy="70" r="14" fill="@exito" fill-opacity="0.25"/>
+    <circle cx="240" cy="70" r="14" fill="@exito" fill-opacity="0.25"/>
+  </g>
+  <g data-paso="3" data-hasta="3">
+    <polygon points="240,40 232,26 248,26" fill="@acento-procedimental"/>
+    <text x="240" y="128" font-size="12" text-anchor="middle" fill="@exito">{{t:incluido}}</text>
+  </g>
+  <g data-paso="4">
+    <polygon points="290,40 282,26 298,26" fill="@error"/>
+    <text x="290" y="128" font-size="12" text-anchor="middle" fill="@error">{{t:termina}}</text>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+<svg viewBox="0 0 340 300">
+  <caja x="8" y="8" ancho="324" alto="46" rol="acento-estructurado" fondo="0.10" tamano="13" texto="{{t:estructura}}¶{{codigo:Si · Mientras · Para · Escribir}}"/>
+  <caja x="8" y="62" ancho="324" alto="46" rol="acento-procedimental" fondo="0.10" tamano="13" texto="{{t:subprogramas}}¶{{codigo:SubProceso · Retornar · Por Referencia}}"/>
+  <caja x="8" y="116" ancho="324" alto="46" rol="acento-objetos" fondo="0.10" tamano="13" texto="{{t:objetos}}¶{{codigo:Clase · Metodo · Nuevo · Este}}"/>
+  <caja x="8" y="170" ancho="324" alto="46" rol="tipo" fondo="0.10" tamano="13" texto="{{t:tipos}}¶{{codigo:Entero · Real · Logico · Cadena}}"/>
+  <caja x="8" y="224" ancho="158" alto="46" rol="logico" fondo="0.10" tamano="13" texto="{{t:valores}}¶{{codigo:Verdadero · Falso}}"/>
+  <caja x="174" y="224" ancho="158" alto="46" rol="tinta" fondo="0.05" tamano="13" texto="{{t:operadores}}¶{{codigo:Y · O · NO · div · mod}}"/>
+  <text x="170" y="292" font-size="12" text-anchor="middle" fill="@atenuado">{{t:nota}}</text>
+</svg>

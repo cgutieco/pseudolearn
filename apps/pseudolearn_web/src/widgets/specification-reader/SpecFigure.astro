@@ -1,0 +1,142 @@
+---
+import type { FigureBlock } from '@entities/specification/model/specification';
+import { figureFrames } from '@entities/specification/model/figure-frames';
+import type { Locale } from '@shared/i18n/locales';
+import { useTranslations } from '@shared/i18n/translator';
+import SpecRuns from './SpecRuns.astro';
+
+export interface Props {
+  block: FigureBlock;
+  locale: Locale;
+}
+
+const { block, locale } = Astro.props;
+const { t } = useTranslations(locale);
+const frames = figureFrames(block);
+const stepped = block.steps.length > 0;
+---
+
+<figure class="figure" id={`figura-${block.id}`}>
+  <ol class:list={['figure__frames', { 'figure__frames--stepped': stepped }]}>
+    {frames.map((frame) => (
+      <li class="figure__frame">
+        <div
+          class="figure__art"
+          role="img"
+          aria-label={stepped ? `${block.alt} · ${t('specification.step')} ${frame.step}` : block.alt}
+          set:html={frame.svg}
+        />
+        {stepped && (
+          <p class="figure__step">
+            <span class="figure__step-number pl-mono">{frame.step}</span>
+            <span>
+              <SpecRuns runs={frame.runs} locale={locale} />
+            </span>
+          </p>
+        )}
+        {frame.zones.length > 0 && (
+          <div class="figure__zones">
+            {frame.zones.map((zone) => (
+              <div class="figure__zone">
+                <p class="figure__zone-name pl-overline">{zone.zone}</p>
+                {zone.entries.map((entry) => (
+                  <p class="figure__zone-entry">
+                    <SpecRuns runs={entry} locale={locale} />
+                  </p>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+      </li>
+    ))}
+  </ol>
+  <figcaption class="figure__caption">
+    <span class="figure__number">
+      {t('specification.figure')} {block.number}.
+    </span>
+    <SpecRuns runs={block.caption} locale={locale} />
+  </figcaption>
+  <p class="pl-visually-hidden">{block.description}</p>
+</figure>
+
+<style>
+  .figure {
+    margin-top: var(--pl-space-lg);
+    padding: var(--pl-space-md);
+    border: 1px solid var(--pl-line);
+    border-radius: var(--pl-radius-card);
+    background: var(--pl-surface);
+  }
+
+  .figure__frames {
+    display: grid;
+    gap: var(--pl-space-lg);
+    list-style: none;
+  }
+
+  .figure__frame {
+    display: grid;
+    gap: var(--pl-space-sm);
+    align-content: start;
+  }
+
+  .figure__art :global(svg) {
+    display: block;
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    margin-inline: auto;
+  }
+
+  .figure__step {
+    display: flex;
+    gap: var(--pl-space-sm);
+    align-items: baseline;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .figure__step-number {
+    flex: none;
+    display: inline-grid;
+    width: 1.75rem;
+    height: 1.75rem;
+    place-items: center;
+    border-radius: var(--pl-radius-pill);
+    background: var(--pl-brand-tint);
+    color: var(--pl-brand-deep);
+    font-size: 0.8125rem;
+  }
+
+  .figure__zones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--pl-space-xs);
+  }
+
+  .figure__zone {
+    flex: 1 1 140px;
+    padding: var(--pl-space-xs) var(--pl-space-sm);
+    border-radius: var(--pl-radius-control);
+    background: var(--pl-sunken);
+    font-size: 0.875rem;
+  }
+
+  .figure__caption {
+    margin-top: var(--pl-space-md);
+    color: var(--pl-ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .figure__number {
+    color: var(--pl-ink);
+    font-weight: 600;
+  }
+
+  @media (min-width: 900px) {
+    .figure__frames--stepped {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

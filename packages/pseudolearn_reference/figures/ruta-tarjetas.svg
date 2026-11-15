@@ -1,0 +1,10 @@
+<svg viewBox="0 0 340 230">
+  <caja x="4" y="6" ancho="160" alto="70" rol="acento-objetos" fondo="0.12" texto="{{t:producto}}¶{{t:producto-1}}¶{{t:producto-2}}" tamano="12"/>
+  <caja x="176" y="6" ancho="160" alto="70" rol="acento-objetos" fondo="0.12" texto="{{t:inventario}}¶{{t:inventario-1}}¶{{t:inventario-2}}" tamano="12"/>
+  <caja x="4" y="150" ancho="160" alto="70" rol="acento-objetos" fondo="0.12" texto="{{t:ticket}}¶{{t:ticket-1}}¶{{t:ticket-2}}" tamano="12"/>
+  <caja x="176" y="150" ancho="160" alto="70" rol="exito" fondo="0.14" texto="{{t:caja}}¶{{t:caja-1}}¶{{t:caja-2}}" tamano="12"/>
+  <flecha puntos="226,146 110,80" rol="tinta"/>
+  <flecha puntos="256,146 256,80" rol="tinta"/>
+  <flecha puntos="176,190 150,190 150,176" rol="tinta"/>
+  <text x="170" y="118" font-size="12" text-anchor="middle" fill="@atenuado">{{t:pide}}</text>
+</svg>

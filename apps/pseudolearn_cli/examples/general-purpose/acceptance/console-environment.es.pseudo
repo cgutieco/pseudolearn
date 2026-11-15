@@ -1,0 +1,23 @@
+SubProceso Probe() Como Resultado<Entero, ErrorES>
+Definir con Como Consola <- Propagar SolicitarConsola();
+Definir env Como Entorno <- Propagar SolicitarEntorno();
+Definir missing Como Opcional<Cadena> <- Propagar env.Obtener("PL_PGS_DEFINITELY_MISSING");
+Segun missing Hacer
+Nada: Escribir "none";
+Algo(text): Escribir "[", text, "]";
+FinSegun
+Definir clock Como Reloj <- Propagar SolicitarReloj();
+Definir local Como FechaHora <- Propagar clock.AhoraLocal();
+Escribir local.DesplazamientoUtc() % 60;
+Definir written Como Entero <- Propagar con.EscribirError("diagnostic\n");
+Escribir written;
+Definir code Como Entero <- Propagar con.EstablecerCodigoSalida(7);
+Escribir code;
+Retornar Exito(0);
+FinSubProceso
+Algoritmo Main
+Segun Probe() Hacer
+Exito(value): Escribir value;
+Error(problem): Escribir problem.Codigo;
+FinSegun
+FinAlgoritmo

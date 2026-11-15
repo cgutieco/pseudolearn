@@ -1,0 +1,13 @@
+<svg viewBox="0 0 340 170">
+  <caja x="6" y="10" ancho="76" alto="36" rol="acento-estructurado" fondo="0.10" tamano="12" texto="{{t:lexica}}"/>
+  <caja x="90" y="10" ancho="76" alto="36" rol="acento-estructurado" fondo="0.14" tamano="12" texto="{{t:sintactica}}"/>
+  <caja x="174" y="10" ancho="76" alto="36" rol="acento-procedimental" fondo="0.14" tamano="12" texto="{{t:semantica}}"/>
+  <caja x="258" y="10" ancho="76" alto="36" rol="error" fondo="0.12" tamano="12" texto="{{t:ejecucion}}"/>
+  <path d="M 6 60 H 250" fill="none" stroke="@atenuado" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="128" y="76" font-size="12" text-anchor="middle" fill="@atenuado">{{t:antes}}</text>
+  <text x="296" y="76" font-size="12" text-anchor="middle" fill="@atenuado">{{t:durante}}</text>
+  <caja x="6" y="96" ancho="78" alto="60" rol="error" fondo="0.16" negrita="" tamano="12" texto="{{t:letraA}}¶{{t:error}}"/>
+  <caja x="90" y="96" ancho="78" alto="60" rol="hueco" fondo="0.14" negrita="" tamano="12" texto="{{t:letraC}}¶{{t:higiene}}"/>
+  <caja x="174" y="96" ancho="78" alto="60" rol="atenuado" fondo="0.08" negrita="" tamano="12" texto="{{t:letraD}}¶{{t:info}}"/>
+  <caja x="258" y="96" ancho="76" alto="60" rol="hueco" fondo="0.08" negrita="" tamano="12" texto="{{t:letraE}}¶{{t:lectura}}"/>
+</svg>

@@ -1,0 +1,17 @@
+{
+  "package": "pseudolearn_brand",
+  "source_root": "pseudolearn_brand",
+  "entry_point": "pseudolearn_brand/__main__.py",
+  "layers": [
+    { "id": 0, "name": "model", "path": "model", "may_import": [] },
+    { "id": 1, "name": "render", "path": "render", "may_import": ["model"] },
+    { "id": 2, "name": "pipeline", "path": "pipeline", "may_import": ["model", "render"] }
+  ],
+  "forbidden_imports": ["subprocess", "socket", "urllib", "requests", "shutil"],
+  "size": {
+    "file_lines": 170,
+    "function_lines": 40,
+    "positional_parameters": 6,
+    "nesting": 3
+  }
+}

@@ -1,0 +1,6 @@
+algorithm Greeting
+define name as string <- "";
+write "What is your name? ñandú 🌍";
+read name;
+write "Hello " + name;
+endAlgorithm

@@ -1,0 +1,16 @@
+algorithm Selection
+define queue as channel<integer> <- channel(2);
+queue.close();
+select
+receive first from queue:
+switch first do
+none: write 81;
+some(value): write value;
+endSwitch
+receive second from queue:
+switch second do
+none: write 82;
+some(other): write other;
+endSwitch
+endSelect
+endAlgorithm

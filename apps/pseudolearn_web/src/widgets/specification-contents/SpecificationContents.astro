@@ -1,0 +1,148 @@
+---
+import type { ContentsPart } from '@entities/specification/model/specification';
+import { sectionPath } from '@entities/specification/model/section-address';
+import { runsText } from '@entities/specification/model/plain-text';
+import type { Locale } from '@shared/i18n/locales';
+import { localizePath } from '@shared/i18n/routes';
+
+export interface Props {
+  parts: readonly ContentsPart[];
+  locale: Locale;
+}
+
+const { parts, locale } = Astro.props;
+---
+
+<ol class="contents">
+  {parts.map((part) => (
+    <li class="contents__part">
+      <span class="contents__node pl-mono" aria-hidden="true">
+        {part.number}
+      </span>
+      <div class="contents__body">
+        <h2 class="contents__title">{part.title}</h2>
+        <p class="contents__summary">{part.summary}</p>
+        <ol class="contents__sections">
+          {part.sections.map((entry) => (
+            <li>
+              <a class="contents__link" href={localizePath(sectionPath(entry.id), locale)}>
+                <span class="contents__section-number pl-mono">{entry.number}</span>
+                <span class="contents__section-title">{runsText(entry.title)}</span>
+                <span class="contents__phrase">{runsText(entry.phrase)}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .contents {
+    --pl-node: 44px;
+  }
+
+  .contents__part {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--pl-node) minmax(0, 1fr);
+    gap: var(--pl-space-md);
+    padding-bottom: var(--pl-space-2xl);
+  }
+
+  .contents__part::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--pl-node) / 2 - 3px);
+    width: 6px;
+    background: var(--pl-brand);
+  }
+
+  .contents__part:first-child::before {
+    top: calc(var(--pl-node) / 2);
+  }
+
+  .contents__part:last-child::before {
+    bottom: calc(100% - var(--pl-node) / 2);
+  }
+
+  .contents__node {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--pl-node);
+    height: var(--pl-node);
+    border: 4px solid var(--pl-canvas);
+    border-radius: var(--pl-radius-pill);
+    background: var(--pl-field);
+    color: var(--pl-on-field);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .contents__title {
+    margin: 8px 0 0;
+    font-size: 24px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+
+  .contents__summary {
+    margin-top: var(--pl-space-xs);
+    color: var(--pl-ink-2);
+  }
+
+  .contents__sections {
+    display: grid;
+    gap: var(--pl-space-xs);
+    margin-top: var(--pl-space-md);
+  }
+
+  .contents__link {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    column-gap: var(--pl-space-sm);
+    height: 100%;
+    padding: var(--pl-space-sm) var(--pl-space-md);
+    border: 1px solid var(--pl-line);
+    border-radius: var(--pl-radius-card);
+    background: var(--pl-surface);
+    color: var(--pl-ink);
+    text-decoration: none;
+    box-shadow: var(--pl-shadow-1);
+  }
+
+  .contents__link:hover {
+    border-color: var(--pl-brand);
+  }
+
+  .contents__section-number {
+    grid-row: span 2;
+    color: var(--pl-brand);
+    font-weight: 600;
+  }
+
+  .contents__section-title {
+    font-weight: 700;
+  }
+
+  .contents__phrase {
+    color: var(--pl-ink-2);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  @media (min-width: 900px) {
+    .contents {
+      --pl-node: 52px;
+    }
+
+    .contents__sections {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

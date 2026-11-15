@@ -1,0 +1,14 @@
+{
+  "violation": "the same example case listed twice",
+  "expect": "duplicate example reference",
+  "edits": [
+    {
+      "op": "duplicate",
+      "path": "/cards/0/content/es/examples/0"
+    },
+    {
+      "op": "duplicate",
+      "path": "/cards/0/content/en/examples/0"
+    }
+  ]
+}

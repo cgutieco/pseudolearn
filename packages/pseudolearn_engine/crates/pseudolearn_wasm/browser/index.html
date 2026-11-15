@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PseudoLearn Wasm</title>
+  </head>
+  <body>
+    <output id="status">Cargando motor</output>
+    <script type="module">
+      import initialize, { WasmSession } from "/pkg/pseudolearn_wasm.js";
+
+      window.wasmReady = initialize().then((exports) => {
+        window.wasmExports = exports;
+        window.WasmSession = WasmSession;
+        document.querySelector("#status").textContent = "Motor listo";
+      });
+    </script>
+  </body>
+</html>

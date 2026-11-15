@@ -1,0 +1,14 @@
+SubProceso Suspendible Preparar(pedido Como Cadena, minutos Como Entero) Como Entero
+  Escribir "Preparando ", pedido;
+  Retornar minutos;
+FinSubProceso
+
+Algoritmo Mostrador
+  Tareas
+    Definir cafe Como Tarea<Entero> <- Lanzar Preparar("café", 3);
+    Definir tostadas Como Tarea<Entero> <- Lanzar Preparar("tostadas", 5);
+    Definir jugo Como Tarea<Entero> <- Lanzar Preparar("jugo", 2);
+    Escribir "Trabajo total: ", Aguardar cafe + Aguardar tostadas + Aguardar jugo, " minutos";
+  FinTareas
+  Escribir "Pedido entregado";
+FinAlgoritmo

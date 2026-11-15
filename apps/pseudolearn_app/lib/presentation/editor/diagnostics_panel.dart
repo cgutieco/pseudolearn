@@ -1,0 +1,145 @@
+import 'package:material_ui/material_ui.dart';
+import '../../domain/model/analysis/app_diagnostic.dart';
+import '../components/button/app_button.dart';
+import '../components/button/app_icon_button.dart';
+import '../components/typography/app_text.dart';
+import '../l10n/generated/app_localizations.dart';
+import '../theme/app_theme.dart';
+import '../theme/tokens/spacing.dart';
+import 'components/diagnostics_list.dart';
+
+final class DiagnosticsPanel extends StatefulWidget {
+  final List<AppDiagnostic> diagnostics;
+  final ValueChanged<AppDiagnostic>? onDiagnosticTap;
+  final bool isCollapsed;
+  final Widget? trailing;
+
+  const DiagnosticsPanel({
+    super.key,
+    required this.diagnostics,
+    this.onDiagnosticTap,
+    this.isCollapsed = false,
+    this.trailing,
+  });
+
+  @override
+  State<DiagnosticsPanel> createState() => _DiagnosticsPanelState();
+}
+
+final class _DiagnosticsPanelState extends State<DiagnosticsPanel> {
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = AppThemeExtension.of(context);
+    final isExpanded = _isExpanded && !widget.isCollapsed;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colors.surfaces.defaultSurface,
+        border: Border(top: BorderSide(color: theme.colors.borders.subtle)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _DiagnosticsHeader(
+            count: widget.diagnostics.length,
+            isExpanded: isExpanded,
+            offersToggle: !widget.isCollapsed,
+            onToggle: () => setState(() => _isExpanded = !_isExpanded),
+            trailing: widget.trailing,
+          ),
+          if (isExpanded)
+            DiagnosticsList(
+              diagnostics: widget.diagnostics,
+              onDiagnosticTap: widget.onDiagnosticTap,
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+final class _DiagnosticsHeader extends StatelessWidget {
+  final int count;
+  final bool isExpanded;
+  final bool offersToggle;
+  final VoidCallback onToggle;
+  final Widget? trailing;
+
+  const _DiagnosticsHeader({
+    required this.count,
+    required this.isExpanded,
+    required this.offersToggle,
+    required this.onToggle,
+    required this.trailing,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = AppThemeExtension.of(context);
+    final countColor = count > 0
+        ? theme.colors.severities.error.fg
+        : theme.colors.text.secondary;
+    final height = trailing != null ? 40.0 : 36.0;
+
+    return Container(
+      height: height,
+      padding: const EdgeInsets.symmetric(horizontal: SpacingTokens.space4),
+      color: theme.colors.surfaces.subtle,
+      child: Row(
+        children: [
+          Expanded(
+            child: count == 0
+                ? const SizedBox.shrink()
+                : _DiagnosticsCountLabel(
+                    text: l10n.diagnosticsCount(count),
+                    color: countColor,
+                  ),
+          ),
+          if (offersToggle)
+            _HeaderToggle(isExpanded: isExpanded, onToggle: onToggle),
+          ?trailing,
+        ],
+      ),
+    );
+  }
+}
+
+final class _DiagnosticsCountLabel extends StatelessWidget {
+  final String text;
+  final Color color;
+
+  const _DiagnosticsCountLabel({required this.text, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return AppText(
+      text,
+      variant: AppTextVariant.label,
+      color: color,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+}
+
+final class _HeaderToggle extends StatelessWidget {
+  final bool isExpanded;
+  final VoidCallback onToggle;
+
+  const _HeaderToggle({required this.isExpanded, required this.onToggle});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return AppIconButton(
+      icon: isExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
+      semanticLabel: isExpanded ? l10n.actionCollapse : l10n.actionExpand,
+      variant: AppButtonVariant.tertiary,
+      onPressed: onToggle,
+    );
+  }
+}

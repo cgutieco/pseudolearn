@@ -1,0 +1,171 @@
+use crate::cells::CellSlot;
+use crate::config::{AotConfig, AotStreams, BooleanWords};
+use crate::fault::{FaultRecord, FaultSite, SourceRange};
+use crate::trap::Trap;
+use pseudolearn_diagnostics::DiagnosticCode;
+use pseudolearn_runtime::{
+    CollectionPolicy, Heap, MemoryError, MemoryOptions, ObjectLayout, RandomState,
+};
+use std::sync::Arc;
+
+pub struct AotEngine {
+    #[cfg(feature = "telemetry")]
+    pub(crate) statistics: std::cell::Cell<crate::AotStatistics>,
+    pub(crate) heap: Heap,
+    pub(crate) random: RandomState,
+    pub(crate) layouts: Vec<Option<Arc<ObjectLayout>>>,
+    pub(crate) sites: Vec<FaultSite>,
+    pub(crate) roots: Vec<u32>,
+    pub(crate) cells: Vec<CellSlot>,
+    pub(crate) pending: Vec<u64>,
+    pub(crate) boolean_words: BooleanWords,
+    pub(crate) site_boolean_words: Vec<BooleanWords>,
+    pub(crate) streams: AotStreams,
+    pub(crate) effects: crate::effect_channel::EffectChannel,
+    pub(crate) tasks: Option<Box<crate::task_state::AotTasks>>,
+    pub(crate) console_line: Vec<u8>,
+    pub(crate) literal_texts: std::collections::HashMap<Box<[u8]>, pseudolearn_abi::Handle>,
+    fault: Option<FaultRecord>,
+    notices: Vec<FaultRecord>,
+}
+
+impl AotEngine {
+    pub(crate) fn new(config: AotConfig, sites: Vec<FaultSite>, streams: AotStreams) -> Self {
+        let capacity = usize::try_from(config.limits.root_capacity).unwrap_or(0);
+        Self {
+            #[cfg(feature = "telemetry")]
+            statistics: std::cell::Cell::default(),
+            heap: Heap::new(MemoryOptions {
+                collection_minimum: 262_144,
+                cells: config.limits.cells,
+                collection: CollectionPolicy::Automatic,
+            }),
+            random: RandomState::seeded(config.seed),
+            layouts: Vec::new(),
+            sites,
+            roots: vec![0; capacity],
+            cells: Vec::new(),
+            pending: vec![
+                0;
+                crate::inline_allocation::INLINE_PENDING_CAPACITY
+                    .saturating_mul(crate::inline_allocation::INLINE_RECORD_WORDS)
+            ],
+            boolean_words: config.boolean_words,
+            site_boolean_words: Vec::new(),
+            streams,
+            effects: crate::effect_channel::EffectChannel::standalone(),
+            tasks: None,
+            console_line: Vec::new(),
+            literal_texts: std::collections::HashMap::new(),
+            fault: None,
+            notices: Vec::new(),
+        }
+    }
+
+    pub(crate) fn use_effects(&mut self, channel: crate::effect_channel::EffectChannel) {
+        self.effects = channel;
+    }
+
+    pub(crate) fn effects_mut(&mut self) -> &mut crate::effect_channel::EffectChannel {
+        &mut self.effects
+    }
+
+    pub fn use_site_boolean_words(&mut self, words: Vec<BooleanWords>) {
+        self.site_boolean_words = words;
+    }
+
+    pub(crate) fn boolean_words_for(&self, profile_index: usize) -> &BooleanWords {
+        self.site_boolean_words
+            .get(profile_index)
+            .unwrap_or(&self.boolean_words)
+    }
+
+    pub fn register_layout(&mut self, layout: ObjectLayout) -> Result<(), MemoryError> {
+        let index = usize::try_from(layout.class).map_err(|_| MemoryError::Resource)?;
+        let required = index.checked_add(1).ok_or(MemoryError::Resource)?;
+        if self.layouts.len() < required {
+            self.layouts.resize(required, None);
+        }
+        self.heap.register_layout(layout.clone())?;
+        if let Some(slot) = self.layouts.get_mut(index) {
+            *slot = Some(Arc::new(layout));
+        }
+        Ok(())
+    }
+
+    pub fn force_collection(&mut self) {
+        self.heap.set_collection_policy(CollectionPolicy::Forced);
+    }
+
+    pub fn flush_output(&mut self) -> std::io::Result<()> {
+        self.streams.output.flush()
+    }
+
+    pub fn fault(&self) -> Option<&FaultRecord> {
+        self.fault.as_ref()
+    }
+
+    pub fn notices(&self) -> &[FaultRecord] {
+        &self.notices
+    }
+
+    pub fn heap(&self) -> &Heap {
+        &self.heap
+    }
+
+    pub(crate) fn site_lexeme(&self, site: u32) -> Option<&str> {
+        self.site(site)
+            .map(|site| site.lexeme.as_str())
+            .filter(|name| !name.is_empty())
+    }
+
+    pub(crate) fn site_range(&self, site: u32) -> SourceRange {
+        self.site(site).map(|entry| entry.range).unwrap_or_default()
+    }
+
+    pub(crate) fn site_code(&self, site: u32) -> Result<DiagnosticCode, Trap> {
+        self.site(site)
+            .map(|entry| entry.code)
+            .ok_or_else(|| Trap::named("internalFault"))
+    }
+
+    pub(crate) fn record_fault(&mut self, record: FaultRecord) {
+        if self.fault.is_none() {
+            self.fault = Some(record);
+        }
+    }
+
+    pub(crate) fn use_tasks(
+        &mut self,
+        dispatcher: crate::task_state::TaskDispatcher,
+        limits: crate::config::AotLimits,
+    ) {
+        let capacity = usize::try_from(limits.channel_capacity).unwrap_or(usize::MAX);
+        let mut tasks = crate::task_state::AotTasks::new(dispatcher, limits.tasks, capacity);
+        tasks.delivery_order = self.effects.delivery_order.clone();
+        tasks.pending_network = self.effects.pending_network;
+        self.tasks = Some(Box::new(tasks));
+    }
+
+    pub(crate) fn seal_abandoned_effects(&mut self) {
+        if let Some(tasks) = self.tasks.as_deref()
+            && crate::task_effects::seal_abandoned(tasks, &mut self.effects).is_err()
+        {
+            self.effects.abort();
+        }
+    }
+
+    pub(crate) fn tasks_mut(&mut self) -> Result<&mut crate::task_state::AotTasks, Trap> {
+        self.tasks
+            .as_deref_mut()
+            .ok_or_else(|| Trap::named("internalFault"))
+    }
+
+    pub(crate) fn record_notice(&mut self, record: FaultRecord) {
+        self.notices.push(record);
+    }
+
+    fn site(&self, site: u32) -> Option<&FaultSite> {
+        self.sites.get(usize::try_from(site).ok()?)
+    }
+}

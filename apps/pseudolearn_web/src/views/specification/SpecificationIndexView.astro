@@ -1,0 +1,107 @@
+---
+import BaseLayout from '@app/layouts/BaseLayout.astro';
+import { specificationEdition } from '@entities/specification/model/specification-catalog';
+import { specificationFigures } from '@entities/specification/model/specification-figures';
+import { sectionPath } from '@entities/specification/model/section-address';
+import type { Locale } from '@shared/i18n/locales';
+import { ROUTES, localizePath } from '@shared/i18n/routes';
+import { useTranslations } from '@shared/i18n/translator';
+import { Icon } from '@shared/ui/icon';
+import StoryHero from '@widgets/story-hero/StoryHero.astro';
+import MetricBand from '@widgets/metric-band/MetricBand.astro';
+import SpecStair from '@widgets/spec-stair/SpecStair.astro';
+import PageSection from '@widgets/page-section/PageSection.astro';
+import SpecificationContents from '@widgets/specification-contents/SpecificationContents.astro';
+import { contentsMarkdownPath } from './specification-pages';
+
+export interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { t, formatNumber } = useTranslations(locale);
+const markdownPath = contentsMarkdownPath(locale);
+const edition = specificationEdition(locale);
+const figures = specificationFigures(edition);
+const firstSection = edition.contents[0]?.sections[0];
+const metrics = [
+  { value: formatNumber(figures.parts), label: t('specification.figures.parts') },
+  { value: formatNumber(figures.sections), label: t('specification.figures.sections') },
+  { value: formatNumber(figures.programs), label: t('specification.figures.programs') },
+  { value: formatNumber(figures.figures), label: t('specification.figures.figures') },
+];
+---
+
+<BaseLayout
+  locale={locale}
+  path={ROUTES.specification}
+  title={t('specification.seoTitle')}
+  description={t('specification.seoDescription')}
+>
+  <link slot="head" rel="alternate" type="text/markdown" href={markdownPath} />
+  <StoryHero
+    overline={t('specification.hero.overline')}
+    title={t('specification.hero.title')}
+    lead={t('specification.hero.lead')}
+    compact
+  >
+    <SpecStair slot="visual" steps={figures.parts} />
+    <Fragment slot="actions">
+      {firstSection && (
+        <a class="pl-btn pl-btn--on-field" href={localizePath(sectionPath(firstSection.id), locale)}>
+          <span>{t('specification.hero.start')}</span>
+          <Icon name="arrowRight" size={17} />
+        </a>
+      )}
+      <a class="pl-btn pl-btn--outline-field" href="#contents">
+        <span>{t('specification.contents.index')}</span>
+        <Icon name="chevronDown" size={17} />
+      </a>
+    </Fragment>
+    <MetricBand items={metrics} />
+  </StoryHero>
+
+  <section class="spec-index" id="contents">
+    <div class="pl-container">
+      <SpecificationContents parts={edition.contents} locale={locale} />
+    </div>
+  </section>
+
+  <PageSection
+    id="agents"
+    tone="field"
+    overline={t('specification.agents.title')}
+    title={t('specification.agents.headline')}
+    lead={t('specification.agents.text')}
+  >
+    <p class="spec-agents">
+      <a class="pl-btn pl-btn--on-field pl-btn--sm" href={markdownPath} type="text/markdown">
+        {t('specification.agents.contents')}
+      </a>
+      <a class="pl-btn pl-btn--outline-field pl-btn--sm" href="/llms.txt" type="text/plain">
+        {t('specification.agents.sheet')}
+      </a>
+    </p>
+  </PageSection>
+</BaseLayout>
+
+<style>
+  .spec-index {
+    scroll-margin-top: 16px;
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+
+  .spec-agents {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--pl-space-sm);
+  }
+
+  @media (min-width: 900px) {
+    .spec-index {
+      padding-top: 104px;
+      padding-bottom: 104px;
+    }
+  }
+</style>

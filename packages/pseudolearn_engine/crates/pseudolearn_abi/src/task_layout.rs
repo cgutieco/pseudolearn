@@ -1,0 +1,10 @@
+pub const TASK_SHAPE_TAG: u32 = u32::MAX - 9;
+pub const TASK_ID_OFFSET: usize = 2;
+pub const TASK_PARENT_OFFSET: usize = 3;
+pub const TASK_SCOPE_OFFSET: usize = 4;
+pub const TASK_STATE_OFFSET: usize = 5;
+pub const TASK_CONTINUATION_OFFSET: usize = 6;
+pub const TASK_RESULT_OFFSET: usize = 7;
+pub const TASK_HEADER_WORDS: usize = 8;
+pub const TASK_LOGICAL_CELLS: u64 = 1;
+pub const TASK_REFERENCE_OFFSETS: [usize; 2] = [TASK_CONTINUATION_OFFSET, TASK_RESULT_OFFSET];

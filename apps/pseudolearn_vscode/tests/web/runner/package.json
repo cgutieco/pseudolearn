@@ -1,0 +1,12 @@
+{
+  "name": "pseudolearn-web-test-runner",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@12.18.0",
+  "engines": {
+    "node": "26.13.1"
+  },
+  "devDependencies": {
+    "@vscode/test-web": "0.0.81"
+  }
+}

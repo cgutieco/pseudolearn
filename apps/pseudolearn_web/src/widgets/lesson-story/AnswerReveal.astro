@@ -1,0 +1,46 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import type { RouteRuns } from '@entities/learning-route/model/route';
+import { routeRunsHtml } from './route-html';
+
+export interface Props {
+  locale: Locale;
+  paragraphs: readonly RouteRuns[];
+}
+
+const { locale, paragraphs } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+<details class="answer">
+  <summary class="answer__summary">{t('home.lesson.reveal')}</summary>
+  <div class="answer__body">
+    {paragraphs.map((runs) => (
+      <p set:html={routeRunsHtml(runs, locale)} />
+    ))}
+  </div>
+</details>
+
+<style>
+  .answer {
+    border-radius: var(--pl-radius-card);
+    border: 1px dashed var(--pl-line-strong);
+    background: var(--pl-surface);
+  }
+
+  .answer__summary {
+    padding: var(--pl-space-md) var(--pl-space-lg);
+    color: var(--pl-brand);
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .answer__body {
+    display: grid;
+    gap: var(--pl-space-sm);
+    padding: 0 var(--pl-space-lg) var(--pl-space-lg);
+    color: var(--pl-ink-2);
+    line-height: 1.6;
+  }
+</style>

@@ -1,0 +1,10 @@
+<svg viewBox="0 0 340 150">
+  <caja x="100" y="30" ancho="140" alto="80" rol="acento-procedimental" fondo="0.12" negrita="" fuente="mono" texto="{{codigo:Doble}}"/>
+  <caja x="6" y="52" ancho="64" alto="36" rol="numero" fondo="0.16" fuente="mono" texto="21"/>
+  <flecha puntos="70,70 98,70" rol="acento-procedimental"/>
+  <flecha puntos="240,70 270,70" rol="acento-procedimental"/>
+  <caja x="272" y="52" ancho="62" alto="36" rol="numero" fondo="0.24" negrita="" fuente="mono" texto="42"/>
+  <text x="38" y="110" font-size="12" text-anchor="middle" fill="@atenuado">{{t:argumento}}</text>
+  <text x="303" y="110" font-size="12" text-anchor="middle" fill="@atenuado">{{t:resultado}}</text>
+  <text x="170" y="134" font-size="12" text-anchor="middle" fill="@atenuado">{{t:dentro}}</text>
+</svg>

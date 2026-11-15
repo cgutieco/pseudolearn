@@ -1,0 +1,10 @@
+{
+  "package": "broken",
+  "source_root": "source",
+  "layers": [
+    { "id": 0, "name": "model", "path": "model", "may_import": [] },
+    { "id": 1, "name": "render", "path": "render", "may_import": ["model"] }
+  ],
+  "forbidden_imports": ["subprocess"],
+  "size": { "file_lines": 20, "function_lines": 4, "positional_parameters": 2, "nesting": 2 }
+}

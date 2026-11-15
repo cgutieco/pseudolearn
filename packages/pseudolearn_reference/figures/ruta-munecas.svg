@@ -1,0 +1,25 @@
+<svg viewBox="0 0 340 150">
+  <g data-paso="1" data-hasta="1">
+    <ellipse cx="50" cy="65" rx="30" ry="45" fill="@acento-procedimental" fill-opacity="0.35"/>
+    <ellipse cx="130" cy="75" rx="23" ry="35" fill="@acento-procedimental" fill-opacity="0.35"/>
+    <text x="170" y="138" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-1}}</text>
+  </g>
+  <g data-paso="2" data-hasta="2">
+    <ellipse cx="50" cy="65" rx="30" ry="45" fill="@acento-procedimental" fill-opacity="0.35"/>
+    <ellipse cx="130" cy="75" rx="23" ry="35" fill="@acento-procedimental" fill-opacity="0.35"/>
+    <ellipse cx="200" cy="85" rx="16" ry="25" fill="@acento-procedimental" fill-opacity="0.35"/>
+    <text x="170" y="138" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-2}}</text>
+  </g>
+  <g data-paso="3" data-hasta="3">
+    <ellipse cx="50" cy="65" rx="30" ry="45" fill="@acento-procedimental" fill-opacity="0.35"/>
+    <ellipse cx="130" cy="75" rx="23" ry="35" fill="@acento-procedimental" fill-opacity="0.35"/>
+    <ellipse cx="200" cy="85" rx="16" ry="25" fill="@acento-procedimental" fill-opacity="0.35"/>
+    <ellipse cx="262" cy="94" rx="10" ry="16" fill="@exito" fill-opacity="0.35"/>
+    <text x="170" y="138" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-3}}</text>
+  </g>
+  <g data-paso="4">
+    <ellipse cx="170" cy="65" rx="30" ry="45" fill="@acento-procedimental" fill-opacity="0.35"/>
+    <flecha puntos="262,70 210,70" rol="exito"/>
+    <text x="170" y="138" font-size="12" text-anchor="middle" fill="@tinta">{{t:paso-4}}</text>
+  </g>
+</svg>

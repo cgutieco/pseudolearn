@@ -1,0 +1,206 @@
+package: pseudolearn_engine
+declarative: false
+unsafe_allowed: [pseudolearn_wasm, pseudolearn_aot_rt, pseudolearn_native_probe]
+generated_sources: []
+deterministic_output_crates: [pseudolearn_transpiler, pseudolearn_project, pseudolearn_ir, pseudolearn_lowering, pseudolearn_runtime, pseudolearn_library, pseudolearn_diagnostics, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_bytecode, pseudolearn_vm, pseudolearn_timeline, pseudolearn_service, pseudolearn_api, pseudolearn_codegen, pseudolearn_wasm]
+isolation:
+  - package: pseudolearn_api
+    targets: [wasm32-unknown-unknown]
+    forbidden:
+      - pseudolearn_runtime/test-host
+      - pseudolearn_api/test-host
+      - pseudolearn_codegen
+      - pseudolearn_aot_rt
+      - "cranelift-*"
+      - http
+      - http-body-util
+      - hyper
+      - hyper-util
+      - reqwest
+      - ureq
+      - rustls
+      - rustls-native-certs
+      - tokio-rustls
+      - hickory-resolver
+      - trust-dns-resolver
+      - dns-lookup
+  - package: pseudolearn_wasm
+    targets: [wasm32-unknown-unknown]
+    forbidden:
+      - pseudolearn_runtime/test-host
+      - pseudolearn_api/test-host
+      - pseudolearn_codegen
+      - pseudolearn_aot_rt
+      - "cranelift-*"
+      - http
+      - http-body-util
+      - hyper
+      - hyper-util
+      - reqwest
+      - ureq
+      - rustls
+      - rustls-native-certs
+      - tokio-rustls
+      - hickory-resolver
+      - trust-dns-resolver
+      - dns-lookup
+layers:
+  - name: pseudolearn_host
+    path: crates/pseudolearn_host
+    may_import: []
+    external_dependencies: [serde, serde_json, cap-std, bytes, flate2, http, http-body-util, hyper, hyper-util, rustls, rustls-platform-verifier, tokio, tokio-rustls, getrandom, jiff]
+    unsafe_allowed: false
+  - name: pseudolearn_source
+    path: crates/pseudolearn_source
+    may_import: []
+    external_dependencies: [unicode-normalization, unicode-ident]
+    unsafe_allowed: false
+  - name: pseudolearn_abi
+    path: crates/pseudolearn_abi
+    may_import: []
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
+  - name: pseudolearn_project
+    path: crates/pseudolearn_project
+    may_import: [pseudolearn_source]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: pseudolearn_diagnostics
+    path: crates/pseudolearn_diagnostics
+    may_import: [pseudolearn_source]
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
+  - name: pseudolearn_lexicon
+    path: crates/pseudolearn_lexicon
+    may_import: [pseudolearn_source]
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
+  - name: pseudolearn_syntax
+    path: crates/pseudolearn_syntax
+    may_import: [pseudolearn_source, pseudolearn_diagnostics, pseudolearn_lexicon]
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
+  - name: pseudolearn_semantic
+    path: crates/pseudolearn_semantic
+    may_import: [pseudolearn_abi, pseudolearn_source, pseudolearn_project, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax]
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
+  - name: pseudolearn_ir
+    path: crates/pseudolearn_ir
+    may_import: [pseudolearn_source, pseudolearn_abi]
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
+  - name: pseudolearn_lowering
+    path: crates/pseudolearn_lowering
+    may_import: [pseudolearn_source, pseudolearn_semantic, pseudolearn_ir, pseudolearn_diagnostics]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: pseudolearn_bytecode
+    path: crates/pseudolearn_bytecode
+    may_import: [pseudolearn_ir, pseudolearn_source]
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
+  - name: pseudolearn_runtime
+    path: crates/pseudolearn_runtime
+    may_import: [pseudolearn_runtime, pseudolearn_abi, pseudolearn_diagnostics]
+    external_dependencies: [serde, serde_json, sha2, hmac]
+    unsafe_allowed: false
+  - name: pseudolearn_library
+    path: crates/pseudolearn_library
+    may_import: [pseudolearn_runtime, pseudolearn_diagnostics]
+    external_dependencies: [serde, serde_json]
+    unsafe_allowed: false
+  - name: pseudolearn_aot_rt
+    path: crates/pseudolearn_aot_rt
+    may_import: [pseudolearn_source, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_runtime, pseudolearn_library, pseudolearn_host]
+    external_dependencies: [serde, serde_json]
+    unsafe_allowed: true
+  - name: pseudolearn_codegen
+    path: crates/pseudolearn_codegen
+    may_import: [pseudolearn_ir, pseudolearn_diagnostics, pseudolearn_aot_rt]
+    external_dependencies: [cranelift-codegen, cranelift-frontend, cranelift-module, cranelift-object, target-lexicon, object]
+    unsafe_allowed: false
+  - name: pseudolearn_math_probe
+    path: crates/pseudolearn_math_probe
+    may_import: [pseudolearn_library]
+    external_dependencies: []
+    unsafe_allowed: false
+    tooling: true
+  - name: pseudolearn_vm_dispatch
+    path: crates/pseudolearn_vm_dispatch
+    may_import: []
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
+    tooling: true
+  - name: pseudolearn_vm
+    path: crates/pseudolearn_vm
+    may_import: [pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_diagnostics, pseudolearn_vm_dispatch]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: pseudolearn_vm_tracer
+    path: crates/pseudolearn_vm_tracer
+    may_import: [pseudolearn_api, pseudolearn_bytecode, pseudolearn_vm]
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
+    tooling: true
+  - name: pseudolearn_timeline
+    path: crates/pseudolearn_timeline
+    may_import: [pseudolearn_vm, pseudolearn_runtime, pseudolearn_bytecode, pseudolearn_diagnostics]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: pseudolearn_service
+    path: crates/pseudolearn_service
+    may_import: [pseudolearn_source, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_project]
+    external_dependencies: [serde, serde_json]
+    unsafe_allowed: false
+  - name: pseudolearn_transpiler
+    path: crates/pseudolearn_transpiler
+    may_import: [pseudolearn_source, pseudolearn_lexicon, pseudolearn_syntax, pseudolearn_semantic]
+    external_dependencies: []
+    unsafe_allowed: false
+  - name: pseudolearn_api
+    path: crates/pseudolearn_api
+    may_import: [pseudolearn_api, pseudolearn_transpiler, pseudolearn_source, pseudolearn_project, pseudolearn_abi, pseudolearn_diagnostics, pseudolearn_lexicon, pseudolearn_syntax, pseudolearn_semantic, pseudolearn_ir, pseudolearn_lowering, pseudolearn_bytecode, pseudolearn_runtime, pseudolearn_library, pseudolearn_vm, pseudolearn_timeline, pseudolearn_service, pseudolearn_codegen, pseudolearn_aot_rt]
+    external_dependencies: [serde, serde_json, sha2]
+    unsafe_allowed: false
+  - name: pseudolearn_wasm
+    path: crates/pseudolearn_wasm
+    may_import: [pseudolearn_api]
+    external_dependencies: [serde_json, wasm-bindgen]
+    unsafe_allowed: true
+  - name: pseudolearn_conformance
+    path: crates/pseudolearn_conformance
+    may_import: [pseudolearn_api, pseudolearn_service, pseudolearn_project]
+    external_dependencies: [serde, serde_json]
+    unsafe_allowed: false
+  - name: pseudolearn_bench_worker
+    path: crates/pseudolearn_bench_worker
+    may_import: [pseudolearn_api, pseudolearn_bytecode, pseudolearn_timeline, pseudolearn_vm]
+    external_dependencies: [serde_json]
+    unsafe_allowed: false
+    tooling: true
+  - name: pseudolearn_native_probe
+    path: crates/pseudolearn_native_probe
+    may_import: [pseudolearn_aot_rt, pseudolearn_api]
+    external_dependencies: [ceiling_kernels, serde, serde_json]
+    permitted_path_dependencies: [ceiling_kernels]
+    unsafe_allowed: true
+    tooling: true
+  - name: xtask
+    path: xtask
+    may_import: []
+    external_dependencies: []
+    unsafe_allowed: false
+    tooling: true
+limits:
+  file_lines: 300
+  function_lines: 40
+  positional_parameters: 4
+  nesting_depth: 3
+  public_methods_per_class: 7
+  unsafe_function_lines: 10
+names:
+  minimum_length: 3
+  permitted_short: [id, io, ir, vm, gc, os]
+  forbidden_components: [ctx, cfg, env, expr, stmt, decl, tok, idx, len, pos, cnt, num, buf, ptr, ref, val, msg, err, res, ret, args, params, attrs, tmp, temp, aux, data, info, item, obj, thing, stuff, foo, bar]
+  forbidden_files: [utils, helpers, common, misc]

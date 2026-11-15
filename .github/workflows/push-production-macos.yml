@@ -1,0 +1,220 @@
+name: Push Production macOS
+
+on:
+  workflow_dispatch: {}
+
+env:
+  BUNDLE_IDENTIFIER: com.pseudolearn.app
+
+jobs:
+  build-sign-upload:
+    runs-on: macos-26
+    defaults:
+      run:
+        working-directory: apps/pseudolearn_app
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      - name: Require Xcode 26 or later
+        run: |
+          XCODE_MAJOR=$(xcodebuild -version | sed -n 's/^Xcode \([0-9]*\).*/\1/p')
+          xcodebuild -version
+          if [ "${XCODE_MAJOR:-0}" -lt 26 ]; then
+            echo "App Store Connect only accepts builds made with Xcode 26 or later; this runner has Xcode $XCODE_MAJOR" >&2
+            exit 1
+          fi
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: apps/pseudolearn_app/pubspec.yaml
+
+      - name: Install app dependencies
+        run: flutter pub get
+
+      - name: Set up Rust bridge
+        uses: ./.github/actions/setup-rust-bridge
+        with:
+          targets: aarch64-apple-darwin x86_64-apple-darwin
+
+      - name: Install App Store Connect API key
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_P8_BASE64: ${{ secrets.APP_STORE_CONNECT_KEY_P8_BASE64 }}
+        run: |
+          for required in APP_STORE_CONNECT_KEY_ID APP_STORE_CONNECT_ISSUER_ID APP_STORE_CONNECT_KEY_P8_BASE64; do
+            if [ -z "${!required}" ]; then
+              echo "Secret $required is empty or missing: add it under Settings > Secrets and variables > Actions > Repository secrets" >&2
+              exit 1
+            fi
+          done
+          PRIVATE_KEYS_DIR="$HOME/.appstoreconnect/private_keys"
+          mkdir -p "$PRIVATE_KEYS_DIR"
+          echo "$APP_STORE_CONNECT_KEY_P8_BASE64" | base64 --decode > "$PRIVATE_KEYS_DIR/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8"
+          echo "ASC_KEY_ID=$APP_STORE_CONNECT_KEY_ID" >> "$GITHUB_ENV"
+          echo "ASC_ISSUER_ID=$APP_STORE_CONNECT_ISSUER_ID" >> "$GITHUB_ENV"
+          echo "ASC_KEY_PATH=$PRIVATE_KEYS_DIR/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8" >> "$GITHUB_ENV"
+
+      - name: Resolve next macOS build number
+        run: |
+          BUILD_NUMBER=$(ruby "$GITHUB_WORKSPACE/.github/scripts/app_store_connect.rb" next-build-number MAC_OS)
+          echo "Releasing macOS build $BUILD_NUMBER"
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_ENV"
+
+      - name: Write build-time auth configuration
+        run: |
+          cat > dart_define.ci.json <<JSON
+          {
+            "SUPABASE_URL": "${{ secrets.SUPABASE_URL }}",
+            "SUPABASE_ANON_KEY": "${{ secrets.SUPABASE_ANON_KEY }}",
+            "GOOGLE_IOS_CLIENT_ID": "${{ secrets.GOOGLE_IOS_CLIENT_ID }}",
+            "AGENT_BACKEND": "proxy",
+            "AGENT_PROXY_URL": "${{ secrets.SUPABASE_URL }}/functions/v1",
+            "AGENT_PURCHASES": "storekit"
+          }
+          JSON
+
+      - name: Build macOS release bundle
+        run: |
+          flutter build macos --release \
+            --dart-define-from-file=dart_define.ci.json \
+            --build-number="$BUILD_NUMBER"
+
+      - name: Verify universal application and Rust asset
+        run: |
+          APP_PATH="build/macos/Build/Products/Release/PseudoLearn.app"
+          APP_EXECUTABLE=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$APP_PATH/Contents/Info.plist")
+          BRIDGE_FRAMEWORK="$APP_PATH/Contents/Frameworks/pseudolearn_bridge.framework/Versions/A/pseudolearn_bridge"
+          test -f "$APP_PATH/Contents/Resources/Assets.car"
+          test -f "$BRIDGE_FRAMEWORK"
+          lipo "$APP_PATH/Contents/MacOS/$APP_EXECUTABLE" -verify_arch arm64 x86_64
+          lipo "$BRIDGE_FRAMEWORK" -verify_arch arm64 x86_64
+          FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR="$PWD/build/native_assets/macos" \
+            flutter test --no-pub tool/native_bridge_test.dart tool/native_bridge_adapters_test.dart
+
+      - name: Import distribution certificates into a temporary keychain
+        env:
+          APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64: ${{ secrets.APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64 }}
+          APPLE_DISTRIBUTION_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_DISTRIBUTION_CERTIFICATE_PASSWORD }}
+          APPLE_INSTALLER_CERTIFICATE_P12_BASE64: ${{ secrets.APPLE_INSTALLER_CERTIFICATE_P12_BASE64 }}
+          APPLE_INSTALLER_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_INSTALLER_CERTIFICATE_PASSWORD }}
+        run: |
+          for required in APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64 APPLE_INSTALLER_CERTIFICATE_P12_BASE64; do
+            if [ -z "${!required}" ]; then
+              echo "Secret $required is empty or missing: add it under Settings > Secrets and variables > Actions > Repository secrets" >&2
+              exit 1
+            fi
+          done
+          KEYCHAIN_PATH="$RUNNER_TEMP/release-signing.keychain-db"
+          KEYCHAIN_PASSWORD=$(openssl rand -base64 24)
+          echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          echo "$APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/distribution.p12"
+          echo "$APPLE_INSTALLER_CERTIFICATE_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/installer.p12"
+          security import "$RUNNER_TEMP/distribution.p12" -k "$KEYCHAIN_PATH" -P "$APPLE_DISTRIBUTION_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security import "$RUNNER_TEMP/installer.p12" -k "$KEYCHAIN_PATH" -P "$APPLE_INSTALLER_CERTIFICATE_PASSWORD" -T /usr/bin/productbuild
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          EXISTING_KEYCHAINS=$(security list-keychains -d user | sed 's/"//g')
+          security list-keychains -d user -s "$KEYCHAIN_PATH" $EXISTING_KEYCHAINS
+
+      - name: Resolve signing identities
+        run: |
+          INSTALLED_IDENTITIES=$( { security find-identity -v "$KEYCHAIN_PATH"; security find-identity "$KEYCHAIN_PATH"; } \
+            | sed -n 's/.*"\(.*\)".*/\1/p' | sort -u )
+          APPLICATION_IDENTITY=$(printf '%s\n' "$INSTALLED_IDENTITIES" | grep -m1 -E "^(Apple Distribution|3rd Party Mac Developer Application):" || true)
+          INSTALLER_IDENTITY=$(printf '%s\n' "$INSTALLED_IDENTITIES" | grep -m1 -E "^3rd Party Mac Developer Installer:" || true)
+          if [ -z "$APPLICATION_IDENTITY" ]; then
+            echo "No Apple Distribution certificate in the keychain: APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64 must hold an Apple Distribution or 3rd Party Mac Developer Application certificate, not a Developer ID one" >&2
+            exit 1
+          fi
+          if [ -z "$INSTALLER_IDENTITY" ]; then
+            echo "No Mac Installer Distribution certificate in the keychain: APPLE_INSTALLER_CERTIFICATE_P12_BASE64 must hold a 3rd Party Mac Developer Installer certificate" >&2
+            exit 1
+          fi
+          echo "APPLICATION_IDENTITY=$APPLICATION_IDENTITY" >> "$GITHUB_ENV"
+          echo "INSTALLER_IDENTITY=$INSTALLER_IDENTITY" >> "$GITHUB_ENV"
+
+      - name: Embed Mac App Store provisioning profile and resolve entitlements
+        env:
+          APPLE_PROVISIONING_PROFILE_BASE64: ${{ secrets.APPLE_PROVISIONING_PROFILE_BASE64 }}
+        run: |
+          APP_PATH="build/macos/Build/Products/Release/PseudoLearn.app"
+          PROFILE_PATH="$RUNNER_TEMP/embedded.provisionprofile"
+          PROFILE_PLIST="$RUNNER_TEMP/profile.plist"
+          if [ -z "$APPLE_PROVISIONING_PROFILE_BASE64" ]; then
+            echo "Secret APPLE_PROVISIONING_PROFILE_BASE64 is empty or missing: add it under Settings > Secrets and variables > Actions > Repository secrets" >&2
+            exit 1
+          fi
+          if ! echo "$APPLE_PROVISIONING_PROFILE_BASE64" | base64 --decode > "$PROFILE_PATH"; then
+            echo "Secret APPLE_PROVISIONING_PROFILE_BASE64 is not valid base64" >&2
+            exit 1
+          fi
+          if ! security cms -D -i "$PROFILE_PATH" > "$PROFILE_PLIST"; then
+            echo "Decoded secret is not a provisioning profile: re-encode the .provisionprofile file with base64" >&2
+            exit 1
+          fi
+          TEAM_PREFIX=$(/usr/libexec/PlistBuddy -c "Print :ApplicationIdentifierPrefix:0" "$PROFILE_PLIST")
+          PROFILE_APP_ID=$(/usr/libexec/PlistBuddy -c "Print :Entitlements:com.apple.application-identifier" "$PROFILE_PLIST" 2>/dev/null \
+            || /usr/libexec/PlistBuddy -c "Print :Entitlements:application-identifier" "$PROFILE_PLIST")
+          if [ "$PROFILE_APP_ID" != "${TEAM_PREFIX}.com.pseudolearn.app" ]; then
+            echo "Provisioning profile targets $PROFILE_APP_ID, expected ${TEAM_PREFIX}.com.pseudolearn.app" >&2
+            exit 1
+          fi
+          for restricted in com.apple.developer.applesignin keychain-access-groups; do
+            if ! /usr/libexec/PlistBuddy -c "Print :Entitlements:$restricted" "$PROFILE_PLIST" >/dev/null 2>&1; then
+              echo "Provisioning profile does not authorize $restricted: it must be a Mac App Store profile for com.pseudolearn.app with Sign In with Apple enabled on the App ID" >&2
+              exit 1
+            fi
+          done
+          cp "$PROFILE_PATH" "$APP_PATH/Contents/embedded.provisionprofile"
+          RESOLVED_ENTITLEMENTS="$RUNNER_TEMP/Release.resolved.entitlements"
+          sed 's|\$(AppIdentifierPrefix)|@TEAM_PREFIX@|g' macos/Runner/Release.entitlements \
+            | sed "s|@TEAM_PREFIX@|${TEAM_PREFIX}.|g" > "$RESOLVED_ENTITLEMENTS"
+          echo "RESOLVED_ENTITLEMENTS=$RESOLVED_ENTITLEMENTS" >> "$GITHUB_ENV"
+
+      - name: Sign nested frameworks and libraries
+        run: |
+          APP_PATH="build/macos/Build/Products/Release/PseudoLearn.app"
+          find "$APP_PATH" \( -name "*.framework" -o -name "*.dylib" \) -print0 \
+            | while IFS= read -r -d '' item; do
+                codesign --force --options runtime --sign "$APPLICATION_IDENTITY" "$item"
+              done
+
+      - name: Sign application bundle
+        run: |
+          APP_PATH="build/macos/Build/Products/Release/PseudoLearn.app"
+          codesign --force --options runtime \
+            --entitlements "$RESOLVED_ENTITLEMENTS" \
+            --sign "$APPLICATION_IDENTITY" \
+            "$APP_PATH"
+          codesign --verify --deep --strict --verbose=2 "$APP_PATH"
+
+      - name: Build signed installer package
+        run: |
+          mkdir -p dist
+          productbuild --component build/macos/Build/Products/Release/PseudoLearn.app /Applications \
+            --sign "$INSTALLER_IDENTITY" \
+            dist/PseudoLearn.pkg
+          pkgutil --check-signature dist/PseudoLearn.pkg
+
+      - name: Upload package to App Store Connect
+        run: |
+          xcrun altool --validate-app --type macos --file dist/PseudoLearn.pkg \
+            --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"
+          xcrun altool --upload-app --type macos --file dist/PseudoLearn.pkg \
+            --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"
+
+      - name: Remove temporary keychain and private key
+        if: always()
+        run: |
+          rm -rf "$HOME/.appstoreconnect/private_keys"
+          if [ -n "$KEYCHAIN_PATH" ] && [ -f "$KEYCHAIN_PATH" ]; then
+            security delete-keychain "$KEYCHAIN_PATH"
+          fi

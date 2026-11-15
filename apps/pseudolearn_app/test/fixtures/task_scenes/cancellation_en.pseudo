@@ -1,0 +1,20 @@
+subroutine suspendable Wait()
+defer
+write "cleanup";
+endDefer
+write "before";
+discard await requestTimer();
+endSubroutine
+subroutine suspendable Parent()
+defer
+write "parent-cleanup";
+endDefer
+tasks
+spawn Wait();
+endTasks
+endSubroutine
+algorithm Cancellation
+tasks
+spawn Parent();
+endTasks
+endAlgorithm

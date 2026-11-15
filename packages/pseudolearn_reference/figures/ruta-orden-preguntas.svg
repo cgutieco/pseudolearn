@@ -1,0 +1,20 @@
+<svg viewBox="0 0 340 200">
+  <text x="170" y="18" font-size="12" text-anchor="middle" font-family="mono" fill="@numero">1900</text>
+  <g data-paso="1" data-hasta="1">
+    <caja x="90" y="30" ancho="160" alto="30" rol="acento-estructurado" fondo="0.14" texto="{{t:entre-4}}" tamano="12"/>
+    <flecha puntos="250,45 296,45 296,74" rol="error"/>
+    <caja x="250" y="78" ancho="86" alto="30" rol="error" fondo="0.16" texto="{{t:bisiesto}}" tamano="12"/>
+    <text x="272" y="40" font-size="12" text-anchor="middle" fill="@error">{{t:si}}</text>
+    <text x="170" y="150" font-size="12" text-anchor="middle" fill="@error">{{t:mal}}</text>
+  </g>
+  <g data-paso="2">
+    <caja x="90" y="30" ancho="160" alto="30" rol="acento-estructurado" fondo="0.14" texto="{{t:entre-400}}" tamano="12"/>
+    <flecha puntos="170,60 170,74" rol="tinta"/>
+    <text x="186" y="71" font-size="12" fill="@atenuado">{{t:no}}</text>
+    <caja x="90" y="78" ancho="160" alto="30" rol="acento-estructurado" fondo="0.14" texto="{{t:entre-100}}" tamano="12"/>
+    <flecha puntos="250,93 296,93 296,122" rol="exito"/>
+    <text x="272" y="88" font-size="12" text-anchor="middle" fill="@exito">{{t:si}}</text>
+    <caja x="250" y="126" ancho="86" alto="30" rol="exito" fondo="0.16" texto="{{t:no-bisiesto}}" tamano="12"/>
+    <text x="120" y="180" font-size="12" text-anchor="middle" fill="@exito">{{t:bien}}</text>
+  </g>
+</svg>

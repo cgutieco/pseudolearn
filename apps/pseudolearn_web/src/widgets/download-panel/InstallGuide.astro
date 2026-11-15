@@ -1,0 +1,65 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { RichText } from '@shared/ui/rich-text';
+import type { InstallGuideModel } from './download-cards';
+
+export interface Props {
+  locale: Locale;
+  guide: InstallGuideModel;
+}
+
+const { locale, guide } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+<details class="install-guide">
+  <summary class="install-guide__summary">{t(guide.summaryKey)}</summary>
+  <div class="install-guide__body">
+    <RichText as="p" class="install-guide__lead" text={t(guide.leadKey)} />
+    <ol class="install-guide__steps">
+      {guide.stepKeys.map((stepKey) => (
+        <RichText as="li" class="install-guide__step" text={t(stepKey)} />
+      ))}
+    </ol>
+    <p class="install-guide__note">{t(guide.noteKey)}</p>
+  </div>
+</details>
+
+<style>
+  .install-guide {
+    margin-top: var(--pl-space-sm);
+    font-size: 14px;
+    color: var(--pl-ink-2);
+  }
+
+  .install-guide__summary {
+    cursor: pointer;
+    color: var(--pl-ink-2);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .install-guide__body {
+    display: grid;
+    gap: var(--pl-space-xs);
+    margin-top: var(--pl-space-sm);
+    line-height: 1.6;
+  }
+
+  .install-guide__steps {
+    display: grid;
+    gap: 4px;
+    padding-left: 20px;
+    list-style: decimal;
+  }
+
+  .install-guide :global(strong) {
+    color: var(--pl-ink);
+  }
+
+  .install-guide__note {
+    font-size: 13px;
+    color: var(--pl-ink-3);
+  }
+</style>

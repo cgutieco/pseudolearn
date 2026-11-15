@@ -1,0 +1,4 @@
+algorithm Extremes
+write 9223372036854775807;
+write -9223372036854775807 - 1;
+endAlgorithm

@@ -1,0 +1,13 @@
+{
+  "violation": "form slot with an invalid identity",
+  "expect": "invalid slot identity",
+  "edits": [
+    {
+      "op": "set",
+      "path": "/cards/0/form/0/segments/0",
+      "value": {
+        "slot": "Ghost"
+      }
+    }
+  ]
+}

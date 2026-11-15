@@ -1,0 +1,2774 @@
+{
+  "@@locale": "es",
+  "appTitle": "PseudoLearn",
+  "@appTitle": {
+    "description": "Título principal de la aplicación"
+  },
+  "navEditor": "Editor",
+  "@navEditor": {
+    "description": "Destino de navegación al editor de código"
+  },
+  "navFlowchart": "Ordinograma",
+  "@navFlowchart": {
+    "description": "Destino de navegación al ordinograma"
+  },
+  "navTrace": "Prueba de escritorio",
+  "@navTrace": {
+    "description": "Destino de navegación a la tabla de traza"
+  },
+  "navKnowledge": "Base de conocimiento",
+  "@navKnowledge": {
+    "description": "Destino de navegación a la base de conocimiento"
+  },
+  "navLibrary": "Mis algoritmos",
+  "@navLibrary": {
+    "description": "Destino de navegación a la biblioteca de algoritmos"
+  },
+  "navSettings": "Ajustes",
+  "@navSettings": {
+    "description": "Destino de navegación a los ajustes"
+  },
+  "actionSave": "Guardar",
+  "@actionSave": {
+    "description": "Acción para guardar el documento actual"
+  },
+  "actionRun": "Ejecutar",
+  "@actionRun": {
+    "description": "Acción para iniciar la ejecución del programa"
+  },
+  "actionStep": "Paso a paso",
+  "@actionStep": {
+    "description": "Acción para avanzar un paso de ejecución"
+  },
+  "diagramZoomIn": "Acercar",
+  "@diagramZoomIn": {
+    "description": "Acción para acercar el diagrama"
+  },
+  "diagramZoomOut": "Alejar",
+  "@diagramZoomOut": {
+    "description": "Acción para alejar el diagrama"
+  },
+  "diagramFitToView": "Encuadrar el diagrama",
+  "@diagramFitToView": {
+    "description": "Acción para devolver el diagrama completo a la vista"
+  },
+  "actionStop": "Detener",
+  "@actionStop": {
+    "description": "Acción para detener la ejecución"
+  },
+  "actionStepOverBlock": "Saltar bloque",
+  "@actionStepOverBlock": {
+    "description": "Acción para ejecutar de una vez el bloque en el que está el foco"
+  },
+  "actionStepOutOfBlock": "Salir del bloque",
+  "@actionStepOutOfBlock": {
+    "description": "Acción para terminar el bloque que contiene al foco y parar después de él"
+  },
+  "actionContinue": "Continuar",
+  "@actionContinue": {
+    "description": "Acción para seguir la ejecución sin parar en cada sentencia"
+  },
+  "actionStepInto": "Paso",
+  "@actionStepInto": {
+    "description": "Acción para avanzar una sola sentencia dentro de una sesión de depuración"
+  },
+  "actionStepEvent": "Siguiente evento",
+  "@actionStepEvent": {
+    "description": "Acción para avanzar exactamente un evento global de ejecución"
+  },
+  "actionStepTask": "Paso de tarea",
+  "@actionStepTask": {
+    "description": "Acción para avanzar hasta el próximo evento de una tarea elegida"
+  },
+  "executionStepTask": "Avanzar en tarea {taskId}",
+  "@executionStepTask": {
+    "description": "Opción del menú para avanzar una tarea concreta",
+    "placeholders": {
+      "taskId": {
+        "type": "int"
+      }
+    }
+  },
+  "actionExport": "Exportar",
+  "@actionExport": {
+    "description": "Acción para abrir el diálogo de exportación"
+  },
+  "actionCancel": "Cancelar",
+  "@actionCancel": {
+    "description": "Acción genérica de cancelación"
+  },
+  "actionDelete": "Eliminar",
+  "@actionDelete": {
+    "description": "Acción destructiva de eliminación"
+  },
+  "actionRename": "Renombrar",
+  "@actionRename": {
+    "description": "Acción para renombrar"
+  },
+  "actionCreate": "Crear",
+  "@actionCreate": {
+    "description": "Acción para crear un nuevo elemento"
+  },
+  "actionCopy": "Copiar",
+  "@actionCopy": {
+    "description": "Acción para copiar contenido al portapapeles"
+  },
+  "languageSystem": "Idioma del sistema",
+  "@languageSystem": {
+    "description": "Opción de idioma siguiendo el sistema operativo"
+  },
+  "languageSpanish": "Español",
+  "@languageSpanish": {
+    "description": "Opción de idioma español"
+  },
+  "languageEnglish": "Inglés",
+  "@languageEnglish": {
+    "description": "Opción de idioma inglés"
+  },
+  "profileSpanish": "Español clásico",
+  "@profileSpanish": {
+    "description": "Perfil de sintaxis en español clásico"
+  },
+  "profileEnglish": "Inglés",
+  "@profileEnglish": {
+    "description": "Perfil de sintaxis en inglés"
+  },
+  "diagnosticsCount": "{count, plural, =0{Sin problemas} =1{1 problema} other{{count} problemas}}",
+  "@diagnosticsCount": {
+    "description": "Contador de diagnósticos con pluralización",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "libraryTitle": "Mis algoritmos",
+  "@libraryTitle": {
+    "description": "Título de la pantalla de biblioteca"
+  },
+  "librarySearchPlaceholder": "Buscar algoritmos...",
+  "@librarySearchPlaceholder": {
+    "description": "Texto del marcador de posición en la búsqueda de biblioteca"
+  },
+  "libraryNewDocument": "Nuevo algoritmo",
+  "@libraryNewDocument": {
+    "description": "Texto del botón para crear un nuevo algoritmo"
+  },
+  "libraryEmptyTitle": "Sin algoritmos aún",
+  "@libraryEmptyTitle": {
+    "description": "Título del estado vacío de la biblioteca"
+  },
+  "libraryEmptyDescription": "Crea tu primer algoritmo para empezar a programar.",
+  "@libraryEmptyDescription": {
+    "description": "Descripción del estado vacío de la biblioteca"
+  },
+  "libraryEmptySearchTitle": "Sin resultados",
+  "@libraryEmptySearchTitle": {
+    "description": "Título cuando la búsqueda no produce resultados"
+  },
+  "libraryEmptySearchDescription": "No se encontraron algoritmos para \"{query}\".",
+  "@libraryEmptySearchDescription": {
+    "description": "Descripción de búsqueda sin resultados",
+    "placeholders": {
+      "query": {
+        "type": "String",
+        "example": "fibonacci"
+      }
+    }
+  },
+  "dialogNewDocTitle": "Nuevo algoritmo",
+  "@dialogNewDocTitle": {
+    "description": "Título del diálogo de nuevo documento"
+  },
+  "dialogNewDocNameLabel": "Nombre del algoritmo",
+  "@dialogNewDocNameLabel": {
+    "description": "Etiqueta del campo de nombre de algoritmo"
+  },
+  "dialogNewDocProfileLabel": "Perfil de sintaxis",
+  "@dialogNewDocProfileLabel": {
+    "description": "Etiqueta del selector de perfil de sintaxis"
+  },
+  "dialogRenameDocTitle": "Renombrar algoritmo",
+  "@dialogRenameDocTitle": {
+    "description": "Título del diálogo para renombrar"
+  },
+  "dialogDeleteDocTitle": "Eliminar algoritmo",
+  "@dialogDeleteDocTitle": {
+    "description": "Título del diálogo de confirmación de eliminación"
+  },
+  "dialogDeleteDocMessage": "¿Estás seguro de que deseas eliminar \"{title}\"? Esta acción no se puede deshacer.",
+  "@dialogDeleteDocMessage": {
+    "description": "Mensaje de confirmación para eliminar documento",
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "example": "Algoritmo 1"
+      }
+    }
+  },
+  "tabEditor": "Editor",
+  "@tabEditor": {
+    "description": "Pestaña de edición de código"
+  },
+  "tabDiagrams": "Diagramas",
+  "@tabDiagrams": {
+    "description": "Pestaña de diagramas, con su conmutador de notación"
+  },
+  "tabTrace": "Prueba de escritorio",
+  "tabTasks": "Tareas",
+  "executionProjectionFlow": "Cronología",
+  "executionProjectionStructure": "Estado",
+  "executionProjectionEvents": "Variables",
+  "executionEventSemantics": "Evento {eventIndex}, tarea {taskId}, {eventClass}, línea {line}",
+  "@executionEventSemantics": {
+    "description": "Rótulo accesible de un marcador de evento",
+    "placeholders": {
+      "eventIndex": {
+        "type": "int"
+      },
+      "taskId": {
+        "type": "int"
+      },
+      "eventClass": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "executionStructureRoot": "Tarea raíz",
+  "executionStatusCreated": "Creada",
+  "executionStatusReady": "Lista",
+  "executionStatusRunning": "Ejecutando",
+  "executionStatusCompleted": "Completada",
+  "executionStatusCancellationRequested": "Cancelación solicitada",
+  "executionStatusFailed": "Detenida por un error del programa",
+  "executionStatusCancelled": "Cancelada cooperativamente",
+  "executionStatusCancelledByHost": "Cancelada por el anfitrión",
+  "executionStatusInterruptedByFailure": "Detenida por el error de otra tarea",
+  "executionStatusInterruptedByHost": "Detenida al cancelar la ejecución",
+  "executionStatusLimitReached": "Límite de ejecución alcanzado",
+  "executionStatusInterruptedByLimit": "Detenida al alcanzar un límite",
+  "executionTaskOutcomeSuccess": "Resultado: éxito",
+  "executionTaskOutcomeError": "Resultado: Error recuperable",
+  "executionTaskOutcomeCancelled": "Resultado: cancelación cooperativa",
+  "executionTaskOutcomeCancelledByHost": "Resultado: cancelación del anfitrión",
+  "executionTaskOutcomeLimitReached": "Resultado: límite alcanzado",
+  "executionTaskOutcomeReported": "Resultado informado: {outcome}",
+  "@executionTaskOutcomeReported": {
+    "placeholders": {
+      "outcome": {
+        "type": "String"
+      }
+    }
+  },
+  "executionHistoryStartsAt": "El historial retenido comienza en el evento {eventIndex}",
+  "@executionHistoryStartsAt": {
+    "description": "Explica que los eventos de creación anteriores ya vencieron",
+    "placeholders": {
+      "eventIndex": {
+        "type": "int"
+      }
+    }
+  },
+  "executionTaskSelector": "Tarea seleccionada",
+  "executionFrameSelector": "Marco seleccionado",
+  "executionPreviousFrames": "Página de marcos anterior",
+  "executionNextFrames": "Página de marcos siguiente",
+  "executionNoVariables": "Este marco no tiene variables.",
+  "executionValueUndefined": "Sin valor",
+  "executionValueNull": "Nulo",
+  "executionValueReference": "Referencia {identity}",
+  "@executionValueReference": {
+    "placeholders": {
+      "identity": {
+        "type": "int"
+      }
+    }
+  },
+  "executionValueChannel": "Canal {identity}: capacidad {capacity}, {state}, {queued} en cola",
+  "@executionValueChannel": {
+    "placeholders": {
+      "identity": {
+        "type": "int"
+      },
+      "capacity": {
+        "type": "int"
+      },
+      "state": {
+        "type": "String"
+      },
+      "queued": {
+        "type": "int"
+      }
+    }
+  },
+  "executionChannelOpen": "abierto",
+  "executionChannelClosed": "cerrado",
+  "executionLoadMoreValues": "Cargar página siguiente",
+  "executionChannelStateUnavailable": "Cada canal muestra su estado y cuántos elementos tiene en cola; los elementos en sí no se publican.",
+  "executionHistoryEmpty": "Ejecuta paso a paso un programa con Tareas para ver aquí cómo se reparten el trabajo.",
+  "executionObservationUnavailable": "La observación de la ejecución no está disponible en esta sesión.",
+  "executionHistoryError": "El evento o el rango seleccionado venció del historial o no se pudo leer.",
+  "executionEventPosition": "Evento {event} de {live}",
+  "@executionEventPosition": {
+    "placeholders": {
+      "event": {
+        "type": "int"
+      },
+      "live": {
+        "type": "int"
+      }
+    }
+  },
+  "executionEventShort": "{event}/{live}",
+  "@executionEventShort": {
+    "placeholders": {
+      "event": {
+        "type": "int"
+      },
+      "live": {
+        "type": "int"
+      }
+    }
+  },
+  "executionPreviousEvent": "Evento anterior",
+  "executionNextEvent": "Evento siguiente",
+  "executionLive": "En vivo",
+  "executionHelpOpen": "Cómo leer esta vista",
+  "executionHelpTitle": "Cómo leer la vista de tareas",
+  "executionHelpTimeline": "Cada fila es un evento, de arriba hacia abajo en el orden en que ocurrió, y cada columna es una tarea. Una flecha continua indica que una tarea lanzó a otra; una punteada, que espera a otra.",
+  "executionHelpStatus": "Muestra cómo está cada tarea en el evento elegido y qué está esperando. Las tareas lanzadas aparecen debajo de quien las lanzó.",
+  "executionHelpVariables": "Muestra los valores de una tarea en el evento elegido. Si eliges una tarea, la vista la sigue mientras avanzás.",
+  "executionHelpNavigation": "Usa ‹ y › para moverte entre eventos sin cambiar la ejecución. «En vivo» vuelve al último evento.",
+  "executionTaskShort": "T{taskId}",
+  "@executionTaskShort": {
+    "placeholders": {
+      "taskId": {
+        "type": "int"
+      }
+    }
+  },
+  "executionTaskNamed": "T{taskId} · {name}",
+  "@executionTaskNamed": {
+    "placeholders": {
+      "taskId": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "executionRootTaskName": "principal",
+  "executionEarlierEvents": "Ver eventos anteriores",
+  "executionSentenceSpawn": "{task} lanza a {child}",
+  "@executionSentenceSpawn": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "child": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceReady": "{task} queda lista para ejecutarse",
+  "@executionSentenceReady": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceResume": "{task} toma el turno",
+  "@executionSentenceResume": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceWaitTask": "{task} espera a que termine {target}",
+  "@executionSentenceWaitTask": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceWaitJoin": "{task} espera a que terminen las tareas que lanzó",
+  "@executionSentenceWaitJoin": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceWaitSend": "{task} espera lugar en el canal {channel}",
+  "@executionSentenceWaitSend": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceWaitReceive": "{task} espera un valor del canal {channel}",
+  "@executionSentenceWaitReceive": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceWaitSelect": "{task} espera a que algún canal esté listo",
+  "@executionSentenceWaitSelect": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceWaitEffect": "{task} espera una operación externa",
+  "@executionSentenceWaitEffect": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceWaitOther": "{task} se pausa",
+  "@executionSentenceWaitOther": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceComplete": "{task} termina",
+  "@executionSentenceComplete": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceCompleteError": "{task} termina con un error recuperable",
+  "@executionSentenceCompleteError": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceCancelled": "{task} se cancela",
+  "@executionSentenceCancelled": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceCancelRequest": "Se pide cancelar {task}",
+  "@executionSentenceCancelRequest": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceJoin": "{task} continúa: sus tareas terminaron",
+  "@executionSentenceJoin": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceChannelCreate": "{task} crea el canal {channel}",
+  "@executionSentenceChannelCreate": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceChannelSend": "{task} envía un valor por el canal {channel}",
+  "@executionSentenceChannelSend": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceChannelReceive": "{task} recibe un valor del canal {channel}",
+  "@executionSentenceChannelReceive": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceChannelEmpty": "{task} no recibe nada: el canal {channel} está cerrado",
+  "@executionSentenceChannelEmpty": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceChannelClose": "{task} cierra el canal {channel}",
+  "@executionSentenceChannelClose": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceEffect": "{task} recibe el resultado de una operación externa",
+  "@executionSentenceEffect": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceCall": "{task} llama a {name}",
+  "@executionSentenceCall": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceReturn": "{task} vuelve de {name}",
+  "@executionSentenceReturn": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceOutput": "{task} escribe «{text}»",
+  "@executionSentenceOutput": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceInput": "{task} lee una entrada",
+  "@executionSentenceInput": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceFailure": "{task} se detiene por un error",
+  "@executionSentenceFailure": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      }
+    }
+  },
+  "executionSentenceEnter": "{task} ejecuta la línea {line}",
+  "@executionSentenceEnter": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceExit": "{task} completa la línea {line}",
+  "@executionSentenceExit": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceDecision": "{task} decide en la línea {line}",
+  "@executionSentenceDecision": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "executionSentenceOther": "{task} registra un evento en la línea {line}",
+  "@executionSentenceOther": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "executionHintCreated": "Recién lanzada",
+  "executionHintReady": "Esperando su turno",
+  "executionHintRunning": "Ejecutando la línea {line}",
+  "@executionHintRunning": {
+    "placeholders": {
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "executionHintWaitTask": "Esperando a {target}",
+  "@executionHintWaitTask": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "executionHintWaitJoin": "Esperando a sus tareas: faltan {pending} de {total}",
+  "@executionHintWaitJoin": {
+    "placeholders": {
+      "pending": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "executionHintWaitSend": "Esperando lugar en el canal {channel}",
+  "@executionHintWaitSend": {
+    "placeholders": {
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionHintWaitReceive": "Esperando un valor del canal {channel}",
+  "@executionHintWaitReceive": {
+    "placeholders": {
+      "channel": {
+        "type": "int"
+      }
+    }
+  },
+  "executionHintWaitSelect": "Esperando a que algún canal esté listo",
+  "executionHintWaitEffect": "Esperando una operación externa",
+  "executionStatusWaiting": "Esperando",
+  "executionLaunchedBy": "Lanzada por {parent} en el evento {event}",
+  "@executionLaunchedBy": {
+    "placeholders": {
+      "parent": {
+        "type": "String"
+      },
+      "event": {
+        "type": "int"
+      }
+    }
+  },
+  "executionShowVariables": "Ver variables",
+  "executionGoToCreation": "Ir a su creación",
+  "executionFollowEventTask": "Tarea del evento",
+  "executionTaskPickerLabel": "Tarea",
+  "executionCallStackLabel": "Llamadas",
+  "@tabTrace": {
+    "description": "Pestaña de tabla de prueba de escritorio"
+  },
+  "tabExport": "Exportación",
+  "@tabExport": {
+    "description": "Pestaña de exportación"
+  },
+  "exportUnavailableFallback": "No hay código equivalente para este programa en este momento.",
+  "@exportUnavailableFallback": {
+    "description": "Aviso cuando la exportación no devuelve código ni motivo"
+  },
+  "outputPanelTitle": "Salida del programa",
+  "@outputPanelTitle": {
+    "description": "Título del panel de salida"
+  },
+  "outputLinesCount": "{count, plural, =0{0 líneas} =1{1 línea} other{{count} líneas}}",
+  "@outputLinesCount": {
+    "description": "Contador de líneas de salida con pluralización",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "outputPreviousExecution": "de la ejecución anterior",
+  "@outputPreviousExecution": {
+    "description": "Aviso de que la salida pertenece a una ejecución previa"
+  },
+  "outputEmpty": "La salida del programa aparecerá aquí.",
+  "@outputEmpty": {
+    "description": "Mensaje cuando no hay líneas de salida"
+  },
+  "stepCounter": "Paso {current} de {max}",
+  "@stepCounter": {
+    "description": "Contador de pasos del programa",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "12"
+      },
+      "max": {
+        "type": "int",
+        "example": "10000"
+      }
+    }
+  },
+  "@executionStatusRunning": {
+    "description": "Estado del pie mientras la ejecución avanza sin pausas"
+  },
+  "traceRowOpen": "En curso",
+  "@traceRowOpen": {
+    "description": "Marca de la fila de la tabla cuya sentencia todavía no terminó"
+  },
+  "trackingStripEmpty": "Sin cambios en este paso",
+  "@trackingStripEmpty": {
+    "description": "Tira de seguimiento cuando el paso no cambió ninguna variable"
+  },
+  "trackingStripLabel": "Cambió",
+  "@trackingStripLabel": {
+    "description": "Rótulo de la tira de seguimiento que precede a las variables que cambiaron"
+  },
+  "companionToggle": "Acompañar",
+  "@companionToggle": {
+    "description": "Conmutador que promueve la pestaña activa a panel acompañante"
+  },
+  "tabEquivalentCode": "Código equivalente",
+  "@tabEquivalentCode": {
+    "description": "Rótulo de la pestaña que muestra el programa en Python o Rust"
+  },
+  "bannerDismiss": "Descartar aviso",
+  "@bannerDismiss": {
+    "description": "Rótulo del control que retira el banner de estado de ejecución"
+  },
+  "inputDialogTitle": "Entrada de datos",
+  "@inputDialogTitle": {
+    "description": "Título del diálogo de entrada interactiva de datos"
+  },
+  "inputDialogPrompt": "Ingresa un valor para continuar:",
+  "@inputDialogPrompt": {
+    "description": "Mensaje de solicitud de dato"
+  },
+  "inputRequestIdentity": "Tarea {task}, solicitud {request}",
+  "@inputRequestIdentity": {
+    "description": "Identidad de la lectura que está esperando respuesta",
+    "placeholders": {
+      "task": {
+        "type": "int"
+      },
+      "request": {
+        "type": "int"
+      }
+    }
+  },
+  "inputDialogSubmit": "Ingresar",
+  "@inputDialogSubmit": {
+    "description": "Botón para enviar el dato ingresado"
+  },
+  "diagnosticsEmpty": "Sin problemas detectados",
+  "@diagnosticsEmpty": {
+    "description": "Mensaje en el panel de diagnósticos cuando no hay errores"
+  },
+  "diagramUnsupportedSyntax": "Este diagrama todavía no puede representar fielmente: {kinds}. El resto del programa no se dibuja para no mostrar un diagrama falso.",
+  "@diagramUnsupportedSyntax": {
+    "description": "Mensaje cuando el programa usa construcciones que el diagrama aún no representa",
+    "placeholders": {
+      "kinds": {
+        "type": "String"
+      }
+    }
+  },
+  "flowchartEmpty": "El ordinograma estará disponible cuando el código no tenga errores.",
+  "@flowchartEmpty": {
+    "description": "Mensaje del ordinograma cuando no hay AST válido"
+  },
+  "structogramEmpty": "El estructograma estará disponible cuando el código no tenga errores.",
+  "@structogramEmpty": {
+    "description": "Mensaje del estructograma cuando no hay AST válido"
+  },
+  "diagramNotationFlowchart": "Ordinograma",
+  "@diagramNotationFlowchart": {
+    "description": "Opción de notación de ordinograma en el conmutador del lienzo"
+  },
+  "diagramNotationClassDiagram": "Diagrama de clases",
+  "@diagramNotationClassDiagram": {
+    "description": "Opción de notación de diagrama de clases en el conmutador del lienzo"
+  },
+  "classDiagramEmpty": "El diagrama de clases estará disponible cuando el código no tenga errores.",
+  "@classDiagramEmpty": {
+    "description": "Mensaje del diagrama de clases cuando no hay AST válido"
+  },
+  "diagramDependencyImport": "Importa {path}",
+  "@diagramDependencyImport": {
+    "description": "Fila de una dependencia importada que no se resuelve",
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "diagramDependencyImportAlias": "Importa {path} como {alias}",
+  "@diagramDependencyImportAlias": {
+    "description": "Fila de una dependencia importada con alias que no se resuelve",
+    "placeholders": {
+      "path": {
+        "type": "String"
+      },
+      "alias": {
+        "type": "String"
+      }
+    }
+  },
+  "diagramDependencyExport": "Exporta {path}",
+  "@diagramDependencyExport": {
+    "description": "Fila de una dependencia reexportada que no se resuelve",
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "diagramDependencyUnlinked": "Sin enlazar: este documento se analiza solo, así que no se ejecuta mientras tenga dependencias pendientes.",
+  "@diagramDependencyUnlinked": {
+    "description": "Estado de una dependencia pegada que no se resuelve"
+  },
+  "exportUnavailableConstructs": "Este programa no tiene un código equivalente comprobado en {target}: {constructs}. La primera aparece en la línea {line}. No se muestra una traducción parcial para no ofrecer como equivalente algo que no lo es.",
+  "@exportUnavailableConstructs": {
+    "description": "Mensaje cuando una construcción impide ofrecer código equivalente en el destino elegido",
+    "placeholders": {
+      "target": {
+        "type": "String"
+      },
+      "constructs": {
+        "type": "String"
+      },
+      "line": {
+        "type": "int"
+      }
+    }
+  },
+  "classDiagramNoClasses": "Este documento no declara ninguna clase.",
+  "@classDiagramNoClasses": {
+    "description": "Mensaje del diagrama de clases cuando el documento analiza pero no declara clases"
+  },
+  "diagramNotationStructogram": "Estructograma",
+  "@diagramNotationStructogram": {
+    "description": "Opción de notación de estructograma en el conmutador del lienzo"
+  },
+  "traceEmpty": "Inicia la ejecución para ver la prueba de escritorio.",
+  "@traceEmpty": {
+    "description": "Mensaje de la tabla de traza cuando no hay ejecución iniciada"
+  },
+  "traceStepHeader": "Paso",
+  "@traceStepHeader": {
+    "description": "Encabezado de columna de paso en tabla de traza"
+  },
+  "traceLineHeader": "Línea",
+  "@traceLineHeader": {
+    "description": "Encabezado de columna de línea en tabla de traza"
+  },
+  "traceScopeHeader": "Ámbito",
+  "@traceScopeHeader": {
+    "description": "Encabezado de columna de ámbito en tabla de traza"
+  },
+  "knowledgeTitle": "Base de conocimiento",
+  "@knowledgeTitle": {
+    "description": "Título de la pantalla de base de conocimiento"
+  },
+  "knowledgeSearchPlaceholder": "Buscar en la base de conocimiento...",
+  "@knowledgeSearchPlaceholder": {
+    "description": "Texto del buscador en base de conocimiento"
+  },
+  "knowledgeSectionRoute": "Ruta",
+  "@knowledgeSectionRoute": {
+    "description": "Nombre de la sección de ruta de aprendizaje"
+  },
+  "knowledgeSectionSpecification": "Especificación",
+  "@knowledgeSectionSpecification": {
+    "description": "Nombre de la sección de especificación"
+  },
+  "knowledgeSectionExercises": "Ejercicios",
+  "@knowledgeSectionExercises": {
+    "description": "Nombre de la sección de ejercicios"
+  },
+  "knowledgeEmptyTitle": "Sin contenido",
+  "@knowledgeEmptyTitle": {
+    "description": "Título cuando no hay contenido en la base de conocimiento"
+  },
+  "knowledgeEmptyDescription": "No hay contenido disponible en la base de conocimiento.",
+  "@knowledgeEmptyDescription": {
+    "description": "Descripción cuando la base de conocimiento está vacía"
+  },
+  "knowledgeEmptySearchTitle": "Sin resultados",
+  "@knowledgeEmptySearchTitle": {
+    "description": "Título cuando la búsqueda o filtro no arroja resultados"
+  },
+  "knowledgeEmptySearchDescription": "No se encontraron elementos para \"{query}\".",
+  "@knowledgeEmptySearchDescription": {
+    "description": "Descripción cuando la búsqueda no encuentra coincidencias",
+    "placeholders": {
+      "query": {
+        "type": "String",
+        "example": "funciones"
+      }
+    }
+  },
+  "knowledgeErrorDescription": "No se pudo cargar la base de conocimiento.",
+  "@knowledgeErrorDescription": {
+    "description": "Mensaje en caso de error al cargar el contenido"
+  },
+  "knowledgeActionRetry": "Reintentar",
+  "@knowledgeActionRetry": {
+    "description": "Botón para reintentar la carga"
+  },
+  "knowledgeDetailCopied": "Copiado",
+  "@knowledgeDetailCopied": {
+    "description": "Tooltip de confirmación de copiado"
+  },
+  "knowledgeDetailSections": "Secciones",
+  "@knowledgeDetailSections": {
+    "description": "Etiqueta para la lista de encabezados navegables"
+  },
+  "knowledgePredictionNotReached": "El programa no llega al paso {step}",
+  "@knowledgePredictionNotReached": {
+    "description": "Mensaje de error cuando la ejecución termina antes del paso esperado",
+    "placeholders": {
+      "step": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "knowledgeSpecReturnToModule": "Volver al módulo {moduleTitle}",
+  "@knowledgeSpecReturnToModule": {
+    "description": "Botón para volver al módulo que referenció la sección de especificación",
+    "placeholders": {
+      "moduleTitle": {
+        "type": "String",
+        "example": "Datos: tipos, variables..."
+      }
+    }
+  },
+  "exerciseCompletedBadge": "Superado",
+  "@exerciseCompletedBadge": {
+    "description": "Insignia que indica que el ejercicio ya fue completado con éxito"
+  },
+  "exerciseFilterLevel": "Nivel",
+  "@exerciseFilterLevel": {
+    "description": "Etiqueta de filtro por nivel"
+  },
+  "exerciseFilterModule": "Módulo",
+  "@exerciseFilterModule": {
+    "description": "Etiqueta de filtro por módulo"
+  },
+  "exerciseFilterConstruct": "Construcción",
+  "@exerciseFilterConstruct": {
+    "description": "Etiqueta de filtro por construcción requerida"
+  },
+  "exerciseBankEmptyFilterTitle": "Sin resultados",
+  "@exerciseBankEmptyFilterTitle": {
+    "description": "Título cuando los filtros no coinciden con ningún ejercicio"
+  },
+  "exerciseBankEmptyFilterDescription": "Ningún ejercicio coincide con los filtros o la búsqueda seleccionada.",
+  "@exerciseBankEmptyFilterDescription": {
+    "description": "Descripción cuando los filtros de ejercicios no arrojan resultados"
+  },
+  "exerciseStripTitle": "Ejercicio: {title}",
+  "@exerciseStripTitle": {
+    "description": "Título de la franja de ejercicio en el editor",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "exerciseStripCollapse": "Contraer franja de ejercicio",
+  "@exerciseStripCollapse": {
+    "description": "Etiqueta semántica para contraer la franja de ejercicio"
+  },
+  "exerciseStripExpand": "Expandir franja de ejercicio",
+  "@exerciseStripExpand": {
+    "description": "Etiqueta semántica para expandir la franja de ejercicio"
+  },
+  "exercisePassedCount": "Cumple {passed} de {total} casos",
+  "@exercisePassedCount": {
+    "description": "Resultado pedagógico de casos superados",
+    "placeholders": {
+      "passed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "exerciseAllCasesPassed": "¡Cumple todos los casos de prueba!",
+  "@exerciseAllCasesPassed": {
+    "description": "Aviso cuando se superan todos los casos de prueba"
+  },
+  "exerciseHiddenFailureTitle": "Primer caso oculto fallido:",
+  "@exerciseHiddenFailureTitle": {
+    "description": "Encabezado para revelar el primer caso oculto fallido"
+  },
+  "exerciseHiddenInputs": "Entrada: {inputs}",
+  "@exerciseHiddenInputs": {
+    "description": "Entrada del caso oculto fallido",
+    "placeholders": {
+      "inputs": {
+        "type": "String"
+      }
+    }
+  },
+  "exerciseHiddenExpected": "Salida esperada: {expected}",
+  "@exerciseHiddenExpected": {
+    "description": "Salida esperada del caso oculto fallido",
+    "placeholders": {
+      "expected": {
+        "type": "String"
+      }
+    }
+  },
+  "exerciseHiddenActual": "Salida obtenida: {actual}",
+  "@exerciseHiddenActual": {
+    "description": "Salida obtenida del caso oculto fallido",
+    "placeholders": {
+      "actual": {
+        "type": "String"
+      }
+    }
+  },
+  "exerciseOutcomeParseError": "El programa contiene errores de sintaxis y no puede comprobarse.",
+  "@exerciseOutcomeParseError": {
+    "description": "Mensaje cuando el programa no analiza sintácticamente"
+  },
+  "exerciseOutcomeHalted": "La ejecución se detuvo de forma anómala.",
+  "@exerciseOutcomeHalted": {
+    "description": "Mensaje cuando la ejecución se detuvo prematuramente"
+  },
+  "exerciseOutcomeStepLimit": "Se agotó el límite de pasos (posible bucle infinito).",
+  "@exerciseOutcomeStepLimit": {
+    "description": "Mensaje cuando la ejecución alcanzó el límite de pasos"
+  },
+  "exerciseOutcomeInputExhausted": "El programa solicitó más entradas de las previstas.",
+  "@exerciseOutcomeInputExhausted": {
+    "description": "Mensaje cuando se agotaron las entradas provistas"
+  },
+  "exerciseNotFoundTitle": "Ejercicio no disponible",
+  "@exerciseNotFoundTitle": {
+    "description": "Título cuando el ejercicio vinculado no existe"
+  },
+  "exerciseNotFoundInCatalog": "El ejercicio vinculado ({id}) no existe en el catálogo. Puedes editar y ejecutar este documento con normalidad.",
+  "@exerciseNotFoundInCatalog": {
+    "description": "Aviso cuando el ejercicio vinculado no existe en el catálogo",
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "exerciseVisibleCasesTitle": "Casos de prueba visibles:",
+  "@exerciseVisibleCasesTitle": {
+    "description": "Título de la sección de casos de prueba visibles"
+  },
+  "exerciseCaseInputsLabel": "Entrada: {inputs}",
+  "@exerciseCaseInputsLabel": {
+    "description": "Entradas de un caso de prueba visible",
+    "placeholders": {
+      "inputs": {
+        "type": "String"
+      }
+    }
+  },
+  "exerciseCaseOutputsLabel": "Salida esperada: {outputs}",
+  "@exerciseCaseOutputsLabel": {
+    "description": "Salidas de un caso de prueba visible",
+    "placeholders": {
+      "outputs": {
+        "type": "String"
+      }
+    }
+  },
+  "exerciseUnmetAssertion": "Falta la restricción: {requirement}",
+  "@exerciseUnmetAssertion": {
+    "description": "Mensaje de aserción estructural no cumplida",
+    "placeholders": {
+      "requirement": {
+        "type": "String"
+      }
+    }
+  },
+  "onboardingStepOf": "Paso {current} de {total}",
+  "@onboardingStepOf": {
+    "description": "Texto del indicador de pasos",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "onboardingWelcomeTitle": "Bienvenido a PseudoLearn",
+  "@onboardingWelcomeTitle": {
+    "description": "Título del paso de bienvenida"
+  },
+  "onboardingWelcomeSubtitle": "Escribe pseudocódigo y mira cómo se ejecuta: diagramas, prueba de escritorio y salida, todo a la vez.",
+  "@onboardingWelcomeSubtitle": {
+    "description": "Subtítulo del paso de bienvenida"
+  },
+  "onboardingWelcomeHighlightEngine": "Un motor que ejecuta de verdad, instrucción a instrucción",
+  "@onboardingWelcomeHighlightEngine": {
+    "description": "Primer punto de valor del paso de bienvenida"
+  },
+  "onboardingWelcomeHighlightDiagrams": "Ordinograma, estructograma y diagrama de clases del mismo programa",
+  "@onboardingWelcomeHighlightDiagrams": {
+    "description": "Segundo punto de valor del paso de bienvenida"
+  },
+  "onboardingWelcomeHighlightRoute": "Una ruta de aprendizaje con ejercicios que se comprueban solos",
+  "@onboardingWelcomeHighlightRoute": {
+    "description": "Tercer punto de valor del paso de bienvenida"
+  },
+  "onboardingLabTitle": "El laboratorio en vivo",
+  "@onboardingLabTitle": {
+    "description": "Título del paso de laboratorio"
+  },
+  "onboardingLabSubtitle": "Pulsa «Paso a paso» y observa cómo reaccionan a la vez el código, los diagramas, la prueba de escritorio y la salida.",
+  "@onboardingLabSubtitle": {
+    "description": "Subtítulo del paso de laboratorio"
+  },
+  "onboardingLabBriefTitle": "La casuística",
+  "@onboardingLabBriefTitle": {
+    "description": "Rótulo de la tarjeta de enunciado del laboratorio"
+  },
+  "onboardingLabBriefStatement": "Un termómetro empieza en 30 grados y se enfría de tres en tres hasta llegar a los 24 grados de confort. Cuenta cuántas veces se enfrió y anuncia el resultado.",
+  "@onboardingLabBriefStatement": {
+    "description": "Enunciado de la casuística que resuelve el programa de demostración"
+  },
+  "onboardingLabReadOnly": "Vista de solo lectura: aquí se observa, no se edita.",
+  "@onboardingLabReadOnly": {
+    "description": "Aviso de que el laboratorio no permite editar"
+  },
+  "onboardingLabSurfaceDiagrams": "Diagramas",
+  "@onboardingLabSurfaceDiagrams": {
+    "description": "Rótulo de la superficie de diagramas del laboratorio"
+  },
+  "onboardingLabSurfaceTrace": "Prueba de escritorio",
+  "@onboardingLabSurfaceTrace": {
+    "description": "Rótulo de la superficie de prueba de escritorio del laboratorio"
+  },
+  "onboardingLabSurfaceOutput": "Salida",
+  "@onboardingLabSurfaceOutput": {
+    "description": "Rótulo de la superficie de salida del laboratorio"
+  },
+  "onboardingLabActionRestart": "Reiniciar",
+  "@onboardingLabActionRestart": {
+    "description": "Botón para volver a empezar la demostración"
+  },
+  "onboardingLabStatusReady": "Listo para ejecutar la primera instrucción.",
+  "@onboardingLabStatusReady": {
+    "description": "Estado del laboratorio antes del primer paso"
+  },
+  "onboardingLabStatusStepping": "{count, plural, =1{1 instrucción ejecutada} other{{count} instrucciones ejecutadas}}",
+  "@onboardingLabStatusStepping": {
+    "description": "Estado del laboratorio durante la ejecución",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "onboardingLabStatusFinished": "Programa terminado. Reinicia para volver a verlo.",
+  "@onboardingLabStatusFinished": {
+    "description": "Estado del laboratorio cuando el programa termina"
+  },
+  "onboardingLabUnavailable": "La demostración no está disponible ahora mismo. Puedes continuar sin ella.",
+  "@onboardingLabUnavailable": {
+    "description": "Aviso cuando el programa de demostración no se puede cargar"
+  },
+  "onboardingKnowledgeTitle": "Tu base de conocimiento",
+  "@onboardingKnowledgeTitle": {
+    "description": "Título del paso de base de conocimiento"
+  },
+  "onboardingKnowledgeSubtitle": "No estás solo frente a la hoja en blanco: hay una ruta, una especificación y un banco de ejercicios esperándote.",
+  "@onboardingKnowledgeSubtitle": {
+    "description": "Subtítulo del paso de base de conocimiento"
+  },
+  "onboardingKnowledgeRouteTitle": "Ruta personalizada",
+  "@onboardingKnowledgeRouteTitle": {
+    "description": "Título de la tarjeta de ruta de aprendizaje"
+  },
+  "onboardingKnowledgeRouteDescription": "Tres tramos encadenados que llevan desde los fundamentos hasta la programación orientada a objetos con pseudocódigo.",
+  "@onboardingKnowledgeRouteDescription": {
+    "description": "Descripción de la tarjeta de ruta de aprendizaje"
+  },
+  "onboardingKnowledgeSpecificationTitle": "Especificación de sintaxis",
+  "@onboardingKnowledgeSpecificationTitle": {
+    "description": "Título de la tarjeta de especificación"
+  },
+  "onboardingKnowledgeSpecificationDescription": "Cada construcción del lenguaje, con su forma exacta y sus ejemplos ejecutables.",
+  "@onboardingKnowledgeSpecificationDescription": {
+    "description": "Descripción de la tarjeta de especificación"
+  },
+  "onboardingKnowledgeSpecificationCount": "{count, plural, =1{1 sección} other{{count} secciones}}",
+  "@onboardingKnowledgeSpecificationCount": {
+    "description": "Recuento de secciones de especificación",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "20"
+      }
+    }
+  },
+  "onboardingKnowledgeExercisesTitle": "Banco de ejercicios",
+  "@onboardingKnowledgeExercisesTitle": {
+    "description": "Título de la tarjeta de banco de ejercicios"
+  },
+  "onboardingKnowledgeExercisesDescription": "Enunciados con casos de prueba que la aplicación comprueba por ti, ordenados por dificultad.",
+  "@onboardingKnowledgeExercisesDescription": {
+    "description": "Descripción de la tarjeta de banco de ejercicios"
+  },
+  "onboardingKnowledgeExerciseCount": "{count, plural, =1{1 ejercicio} other{{count} ejercicios}}",
+  "@onboardingKnowledgeExerciseCount": {
+    "description": "Recuento total de ejercicios",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "95"
+      }
+    }
+  },
+  "onboardingKnowledgeUnavailable": "El catálogo no se pudo leer ahora mismo. Estará disponible dentro de la aplicación.",
+  "@onboardingKnowledgeUnavailable": {
+    "description": "Aviso cuando el catálogo de conocimiento no carga"
+  },
+  "onboardingCompletionTitle": "¡Todo listo para empezar!",
+  "@onboardingCompletionTitle": {
+    "description": "Título del paso de cierre"
+  },
+  "onboardingCompletionSubtitle": "Crea tu primer algoritmo desde cero, o entra por la ruta de aprendizaje si prefieres que te guíen.",
+  "@onboardingCompletionSubtitle": {
+    "description": "Subtítulo del paso de cierre"
+  },
+  "onboardingActionCreateFirst": "Crear mi primer documento",
+  "@onboardingActionCreateFirst": {
+    "description": "Botón primario para crear el primer documento desde el onboarding"
+  },
+  "onboardingActionExploreRoute": "Entrar en la ruta de aprendizaje",
+  "@onboardingActionExploreRoute": {
+    "description": "Botón secundario para abrir la ruta de aprendizaje desde el onboarding"
+  },
+  "onboardingActionNext": "Siguiente",
+  "@onboardingActionNext": {
+    "description": "Botón genérico para avanzar en onboarding"
+  },
+  "onboardingActionBack": "Atrás",
+  "@onboardingActionBack": {
+    "description": "Botón genérico para retroceder en onboarding"
+  },
+  "onboardingActionSkip": "Saltar",
+  "@onboardingActionSkip": {
+    "description": "Botón para saltar la introducción"
+  },
+  "settingsTitle": "Ajustes",
+  "@settingsTitle": {
+    "description": "Título principal de la pantalla de ajustes"
+  },
+  "settingsSectionGeneral": "General",
+  "@settingsSectionGeneral": {
+    "description": "Sección general de ajustes"
+  },
+  "settingsSectionInformation": "Información",
+  "@settingsSectionInformation": {
+    "description": "Sección de información en ajustes"
+  },
+  "settingsLanguage": "Idioma de la interfaz",
+  "@settingsLanguage": {
+    "description": "Opción de idioma de la interfaz"
+  },
+  "settingsLanguageNotice": "No cambia el vocabulario de tus documentos",
+  "@settingsLanguageNotice": {
+    "description": "Aviso de que el idioma de interfaz es independiente del de los documentos"
+  },
+  "settingsTheme": "Tema visual",
+  "@settingsTheme": {
+    "description": "Opción de tema visual"
+  },
+  "settingsThemeSystem": "Tema del sistema",
+  "@settingsThemeSystem": {
+    "description": "Opción de tema según el sistema"
+  },
+  "settingsThemeLight": "Tema claro",
+  "@settingsThemeLight": {
+    "description": "Opción de tema claro"
+  },
+  "settingsThemeDark": "Tema oscuro",
+  "@settingsThemeDark": {
+    "description": "Opción de tema oscuro"
+  },
+  "settingsRestartOnboarding": "Ver la introducción de nuevo",
+  "@settingsRestartOnboarding": {
+    "description": "Opción para reiniciar la introducción interactiva"
+  },
+  "settingsContact": "Contacto y soporte",
+  "@settingsContact": {
+    "description": "Opción de contacto y soporte"
+  },
+  "settingsVersion": "v{version}",
+  "@settingsVersion": {
+    "description": "Versión de la aplicación",
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "1.0.0"
+      }
+    }
+  },
+  "settingsBack": "Volver a Ajustes",
+  "@settingsBack": {
+    "description": "Etiqueta del botón de volver en una subpantalla de ajustes"
+  },
+  "settingsAbout": "Sobre este ajuste",
+  "@settingsAbout": {
+    "description": "Rótulo del grupo que explica un ajuste"
+  },
+  "settingsLanguageOptions": "Idiomas disponibles",
+  "@settingsLanguageOptions": {
+    "description": "Rótulo del grupo de opciones de idioma"
+  },
+  "settingsThemeOptions": "Temas disponibles",
+  "@settingsThemeOptions": {
+    "description": "Rótulo del grupo de opciones de tema"
+  },
+  "settingsThemeNotice": "«Tema del sistema» sigue la apariencia clara u oscura de tu equipo",
+  "@settingsThemeNotice": {
+    "description": "Aviso de qué hace la opción de tema del sistema"
+  },
+  "settingsDiagramAssist": "Zoom asistido en diagramas",
+  "@settingsDiagramAssist": {
+    "description": "Opción de seguimiento del paso activo en los diagramas"
+  },
+  "settingsDiagramAssistOptions": "Comportamiento al ejecutar paso a paso",
+  "@settingsDiagramAssistOptions": {
+    "description": "Rótulo del grupo de opciones del zoom asistido"
+  },
+  "settingsDiagramAssistOn": "Seguir el paso activo",
+  "@settingsDiagramAssistOn": {
+    "description": "Opción que activa el seguimiento del paso activo"
+  },
+  "settingsDiagramAssistOff": "No mover el diagrama",
+  "@settingsDiagramAssistOff": {
+    "description": "Opción que desactiva el seguimiento del paso activo"
+  },
+  "settingsDiagramAssistNotice": "Con el seguimiento activo, el diagrama se acerca al bloque en ejecución y se desplaza hasta el siguiente sin saltos",
+  "@settingsDiagramAssistNotice": {
+    "description": "Aviso de qué hace el seguimiento del paso activo"
+  },
+  "settingsContactTitle": "Contacto y soporte",
+  "@settingsContactTitle": {
+    "description": "Título de la pantalla de contacto"
+  },
+  "settingsContactTipsTitle": "Consejos para reportar incidencias",
+  "@settingsContactTipsTitle": {
+    "description": "Título de la tarjeta de consejos para reporte de problemas"
+  },
+  "settingsContactTipsBody": "Al escribirnos sobre un problema técnico, describe los pasos para reproducirlo e incluye el fragmento de pseudocódigo afectado para ayudarte con mayor rapidez.",
+  "@settingsContactTipsBody": {
+    "description": "Descripción de la tarjeta de consejos para reporte de problemas"
+  },
+  "targetLanguagePython": "Python",
+  "@targetLanguagePython": {
+    "description": "Nombre de la opción de lenguaje Python"
+  },
+  "targetLanguageRust": "Rust",
+  "@targetLanguageRust": {
+    "description": "Nombre de la opción de lenguaje Rust"
+  },
+  "exportAnalysisErrorTitle": "Programa con errores",
+  "@exportAnalysisErrorTitle": {
+    "description": "Título de estado de error de análisis en exportación"
+  },
+  "exportAnalysisErrorDescription": "Corrige los errores en el editor para ver el código exportado.",
+  "@exportAnalysisErrorDescription": {
+    "description": "Descripción de estado de error de análisis en exportación"
+  },
+  "exportCopyTooltip": "Copiar código",
+  "@exportCopyTooltip": {
+    "description": "Tooltip del botón de copiar en reposo"
+  },
+  "exportCopiedTooltip": "¡Copiado!",
+  "@exportCopiedTooltip": {
+    "description": "Tooltip del botón de copiar tras confirmación"
+  },
+  "exportEmptySourceDescription": "Escribe o abre un algoritmo para ver su traducción.",
+  "@exportEmptySourceDescription": {
+    "description": "Descripción cuando el código fuente está vacío en exportación"
+  },
+  "exportNotesTitle": "Notas de exportación",
+  "@exportNotesTitle": {
+    "description": "Título de la sección de notas de exportación"
+  },
+  "libraryDocumentOptions": "Opciones del documento",
+  "@libraryDocumentOptions": {
+    "description": "Accessible label for the per-document options menu"
+  },
+  "severityError": "ERROR",
+  "@severityError": {
+    "description": "Etiqueta de la insignia de severidad de error"
+  },
+  "severityWarning": "AVISO",
+  "@severityWarning": {
+    "description": "Etiqueta de la insignia de severidad de aviso"
+  },
+  "severityInfo": "INFO",
+  "@severityInfo": {
+    "description": "Etiqueta de la insignia de severidad informativa"
+  },
+  "severityHint": "PISTA",
+  "@severityHint": {
+    "description": "Etiqueta de la insignia de severidad de pista"
+  },
+  "severitySuccess": "ÉXITO",
+  "@severitySuccess": {
+    "description": "Etiqueta de la insignia de severidad de éxito"
+  },
+  "validationNameEmpty": "El nombre no puede estar vacío",
+  "@validationNameEmpty": {
+    "description": "Error de validación de un nombre vacío"
+  },
+  "validationNameDuplicate": "Ya existe un documento con este nombre",
+  "@validationNameDuplicate": {
+    "description": "Error de validación cuando ya existe un documento con el mismo nombre"
+  },
+  "executionRuntimeError": "Error en tiempo de ejecución",
+  "@executionRuntimeError": {
+    "description": "Mensaje por defecto cuando la ejecución se detiene sin motivo propio"
+  },
+  "settingsAccount": "Cuenta",
+  "@settingsAccount": {
+    "description": "Rótulo de la sección y página de cuenta en ajustes"
+  },
+  "settingsAccountNotLinked": "Sin vincular",
+  "@settingsAccountNotLinked": {
+    "description": "Estado de cuenta no vinculada o sin sesión"
+  },
+  "settingsAccountLinked": "Vinculada",
+  "@settingsAccountLinked": {
+    "description": "Estado de cuenta vinculada con sesión activa"
+  },
+  "settingsAccountSyncNotice": "Inicia sesión para sincronizar tus algoritmos y tu progreso entre dispositivos.",
+  "@settingsAccountSyncNotice": {
+    "description": "Explicación del beneficio de la sincronización en la página de cuenta"
+  },
+  "settingsAccountOfflineNote": "PseudoLearn funciona completamente sin cuenta. Tus algoritmos y progreso se guardan en este dispositivo.",
+  "@settingsAccountOfflineNote": {
+    "description": "Nota que enfatiza que la aplicación funciona sin conexión ni cuenta"
+  },
+  "settingsAccountSectionOptions": "Opciones de acceso",
+  "@settingsAccountSectionOptions": {
+    "description": "Encabezado de la sección de opciones de acceso en cuenta"
+  },
+  "settingsAccountSectionSession": "Sesión activa",
+  "@settingsAccountSectionSession": {
+    "description": "Encabezado de la sección con los datos de la sesión activa"
+  },
+  "settingsAccountPrivateRelay": "Correo privado de Apple",
+  "@settingsAccountPrivateRelay": {
+    "description": "Aclaración bajo una dirección de reenvío privado de Apple"
+  },
+  "authSignInWithApple": "Continuar con Apple",
+  "@authSignInWithApple": {
+    "description": "Botón para iniciar sesión con Apple"
+  },
+  "authSignInWithGoogle": "Continuar con Google",
+  "@authSignInWithGoogle": {
+    "description": "Botón para iniciar sesión con Google"
+  },
+  "authSignInWithEmail": "Continuar con correo",
+  "@authSignInWithEmail": {
+    "description": "Botón para iniciar sesión con enlace mágico por correo"
+  },
+  "authSignOut": "Cerrar sesión",
+  "@authSignOut": {
+    "description": "Botón para cerrar sesión conservando los datos locales"
+  },
+  "authSignOutAndDelete": "Cerrar sesión y borrar datos de este dispositivo",
+  "@authSignOutAndDelete": {
+    "description": "Botón destructivo para cerrar sesión y eliminar los datos locales"
+  },
+  "authDeleteDataDialogTitle": "¿Cerrar sesión y borrar datos?",
+  "@authDeleteDataDialogTitle": {
+    "description": "Título del diálogo de confirmación para cerrar sesión y borrar datos locales"
+  },
+  "authDeleteDataDialogMessage": "Se eliminarán todos los documentos guardados en este dispositivo. Esta acción no se puede deshacer.",
+  "@authDeleteDataDialogMessage": {
+    "description": "Mensaje de advertencia del diálogo de confirmación de borrado local"
+  },
+  "authDeleteDataConfirm": "Borrar datos y salir",
+  "@authDeleteDataConfirm": {
+    "description": "Acción afirmativa del diálogo de confirmación de borrado local"
+  },
+  "authDeleteAccount": "Eliminar cuenta",
+  "@authDeleteAccount": {
+    "description": "Botón destructivo para eliminar permanentemente la cuenta del usuario"
+  },
+  "authDeleteAccountDialogTitle": "¿Eliminar cuenta?",
+  "@authDeleteAccountDialogTitle": {
+    "description": "Título del diálogo de confirmación para eliminar la cuenta"
+  },
+  "authDeleteAccountDialogMessage": "Tu cuenta y todos los datos asociados se eliminarán permanentemente de los servidores. También se borrarán los documentos y el progreso de este dispositivo. Si iniciaste sesión con Apple, se te pedirá confirmar tu identidad. Esta acción no se puede deshacer.",
+  "@authDeleteAccountDialogMessage": {
+    "description": "Mensaje de advertencia del diálogo de confirmación de eliminación de cuenta"
+  },
+  "authDeleteAccountConfirm": "Eliminar cuenta",
+  "@authDeleteAccountConfirm": {
+    "description": "Acción afirmativa del diálogo de confirmación de eliminación de cuenta"
+  },
+  "authDeletingAccount": "Eliminando cuenta...",
+  "@authDeletingAccount": {
+    "description": "Indicador de progreso mientras el servidor elimina la cuenta"
+  },
+  "authDeleteAccountErrorNoConnection": "No se pudo eliminar la cuenta porque no hay conexión a internet. Tu cuenta y tus documentos siguen intactos.",
+  "@authDeleteAccountErrorNoConnection": {
+    "description": "Error de eliminación de cuenta sin conexión de red"
+  },
+  "authDeleteAccountErrorApple": "Apple no confirmó la eliminación. Tu cuenta sigue intacta; vuelve a intentarlo y confirma tu identidad con Apple.",
+  "@authDeleteAccountErrorApple": {
+    "description": "Error de eliminación de cuenta cuando falla la reautenticación o la revocación de Apple"
+  },
+  "authDeleteAccountErrorAppleUnavailable": "Esta cuenta usa Sign in with Apple y solo se puede eliminar desde un iPhone, iPad o Mac, donde Apple confirma tu identidad. Tu cuenta sigue intacta.",
+  "@authDeleteAccountErrorAppleUnavailable": {
+    "description": "Error de eliminación de cuenta cuando la plataforma no puede reautenticar con Apple"
+  },
+  "authDeleteAccountErrorGeneric": "No se pudo eliminar la cuenta. Tu cuenta y tus documentos siguen intactos; inténtalo de nuevo.",
+  "@authDeleteAccountErrorGeneric": {
+    "description": "Error general de eliminación de cuenta en el servidor"
+  },
+  "authDeleteAccountErrorLocalCleanup": "La cuenta se eliminó, pero no se pudieron borrar todos los datos de este dispositivo. Reinstala la aplicación para eliminarlos.",
+  "@authDeleteAccountErrorLocalCleanup": {
+    "description": "Error cuando la cuenta se eliminó en el servidor pero falló la purga local"
+  },
+  "authMagicLinkDialogTitle": "Iniciar sesión con enlace mágico",
+  "@authMagicLinkDialogTitle": {
+    "description": "Título del diálogo para ingresar correo electrónico de enlace mágico"
+  },
+  "authMagicLinkEmailLabel": "Correo electrónico",
+  "@authMagicLinkEmailLabel": {
+    "description": "Etiqueta del campo de correo electrónico en el diálogo de enlace mágico"
+  },
+  "authMagicLinkSend": "Enviar enlace",
+  "@authMagicLinkSend": {
+    "description": "Botón para enviar el enlace mágico al correo ingresado"
+  },
+  "authMagicLinkSentNotice": "Hemos enviado un enlace de acceso a {email}. Ábrelo en este dispositivo para iniciar sesión.",
+  "@authMagicLinkSentNotice": {
+    "description": "Aviso informativo mostrado tras enviar un enlace mágico",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "authAuthenticating": "Iniciando sesión...",
+  "@authAuthenticating": {
+    "description": "Indicador de progreso durante la autenticación"
+  },
+  "authErrorGeneric": "No se pudo iniciar sesión. Inténtalo de nuevo.",
+  "@authErrorGeneric": {
+    "description": "Mensaje de error general de autenticación"
+  },
+  "authErrorNoConnection": "Sin conexión a internet. Comprueba tu red.",
+  "@authErrorNoConnection": {
+    "description": "Mensaje de error cuando no hay conexión de red durante la autenticación"
+  },
+  "syncBannerInProgress": "Sincronizando biblioteca...",
+  "@syncBannerInProgress": {
+    "description": "Mensaje informativo mientras la sincronización está en curso"
+  },
+  "syncBannerConflictTitle": "Conflictos detectados",
+  "@syncBannerConflictTitle": {
+    "description": "Título del banner de conflicto de sincronización"
+  },
+  "syncBannerConflictMessage": "{count, plural, =1{Se ha creado 1 copia de conflicto.} other{Se han creado {count} copias de conflicto.}}",
+  "@syncBannerConflictMessage": {
+    "description": "Mensaje del banner de copias de conflicto detectadas",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncBannerErrorTitle": "Error de sincronización",
+  "@syncBannerErrorTitle": {
+    "description": "Título del banner cuando ocurre un error de sincronización"
+  },
+  "syncBannerErrorMessage": "No se pudieron sincronizar algunos cambios.",
+  "@syncBannerErrorMessage": {
+    "description": "Mensaje detallado del error de sincronización"
+  },
+  "syncRetryButton": "Reintentar",
+  "@syncRetryButton": {
+    "description": "Texto del botón para reintentar la sincronización"
+  },
+  "syncStatusSynced": "Sincronizado",
+  "@syncStatusSynced": {
+    "description": "Etiqueta accesible de documento sincronizado con la nube"
+  },
+  "syncStatusPending": "Pendiente de subir",
+  "@syncStatusPending": {
+    "description": "Etiqueta accesible de documento con cambios locales pendientes de sincronizar"
+  },
+  "syncStatusLocalOnly": "Solo en este dispositivo",
+  "@syncStatusLocalOnly": {
+    "description": "Etiqueta accesible de documento que solo existe localmente"
+  },
+  "syncConflictBadge": "Copia de conflicto",
+  "@syncConflictBadge": {
+    "description": "Etiqueta visual y accesible para documentos que son copia de conflicto"
+  },
+  "navProgress": "Progreso",
+  "@navProgress": {
+    "description": "Destino de navegación al panel de progreso"
+  },
+  "dashboardTitle": "Mi progreso",
+  "@dashboardTitle": {
+    "description": "Título de la pantalla del panel de progreso"
+  },
+  "dashboardEmptyTitle": "Todavía no hay nada que resumir",
+  "@dashboardEmptyTitle": {
+    "description": "Título del estado vacío del panel de progreso"
+  },
+  "dashboardEmptyMessage": "Escribe tu primer algoritmo o abre un módulo de la ruta de aprendizaje y aquí aparecerá tu avance.",
+  "@dashboardEmptyMessage": {
+    "description": "Mensaje del estado vacío del panel de progreso"
+  },
+  "dashboardErrorTitle": "No se pudo construir el panel",
+  "@dashboardErrorTitle": {
+    "description": "Título del estado de error del panel de progreso"
+  },
+  "dashboardLibraryTitle": "Biblioteca",
+  "@dashboardLibraryTitle": {
+    "description": "Título de la tarjeta de biblioteca del panel"
+  },
+  "dashboardLibraryProfileClassic": "Perfil castellano",
+  "@dashboardLibraryProfileClassic": {
+    "description": "Rótulo del recuento de algoritmos con perfil de sintaxis castellano"
+  },
+  "dashboardLibraryProfileEnglish": "Perfil inglés",
+  "@dashboardLibraryProfileEnglish": {
+    "description": "Rótulo del recuento de algoritmos con perfil de sintaxis inglés"
+  },
+  "dashboardRouteTitle": "Ruta de aprendizaje",
+  "@dashboardRouteTitle": {
+    "description": "Título de la tarjeta de ruta de aprendizaje del panel"
+  },
+  "dashboardRouteSubtitle": "Cada punto es una lección; tócalo para abrirla",
+  "@dashboardRouteSubtitle": {
+    "description": "Subtítulo de la tarjeta de ruta de aprendizaje"
+  },
+  "dashboardExercisesTitle": "Ejercicios",
+  "@dashboardExercisesTitle": {
+    "description": "Título de la tarjeta de ejercicios del panel"
+  },
+  "dashboardExercisesByLevel": "Por nivel",
+  "@dashboardExercisesByLevel": {
+    "description": "Rótulo del grupo de ejercicios por nivel"
+  },
+  "dashboardExercisesByKind": "Por tipo",
+  "@dashboardExercisesByKind": {
+    "description": "Rótulo del grupo de ejercicios por tipo"
+  },
+  "dashboardNextStepTitle": "Siguiente paso",
+  "@dashboardNextStepTitle": {
+    "description": "Título de la tarjeta de siguiente paso del panel"
+  },
+  "dashboardNextStepDone": "Completaste todas las lecciones de la ruta.",
+  "@dashboardNextStepDone": {
+    "description": "Mensaje cuando no queda ningún módulo por visitar"
+  },
+  "dashboardNextStepOpen": "Abrir lección",
+  "@dashboardNextStepOpen": {
+    "description": "Acción para abrir el siguiente módulo sugerido"
+  },
+  "dashboardSyncTitle": "Sincronización",
+  "@dashboardSyncTitle": {
+    "description": "Título de la tarjeta de sincronización del panel"
+  },
+  "dashboardSyncLastAt": "Última sincronización",
+  "@dashboardSyncLastAt": {
+    "description": "Rótulo de la fecha de la última sincronización"
+  },
+  "dashboardSyncNever": "Todavía sin sincronizar",
+  "@dashboardSyncNever": {
+    "description": "Valor mostrado cuando nunca hubo sincronización"
+  },
+  "dashboardSyncPending": "Cambios en cola",
+  "@dashboardSyncPending": {
+    "description": "Rótulo del número de cambios pendientes de subir"
+  },
+  "dashboardSyncOldest": "Antigüedad del más antiguo",
+  "@dashboardSyncOldest": {
+    "description": "Rótulo de la antigüedad del cambio pendiente más viejo"
+  },
+  "dashboardSyncConflicts": "Conflictos abiertos",
+  "@dashboardSyncConflicts": {
+    "description": "Rótulo del número de copias de conflicto sin revisar"
+  },
+  "dashboardSyncDaysAgo": "{count, plural, =0{Hoy} =1{1 día} other{{count} días}}",
+  "@dashboardSyncDaysAgo": {
+    "description": "Antigüedad en días de un cambio pendiente",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "dashboardConceptsTitle": "Conceptos ejercitados",
+  "@dashboardConceptsTitle": {
+    "description": "Título de la tarjeta de conceptos ejercitados"
+  },
+  "dashboardConceptsSubtitle": "Construcciones que ya has escrito en tus propios algoritmos",
+  "@dashboardConceptsSubtitle": {
+    "description": "Subtítulo de la tarjeta de conceptos ejercitados"
+  },
+  "dashboardConceptDocuments": "{count, plural, =0{Sin usar} =1{En 1 algoritmo} other{En {count} algoritmos}}",
+  "@dashboardConceptDocuments": {
+    "description": "Número de algoritmos en los que aparece una construcción",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "dashboardConceptConditional": "Condicional",
+  "@dashboardConceptConditional": {
+    "description": "Nombre de la construcción condicional"
+  },
+  "dashboardConceptMultipleSelection": "Selección múltiple",
+  "@dashboardConceptMultipleSelection": {
+    "description": "Nombre de la construcción de selección múltiple"
+  },
+  "dashboardConceptConditionalLoop": "Bucle condicional",
+  "@dashboardConceptConditionalLoop": {
+    "description": "Nombre del bucle condicional previo"
+  },
+  "dashboardConceptPostConditionalLoop": "Bucle con condición al final",
+  "@dashboardConceptPostConditionalLoop": {
+    "description": "Nombre del bucle con condición posterior"
+  },
+  "dashboardConceptCountedLoop": "Bucle contado",
+  "@dashboardConceptCountedLoop": {
+    "description": "Nombre del bucle contado"
+  },
+  "dashboardConceptArray": "Arreglo",
+  "@dashboardConceptArray": {
+    "description": "Nombre de la declaración de arreglo"
+  },
+  "dashboardConceptSubprogram": "Subprograma",
+  "@dashboardConceptSubprogram": {
+    "description": "Nombre de la declaración de subprograma"
+  },
+  "dashboardConceptClass": "Clase",
+  "@dashboardConceptClass": {
+    "description": "Nombre de la declaración de clase"
+  },
+  "dashboardConceptInterface": "Interfaz",
+  "@dashboardConceptInterface": {
+    "description": "Nombre de la declaración de interfaz"
+  },
+  "dashboardSpecificationTitle": "Cobertura de la especificación",
+  "@dashboardSpecificationTitle": {
+    "description": "Título de la tarjeta de cobertura de la especificación"
+  },
+  "dashboardSpecificationSubtitle": "Secciones normativas que tus algoritmos ya ejercitan",
+  "@dashboardSpecificationSubtitle": {
+    "description": "Subtítulo de la tarjeta de cobertura de la especificación"
+  },
+  "dashboardSpecificationExercised": "Ejercitada",
+  "@dashboardSpecificationExercised": {
+    "description": "Estado de una sección de la especificación ya ejercitada"
+  },
+  "dashboardSpecificationPending": "Sin ejercitar",
+  "@dashboardSpecificationPending": {
+    "description": "Estado de una sección de la especificación todavía sin ejercitar"
+  },
+  "dashboardActivityTitle": "Línea de actividad",
+  "@dashboardActivityTitle": {
+    "description": "Título de la tarjeta de línea de actividad"
+  },
+  "dashboardActivitySubtitle": "Lecciones, ejercicios y algoritmos por semana",
+  "@dashboardActivitySubtitle": {
+    "description": "Subtítulo de la tarjeta de línea de actividad"
+  },
+  "dashboardWeekOf": "Semana del {day}/{month}",
+  "@dashboardWeekOf": {
+    "description": "Rótulo de una semana de la línea de actividad",
+    "placeholders": {
+      "day": {
+        "type": "int",
+        "example": "13"
+      },
+      "month": {
+        "type": "int",
+        "example": "4"
+      }
+    }
+  },
+  "dashboardOverviewTitle": "Tu avance",
+  "@dashboardOverviewTitle": {
+    "description": "Título de la tarjeta de resumen del panel"
+  },
+  "dashboardOverviewSubtitle": "Ruta, ejercicios y lenguaje de un vistazo",
+  "@dashboardOverviewSubtitle": {
+    "description": "Subtítulo de la tarjeta de resumen del panel"
+  },
+  "dashboardPercent": "{percent} %",
+  "@dashboardPercent": {
+    "description": "Porcentaje redondeado mostrado en un gráfico",
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "dashboardOverviewRouteCaption": "de la ruta",
+  "@dashboardOverviewRouteCaption": {
+    "description": "Rótulo bajo el porcentaje de la ruta completada"
+  },
+  "dashboardOverviewLessons": "Lecciones completadas",
+  "@dashboardOverviewLessons": {
+    "description": "Leyenda del anillo de lecciones completadas"
+  },
+  "dashboardOverviewExercises": "Ejercicios resueltos",
+  "@dashboardOverviewExercises": {
+    "description": "Leyenda del anillo de ejercicios resueltos"
+  },
+  "dashboardOverviewConcepts": "Conceptos usados",
+  "@dashboardOverviewConcepts": {
+    "description": "Leyenda del anillo de conceptos usados en algoritmos propios"
+  },
+  "dashboardStatAlgorithms": "Algoritmos",
+  "@dashboardStatAlgorithms": {
+    "description": "Rótulo del indicador de algoritmos creados"
+  },
+  "dashboardStatActiveWeeks": "Semanas activas",
+  "@dashboardStatActiveWeeks": {
+    "description": "Rótulo del indicador de semanas con actividad"
+  },
+  "dashboardStatAssisted": "Con ayuda de Nodo",
+  "@dashboardStatAssisted": {
+    "description": "Rótulo del indicador de ejercicios resueltos con ayuda del agente"
+  },
+  "dashboardLessonPending": "Sin empezar",
+  "@dashboardLessonPending": {
+    "description": "Estado de una lección todavía no abierta en el recorrido"
+  },
+  "dashboardLessonNode": "Lección {number}: {stage}",
+  "@dashboardLessonNode": {
+    "description": "Etiqueta accesible de un punto del recorrido de la ruta",
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "1.2"
+      },
+      "stage": {
+        "type": "String",
+        "example": "En curso"
+      }
+    }
+  },
+  "dashboardNextStepRequired": "Ejercicios obligatorios: {done} de {total}",
+  "@dashboardNextStepRequired": {
+    "description": "Avance de los ejercicios obligatorios de la lección sugerida",
+    "placeholders": {
+      "done": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "dashboardNextStepRequiredHint": "Resuélvelos para dar la lección por completada.",
+  "@dashboardNextStepRequiredHint": {
+    "description": "Explicación de qué completa una lección con ejercicios obligatorios"
+  },
+  "dashboardNextStepVisitHint": "Esta lección se completa al abrirla.",
+  "@dashboardNextStepVisitHint": {
+    "description": "Explicación de qué completa una lección sin ejercicios obligatorios"
+  },
+  "dashboardExercisesSubtitle": "Por nivel de dificultad y por tipo de habilidad",
+  "@dashboardExercisesSubtitle": {
+    "description": "Subtítulo de la tarjeta de ejercicios del panel"
+  },
+  "dashboardActivityLessons": "Lecciones abiertas",
+  "@dashboardActivityLessons": {
+    "description": "Leyenda de la serie de lecciones abiertas por semana"
+  },
+  "dashboardActivityExercises": "Ejercicios resueltos",
+  "@dashboardActivityExercises": {
+    "description": "Leyenda de la serie de ejercicios resueltos por semana"
+  },
+  "dashboardActivityCreations": "Algoritmos creados",
+  "@dashboardActivityCreations": {
+    "description": "Leyenda de la serie de algoritmos creados por semana"
+  },
+  "dashboardActivityActiveWeeks": "{count} de {total} semanas con actividad",
+  "@dashboardActivityActiveWeeks": {
+    "description": "Resumen de semanas con actividad en la ventana del panel",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      },
+      "total": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "dashboardSpecificationSections": "Secciones ejercitadas",
+  "@dashboardSpecificationSections": {
+    "description": "Rótulo del medidor de secciones de la especificación ejercitadas"
+  },
+  "dashboardCoverageRatio": "{done} de {total}",
+  "@dashboardCoverageRatio": {
+    "description": "Recuento de cobertura mostrado como parte del total",
+    "placeholders": {
+      "done": {
+        "type": "int",
+        "example": "8"
+      },
+      "total": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "editorKeyIndent": "Insertar sangría",
+  "@editorKeyIndent": {
+    "description": "Etiqueta accesible de la tecla de sangría de la barra del editor"
+  },
+  "editorKeyDedent": "Quitar sangría",
+  "@editorKeyDedent": {
+    "description": "Etiqueta accesible de la operación que retira un nivel de sangría"
+  },
+  "editorKeyAssignment": "Insertar asignación",
+  "@editorKeyAssignment": {
+    "description": "Etiqueta accesible de la tecla de asignación de la barra del editor"
+  },
+  "editorKeyQuote": "Insertar comillas",
+  "@editorKeyQuote": {
+    "description": "Etiqueta accesible de la tecla de comillas de la barra del editor"
+  },
+  "editorKeyOpenParenthesis": "Insertar paréntesis de apertura",
+  "@editorKeyOpenParenthesis": {
+    "description": "Etiqueta accesible de la tecla de paréntesis de apertura"
+  },
+  "editorKeyCloseParenthesis": "Insertar paréntesis de cierre",
+  "@editorKeyCloseParenthesis": {
+    "description": "Etiqueta accesible de la tecla de paréntesis de cierre"
+  },
+  "editorKeyGreaterOrEqual": "Insertar mayor o igual",
+  "@editorKeyGreaterOrEqual": {
+    "description": "Etiqueta accesible de la tecla de comparación mayor o igual"
+  },
+  "editorKeyLessOrEqual": "Insertar menor o igual",
+  "@editorKeyLessOrEqual": {
+    "description": "Etiqueta accesible de la tecla de comparación menor o igual"
+  },
+  "editorKeyTemplatesShow": "Mostrar plantillas de estructura",
+  "@editorKeyTemplatesShow": {
+    "description": "Etiqueta accesible de la tecla que despliega la fila de plantillas"
+  },
+  "editorKeyTemplatesHide": "Ocultar plantillas de estructura",
+  "@editorKeyTemplatesHide": {
+    "description": "Etiqueta accesible de la tecla que repliega la fila de plantillas"
+  },
+  "editorActionHideKeyboard": "Ocultar teclado",
+  "@editorActionHideKeyboard": {
+    "description": "Etiqueta accesible de la acción que baja el teclado en pantalla desde el editor"
+  },
+  "actionExpand": "Expandir",
+  "@actionExpand": {
+    "description": "Etiqueta accesible de la acción que despliega un panel plegable"
+  },
+  "actionCollapse": "Contraer",
+  "@actionCollapse": {
+    "description": "Etiqueta accesible de la acción que repliega un panel desplegado"
+  },
+  "editorStopNext": "Siguiente parada",
+  "@editorStopNext": {
+    "description": "Etiqueta accesible del botón que salta a la siguiente parada de una plantilla"
+  },
+  "editorStopPrevious": "Parada anterior",
+  "@editorStopPrevious": {
+    "description": "Etiqueta accesible del botón que vuelve a la parada anterior de una plantilla"
+  },
+  "editorStopExit": "Terminar plantilla",
+  "@editorStopExit": {
+    "description": "Etiqueta accesible del botón que sale de la plantilla y deja el cursor en el cuerpo"
+  },
+  "editorDetailCloseBlock": "Cerrar bloque",
+  "@editorDetailCloseBlock": {
+    "description": "Detalle de la sugerencia que cierra el bloque abierto más interno"
+  },
+  "editorDetailStructure": "Estructura",
+  "@editorDetailStructure": {
+    "description": "Detalle de la sugerencia que inserta una estructura completa"
+  },
+  "editorDetailBilingualEquivalent": "Equivalente de {term}",
+  "@editorDetailBilingualEquivalent": {
+    "description": "Detalle de la sugerencia que corresponde a un término del otro idioma",
+    "placeholders": {
+      "term": {
+        "type": "String",
+        "example": "while"
+      }
+    }
+  },
+  "editorDetailPrimitiveType": "Tipo primitivo",
+  "@editorDetailPrimitiveType": {
+    "description": "Detalle de la sugerencia de un tipo primitivo"
+  },
+  "editorDetailClass": "Clase",
+  "@editorDetailClass": {
+    "description": "Detalle de la sugerencia de una clase"
+  },
+  "editorDetailStandardFunction": "Función estándar",
+  "@editorDetailStandardFunction": {
+    "description": "Detalle de la sugerencia de una función estándar"
+  },
+  "editorCompletionListLabel": "Sugerencias de código",
+  "@editorCompletionListLabel": {
+    "description": "Etiqueta accesible de la lista emergente de sugerencias del editor"
+  },
+  "settingsEditorAssist": "Asistencia de edición",
+  "@settingsEditorAssist": {
+    "description": "Título del ajuste que activa las sugerencias y el cierre automático al escribir"
+  },
+  "settingsEditorAssistOptions": "Mientras escribes",
+  "@settingsEditorAssistOptions": {
+    "description": "Título del grupo de opciones de la asistencia de edición"
+  },
+  "settingsEditorAssistOn": "Sugerir y completar al escribir",
+  "@settingsEditorAssistOn": {
+    "description": "Opción que activa la asistencia de edición"
+  },
+  "settingsEditorAssistOff": "Solo cuando la pida",
+  "@settingsEditorAssistOff": {
+    "description": "Opción que desactiva la asistencia de edición"
+  },
+  "settingsEditorAssistNotice": "Con la asistencia activa, el editor muestra sugerencias mientras escribes, cierra los bloques y los paréntesis y salta entre los huecos de una plantilla. Puedes pedir sugerencias en cualquier momento con Ctrl+Espacio.",
+  "@settingsEditorAssistNotice": {
+    "description": "Aviso del ajuste de asistencia de edición"
+  },
+  "helpExplainAction": "Explicar",
+  "@helpExplainAction": {
+    "description": "Acción del editor que explica el elemento bajo el cursor"
+  },
+  "helpExplainSemantic": "Explicar el elemento bajo el cursor",
+  "@helpExplainSemantic": {
+    "description": "Etiqueta accesible de la acción de explicar"
+  },
+  "helpPanelLabel": "Ayuda del lenguaje",
+  "@helpPanelLabel": {
+    "description": "Etiqueta accesible del panel de ayuda del editor"
+  },
+  "helpClose": "Cerrar ayuda",
+  "@helpClose": {
+    "description": "Cierra el panel de ayuda del editor"
+  },
+  "helpNoHelp": "No hay ayuda para esta posición.",
+  "@helpNoHelp": {
+    "description": "Mensaje cuando la posición no selecciona ningún elemento con ayuda"
+  },
+  "helpInvalidPosition": "La posición del cursor no es válida.",
+  "@helpInvalidPosition": {
+    "description": "Mensaje cuando la posición del cursor no puede consultarse"
+  },
+  "helpFailure": "No se pudo consultar la ayuda.",
+  "@helpFailure": {
+    "description": "Mensaje cuando el servicio de ayuda falla"
+  },
+  "helpPartialNote": "El programa tiene errores; la ayuda puede no corresponder a lo que querías escribir.",
+  "@helpPartialNote": {
+    "description": "Aviso cuando la resolución de ayuda es parcial por errores del programa"
+  },
+  "helpSymbolNote": "Nombre definido en tu programa.",
+  "@helpSymbolNote": {
+    "description": "Nota para un símbolo del usuario sin ficha"
+  },
+  "helpSectionHowToWrite": "Cómo se escribe",
+  "@helpSectionHowToWrite": {
+    "description": "Encabezado de la plantilla de escritura de una ficha"
+  },
+  "helpSectionEachPart": "Cada parte",
+  "@helpSectionEachPart": {
+    "description": "Encabezado de la explicación de cada palabra y hueco de la plantilla"
+  },
+  "helpSectionResult": "Devuelve",
+  "@helpSectionResult": {
+    "description": "Encabezado de lo que devuelve una función o un símbolo"
+  },
+  "helpSectionRules": "Reglas",
+  "@helpSectionRules": {
+    "description": "Encabezado de las reglas de una ficha"
+  },
+  "helpSectionCommonErrors": "Errores comunes",
+  "@helpSectionCommonErrors": {
+    "description": "Encabezado de la sección de errores comunes de una ficha"
+  },
+  "helpSectionExample": "Ejemplo",
+  "@helpSectionExample": {
+    "description": "Encabezado de la sección de ejemplos cuando hay uno solo"
+  },
+  "helpSectionExamples": "Ejemplos",
+  "@helpSectionExamples": {
+    "description": "Encabezado de la sección de ejemplos cuando hay varios"
+  },
+  "helpExampleOutput": "Resultado",
+  "@helpExampleOutput": {
+    "description": "Etiqueta de la salida que produce un ejemplo"
+  },
+  "helpExampleDiagnostic": "Este programa muestra un error",
+  "@helpExampleDiagnostic": {
+    "description": "Aviso de un ejemplo que produce un error a propósito"
+  },
+  "helpCategoryBlock": "Bloque",
+  "@helpCategoryBlock": {
+    "description": "Categoría de una ficha: bloque con apertura y cierre"
+  },
+  "helpCategoryInstruction": "Instrucción",
+  "@helpCategoryInstruction": {
+    "description": "Categoría de una ficha: instrucción de una línea"
+  },
+  "helpCategorySymbol": "Símbolo",
+  "@helpCategorySymbol": {
+    "description": "Categoría de una ficha: operador o signo"
+  },
+  "helpCategoryFunction": "Función",
+  "@helpCategoryFunction": {
+    "description": "Categoría de una ficha: función que devuelve un resultado"
+  },
+  "helpCategoryType": "Tipo de dato",
+  "@helpCategoryType": {
+    "description": "Categoría de una ficha: tipo de dato"
+  },
+  "helpCategoryValue": "Valor",
+  "@helpCategoryValue": {
+    "description": "Categoría de una ficha: valor fijo"
+  },
+  "diagramRelationGeneralization": "Herencia",
+  "@diagramRelationGeneralization": {
+    "description": "Nombre accesible de una relación de herencia"
+  },
+  "diagramRelationAssociation": "Asociación",
+  "@diagramRelationAssociation": {
+    "description": "Nombre accesible de una relación de asociación"
+  },
+  "diagramRelationRealization": "Realización",
+  "@diagramRelationRealization": {
+    "description": "Nombre accesible de una relación de realización"
+  },
+  "diagramRelationUsage": "Uso",
+  "@diagramRelationUsage": {
+    "description": "Nombre accesible de una relación de uso"
+  },
+  "diagramRelationAccessible": "{kind} de {from} a {to}",
+  "@diagramRelationAccessible": {
+    "description": "Descripción accesible de una relación del diagrama de clases",
+    "placeholders": {
+      "kind": {
+        "type": "String"
+      },
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "diagramRelationInvalidAccessible": "{relation}, inválida: {codes}",
+  "@diagramRelationInvalidAccessible": {
+    "description": "Descripción accesible de una relación inválida con sus diagnósticos",
+    "placeholders": {
+      "relation": {
+        "type": "String"
+      },
+      "codes": {
+        "type": "String"
+      }
+    }
+  },
+  "executionArguments": "Argumentos",
+  "executionArgumentsInvalid": "Revisa las comillas y los escapes de los argumentos.",
+  "executionReplay": "Repetir última ejecución",
+  "executionReplayRejectedChanged": "No se puede repetir porque el código cambió desde la última ejecución. Pulsa Ejecutar para probar la versión actual.",
+  "@executionReplayRejectedChanged": {
+    "description": "Motivo del rechazo de repetir cuando el código cambió desde la ejecución grabada"
+  },
+  "executionReplayRejectedUnfinished": "No se puede repetir porque la última ejecución se detuvo antes de acabar o no pudo grabar todos sus datos. Pulsa Ejecutar para lanzarla de nuevo.",
+  "@executionReplayRejectedUnfinished": {
+    "description": "Motivo del rechazo de repetir cuando la ejecución grabada no es reproducible"
+  },
+  "executionReplayRejectedInvalid": "No se puede repetir porque la grabación de la última ejecución no es válida. Pulsa Ejecutar para lanzarla de nuevo.",
+  "@executionReplayRejectedInvalid": {
+    "description": "Motivo del rechazo de repetir cuando la grabación está dañada o es incompatible"
+  },
+  "runResultReplayRejected": "No se pudo repetir",
+  "@runResultReplayRejected": {
+    "description": "Rótulo de la píldora cuando se rechazó repetir la última ejecución"
+  },
+  "runResultFinished": "Terminado",
+  "@runResultFinished": {
+    "description": "Rótulo de la píldora cuando el programa terminó correctamente"
+  },
+  "runResultError": "Error",
+  "@runResultError": {
+    "description": "Rótulo de la píldora cuando el programa se detuvo por un error sin línea conocida"
+  },
+  "runResultErrorAt": "Error · línea {line}",
+  "@runResultErrorAt": {
+    "description": "Rótulo de la píldora cuando el programa se detuvo por un error en una línea",
+    "placeholders": {
+      "line": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "runResultStepLimit": "Límite alcanzado",
+  "@runResultStepLimit": {
+    "description": "Rótulo de la píldora cuando el motor informó un límite de ejecución"
+  },
+  "runResultUiSafetyLimit": "Tope de interfaz",
+  "@runResultUiSafetyLimit": {
+    "description": "Rótulo de la píldora cuando la interfaz detuvo el bombeo por seguridad"
+  },
+  "runResultCancelled": "Cancelada",
+  "@runResultCancelled": {
+    "description": "Rótulo de la píldora cuando el anfitrión canceló la ejecución"
+  },
+  "runNoteStepLimit": "El motor informó que esta ejecución alcanzó un límite configurado.",
+  "@runNoteStepLimit": {
+    "description": "Línea final de la salida que explica el límite de ejecución"
+  },
+  "runNoteUiSafetyLimit": "La interfaz detuvo el bombeo tras 10 000 avances para seguir respondiendo. Este tope local no es un límite del lenguaje.",
+  "@runNoteUiSafetyLimit": {
+    "description": "Línea final de la salida que explica el tope local de interfaz"
+  },
+  "runNoteCancelled": "El anfitrión detuvo la ejecución. No se ejecutaron limpiezas de las tareas.",
+  "@runNoteCancelled": {
+    "description": "Línea final de la salida que explica la cancelación del anfitrión"
+  },
+  "runOptionsTitle": "Opciones de ejecución",
+  "@runOptionsTitle": {
+    "description": "Título de la hoja de opciones de ejecución"
+  },
+  "runOptionsOpen": "Opciones de ejecución",
+  "@runOptionsOpen": {
+    "description": "Rótulo accesible del botón que abre las opciones de ejecución"
+  },
+  "runOptionsOpenWithArguments": "Opciones de ejecución, con argumentos definidos",
+  "@runOptionsOpenWithArguments": {
+    "description": "Rótulo accesible del botón de opciones cuando hay argumentos definidos"
+  },
+  "executionArgumentsHelp": "Valores que tu programa recibe como argumentos. Sepáralos con espacios y usa comillas para incluir espacios.",
+  "@executionArgumentsHelp": {
+    "description": "Ayuda bajo el campo de argumentos de ejecución"
+  },
+  "executionReplayHelp": "Vuelve a ejecutar el programa con los mismos datos que registró la última ejecución: lo que escribiste, los archivos y los argumentos. Sirve para volver a ver un error; solo funciona si no cambiaste el código.",
+  "@executionReplayHelp": {
+    "description": "Explicación de qué hace repetir la última ejecución"
+  },
+  "executionWorkingDirectoryHelp": "Los archivos que tu programa crea o lee se guardan en la carpeta de este algoritmo.",
+  "@executionWorkingDirectoryHelp": {
+    "description": "Explicación de dónde quedan los archivos que usa el programa"
+  },
+  "exerciseCasesRatio": "{passed}/{total}",
+  "@exerciseCasesRatio": {
+    "description": "Proporción compacta de casos cumplidos en la tira del ejercicio",
+    "placeholders": {
+      "passed": {
+        "type": "int",
+        "example": "5"
+      },
+      "total": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "referenceContents": "En esta sección",
+  "referenceOpenContents": "Índice de la sección",
+  "referenceTryInEditor": "Probar en el editor",
+  "referenceExecutedSeal": "Ejecutado con el motor",
+  "referenceOutput": "Salida",
+  "referenceNoOutput": "(sin salida)",
+  "referenceDiagnostics": "Diagnósticos",
+  "referenceStepPrevious": "Anterior",
+  "referenceStepNext": "Siguiente",
+  "referenceStepCounter": "Paso {current} de {total}",
+  "@referenceStepCounter": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "referenceFigureLabel": "Figura {number}",
+  "@referenceFigureLabel": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "referenceCalloutPhrase": "En una frase",
+  "referenceCalloutLimit": "Límite exacto",
+  "referenceCalloutInside": "Por dentro",
+  "referenceCalloutAnalogy": "Analogía",
+  "referenceCalloutNote": "Nota",
+  "referenceCalloutParts": "Cada parte",
+  "referenceCalloutErrors": "Errores frecuentes",
+  "referenceSummary": "En resumen",
+  "referenceSeeAlso": "Véase también",
+  "referenceIntermediate": "Representación intermedia",
+  "referenceTrace": "Traza del motor",
+  "referenceNotFoundTitle": "Sección no encontrada",
+  "referenceNotFoundDescription": "Esta sección no existe en la especificación.",
+  "referenceIndexErrorTitle": "No se pudo cargar la especificación",
+  "referenceSearchEmpty": "Ninguna sección coincide con «{query}»",
+  "@referenceSearchEmpty": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "referenceOpenInSpecification": "Ver en la especificación",
+  "referenceAnatomyLabel": "Pieza por pieza",
+  "referenceFormLabel": "Forma",
+  "referenceTerminationCompleted": "Terminó con normalidad",
+  "referenceTerminationFailed": "Se detuvo por un fallo",
+  "referenceTerminationRejected": "No se ejecutó: el análisis encontró errores",
+  "referenceTerminationOther": "Terminó de forma anticipada",
+  "routeLessonMinutes": "{minutes} min",
+  "@routeLessonMinutes": {"placeholders": {"minutes": {"type": "int"}}},
+  "routeLessonCompleted": "Completada",
+  "routeLessonVisited": "En curso",
+  "routeLessonRequired": "Obligatorios resueltos: {done} de {total}",
+  "@routeLessonRequired": {
+    "description": "Ejercicios obligatorios resueltos de una lección en el índice de la ruta",
+    "placeholders": {
+      "done": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "routeNextLesson": "Sigue esta",
+  "routeIndexErrorTitle": "No se pudo cargar la ruta",
+  "routeIndexCompletionRule": "Una lección se completa cuando resuelves todos sus ejercicios obligatorios; si no tiene ninguno, basta con abrirla.",
+  "@routeIndexCompletionRule": {
+    "description": "Regla visible en el índice de la ruta que explica cuándo una lección queda completada"
+  },
+  "routeLessonNotFoundTitle": "No se encontró la lección",
+  "routeExerciseNotFoundTitle": "No se encontró el ejercicio",
+  "routeLessonNeeds": "Necesitas",
+  "routeLessonNeedsNothing": "nada, esta lección empieza de cero",
+  "routeLessonLearn": "Vas a aprender",
+  "routeProblemLabel": "Problema",
+  "routeAttemptReveal": "Ya lo intenté: ver la respuesta",
+  "routeAttemptHide": "Ocultar la respuesta",
+  "routePhaseUnderstand": "Entender",
+  "routePhasePlan": "Planear",
+  "routePhaseWrite": "Escribir",
+  "routePhaseTest": "Probar",
+  "routePhaseImprove": "Mejorar",
+  "routeBriefTitle": "Ficha del problema",
+  "routeBriefInputs": "Entra",
+  "routeBriefOutputs": "Sale",
+  "routeBriefRelation": "Relación",
+  "routeBriefExamples": "Ejemplos a mano",
+  "routeParadigmTitle": "Un paradigma nuevo",
+  "routeParadigmQuestion": "La pregunta",
+  "routeParadigmMetaphor": "La metáfora",
+  "routeParadigmHistory": "La historia",
+  "routeParadigmCost": "Lo que cuesta",
+  "routeRolesTitle": "Roles",
+  "routeRecallTitle": "Recuerda",
+  "routeRecallLesson": "Lección {number}",
+  "@routeRecallLesson": {"placeholders": {"number": {"type": "String"}}},
+  "routeSpecLinkLabel": "Especificación §{number}",
+  "@routeSpecLinkLabel": {"placeholders": {"number": {"type": "String"}}},
+  "routeSpecFigureOrigin": "De la Especificación §{number}",
+  "@routeSpecFigureOrigin": {"placeholders": {"number": {"type": "String"}}},
+  "routeUnderTheHood": "Bajo el capó",
+  "routeDeepen": "Profundizar",
+  "routeNextTitle": "Siguiente",
+  "routePracticeRequired": "Obligatorio",
+  "routePracticeDone": "Resuelto",
+  "routePracticeRequiredHint": "Resuelve los ejercicios marcados como «Obligatorio» para completar esta lección.",
+  "@routePracticeRequiredHint": {
+    "description": "Aviso sobre la lista de práctica de una lección con ejercicios obligatorios"
+  },
+  "routeKindPredict": "Predecir",
+  "routeKindTrace": "Rastrear",
+  "routeKindOrder": "Ordenar",
+  "routeKindFindError": "Encontrar el error",
+  "routeKindBreak": "Romperlo",
+  "routeKindDesignTests": "Diseñar las pruebas",
+  "routeKindModify": "Modificar",
+  "routeKindSolve": "Resolver",
+  "routeKindCompare": "Comparar",
+  "routeKindClassify": "Clasificar",
+  "routeKindExplain": "Explicar",
+  "routeLevelSeed": "Semilla",
+  "routeLevelSprout": "Brote",
+  "routeLevelTree": "Árbol",
+  "routeExerciseCheck": "Comprobar",
+  "routeExerciseSolved": "¡Resuelto!",
+  "routeExerciseOpenEditor": "Resolver en el editor",
+  "routeExerciseHint": "Ver una pista",
+  "routeExerciseHintNumber": "Pista {number}",
+  "@routeExerciseHintNumber": {"placeholders": {"number": {"type": "int"}}},
+  "routeExerciseReveal": "Ver la respuesta",
+  "routeExerciseVariant": "Variante",
+  "routeExerciseExplanation": "Explicación",
+  "routeAnswerPlaceholder": "Escribe la salida exacta, una línea por renglón",
+  "routeAnswerInput": "Valor {number}",
+  "@routeAnswerInput": {"placeholders": {"number": {"type": "int"}}},
+  "routeDesignAddCase": "Agregar un caso",
+  "routeDesignInputs": "Entradas, separadas por ;",
+  "routeDesignExpected": "Salida esperada",
+  "routeDesignRemove": "Quitar el caso",
+  "routeOrderUp": "Subir",
+  "routeOrderDown": "Bajar",
+  "routeClassifyChoose": "Elige",
+  "routeFeedbackLine": "No coincide a partir de la línea {line}.",
+  "@routeFeedbackLine": {"placeholders": {"line": {"type": "int"}}},
+  "routeFeedbackCells": "Hay {count} celdas que no coinciden; están marcadas en rojo.",
+  "@routeFeedbackCells": {"placeholders": {"count": {"type": "int"}}},
+  "routeFeedbackCase": "El programa armado no pasa uno de los casos. Revisa el orden.",
+  "routeFeedbackUnbroken": "Con esa entrada los dos programas responden lo mismo: {output}.",
+  "@routeFeedbackUnbroken": {"placeholders": {"output": {"type": "String"}}},
+  "routeFeedbackReferenceRejects": "El caso {number} no lo cumple ni el programa correcto, que responde: {output}.",
+  "@routeFeedbackReferenceRejects": {"placeholders": {"number": {"type": "int"}, "output": {"type": "String"}}},
+  "routeFeedbackSurvivors": "{count} versiones con errores pasan todos tus casos.",
+  "@routeFeedbackSurvivors": {"placeholders": {"count": {"type": "int"}}},
+  "routeFeedbackWrongCount": "Escribe entre {minimum} y {maximum} casos.",
+  "@routeFeedbackWrongCount": {"placeholders": {"minimum": {"type": "int"}, "maximum": {"type": "int"}}},
+  "routeFeedbackMisplaced": "Hay {count} respuestas que no coinciden.",
+  "@routeFeedbackMisplaced": {"placeholders": {"count": {"type": "int"}}},
+  "routeFeedbackNotYet": "Todavía no. Revisa tu respuesta.",
+  "routeLearnInRoute": "Aprender en la ruta",
+  "settingsContactIntro": "Si tienes dudas sobre el funcionamiento de PseudoLearn, encuentras algún comportamiento inesperado o deseas compartir propuestas educativas, estamos a tu disposición para ayudarte.",
+  "settingsContactChannelEmail": "Correo electrónico: support@pseudolearn.app",
+  "settingsContactChannelWebsite": "Sitio web oficial: https://pseudolearn.app",
+  "settingsContactChannelSupport": "Asistencia y soporte web: https://pseudolearn.app/contact",
+  "settingsContactPedagogicalTitle": "Sugerencias pedagógicas",
+  "settingsContactPedagogicalBody": "Agradecemos los comentarios de docentes, estudiantes y autodidactas sobre la ruta de aprendizaje, la progresión de los ejercicios y los ejemplos incluidos en la aplicación. Si tienes ideas para enriquecer el aprendizaje de algoritmos, nos encantará leerte.",
+  "onboardingKnowledgeLessonCount": "{count, plural, =1{1 lección} other{{count} lecciones}}",
+  "@onboardingKnowledgeLessonCount": {"placeholders": {"count": {"type": "int"}}},
+  "onboardingKnowledgeLevelNamedCount": "{level}: {count}",
+  "@onboardingKnowledgeLevelNamedCount": {"placeholders": {"level": {"type": "String"}, "count": {"type": "int"}}},
+  "librarySectionAlgorithms": "Algoritmos",
+  "librarySectionExercises": "Ejercicios",
+  "userExercisesIntro": "Retos con casos de prueba que se resuelven como un algoritmo.",
+  "userExercisesEmptyTitle": "Sin ejercicios aún",
+  "userExercisesNew": "Nuevo ejercicio",
+  "userExercisesEmpty": "Aún no has creado ejercicios. Crea uno con su solución de referencia y casos de prueba.",
+  "userExercisesSolve": "Resolver",
+  "userExercisesEdit": "Editar",
+  "userExercisesDelete": "Eliminar",
+  "userExercisesDeleteTitle": "¿Eliminar el ejercicio?",
+  "userExercisesDeleteMessage": "«{title}» se eliminará de tus ejercicios. Tus intentos se conservan como algoritmos.",
+  "@userExercisesDeleteMessage": {"placeholders": {"title": {"type": "String"}}},
+  "userExerciseEditorNewTitle": "Nuevo ejercicio",
+  "userExerciseEditorEditTitle": "Editar ejercicio",
+  "userExerciseFieldTitle": "Título",
+  "userExerciseFieldNarrative": "Narrativa",
+  "userExerciseFieldStatement": "Enunciado",
+  "userExerciseFieldRestrictions": "Restricciones",
+  "userExerciseFieldHints": "Pistas graduadas",
+  "userExerciseFieldVisibleCases": "Casos visibles",
+  "userExerciseFieldHiddenCases": "Casos ocultos",
+  "userExerciseCasesHelp": "Quien resuelve ve estos casos. Uno por línea: entradas separadas por ; luego => y las salidas esperadas. Ejemplo: 2; 3 => 5",
+  "userExerciseFieldAssertions": "Aserciones estructurales",
+  "userExerciseAssertionsHelp": "Exigen o prohíben estructuras en el código. Una por línea: contiene: bucle-contado · no-contiene: bucle-condicional · repite-como-mucho: condicional/2 · subprograma: Sumar/2",
+  "userExerciseFieldSolution": "Solución de referencia",
+  "userExerciseFieldStarter": "Código inicial",
+  "userExercisePublish": "Validar y publicar",
+  "userExerciseSaving": "Validando la solución de referencia…",
+  "userExerciseMissing": "Este ejercicio ya no existe.",
+  "userExerciseStorageError": "No se pudo guardar el ejercicio.",
+  "userExerciseMalformedCases": "Revisa el formato de los casos: cada línea necesita => y al menos una salida.",
+  "userExerciseMalformedAssertions": "Revisa el formato de las aserciones.",
+  "userExerciseProblemEmptyTitle": "El ejercicio necesita un título.",
+  "userExerciseProblemEmptyStatement": "El ejercicio necesita un enunciado.",
+  "userExerciseProblemNoVisibleCase": "Añade al menos un caso visible.",
+  "userExerciseProblemEmptySolution": "Escribe la solución de referencia.",
+  "userExerciseProblemSolutionDoesNotParse": "La solución de referencia tiene errores.",
+  "userExerciseProblemSolutionFailsCase": "La solución de referencia no pasa el caso {number}.",
+  "@userExerciseProblemSolutionFailsCase": {"placeholders": {"number": {"type": "int"}}},
+  "userExerciseProblemSolutionFailsHiddenCase": "La solución de referencia no pasa el caso oculto {number}.",
+  "@userExerciseProblemSolutionFailsHiddenCase": {"placeholders": {"number": {"type": "int"}}},
+  "userExerciseProblemSolutionMissesAssertion": "La solución de referencia no cumple: {requirement}",
+  "@userExerciseProblemSolutionMissesAssertion": {"placeholders": {"requirement": {"type": "String"}}},
+  "userExercisesOptions": "Opciones de «{title}»",
+  "@userExercisesOptions": {"placeholders": {"title": {"type": "String"}}},
+  "userExercisesCaseCount": "{count, plural, =1{1 caso de prueba} other{{count} casos de prueba}}",
+  "@userExercisesCaseCount": {"placeholders": {"count": {"type": "int"}}},
+  "userExercisesHintCount": "{count, plural, =1{1 pista} other{{count} pistas}}",
+  "@userExercisesHintCount": {"placeholders": {"count": {"type": "int"}}},
+  "userExerciseRequired": "Obligatorio",
+  "userExerciseOptional": "Opcional",
+  "userExerciseRequiredField": "{field}, obligatorio",
+  "@userExerciseRequiredField": {"placeholders": {"field": {"type": "String"}}},
+  "userExerciseOptionalField": "{field}, opcional",
+  "@userExerciseOptionalField": {"placeholders": {"field": {"type": "String"}}},
+  "userExerciseEditorIntro": "Describe el problema, escribe los casos con los que se comprueba y una solución que los pase. Al publicar, PseudoLearn ejecuta tu solución contra todos los casos y te dice cuál falla, si alguno lo hace.",
+  "userExerciseSectionProblem": "El problema",
+  "userExerciseSectionProblemHelp": "Lo que lee quien resuelve el ejercicio.",
+  "userExerciseSectionChecks": "Cómo se comprueba",
+  "userExerciseSectionChecksHelp": "Entradas con sus salidas esperadas y reglas sobre la forma del código.",
+  "userExerciseSectionSolution": "Solución",
+  "userExerciseSectionSolutionHelp": "Demuestra que el ejercicio tiene respuesta y define cómo empieza el editor.",
+  "userExerciseTitlePlaceholder": "Ej.: ¿Es par o impar?",
+  "userExerciseTitleHelp": "Un nombre corto para reconocerlo en tu lista.",
+  "userExerciseNarrativePlaceholder": "Ej.: Lucía reparte fichas en dos equipos y quiere saber si quedan igualados…",
+  "userExerciseNarrativeHelp": "Una historia o contexto que se lee antes del enunciado.",
+  "userExerciseStatementPlaceholder": "Ej.: Lee un número entero y escribe «par» si es divisible entre 2, o «impar» si no lo es.",
+  "userExerciseStatementHelp": "Qué datos recibe el algoritmo y qué tiene que mostrar.",
+  "userExerciseRestrictionsPlaceholder": "Ej.: No uses el operador MOD",
+  "userExerciseRestrictionsHelp": "Reglas que la solución debe respetar. Una por línea.",
+  "userExerciseHintsPlaceholder": "Ej.: Piensa en el resto de dividir entre 2",
+  "userExerciseHintsHelp": "Se revelan de una en una, de la más general a la más concreta. Una por línea.",
+  "userExerciseVisibleCasesPlaceholder": "4 => par\n7 => impar",
+  "userExerciseHiddenCasesPlaceholder": "0 => par\n-3 => impar",
+  "userExerciseHiddenCasesHelp": "Se comprueban sin mostrarse, para que no baste con acertar los casos visibles. Mismo formato.",
+  "userExerciseAssertionsPlaceholder": "contiene: condicional",
+  "userExerciseSolutionHelp": "Un algoritmo completo que pase todos los casos. Se ejecuta al publicar para validar el ejercicio.",
+  "userExerciseStarterHelp": "Con lo que arranca el editor de quien resuelve, por ejemplo un esqueleto para completar. Vacío, empieza en blanco.",
+  "agentName": "Nodo",
+  "agentAiBadge": "IA",
+  "agentOpen": "Abrir Nodo, asistente de IA",
+  "agentClose": "Cerrar Nodo",
+  "agentComposerHint": "Pregunta a Nodo…",
+  "agentSend": "Enviar",
+  "agentThinking": "Nodo está pensando…",
+  "agentNewConversation": "Nueva conversación",
+  "agentEmptyTitle": "Pregunta lo que quieras",
+  "agentEmptyBody": "Nodo conoce PseudoLearn, ve la pantalla en la que estás y puede comprobar programas con el motor. Es una IA y puede equivocarse.",
+  "agentStepsTitle": "{count, plural, =1{1 paso} other{{count} pasos}}",
+  "@agentStepsTitle": {"placeholders": {"count": {"type": "int"}}},
+  "agentStepReadScreen": "Leer la pantalla",
+  "agentStepSearch": "Buscar en el manual y la especificación",
+  "agentStepListDocuments": "Listar algoritmos",
+  "agentStepReadDocument": "Leer un algoritmo",
+  "agentStepCheck": "Comprobar el programa",
+  "agentStepRun": "Ejecutar el programa",
+  "agentStepTranslate": "Traducir el programa",
+  "agentStepFormat": "Formatear el programa",
+  "agentStepProgress": "Consultar tu progreso",
+  "agentStepLesson": "Leer una lección",
+  "agentStepExercise": "Leer un ejercicio",
+  "agentStepExplain": "Explicar un diagnóstico",
+  "agentStepCreateDocument": "crear un algoritmo",
+  "agentStepRenameDocument": "renombrar un algoritmo",
+  "agentStepEditDocument": "editar un algoritmo",
+  "agentStepReplaceDocument": "reemplazar todo el contenido de un algoritmo",
+  "agentStepDeleteDocument": "eliminar un algoritmo",
+  "agentStepArguments": "cambiar los argumentos de ejecución",
+  "agentStepCreateExercise": "crear un ejercicio",
+  "agentStepUpdateExercise": "actualizar un ejercicio",
+  "agentStepDeleteExercise": "eliminar un ejercicio",
+  "agentStepHint": "Dar una pista",
+  "agentStepRevealSolution": "mostrar la solución",
+  "agentStepNavigate": "Abrir una pantalla",
+  "agentStepTheme": "Cambiar el tema",
+  "agentStepLanguage": "Cambiar el idioma",
+  "agentStepProfile": "traducir un algoritmo a otro perfil",
+  "agentStepUnknown": "Paso desconocido",
+  "agentStepFailed": "No se pudo completar",
+  "agentStepDeclined": "Rechazado",
+  "agentConfirmTitle": "Nodo quiere {action}",
+  "@agentConfirmTitle": {"placeholders": {"action": {"type": "String"}}},
+  "agentConfirmDestructive": "Esta acción no se puede deshacer.",
+  "agentConfirmApprove": "Permitir",
+  "agentConfirmDecline": "No permitir",
+  "agentVerified": "Verificado",
+  "agentWithErrors": "Con errores",
+  "agentInsertInEditor": "Insertar en el editor",
+  "agentCodePseudoLearn": "PseudoLearn",
+  "agentDiagramTitle": "Diagrama",
+  "agentDiagramShowSource": "Ver código",
+  "agentDiagramShowDiagram": "Ver diagrama",
+  "agentDiagramUnsupported": "Este tipo de diagrama todavía no se puede dibujar aquí. Este es su código:",
+  "agentDiagramDescription": "Diagrama de flujo: {nodes}",
+  "@agentDiagramDescription": {"placeholders": {"nodes": {"type": "String"}}},
+  "agentAlertNote": "Nota",
+  "agentAlertTip": "Consejo",
+  "agentAlertImportant": "Importante",
+  "agentAlertWarning": "Advertencia",
+  "agentAlertCaution": "Precaución",
+  "agentTaskDone": "Hecho",
+  "agentTaskOpen": "Pendiente",
+  "agentFailureUnauthenticated": "Inicia sesión para usar Nodo.",
+  "agentFailureSubscriptionRequired": "Necesitas un plan o la prueba gratuita para hablar con Nodo.",
+  "agentFailureCreditsExhausted": "Te quedaste sin créditos. Recarga o espera a la renovación.",
+  "agentFailureRequestCap": "Esta petición alcanzó su tope de créditos. Prueba a dividirla en preguntas más pequeñas.",
+  "agentFailureRateLimited": "Demasiadas peticiones seguidas. Espera un momento.",
+  "agentFailureModelUnconfigured": "Nodo todavía no está disponible en esta versión.",
+  "agentFailurePurchasesDisabled": "Las compras no están disponibles por ahora.",
+  "agentFailureTrialUsed": "Ya usaste la prueba gratuita en esta cuenta.",
+  "agentFailureOffline": "Necesita conexión. No se cobró nada.",
+  "agentFailureUpstream": "El servicio de IA falló. No se cobró nada; inténtalo de nuevo.",
+  "agentExhausted": "Nodo usó todos los pasos de esta petición. Pídele que continúe si lo necesitas.",
+  "agentConsentTitle": "Antes de hablar con Nodo",
+  "agentConsentBody": "Nodo usa un modelo de OpenAI a través del servidor de PseudoLearn. Cuando envías un mensaje se envían tu mensaje, el código y el contexto de la pantalla que estás viendo y un resumen de tu progreso. No se envían tu correo ni tus contraseñas. OpenAI no guarda las conversaciones para entrenar y PseudoLearn solo registra el uso de créditos, no el contenido. Puedes retirar el consentimiento en Ajustes → Nodo.",
+  "agentConsentAge": "Nodo es para personas de 13 años o más.",
+  "agentConsentAccept": "Aceptar y continuar",
+  "agentConsentDecline": "Ahora no",
+  "agentOfferTitle": "Nodo · IA",
+  "agentOfferBody": "Un asistente que explica, comprueba tu código con el motor de PseudoLearn y te guía en los ejercicios sin darte la respuesta.",
+  "agentOfferSignIn": "Iniciar sesión",
+  "agentOfferTrial": "Probar 7 días gratis (40 créditos)",
+  "agentOfferMonthly": "Plan mensual: 300 créditos",
+  "agentOfferTopUp": "Recarga de 150 créditos",
+  "agentOfferSimulated": "Compras simuladas: no se cobra dinero.",
+  "agentOfferPriceMonthly": "{price} al mes",
+  "@agentOfferPriceMonthly": {"placeholders": {"price": {"type": "String"}}},
+  "agentOfferTrialIncluded": "La primera vez incluye 7 días de prueba gratis con 40 créditos.",
+  "agentOfferSubscribe": "Suscribirme",
+  "agentOfferPriceAtCheckout": "Verás el precio final en tu moneda en el pago seguro de Paddle antes de confirmar.",
+  "agentOfferLegal": "Suscripción mensual de renovación automática con 300 créditos al mes que no se acumulan. Se cobra al confirmar y se renueva cada mes salvo que la canceles al menos 24 horas antes del final del periodo. Puedes gestionarla o cancelarla cuando quieras.",
+  "agentOfferTerms": "Términos de uso",
+  "agentOfferPrivacy": "Privacidad",
+  "agentPurchaseContinuesOutside": "Completa el pago en el navegador. Al volver, tu saldo se actualiza solo; si no, pulsa Actualizar saldo.",
+  "agentCreditsTopUpPrice": "Recargar 150 créditos · {price}",
+  "@agentCreditsTopUpPrice": {"placeholders": {"price": {"type": "String"}}},
+  "agentCreditsManage": "Gestionar suscripción",
+  "agentCreditsRestore": "Restaurar compras",
+  "agentCreditsManagedElsewhere": "Tu plan se gestiona en {store}.",
+  "@agentCreditsManagedElsewhere": {"placeholders": {"store": {"type": "String"}}},
+  "agentStoreAppStore": "el App Store",
+  "agentStorePaddle": "Paddle, desde la app de Windows",
+  "agentStoreSimulated": "la tienda simulada",
+  "agentStoreUnavailable": "otra tienda",
+  "agentOfferUnavailable": "Por ahora Nodo no se puede contratar desde esta versión de PseudoLearn. Si ya lo tienes activo en tu cuenta (por ejemplo, desde un iPhone o una Mac), inicia sesión con esa cuenta y úsalo aquí.",
+  "agentCreditsTopUpUnavailable": "Por ahora las recargas no se pueden comprar desde esta versión de PseudoLearn.",
+  "agentFailureAlreadySubscribed": "Ya tienes un plan activo.",
+  "agentFailurePurchaseOwnedElsewhere": "Esa compra pertenece a otra cuenta de PseudoLearn. Inicia sesión con la cuenta con la que la hiciste.",
+  "agentFailureInvalidPurchase": "La tienda no pudo confirmar la compra. Vuelve a intentarlo o restaura tus compras.",
+  "agentFailurePurchaseNotApplied": "No se pudo sumar la compra a tu saldo. Si la tienda te la cobró, se sumará sola en cuanto sea posible; si no, inténtalo de nuevo.",
+  "agentCreditsTitle": "Nodo · IA",
+  "agentCreditsRenews": "Se renueva el {date}",
+  "@agentCreditsRenews": {"placeholders": {"date": {"type": "String"}}},
+  "agentCreditsTopUp": "Recargar 150 créditos",
+  "agentCreditsTopUpNeedsPlan": "Las recargas se compran con el plan mensual o la prueba activos. Lo que ya recargaste se sigue gastando.",
+  "agentCreditsRefresh": "Actualizar saldo",
+  "agentCreditsWithdrawConsent": "Retirar consentimiento",
+  "agentCreditsConsentWithdrawn": "Consentimiento retirado. Nodo te lo pedirá de nuevo antes del próximo mensaje.",
+  "agentCreditsExhaustedTitle": "Sin créditos",
+  "agentIntroHeadline": "Tu tutor de pseudocódigo, dentro de la app",
+  "agentIntroBody": "Nodo ve lo que estás haciendo y te responde con tu propio código, no con explicaciones de manual.",
+  "agentIntroExplain": "Explica tus errores y comprueba tu código con el motor",
+  "agentIntroTutor": "Te da pistas en los ejercicios sin regalarte la respuesta",
+  "agentIntroEdit": "Crea y edita algoritmos contigo, siempre con tu permiso",
+  "agentIntroCreditsMonthly": "300 créditos cada mes",
+  "agentIntroCreditsTopUp": "¿Te quedas corto? Recarga 150 créditos cuando quieras, sin esperar a la renovación.",
+  "agentIntroSignInNote": "Nodo va unido a tu cuenta de PseudoLearn. Inicia sesión para suscribirte y ver el precio, o entra con una cuenta que ya tenga Nodo activo para recuperarlo. Si cierras sesión, Nodo se desactiva en este dispositivo.",
+  "agentOfferPricePending": "El precio aparecerá aquí cuando la tienda lo confirme.",
+  "agentPlanOverline": "CRÉDITOS DE NODO",
+  "agentPlanAvailable": "{count, plural, =1{crédito disponible} other{créditos disponibles}}",
+  "@agentPlanAvailable": {"placeholders": {"count": {"type": "int"}}},
+  "agentPlanMonthlyLeft": "{left} de {allowance} del mes",
+  "@agentPlanMonthlyLeft": {"placeholders": {"left": {"type": "int"}, "allowance": {"type": "int"}}},
+  "agentPlanTopUpLeft": "+{count} de recarga",
+  "@agentPlanTopUpLeft": {"placeholders": {"count": {"type": "int"}}},
+  "agentPlanMeter": "Créditos del mes restantes",
+  "agentPlanKindTrial": "Prueba gratuita",
+  "agentPlanKindMonthly": "Plan mensual",
+  "agentPlanKindTopUpOnly": "Solo recargas",
+  "agentPlanLastSpend": "{count, plural, =0{Aún no has hecho peticiones} =1{Tu última petición gastó 1 crédito} other{Tu última petición gastó {count} créditos}}",
+  "@agentPlanLastSpend": {"placeholders": {"count": {"type": "int"}}},
+  "agentPlanLapsed": "Tu suscripción terminó, pero puedes seguir usando Nodo con lo que te queda de recargas. Si vuelves a suscribirte, se suman a los créditos del mes.",
+  "agentPlanTopUpTitle": "¿Necesitas más?",
+  "agentPlanTopUpBody": "La recarga suma 150 créditos a tu saldo actual.",
+  "agentPlanLauncherTitle": "Botón de Nodo",
+  "agentPlanLauncherShow": "Mostrar en todas las pantallas",
+  "agentPlanLauncherHide": "Ocultar",
+  "agentPlanLauncherNote": "Ocúltalo cuando quieras practicar sin ayuda. Tu suscripción y tus créditos no cambian, y puedes volver a mostrarlo aquí.",
+  "agentPlanSubscriptionTitle": "Suscripción",
+  "settingsAgent": "Nodo · IA",
+  "dashboardExercisesAssisted": "{count, plural, =1{1 resuelto con ayuda de Nodo} other{{count} resueltos con ayuda de Nodo}}",
+  "@dashboardExercisesAssisted": {"placeholders": {"count": {"type": "int"}}}
+}

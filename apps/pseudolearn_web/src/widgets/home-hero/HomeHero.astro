@@ -1,0 +1,45 @@
+---
+import { useTranslations } from '@shared/i18n/translator';
+import type { Locale } from '@shared/i18n/locales';
+import { Icon } from '@shared/ui/icon';
+import { StairMark } from '@shared/ui/brand-mark';
+import { ROUTES, localizePath } from '@shared/i18n/routes';
+import StoryHero from '@widgets/story-hero/StoryHero.astro';
+
+export interface Props {
+  locale: Locale;
+  storyId: string;
+}
+
+const { locale, storyId } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+<StoryHero
+  overline={t('home.hero.overline')}
+  title={t('home.hero.title')}
+  lead={t('home.hero.lead')}
+  note={t('home.hero.requirements')}
+  ceremony
+>
+  <StairMark slot="visual" id="hero" motion="ceremony" class="home-mark" />
+  <Fragment slot="actions">
+    <a class="pl-btn pl-btn--on-field" href={localizePath(ROUTES.download, locale)}>
+      <Icon name="download" size={19} />
+      <span>{t('home.hero.ctaPrimary')}</span>
+    </a>
+    <a class="pl-btn pl-btn--outline-field" href={`#${storyId}`}>
+      <span>{t('home.hero.ctaSecondary')}</span>
+      <Icon name="chevronDown" size={17} />
+    </a>
+  </Fragment>
+</StoryHero>
+
+<style>
+  :global(.home-mark) {
+    width: clamp(104px, 28vw, 168px);
+    height: auto;
+
+    --pl-stair-flag: var(--pl-on-field);
+  }
+</style>

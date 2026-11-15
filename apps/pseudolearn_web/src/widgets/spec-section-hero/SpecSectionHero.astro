@@ -1,0 +1,106 @@
+---
+import type { ContentsPart, SpecificationSection } from '@entities/specification/model/specification';
+import type { Locale } from '@shared/i18n/locales';
+import { ROUTES, localizePath } from '@shared/i18n/routes';
+import { useTranslations } from '@shared/i18n/translator';
+import SpecRuns from '@widgets/specification-reader/SpecRuns.astro';
+
+export interface Props {
+  section: SpecificationSection;
+  part: ContentsPart;
+  locale: Locale;
+  markdownHref: string;
+}
+
+const { section, part, locale, markdownHref } = Astro.props;
+const { t } = useTranslations(locale);
+---
+
+<header class="section-hero pl-field">
+  <div class="pl-container section-hero__inner">
+    <p class="section-hero__trail pl-mono">
+      <a href={localizePath(ROUTES.specification, locale)}>{t('nav.specification')}</a>
+      <span aria-hidden="true">/</span>
+      <span>
+        {part.number} · {part.title}
+      </span>
+    </p>
+    <p class="section-hero__number pl-mono">{section.number}</p>
+    <h1 class="section-hero__title">
+      <SpecRuns runs={section.title} locale={locale} />
+    </h1>
+    <p class="section-hero__phrase">
+      <SpecRuns runs={section.phrase} locale={locale} />
+    </p>
+    <a class="section-hero__markdown pl-mono" href={markdownHref} type="text/markdown">
+      {t('specification.section.markdown')}
+    </a>
+  </div>
+</header>
+
+<style>
+  .section-hero {
+    background:
+      radial-gradient(60% 80% at 90% 0%, rgb(110 187 191 / 20%), transparent 70%),
+      radial-gradient(circle at 1px 1px, var(--pl-on-field-line) 1px, transparent 0) 0 0 / 28px 28px,
+      var(--pl-field);
+    color: var(--pl-on-field-2);
+  }
+
+  .section-hero__inner {
+    display: grid;
+    gap: var(--pl-space-sm);
+    padding-top: var(--pl-space-2xl);
+    padding-bottom: var(--pl-space-2xl);
+  }
+
+  .section-hero__trail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--pl-space-xs);
+    font-size: 12px;
+  }
+
+  .section-hero__trail a {
+    color: var(--pl-on-field-3);
+  }
+
+  .section-hero__number {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--pl-on-field-3);
+  }
+
+  .section-hero__title {
+    max-width: 22ch;
+    margin: 0;
+    font-size: clamp(30px, 6vw, 52px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--pl-on-field);
+  }
+
+  .section-hero__phrase {
+    max-width: 60ch;
+    font-size: 19px;
+    line-height: 1.55;
+  }
+
+  .section-hero__markdown {
+    justify-self: start;
+    font-size: 12px;
+    color: var(--pl-on-field-3);
+  }
+
+  @media (min-width: 900px) {
+    .section-hero__inner {
+      padding-top: 72px;
+      padding-bottom: 72px;
+    }
+
+    .section-hero__number {
+      font-size: 64px;
+    }
+  }
+</style>

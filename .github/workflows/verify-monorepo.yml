@@ -1,0 +1,317 @@
+name: Verify Monorepo
+
+on:
+  workflow_dispatch:
+    inputs:
+      collect_metrics:
+        description: Medir el motor Rust en macOS, Linux y Windows
+        type: boolean
+        default: false
+      native_targets_only:
+        description: Verificar solo los destinos nativos de pseudo compilar
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  app:
+    if: ${{ !inputs.native_targets_only }}
+    runs-on: xcode-27
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: apps/pseudolearn_app/pubspec.yaml
+          cache: true
+      - run: flutter pub get
+        working-directory: apps/pseudolearn_app
+      - uses: ./.github/actions/setup-rust-bridge
+        with:
+          targets: aarch64-apple-darwin
+      - run: cargo build --release --locked --lib --manifest-path native/Cargo.toml
+        working-directory: apps/pseudolearn_app
+      - run: flutter test && flutter analyze --fatal-infos --fatal-warnings && dart run tool/check_limits.dart && dart run tool/check_content.dart && dart run tool/check_design_system.dart
+        working-directory: apps/pseudolearn_app
+  brand:
+    if: ${{ !inputs.native_targets_only }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.15'
+      - run: python3 -m pip install fonttools
+      - run: python3 -m pseudolearn_brand check && python3 tool/check_limits.py && python3 -m unittest discover -s test -t .
+        working-directory: packages/pseudolearn_brand
+  backend:
+    if: ${{ !inputs.native_targets_only }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.9.8
+      - run: deno task verify
+        working-directory: apps/pseudolearn_backend
+  web:
+    if: ${{ !inputs.native_targets_only }}
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: apps/pseudolearn_app/pubspec.yaml
+          cache: true
+      - run: flutter pub get
+        working-directory: apps/pseudolearn_app
+      - uses: ./.github/actions/setup-rust-bridge
+        with:
+          targets: aarch64-apple-darwin
+      - run: cargo build --release --locked --lib --manifest-path native/Cargo.toml
+        working-directory: apps/pseudolearn_app
+      - run: flutter test tool/generate_product_shot.dart
+        env:
+          FRB_DART_LOAD_EXTERNAL_LIBRARY_NATIVE_LIB_DIR: ${{ github.workspace }}/apps/pseudolearn_app/native/target/release
+        working-directory: apps/pseudolearn_app
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.15'
+      - run: python3 -m pip install fonttools
+      - run: python3 -m pseudolearn_brand build
+        working-directory: packages/pseudolearn_brand
+      - uses: pnpm/action-setup@v6
+        with:
+          version: '12.18.0'
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: apps/pseudolearn_web/.nvmrc
+          cache: pnpm
+          cache-dependency-path: apps/pseudolearn_web/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+        working-directory: apps/pseudolearn_web
+      - run: pnpm check:all
+        working-directory: apps/pseudolearn_web
+      - run: pnpm exec playwright install chromium
+        working-directory: apps/pseudolearn_web
+      - run: pnpm exec playwright test
+        working-directory: apps/pseudolearn_web
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: browser-failures
+          path: apps/pseudolearn_web/test-results
+  rust:
+    if: ${{ !inputs.native_targets_only }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: apps/pseudolearn_app/pubspec.yaml
+          cache: true
+      - run: rustup show
+        working-directory: packages/pseudolearn_rust_checks
+      - run: cargo install cargo-deny --version 0.20.2 --locked
+      - run: cargo run --locked -p see_cli --bin see -- export --root .
+        working-directory: packages/pseudolearn_spec
+      - run: |
+          (cd packages/pseudolearn_rust_checks && cargo run -p pseudolearn_check_command --bin rust-checks -- toolchain ../..)
+          while IFS= read -r toolchain; do
+            member=$(dirname "$toolchain")
+            if [ "$member" = "apps/pseudolearn_app/native" ]; then
+              (cd "$member" && cargo fmt --all --check && cargo clippy --all-targets -- -D warnings && cargo test && cargo deny check)
+            else
+              (cd "$member" && cargo xtask verify)
+            fi
+          done < <(git ls-files '*rust-toolchain.toml')
+  benchmarks:
+    if: ${{ !inputs.native_targets_only }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-26, ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: packages/pseudolearn_benchmarks
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: apps/pseudolearn_app/pubspec.yaml
+          cache: true
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: packages/pseudolearn_benchmarks/node-version
+      - run: cargo run --locked -p see_cli --bin see -- export --root .
+        working-directory: packages/pseudolearn_spec
+      - run: dart pub get
+      - run: dart format --output=none --set-exit-if-changed lib tool test
+      - run: dart test && dart analyze --fatal-infos --fatal-warnings && dart run tool/check.dart
+      - run: dart run tool/collect_frontend.dart
+        if: inputs.collect_metrics
+      - uses: actions/upload-artifact@v7
+        if: always() && inputs.collect_metrics
+        with:
+          name: rust-frontend-${{ matrix.os }}
+          path: packages/pseudolearn_benchmarks/results/e08r
+          if-no-files-found: error
+
+  native-target:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+          - runner: macos-15-intel
+            target: x86_64-apple-darwin
+          - runner: macos-latest
+            target: aarch64-apple-darwin
+          - runner: windows-latest
+            target: x86_64-pc-windows-msvc
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.15"
+
+      - name: Install musl tools
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y musl-tools
+
+      - name: Install the pinned Rust toolchain and target
+        run: |
+          rustup toolchain install 1.99.1 --profile minimal --target "${{ matrix.target }}"
+          rustup show
+
+      - name: Cache Cargo
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            packages/pseudolearn_spec/target
+            apps/pseudolearn_cli/target
+          key: native-target-${{ matrix.target }}-${{ hashFiles('packages/pseudolearn_engine/Cargo.lock', 'packages/pseudolearn_spec/Cargo.lock', 'apps/pseudolearn_cli/Cargo.lock') }}
+          restore-keys: native-target-${{ matrix.target }}-
+
+      - name: Resolve the unversioned library lockfiles
+        run: |
+          (cd packages/pseudolearn_engine && cargo generate-lockfile)
+          (cd packages/pseudolearn_spec && cargo generate-lockfile)
+
+      - name: Generate the corpus export
+        working-directory: packages/pseudolearn_spec
+        run: cargo run --locked -p see_cli --bin see -- export --root .
+
+      - name: Build pseudo
+        working-directory: apps/pseudolearn_cli
+        run: |
+          mkdir -p "${{ runner.temp }}/native-target-logs"
+          cargo build --release --locked 2>&1 | tee "${{ runner.temp }}/native-target-logs/build-pseudo.log"
+          exit "${PIPESTATUS[0]}"
+
+      - name: Build and run the acceptance programs
+        working-directory: apps/pseudolearn_cli
+        run: python -I tool/verify_native_target.py "target/release/pseudo" "${{ matrix.target }}" "${{ runner.temp }}/native-target-logs"
+
+      - name: Check the system path forms with the VM
+        working-directory: apps/pseudolearn_cli
+        run: python -I tool/verify_system_paths.py "target/release/pseudo" | tee "${{ runner.temp }}/native-target-logs/system-paths.json"
+
+      - name: Test the Windows path handling of the physical host
+        if: runner.os == 'Windows'
+        working-directory: packages/pseudolearn_engine
+        run: cargo test --locked -p pseudolearn_host --test physical_paths 2>&1 | tee "${{ runner.temp }}/native-target-logs/host-paths.log"
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: native-target-${{ matrix.target }}
+          path: ${{ runner.temp }}/native-target-logs
+          if-no-files-found: warn
+
+  extension-windows:
+    runs-on: windows-latest
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Install the pinned Rust toolchain
+        run: rustup toolchain install 1.99.1 --profile minimal --target x86_64-pc-windows-msvc
+
+      - name: Resolve the unversioned library lockfiles and the corpus export
+        run: |
+          (cd packages/pseudolearn_engine && cargo generate-lockfile)
+          (cd packages/pseudolearn_spec && cargo generate-lockfile && cargo run --locked -p see_cli --bin see -- export --root .)
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: '12.18.0'
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '26.13.1'
+
+      - name: Package the win32-x64 extension
+        working-directory: apps/pseudolearn_vscode
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm exec vitest run tests/scripts/artifact.test.mjs
+          pnpm build:cli
+          pnpm generate:icon
+          pnpm build
+          node scripts/package.mjs
+
+      - name: Run the packaged binary from the VSIX
+        working-directory: apps/pseudolearn_vscode
+        run: |
+          mkdir -p unpacked
+          unzip -q -o .artifacts/pseudolearn-0.1.0-win32-x64.vsix -d unpacked
+          python -I ../pseudolearn_cli/tool/verify_system_paths.py unpacked/extension/bin/win32-x64/pseudo.exe
+          cat .artifacts/pseudolearn-0.1.0-win32-x64.vsix.sha256 .artifacts/pseudolearn-0.1.0-win32-x64.vsix.json
+
+      - name: Upload the VSIX and its record
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pseudolearn-vscode-win32-x64
+          include-hidden-files: true
+          path: |
+            apps/pseudolearn_vscode/.artifacts/*.vsix
+            apps/pseudolearn_vscode/.artifacts/*.vsix.json
+            apps/pseudolearn_vscode/.artifacts/*.vsix.sha256
+          if-no-files-found: warn

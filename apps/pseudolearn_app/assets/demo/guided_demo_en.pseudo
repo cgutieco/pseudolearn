@@ -1,0 +1,10 @@
+algorithm GuidedDemo
+    define temperature as integer <- 30;
+    define readings as integer <- 0;
+    while temperature > 24 do
+        temperature <- temperature - 3;
+        readings <- readings + 1;
+        write "Reading ", readings, ": ", temperature, " degrees";
+    endWhile
+    write "Comfort reached after ", readings, " readings";
+endAlgorithm

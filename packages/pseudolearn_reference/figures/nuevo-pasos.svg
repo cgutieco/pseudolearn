@@ -1,0 +1,18 @@
+<svg viewBox="0 0 340 150">
+  <text x="60" y="24" font-size="13" text-anchor="middle" font-family="mono" fill="@tinta">{{codigo:pasos}}</text>
+  <caja x="20" y="34" ancho="80" alto="34" rol="hueco" discontinua="" fondo="0.06" tamano="12" texto="{{t:vacia}}"/>
+  <caja x="170" y="34" ancho="150" alto="70" rol="acento-objetos" fondo="0.10" fuente="mono" tamano="13" texto="{{codigo:valor}}"/>
+  <text x="245" y="124" font-size="12" text-anchor="middle" fill="@atenuado">{{t:objeto}}</text>
+  <g data-paso="2">
+    <rect x="170" y="34" width="150" height="70" rx="6" fill="@superficie"/>
+    <caja x="170" y="34" ancho="150" alto="70" rol="acento-objetos" fondo="0.18" fuente="mono" tamano="13" texto="{{codigo:valor = 10}}"/>
+  </g>
+  <g data-paso="2" data-hasta="2">
+    <text x="245" y="144" font-size="12" text-anchor="middle" fill="@acento-objetos">{{codigo:Constructor(10)}}</text>
+  </g>
+  <g data-paso="3">
+    <rect x="20" y="34" width="80" height="34" rx="6" fill="@superficie"/>
+    <caja x="20" y="34" ancho="80" alto="34" rol="atenuado" fondo="0.06" tamano="12" texto="{{t:ref}}"/>
+    <flecha puntos="100,51 166,60" rol="acento-objetos"/>
+  </g>
+</svg>

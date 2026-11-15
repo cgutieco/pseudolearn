@@ -1,0 +1,17 @@
+<svg viewBox="0 0 340 250">
+  <text x="4" y="16" font-size="12" font-weight="bold" fill="@tinta">{{t:paralelos}}</text>
+  <caja x="4" y="22" ancho="100" alto="22" rol="hueco" fondo="0.14" texto="{{t:ana}} · {{t:beto}} · {{t:caro}}" tamano="12"/>
+  <caja x="110" y="22" ancho="120" alto="22" rol="hueco" fondo="0.14" texto="555-1 · 555-2 · 555-3" tamano="12"/>
+  <caja x="236" y="22" ancho="100" alto="22" rol="hueco" fondo="0.14" texto="5 · 11 · 5" tamano="12"/>
+  <text x="4" y="62" font-size="12" fill="@error">{{t:paralelos-riesgo}}</text>
+  <text x="4" y="94" font-size="12" font-weight="bold" fill="@tinta">{{t:registros}}</text>
+  <caja x="4" y="100" ancho="104" alto="44" rol="acento-procedimental" fondo="0.14" texto="{{t:ana}}¶555-1 · 5" tamano="12"/>
+  <caja x="116" y="100" ancho="104" alto="44" rol="acento-procedimental" fondo="0.14" texto="{{t:beto}}¶555-2 · 11" tamano="12"/>
+  <caja x="228" y="100" ancho="104" alto="44" rol="acento-procedimental" fondo="0.14" texto="{{t:caro}}¶555-3 · 5" tamano="12"/>
+  <text x="4" y="162" font-size="12" fill="@exito">{{t:registros-bien}}</text>
+  <text x="4" y="194" font-size="12" font-weight="bold" fill="@tinta">{{t:diccionario}}</text>
+  <caja x="4" y="200" ancho="104" alto="24" rol="acento-objetos" fondo="0.14" texto="{{t:ana}} → 555-1" tamano="12"/>
+  <caja x="116" y="200" ancho="104" alto="24" rol="acento-objetos" fondo="0.14" texto="{{t:beto}} → 555-2" tamano="12"/>
+  <caja x="228" y="200" ancho="104" alto="24" rol="acento-objetos" fondo="0.14" texto="{{t:caro}} → 555-3" tamano="12"/>
+  <text x="4" y="244" font-size="12" fill="@exito">{{t:diccionario-bien}}</text>
+</svg>

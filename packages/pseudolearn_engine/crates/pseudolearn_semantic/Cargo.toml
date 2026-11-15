@@ -1,0 +1,19 @@
+[package]
+name = "pseudolearn_semantic"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+pseudolearn_abi = { path = "../pseudolearn_abi", version = "=0.1.0" }
+pseudolearn_source = { path = "../pseudolearn_source", version = "=0.1.0" }
+pseudolearn_project = { path = "../pseudolearn_project", version = "=0.1.0" }
+pseudolearn_diagnostics = { path = "../pseudolearn_diagnostics", version = "=0.1.0" }
+pseudolearn_lexicon = { path = "../pseudolearn_lexicon", version = "=0.1.0" }
+pseudolearn_syntax = { path = "../pseudolearn_syntax", version = "=0.1.0" }
+
+[lints]
+workspace = true
+
+[dev-dependencies]
+serde_json = "1"

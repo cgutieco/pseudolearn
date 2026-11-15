@@ -1,0 +1,10 @@
+Algoritmo Red
+Segun SolicitarRed() Hacer
+Exito(net):
+Segun net.Enviar(PeticionHttp(MetodoHttp.GET, "__ORIGIN__/ok")) Hacer
+Exito(response): Escribir response.Estado(); Escribir response.Cuerpo().Longitud();
+Error(problem): Escribir problem.Codigo;
+FinSegun
+Error(problem): Escribir problem.Codigo;
+FinSegun
+FinAlgoritmo

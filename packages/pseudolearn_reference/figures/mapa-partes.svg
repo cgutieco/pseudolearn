@@ -1,0 +1,21 @@
+<svg viewBox="0 0 340 470">
+  <caja x="20" y="8" ancho="300" alto="40" rol="atenuado" fondo="0.10" texto="{{t:p0}}"/>
+  <flecha puntos="170,48 170,66"/>
+  <caja x="20" y="66" ancho="300" alto="40" rol="acento-estructurado" fondo="0.10" texto="{{t:p1}}"/>
+  <flecha puntos="170,106 170,124"/>
+  <caja x="20" y="124" ancho="140" alto="52" rol="acento-estructurado" fondo="0.14" texto="{{t:p2}}"/>
+  <caja x="180" y="124" ancho="140" alto="52" rol="tipo" fondo="0.14" texto="{{t:p3}}"/>
+  <flecha puntos="90,176 90,194"/>
+  <flecha puntos="250,176 250,194"/>
+  <caja x="20" y="194" ancho="140" alto="52" rol="numero" fondo="0.12" texto="{{t:p4}}"/>
+  <caja x="180" y="194" ancho="140" alto="52" rol="acento-estructurado" fondo="0.12" texto="{{t:p5}}"/>
+  <flecha puntos="170,246 170,264"/>
+  <caja x="20" y="264" ancho="300" alto="40" rol="acento-estructurado" fondo="0.18" texto="{{t:p6}}"/>
+  <flecha puntos="90,304 90,322"/>
+  <flecha puntos="250,304 250,322"/>
+  <caja x="20" y="322" ancho="140" alto="52" rol="acento-procedimental" fondo="0.14" texto="{{t:p7}}"/>
+  <caja x="180" y="322" ancho="140" alto="52" rol="acento-objetos" fondo="0.14" texto="{{t:p9}}"/>
+  <flecha puntos="170,374 170,392"/>
+  <caja x="20" y="392" ancho="300" alto="34" rol="tinta" fondo="0.06" tamano="13" texto="{{t:resto}}"/>
+  <caja x="20" y="434" ancho="300" alto="30" rol="atenuado" fondo="0.04" discontinua="" tamano="12" texto="{{t:apendices}}"/>
+</svg>
