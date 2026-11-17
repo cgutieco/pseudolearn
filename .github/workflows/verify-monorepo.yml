@@ -23,6 +23,7 @@ jobs:
   app:
     if: ${{ !inputs.native_targets_only }}
     runs-on: xcode-27
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v7
         with:
@@ -43,6 +44,7 @@ jobs:
   brand:
     if: ${{ !inputs.native_targets_only }}
     runs-on: ubuntu-24.04
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -54,6 +56,7 @@ jobs:
   backend:
     if: ${{ !inputs.native_targets_only }}
     runs-on: ubuntu-24.04
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v7
       - uses: denoland/setup-deno@v2
@@ -64,6 +67,7 @@ jobs:
   web:
     if: ${{ !inputs.native_targets_only }}
     runs-on: macos-26
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v7
         with:
@@ -113,6 +117,7 @@ jobs:
   rust:
     if: ${{ !inputs.native_targets_only }}
     runs-on: ubuntu-24.04
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v7
         with:
@@ -143,6 +148,7 @@ jobs:
       matrix:
         os: [macos-26, ubuntu-24.04, windows-2025]
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 120
     defaults:
       run:
         shell: bash

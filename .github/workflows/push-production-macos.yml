@@ -3,6 +3,9 @@ name: Push Production macOS
 on:
   workflow_dispatch: {}
 
+permissions:
+  contents: read
+
 env:
   BUNDLE_IDENTIFIER: com.pseudolearn.app
 
