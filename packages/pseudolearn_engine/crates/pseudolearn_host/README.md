@@ -65,6 +65,8 @@ flowchart LR
   admite raíces adicionales: `TlsConfiguration` con raíces adicionales responde `CERTIFICATE_INVALID` en vez de
   conectar con una confianza distinta de la pedida. Antes de la primera conexión, la app debe inicializar el
   verificador con el `Context` de Android (lo hace el puente de `apps/pseudolearn_app`).
+- La zona local sale de la zona del sistema. Android no tiene `/usr/share/zoneinfo`: guarda las zonas en un archivo
+  `tzdata` concatenado, que `jiff` lee con la feature `tzdb-concatenated`. Sin ella, `AhoraLocal` cae a UTC.
 
 ## Comandos útiles
 
