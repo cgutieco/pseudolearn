@@ -107,8 +107,9 @@ final class PlatformNativeCredentialSource implements NativeCredentialSource {
       return NativeGoogleCredential(
         idToken: idToken,
       );
-    } catch (_) {
-      return null;
+    } on GoogleSignInException catch (error) {
+      if (error.code == GoogleSignInExceptionCode.canceled) return null;
+      rethrow;
     }
   }
 }
