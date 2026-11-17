@@ -6,6 +6,11 @@ import {
   appStoreName,
   AppStorePurchaseVerifier,
 } from "./infrastructure/app_store_purchase_verifier.ts";
+import { googlePlayStore } from "./domain/google_play_purchase.ts";
+import type { GooglePlaySettings } from "./infrastructure/google_play_environment.ts";
+import { GooglePlayPublisher } from "./infrastructure/google_play_publisher.ts";
+import { GooglePlayPurchaseVerifier } from "./infrastructure/google_play_purchase_verifier.ts";
+import { GoogleAccessTokens } from "./infrastructure/google_service_account.ts";
 import { PaddleCheckoutGateway } from "./infrastructure/paddle_checkout_gateway.ts";
 import { PostgresStoreLedger } from "./infrastructure/postgres_store_ledger.ts";
 import {
@@ -42,7 +47,16 @@ function purchasesFor(environment: AgentEnvironment, stores: StoreEnvironment): 
       new AppStorePurchaseVerifier(new AppleSignedDataVerifier(), stores.appStore),
     );
   }
+  if (stores.googlePlay !== null) {
+    verifiers.set(googlePlayStore, googlePlayVerifierFor(stores.googlePlay));
+  }
   return new StoreRoutedPurchaseVerifier(verifiers);
+}
+
+function googlePlayVerifierFor(settings: GooglePlaySettings): PurchaseVerifier {
+  const tokens = new GoogleAccessTokens(settings.serviceAccount, fetcher);
+  const publisher = new GooglePlayPublisher(settings.catalog.packageName, tokens, fetcher);
+  return new GooglePlayPurchaseVerifier(publisher, settings.catalog);
 }
 
 function buildDependencies(environment: AgentEnvironment): CreditsDependencies {
