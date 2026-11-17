@@ -148,8 +148,9 @@ flowchart LR
 | Compilar                                     | `flutter build macos --release`, `flutter build ipa --no-codesign`, `flutter build windows --release`, `flutter build appbundle --release` |
 
 Requisitos: Flutter 3.50.0 (fijado en `pubspec.yaml`), Dart `^3.14.0` y Rust según `native/rust-toolchain.toml` para
-compilar el puente. Android necesita además JDK 17 y el NDK `28.2.13676358` que fija Flutter. El inicio de sesión y la sincronización leen `SUPABASE_URL`, `SUPABASE_ANON_KEY` y
-`GOOGLE_IOS_CLIENT_ID` de `dart_define.local.json`, que no se versiona.
+compilar el puente. Android necesita además JDK 17 y el NDK `28.2.13676358` que fija Flutter. El inicio de sesión y la sincronización leen `SUPABASE_URL`, `SUPABASE_ANON_KEY`,
+`GOOGLE_IOS_CLIENT_ID` (iOS y macOS) y `GOOGLE_SERVER_CLIENT_ID` (Android) de `dart_define.local.json`, que no se
+versiona.
 
 ## Pendientes declarados
 

@@ -1,6 +1,7 @@
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+import '../platform/platform_google_client_ids.dart';
 import '../platform/platform_native_auth_support.dart';
 import 'native_auth_support.dart';
 import 'sign_in_nonce.dart';
@@ -41,19 +42,23 @@ abstract interface class NativeCredentialSource {
 final class PlatformNativeCredentialSource implements NativeCredentialSource {
   final GoogleSignIn _googleSignIn;
   final NativeAuthSupport _authSupport;
+  final GoogleClientIds _googleClientIds;
   bool _initialized = false;
 
   PlatformNativeCredentialSource({
     GoogleSignIn? googleSignIn,
     NativeAuthSupport? authSupport,
+    GoogleClientIds? googleClientIds,
   })  : _googleSignIn = googleSignIn ?? GoogleSignIn.instance,
-        _authSupport = authSupport ?? const PlatformNativeAuthSupport();
+        _authSupport = authSupport ?? const PlatformNativeAuthSupport(),
+        _googleClientIds = googleClientIds ?? currentGoogleClientIds();
 
   @override
   bool get isAppleSupported => _authSupport.isAppleSupported;
 
   @override
-  bool get isGoogleSupported => _authSupport.isGoogleSupported;
+  bool get isGoogleSupported =>
+      _authSupport.isGoogleSupported && _googleClientIds.isSufficientForNativeSignIn;
 
   @override
   Future<NativeAppleCredential?> getAppleCredential() async {
@@ -88,9 +93,9 @@ final class PlatformNativeCredentialSource implements NativeCredentialSource {
   Future<NativeGoogleCredential?> getGoogleCredential() async {
     try {
       if (!_initialized) {
-        final clientId = const String.fromEnvironment('GOOGLE_IOS_CLIENT_ID');
         await _googleSignIn.initialize(
-          clientId: clientId.isEmpty ? null : clientId,
+          clientId: _googleClientIds.clientId,
+          serverClientId: _googleClientIds.serverClientId,
         );
         _initialized = true;
       }
