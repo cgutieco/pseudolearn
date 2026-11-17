@@ -1,11 +1,11 @@
 # pseudolearn_app
 
-Aplicación Flutter de PseudoLearn para iOS, macOS y Windows: editor de pseudocódigo con diagnósticos, ejecución paso a
+Aplicación Flutter de PseudoLearn para iOS, macOS, Windows y Android: editor de pseudocódigo con diagnósticos, ejecución paso a
 paso, diagramas, código equivalente, ruta de aprendizaje, cuenta con sincronización y el agente Nodo. Analiza y ejecuta
 los programas llamando al motor Rust a través de un puente generado (`native/`).
 
 **No hace:** definir ni interpretar el lenguaje en Dart (lo hace el motor), tener backend propio (usa las funciones de
-`apps/pseudolearn_backend`) ni publicarse en navegador: no existe carpeta `web/`, solo `ios/`, `macos/` y `windows/`.
+`apps/pseudolearn_backend`) ni publicarse en navegador: no existe carpeta `web/`, solo `ios/`, `macos/`, `windows/` y `android/`.
 
 ## Dónde encaja
 
@@ -98,8 +98,23 @@ flowchart LR
   reconstruye el pasado en el motor y frenaba la salida. Se carga al detenerse la ejecución. Paso a paso no cambia. El bucle cede el hilo cada
   8 ms y muestra una sola vez la espera de un efecto.
 - Los colores y las duraciones literales solo existen en los archivos dueños que declara `architecture.yaml`.
+- Los iconos y la pantalla de arranque de todas las plataformas salen de la geometría de marca: `tool/app_icon_canvas.dart`
+  dibuja el icono una sola vez y `tool/generate_app_icons.dart` y `tool/generate_android_resources.dart` lo escriben en
+  cada formato. En Android eso incluye el icono adaptativo con capa monocroma, el arranque previo a Android 12 y el de
+  `windowSplashScreen`, junto con los colores y temas de `res/values*`; nada de eso se edita a mano.
+- Android exige el permiso `INTERNET` en el manifiesto principal: Flutter solo lo añade en depuración, y sin él fallan
+  en release Supabase, Nodo, la comprobación de conectividad y la red de los programas.
+  El manifiesto retira `USE_BIOMETRIC` y `USE_FINGERPRINT`, que añade `flutter_secure_storage` aunque la app no usa
+  biometría, para no declarar en Google Play permisos sin uso.
+- El release de Android no ejecuta el lint vital (`lint.checkReleaseBuilds = false`): el lint de Android Gradle Plugin
+  9.3 falla internamente al analizar `in_app_purchase_android` y detiene el build. R8 sigue activo, y las clases que
+  solo se alcanzan por JNI (`PlatformCertificateVerifier` y `org.rustls.platformverifier`) se conservan con
+  `proguard-rules.pro`.
 - La carpeta de ejecución de un documento es un único segmento bajo `execution/`: el identificador se codifica, incluidos
   los puntos, para que `.` o `..` no salgan de ella en ninguna plataforma.
+- El `applicationId` de Android es `com.pseudolearn.app` y no puede cambiar tras publicarse. La versión release se firma
+  con la clave de subida si existe `android/key.properties` (no versionado, igual que el almacén de claves); si no, con
+  la clave de depuración, que sirve para probar en un dispositivo pero no para Google Play.
 - `AGENT_PURCHASES` elige cómo se venden los productos de Nodo: `storekit` (iOS y macOS), `paddle`, `simulated`
   (desarrollo) o `unavailable`. Este último no vende nada: la oferta y la recarga muestran un aviso en lugar del
   checkout, y quien ya tenga Nodo activo en su cuenta lo sigue usando. Las versiones de Windows salen con `unavailable`
@@ -115,6 +130,8 @@ flowchart LR
 | Instalar dependencias                        | `flutter pub get`                                                                                     |
 | Generar exportación, l10n y puente           | `bash tool/prepare_generated.sh`                                                                      |
 | Ejecutar en macOS                            | `flutter run -d macos --dart-define-from-file=dart_define.local.json`                                 |
+| Ejecutar en un dispositivo Android           | `flutter run -d <id de adb> --dart-define-from-file=dart_define.local.json`                           |
+| Iconos y arranque de Android                 | `flutter test tool/generate_android_resources.dart`                                                   |
 | Análisis estático                            | `flutter analyze --fatal-infos --fatal-warnings`                                                      |
 | Tests de la app                              | `flutter test`                                                                                        |
 | Tests del puente contra la biblioteca nativa | `bash tool/test_bridge.sh`                                                                            |
@@ -126,10 +143,10 @@ flowchart LR
 | Grabar las placas de las tiendas             | `flutter test tool/generate_store_plates.dart` (acotable con `--dart-define=STORE_PLATE_DEVICES=mac`) |
 | Grabar la placa animada del tráiler          | `flutter test tool/generate_trailer_plates.dart`                                                      |
 | Regenerar las capturas de la web             | `flutter test tool/generate_product_shot.dart`                                                        |
-| Compilar                                     | `flutter build macos --release`, `flutter build ipa --no-codesign`, `flutter build windows --release` |
+| Compilar                                     | `flutter build macos --release`, `flutter build ipa --no-codesign`, `flutter build windows --release`, `flutter build appbundle --release` |
 
 Requisitos: Flutter 3.50.0 (fijado en `pubspec.yaml`), Dart `^3.14.0` y Rust según `native/rust-toolchain.toml` para
-compilar el puente. El inicio de sesión y la sincronización leen `SUPABASE_URL`, `SUPABASE_ANON_KEY` y
+compilar el puente. Android necesita además JDK 17 y el NDK `28.2.13676358` que fija Flutter. El inicio de sesión y la sincronización leen `SUPABASE_URL`, `SUPABASE_ANON_KEY` y
 `GOOGLE_IOS_CLIENT_ID` de `dart_define.local.json`, que no se versiona.
 
 ## Pendientes declarados
