@@ -115,6 +115,11 @@ flowchart LR
 - El `applicationId` de Android es `com.pseudolearn.app` y no puede cambiar tras publicarse. La versión release se firma
   con la clave de subida si existe `android/key.properties` (no versionado, igual que el almacén de claves); si no, con
   la clave de depuración, que sirve para probar en un dispositivo pero no para Google Play.
+- En Android, Google identifica la app por su paquete y la huella SHA-1 del certificado, y el token debe ir dirigido
+  al cliente web que Supabase ya acepta; por eso Android pide `GOOGLE_SERVER_CLIENT_ID` y no el cliente de iOS. Sin ese
+  valor, Google cae al inicio de sesión por navegador en vez de fallar en silencio. Apple usa siempre el navegador en
+  Android. Ambos vuelven a la app por `pseudolearn://auth-callback`, y el deep linking propio de Flutter está
+  desactivado para que ese enlace no llegue a `go_router` como si fuera una ruta.
 - `AGENT_PURCHASES` elige cómo se venden los productos de Nodo: `storekit` (iOS y macOS), `paddle`, `simulated`
   (desarrollo) o `unavailable`. Este último no vende nada: la oferta y la recarga muestran un aviso en lugar del
   checkout, y quien ya tenga Nodo activo en su cuenta lo sigue usando. Las versiones de Windows salen con `unavailable`
