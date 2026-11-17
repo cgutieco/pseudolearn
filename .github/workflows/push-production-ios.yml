@@ -3,6 +3,9 @@ name: Push Production iOS
 on:
   workflow_dispatch: {}
 
+permissions:
+  contents: read
+
 concurrency:
   group: push-production-ios
   cancel-in-progress: false
