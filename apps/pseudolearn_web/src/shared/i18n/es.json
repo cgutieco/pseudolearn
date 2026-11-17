@@ -294,7 +294,7 @@
   "privacy.section.storage.deviceTitle": "En tu dispositivo",
   "privacy.section.storage.deviceText": "Tus programas se guardan siempre como archivos de texto plano <code>.pseudo</code> más un índice local. Esa es la copia principal e independiente, con o sin cuenta.",
   "privacy.section.storage.cloudTitle": "En Supabase (Fráncfort, Unión Europea)",
-  "privacy.section.storage.cloudText": "Únicamente si iniciaste sesión. Es nuestro proveedor de autenticación y base de datos. Los datos viajan cifrados bajo HTTPS/TLS y el backend aplica seguridad a nivel de fila (Row Level Security): cada cuenta solo puede leer y escribir su propia información. Los tokens de sesión se custodian en el Llavero seguro del sistema operativo.",
+  "privacy.section.storage.cloudText": "Únicamente si iniciaste sesión. Es nuestro proveedor de autenticación y base de datos. Los datos viajan cifrados bajo HTTPS/TLS y el backend aplica seguridad a nivel de fila (Row Level Security): cada cuenta solo puede leer y escribir su propia información. Los tokens de sesión se custodian cifrados en el almacén seguro de credenciales del sistema operativo.",
   "privacy.section.storage.webTitle": "En el sitio web",
   "privacy.section.storage.webText": "El sitio opera sobre Cloudflare Workers y no conserva bases de datos con tus envíos. El formulario genera un correo seguro entregado mediante Oracle Cloud (Fráncfort) directamente a nuestro buzón de soporte.",
   "privacy.section.storage.assetsTitle": "Fuentes y recursos propios",
