@@ -26,7 +26,7 @@ BundledLesson firstBundledLesson(String localeTag) {
   final toc =
       jsonDecode(
             File(
-              'assets/route/$localeTag/$localeTag/toc.json',
+              'assets/route/$localeTag/keywords-$localeTag/toc.json',
             ).readAsStringSync(),
           )
           as List<dynamic>;
