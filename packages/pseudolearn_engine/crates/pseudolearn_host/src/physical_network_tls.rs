@@ -1,8 +1,10 @@
 use crate::physical_error::HostError;
 use rustls::{
     ClientConfig, Error,
+    crypto::CryptoProvider,
     pki_types::{CertificateDer, pem::PemObject},
 };
+use rustls_platform_verifier::Verifier;
 use std::io;
 use std::sync::Arc;
 use tokio_rustls::TlsConnector;
@@ -31,17 +33,34 @@ impl TlsConfiguration {
             }
             certificates.extend(parsed);
         }
-        let verifier = rustls_platform_verifier::Verifier::new_with_extra_roots(
-            certificates,
-            builder.crypto_provider().clone(),
-        )
-        .map_err(|_| HostError::CERTIFICATE_INVALID)?;
+        let verifier = platform_verifier(certificates, builder.crypto_provider().clone())?;
         let settings = builder
             .dangerous()
             .with_custom_certificate_verifier(Arc::new(verifier))
             .with_no_client_auth();
         Ok(TlsConnector::from(Arc::new(settings)))
     }
+}
+
+#[cfg(not(target_os = "android"))]
+fn platform_verifier(
+    additional_roots: Vec<CertificateDer<'static>>,
+    provider: Arc<CryptoProvider>,
+) -> Result<Verifier, HostError> {
+    Verifier::new_with_extra_roots(additional_roots, provider)
+        .map_err(|_| HostError::CERTIFICATE_INVALID)
+}
+
+#[cfg(target_os = "android")]
+fn platform_verifier(
+    additional_roots: Vec<CertificateDer<'static>>,
+    provider: Arc<CryptoProvider>,
+) -> Result<Verifier, HostError> {
+    let android_trust_manager_accepts_only_system_roots = additional_roots.is_empty();
+    if !android_trust_manager_accepts_only_system_roots {
+        return Err(HostError::CERTIFICATE_INVALID);
+    }
+    Verifier::new(provider).map_err(|_| HostError::CERTIFICATE_INVALID)
 }
 
 pub(super) fn classify_handshake_error(error: &io::Error) -> HostError {
