@@ -110,11 +110,27 @@ export const DOWNLOAD_CARDS: readonly DownloadCardModel[] = [
   },
   {
     icon: 'code',
-    available: false,
+    available: true,
     titleKey: 'download.vscodeTitle',
     textKey: 'download.vscodeText',
-    actions: [],
-    specs: [{ labelKey: 'download.specRequirements', valueKey: 'download.vscodeRequirements' }],
+    actions: [
+      {
+        labelKey: 'download.vscodePrimary',
+        variant: 'pl-btn--primary',
+        href: SITE.vscodeMarketplaceUrl,
+        external: true,
+      },
+      {
+        labelKey: 'download.vscodeSecondary',
+        variant: 'pl-btn--ghost',
+        href: SITE.openVsxUrl,
+        external: true,
+      },
+    ],
+    specs: [
+      { labelKey: 'download.specRequirements', valueKey: 'download.vscodeRequirements' },
+      { labelKey: 'download.specPrice', valueKey: 'download.priceValue' },
+    ],
   },
   {
     icon: 'terminal',

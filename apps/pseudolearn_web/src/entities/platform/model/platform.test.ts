@@ -8,12 +8,17 @@ import {
 } from './platform';
 
 describe('platform', () => {
-  it('announces Windows once among the available platforms', () => {
-    expect(availablePlatforms().map((platform) => platform.id)).toEqual(['macos', 'ios', 'windows']);
+  it('announces Windows once and the editor extension among the available platforms', () => {
+    expect(availablePlatforms().map((platform) => platform.id)).toEqual([
+      'macos',
+      'ios',
+      'windows',
+      'vscode',
+    ]);
   });
 
-  it('announces the editor extension and the command line as coming soon', () => {
-    expect(comingSoonPlatforms().map((platform) => platform.id)).toEqual(['vscode', 'cli']);
+  it('announces only the command line as coming soon', () => {
+    expect(comingSoonPlatforms().map((platform) => platform.id)).toEqual(['cli']);
   });
 
   it('lists the planned platforms without the catch-all option', () => {

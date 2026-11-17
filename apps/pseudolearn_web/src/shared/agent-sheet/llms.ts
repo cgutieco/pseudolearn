@@ -9,7 +9,7 @@ const indexLines = [
   '## Language',
   '',
   '- [Full language sheet for agents](/llms-full.txt): vocabulary, grammar, library, differences from PSeInt and executed examples, in English and Spanish.',
-  '- [The language](/en/language): paradigms, syntax profiles and environments (app now; VS Code extension and command line coming soon).',
+  '- [The language](/en/language): paradigms, syntax profiles and environments (app and VS Code extension now; command line coming soon).',
   '',
   '## Learning',
   '',

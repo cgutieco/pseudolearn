@@ -5,6 +5,8 @@ export const SITE = {
   iosAppStoreUrl: 'https://apps.apple.com/app/pseudolearn/id6810296577',
   windowsInstallerUrl: 'https://downloads.pseudolearn.app/windows/PseudoLearn-Setup.exe',
   microsoftStoreUrl: 'https://apps.microsoft.com/store/detail/9MXZB1XDWP9J?cid=DevShareMCLPCS',
+  vscodeMarketplaceUrl: 'https://marketplace.visualstudio.com/items?itemName=pseudolearn.pseudolearn-vscode',
+  openVsxUrl: 'https://open-vsx.org/extension/pseudolearn/pseudolearn-vscode',
   agentSheetPath: '/llms.txt',
   supportEmail: 'support@pseudolearn.app',
   authorHandle: '@cgutieco',

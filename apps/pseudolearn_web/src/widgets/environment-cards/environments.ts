@@ -22,7 +22,7 @@ export const ENVIRONMENT_CARDS: readonly EnvironmentCard[] = [
   {
     id: 'vscode',
     icon: 'code',
-    available: false,
+    available: true,
     titleKey: 'language.env.vscode.title',
     textKey: 'language.env.vscode.text',
     featureKeys: ['language.env.vscode.f1', 'language.env.vscode.f2', 'language.env.vscode.f3'],

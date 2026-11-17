@@ -3,12 +3,12 @@ import { SITE } from '@shared/config/site';
 import { DOWNLOAD_CARDS, UNSIGNED_WINDOWS_INSTALL_GUIDE } from './download-cards';
 
 describe('DOWNLOAD_CARDS', () => {
-  it('offers macOS, mobile and Windows now and announces VS Code and the terminal as coming soon', () => {
+  it('offers macOS, mobile, Windows and VS Code now and announces the terminal as coming soon', () => {
     expect(DOWNLOAD_CARDS.map((card) => [card.titleKey, card.available])).toEqual([
       ['download.macTitle', true],
       ['download.mobileTitle', true],
       ['download.windowsTitle', true],
-      ['download.vscodeTitle', false],
+      ['download.vscodeTitle', true],
       ['download.cliTitle', false],
     ]);
   });
@@ -97,8 +97,33 @@ describe('DOWNLOAD_CARDS', () => {
     ]);
   });
 
-  it('shows the version of every published card from the shared changelog', () => {
-    for (const card of DOWNLOAD_CARDS.filter((candidate) => candidate.available)) {
+  it('links the VS Code extension to the Visual Studio Marketplace first and Open VSX second', () => {
+    const vscodeCard = DOWNLOAD_CARDS[3];
+    expect(vscodeCard?.actions).toEqual([
+      {
+        labelKey: 'download.vscodePrimary',
+        variant: 'pl-btn--primary',
+        href: 'https://marketplace.visualstudio.com/items?itemName=pseudolearn.pseudolearn-vscode',
+        external: true,
+      },
+      {
+        labelKey: 'download.vscodeSecondary',
+        variant: 'pl-btn--ghost',
+        href: 'https://open-vsx.org/extension/pseudolearn/pseudolearn-vscode',
+        external: true,
+      },
+    ]);
+  });
+
+  it('keeps the app changelog version off the extension card, which is versioned on its own', () => {
+    const vscodeSpecs = DOWNLOAD_CARDS[3]?.specs.map((spec) => spec.labelKey) ?? [];
+    expect(vscodeSpecs).not.toContain('download.specVersion');
+  });
+
+  it('shows the version of every published app card from the shared changelog', () => {
+    for (const card of DOWNLOAD_CARDS.filter(
+      (candidate) => candidate.available && candidate.titleKey !== 'download.vscodeTitle',
+    )) {
       const versionSpec = card.specs.find((spec) => spec.labelKey === 'download.specVersion');
       expect(versionSpec?.valueKey).toBe('download.versionValue');
     }
