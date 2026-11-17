@@ -52,6 +52,20 @@ void main() {
     expect(find.byKey(const ValueKey('agent-purchase-outside')), findsOneWidget);
   });
 
+  testWidgets('a Google Play plan whose payment is still pending says the store has not confirmed it', (tester) async {
+    final harness = PurchaseWidgetHarness(
+      store: ScriptedPurchaseStore(channel: PurchaseChannel.googlePlay, attempt: const PurchaseAwaitsStorePayment()),
+      balance: _noPlan,
+    );
+    await harness.pump(tester, const AgentOfferProducts(), locale: 'en');
+    expect(find.byKey(const ValueKey('agent-purchase-awaiting-store')), findsNothing);
+    await tester.tap(find.byKey(const ValueKey('agent-buy-monthly')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('agent-purchase-awaiting-store')), findsOneWidget);
+    expect(find.byKey(const ValueKey('agent-offer-restore')), findsOneWidget);
+    expect(find.byKey(const ValueKey('agent-purchase-outside')), findsNothing);
+  });
+
   testWidgets('the simulated store keeps its own trial and says no money is charged', (tester) async {
     final harness = PurchaseWidgetHarness(store: SimulatedPurchaseStore(FakeIdentifierGenerator()), balance: _noPlan);
     await harness.pump(tester, const AgentOfferProducts(), locale: 'en');

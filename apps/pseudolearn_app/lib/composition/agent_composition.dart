@@ -10,13 +10,13 @@ import '../data/agent/markdown/markdown_reply_reader.dart';
 import '../data/agent/proxy_agent_model_gateway.dart';
 import '../data/auth/supabase_access_token_source.dart';
 import '../data/credits/proxy_credits_gateway.dart';
-import '../data/credits/in_app_purchase_storekit_client.dart';
 import '../data/credits/no_pending_purchases.dart';
 import '../data/credits/paddle_purchase_store.dart';
 import '../data/credits/proxy_checkout_gateway.dart';
 import '../data/credits/purchase_store_simulation.dart';
-import '../data/credits/storekit_purchase_store.dart';
-import '../data/credits/storekit_transaction_queue.dart';
+import '../data/credits/store_billing_purchase_store.dart';
+import '../data/credits/store_billing_setup.dart';
+import '../data/credits/store_transaction_queue.dart';
 import '../data/credits/unavailable_purchase_store.dart';
 import '../data/platform/platform_external_url_launcher.dart';
 import '../data/platform/platform_name_source.dart';
@@ -67,7 +67,9 @@ typedef PurchaseAdapters = ({PurchaseStore store, PendingPurchases pending});
 final Map<String, PurchaseAdapters Function(AgentEndpoints endpoints, IdentifierGenerator identifiers)>
 _purchaseAdapters = {
   'simulated': (_, identifiers) => (store: SimulatedPurchaseStore(identifiers), pending: const NoPendingPurchases()),
-  'storekit': (endpoints, _) => _storeKitAdapters(() => endpoints.client.auth.currentUser?.id),
+  'storekit': (endpoints, _) => _storeBillingAdapters(appStoreBillingSetup(), () => endpoints.client.auth.currentUser?.id),
+  'google_play': (endpoints, _) =>
+      _storeBillingAdapters(googlePlayBillingSetup(), () => endpoints.client.auth.currentUser?.id),
   'paddle': (endpoints, _) => (
     store: PaddlePurchaseStore(
       checkouts: ProxyCheckoutGateway(functionsUrl: endpoints.functionsUrl, tokens: endpoints.tokens),
@@ -78,13 +80,18 @@ _purchaseAdapters = {
   'unavailable': (_, _) => (store: const UnavailablePurchaseStore(), pending: const NoPendingPurchases()),
 };
 
-PurchaseAdapters _storeKitAdapters(String? Function() accountToken) {
-  final client = InAppPurchaseStoreKitClient();
-  final queue = StoreKitTransactionQueue(client: client, accountToken: accountToken);
+PurchaseAdapters _storeBillingAdapters(StoreBillingSetup setup, String? Function() accountToken) {
+  final queue = StoreTransactionQueue(
+    client: setup.client,
+    unfinishedTransactions: setup.unfinished,
+    profile: setup.profile,
+    accountToken: accountToken,
+  );
   return (
-    store: StoreKitPurchaseStore(
-      client: client,
+    store: StoreBillingPurchaseStore(
+      client: setup.client,
       queue: queue,
+      profile: setup.profile,
       accountToken: accountToken,
       launcher: const PlatformExternalUrlLauncher(),
     ),

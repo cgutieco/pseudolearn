@@ -78,6 +78,18 @@ void main() {
     await harness.close();
   });
 
+  test('a payment the store has not confirmed waits without redeeming anything', () async {
+    final harness = _Harness(attempt: const PurchaseAwaitsStorePayment());
+    await harness.cubit.buy(AgentProduct.topUp);
+    expect(harness.cubit.state.status, PurchaseStatus.awaitingStorePayment);
+    expect(harness.cubit.state.awaitsStorePayment(AgentProduct.topUp), isTrue);
+    expect(harness.cubit.state.awaitsStorePayment(AgentProduct.monthly), isFalse);
+    expect(harness.gateway.redeemed, isEmpty);
+    await harness.cubit.buy(AgentProduct.monthly);
+    expect(harness.cubit.state.awaitsStorePayment(AgentProduct.monthly), isTrue);
+    await harness.close();
+  });
+
   test('a payment outside the app waits until the return link refreshes the balance', () async {
     final harness = _Harness(attempt: const PurchaseContinuesOutside());
     await harness.cubit.buy(AgentProduct.monthly);

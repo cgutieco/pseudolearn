@@ -123,11 +123,22 @@ flowchart LR
 - El respaldo de Android conserva documentos, índice y progreso, pero excluye `SharedPreferences`: ahí
   `flutter_secure_storage` guarda la sesión cifrada con una clave del Keystore que no viaja en el respaldo, y restaurarla
   en otro equipo haría fallar el descifrado. Tras restaurar, los algoritmos están y solo hay que volver a iniciar sesión.
-- `AGENT_PURCHASES` elige cómo se venden los productos de Nodo: `storekit` (iOS y macOS), `paddle`, `simulated`
-  (desarrollo) o `unavailable`. Este último no vende nada: la oferta y la recarga muestran un aviso en lugar del
-  checkout, y quien ya tenga Nodo activo en su cuenta lo sigue usando. Las versiones de Windows salen con `unavailable`
-  porque Paddle no aprobó la cuenta para Nodo; cuando haya un proveedor aprobado se cambia el valor en los dos flujos
-  de Windows, sin tocar código.
+- `AGENT_PURCHASES` elige cómo se venden los productos de Nodo: `storekit` (iOS y macOS), `google_play` (Android),
+  `paddle`, `simulated` (desarrollo) o `unavailable`. Este último no vende nada: la oferta y la recarga muestran un
+  aviso en lugar del checkout, y quien ya tenga Nodo activo en su cuenta lo sigue usando. Las versiones de Windows salen
+  con `unavailable` porque Paddle no aprobó la cuenta para Nodo; cuando haya un proveedor aprobado se cambia el valor en
+  los dos flujos de Windows, sin tocar código.
+- App Store y Google Play comparten la cola de transacciones y la tienda de `data/credits/`; lo que cambia entre ellas
+  se inyecta como datos (`StoreBillingProfile`: canal, página de suscripciones y significado de «pendiente») y como un
+  flujo por plataforma (`AppStorePurchaseFlow`, `GooglePlayPurchaseFlow`). En StoreKit «pendiente» es una compra en
+  curso y la tienda vuelve a entregar sola las transacciones sin terminar; en Google Play «pendiente» es un pago
+  diferido (efectivo, por ejemplo), así que la compra se cierra con un aviso y no otorga nada hasta pasar a comprada.
+- Google Play reembolsa en tres días lo que no se confirma. Por eso la suscripción se confirma y la recarga se consume
+  solo después de que el backend acreditó los créditos (la recarga se compra con `autoConsume: false`), y al abrir la
+  app se consultan las compras pasadas para canjear las suscripciones sin confirmar y las recargas sin consumir. Solo se
+  vende el plan base de la suscripción: la prueba gratuita la concede el backend, nunca una oferta de la tienda. El ID
+  de cuenta ofuscado de Play es el ID de usuario de Supabase, un UUID de 36 caracteres que no es un dato personal y cabe
+  en el límite de 64. Gestionar la suscripción abre la página de Play del plan (`sku` y `package`).
 - Límites: 250 líneas por archivo, 40 por función, 30 por `build`, 3 parámetros posicionales, anidación 3 y 5 métodos
   públicos por clase. Sin comentarios; `lib/engine/bridge/` y `lib/presentation/l10n/generated/` son generados.
 
@@ -156,7 +167,9 @@ flowchart LR
 | Compilar                                     | `flutter build macos --release`, `flutter build ipa --no-codesign`, `flutter build windows --release`, `flutter build appbundle --release` |
 
 Requisitos: Flutter 3.50.0 (fijado en `pubspec.yaml`), Dart `^3.14.0` y Rust según `native/rust-toolchain.toml` para
-compilar el puente. Android necesita además JDK 17 y el NDK `28.2.13676358` que fija Flutter. El inicio de sesión y la sincronización leen `SUPABASE_URL`, `SUPABASE_ANON_KEY`,
+compilar el puente. Android necesita además JDK 17 y el NDK `28.2.13676358` que fija Flutter. Para probar compras de
+Google Play hace falta `AGENT_PURCHASES=google_play`, una build instalada desde una pista de pruebas de Play y una
+cuenta de prueba de licencias. El inicio de sesión y la sincronización leen `SUPABASE_URL`, `SUPABASE_ANON_KEY`,
 `GOOGLE_IOS_CLIENT_ID` (iOS y macOS) y `GOOGLE_SERVER_CLIENT_ID` (Android) de `dart_define.local.json`, que no se
 versiona.
 

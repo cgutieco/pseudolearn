@@ -23,7 +23,6 @@ final class AgentTopUpButton extends StatelessWidget {
     final sells = context.select<PurchaseCubit, bool>((cubit) => cubit.state.channel.sells);
     final price = context.select<PurchaseCubit, String?>((cubit) => cubit.state.priceOf(AgentProduct.topUp));
     final busy = context.select<PurchaseCubit, bool>((cubit) => cubit.state.status == PurchaseStatus.purchasing);
-    final failure = context.select<PurchaseCubit, CreditFailure?>((cubit) => cubit.state.topUpFailure);
     if (!sells) {
       return AppText(l10n.agentCreditsTopUpUnavailable, key: ValueKey('$keyPrefix-unavailable'), variant: AppTextVariant.caption);
     }
@@ -39,11 +38,27 @@ final class AgentTopUpButton extends StatelessWidget {
           variant: AppButtonVariant.primary,
           onPressed: busy ? null : () => context.read<PurchaseCubit>().buy(AgentProduct.topUp),
         ),
-        if (failure != null) ...[
-          const SizedBox(height: SpacingTokens.space2),
-          AppText(agentFailureText(l10n, failure), key: ValueKey('$keyPrefix-failure'), variant: AppTextVariant.caption),
-        ],
+        _TopUpNotice(keyPrefix: keyPrefix),
       ],
+    );
+  }
+}
+
+final class _TopUpNotice extends StatelessWidget {
+  final String keyPrefix;
+
+  const _TopUpNotice({required this.keyPrefix});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final failure = context.select<PurchaseCubit, CreditFailure?>((cubit) => cubit.state.topUpFailure);
+    final awaiting = context.select<PurchaseCubit, bool>((cubit) => cubit.state.awaitsStorePayment(AgentProduct.topUp));
+    final text = failure != null ? agentFailureText(l10n, failure) : (awaiting ? l10n.agentPurchaseAwaitingStorePayment : null);
+    if (text == null) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(top: SpacingTokens.space2),
+      child: AppText(text, key: ValueKey(failure != null ? '$keyPrefix-failure' : '$keyPrefix-awaiting-store'), variant: AppTextVariant.caption),
     );
   }
 }

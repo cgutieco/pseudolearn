@@ -1,6 +1,7 @@
 enum PurchaseChannel {
   simulated('simulated', sells: true, sellsOwnTrial: true, restoresPurchases: false, managesSubscriptions: false, quotesPriceAtCheckout: false),
   appStore('app_store', sells: true, sellsOwnTrial: false, restoresPurchases: true, managesSubscriptions: true, quotesPriceAtCheckout: false),
+  googlePlay('google_play', sells: true, sellsOwnTrial: false, restoresPurchases: true, managesSubscriptions: true, quotesPriceAtCheckout: false),
   paddle('paddle', sells: true, sellsOwnTrial: false, restoresPurchases: false, managesSubscriptions: true, quotesPriceAtCheckout: true),
   unavailable('unavailable', sells: false, sellsOwnTrial: false, restoresPurchases: false, managesSubscriptions: false, quotesPriceAtCheckout: false);
 

@@ -4,34 +4,36 @@ import '../../domain/model/credits/purchase_attempt.dart';
 import '../../domain/model/credits/purchase_channel.dart';
 import '../../domain/ports/external_url_launcher.dart';
 import '../../domain/ports/purchase_store.dart';
-import 'storekit_client.dart';
-import 'storekit_transaction_queue.dart';
+import 'store_billing_client.dart';
+import 'store_billing_profile.dart';
+import 'store_transaction_queue.dart';
 
-final class StoreKitPurchaseStore implements PurchaseStore {
-  static final Uri subscriptionsUrl = Uri.parse('https://apps.apple.com/account/subscriptions');
+final class StoreBillingPurchaseStore implements PurchaseStore {
   static const List<AgentProduct> _sold = [AgentProduct.monthly, AgentProduct.topUp];
 
-  final StoreKitClient _client;
-  final StoreKitTransactionQueue _queue;
+  final StoreBillingClient _client;
+  final StoreTransactionQueue _queue;
+  final StoreBillingProfile _profile;
   final String? Function() _accountToken;
   final ExternalUrlLauncher _launcher;
 
-  const StoreKitPurchaseStore({
+  const StoreBillingPurchaseStore({
     required this._client,
     required this._queue,
+    required this._profile,
     required this._accountToken,
     required this._launcher,
   });
 
   @override
-  PurchaseChannel get channel => PurchaseChannel.appStore;
+  PurchaseChannel get channel => _profile.channel;
 
   @override
   Future<PurchaseAttempt> purchase(AgentProduct product) async {
     if (!_sold.contains(product)) return const PurchaseRefused(CreditFailure.purchasesDisabled);
     return _queue.track(
       product,
-      () => _client.buy(product.storeId, consumable: product == AgentProduct.topUp, accountToken: _accountToken()),
+      () => _client.buy(product.storeId, consumable: product.consumable, accountToken: _accountToken()),
     );
   }
 
@@ -45,5 +47,5 @@ final class StoreKitPurchaseStore implements PurchaseStore {
   }
 
   @override
-  Future<bool> manageSubscription() => _launcher.launchExternalUrl(subscriptionsUrl);
+  Future<bool> manageSubscription() => _launcher.launchExternalUrl(_profile.subscriptionsPage);
 }

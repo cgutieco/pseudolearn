@@ -16,14 +16,14 @@ final class StoreTransaction {
   });
 }
 
-abstract interface class StoreKitClient {
+abstract interface class StoreBillingClient {
   Stream<List<StoreTransaction>> transactions();
 
   Future<Map<String, String>> prices(Set<String> productIds);
 
   Future<bool> buy(String productId, {required bool consumable, required String? accountToken});
 
-  Future<void> complete(StoreTransaction transaction);
+  Future<void> complete(StoreTransaction transaction, {required bool consumable});
 
   Future<void> restore(String? accountToken);
 }

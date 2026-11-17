@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'package:pseudolearn_app/data/credits/storekit_client.dart';
+import 'package:pseudolearn_app/data/credits/store_billing_client.dart';
+import 'package:pseudolearn_app/data/credits/unfinished_store_transactions.dart';
 import 'package:pseudolearn_app/domain/model/credits/agent_product.dart';
 import 'package:pseudolearn_app/domain/model/credits/checkout_link.dart';
 import 'package:pseudolearn_app/domain/model/credits/credit_failure.dart';
@@ -84,16 +85,17 @@ final class FakeCheckoutGateway implements CheckoutGateway {
   Future<CheckoutLink> portal() async => portalLink;
 }
 
-final class FakeStoreKitClient implements StoreKitClient {
+final class FakeStoreBillingClient implements StoreBillingClient {
   final StreamController<List<StoreTransaction>> stream = StreamController.broadcast();
   final List<String> bought = [];
   final List<String?> tokens = [];
   final List<StoreTransaction> completed = [];
+  final List<bool> completedAsConsumable = [];
   final Map<String, String> catalog;
   bool buyStarts;
   int restores = 0;
 
-  FakeStoreKitClient({this.catalog = const {}, this.buyStarts = true});
+  FakeStoreBillingClient({this.catalog = const {}, this.buyStarts = true});
 
   @override
   Stream<List<StoreTransaction>> transactions() => stream.stream;
@@ -110,7 +112,10 @@ final class FakeStoreKitClient implements StoreKitClient {
   }
 
   @override
-  Future<void> complete(StoreTransaction transaction) async => completed.add(transaction);
+  Future<void> complete(StoreTransaction transaction, {required bool consumable}) async {
+    completed.add(transaction);
+    completedAsConsumable.add(consumable);
+  }
 
   @override
   Future<void> restore(String? accountToken) async => restores++;
@@ -127,3 +132,18 @@ StoreTransaction storeTransaction(
   status: status,
   handle: transactionId,
 );
+
+final class ScriptedUnfinishedTransactions implements UnfinishedStoreTransactions {
+  final List<StoreTransaction> transactions;
+  final bool fails;
+  int queries = 0;
+
+  ScriptedUnfinishedTransactions({this.transactions = const [], this.fails = false});
+
+  @override
+  Future<List<StoreTransaction>> unfinished() async {
+    queries++;
+    if (fails) throw const FormatException('billing unavailable');
+    return transactions;
+  }
+}

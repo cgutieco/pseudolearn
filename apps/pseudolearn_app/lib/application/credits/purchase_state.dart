@@ -2,7 +2,7 @@ import '../../domain/model/credits/agent_product.dart';
 import '../../domain/model/credits/credit_failure.dart';
 import '../../domain/model/credits/purchase_channel.dart';
 
-enum PurchaseStatus { idle, purchasing, completed, cancelled, failed, continuesOutside }
+enum PurchaseStatus { idle, purchasing, completed, cancelled, failed, continuesOutside, awaitingStorePayment }
 
 final class PurchaseState {
   final PurchaseStatus status;
@@ -26,6 +26,8 @@ final class PurchaseState {
       PurchaseState(status: status, product: product, failure: failure, channel: channel, prices: prices);
 
   String? priceOf(AgentProduct product) => prices[product];
+
+  bool awaitsStorePayment(AgentProduct product) => status == PurchaseStatus.awaitingStorePayment && this.product == product;
 
   CreditFailure? get topUpFailure =>
       status == PurchaseStatus.failed && product == AgentProduct.topUp ? failure : null;

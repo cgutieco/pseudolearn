@@ -51,6 +51,8 @@ final class PurchaseCubit extends Cubit<PurchaseState> {
         emit(state.withStatus(PurchaseStatus.cancelled, product: product));
       case PurchaseContinuesOutside():
         emit(state.withStatus(PurchaseStatus.continuesOutside, product: product));
+      case PurchaseAwaitsStorePayment():
+        emit(state.withStatus(PurchaseStatus.awaitingStorePayment, product: product));
       case PurchaseRefused(:final failure):
         emit(state.withStatus(PurchaseStatus.failed, product: product, failure: failure));
     }
