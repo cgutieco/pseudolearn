@@ -33,6 +33,7 @@ flowchart BT
 |:---------------------------------|:--------------------------------------------------------------------------------------------------------------------------|
 | `src/api.rs`                     | `create_session`, `call_session` y `close_session`; valida el sobre y guarda el registro de sesiones en un `thread_local` |
 | `src/bridge_session.rs`          | Una `ApiSession` más un `HostWorker` por recurso; atiende `host_open`, `host_submit`, `host_poll` y `host_close`          |
+| `src/android_certificate_verifier.rs` | Solo Android: recibe por JNI el `Context` de la app y con él inicializa `rustls-platform-verifier`                   |
 | `src/frb_generated.rs`           | Salida de `flutter_rust_bridge_codegen`; no se versiona ni se edita                                                       |
 | `lib/engine/bridge/` (en la app) | Lado Dart generado; no se versiona ni se edita                                                                            |
 
@@ -53,11 +54,16 @@ flowchart LR
 
 ## Reglas que conviene saber
 
-- El crate solo puede depender de `pseudolearn_api`, `pseudolearn_host`, `flutter_rust_bridge` y `serde_json`
-  (`architecture.yaml`).
+- El crate solo puede depender de `pseudolearn_api`, `pseudolearn_host`, `flutter_rust_bridge` y `serde_json`, y en
+  Android además de `jni` y `rustls-platform-verifier` (`architecture.yaml`).
+- En Android, la verificación TLS del host consulta el `TrustManager` del sistema por JNI y no funciona hasta recibir
+  el `Context`. `MainActivity` carga `libpseudolearn_bridge.so` y llama a `PlatformCertificateVerifier.initialize`
+  antes de crear el motor de Flutter; la función se exporta con `jni_mangle`, sin `unsafe` escrito a mano. El
+  componente Kotlin del verificador (`org.rustls:rustls-platform-verifier`) toma su versión de `Cargo.lock` al
+  configurar Gradle, porque debe coincidir con el crate `rustls-platform-verifier-android`.
 - `rust-checks isolation` rechaza que `pseudolearn_bridge` alcance `pseudolearn_codegen`, `pseudolearn_aot_rt`,
-  `cranelift-*`, `reqwest`, `ureq`, resolvedores DNS ni las features `test-host`, en seis destinos: iOS (dispositivo,
-  simulador arm64 y x86_64), macOS (arm64 y x86_64) y Windows x64.
+  `cranelift-*`, `reqwest`, `ureq`, resolvedores DNS ni las features `test-host`, en nueve destinos: iOS (dispositivo,
+  simulador arm64 y x86_64), macOS (arm64 y x86_64), Windows x64 y Android (arm64, armv7 y x86_64).
 - `unsafe` solo existe en `src/frb_generated.rs`, que el verificador omite; el código escrito a mano no lo usa.
 - Límites: 300 líneas por archivo, 40 por función, 4 parámetros posicionales, anidación 3 y 7 métodos públicos por
   clase.
@@ -77,5 +83,6 @@ flowchart LR
 | Dependencias                                       | `cargo deny check`                                                                                                                       |
 | Verificadores del monorepo                         | `cargo run --manifest-path ../../../packages/pseudolearn_rust_checks/Cargo.toml -p pseudolearn_check_command --bin rust-checks -- all .` |
 
-Requisitos: Rust `1.99.1` con los destinos de `rust-toolchain.toml`, `cargo-deny`, `cargo-expand` `1.0.127` y
+Requisitos: Rust `1.99.1` con los destinos de `rust-toolchain.toml`, el NDK de Android que fija Flutter (`28.2.13676358`)
+para los destinos Android, `cargo-deny`, `cargo-expand` `1.0.127` y
 `flutter_rust_bridge_codegen` `2.13.0` (`.github/actions/setup-rust-bridge` los instala con esas versiones).

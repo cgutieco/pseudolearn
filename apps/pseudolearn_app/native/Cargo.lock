@@ -1020,8 +1020,10 @@ name = "pseudolearn_bridge"
 version = "0.1.0"
 dependencies = [
  "flutter_rust_bridge",
+ "jni",
  "pseudolearn_api",
  "pseudolearn_host",
+ "rustls-platform-verifier",
  "serde_json",
 ]
 
