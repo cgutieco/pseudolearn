@@ -1,12 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-import 'dart:ui';
 
-import 'package:flutter/painting.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:pseudolearn_app/presentation/brand/brand_symbol_geometry.dart';
+
+import 'app_icon_canvas.dart';
 
 const String _iosDirectory = 'ios/Runner/Assets.xcassets/AppIcon.appiconset';
 const String _macosDirectory =
@@ -73,7 +72,7 @@ void main() {
         macosFiles.add(name);
         await _writeIcon(macos, name, size);
       }
-      windowsIcon.writeAsBytesSync(await _renderIcon(1024));
+      windowsIcon.writeAsBytesSync(await renderAppIcon(1024));
       windowsIco.writeAsBytesSync(await _renderIco());
 
       _writeContents(ios, _iosContents());
@@ -103,40 +102,14 @@ String _iosFileName(String size, String idiom, int scale) {
 Future<void> _writeIcon(Directory directory, String name, int pixels) async {
   File(
     p.join(directory.path, name),
-  ).writeAsBytesSync(await _renderIcon(pixels));
-}
-
-Future<Uint8List> _renderIcon(int pixels) async {
-  final recorder = PictureRecorder();
-  final canvas = Canvas(recorder)..scale(pixels / 1024);
-  final bounds = const Rect.fromLTWH(0, 0, 1024, 1024);
-  canvas.drawRect(
-    bounds,
-    Paint()
-      ..shader = const LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: <Color>[Color(0xFF195C5F), Color(0xFF0F4346)],
-      ).createShader(bounds),
-  );
-  canvas
-    ..save()
-    ..translate(230.4, 224.472)
-    ..scale(5.928421)
-    ..drawPath(buildBrandSymbolPath(), Paint()..color = const Color(0xFFFFFFFF))
-    ..restore();
-  final image = await recorder.endRecording().toImage(pixels, pixels);
-  final bytes = await image.toByteData(format: ImageByteFormat.png);
-  final png = bytes!.buffer.asUint8List();
-  image.dispose();
-  return png;
+  ).writeAsBytesSync(await renderAppIcon(pixels));
 }
 
 Future<Uint8List> _renderIco() async {
   const sizes = <int>[16, 32, 48, 64, 128, 256];
   final images = <Uint8List>[];
   for (final size in sizes) {
-    images.add(await _renderIcon(size));
+    images.add(await renderAppIcon(size));
   }
   final directory = ByteData(6 + sizes.length * 16);
   directory.setUint16(0, 0, Endian.little);
