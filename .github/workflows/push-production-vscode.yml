@@ -148,6 +148,7 @@ jobs:
     if: ${{ inputs.publish }}
     needs: [desktop, web]
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     environment: vscode-marketplace
     permissions:
       contents: read
