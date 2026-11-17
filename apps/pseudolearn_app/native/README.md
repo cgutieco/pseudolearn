@@ -68,6 +68,9 @@ flowchart LR
 - Límites: 300 líneas por archivo, 40 por función, 4 parámetros posicionales, anidación 3 y 7 métodos públicos por
   clase.
   Sin comentarios, sin `unwrap`/`panic` y nombres de al menos tres caracteres (`architecture.yaml`).
+- El hook de activos nativos decide si recompila por el contenido de los fuentes Rust, no por las features de los
+  `Cargo.toml`. Tras cambiar solo features hay que borrar `.dart_tool/flutter_build` y la carpeta del destino en
+  `.dart_tool/hooks_runner/shared/pseudolearn_app/build/`, o el dispositivo sigue recibiendo la biblioteca anterior.
 - Las versiones de `flutter_rust_bridge` están fijadas con `=2.13.0` y `Cargo.lock` fija el grafo; `deny.toml` prohíbe
   versiones duplicadas.
 
