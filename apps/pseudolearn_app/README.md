@@ -120,6 +120,9 @@ flowchart LR
   valor, Google cae al inicio de sesión por navegador en vez de fallar en silencio. Apple usa siempre el navegador en
   Android. Ambos vuelven a la app por `pseudolearn://auth-callback`, y el deep linking propio de Flutter está
   desactivado para que ese enlace no llegue a `go_router` como si fuera una ruta.
+- El respaldo de Android conserva documentos, índice y progreso, pero excluye `SharedPreferences`: ahí
+  `flutter_secure_storage` guarda la sesión cifrada con una clave del Keystore que no viaja en el respaldo, y restaurarla
+  en otro equipo haría fallar el descifrado. Tras restaurar, los algoritmos están y solo hay que volver a iniciar sesión.
 - `AGENT_PURCHASES` elige cómo se venden los productos de Nodo: `storekit` (iOS y macOS), `paddle`, `simulated`
   (desarrollo) o `unavailable`. Este último no vende nada: la oferta y la recarga muestran un aviso en lugar del
   checkout, y quien ya tenga Nodo activo en su cuenta lo sigue usando. Las versiones de Windows salen con `unavailable`
