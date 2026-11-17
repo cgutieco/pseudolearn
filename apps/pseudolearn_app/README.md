@@ -98,6 +98,8 @@ flowchart LR
   reconstruye el pasado en el motor y frenaba la salida. Se carga al detenerse la ejecución. Paso a paso no cambia. El bucle cede el hilo cada
   8 ms y muestra una sola vez la espera de un efecto.
 - Los colores y las duraciones literales solo existen en los archivos dueños que declara `architecture.yaml`.
+- La carpeta de ejecución de un documento es un único segmento bajo `execution/`: el identificador se codifica, incluidos
+  los puntos, para que `.` o `..` no salgan de ella en ninguna plataforma.
 - `AGENT_PURCHASES` elige cómo se venden los productos de Nodo: `storekit` (iOS y macOS), `paddle`, `simulated`
   (desarrollo) o `unavailable`. Este último no vende nada: la oferta y la recarga muestran un aviso en lugar del
   checkout, y quien ya tenga Nodo activo en su cuenta lo sigue usando. Las versiones de Windows salen con `unavailable`
