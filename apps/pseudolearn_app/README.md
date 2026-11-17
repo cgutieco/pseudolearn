@@ -137,6 +137,7 @@ flowchart LR
 | Tests del puente contra la biblioteca nativa | `bash tool/test_bridge.sh`                                                                            |
 | Límites de `architecture.yaml`               | `dart run tool/check_limits.dart`                                                                     |
 | Sistema de diseño                            | `dart run tool/check_design_system.dart`                                                              |
+| Sin comentarios en `android/`                | `dart run tool/check_android_comments.dart`                                                           |
 | Cobertura de formas de la vista              | `dart run tool/check_syntax_coverage.dart`                                                            |
 | Manual de usuario en `es` y `en`             | `dart run tool/check_manual.dart`                                                                     |
 | Conformidad del sujeto `app`                 | `cargo run -p see_cli --bin see -- conform --subject app` (en `packages/pseudolearn_spec`)            |
