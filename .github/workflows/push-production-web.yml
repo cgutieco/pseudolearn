@@ -3,6 +3,9 @@ name: Push Production Web
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 concurrency:
   group: push-production-web
   cancel-in-progress: false
