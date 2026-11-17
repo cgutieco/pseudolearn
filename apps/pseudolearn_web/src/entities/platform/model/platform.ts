@@ -12,7 +12,7 @@ export const PLATFORMS: readonly Platform[] = [
   { id: 'macos', translationKey: 'platform.macos', availability: 'available', minimumVersion: '13+' },
   { id: 'ios', translationKey: 'platform.ios', availability: 'available', minimumVersion: '16+' },
   { id: 'windows', translationKey: 'platform.windows', availability: 'available', minimumVersion: '10+' },
-  { id: 'vscode', translationKey: 'platform.vscode', availability: 'comingSoon' },
+  { id: 'vscode', translationKey: 'platform.vscode', availability: 'available' },
   { id: 'cli', translationKey: 'platform.cli', availability: 'comingSoon' },
   { id: 'linux', translationKey: 'platform.linux', availability: 'planned' },
   { id: 'android', translationKey: 'platform.android', availability: 'planned' },
