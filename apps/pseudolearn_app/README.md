@@ -132,6 +132,7 @@ flowchart LR
 | Ejecutar en macOS                            | `flutter run -d macos --dart-define-from-file=dart_define.local.json`                                 |
 | Ejecutar en un dispositivo Android           | `flutter run -d <id de adb> --dart-define-from-file=dart_define.local.json`                           |
 | Iconos y arranque de Android                 | `flutter test tool/generate_android_resources.dart`                                                   |
+| Archivos, HTTPS y zona horaria en un equipo | `flutter test integration_test/platform_host_smoke_test.dart -d <id>` (necesita Internet)             |
 | Análisis estático                            | `flutter analyze --fatal-infos --fatal-warnings`                                                      |
 | Tests de la app                              | `flutter test`                                                                                        |
 | Tests del puente contra la biblioteca nativa | `bash tool/test_bridge.sh`                                                                            |
