@@ -24,6 +24,7 @@ class RecordingAuthenticity implements PushAuthenticity {
 
 class ScriptedPurchases implements GooglePlayPurchases {
   readonly asked: string[] = [];
+  productState = 0;
 
   subscription(token: string) {
     this.asked.push(`subscription:${token}`);
@@ -41,7 +42,7 @@ class ScriptedPurchases implements GooglePlayPurchases {
 
   oneTimeProduct(productId: string, token: string) {
     this.asked.push(`product:${productId}:${token}`);
-    return Promise.resolve({ purchaseState: 0, obfuscatedExternalAccountId: user });
+    return Promise.resolve({ purchaseState: this.productState, obfuscatedExternalAccountId: user });
   }
 }
 
@@ -88,6 +89,27 @@ Deno.test("a purchased top-up is read from the one-time product", async () => {
   );
   assertEquals(purchases.asked, ["product:pseudolearn.nodo.topup150:t"]);
   assertEquals(events[0].kind === "purchase" ? events[0].userHint : null, user);
+});
+
+Deno.test("a revoked top-up is checked with Google and then revoked", async () => {
+  const purchases = new ScriptedPurchases();
+  purchases.productState = 1;
+  const subject = new GooglePlayNotificationReader(new RecordingAuthenticity(), purchases, catalog);
+  const events = await subject.read(
+    notification({
+      oneTimeProductNotification: {
+        notificationType: 2,
+        purchaseToken: "t",
+        sku: "pseudolearn.nodo.topup150",
+      },
+    }),
+    "Bearer jwt",
+  );
+  assertEquals(purchases.asked, ["product:pseudolearn.nodo.topup150:t"]);
+  assertEquals(
+    events[0].kind === "revocation" ? events[0].revocation.transactionId : null,
+    "google_play:t",
+  );
 });
 
 Deno.test("revocations and voided purchases need no API call", async () => {

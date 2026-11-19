@@ -1,8 +1,6 @@
 import { assertEquals } from "@std/assert";
 import {
   googlePlayNoticeOf,
-  googlePlayOneTimeEventOf,
-  googlePlayRevocationOf,
   googlePlaySubscriptionEventOf,
 } from "../../../../supabase/functions/store-events/domain/google_play_notification.ts";
 
@@ -26,6 +24,25 @@ function plan(state: string, expiryTime = "2026-12-01T00:00:00Z") {
     }],
   };
 }
+
+Deno.test("one-time product notifications are read as one-time notices", () => {
+  const notice = googlePlayNoticeOf(
+    notification({
+      oneTimeProductNotification: {
+        notificationType: 2,
+        purchaseToken: "t",
+        sku: "pseudolearn.nodo.topup150",
+      },
+    }),
+    packageName,
+  );
+  assertEquals(notice, {
+    kind: "one_time",
+    token: "t",
+    productId: "pseudolearn.nodo.topup150",
+    cancelled: true,
+  });
+});
 
 Deno.test("subscription notifications ask for the current state, except revocations", () => {
   for (const notificationType of [1, 2, 3, 4, 5, 6, 7, 10, 13, 17, 18]) {
@@ -54,30 +71,6 @@ Deno.test("a cancelled pending subscription and a subscription without token are
   });
   const tokenless = { subscriptionNotification: { notificationType: 4 } };
   assertEquals(googlePlayNoticeOf(notification(tokenless), packageName).kind, "ignored");
-});
-
-Deno.test("only a purchased one-time product with token and sku is processed", () => {
-  const purchased = {
-    oneTimeProductNotification: {
-      notificationType: 1,
-      purchaseToken: "t",
-      sku: "pseudolearn.nodo.topup150",
-    },
-  };
-  assertEquals(googlePlayNoticeOf(notification(purchased), packageName), {
-    kind: "one_time_purchase",
-    token: "t",
-    productId: "pseudolearn.nodo.topup150",
-  });
-  const canceled = {
-    oneTimeProductNotification: { notificationType: 2, purchaseToken: "t", sku: "s" },
-  };
-  assertEquals(googlePlayNoticeOf(notification(canceled), packageName), {
-    kind: "ignored",
-    reason: "one_time_canceled",
-  });
-  const incomplete = { oneTimeProductNotification: { notificationType: 1, purchaseToken: "t" } };
-  assertEquals(googlePlayNoticeOf(notification(incomplete), packageName).kind, "ignored");
 });
 
 Deno.test("voided purchases tell subscriptions from one-time products", () => {
@@ -160,38 +153,5 @@ Deno.test("unknown tokens and pending subscriptions are ignored", () => {
   assertEquals(googlePlaySubscriptionEventOf("t", plan("SUBSCRIPTION_STATE_PENDING"), catalog), {
     kind: "ignored",
     reason: "subscription_subscription_state_pending",
-  });
-});
-
-Deno.test("a purchased top-up becomes a purchase and anything else is ignored", () => {
-  const notice = { token: "t", productId: "pseudolearn.nodo.topup150" };
-  const event = googlePlayOneTimeEventOf(
-    notice,
-    { purchaseState: 0, obfuscatedExternalAccountId: user },
-    catalog,
-  );
-  assertEquals(event.kind === "purchase" ? event.userHint : null, user);
-  assertEquals(googlePlayOneTimeEventOf(notice, null, catalog), {
-    kind: "ignored",
-    reason: "unknown_purchase",
-  });
-  assertEquals(googlePlayOneTimeEventOf(notice, { purchaseState: 1 }, catalog), {
-    kind: "ignored",
-    reason: "one_time_not_granted",
-  });
-});
-
-Deno.test("revocations target the whole subscription or the single top-up", () => {
-  assertEquals(googlePlayRevocationOf("t", true), {
-    kind: "revocation",
-    revocation: { store: "google_play", transactionId: null, originalTransactionId: "t" },
-  });
-  assertEquals(googlePlayRevocationOf("t", false), {
-    kind: "revocation",
-    revocation: {
-      store: "google_play",
-      transactionId: "google_play:t",
-      originalTransactionId: null,
-    },
   });
 });

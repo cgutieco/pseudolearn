@@ -117,9 +117,13 @@ con cinco minutos de tolerancia. La notificación solo dice qué token cambió; 
 | `SUBSCRIPTION_REVOKED` (12)                           | Revoca el periodo vigente de esa suscripción                     |
 | Recarga comprada (`ONE_TIME_PRODUCT_PURCHASED`)       | Se otorga, por si la app nunca llegó a canjearla                  |
 | `voidedPurchaseNotification` (reembolso o anulación)  | Revoca la suscripción (`productType = 1`) o la recarga           |
+| Recarga cancelada (`ONE_TIME_PRODUCT_CANCELED`)       | Si la API la da por cancelada (`purchaseState = 1`), la revoca   |
 | Prueba, compra pendiente cancelada, otro paquete      | Se ignora con su motivo                                          |
 
-Un fallo de la API responde 5xx y Pub/Sub reintenta. No hizo falta migración: `store` es texto libre en el libro y las
+Un reembolso solo genera aviso si en Play Console se elige «Reembolsar y revocar»: con «Solo reembolsar» Google no
+publica nada y los créditos se conservan. Una recarga revocada puede llegar como `ONE_TIME_PRODUCT_CANCELED`, que
+también se usa para un pago pendiente cancelado; por eso se consulta su estado antes de revocar. Un fallo de la API
+responde 5xx y Pub/Sub reintenta. No hizo falta migración: `store` es texto libre en el libro y las
 RPC no enumeran tiendas. Se usó `purchases.products.get`, que no está obsoleto y valida el producto en la propia ruta,
 en lugar del nuevo `purchases.productsv2`; se descartó `latestOrderId`, obsoleto en `subscriptionsv2`.
 

@@ -37,7 +37,7 @@ export class GooglePlayNotificationReader implements StoreEventReader {
         const subscription = await this.publisher.subscription(notice.token);
         return [googlePlaySubscriptionEventOf(notice.token, subscription, this.catalog)];
       }
-      case "one_time_purchase": {
+      case "one_time": {
         const purchase = await this.publisher.oneTimeProduct(notice.productId, notice.token);
         return [googlePlayOneTimeEventOf(notice, purchase, this.catalog)];
       }
