@@ -29,9 +29,9 @@ export function googlePlaySubscriptionOf(
   catalog: GooglePlayCatalog,
 ): VerifiedPurchase | null {
   const item = monthlyLineItemOf(subscription);
-  const startsAt = dateOf(subscription.startTime);
+  const grantedAt = dateOf(subscription.startTime);
   const endsAt = item === null ? null : dateOf(item.expiryTime);
-  if (item === null || startsAt === null || endsAt === null) return null;
+  if (item === null || grantedAt === null || endsAt === null) return null;
   if (!entitledSubscriptionStates.has(textOf(subscription.subscriptionState) ?? "")) return null;
   if (isRecord(subscription.testPurchase) && !catalog.acceptsTestPurchases) return null;
   const order = textOf(item.latestSuccessfulOrderId);
@@ -40,7 +40,7 @@ export function googlePlaySubscriptionOf(
     product: "monthly",
     transactionId: `${googlePlayStore}:${order ?? `${token}:${endsAt.toISOString()}`}`,
     originalTransactionId: token,
-    startsAt,
+    startsAt: null,
     endsAt,
     trial: isRecord(item.offerPhase) && isRecord(item.offerPhase.freeTrial),
     revoked: false,

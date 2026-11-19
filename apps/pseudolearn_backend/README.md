@@ -91,9 +91,11 @@ API autenticado con una cuenta de servicio (JWT RS256 firmado con su clave → t
 `androidpublisher`, reutilizado hasta cinco minutos antes de caducar):
 
 - **Plan:** `purchases.subscriptionsv2.get`. Otorga si el estado es `ACTIVE`, `IN_GRACE_PERIOD` o `CANCELED` (cancelar
-  solo apaga la renovación), con `startTime` y la `expiryTime` de `pseudolearn.nodo.monthly`. Cada periodo se identifica
-  por `lineItems[].latestSuccessfulOrderId` (o por token y caducidad si falta) y la suscripción por su token, que
-  vincula al dueño en `agent_store_links`. Una fase `offerPhase.freeTrial` cuenta como prueba y pasa por la guarda
+  solo apaga la renovación) y existen `startTime` y la `expiryTime` de `pseudolearn.nodo.monthly`. El periodo empieza al
+  verificarse y termina en `expiryTime`: `startTime` es la primera concesión de la suscripción, no la de cada renovación,
+  y usarlo como inicio dejaba en cero el periodo anterior, porque el libro cierra el periodo vigente donde empieza el
+  nuevo. Cada periodo se identifica por `lineItems[].latestSuccessfulOrderId` (o por token y caducidad si falta) y la
+  suscripción por su token, que vincula al dueño en `agent_store_links`. Una fase `offerPhase.freeTrial` cuenta como prueba y pasa por la guarda
   `trial_used`.
 - **Recarga:** `purchases.products.get`, con `purchaseState = 0`. Se identifica por `google_play:<token>`, así que
   repetir el canje de una recarga ya consumida responde `repeated` en vez de acreditar dos veces.

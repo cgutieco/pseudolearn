@@ -235,6 +235,11 @@ begin
   v_reply := pg_temp.apply(v_f, 'google_play', 'monthly', 'google_play:GPA.1', 'play-token-1', 300000,
     '2026-11-01', '2026-12-01 06:00', false, '2026-11-02');
   assert (v_reply->>'repeated')::boolean, 'the same order delivered again is a repetition';
+  v_reply := pg_temp.apply(v_f, 'google_play', 'monthly', 'google_play:GPA.1..0', 'play-token-1', 300000,
+    '2026-11-02 12:00', '2026-12-02 06:00', false, '2026-11-02 12:00');
+  assert v_reply->>'error' is null, 'a Google Play renewal opens the next period';
+  assert (select ends_at from agent_ledger_periods where transaction_id = 'google_play:GPA.1')
+    = '2026-11-02 12:00'::timestamptz, 'a renewal closes the previous period when it starts';
   v_reply := pg_temp.apply(v_f, 'google_play', 'top_up', 'google_play:play-token-2', null, 150000,
     '2026-11-03', '2026-11-03', false, '2026-11-03');
   assert v_reply->>'error' is null, 'a Google Play top-up is granted';

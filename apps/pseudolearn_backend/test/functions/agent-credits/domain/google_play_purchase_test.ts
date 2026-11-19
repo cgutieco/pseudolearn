@@ -36,13 +36,13 @@ const topUp = {
   obfuscatedExternalAccountId: user,
 };
 
-Deno.test("an active subscription grants its period, keyed by its order and linked by its token", () => {
+Deno.test("an active subscription grants the current period from verification to expiry, keyed by its order", () => {
   assertEquals(googlePlaySubscriptionOf("token-1", subscription(), catalog), {
     store: "google_play",
     product: "monthly",
     transactionId: "google_play:GPA.1234-5678-9012-34567",
     originalTransactionId: "token-1",
-    startsAt: new Date("2026-11-01T10:00:00Z"),
+    startsAt: null,
     endsAt: new Date("2026-12-01T10:00:00Z"),
     trial: false,
     revoked: false,
@@ -125,6 +125,15 @@ Deno.test("without an order the period is keyed by token and expiry", () => {
 Deno.test("a subscription without account identifiers has no account token", () => {
   const anonymous = subscription({ externalAccountIdentifiers: undefined });
   assertEquals(googlePlaySubscriptionOf("t", anonymous, catalog)?.accountToken, null);
+});
+
+Deno.test("a renewal starts its period when verified, not when the subscription was first granted", () => {
+  const renewal = subscription({ startTime: "2026-09-01T10:00:00Z" }, {
+    latestSuccessfulOrderId: "GPA.1234-5678-9012-34567..2",
+  });
+  const granted = googlePlaySubscriptionOf("token-1", renewal, catalog);
+  assertEquals(granted?.startsAt, null);
+  assertEquals(granted?.transactionId, "google_play:GPA.1234-5678-9012-34567..2");
 });
 
 Deno.test("the subscription end is the expiry of our plan", () => {
