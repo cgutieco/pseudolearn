@@ -142,6 +142,17 @@ flowchart LR
 - El `applicationId` de Android es `com.pseudolearn.app` y no puede cambiar tras publicarse. La versión release se firma
   con la clave de subida si existe `android/key.properties` (no versionado, igual que el almacén de claves); si no, con
   la clave de depuración, que sirve para probar en un dispositivo pero no para Google Play.
+- Android se publica con el flujo manual `push-production-android.yml`: compila el AAB con `AGENT_PURCHASES=google_play`,
+  lo firma con la clave de subida, comprueba que el certificado del AAB es el de esa clave y que cada `.so` está
+  alineada a 16 KB, y lo sube a la pista interna con la Google Play Developer API (`.github/scripts/google_play.rb`).
+  El `versionCode` es el mayor que Play ya conoce más uno, igual que el número de build de iOS; el `versionName` sale de
+  `pubspec.yaml` y las notas, del resumen de `CHANGELOG.json` en `es-419` y `en-US`. Play firma lo que distribuye con
+  su propia clave (firma de apps de Play), así que la clave de subida solo autentica las subidas. La API solo acepta
+  cambios en una app que ya tiene un AAB, por eso la primera subida se hace a mano en Play Console, y mientras la app
+  no se haya lanzado en ninguna pista solo admite versiones en borrador (`release_status: draft`).
+  Secretos del flujo: `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64`, `ANDROID_UPLOAD_KEYSTORE_BASE64`,
+  `ANDROID_UPLOAD_KEYSTORE_PASSWORD`, `ANDROID_UPLOAD_KEY_ALIAS`, `ANDROID_UPLOAD_KEY_PASSWORD`, `SUPABASE_URL`,
+  `SUPABASE_ANON_KEY` y `GOOGLE_SERVER_CLIENT_ID`.
 - En Android, Google identifica la app por su paquete y la huella SHA-1 del certificado, y el token debe ir dirigido
   al cliente web que Supabase ya acepta; por eso Android pide `GOOGLE_SERVER_CLIENT_ID` y no el cliente de iOS. Sin ese
   valor, Google cae al inicio de sesión por navegador en vez de fallar en silencio. Apple usa siempre el navegador en
@@ -191,6 +202,7 @@ flowchart LR
 | Manual de usuario en `es` y `en`             | `dart run tool/check_manual.dart`                                                                     |
 | Conformidad del sujeto `app`                 | `cargo run -p see_cli --bin see -- conform --subject app` (en `packages/pseudolearn_spec`)            |
 | Grabar las placas de las tiendas             | `flutter test tool/generate_store_plates.dart` (acotable con `--dart-define=STORE_PLATE_DEVICES=mac`) |
+| AAB firmado para la primera subida a Play    | `flutter build appbundle --release --dart-define=AGENT_PURCHASES=google_play --dart-define-from-file=dart_define.local.json` (con `android/key.properties`) |
 | Grabar la placa animada del tráiler          | `flutter test tool/generate_trailer_plates.dart`                                                      |
 | Regenerar las capturas de la web             | `flutter test tool/generate_product_shot.dart`                                                        |
 | Compilar                                     | `flutter build macos --release`, `flutter build ipa --no-codesign`, `flutter build windows --release`, `flutter build appbundle --release` |
