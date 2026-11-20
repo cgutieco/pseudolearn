@@ -46571,7 +46571,9 @@
       ]
     },
     "input_requested": {
-      "datos": []
+      "datos": [
+        "tipo"
+      ]
     },
     "output": {
       "datos": [
