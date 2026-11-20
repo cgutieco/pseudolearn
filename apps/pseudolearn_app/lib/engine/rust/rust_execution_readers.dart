@@ -20,14 +20,12 @@ bool isExecutableReport(Map<String, Object?> report) {
       !diagnostics.any((item) => item['severity'] == 'error');
 }
 
-String? inputPromptOf(
+String readStatementSourceOf(
   RustProgramView view,
   SourceOffsetIndex offsets,
   RustEvent event,
 ) {
   final node = view.node(event.nodeId);
-  if (node == null) return null;
-  final text = offsets.textBetween(node.range).replaceAll(';', '').trim();
-  final separator = text.indexOf(' ');
-  return separator < 0 ? text : text.substring(separator + 1).trim();
+  if (node == null) return '';
+  return offsets.textBetween(node.range);
 }

@@ -3,6 +3,7 @@ import 'effect_wait.dart';
 import 'execution_focus.dart';
 import 'execution_task_context.dart';
 import 'input_wait.dart';
+import 'read_request.dart';
 import 'watch_row.dart';
 
 final class ExecutionStep {
@@ -24,8 +25,7 @@ final class ExecutionStep {
   final bool isUiSafetyLimitReached;
   final bool isAwaitingInput;
   final InputWait? inputWait;
-  final String? inputPrompt;
-  final String? expectedInputType;
+  final ReadRequest? readRequest;
   final EffectWait? pendingEffect;
 
   const ExecutionStep({
@@ -47,8 +47,7 @@ final class ExecutionStep {
     this.isUiSafetyLimitReached = false,
     this.isAwaitingInput = false,
     this.inputWait,
-    this.inputPrompt,
-    this.expectedInputType,
+    this.readRequest,
     this.pendingEffect,
   });
 
@@ -71,8 +70,7 @@ final class ExecutionStep {
       isUiSafetyLimitReached = false,
       isAwaitingInput = false,
       inputWait = null,
-      inputPrompt = null,
-      expectedInputType = null,
+      readRequest = null,
       pendingEffect = null;
 
   const ExecutionStep.exhausted()
@@ -94,8 +92,7 @@ final class ExecutionStep {
       isUiSafetyLimitReached = false,
       isAwaitingInput = false,
       inputWait = null,
-      inputPrompt = null,
-      expectedInputType = null,
+      readRequest = null,
       pendingEffect = null;
 
   bool get isTerminal =>

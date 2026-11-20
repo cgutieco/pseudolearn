@@ -29,6 +29,33 @@ void main() {
       ]);
     });
 
+    test('an echo keeps the variable and the line that read it', () {
+      final assembler = RustOutputAssembler()
+        ..echoInput('5', target: 'numero', sourceLine: 4);
+      final echo = assembler.lines.single;
+      expect(echo.target, 'numero');
+      expect(echo.sourceLine, 4);
+    });
+
+    test('a rejected value is its own line and closes the open line', () {
+      final assembler = RustOutputAssembler()
+        ..append('edad? ')
+        ..rejectInput('veinte', target: 'edad', sourceLine: 7)
+        ..append('z');
+      expect(assembler.lines.map((line) => line.kind), [
+        OutputLineKind.programOutput,
+        OutputLineKind.rejectedInput,
+        OutputLineKind.programOutput,
+      ]);
+      expect(assembler.lines[1].text, 'veinte');
+      expect(assembler.lines[1].target, 'edad');
+    });
+
+    test('an empty echo is still recorded', () {
+      final assembler = RustOutputAssembler()..echoInput('');
+      expect(assembler.lines.single.text, '');
+    });
+
     test('keeps blank lines produced by consecutive newlines', () {
       final assembler = RustOutputAssembler()..append('\n\nz');
       expect(assembler.lines.map((line) => line.text), ['', '', 'z']);

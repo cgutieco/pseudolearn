@@ -1,6 +1,7 @@
 import '../../domain/model/execution/effect_wait.dart';
 import '../../domain/model/execution/execution_step.dart';
 import '../../domain/model/execution/input_wait.dart';
+import '../../domain/model/execution/read_request.dart';
 import 'rust_effect_gate.dart';
 import 'rust_focus_tracker.dart';
 import 'rust_wire_models.dart';
@@ -18,7 +19,7 @@ final class RustExecutionStepBuilder {
     bool cancelled = false,
     bool awaitingInput = false,
     InputWait? inputWait,
-    String? prompt,
+    ReadRequest? readRequest,
     String? reason,
   }) => _executionStep(
     tracker: tracker,
@@ -30,7 +31,7 @@ final class RustExecutionStepBuilder {
     cancelled: cancelled,
     awaitingInput: awaitingInput,
     inputWait: inputWait,
-    prompt: prompt,
+    readRequest: readRequest,
     reason: reason,
   );
 
@@ -44,7 +45,7 @@ final class RustExecutionStepBuilder {
     bool cancelled = false,
     bool awaitingInput = false,
     InputWait? inputWait,
-    String? prompt,
+    ReadRequest? readRequest,
     String? reason,
   }) => ExecutionStep(
     stepNumber: stepNumber,
@@ -63,7 +64,7 @@ final class RustExecutionStepBuilder {
     haltReason: reason,
     isAwaitingInput: awaitingInput,
     inputWait: inputWait,
-    inputPrompt: prompt,
+    readRequest: readRequest,
     pendingEffect: pending,
   );
 
@@ -73,7 +74,7 @@ final class RustExecutionStepBuilder {
     required int eventIndex,
     required RustTerminationKind termination,
     required RustBatch? batch,
-    required String? inputPrompt,
+    required ReadRequest? readRequest,
     required String? failureReason,
   }) => switch (termination) {
     RustTerminationKind.completed => _finished(tracker, stepNumber, eventIndex),
@@ -83,7 +84,7 @@ final class RustExecutionStepBuilder {
       stepNumber: stepNumber,
       eventIndex: eventIndex,
       batch: batch,
-      prompt: inputPrompt,
+      readRequest: readRequest,
     ),
     RustTerminationKind.awaitingEffect => _awaitingEffect(
       tracker: tracker,
@@ -122,14 +123,14 @@ final class RustExecutionStepBuilder {
     required int stepNumber,
     required int eventIndex,
     required RustBatch? batch,
-    required String? prompt,
+    required ReadRequest? readRequest,
   }) => build(
     tracker: tracker,
     stepNumber: stepNumber,
     eventIndex: eventIndex,
     awaitingInput: true,
     inputWait: batch?.pendingInput?.toDomain(),
-    prompt: prompt,
+    readRequest: readRequest,
   );
 
   ExecutionStep _limitReached({

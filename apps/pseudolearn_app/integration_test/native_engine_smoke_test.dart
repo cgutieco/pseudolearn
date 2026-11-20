@@ -65,7 +65,7 @@ void verifyExecutionInputAndArray(RustEngineServices services) {
     step = execution.step();
   }
   expect(step.isAwaitingInput, isTrue);
-  expect(step.inputPrompt, 'amount');
+  expect(step.readRequest?.designator, 'amount');
   step = execution.provideInput(step.inputWait!, '7');
   while (!step.isTerminal) {
     arrayVisible = arrayVisible || hasArray(step);

@@ -146,7 +146,7 @@ final class RustProgramExecution
       eventIndex: _progress.eventIndex,
       termination: _progress.termination,
       batch: _progress.last,
-      inputPrompt: _events.inputPrompt,
+      readRequest: _events.readRequest,
       failureReason: _failureReason,
     );
   }
@@ -162,7 +162,7 @@ final class RustProgramExecution
     _execution.provideInput(execution, request, rawInput);
     _progress.termination = RustTerminationKind.running;
     _failureReason = null;
-    _events.clearInputPrompt();
+    _events.submitInput(rawInput);
     return step();
   }
 

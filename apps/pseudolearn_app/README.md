@@ -97,6 +97,11 @@ flowchart LR
   durante la ejecución continua salvo que esa pestaña esté visible (como mucho cada 100 ms): cada consulta también
   reconstruye el pasado en el motor y frenaba la salida. Se carga al detenerse la ejecución. Paso a paso no cambia. El bucle cede el hilo cada
   8 ms y muestra una sola vez la espera de un efecto.
+- `Leer` no abre un diálogo: la consola termina en una línea de lectura (`numero <- ▍`) y el eco queda como
+  asignación con su línea. Un diálogo tapaba la salida y el estudiante perdía el hilo entre peticiones seguidas. El
+  tipo esperado y el rechazo por tipo vienen del motor (`input_requested` y `readValueTypeMismatch`), nunca de una
+  validación propia; el texto del designador sí sale del código fuente, solo para mostrarlo. Mientras se espera un
+  valor el pie no se oculta con el teclado en pantallas compactas, para que la línea siga a la vista.
 - El tope local de 10 000 avances cuenta solo los del tramo en curso: desde que se pulsa Ejecutar, Continuar o un paso,
   o desde la última entrada respondida, hasta que el programa vuelve a esperar. Protege la interfaz de un bucle que no
   pide nada; contar desde el inicio de la ejecución cortaba los programas interactivos largos (un juego de consola

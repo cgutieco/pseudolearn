@@ -790,29 +790,101 @@
   "@bannerDismiss": {
     "description": "Label of the control that removes the execution status banner"
   },
-  "inputDialogTitle": "Data input",
-  "@inputDialogTitle": {
-    "description": "Title for input dialog"
-  },
-  "inputDialogPrompt": "Enter a value to continue:",
-  "@inputDialogPrompt": {
-    "description": "Prompt for input dialog"
-  },
-  "inputRequestIdentity": "Task {task}, request {request}",
-  "@inputRequestIdentity": {
-    "description": "Identity of the read request waiting for a response",
+  "readLineLocation": "Line {line}",
+  "@readLineLocation": {
+    "description": "Ubicación de la sentencia Leer que espera un valor",
     "placeholders": {
-      "task": {
-        "type": "int"
-      },
-      "request": {
+      "line": {
         "type": "int"
       }
     }
   },
-  "inputDialogSubmit": "Submit",
-  "@inputDialogSubmit": {
-    "description": "Submit button for input dialog"
+  "readLineAssign": "Assign",
+  "@readLineAssign": {
+    "description": "Botón que entrega el valor escrito a la variable que lo espera"
+  },
+  "readLineHint": "{type} · what you type is stored in {name}",
+  "@readLineHint": {
+    "description": "Explicación bajo la línea de lectura: tipo esperado y variable que recibe el valor",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "readLineHintUntyped": "What you type is stored in {name}",
+  "@readLineHintUntyped": {
+    "description": "Explicación bajo la línea de lectura cuando no se conoce el tipo esperado",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "readLineRejected": "{name} expects a value of type {type}. Enter another one.",
+  "@readLineRejected": {
+    "description": "Aviso cuando el lenguaje rechaza un valor por su tipo y no llegó el mensaje del motor",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "readLineRejectedUntyped": "That value does not fit {name}. Enter another one.",
+  "@readLineRejectedUntyped": {
+    "description": "Aviso cuando el lenguaje rechaza un valor y no se conoce el tipo",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "readLineFieldLabel": "Value for {name}",
+  "@readLineFieldLabel": {
+    "description": "Rótulo accesible del campo donde se escribe el valor que pide Leer",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "readTypeInteger": "Integer",
+  "@readTypeInteger": {
+    "description": "Nombre del tipo entero en la línea de lectura"
+  },
+  "readTypeReal": "Real",
+  "@readTypeReal": {
+    "description": "Nombre del tipo real en la línea de lectura"
+  },
+  "readTypeBoolean": "Boolean",
+  "@readTypeBoolean": {
+    "description": "Nombre del tipo lógico en la línea de lectura"
+  },
+  "readTypeCharacter": "Character",
+  "@readTypeCharacter": {
+    "description": "Nombre del tipo carácter en la línea de lectura"
+  },
+  "readTypeText": "String",
+  "@readTypeText": {
+    "description": "Nombre del tipo cadena en la línea de lectura"
+  },
+  "readValueTrue": "True",
+  "@readValueTrue": {
+    "description": "Atajo que entrega el valor lógico verdadero"
+  },
+  "readValueFalse": "False",
+  "@readValueFalse": {
+    "description": "Atajo que entrega el valor lógico falso"
+  },
+  "outputRejectedTag": "rejected",
+  "@outputRejectedTag": {
+    "description": "Marca de un valor que el lenguaje rechazó por su tipo en el historial de la consola"
   },
   "diagnosticsEmpty": "No issues detected",
   "@diagnosticsEmpty": {

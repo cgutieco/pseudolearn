@@ -20,9 +20,29 @@ final class RustOutputAssembler {
     }
   }
 
-  void echoInput(String rawText) {
+  void echoInput(String rawText, {String? target, int? sourceLine}) =>
+      _closeWith(
+        OutputLine(
+          text: rawText,
+          kind: OutputLineKind.userInputEcho,
+          target: target,
+          sourceLine: sourceLine,
+        ),
+      );
+
+  void rejectInput(String rawText, {String? target, int? sourceLine}) =>
+      _closeWith(
+        OutputLine(
+          text: rawText,
+          kind: OutputLineKind.rejectedInput,
+          target: target,
+          sourceLine: sourceLine,
+        ),
+      );
+
+  void _closeWith(OutputLine line) {
     _hasOpenLine = false;
-    lines.add(OutputLine(text: rawText, kind: OutputLineKind.userInputEcho));
+    lines.add(line);
   }
 
   void _appendPart(

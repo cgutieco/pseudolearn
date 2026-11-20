@@ -18,7 +18,6 @@ import '../../application/settings/settings_cubit.dart';
 import '../../domain/model/profiles/syntax_profile_id.dart';
 import 'components/document_scaffold_body.dart';
 import 'components/tab_selector.dart';
-import 'dialogs/data_input_dialog.dart';
 
 bool _sourceChanged(EditorState previous, EditorState current) =>
     previous.sourceCode != current.sourceCode ||
@@ -29,14 +28,6 @@ CompanionView _companionOf(DocumentTabKind tab) => switch (tab) {
   DocumentTabKind.equivalentCode => CompanionView.equivalentCode,
   _ => CompanionView.none,
 };
-
-bool _inputJustRequested(ExecutionState previous, ExecutionState current) =>
-    current.status == ExecutionStatus.pausedAwaitingInput &&
-    (previous.status != ExecutionStatus.pausedAwaitingInput ||
-        current.currentStep.inputWait?.requestId !=
-            previous.currentStep.inputWait?.requestId ||
-        current.currentStep.inputWait?.taskId !=
-            previous.currentStep.inputWait?.taskId);
 
 final class DocumentPage extends StatefulWidget {
   final String documentId;
@@ -145,18 +136,6 @@ final class _DocumentPageState extends State<DocumentPage> {
     }
   }
 
-  void _onInputRequested(BuildContext context, ExecutionState execState) {
-    final request = execState.currentStep.inputWait;
-    if (request == null) return;
-    showDataInputDialog(
-      context: context,
-      prompt: execState.currentStep.inputPrompt,
-      inputWait: request,
-      onSubmit: (input) =>
-          context.read<ExecutionCubit>().provideInput(request, input),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final body = DocumentScaffoldBody(
@@ -179,7 +158,6 @@ final class _DocumentPageState extends State<DocumentPage> {
       },
       child: _EditorListeners(
         onEditorStateChanged: _onEditorStateChanged,
-        onInputRequested: _onInputRequested,
         onExerciseLoaded: _onExerciseLoaded,
         child: body,
       ),
@@ -190,13 +168,11 @@ final class _DocumentPageState extends State<DocumentPage> {
 final class _EditorListeners extends StatelessWidget {
   final Widget child;
   final void Function(BuildContext, EditorState) onEditorStateChanged;
-  final void Function(BuildContext, ExecutionState) onInputRequested;
   final void Function(BuildContext, ExerciseSessionState) onExerciseLoaded;
 
   const _EditorListeners({
     required this.child,
     required this.onEditorStateChanged,
-    required this.onInputRequested,
     required this.onExerciseLoaded,
   });
 
@@ -207,10 +183,6 @@ final class _EditorListeners extends StatelessWidget {
         BlocListener<EditorCubit, EditorState>(
           listenWhen: _sourceChanged,
           listener: onEditorStateChanged,
-        ),
-        BlocListener<ExecutionCubit, ExecutionState>(
-          listenWhen: _inputJustRequested,
-          listener: onInputRequested,
         ),
         BlocListener<ExecutionCubit, ExecutionState>(
           listenWhen: (p, c) => p.followedFocus != c.followedFocus,

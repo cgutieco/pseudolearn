@@ -1,6 +1,7 @@
 import '../../domain/model/profiles/syntax_profile_id.dart';
 import 'rust_editor_vocabulary.dart';
 import '../../domain/model/execution/output_line.dart';
+import '../../domain/model/execution/read_request.dart';
 import 'rust_execution_event_effects.dart';
 import 'rust_execution_readers.dart';
 import 'rust_focus_tracker.dart';
@@ -10,6 +11,14 @@ import 'rust_transport.dart';
 import 'rust_watch_rows.dart';
 import 'rust_wire_models.dart';
 import 'source_offset_index.dart';
+
+String? _applied(RustFocusTracker tracker, RustEvent event, int eventIndex) {
+  try {
+    return tracker.apply(event, eventIndex) ? null : 'invalid_event_sequence';
+  } on Object {
+    return 'invalid_event';
+  }
+}
 
 final class RustExecutionEventConsumer {
   final RustWatchRows _watch;
@@ -23,14 +32,14 @@ final class RustExecutionEventConsumer {
 
   List<OutputLine> get outputLines => _effects.outputLines;
 
-  String? get inputPrompt => _effects.inputPrompt;
+  ReadRequest? get readRequest => _effects.readRequest;
 
   void clear() => _effects.clear();
 
   void configure(SyntaxProfileId profile) =>
       _watch.useReceiverName(_vocabulary.receiverName(profile));
 
-  void clearInputPrompt() => _effects.clearInputPrompt();
+  void submitInput(String text) => _effects.submitInput(text);
 
   String? consume({
     required RustEvent event,
@@ -40,15 +49,33 @@ final class RustExecutionEventConsumer {
     required SourceOffsetIndex offsets,
     required RustFocusTracker tracker,
     List<(int, int)> errorRanges = const [],
+    String? rejectionMessage,
   }) {
-    try {
-      if (!tracker.apply(event, eventIndex)) return 'invalid_event_sequence';
-    } on Object {
-      return 'invalid_event';
-    }
-    _effects.record(event, view, offsets, errorRanges: errorRanges);
+    final rejected = _applied(tracker, event, eventIndex);
+    if (rejected != null) return rejected;
+    _effects.record(
+      event,
+      view,
+      offsets,
+      errorRanges: errorRanges,
+      rejectionMessage: rejectionMessage,
+    );
     if (!observesEnvironment) return null;
     if (!rustEventRequiresEnvironment(event.eventClass)) return null;
+    return _observeEnvironment(
+      event: event,
+      eventIndex: eventIndex,
+      execution: execution,
+      tracker: tracker,
+    );
+  }
+
+  String? _observeEnvironment({
+    required RustEvent event,
+    required int eventIndex,
+    required int execution,
+    required RustFocusTracker tracker,
+  }) {
     final result = _watch.at(
       execution: execution,
       event: eventIndex,

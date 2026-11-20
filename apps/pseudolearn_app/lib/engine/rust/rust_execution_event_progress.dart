@@ -71,6 +71,7 @@ final class RustExecutionEventProgress {
       offsets: offsets,
       tracker: tracker,
       errorRanges: last?.errorRanges ?? const [],
+      rejectionMessage: last?.readRejectionMessage,
     );
     if (failure != null) {
       onFailure(failure);

@@ -9,6 +9,8 @@ import 'package:pseudolearn_app/domain/model/help/help_query_result.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/domain/model/execution/input_wait.dart';
+import 'package:pseudolearn_app/domain/model/execution/output_line.dart';
+import 'package:pseudolearn_app/domain/model/execution/read_value_type.dart';
 import 'package:pseudolearn_app/engine/bridge/frb_generated.dart';
 import 'package:pseudolearn_app/engine/exercise/program_runner.dart';
 import 'package:pseudolearn_app/engine/rust/native_rust_transport.dart';
@@ -249,7 +251,9 @@ void main() {
       step = execution.step();
     }
     expect(step.isAwaitingInput, isTrue);
-    expect(step.inputPrompt, 'x');
+    expect(step.readRequest?.designator, 'x');
+    expect(step.readRequest?.valueType, ReadValueType.integer);
+    expect(step.readRequest?.line, 3);
     final firstRequest = step.inputWait!;
     expect(firstRequest.resourceId, greaterThan(0));
     expect(firstRequest.requestId, greaterThan(0));
@@ -264,7 +268,13 @@ void main() {
     expect(crossed.inputWait?.matches(firstRequest), isTrue);
 
     step = execution.provideInput(firstRequest, 'not an integer');
+    while (!step.isAwaitingInput && !step.isTerminal) {
+      step = execution.step();
+    }
     expect(step.isAwaitingInput, isTrue);
+    expect(step.readRequest?.rejection?.rejectedText, 'not an integer');
+    expect(step.readRequest?.rejection?.message, isNotEmpty);
+    expect(execution.outputLines.single.kind, OutputLineKind.rejectedInput);
     final retryRequest = step.inputWait!;
     expect(retryRequest.resourceId, firstRequest.resourceId);
     expect(retryRequest.taskId, firstRequest.taskId);
@@ -277,7 +287,12 @@ void main() {
       step = execution.step();
     }
     expect(step.isFinished, isTrue);
-    expect(execution.outputLines.map((line) => line.text), ['5', '5']);
+    expect(execution.outputLines.map((line) => line.text), [
+      'not an integer',
+      '5',
+      '5',
+    ]);
+    expect(execution.outputLines[1].target, 'x');
     execution.stop();
   });
 

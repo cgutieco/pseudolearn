@@ -7,6 +7,8 @@ import 'package:pseudolearn_app/domain/model/execution/execution_focus.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_step.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_task_context.dart';
 import 'package:pseudolearn_app/domain/model/execution/input_wait.dart';
+import 'package:pseudolearn_app/domain/model/execution/output_line.dart';
+import 'package:pseudolearn_app/domain/model/execution/read_value_type.dart';
 import 'package:pseudolearn_app/domain/model/profiles/syntax_profile_id.dart';
 import 'package:pseudolearn_app/domain/model/settings/ui_language_id.dart';
 import 'package:pseudolearn_app/engine/rust/rust_program_execution.dart';
@@ -594,7 +596,13 @@ void main() {
         transportWith(
           batches: [
             batch(
-              [event('input_requested', node: 'n1')],
+              [
+                event(
+                  'input_requested',
+                  node: 'n1',
+                  data: {'tipo': 'entero'},
+                ),
+              ],
               {'kind': 'awaiting_input'},
             ),
             batch(
@@ -609,10 +617,62 @@ void main() {
       expect(execution.step().isAwaitingInput, isFalse);
       final waiting = execution.step();
       expect(waiting.isAwaitingInput, isTrue);
-      expect(waiting.inputPrompt, 'Escr');
+      expect(waiting.readRequest?.statementText, 'Escr');
+      expect(waiting.readRequest?.valueType, ReadValueType.integer);
+      expect(waiting.readRequest?.line, 2);
+      expect(waiting.readRequest?.rejection, isNull);
       execution.provideInput(waiting.inputWait!, '5');
       expect(execution.outputLines.map((line) => line.text), ['5']);
+      expect(execution.outputLines.single.sourceLine, 2);
       expect(execution.step().isFinished, isTrue);
+    });
+
+    test('rejected input reopens the read with the engine message', () {
+      final execution = start(
+        transportWith(
+          batches: [
+            batch(
+              [
+                event(
+                  'input_requested',
+                  node: 'n1',
+                  data: {'tipo': 'entero'},
+                ),
+              ],
+              {'kind': 'awaiting_input'},
+            ),
+            batch(
+              [
+                event(
+                  'input_requested',
+                  node: 'n1',
+                  data: {'tipo': 'entero'},
+                ),
+              ],
+              {'kind': 'awaiting_input'},
+              [
+                {
+                  'code': 'readValueTypeMismatch',
+                  'severity': 'warning',
+                  'message': 'Se esperaba un valor de tipo Entero',
+                },
+              ],
+            ),
+          ],
+        ),
+      );
+      execution.step();
+      final waiting = execution.step();
+      execution.provideInput(waiting.inputWait!, 'veinte');
+      final retry = execution.step();
+      expect(retry.isAwaitingInput, isTrue);
+      expect(retry.readRequest?.rejection?.rejectedText, 'veinte');
+      expect(
+        retry.readRequest?.rejection?.message,
+        'Se esperaba un valor de tipo Entero',
+      );
+      expect(execution.outputLines.single.kind, OutputLineKind.rejectedInput);
+      expect(execution.outputLines.single.text, 'veinte');
     });
 
     test('rejects crossed input identity without advancing or sending it', () {
