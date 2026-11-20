@@ -111,6 +111,28 @@ void main() {
       );
     });
 
+    test(
+      'equivalent code built mid-run lights the statement in focus',
+      () async {
+        final late = ExportCubit(
+          exporter: nativeTestEngine.programExporter,
+          executionStates: execution.stream,
+        );
+        addTearDown(late.close);
+        for (var i = 0; i < 12 && export.state.focusedLines.isEmpty; i++) {
+          await step();
+        }
+
+        late.updateSource(
+          sourceCode: _factorial,
+          profileId: SyntaxProfileId.classicSpanish,
+        );
+
+        expect(export.state.focusedLines, isNotEmpty);
+        expect(late.state.focusedLines, export.state.focusedLines);
+      },
+    );
+
     test('the trace records the lines the editor walked, in order', () async {
       final walked = <int>[];
       for (var i = 0; i < 12; i++) {

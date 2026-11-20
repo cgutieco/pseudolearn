@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import '../../domain/model/analysis/program_node_id.dart';
 import '../../domain/model/export/export_result.dart';
 import '../../domain/model/export/exported_program.dart';
 import '../../domain/model/export/target_language_id.dart';
@@ -13,6 +14,7 @@ final class ExportCubit extends Cubit<ExportState> {
   final ProgramExporter _exporter;
   late final StreamSubscription<ExecutionState> _subscription;
   ExportedProgram? _program;
+  ProgramNodeId? _focusNodeId;
 
   ExportCubit({
     required this._exporter,
@@ -28,8 +30,8 @@ final class ExportCubit extends Cubit<ExportState> {
   }
 
   void _onExecutionState(ExecutionState executionState) {
-    final lines = _program?.linesFor(executionState.followedFocus?.nodeId) ?? const <int>[];
-    final focused = lines.toSet();
+    _focusNodeId = executionState.followedFocus?.nodeId;
+    final focused = _focusedLines();
     if (focused.length == state.focusedLines.length &&
         focused.containsAll(state.focusedLines)) {
       return;
@@ -79,7 +81,7 @@ final class ExportCubit extends Cubit<ExportState> {
           blockers: const [],
           exportedCode: program.sourceCode,
           notes: program.notes,
-          focusedLines: const {},
+          focusedLines: _focusedLines(),
         ));
       case ExportAnalysisError():
         _program = null;
@@ -102,6 +104,9 @@ final class ExportCubit extends Cubit<ExportState> {
         ));
     }
   }
+
+  Set<int> _focusedLines() =>
+      (_program?.linesFor(_focusNodeId) ?? const <int>[]).toSet();
 
   void reset() {
     _program = null;

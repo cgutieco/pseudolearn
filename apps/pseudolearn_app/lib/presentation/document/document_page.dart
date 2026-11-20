@@ -2,13 +2,15 @@ import '../../domain/model/exercises/exercise_reference.dart';
 import '../../domain/model/execution/execution_configuration.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../application/companion/companion_cubit.dart';
+import '../../application/companion/companion_source.dart';
+import '../../application/companion/companion_view.dart';
 import '../../application/diagram/diagram_cubit.dart';
 import '../../application/editor/editor_cubit.dart';
 import '../../application/editor/editor_state.dart';
 import '../../application/execution/execution_cubit.dart';
 import '../../application/execution/execution_state.dart';
 import '../../application/execution/step_pace.dart';
-import '../../application/export/export_cubit.dart';
 import '../../application/route/session/exercise_session_cubit.dart';
 import '../../application/route/session/exercise_session_state.dart';
 import '../../domain/model/reference/reference_edition.dart';
@@ -21,6 +23,12 @@ import 'dialogs/data_input_dialog.dart';
 bool _sourceChanged(EditorState previous, EditorState current) =>
     previous.sourceCode != current.sourceCode ||
     previous.document != current.document;
+
+CompanionView _companionOf(DocumentTabKind tab) => switch (tab) {
+  DocumentTabKind.flowchart => CompanionView.diagram,
+  DocumentTabKind.equivalentCode => CompanionView.equivalentCode,
+  _ => CompanionView.none,
+};
 
 bool _inputJustRequested(ExecutionState previous, ExecutionState current) =>
     current.status == ExecutionStatus.pausedAwaitingInput &&
@@ -51,6 +59,7 @@ final class _DocumentPageState extends State<DocumentPage> {
     context.read<ExecutionCubit>().applyViewAction(
       ExecutionViewAction.showOtherTab,
     );
+    context.read<CompanionCubit>().show(_companionOf(_activeTab));
   }
 
   void _onTabSelected(DocumentTabKind tab) {
@@ -60,6 +69,7 @@ final class _DocumentPageState extends State<DocumentPage> {
       DocumentTabKind.tasks => ExecutionViewAction.showTasks,
       _ => ExecutionViewAction.showOtherTab,
     });
+    context.read<CompanionCubit>().show(_companionOf(tab));
   }
 
   void _onPace(BuildContext context, EditorState editorState, StepPace pace) {
@@ -89,14 +99,12 @@ final class _DocumentPageState extends State<DocumentPage> {
     final profileId =
         editorState.document?.profileId ?? SyntaxProfileId.classicSpanish;
     final languageId = context.read<SettingsCubit>().state.language;
-    context.read<ExportCubit>().updateSource(
-      sourceCode: editorState.sourceCode,
-      profileId: profileId,
-    );
-    context.read<DiagramCubit>().updateDiagram(
-      sourceCode: editorState.sourceCode,
-      profileId: profileId,
-      languageId: languageId,
+    context.read<CompanionCubit>().sourceChanged(
+      CompanionSource(
+        sourceCode: editorState.sourceCode,
+        profileId: profileId,
+        languageId: languageId,
+      ),
     );
     final exerciseId = editorState.document?.exerciseId;
     if (exerciseId != null) {
