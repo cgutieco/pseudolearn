@@ -200,6 +200,7 @@ final class RustProgramExecution
     executionApi: _execution,
     execution: _executionId,
     batchSize: batchSize,
+    tape: _reproduction.tape,
     observe: _progress.observeBatch,
     consume: _consume,
     snapshot: _snapshot,

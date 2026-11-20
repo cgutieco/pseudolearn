@@ -85,22 +85,41 @@ void main() {
       expect(() => projection.events.add('x'), throwsUnsupportedError);
     });
 
-    test('the latest tape is kept and a batch without tape does not erase it', () {
+    test('the recorded tape is the assembled one', () {
       final reproduction = RustExecutionReproduction()..begin(replaying: false);
       expect(reproduction.recordedTape, isNull);
-      reproduction
-        ..observed(batchWith({'entries': [1]}))
-        ..observed(batchWith(null));
-      expect(reproduction.recordedTape?.toDocument(), {'entries': [1]});
+      reproduction.tape
+        ..receive({'entries': [1]}, from: 0)
+        ..receive({'entries': [2]}, from: 1);
+      reproduction.observed(batchWith({'entries': [2]}));
+      expect(reproduction.recordedTape?.toDocument(), {
+        'entries': [1, 2],
+      });
+    });
+
+    test('the recorded tape is reused until a batch brings tape', () {
+      final reproduction = RustExecutionReproduction()..begin(replaying: false);
+      reproduction.tape.receive({'entries': [1]}, from: 0);
+      final first = reproduction.recordedTape;
+
+      reproduction.observed(batchWith(null));
+      expect(identical(reproduction.recordedTape, first), isTrue);
+
+      reproduction.tape.receive({'entries': [2]}, from: 1);
+      reproduction.observed(batchWith({'entries': [2]}));
+      expect(identical(reproduction.recordedTape, first), isFalse);
+      expect(reproduction.recordedTape?.toDocument(), {
+        'entries': [1, 2],
+      });
     });
 
     test('begin clears tape, events, rejection and the replay flag', () {
       final reproduction = RustExecutionReproduction()
         ..begin(replaying: true)
         ..consumed(event('call'))
-        ..observed(batchWith({'entries': []}))
         ..reject(const RustBridgeFailure(family: 'usage', detail: 'x'));
       expect(reproduction.rejection, ReplayRejection.engineRefused);
+      reproduction.tape.receive({'entries': <Object?>[]}, from: 0);
       reproduction.begin(replaying: false);
       expect(reproduction.rejection, isNull);
       expect(reproduction.recordedTape, isNull);

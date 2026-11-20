@@ -2,6 +2,7 @@ import '../../domain/model/execution/effect_wait.dart';
 import '../../domain/model/execution/execution_configuration.dart';
 import '../../domain/ports/execution_environment.dart';
 import 'rust_effect_policy.dart';
+import 'rust_effect_tape_assembly.dart';
 import 'rust_execution_api.dart';
 import 'rust_transport.dart';
 import 'rust_wire_models.dart';
@@ -41,8 +42,13 @@ final class RustEffectGate {
   String? get workingDirectory =>
       _environment?.directoryFor(_configuration.documentId);
 
-  RustBatch drain(int execution, int batchSize, List<RustEvent> collected) {
-    var batch = _execution.advance(execution, batchSize);
+  RustBatch drain(
+    int execution,
+    int batchSize,
+    List<RustEvent> collected, {
+    RustEffectTapeAssembly? tape,
+  }) {
+    var batch = _execution.advance(execution, batchSize, tape: tape);
     collected.addAll(batch.events);
     var resolutions = 0;
     while (_autoResolve &&
@@ -52,7 +58,7 @@ final class RustEffectGate {
         return batch;
       }
       resolutions++;
-      batch = _execution.advance(execution, batchSize);
+      batch = _execution.advance(execution, batchSize, tape: tape);
       collected.addAll(batch.events);
     }
     return batch;

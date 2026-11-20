@@ -120,6 +120,7 @@ final class RustBatch {
   final List<PendingEffectRequest> pendingEffects;
   final List<Map<String, Object?>> pendingRequests;
   final Map<String, Object?>? effectTape;
+  final int effectTapeFrom;
   final List<(int, int)> errorRanges;
   final int? exitCode;
 
@@ -134,6 +135,7 @@ final class RustBatch {
     this.pendingEffects = const [],
     this.pendingRequests = const [],
     this.effectTape,
+    this.effectTapeFrom = 0,
     this.errorRanges = const [],
     this.exitCode,
   });
@@ -146,6 +148,7 @@ final class RustBatch {
     final pendingInput = _pendingInputOf(json['pending_input'], kind);
     return RustBatch(
       effectTape: _tapeOf(json['effect_tape']),
+      effectTapeFrom: json['effect_tape_from'] as int? ?? 0,
       errorRanges: _rangesOf(json['error_ranges']),
       exitCode: json['exit_code'] as int?,
       events: (json['events'] as List<Object?>)
@@ -222,6 +225,7 @@ final class RustBatch {
     events: events,
     termination: RustTerminationKind.running,
     effectTape: effectTape,
+    effectTapeFrom: effectTapeFrom,
     errorRanges: errorRanges,
     exitCode: exitCode,
   );

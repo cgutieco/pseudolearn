@@ -1,6 +1,7 @@
 import '../../domain/model/execution/effect_settlement.dart';
 import '../../domain/model/execution/execution_step.dart';
 import 'rust_effect_gate.dart';
+import 'rust_effect_tape_assembly.dart';
 import 'rust_execution_api.dart';
 import 'rust_wire_models.dart';
 
@@ -29,6 +30,7 @@ final class RustExecutionEffectSettlement {
     required RustExecutionApi executionApi,
     required int? execution,
     required int batchSize,
+    required RustEffectTapeAssembly tape,
     required void Function(RustBatch) observe,
     required ExecutionStep Function(RustEvent) consume,
     required ExecutionStep Function() snapshot,
@@ -41,6 +43,7 @@ final class RustExecutionEffectSettlement {
       confirmCancellation: true,
       release: false,
       batchSize: batchSize,
+      tape: tape,
     );
     if (batch == null) return const ExecutionStep.exhausted();
     observe(batch);

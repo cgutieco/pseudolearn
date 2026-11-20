@@ -1,6 +1,7 @@
 import '../../domain/model/execution/effect_tape.dart';
 import '../../domain/model/execution/input_wait.dart';
 import 'rust_analysis_api.dart';
+import 'rust_effect_tape_assembly.dart';
 import 'rust_execution_resource.dart';
 import 'rust_transport.dart';
 import 'rust_wire_models.dart';
@@ -40,14 +41,21 @@ final class RustExecutionApi {
     return execution;
   }
 
-  RustBatch advance(int execution, int batchSize) {
-    final batch =
-        _transport.call('advance', {
-              'resource': execution,
-              'batch_size': batchSize,
-            })
-            as Map<String, Object?>;
-    return RustBatch.fromJson(batch);
+  RustBatch advance(
+    int execution,
+    int batchSize, {
+    RustEffectTapeAssembly? tape,
+  }) {
+    final batch = RustBatch.fromJson(
+      _transport.call('advance', {
+            'resource': execution,
+            'batch_size': batchSize,
+            'effect_tape_from': ?tape?.entryCount,
+          })
+          as Map<String, Object?>,
+    );
+    tape?.receive(batch.effectTape, from: batch.effectTapeFrom);
+    return batch;
   }
 
   void provideInput(int execution, InputWait request, String text) {
@@ -74,6 +82,7 @@ final class RustExecutionApi {
     bool confirmCancellation = false,
     bool release = true,
     int batchSize = 25,
+    RustEffectTapeAssembly? tape,
   }) {
     if (execution == null) {
       _resource?.clear();
@@ -81,15 +90,9 @@ final class RustExecutionApi {
     }
     if (cancel) _transport.call('cancel', {'resource': execution});
     try {
-      final rawBatch = confirmCancellation
-          ? _transport.call('advance', {
-              'resource': execution,
-              'batch_size': batchSize,
-            })
+      return confirmCancellation
+          ? advance(execution, batchSize, tape: tape)
           : null;
-      return rawBatch == null
-          ? null
-          : RustBatch.fromJson(rawBatch as Map<String, Object?>);
     } finally {
       if (release) {
         _transport.call('release', {'resource': execution});
