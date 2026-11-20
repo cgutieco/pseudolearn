@@ -16,19 +16,22 @@ ExecutionState stateAfterStep(
       !current.isOutputPanelExpanded &&
       !current.userCollapsedOutput;
   final advanced = step.focusRevision != current.currentStep.focusRevision;
+  final status = executionStatusFromStep(step);
   final reproduction = switch (execution) {
     final ExecutionReproduction value => value,
     _ => null,
   };
   return current.copyWith(
-    status: executionStatusFromStep(step),
+    status: status,
     currentStep: step,
     outputLines: lines,
     workingDirectory: switch (execution) {
       final ExecutionContext context => context.workingDirectory,
       _ => null,
     },
-    recordedTape: reproduction?.recordedTape,
+    recordedTape: _isMidRun(current, status)
+        ? null
+        : reproduction?.recordedTape,
     replayRejection: reproduction?.replayRejection,
     statementNumber: advanced
         ? current.statementNumber + 1
@@ -39,3 +42,6 @@ ExecutionState stateAfterStep(
     haltMessage: step.haltReason,
   );
 }
+
+bool _isMidRun(ExecutionState current, ExecutionStatus status) =>
+    current.isContinuous && status == ExecutionStatus.running;
