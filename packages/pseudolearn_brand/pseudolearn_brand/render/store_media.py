@@ -3,8 +3,9 @@ import json
 
 from . import svg, typescript
 
-LOCKUPS = (("BRAND_LOCKUP_HORIZONTAL_SVG", "lockup-horizontal"),
-           ("BRAND_LOCKUP_HORIZONTAL_INVERSE_SVG", "lockup-horizontal-inverse"))
+EMBEDDED_DOCUMENTS = (("BRAND_LOCKUP_HORIZONTAL_SVG", "lockup-horizontal"),
+                      ("BRAND_LOCKUP_HORIZONTAL_INVERSE_SVG", "lockup-horizontal-inverse"),
+                      ("BRAND_APP_ICON_SVG", "app-icon"))
 
 PALETTE = ("\n"
            "export const BRAND_GROUND_TOP = '{ground_top}';\n"
@@ -21,7 +22,7 @@ def module(composition, catalog):
     parts = [typescript.module(composition, catalog),
              PALETTE.format(ground_top=palette.ground_top, ground_bottom=palette.ground_bottom,
                             ink=palette.ink, deep=palette.deep)]
-    for constant, name in LOCKUPS:
+    for constant, name in EMBEDDED_DOCUMENTS:
         variant = next(entry for entry in catalog.variants if entry.name == name)
         document = json.dumps(svg.document(composition, variant).strip())
         parts.append(f"\nexport const {constant} =\n  {document};\n")
