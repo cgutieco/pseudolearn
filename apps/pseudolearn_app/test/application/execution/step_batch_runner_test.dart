@@ -235,6 +235,28 @@ void main() {
       },
     );
 
+    test(
+      'the local UI safety cap counts only the advances of the current drain',
+      () async {
+        final execution = _ScriptedExecution([
+          for (var index = 40; index < 60; index++) _eventStep(index, 0),
+        ]);
+        final steps = <ExecutionStep>[];
+
+        await const StepBatchRunner(maxSteps: 5).runUntilSettled(
+          execution,
+          settlement: _toEnd,
+          fromRevision: 0,
+          shouldStop: () => false,
+          onStep: steps.add,
+        );
+
+        expect(steps.where((step) => !step.isStepLimitReached), hasLength(5));
+        expect(steps.last.isUiSafetyLimitReached, isTrue);
+        expect(steps.last.eventIndex, 44);
+      },
+    );
+
     test('a pending effect is shown once while the host answers', () async {
       final execution = _ScriptedExecution([
         _eventStep(0, 0),

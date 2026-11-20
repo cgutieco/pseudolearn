@@ -27,6 +27,7 @@ final class StepBatchRunner {
   }) async {
     var previousRevision = fromRevision;
     var stepsInBatch = 0;
+    int? drainStart;
     final sinceYield = Stopwatch()..start();
     while (!shouldStop()) {
       final step = await _settledStep(execution, shouldStop, onStep);
@@ -35,7 +36,8 @@ final class StepBatchRunner {
       final settles = settlement.settlesOn(step, previousRevision);
       previousRevision = step.focusRevision;
       if (settles) return;
-      if (step.stepNumber >= maxSteps) {
+      drainStart ??= step.stepNumber - 1;
+      if (step.stepNumber - drainStart >= maxSteps) {
         onStep(step.asStepLimitReached(isUiSafetyLimitReached: true));
         return;
       }

@@ -97,6 +97,10 @@ flowchart LR
   durante la ejecución continua salvo que esa pestaña esté visible (como mucho cada 100 ms): cada consulta también
   reconstruye el pasado en el motor y frenaba la salida. Se carga al detenerse la ejecución. Paso a paso no cambia. El bucle cede el hilo cada
   8 ms y muestra una sola vez la espera de un efecto.
+- El tope local de 10 000 avances cuenta solo los del tramo en curso: desde que se pulsa Ejecutar, Continuar o un paso,
+  o desde la última entrada respondida, hasta que el programa vuelve a esperar. Protege la interfaz de un bucle que no
+  pide nada; contar desde el inicio de la ejecución cortaba los programas interactivos largos (un juego de consola
+  consume unos 250 avances por orden y quedaba detenido tras unas 40).
 - El motor habla en bytes UTF-8 y el editor en unidades UTF-16. `SourceOffsetIndex` convierte entre ambos con un índice
   por línea (`Utf8LineOffsets`) y no recodificando el prefijo del texto en cada posición: eso era cuadrático y, con
   programas largos, se comía casi todo el tiempo de decodificar las respuestas del motor (abrir 3000 sentencias en un
