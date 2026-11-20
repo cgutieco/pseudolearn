@@ -1350,22 +1350,22 @@
       "estado": "cumple"
     },
     {
-      "regla": "API.EXECUTE@1.0.0#R1",
+      "regla": "API.EXECUTE@1.1.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "API.EXECUTE@1.0.0#R2",
+      "regla": "API.EXECUTE@1.1.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "API.EXECUTE@1.0.0#R3",
+      "regla": "API.EXECUTE@1.1.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "API.EXECUTE@1.0.0#R4",
+      "regla": "API.EXECUTE@1.1.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
@@ -2042,7 +2042,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "API.EXECUTE@1.0.0#R5",
+      "regla": "API.EXECUTE@1.1.0#R5",
       "verificacion": "crates/pseudolearn_api/src/execution_resource.rs",
       "estado": "cumple"
     },
@@ -2067,7 +2067,7 @@
       "estado": "cumple"
     },
     {
-      "regla": "API.EXECUTE@1.0.0#R6",
+      "regla": "API.EXECUTE@1.1.0#R6",
       "verificacion": "crates/pseudolearn_api/src/execution_resource.rs",
       "estado": "cumple"
     },
@@ -2518,18 +2518,23 @@
       "estado": "cumple"
     },
     {
-      "regla": "API.EXECUTE@1.0.0#R7",
+      "regla": "API.EXECUTE@1.1.0#R7",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "API.EXECUTE@1.0.0#R8",
+      "regla": "API.EXECUTE@1.1.0#R8",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "API.EXECUTE@1.0.0#R9",
+      "regla": "API.EXECUTE@1.1.0#R9",
       "verificacion": "crates/pseudolearn_api/tests/replay_transport_tests.rs",
+      "estado": "cumple"
+    },
+    {
+      "regla": "API.EXECUTE@1.1.0#R10",
+      "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {

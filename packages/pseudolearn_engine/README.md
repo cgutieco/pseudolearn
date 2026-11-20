@@ -128,6 +128,10 @@ flowchart LR
   capas rechaza cualquier otro import.
 - **`unsafe`** solo en `pseudolearn_wasm`, `pseudolearn_aot_rt` y `pseudolearn_native_probe`; los demás lo prohíben y
   `aot_rt` y `native_probe` documentan cada función en su tabla «Invariantes de `unsafe`».
+- **Cinta por tramos**: `advance` con `effect_tape_from` entrega solo las entradas nuevas. La cinta no solo crece: la
+  entrada provisional de un efecto pendiente se retira al llegar su resultado y el presupuesto recorta la cola. Por
+  eso cada ejecución recuerda los `entry_hash` ya entregados y responde desde el prefijo que sigue intacto; como cada
+  hash encadena las entradas anteriores, comparar uno basta para validar todo el prefijo.
 - **Aislamiento Wasm**: el grafo de `api` y `wasm` para `wasm32` no puede incluir `codegen`, `aot_rt`, `cranelift-*`, la
   característica `test-host` ni bibliotecas de red nativa; `tool/wasm.sh build` rechaza el grafo con `cargo tree`.
 

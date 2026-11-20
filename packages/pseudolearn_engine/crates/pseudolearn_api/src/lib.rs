@@ -5,6 +5,7 @@ mod equivalent_code;
 pub use equivalent_code::equivalent_code;
 pub use pseudolearn_transpiler::TargetLanguage;
 mod argument_conversion;
+mod argument_counts;
 mod diagnostic_conversion;
 pub mod errors;
 mod help_card_model;

@@ -65,14 +65,27 @@ impl ExecutionResource {
         response
     }
 
-    pub(super) fn add_effect_observation(&self, response: &mut Value) {
+    pub(super) fn add_effect_observation(
+        &mut self,
+        response: &mut Value,
+        tape_start: Option<usize>,
+    ) {
+        let window_start = tape_start.map(|requested| self.unchanged_tape_prefix(requested));
+        self.remember_delivered_tape();
         let Some(fields) = response.as_object_mut() else {
             return;
         };
+        let tape = self.effects.tape();
         fields.insert(
             "effect_tape".to_owned(),
-            crate::tape_wire::tape_to_value(self.effects.tape()),
+            window_start.map_or_else(
+                || crate::tape_wire::tape_to_value(tape),
+                |start| crate::tape_wire::tape_window_to_value(tape, start),
+            ),
         );
+        if let Some(start) = window_start {
+            fields.insert("effect_tape_from".to_owned(), json!(start));
+        }
         if let Some(pending) = self.pending_host_value() {
             fields.insert("pending_effect".to_owned(), pending);
         }

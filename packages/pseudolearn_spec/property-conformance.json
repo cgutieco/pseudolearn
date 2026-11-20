@@ -20,7 +20,7 @@
       "samples": 100
     },
     {
-      "reference": "API.EXECUTE@1.0.0#P1",
+      "reference": "API.EXECUTE@1.1.0#P1",
       "executor": "execution_controls",
       "seed": 42,
       "samples": 100
