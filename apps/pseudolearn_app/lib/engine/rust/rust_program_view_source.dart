@@ -35,12 +35,22 @@ final class RustProgramViewSource {
     required String sourceCode,
     required SyntaxProfileId profileId,
     UiLanguageId languageId = UiLanguageId.spanish,
+  }) => loadStructureResult(
+    sourceCode: sourceCode,
+    profileId: profileId,
+    languageId: languageId,
+  ).view;
+
+  RustProgramViewReadResult loadStructureResult({
+    required String sourceCode,
+    required SyntaxProfileId profileId,
+    UiLanguageId languageId = UiLanguageId.spanish,
   }) => loadResult(
     sourceCode: sourceCode,
     profileId: profileId,
     languageId: languageId,
     rejects: _syntaxError,
-  ).view;
+  );
 
   RustProgramViewReadResult _load(
     String sourceCode,

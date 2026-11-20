@@ -27,6 +27,7 @@ import '../engine/rust/rust_source_editor.dart';
 import '../engine/rust/rust_exercise_checker.dart';
 import '../engine/rust/rust_program_construct_reader.dart';
 import '../engine/rust/rust_program_analyzer.dart';
+import '../engine/rust/rust_program_structure_cache.dart';
 import '../engine/rust/rust_effect_policy.dart';
 import '../engine/rust/rust_program_execution.dart';
 import '../engine/rust/rust_program_execution_observer.dart';
@@ -106,6 +107,7 @@ RustEngineServices buildRustEngineServices(
   final analysis = RustAnalysisApi(transport);
   final analyzer = RustProgramAnalyzer(analysis);
   final vocabulary = RustEditorVocabulary(transport);
+  final diagrams = _diagramBuilders(transport);
   return RustEngineServices(
     analyzer: analyzer,
     createProgramExecution: () =>
@@ -117,9 +119,9 @@ RustEngineServices buildRustEngineServices(
     sourceEditor: RustSourceEditor(RustEditAssistSource(transport)),
     editorKeySource: RustEditorKeySource(vocabulary),
     programConstructReader: RustProgramConstructReader(transport),
-    flowchartBuilder: RustFlowchartBuilder(transport),
-    structogramBuilder: RustStructogramBuilder(transport),
-    classDiagramBuilder: RustClassDiagramBuilder(transport),
+    flowchartBuilder: diagrams.flowchart,
+    structogramBuilder: diagrams.structogram,
+    classDiagramBuilder: diagrams.classDiagram,
     syntaxHelpSource: RustSyntaxHelpSource(transport),
     programExporter: RustProgramExporter(transport),
     exerciseChecker: RustExerciseChecker(
@@ -134,6 +136,20 @@ RustEngineServices buildRustEngineServices(
       analyzer: analyzer,
     ),
     programTools: _programTools(transport, analyzer),
+  );
+}
+
+({
+  RustFlowchartBuilder flowchart,
+  RustStructogramBuilder structogram,
+  RustClassDiagramBuilder classDiagram,
+})
+_diagramBuilders(RustTransport transport) {
+  final structures = RustProgramStructureCache(transport);
+  return (
+    flowchart: RustFlowchartBuilder(transport, structures: structures),
+    structogram: RustStructogramBuilder(transport, structures: structures),
+    classDiagram: RustClassDiagramBuilder(transport, structures: structures),
   );
 }
 
