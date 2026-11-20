@@ -170,6 +170,8 @@ flowchart LR
 | Ejecutar en un dispositivo Android           | `flutter run -d <id de adb> --dart-define-from-file=dart_define.local.json`                           |
 | Iconos y arranque de Android                 | `flutter test tool/generate_android_resources.dart`                                                   |
 | Archivos, HTTPS y zona horaria en un equipo | `flutter test integration_test/platform_host_smoke_test.dart -d <id>` (necesita Internet)             |
+| Cuadros por flujo en un Android            | `flutter drive --profile --no-dds -d <id> --driver test_driver/integration_test.dart --target integration_test/frame_performance_test.dart` |
+| Campaña del puente en un Android           | `dart run tool/bridge_benchmark_device_worker.dart <id> < <configuración>.json` (misma entrada y salida que `tool/bridge_benchmark_worker.dart`) |
 | Análisis estático                            | `flutter analyze --fatal-infos --fatal-warnings`                                                      |
 | Tests de la app                              | `flutter test`                                                                                        |
 | Tests del puente contra la biblioteca nativa | `bash tool/test_bridge.sh`                                                                            |
