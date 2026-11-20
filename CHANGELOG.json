@@ -1,6 +1,81 @@
 {
   "releases": [
     {
+      "version": "2.1.0",
+      "date": "2026-11-20",
+      "core": "1.1.0",
+      "headline": {
+        "es": "PseudoLearn 2.1: llega a Android y todo va más rápido",
+        "en": "PseudoLearn 2.1: Android arrives and everything gets faster"
+      },
+      "summary": {
+        "es": "PseudoLearn ya se instala en teléfonos Android desde Google Play, con el mismo motor, la misma ruta de aprendizaje y Nodo. En todas las plataformas, los programas largos se abren, se editan y se ejecutan mucho más rápido, y Leer pide los datos dentro de la consola diciendo qué tipo espera.",
+        "en": "PseudoLearn now installs on Android phones from Google Play, with the same engine, the same learning path and Nodo. On every platform, long programs open, edit and run much faster, and Read asks for input inside the console, saying which type it expects."
+      },
+      "changes": [
+        {
+          "id": "android",
+          "kind": "platform",
+          "title": {
+            "es": "PseudoLearn en Android",
+            "en": "PseudoLearn on Android"
+          },
+          "description": {
+            "es": "La app se instala desde Google Play en teléfonos Android. El motor corre en el propio teléfono, sin conexión, y los programas trabajan con archivos y descargan por HTTPS igual que en el resto de plataformas. Puedes iniciar sesión con Google o con un enlace a tu correo para sincronizar tus algoritmos, y una barra de teclas sobre el teclado acerca los símbolos que más se usan al programar.",
+            "en": "The app installs from Google Play on Android phones. The engine runs on the phone itself, offline, and programs work with files and download over HTTPS just as on the other platforms. You can sign in with Google or with a link sent to your email to sync your algorithms, and a key bar above the keyboard puts the symbols you use most within reach."
+          }
+        },
+        {
+          "id": "google-play-nodo",
+          "kind": "platform",
+          "title": {
+            "es": "Nodo con Google Play",
+            "en": "Nodo with Google Play"
+          },
+          "description": {
+            "es": "En Android, la suscripción y la recarga de Nodo se pagan con Google Play y se gestionan desde tu cuenta de Google Play. Los créditos se acreditan antes de confirmar la compra, así que una compra nunca se pierde: si algo falla, se recupera al volver a abrir la app.",
+            "en": "On Android, the Nodo subscription and top-up are paid with Google Play and managed from your Google Play account. Credits are granted before the purchase is confirmed, so a purchase is never lost: if something fails, it is recovered the next time you open the app."
+          }
+        },
+        {
+          "id": "inline-input",
+          "kind": "feature",
+          "title": {
+            "es": "Leer dentro de la consola",
+            "en": "Read inside the console"
+          },
+          "description": {
+            "es": "Cuando el programa pide un dato, la consola termina en una línea de lectura que dice qué tipo espera, en lugar de abrir un diálogo que tapaba la salida. Si escribes un valor de otro tipo, el motor lo rechaza, explica por qué y vuelve a pedirlo, y cada respuesta queda en la consola como parte de la ejecución.",
+            "en": "When the program asks for a value, the console ends in an input line that says which type it expects, instead of opening a dialog that covered the output. If you type a value of another type, the engine rejects it, explains why and asks again, and every answer stays in the console as part of the run."
+          }
+        },
+        {
+          "id": "performance",
+          "kind": "feature",
+          "title": {
+            "es": "Más rápido con programas largos",
+            "en": "Faster with long programs"
+          },
+          "description": {
+            "es": "Abrir un programa de 3000 instrucciones en un Android de gama baja pasa de 201 s a 37 s. Con un diagrama visible y 1000 instrucciones, cada tecla tarda 70 ms en lugar de 1,2 s, porque los diagramas y el código equivalente solo se recalculan cuando están a la vista y comparten un único análisis. Un programa que escribe 2499 líneas termina en 0,6 s en lugar de 40 s.",
+            "en": "Opening a 3000-statement program on a low-end Android phone drops from 201 s to 37 s. With a diagram visible and 1000 statements, each keystroke takes 70 ms instead of 1.2 s, because diagrams and equivalent code are only recomputed while they are on screen and share a single analysis. A program that writes 2499 lines finishes in 0.6 s instead of 40 s."
+          }
+        },
+        {
+          "id": "execution-fixes",
+          "kind": "fix",
+          "title": {
+            "es": "Ejecuciones más fiables",
+            "en": "More reliable runs"
+          },
+          "description": {
+            "es": "Los programas interactivos largos, como un juego de consola, ya no se detienen tras unas cuarenta órdenes: el límite de seguridad cuenta solo el tramo desde la última respuesta. Cada documento abierto tiene su propia consola, y la carpeta de archivos de un programa nunca sale de su espacio, aunque el nombre del documento tenga puntos o barras.",
+            "en": "Long interactive programs, such as a console game, no longer stop after about forty commands: the safety limit only counts the stretch since the last answer. Each open document has its own console, and a program's file folder never leaves its own space, even when the document name contains dots or slashes."
+          }
+        }
+      ]
+    },
+    {
       "version": "2.0.0",
       "date": "2026-11-09",
       "core": "1.0.0",
