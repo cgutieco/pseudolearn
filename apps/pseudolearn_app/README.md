@@ -97,6 +97,24 @@ flowchart LR
   durante la ejecución continua salvo que esa pestaña esté visible (como mucho cada 100 ms): cada consulta también
   reconstruye el pasado en el motor y frenaba la salida. Se carga al detenerse la ejecución. Paso a paso no cambia. El bucle cede el hilo cada
   8 ms y muestra una sola vez la espera de un efecto.
+- El motor habla en bytes UTF-8 y el editor en unidades UTF-16. `SourceOffsetIndex` convierte entre ambos con un índice
+  por línea (`Utf8LineOffsets`) y no recodificando el prefijo del texto en cada posición: eso era cuadrático y, con
+  programas largos, se comía casi todo el tiempo de decodificar las respuestas del motor (abrir 3000 sentencias en un
+  Android de gama baja bajó de 201 s a 37 s).
+- Los diagramas y el código equivalente se calculan solo cuando su pestaña está a la vista. `CompanionCubit` recibe cada
+  cambio del programa, recalcula la vista visible y deja pendiente la otra hasta que se muestre; antes ambas se
+  recalculaban dos veces por tecla aunque estuvieran ocultas (con 1000 sentencias, 1,2 s por tecla en macOS; ahora
+  70 ms). Una vista calculada tarde vuelve a aplicar el foco de la ejecución en curso. Con la pestaña visible y el
+  editor al lado se recalcula en cada cambio, sin retardo, para no cambiar lo que se ve.
+- Diagrama de flujo, estructograma y diagrama de clases comparten un `RustProgramStructureCache`: el mismo programa,
+  perfil e idioma se analizan una sola vez (con el diagrama visible y 1000 sentencias, 0,3 s por tecla en macOS).
+  Recuerda el último resultado estable (vista o rechazo por sintaxis), nunca un fallo del puente.
+- La cinta reproducible solo se materializa cuando la ejecución continua se detiene, o en cada paso del paso a paso:
+  antes se serializaba entera en cada paso y 2499 líneas de salida tardaban 40 s en macOS; ahora 6 s.
+- Cada avance pide al motor solo las entradas de la cinta de efectos que aún no tiene (`effect_tape_from`) y las
+  empalma en la posición que el motor declara, que puede ser anterior si el motor sustituyó una entrada provisional.
+  Con la cinta completa en cada respuesta el costo crecía de forma cuadrática: las mismas 2499 líneas bajan de 6 s a
+  0,6 s.
 - Los colores y las duraciones literales solo existen en los archivos dueños que declara `architecture.yaml`.
 - Los iconos y la pantalla de arranque de todas las plataformas salen de la geometría de marca: `tool/app_icon_canvas.dart`
   dibuja el icono una sola vez y `tool/generate_app_icons.dart` y `tool/generate_android_resources.dart` lo escriben en
