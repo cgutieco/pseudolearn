@@ -1,4 +1,4 @@
-import type { CodecProfile } from "../catalog/catalog_types.ts";
+import type { CodecProfile, PixelFormat } from "../catalog/catalog_types.ts";
 import type { LoudnessMeasure } from "../audit/loop_audit.ts";
 import type { VideoProbe } from "../audit/video_audit.ts";
 
@@ -48,7 +48,7 @@ export type MediaToolkit = {
   probe(path: string): Promise<Outcome<VideoProbe>>;
   measureLoudness(path: string): Promise<Outcome<LoudnessMeasure>>;
   sampleFrame(path: string, frameIndex: number): Promise<Outcome<Uint8Array>>;
-  flattenImage(inputPath: string, outputPath: string): Promise<Outcome<string>>;
+  flattenImage(inputPath: string, outputPath: string, pixelFormat?: PixelFormat): Promise<Outcome<string>>;
   assemblePlate(request: PlateAssemblyRequest): Promise<Outcome<string>>;
   extractStill(request: StillRequest): Promise<Outcome<string>>;
 };

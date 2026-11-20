@@ -1,3 +1,4 @@
+import type { PixelFormat } from "../catalog/catalog_types.ts";
 import type { LoudnessMeasure } from "../audit/loop_audit.ts";
 import type { VideoProbe } from "../audit/video_audit.ts";
 import type { EncodeRequest, MediaToolkit, Outcome, StillRequest } from "../pipeline/ports.ts";
@@ -52,8 +53,8 @@ async function sampleFrame(path: string, frameIndex: number): Promise<Outcome<Ui
   return { ok: true, value: new Uint8Array(result.stdout) };
 }
 
-async function flattenImage(inputPath: string, outputPath: string): Promise<Outcome<string>> {
-  const result = await runProcess("ffmpeg", flattenArguments(inputPath, outputPath));
+async function flattenImage(inputPath: string, outputPath: string, pixelFormat: PixelFormat = "rgb"): Promise<Outcome<string>> {
+  const result = await runProcess("ffmpeg", flattenArguments(inputPath, outputPath, pixelFormat));
   return result.code === 0 ? { ok: true, value: outputPath } : { ok: false, error: failureOf("ffmpeg", result) };
 }
 

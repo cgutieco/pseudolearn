@@ -1,4 +1,4 @@
-export const STORES = ["app-store", "microsoft-store"] as const;
+export const STORES = ["app-store", "microsoft-store", "google-play"] as const;
 export type StoreId = (typeof STORES)[number];
 
 export const ASSET_KINDS = [
@@ -11,6 +11,8 @@ export const ASSET_KINDS = [
   "hero-art",
   "poster-art",
   "box-art",
+  "feature-graphic",
+  "app-icon",
 ] as const;
 export type AssetKind = (typeof ASSET_KINDS)[number];
 
@@ -34,6 +36,9 @@ export type EditListPolicy = (typeof EDIT_LIST_POLICIES)[number];
 
 export const AUDIO_POLICIES = ["required", "none"] as const;
 export type AudioPolicy = (typeof AUDIO_POLICIES)[number];
+
+export const PIXEL_FORMATS = ["rgb", "rgba"] as const;
+export type PixelFormat = (typeof PIXEL_FORMATS)[number];
 
 export const LANGUAGES = ["es", "en"] as const;
 export type Language = (typeof LANGUAGES)[number];
@@ -116,6 +121,7 @@ export type Slot = {
   readonly height: number;
   readonly maxCount: number;
   readonly maxBytes: number;
+  readonly pixelFormat: PixelFormat;
   readonly safeArea: NormalizedRect;
   readonly rules: readonly LayoutRule[];
   readonly labelLimits: LabelLimits;

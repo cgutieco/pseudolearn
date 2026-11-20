@@ -9,7 +9,7 @@ import type { Outcome, Toolbox } from "./ports.ts";
 import { produceStill } from "./produce_still.ts";
 import type { Job } from "./render_plan.ts";
 
-export const HERO_KINDS = new Set(["hero-art", "poster-art", "box-art"]);
+export const HERO_KINDS = new Set(["hero-art", "poster-art", "box-art", "feature-graphic"]);
 
 export type HeroJob = {
   readonly toolbox: Toolbox;
@@ -23,7 +23,7 @@ export type HeroJob = {
 export function produceHero(request: HeroJob): Promise<Outcome<Manifest>> {
   const { job, story } = request;
   if (!HERO_KINDS.has(job.slot.kind)) {
-    return Promise.resolve({ ok: false, error: `${job.slot.id} is not hero, poster or box art` });
+    return Promise.resolve({ ok: false, error: `${job.slot.id} is not hero, poster or box art or a feature graphic` });
   }
   const statements = story.statements[job.language];
   const canvas = { width: job.slot.width, height: job.slot.height };

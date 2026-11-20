@@ -3,6 +3,7 @@ import {
   AUDIO_POLICIES,
   LABEL_KINDS,
   LAYOUT_RULES,
+  PIXEL_FORMATS,
   STORES,
   type CodecProfile,
   type Device,
@@ -15,7 +16,7 @@ import {
 import type { JsonObject, JsonReader } from "./json_reader.ts";
 import { parseViewportProfiles } from "./parse_viewport_profiles.ts";
 
-const SLOT_KEYS = ["id", "store", "surface", "kind", "width", "height", "maxCount", "maxBytes", "safeArea", "rules", "labelLimits",
+const SLOT_KEYS = ["id", "store", "surface", "kind", "width", "height", "maxCount", "maxBytes", "pixelFormat", "safeArea", "rules", "labelLimits",
   "viewportProfiles", "video", "device"];
 const VIDEO_KEYS = ["fps", "acceptedFps", "duration", "codecProfile", "audio"];
 const APPLE_MAX_BYTES = 524_288_000;
@@ -64,6 +65,7 @@ function parseSlot(context: SlotContext, entry: JsonObject, path: string): Slot 
     maxBytes: entry["maxBytes"] === undefined
       ? APPLE_MAX_BYTES
       : reader.number(entry["maxBytes"], `${path}.maxBytes`, { min: 1, max: 4_294_967_296 }),
+    pixelFormat: entry["pixelFormat"] === undefined ? "rgb" : reader.member(entry["pixelFormat"], `${path}.pixelFormat`, PIXEL_FORMATS),
     safeArea: entry["safeArea"] === undefined ? FULL_CANVAS : parseRect(reader, entry["safeArea"], `${path}.safeArea`),
     rules: reader.array(entry["rules"] ?? [], `${path}.rules`)
       .map((rule, index) => reader.member(rule, `${path}.rules[${index}]`, LAYOUT_RULES)),

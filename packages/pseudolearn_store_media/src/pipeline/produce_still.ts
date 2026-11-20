@@ -46,7 +46,7 @@ export async function produceStill(request: StillJob): Promise<Outcome<Manifest>
   }
   const outputPath = files.join(directory, `${composition.id}.png`);
   const first = rendered.value.framePattern.replace("%06d", String(rendered.value.startNumber).padStart(6, "0"));
-  const flattened = await toolbox.media.flattenImage(first, outputPath);
+  const flattened = await toolbox.media.flattenImage(first, outputPath, job.slot.pixelFormat);
   if (!flattened.ok) {
     return flattened;
   }

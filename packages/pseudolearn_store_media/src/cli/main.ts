@@ -9,6 +9,7 @@ import { runCalibrate } from "./calibrate_command.ts";
 import { runCreative } from "./creative_command.ts";
 import { runDesktopScreenshots } from "./desktop_screenshots_command.ts";
 import { runHero } from "./hero_command.ts";
+import { runIcon } from "./icon_command.ts";
 import { runTrailer } from "./trailer_command.ts";
 import { runPlan } from "./plan_command.ts";
 import { runScreenshots } from "./screenshots_command.ts";
@@ -35,6 +36,7 @@ const COMMANDS: Readonly<Record<string, (context: CommandContext) => Promise<num
   creative: runCreative,
   "desktop-screenshots": runDesktopScreenshots,
   hero: runHero,
+  icon: runIcon,
   trailer: runTrailer,
 };
 

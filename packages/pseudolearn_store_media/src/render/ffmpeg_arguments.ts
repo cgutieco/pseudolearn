@@ -1,4 +1,4 @@
-import type { AudioEncoder } from "../catalog/catalog_types.ts";
+import type { AudioEncoder, PixelFormat } from "../catalog/catalog_types.ts";
 import type { EncodeRequest, StillRequest } from "../pipeline/ports.ts";
 
 const COLOR_PARAMETERS = "colorprim=bt709:transfer=bt709:colormatrix=bt709:range=tv";
@@ -67,8 +67,10 @@ export function probeArguments(path: string): readonly string[] {
   return ["-v", "error", "-print_format", "json", "-show_streams", "-show_format", path];
 }
 
-export function flattenArguments(inputPath: string, outputPath: string): readonly string[] {
-  return ["-y", "-hide_banner", "-loglevel", "error", "-i", inputPath, "-frames:v", "1", "-pix_fmt", "rgb24", outputPath];
+const FLATTENED_PIXEL_FORMATS: Readonly<Record<PixelFormat, string>> = { rgb: "rgb24", rgba: "rgba" };
+
+export function flattenArguments(inputPath: string, outputPath: string, pixelFormat: PixelFormat = "rgb"): readonly string[] {
+  return ["-y", "-hide_banner", "-loglevel", "error", "-i", inputPath, "-frames:v", "1", "-pix_fmt", FLATTENED_PIXEL_FORMATS[pixelFormat], outputPath];
 }
 
 export function plateAssemblyArguments(framePattern: string, fps: number, outputPath: string): readonly string[] {

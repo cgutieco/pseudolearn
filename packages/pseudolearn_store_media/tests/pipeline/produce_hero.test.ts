@@ -24,6 +24,15 @@ describe("produceHero", () => {
   });
 });
 
+describe("produceHero for the Google Play feature graphic", () => {
+  it("renders the feature graphic as an opaque still with no text inside its centred safe area", async () => {
+    const toolbox = fakeToolbox({ flattened: pngBytes({ width: 1024, height: 500, colorType: 2 }) }, {} as VideoProbe);
+    const outcome = await produceHero({ toolbox, catalog, job: jobFor("google-play.feature-graphic"), story: shippedLensStory(), mono, outputRoot: "out" });
+    expect(outcome.ok && outcome.value.file).toBe("out/google-play/google-play.feature-graphic/en/mute-lens-feature-graphic-en.png");
+    expect(outcome.ok && outcome.value.findings).toEqual([]);
+  });
+});
+
 describe("produceHero rejections", () => {
   it("rejects a hero that comes out transparent", async () => {
     const toolbox = fakeToolbox({ flattened: pngBytes({ width: 3840, height: 2160, colorType: 6 }) }, {} as VideoProbe);
@@ -31,9 +40,9 @@ describe("produceHero rejections", () => {
     expect(outcome.ok && outcome.value.findings.map((entry) => entry.rule)).toEqual(["MEDIA-ALPHA"]);
   });
 
-  it("refuses a slot that is not hero, poster or box art", async () => {
+  it("refuses a slot that is not hero, poster or box art or a feature graphic", async () => {
     const toolbox = fakeToolbox({}, {} as VideoProbe);
     expect(await produceHero({ toolbox, catalog, job: jobFor("microsoft.trailer-thumbnail"), story: shippedLensStory(), mono, outputRoot: "out" }))
-      .toEqual({ ok: false, error: "microsoft.trailer-thumbnail is not hero, poster or box art" });
+      .toEqual({ ok: false, error: "microsoft.trailer-thumbnail is not hero, poster or box art or a feature graphic" });
   });
 });
