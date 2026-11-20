@@ -20,6 +20,7 @@ mod memory_arrays;
 mod observation;
 mod output;
 mod profile;
+mod read_kind;
 mod registers;
 mod roots;
 mod select;

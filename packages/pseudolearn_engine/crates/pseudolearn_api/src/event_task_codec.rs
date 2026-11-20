@@ -36,6 +36,7 @@ fn schema(class: TraceClass) -> Option<Schema> {
         TraceClass::ChannelCreated => &[("channel", Kind::Number), ("capacity", Kind::Number)],
         TraceClass::ChannelSent | TraceClass::ChannelClosed => &[("channel", Kind::Number)],
         TraceClass::ChannelReceived => &[("channel", Kind::Number), ("present", Kind::Flag)],
+        TraceClass::InputRequested => &[("tipo", Kind::Text)],
         TraceClass::EffectDelivered => &[
             ("effect_seq", Kind::Number),
             ("delivery_seq", Kind::Number),

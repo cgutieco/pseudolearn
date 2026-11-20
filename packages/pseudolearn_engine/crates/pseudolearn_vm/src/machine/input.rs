@@ -2,13 +2,14 @@
 
 use crate::Fault;
 use crate::VmTrap;
-use crate::events::{EventPayload, TraceClass, TraceEvent};
+use crate::events::{EventField, EventPayload, TraceClass, TraceEvent};
+use crate::machine::read_kind::ReadKind;
 use crate::machine::{Flow, Machine};
 use pseudolearn_diagnostics::DiagnosticArgument;
 
 impl Machine<'_> {
     pub(crate) fn in_read_integer(&mut self, destination: u16) -> Result<Flow, Fault> {
-        if self.ensure_input_requested() {
+        if self.ensure_input_requested(ReadKind::Integer) {
             return Ok(Flow::Continue);
         }
         let Some(text) = self.next_input() else {
@@ -27,15 +28,14 @@ impl Machine<'_> {
                 Ok(Flow::Continue)
             }
             Err(_) => {
-                self.record_type_mismatch("Entero", &text);
-                self.cursor.program_counter = self.cursor.program_counter.wrapping_sub(1);
+                self.reject_input(ReadKind::Integer, &text);
                 Ok(Flow::Continue)
             }
         }
     }
 
     pub(crate) fn in_read_real(&mut self, destination: u16) -> Result<Flow, Fault> {
-        if self.ensure_input_requested() {
+        if self.ensure_input_requested(ReadKind::Real) {
             return Ok(Flow::Continue);
         }
         let Some(text) = self.next_input() else {
@@ -54,15 +54,14 @@ impl Machine<'_> {
                 Ok(Flow::Continue)
             }
             Err(_) => {
-                self.record_type_mismatch("Real", &text);
-                self.cursor.program_counter = self.cursor.program_counter.wrapping_sub(1);
+                self.reject_input(ReadKind::Real, &text);
                 Ok(Flow::Continue)
             }
         }
     }
 
     pub(crate) fn in_read_boolean(&mut self, destination: u16) -> Result<Flow, Fault> {
-        if self.ensure_input_requested() {
+        if self.ensure_input_requested(ReadKind::Boolean) {
             return Ok(Flow::Continue);
         }
         let Some(text) = self.next_input() else {
@@ -83,14 +82,13 @@ impl Machine<'_> {
             self.input_requested_emitted = false;
             Ok(Flow::Continue)
         } else {
-            self.record_type_mismatch("Logico", &text);
-            self.cursor.program_counter = self.cursor.program_counter.wrapping_sub(1);
+            self.reject_input(ReadKind::Boolean, &text);
             Ok(Flow::Continue)
         }
     }
 
     pub(crate) fn in_read_character(&mut self, destination: u16) -> Result<Flow, Fault> {
-        if self.ensure_input_requested() {
+        if self.ensure_input_requested(ReadKind::Character) {
             return Ok(Flow::Continue);
         }
         let Some(text) = self.next_input() else {
@@ -110,14 +108,13 @@ impl Machine<'_> {
             self.input_requested_emitted = false;
             Ok(Flow::Continue)
         } else {
-            self.record_type_mismatch("Caracter", &text);
-            self.cursor.program_counter = self.cursor.program_counter.wrapping_sub(1);
+            self.reject_input(ReadKind::Character, &text);
             Ok(Flow::Continue)
         }
     }
 
     pub(crate) fn in_read_string(&mut self, destination: u16) -> Result<Flow, Fault> {
-        if self.ensure_input_requested() {
+        if self.ensure_input_requested(ReadKind::Text) {
             return Ok(Flow::Continue);
         }
         let Some(text) = self.next_input() else {
@@ -136,7 +133,7 @@ impl Machine<'_> {
         Ok(Flow::Continue)
     }
 
-    fn ensure_input_requested(&mut self) -> bool {
+    fn ensure_input_requested(&mut self, kind: ReadKind) -> bool {
         if self.probed && !self.input_requested_emitted {
             let line = self.current_line();
             let depth = self.current_depth();
@@ -145,7 +142,10 @@ impl Machine<'_> {
                 line,
                 depth,
                 span: self.current_span(),
-                payload: None,
+                payload: Some(EventPayload::Fields(vec![(
+                    "tipo",
+                    EventField::Text(kind.event_name().to_owned()),
+                )])),
             });
             self.input_requested_emitted = true;
             self.cursor.program_counter = self.cursor.program_counter.saturating_sub(1);
@@ -174,6 +174,12 @@ impl Machine<'_> {
                 }),
             });
         }
+    }
+
+    fn reject_input(&mut self, kind: ReadKind, found: &str) {
+        self.record_type_mismatch(kind.diagnostic_name(), found);
+        self.input_requested_emitted = false;
+        self.cursor.program_counter = self.cursor.program_counter.wrapping_sub(1);
     }
 
     fn record_type_mismatch(&mut self, expected: &'static str, found: &str) {

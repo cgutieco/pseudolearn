@@ -1034,42 +1034,47 @@
       "estado": "cumple"
     },
     {
-      "regla": "ENG.TRACE.EVENTS@1.0.0#R1",
+      "regla": "ENG.TRACE.EVENTS@1.1.0#R1",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.TRACE.EVENTS@1.0.0#R2",
+      "regla": "ENG.TRACE.EVENTS@1.1.0#R2",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.TRACE.EVENTS@1.0.0#R3",
+      "regla": "ENG.TRACE.EVENTS@1.1.0#R3",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.TRACE.EVENTS@1.0.0#R4",
+      "regla": "ENG.TRACE.EVENTS@1.1.0#R4",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.TRACE.EVENTS@1.0.0#R5",
+      "regla": "ENG.TRACE.EVENTS@1.1.0#R5",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.TRACE.EVENTS@1.0.0#R7",
+      "regla": "ENG.TRACE.EVENTS@1.1.0#R7",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.TRACE.EVENTS@1.0.0#R8",
+      "regla": "ENG.TRACE.EVENTS@1.1.0#R8",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
     {
-      "regla": "ENG.TRACE.EVENTS@1.0.0#R6",
+      "regla": "ENG.TRACE.EVENTS@1.1.0#R9",
+      "verificacion": "ejecutor",
+      "estado": "cumple"
+    },
+    {
+      "regla": "ENG.TRACE.EVENTS@1.1.0#R6",
       "verificacion": "ejecutor",
       "estado": "cumple"
     },
