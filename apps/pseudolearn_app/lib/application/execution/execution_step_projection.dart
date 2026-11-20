@@ -1,9 +1,34 @@
+import '../../domain/model/execution/effect_tape.dart';
+import '../../domain/model/execution/execution_configuration.dart';
 import '../../domain/model/execution/execution_step.dart';
 import '../../domain/ports/execution_context.dart';
 import '../../domain/ports/execution_reproduction.dart';
 import '../../domain/ports/program_execution.dart';
 import 'execution_state.dart';
 import 'execution_status_from_step.dart';
+
+ExecutionState stateAtStart(
+  ExecutionState current,
+  ExecutionStep initialStep,
+  ProgramExecution execution, {
+  required int runId,
+  required ExecutionConfiguration configuration,
+  EffectTape? replayTape,
+}) => ExecutionState(
+  status: ExecutionStatus.pausedAtStatement,
+  currentStep: initialStep,
+  outputLines: execution.outputLines,
+  runId: runId,
+  statementNumber: 0,
+  isOutputPanelExpanded: current.isOutputPanelExpanded,
+  userCollapsedOutput: current.userCollapsedOutput,
+  isTraceVisible: current.isTraceVisible,
+  isTasksVisible: current.isTasksVisible,
+  observesVariables: current.observesVariables,
+  isContinuous: current.isContinuous,
+  configuration: configuration,
+  recordedTape: replayTape,
+);
 
 ExecutionState stateAfterStep(
   ExecutionState current,

@@ -26,6 +26,7 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
   StepSettlement _settlement = const StepSettlement.atAnyFocusChange();
   int _fromRevision = 0;
   StepPace _pace = StepPace.nextStatement;
+  String? _activeDocumentId;
   late final ExecutionStatePublisher _publisher = ExecutionStatePublisher(emit);
 
   ExecutionCubit({
@@ -118,26 +119,41 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
       });
 
   void stop() {
-    _commandEpoch++;
-    _stopRequested = true;
-    _execution.stop();
-    _hasStarted = false;
     final current = _publisher.latest(state);
-    _publisher.discard();
-    emit(
-      current.copyWith(
-        status: ExecutionStatus.idle,
-        currentStep: const ExecutionState.initial().currentStep,
-        isOutputStale: current.outputLines.isNotEmpty,
-      ),
-    );
+    _haltExecution();
+    emit(current.copyWith(
+      status: ExecutionStatus.idle,
+      currentStep: const ExecutionState.initial().currentStep,
+      isOutputStale: current.outputLines.isNotEmpty,
+    ));
   }
 
   void applyViewAction(ExecutionViewAction action) {
+    if (action case OpenDocumentViewAction(:final documentId)) {
+      _switchDocument(documentId);
+      return;
+    }
     final current = _publisher.latest(state);
     _publisher.discard();
     emit(current.applyViewAction(action));
     _adoptPace(_pace);
+  }
+
+  void _switchDocument(String documentId) {
+    if (_activeDocumentId == documentId) return;
+    _activeDocumentId = documentId;
+    _haltExecution();
+    _pace = StepPace.nextStatement;
+    emit(state.applyViewAction(ExecutionViewAction.openDocument(documentId)));
+    _adoptPace(_pace);
+  }
+
+  void _haltExecution() {
+    _commandEpoch++;
+    _stopRequested = true;
+    _execution.stop();
+    _hasStarted = false;
+    _publisher.discard();
   }
 
   void _adoptPace(StepPace pace) {
@@ -147,16 +163,10 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
     if (_execution case final VariableObservation observation) {
       observation.observesVariables = observes;
     }
-    if (observes == state.observesVariables &&
-        continuous == state.isContinuous) {
+    if (observes == state.observesVariables && continuous == state.isContinuous) {
       return;
     }
-    emit(
-      state.withVisibility(
-        observesVariables: observes,
-        isContinuous: continuous,
-      ),
-    );
+    emit(state.withVisibility(observesVariables: observes, isContinuous: continuous));
   }
 
   Future<void> _drain() async {
@@ -200,6 +210,7 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
   }) {
     _hasStarted = true;
     _runCounter++;
+    _activeDocumentId = configuration.documentId;
     final initialStep = _execution.startExecution(
       sourceCode: sourceCode,
       profileId: profileId,
@@ -208,20 +219,13 @@ final class ExecutionCubit extends Cubit<ExecutionState> {
       replayTape: replayTape,
     );
     emit(
-      ExecutionState(
-        status: ExecutionStatus.pausedAtStatement,
-        currentStep: initialStep,
-        outputLines: _execution.outputLines,
+      stateAtStart(
+        state,
+        initialStep,
+        _execution,
         runId: _runCounter,
-        statementNumber: 0,
-        isOutputPanelExpanded: state.isOutputPanelExpanded,
-        userCollapsedOutput: state.userCollapsedOutput,
-        isTraceVisible: state.isTraceVisible,
-        isTasksVisible: state.isTasksVisible,
-        observesVariables: state.observesVariables,
-        isContinuous: state.isContinuous,
         configuration: configuration,
-        recordedTape: replayTape,
+        replayTape: replayTape,
       ),
     );
     return initialStep;

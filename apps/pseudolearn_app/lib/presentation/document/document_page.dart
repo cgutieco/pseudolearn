@@ -46,10 +46,24 @@ final class _DocumentPageState extends State<DocumentPage> {
   @override
   void initState() {
     super.initState();
+    _openCurrentDocument();
+  }
+
+  @override
+  void didUpdateWidget(covariant DocumentPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.documentId != widget.documentId) {
+      _activeTab = DocumentTabKind.editor;
+      _exerciseStripExpansion = null;
+      _openCurrentDocument();
+    }
+  }
+
+  void _openCurrentDocument() {
     context.read<EditorCubit>().loadDocument(widget.documentId);
-    context.read<ExecutionCubit>().applyViewAction(
-      ExecutionViewAction.showOtherTab,
-    );
+    context.read<ExecutionCubit>()
+      ..applyViewAction(ExecutionViewAction.openDocument(widget.documentId))
+      ..applyViewAction(ExecutionViewAction.showOtherTab);
     context.read<CompanionCubit>().show(_companionOf(_activeTab));
   }
 
