@@ -1,10 +1,10 @@
-import 'dart:convert';
-
 import '../../domain/model/analysis/source_range.dart';
+import 'utf8_line_offsets.dart';
 
 final class SourceOffsetIndex {
   final String _source;
   final List<int> _lineStarts = [0];
+  late final Utf8LineOffsets _utf8 = Utf8LineOffsets(_source, _lineStarts);
 
   SourceOffsetIndex(this._source) {
     for (var offset = 0; offset < _source.length; offset++) {
@@ -59,18 +59,10 @@ final class SourceOffsetIndex {
       final current = _source.codeUnitAt(offset);
       if (_isHighSurrogate(previous) && _isLowSurrogate(current)) return null;
     }
-    return utf8.encode(_source.substring(0, offset)).length;
+    return _utf8.utf8OffsetAt(offset);
   }
 
-  int? utf16OffsetAtUtf8(int offset) {
-    final bytes = utf8.encode(_source);
-    if (offset < 0 || offset > bytes.length) return null;
-    try {
-      return utf8.decode(bytes.sublist(0, offset)).length;
-    } on FormatException {
-      return null;
-    }
-  }
+  int? utf16OffsetAtUtf8(int offset) => _utf8.utf16OffsetAt(offset);
 
   SourceRange rangeOf({
     required int startLine,

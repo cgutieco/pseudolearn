@@ -1,13 +1,11 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../application/diagram/diagram_cubit.dart';
 import '../../../application/editor/editor_cubit.dart';
 import '../../../application/editor/editor_state.dart';
 import '../../../application/editor/help/syntax_help_cubit.dart';
 import '../../../application/editor/help/syntax_help_state.dart';
 import '../../../application/execution/execution_cubit.dart';
 import '../../../application/execution/execution_state.dart';
-import '../../../application/export/export_cubit.dart';
 import '../../../application/settings/settings_cubit.dart';
 import '../../../domain/model/editor/caret_range.dart';
 import '../../../domain/model/editor/editor_key.dart';
@@ -95,7 +93,6 @@ final class EditorTabItem extends StatelessWidget {
       languageId: languageId,
       assisted: context.read<SettingsCubit>().state.editorAssistance,
     );
-    _refreshCompanions(context, context.read<EditorCubit>().state.sourceCode);
     context.read<SyntaxHelpCubit>().documentChanged(
       context.read<EditorCubit>().state.completionRevision,
     );
@@ -109,24 +106,8 @@ final class EditorTabItem extends StatelessWidget {
       caret,
       languageId: context.read<SettingsCubit>().state.language,
     );
-    _refreshCompanions(context, editor.state.sourceCode);
     context.read<SyntaxHelpCubit>().documentChanged(
       editor.state.completionRevision,
-    );
-  }
-
-  void _refreshCompanions(BuildContext context, String code) {
-    final profileId =
-        editorState.document?.profileId ?? SyntaxProfileId.classicSpanish;
-    final languageId = context.read<SettingsCubit>().state.language;
-    context.read<DiagramCubit>().updateDiagram(
-      sourceCode: code,
-      profileId: profileId,
-      languageId: languageId,
-    );
-    context.read<ExportCubit>().updateSource(
-      sourceCode: code,
-      profileId: profileId,
     );
   }
 }

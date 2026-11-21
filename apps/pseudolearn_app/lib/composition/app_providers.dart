@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../application/companion/companion_cubit.dart';
 import '../application/dashboard/dashboard_cubit.dart';
 import '../application/dashboard/dashboard_loader.dart';
 import '../application/diagram/diagram_cubit.dart';
@@ -59,6 +60,15 @@ List<BlocProvider> createDocumentProviders(AppDependencies dependencies) {
   final (:execution, :executionHistory) = _createExecutionProviders(
     dependencies,
   );
+  final diagram = DiagramCubit(
+    flowchartBuilder: dependencies.flowchartBuilder,
+    structogramBuilder: dependencies.structogramBuilder,
+    classDiagramBuilder: dependencies.classDiagramBuilder,
+  );
+  final export = ExportCubit(
+    exporter: dependencies.programExporter,
+    executionStates: execution.stream,
+  );
   return [
     BlocProvider<LibraryCubit>(
       create: (_) => LibraryCubit(
@@ -71,21 +81,13 @@ List<BlocProvider> createDocumentProviders(AppDependencies dependencies) {
     createSyntaxHelpProvider(dependencies),
     BlocProvider<ExecutionCubit>(create: (_) => execution),
     BlocProvider<ExecutionHistoryCubit>(create: (_) => executionHistory),
-    BlocProvider<DiagramCubit>(
-      create: (_) => DiagramCubit(
-        flowchartBuilder: dependencies.flowchartBuilder,
-        structogramBuilder: dependencies.structogramBuilder,
-        classDiagramBuilder: dependencies.classDiagramBuilder,
-      ),
-    ),
+    BlocProvider<DiagramCubit>(create: (_) => diagram),
     BlocProvider<TraceCubit>(
       create: (_) => TraceCubit(executionStates: execution.stream),
     ),
-    BlocProvider<ExportCubit>(
-      create: (_) => ExportCubit(
-        exporter: dependencies.programExporter,
-        executionStates: execution.stream,
-      ),
+    BlocProvider<ExportCubit>(create: (_) => export),
+    BlocProvider<CompanionCubit>(
+      create: (_) => CompanionCubit(diagram: diagram, export: export),
     ),
     createSyncProvider(dependencies),
     ...createUserExerciseProviders(dependencies),

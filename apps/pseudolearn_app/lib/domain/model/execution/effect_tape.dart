@@ -13,6 +13,7 @@ final class EffectTape {
 
   @override
   bool operator ==(Object other) =>
+      identical(this, other) ||
       other is EffectTape && other.canonicalJson == canonicalJson;
 
   @override

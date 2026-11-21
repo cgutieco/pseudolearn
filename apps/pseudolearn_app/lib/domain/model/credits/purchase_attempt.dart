@@ -15,6 +15,10 @@ final class PurchaseCancelled extends PurchaseAttempt {
   const PurchaseCancelled();
 }
 
+final class PurchaseAwaitsStorePayment extends PurchaseAttempt {
+  const PurchaseAwaitsStorePayment();
+}
+
 final class PurchaseContinuesOutside extends PurchaseAttempt {
   const PurchaseContinuesOutside();
 }

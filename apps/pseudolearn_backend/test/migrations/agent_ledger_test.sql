@@ -220,6 +220,42 @@ begin
 end;
 $$;
 
+insert into auth.users (id) values ('00000000-0000-0000-0000-00000000000f');
+
+do $$
+declare
+  v_reply jsonb;
+  v_f text := '00000000-0000-0000-0000-00000000000f';
+begin
+  v_reply := pg_temp.apply(v_f, 'google_play', 'monthly', 'google_play:GPA.1', 'play-token-1', 300000,
+    '2026-11-01', '2026-12-01 06:00', false, '2026-11-01');
+  assert v_reply->>'error' is null, 'a Google Play plan opens a period';
+  assert v_reply->'balance'->>'store' = 'google_play', 'the balance names Google Play';
+  assert agent_store_owner('google_play', 'play-token-1') = v_f::uuid, 'the purchase token links the owner';
+  v_reply := pg_temp.apply(v_f, 'google_play', 'monthly', 'google_play:GPA.1', 'play-token-1', 300000,
+    '2026-11-01', '2026-12-01 06:00', false, '2026-11-02');
+  assert (v_reply->>'repeated')::boolean, 'the same order delivered again is a repetition';
+  v_reply := pg_temp.apply(v_f, 'google_play', 'monthly', 'google_play:GPA.1..0', 'play-token-1', 300000,
+    '2026-11-02 12:00', '2026-12-02 06:00', false, '2026-11-02 12:00');
+  assert v_reply->>'error' is null, 'a Google Play renewal opens the next period';
+  assert (select ends_at from agent_ledger_periods where transaction_id = 'google_play:GPA.1')
+    = '2026-11-02 12:00'::timestamptz, 'a renewal closes the previous period when it starts';
+  v_reply := pg_temp.apply(v_f, 'google_play', 'top_up', 'google_play:play-token-2', null, 150000,
+    '2026-11-03', '2026-11-03', false, '2026-11-03');
+  assert v_reply->>'error' is null, 'a Google Play top-up is granted';
+  assert agent_revoke_purchase('google_play', 'google_play:play-token-2', null, '2026-11-04') = 1,
+    'a voided top-up is revoked by its token';
+  assert agent_end_subscription('google_play', 'play-token-1', '2026-11-20') = 1,
+    'an expired Google Play subscription ends its period';
+  assert agent_revoke_purchase('app_store', null, 'play-token-1', '2026-11-15') = 0,
+    'another store never revokes a Google Play purchase';
+  assert agent_revoke_purchase('google_play', null, 'play-token-1', '2026-11-15') = 1,
+    'a revoked Google Play subscription loses its current period';
+  assert agent_revoke_purchase('google_play', null, 'play-token-1', '2026-11-16') = 0,
+    'a revoked subscription is not revoked twice';
+end;
+$$;
+
 do $$
 begin
   assert not has_function_privilege('authenticated',

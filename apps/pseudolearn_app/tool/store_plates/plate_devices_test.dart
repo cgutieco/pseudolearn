@@ -18,6 +18,7 @@ void main() {
       'ipad-13',
       'mac',
       'windows-desktop',
+      'android-phone',
     ]);
   });
 
@@ -41,6 +42,7 @@ void main() {
     expect(sizes['ipad-13'], const Size(2064, 2752));
     expect(sizes['mac'], const Size(2880, 1800));
     expect(sizes['windows-desktop'], const Size(3840, 2160));
+    expect(sizes['android-phone'], const Size(1236, 2745));
   });
 
   test('names every chapter plate once', () {

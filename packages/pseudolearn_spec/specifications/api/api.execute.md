@@ -5,7 +5,7 @@
   "titulo": "Ejecución",
   "dominio": "motor",
   "estado": "estable",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "duenos": [
     "responsable-motor"
   ],
@@ -36,6 +36,13 @@
     }
   ],
   "titulo_en": "Execution",
+  "cambio": {
+    "clase": "ampliacion",
+    "impacto_usuarios": "Ninguno visible: la salida, la cinta reproducible y la terminación de cada ejecución no cambian.",
+    "impacto_implementaciones": "advance acepta el argumento opcional effect_tape_from; un consumidor que lo omite recibe la cinta completa como antes, y uno que lo envía conserva sus entradas anteriores a la posición effect_tape_from de la respuesta y les añade las recibidas.",
+    "justificacion": "Con la cinta completa en cada respuesta, una ejecución con mucha salida transfería en cada lote todas las entradas ya entregadas y su costo total crecía de forma cuadrática con la longitud de la ejecución.",
+    "revisado_por": "Pendiente de revisión"
+  },
   "revisado_por": [
     "César Antonio Gutiérrez Contreras"
   ]
@@ -1365,6 +1372,482 @@
     "engine"
   ],
   "programa": "Algoritmo P\nEscribir 42;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```regla
+{
+  "id": "R10",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "advance acepta effect_tape_from opcional: el número de entradas de cinta que el consumidor conserva de las respuestas de avance anteriores de la misma ejecución. Con él, la respuesta declara effect_tape_from, la posición desde la que entrega entradas, que nunca supera la pedida; su cinta conserva formato, identidad, estado y política, y sus entries contienen solo las entradas grabadas desde esa posición, en orden. Las entradas entregadas antes de esa posición siguen grabadas sin cambios, de modo que conservarlas y añadirles las recibidas reconstruye la cinta completa aunque el motor haya retirado o sustituido entradas ya entregadas, como la entrada provisional de un efecto pendiente al recibir su resultado. Sin effect_tape_from la respuesta incluye la cinta completa y no declara posición. Un effect_tape_from mayor que el número de entradas ya entregadas devuelve un error de uso sin avanzar.",
+  "verificacion": [
+    "C17",
+    "C18",
+    "C19"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C17",
+  "regla": "R10",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42,
+          "host": {
+            "detached": true
+          }
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 3,
+          "effect_tape_from": 0
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 3,
+          "effect_tape_from": 1
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 64,
+          "effect_tape_from": 2
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 64
+        },
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "running"
+            },
+            "effect_tape_from": 0,
+            "effect_tape": {
+              "format": "pseudolearn.tape/v1",
+              "status": "reproducible",
+              "entries": [
+                {
+                  "effect_seq": 1,
+                  "capability_kind": "console",
+                  "operation": "write",
+                  "payload_bytes": [
+                    49,
+                    10
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "running"
+            },
+            "effect_tape_from": 1,
+            "effect_tape": {
+              "format": "pseudolearn.tape/v1",
+              "entries": [
+                {
+                  "effect_seq": 2,
+                  "payload_bytes": [
+                    50,
+                    10
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "value": {
+            "output": "1\n2\n3\n",
+            "termination": {
+              "kind": "completed"
+            },
+            "effect_tape_from": 2,
+            "effect_tape": {
+              "format": "pseudolearn.tape/v1",
+              "status": "reproducible",
+              "entries": [
+                {
+                  "effect_seq": 3,
+                  "payload_bytes": [
+                    51,
+                    10
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "completed"
+            },
+            "effect_tape": {
+              "entries": [
+                {
+                  "effect_seq": 1
+                },
+                {
+                  "effect_seq": 2
+                },
+                {
+                  "effect_seq": 3
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nEscribir 1;\nEscribir 2;\nEscribir 3;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C18",
+  "regla": "R10",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42,
+          "host": {
+            "detached": true
+          }
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 3,
+          "effect_tape_from": 1
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 3,
+          "effect_tape_from": 0
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 3,
+          "effect_tape_from": 2
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 3,
+          "effect_tape_from": 1
+        },
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "running"
+            },
+            "effect_tape_from": 0,
+            "effect_tape": {
+              "entries": [
+                {
+                  "effect_seq": 1
+                }
+              ]
+            }
+          }
+        },
+        {
+          "failure": {
+            "family": "usage"
+          }
+        },
+        {
+          "value": {
+            "effect_tape_from": 1,
+            "effect_tape": {
+              "entries": [
+                {
+                  "effect_seq": 2
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "Algoritmo P\nEscribir 1;\nEscribir 2;\nFinAlgoritmo\n",
+  "perfil_base": "es"
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R10",
+  "perfiles": [
+    "es"
+  ],
+  "origen": "derivado",
+  "operacion": "api",
+  "api": {
+    "calls": [
+      {
+        "operation": "create_analysis",
+        "arguments": {}
+      },
+      {
+        "operation": "start",
+        "arguments": {
+          "observe": "events",
+          "seed": 42,
+          "host": {
+            "detached": true
+          }
+        },
+        "resource_from": 0
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 64,
+          "effect_tape_from": 0
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "effect_result",
+        "resource_from": 1,
+        "arguments": {
+          "effect_seq": 1,
+          "result": {
+            "outcome": "committed",
+            "value": {
+              "kind": "capability",
+              "value": {
+                "slot": 0,
+                "generation": 1,
+                "rights": 4,
+                "kind": 4
+              }
+            }
+          }
+        }
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 64,
+          "effect_tape_from": 1
+        },
+        "resource_from": 1
+      },
+      {
+        "operation": "effect_result",
+        "resource_from": 1,
+        "arguments": {
+          "effect_seq": 2,
+          "result": {
+            "outcome": "failed",
+            "value": {
+              "code": "tiempo_agotado",
+              "uncertain": false
+            }
+          }
+        }
+      },
+      {
+        "operation": "advance",
+        "arguments": {
+          "batch_size": 64,
+          "effect_tape_from": 2
+        },
+        "resource_from": 1
+      }
+    ]
+  },
+  "espera": {
+    "api": {
+      "results": [
+        {
+          "value": {}
+        },
+        {
+          "value": {}
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "awaiting_effect",
+              "effect_seq": 1
+            },
+            "effect_tape_from": 0,
+            "effect_tape": {
+              "entries": [
+                {
+                  "effect_seq": 1,
+                  "operation": "request_clock",
+                  "outcome": "requested"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "value": null
+        },
+        {
+          "value": {
+            "termination": {
+              "kind": "awaiting_effect",
+              "effect_seq": 2
+            },
+            "effect_tape_from": 0,
+            "effect_tape": {
+              "entries": [
+                {
+                  "effect_seq": 1,
+                  "operation": "request_clock",
+                  "outcome": "committed"
+                },
+                {
+                  "effect_seq": 2,
+                  "operation": "clock_now",
+                  "outcome": "requested"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "value": null
+        },
+        {
+          "value": {
+            "output": "tiempo_agotado\ncierto\n",
+            "termination": {
+              "kind": "completed"
+            },
+            "effect_tape_from": 1,
+            "effect_tape": {
+              "status": "reproducible",
+              "entries": [
+                {
+                  "effect_seq": 2,
+                  "operation": "clock_now",
+                  "outcome": "failed"
+                },
+                {
+                  "effect_seq": 3,
+                  "operation": "write",
+                  "outcome": "committed"
+                },
+                {
+                  "effect_seq": 4,
+                  "operation": "write",
+                  "outcome": "committed"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sujetos": [
+    "engine"
+  ],
+  "programa": "SubProceso Probe() Como Resultado<Entero, ErrorES>\nDefinir clock Como Reloj <- Propagar SolicitarReloj();\nRetornar clock.Ahora();\nFinSubProceso\nAlgoritmo Main\nSegun Probe() Hacer\nExito(value): Escribir value;\nError(problem): Escribir problem.Codigo; Si problem.Incierto Entonces Escribir \"incierto\"; Sino Escribir \"cierto\"; FinSi\nFinSegun\nFinAlgoritmo\n",
   "perfil_base": "es"
 }
 ```

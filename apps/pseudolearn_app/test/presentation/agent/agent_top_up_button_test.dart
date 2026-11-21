@@ -46,6 +46,17 @@ void main() {
     expect(find.byKey(const ValueKey('top-up-failure')), findsNothing);
   });
 
+  testWidgets('a top-up whose payment the store has not confirmed waits without a failure', (tester) async {
+    final harness = PurchaseWidgetHarness(store: ScriptedPurchaseStore(attempt: const PurchaseAwaitsStorePayment()), balance: _subscribed);
+    await harness.pump(tester, const AgentTopUpButton(keyPrefix: 'top-up'));
+    await tester.tap(find.byKey(const ValueKey('top-up')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('top-up-awaiting-store')), findsOneWidget);
+    expect(find.textContaining('La tienda aún no confirma el pago'), findsOneWidget);
+    expect(find.byKey(const ValueKey('top-up-failure')), findsNothing);
+    expect(harness.gateway.redeemed, isEmpty);
+  });
+
   testWidgets('without an active plan the button is replaced by the plan notice', (tester) async {
     final harness = PurchaseWidgetHarness(store: ScriptedPurchaseStore(), balance: const CreditsKnown(CreditBalance(remaining: 30, allowance: 0, topUp: 30)));
     await harness.pump(tester, const AgentTopUpButton(keyPrefix: 'top-up'));

@@ -5,6 +5,9 @@ import '../../domain/model/execution/execution_focus.dart';
 import '../../domain/model/execution/execution_step.dart';
 import '../../domain/model/execution/output_line.dart';
 import '../../domain/model/execution/execution_configuration.dart';
+import 'execution_view_action.dart';
+
+export 'execution_view_action.dart';
 
 enum ExecutionStatus {
   idle,
@@ -18,8 +21,6 @@ enum ExecutionStatus {
   cancelledByHost,
   finishedSuccess,
 }
-
-enum ExecutionViewAction { toggleOutputPanel, showTrace, showTasks, showOtherTab }
 
 final class ExecutionState extends Equatable {
   final ExecutionStatus status;
@@ -117,22 +118,20 @@ final class ExecutionState extends Equatable {
     return false;
   }
 
-  ExecutionState applyViewAction(ExecutionViewAction action) {
-    switch (action) {
-      case ExecutionViewAction.toggleOutputPanel:
-        final expanded = !isOutputPanelExpanded;
-        return copyWith(
-          isOutputPanelExpanded: expanded,
-          userCollapsedOutput: !expanded,
-        );
-      case ExecutionViewAction.showTrace:
-        return withVisibility(isTraceVisible: true, isTasksVisible: false);
-      case ExecutionViewAction.showTasks:
-        return withVisibility(isTraceVisible: false, isTasksVisible: true);
-      case ExecutionViewAction.showOtherTab:
-        return withVisibility(isTraceVisible: false, isTasksVisible: false);
-    }
-  }
+  ExecutionState applyViewAction(ExecutionViewAction action) => switch (action) {
+    ToggleOutputPanelViewAction() => copyWith(
+      isOutputPanelExpanded: !isOutputPanelExpanded,
+      userCollapsedOutput: isOutputPanelExpanded,
+    ),
+    ShowTraceViewAction() =>
+        withVisibility(isTraceVisible: true, isTasksVisible: false),
+    ShowTasksViewAction() =>
+        withVisibility(isTraceVisible: false, isTasksVisible: true),
+    ShowOtherTabViewAction() =>
+        withVisibility(isTraceVisible: false, isTasksVisible: false),
+    OpenDocumentViewAction(:final documentId) => const ExecutionState.initial()
+        .copyWith(configuration: ExecutionConfiguration(documentId: documentId)),
+  };
 
   ExecutionState withVisibility({
     bool? isTraceVisible,

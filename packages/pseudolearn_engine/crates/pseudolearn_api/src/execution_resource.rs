@@ -35,6 +35,8 @@ mod execution_response;
 mod execution_setup;
 #[path = "execution_shadow.rs"]
 mod execution_shadow;
+#[path = "execution_tape_window.rs"]
+mod execution_tape_window;
 #[path = "history_operations.rs"]
 mod history_operations;
 #[path = "inspection_operations.rs"]
@@ -156,7 +158,11 @@ impl ExecutionResource {
         self.sources = sources;
     }
 
-    pub(crate) fn advance(&mut self, maximum: usize) -> Result<Value, ApiError> {
+    fn advance_batch(
+        &mut self,
+        maximum: usize,
+        tape_start: Option<usize>,
+    ) -> Result<Value, ApiError> {
         if maximum == 0 {
             return Err(usage("batch size must be positive"));
         }
@@ -180,7 +186,12 @@ impl ExecutionResource {
         }
 
         let mut response = self.tip_response();
-        self.add_effect_observation(&mut response);
+        self.add_effect_observation(&mut response, tape_start);
+        self.settle_delivery(&mut response)?;
+        Ok(response)
+    }
+
+    fn settle_delivery(&mut self, response: &mut Value) -> Result<(), ApiError> {
         self.delivered = machine_event_count(&self.machine);
         if !self.has_external_effects() {
             self.machine
@@ -189,10 +200,10 @@ impl ExecutionResource {
                 ));
             self.record_checkpoint()?;
         }
-        self.capture_debug_response(&mut response)?;
+        self.capture_debug_response(response)?;
         take_machine_events(&mut self.machine);
         self.trim_history()?;
-        Ok(response)
+        Ok(())
     }
 
     pub(crate) fn horizon(&self) -> Value {

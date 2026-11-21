@@ -10,6 +10,7 @@ import '../../theme/tokens/component_metrics.dart';
 import 'run_outcome.dart';
 import 'run_outcome_note.dart';
 import 'run_result_pill.dart';
+import 'output_line_row.dart';
 
 final class OutputPanel extends StatelessWidget {
   final List<OutputLine> outputLines;
@@ -18,6 +19,7 @@ final class OutputPanel extends StatelessWidget {
   final VoidCallback onToggle;
   final RunOutcome? outcome;
   final VoidCallback? onOutcomeTap;
+  final Widget? pendingRead;
 
   const OutputPanel({
     super.key,
@@ -27,12 +29,13 @@ final class OutputPanel extends StatelessWidget {
     required this.onToggle,
     this.outcome,
     this.onOutcomeTap,
+    this.pendingRead,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = AppThemeExtension.of(context);
-
+    final isOpen = isExpanded || pendingRead != null;
     return Container(
       decoration: BoxDecoration(
         color: theme.colors.surfaces.subtle,
@@ -45,14 +48,15 @@ final class OutputPanel extends StatelessWidget {
         children: [
           _OutputPanelHeader(
             lineCount: outputLines.length,
-            isExpanded: isExpanded,
+            isExpanded: isOpen,
             isStale: isStale,
             onToggle: onToggle,
             outcome: outcome,
             onOutcomeTap: onOutcomeTap,
           ),
-          if (isExpanded)
-            _OutputContentBox(outputLines: outputLines, outcome: outcome),
+          if (isOpen)
+            _OutputContentBox(
+                outputLines: outputLines, outcome: outcome, pendingRead: pendingRead),
         ],
       ),
     );
@@ -164,74 +168,58 @@ final class _EllipsizedLabel extends StatelessWidget {
 final class _OutputContentBox extends StatelessWidget {
   final List<OutputLine> outputLines;
   final RunOutcome? outcome;
+  final Widget? pendingRead;
 
-  const _OutputContentBox({required this.outputLines, required this.outcome});
+  const _OutputContentBox({
+    required this.outputLines,
+    required this.outcome,
+    required this.pendingRead,
+  });
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = AppThemeExtension.of(context);
-
+    final read = pendingRead;
     return SizedBox(
       height: ComponentMetricsTokens.outputPanelBodyHeight,
-      child: outputLines.isEmpty && outcome?.note == null
+      child: read != null
+          ? _ConsoleAwaitingRead(outputLines: outputLines, read: read)
+          : outputLines.isEmpty && outcome?.note == null
           ? Center(
               child: AppText(l10n.outputEmpty,
                   variant: AppTextVariant.caption,
                   color: theme.colors.text.tertiary),
             )
           : ListView.builder(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: SpacingTokens.space4,
-                  vertical: SpacingTokens.space2),
+              padding: _consolePadding,
               itemCount: outputLines.length + (outcome?.note == null ? 0 : 1),
               itemBuilder: (context, index) => index < outputLines.length
-                  ? _OutputLineRow(line: outputLines[index])
+                  ? OutputLineRow(line: outputLines[index])
                   : RunOutcomeNote(outcome: outcome!),
             ),
     );
   }
 }
 
-final class _OutputLineRow extends StatelessWidget {
-  final OutputLine line;
+const EdgeInsets _consolePadding = EdgeInsets.symmetric(
+  horizontal: SpacingTokens.space4,
+  vertical: SpacingTokens.space2,
+);
 
-  const _OutputLineRow({required this.line});
+final class _ConsoleAwaitingRead extends StatelessWidget {
+  final List<OutputLine> outputLines;
+  final Widget read;
+
+  const _ConsoleAwaitingRead({required this.outputLines, required this.read});
 
   @override
-  Widget build(BuildContext context) {
-    final theme = AppThemeExtension.of(context);
-    final isInput = line.kind == OutputLineKind.userInputEcho;
-    final isError = line.kind == OutputLineKind.programError;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: SpacingTokens.spaceHalf),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (isInput) ...[
-            Icon(Icons.arrow_forward,
-                size: 14, color: theme.colors.text.secondary),
-            const SizedBox(width: SpacingTokens.space2),
-          ],
-          Expanded(
-            child: AppText(
-              line.text,
-              variant: AppTextVariant.codeEditor,
-              color: _colorOf(theme, isError: isError, isInput: isInput),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Color _colorOf(
-    AppThemeExtension theme, {
-    required bool isError,
-    required bool isInput,
-  }) {
-    if (isError) return theme.colors.severities.error.fg;
-    if (isInput) return theme.colors.text.secondary;
-    return theme.colors.text.primary;
-  }
+  Widget build(BuildContext context) => ListView.builder(
+    reverse: true,
+    padding: _consolePadding,
+    itemCount: outputLines.length + 1,
+    itemBuilder: (context, index) => index == 0
+        ? KeyedSubtree(key: const ValueKey('pending-read'), child: read)
+        : OutputLineRow(line: outputLines[outputLines.length - index]),
+  );
 }

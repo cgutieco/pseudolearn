@@ -5,7 +5,7 @@
   "titulo": "Eventos observables de la ejecución",
   "dominio": "motor",
   "estado": "estable",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "duenos": [
     "responsable-motor"
   ],
@@ -29,7 +29,14 @@
       "tipo": "usa"
     }
   ],
-  "titulo_en": "Observable execution events"
+  "titulo_en": "Observable execution events",
+  "cambio": {
+    "clase": "ampliacion",
+    "impacto_usuarios": "Quien recorre una ejecución ve qué tipo espera cada valor que pide Leer y ve también cada nueva petición tras un valor rechazado; la salida, la terminación y la cinta reproducible no cambian.",
+    "impacto_implementaciones": "input_requested lleva el dato tipo. Un valor rechazado con readValueTypeMismatch va seguido de otro input_requested para la misma posición. Un consumidor que ignora los datos de input_requested sigue funcionando, pero uno que cuenta peticiones ve una más por cada rechazo.",
+    "justificacion": "Sin el tipo ni la nueva petición, un consumidor que presenta la lectura no podía ofrecer un teclado ni un rótulo adecuados al tipo, ni distinguir un valor rechazado de uno aceptado sin reconstruirlo desde el texto fuente y los diagnósticos acumulados.",
+    "revisado_por": "Pendiente de revisión"
+  }
 }
 ---
 
@@ -69,7 +76,9 @@
       ]
     },
     "input_requested": {
-      "datos": []
+      "datos": [
+        "tipo"
+      ]
     },
     "input_received": {
       "datos": [
@@ -248,7 +257,10 @@
       },
       {
         "clase": "input_requested",
-        "linea": 3
+        "linea": 3,
+        "datos": {
+          "tipo": "entero"
+        }
       },
       {
         "clase": "input_received",
@@ -376,7 +388,10 @@
       },
       {
         "clase": "input_requested",
-        "linea": 3
+        "linea": 3,
+        "datos": {
+          "tipo": "entero"
+        }
       }
     ]
   },
@@ -1543,5 +1558,187 @@
       }
     ]
   }
+}
+```
+
+```regla
+{
+  "id": "R9",
+  "fuerza": "DEBE",
+  "clase": "semantica",
+  "texto": "input_requested lleva tipo, el tipo que espera la posición de Leer que pide el valor: entero, real, logico, caracter o cadena. Cada vez que una posición pide un valor se produce input_requested, también cuando vuelve a pedirlo tras rechazar una entrada con readValueTypeMismatch; el valor rechazado no produce input_received. Así, a cada input_requested le sigue input_received si el valor se aceptó, otro input_requested de la misma posición si se rechazó, o ningún evento si la ejecución espera.",
+  "verificacion": [
+    "C19",
+    "C20"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C19",
+  "regla": "R9",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "trace",
+  "espera": {
+    "salida": "ab8\n",
+    "terminacion": "completed",
+    "eventos": [
+      {
+        "clase": "statement_entered",
+        "linea": 2
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 2
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 3
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 3
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 4
+      },
+      {
+        "clase": "input_requested",
+        "linea": 4,
+        "datos": {
+          "tipo": "entero"
+        }
+      },
+      {
+        "clase": "input_received",
+        "linea": 4,
+        "datos": {
+          "texto": "7"
+        }
+      },
+      {
+        "clase": "input_requested",
+        "linea": 4,
+        "datos": {
+          "tipo": "cadena"
+        }
+      },
+      {
+        "clase": "input_received",
+        "linea": 4,
+        "datos": {
+          "texto": "ab"
+        }
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 4
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 5
+      },
+      {
+        "clase": "output",
+        "linea": 5,
+        "datos": {
+          "texto": "ab8\n"
+        }
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 5
+      }
+    ]
+  },
+  "programa": "Algoritmo P\nDefinir n Como Entero <- 0;\nDefinir t Como Cadena <- \"\";\nLeer n, t;\nEscribir t, n + 1;\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "entradas": [
+    "7",
+    "ab"
+  ]
+}
+```
+
+```caso
+{
+  "id": "C20",
+  "regla": "R9",
+  "perfiles": [
+    "es",
+    "en"
+  ],
+  "origen": "derivado",
+  "operacion": "trace",
+  "espera": {
+    "salida": "7\n",
+    "terminacion": "completed",
+    "eventos": [
+      {
+        "clase": "statement_entered",
+        "linea": 2
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 2
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 3
+      },
+      {
+        "clase": "input_requested",
+        "linea": 3,
+        "datos": {
+          "tipo": "entero"
+        }
+      },
+      {
+        "clase": "input_requested",
+        "linea": 3,
+        "datos": {
+          "tipo": "entero"
+        }
+      },
+      {
+        "clase": "input_received",
+        "linea": 3,
+        "datos": {
+          "texto": "7"
+        }
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 3
+      },
+      {
+        "clase": "statement_entered",
+        "linea": 4
+      },
+      {
+        "clase": "output",
+        "linea": 4,
+        "datos": {
+          "texto": "7\n"
+        }
+      },
+      {
+        "clase": "statement_exited",
+        "linea": 4
+      }
+    ]
+  },
+  "programa": "Algoritmo P\nDefinir x Como Entero <- 0;\nLeer x;\nEscribir x;\nFinAlgoritmo\n",
+  "perfil_base": "es",
+  "entradas": [
+    "oops",
+    "7"
+  ]
 }
 ```

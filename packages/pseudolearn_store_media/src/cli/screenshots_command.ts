@@ -1,6 +1,7 @@
 import { join, resolve } from "node:path";
 import { isAccepted } from "../pipeline/manifest.ts";
-import { planJobs } from "../pipeline/render_plan.ts";
+import type { StoreId } from "../catalog/catalog_types.ts";
+import { planJobs, type Job } from "../pipeline/render_plan.ts";
 import { produceScreenshotSet, type ScreenshotResult } from "../pipeline/screenshot_set.ts";
 import { loadScreenshotStory } from "../pipeline/story_source.ts";
 import { ffmpegToolkit } from "../render/ffmpeg_toolkit.ts";
@@ -8,7 +9,10 @@ import { hyperframesRenderer } from "../render/hyperframes_renderer.ts";
 import { nodeFileStore } from "../render/node_file_store.ts";
 import type { CommandContext } from "./main.ts";
 
-const DEFAULT_STORY = "stories/app-store-screenshots.json";
+const DEFAULT_STORIES: Readonly<Partial<Record<StoreId, string>>> = {
+  "app-store": "stories/app-store-screenshots.json",
+  "google-play": "stories/google-play-screenshots.json",
+};
 const DEFAULT_PLATES = "../../apps/pseudolearn_app/build/store-plates";
 const FONTS = {
   sans: "../pseudolearn_brand/assets/fonts/IBMPlexSans-Bold.ttf",
@@ -16,18 +20,34 @@ const FONTS = {
 };
 
 export async function runScreenshots(context: CommandContext): Promise<number> {
-  const storyPath = resolve(context.packageRoot, context.story ?? DEFAULT_STORY);
+  const plan = planJobs({ catalog: context.catalog, slotIds: context.slotIds, languages: context.languages });
+  if (plan.unknownSlots.length > 0) {
+    context.write(`unknown slots: ${plan.unknownSlots.join(", ")}`);
+    return 2;
+  }
+  const jobs = context.slotIds.length > 0 ? plan.jobs : plan.jobs.filter((job) => job.slot.kind === "screenshot" && DEFAULT_STORIES[job.slot.store]);
+  let worst = 0;
+  for (const [storyPath, storyJobs] of jobsByStory(context, jobs)) {
+    worst = Math.max(worst, await runStory(context, storyPath, storyJobs));
+  }
+  return worst;
+}
+
+function jobsByStory(context: CommandContext, jobs: readonly Job[]): ReadonlyMap<string, readonly Job[]> {
+  const groups = new Map<string, Job[]>();
+  for (const job of jobs) {
+    const storyPath = resolve(context.packageRoot, context.story ?? DEFAULT_STORIES[job.slot.store] ?? DEFAULT_STORIES["app-store"]!);
+    groups.set(storyPath, [...(groups.get(storyPath) ?? []), job]);
+  }
+  return groups;
+}
+
+async function runStory(context: CommandContext, storyPath: string, jobs: readonly Job[]): Promise<number> {
   const files = nodeFileStore();
   const story = await loadScreenshotStory(files, storyPath);
   if (!story.ok) {
     story.errors.forEach((error) => context.write(`${error.path}: ${error.message}`));
     return 1;
-  }
-  const plan = planJobs({ catalog: context.catalog, slotIds: context.slotIds, languages: context.languages });
-  const jobs = context.slotIds.length > 0 ? plan.jobs : plan.jobs.filter((job) => job.slot.device !== null);
-  if (plan.unknownSlots.length > 0) {
-    context.write(`unknown slots: ${plan.unknownSlots.join(", ")}`);
-    return 2;
   }
   const outcome = await produceScreenshotSet({
     toolbox: { frames: hyperframesRenderer(), media: ffmpegToolkit(), files },

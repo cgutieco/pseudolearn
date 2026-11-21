@@ -7,6 +7,7 @@ import 'package:pseudolearn_app/application/execution/execution_history_cubit.da
 import 'package:pseudolearn_app/application/execution/execution_state.dart';
 import 'package:pseudolearn_app/application/execution/step_batch_runner.dart';
 import 'package:pseudolearn_app/application/execution/step_pace.dart';
+import 'package:pseudolearn_app/application/trace/trace_cubit.dart';
 import 'package:pseudolearn_app/domain/model/execution/input_wait.dart';
 import 'package:pseudolearn_app/domain/model/execution/execution_configuration.dart';
 import 'package:pseudolearn_app/engine/execution/task_flow_projection.dart';
@@ -666,6 +667,141 @@ void main() {
         expect(cubit.state.statementNumber, equals(3));
       },
     );
+  });
+
+  group('ExecutionCubit document context isolation', () {
+    test('reopening the same document keeps console output and status', () async {
+      final cubit = ExecutionCubit(
+        execution: nativeTestEngine.createProgramExecution(),
+      );
+      addTearDown(cubit.close);
+
+      cubit.applyViewAction(const ExecutionViewAction.openDocument('doc-a'));
+      await cubit.advance(
+        pace: StepPace.toEnd,
+        sourceCode: _immediate,
+        profileId: SyntaxProfileId.classicSpanish,
+        languageId: UiLanguageId.spanish,
+        configuration: const ExecutionConfiguration(documentId: 'doc-a'),
+      );
+
+      final before = cubit.state;
+      expect(before.outputLines.map((line) => line.text), ['Listo']);
+      expect(before.isOutputPanelExpanded, isTrue);
+      expect(before.status, ExecutionStatus.finishedSuccess);
+
+      cubit.applyViewAction(const ExecutionViewAction.openDocument('doc-a'));
+
+      expect(cubit.state, equals(before));
+    });
+
+    test('switching to another document clears console output, status, trace and history', () async {
+      final session = nativeTestEngine.createObservableExecutionSession();
+      final cubit = ExecutionCubit(execution: session.execution);
+      final trace = TraceCubit(executionStates: cubit.stream);
+      final history = ExecutionHistoryCubit(
+        executionStates: cubit.stream,
+        observer: session.observer,
+        flowProjector: const TaskFlowProjection(),
+        structureProjector: const TaskStructureProjection(),
+      );
+      addTearDown(() async {
+        await history.close();
+        await trace.close();
+        await cubit.close();
+      });
+
+      cubit.applyViewAction(const ExecutionViewAction.openDocument('doc-a'));
+      await cubit.advance(
+        pace: StepPace.nextStatement,
+        sourceCode: _counted,
+        profileId: SyntaxProfileId.classicSpanish,
+        languageId: UiLanguageId.spanish,
+        configuration: const ExecutionConfiguration(documentId: 'doc-a'),
+      );
+      await cubit.advance(
+        pace: StepPace.toEnd,
+        sourceCode: _counted,
+        profileId: SyntaxProfileId.classicSpanish,
+        languageId: UiLanguageId.spanish,
+        configuration: const ExecutionConfiguration(documentId: 'doc-a'),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      expect(cubit.state.outputLines, isNotEmpty);
+      expect(cubit.state.isOutputPanelExpanded, isTrue);
+      expect(trace.state.rows, isNotEmpty);
+
+      cubit.applyViewAction(const ExecutionViewAction.openDocument('doc-b'));
+      await Future<void>.delayed(Duration.zero);
+
+      expect(cubit.state.status, ExecutionStatus.idle);
+      expect(cubit.state.outputLines, isEmpty);
+      expect(cubit.state.isOutputPanelExpanded, isFalse);
+      expect(cubit.state.isOutputStale, isFalse);
+      expect(cubit.state.runId, 0);
+      expect(cubit.state.configuration.documentId, 'doc-b');
+      expect(trace.state.rows, isEmpty);
+      expect(history.state.hasExecution, isFalse);
+      expect(history.state.events, isEmpty);
+    });
+
+    test('switching to another document while awaiting input stops execution and clears pending read', () async {
+      final cubit = ExecutionCubit(
+        execution: nativeTestEngine.createProgramExecution(),
+      );
+      addTearDown(cubit.close);
+
+      cubit.applyViewAction(const ExecutionViewAction.openDocument('doc-a'));
+      await cubit.advance(
+        pace: StepPace.toEnd,
+        sourceCode: _readsInput,
+        profileId: SyntaxProfileId.classicSpanish,
+        languageId: UiLanguageId.spanish,
+        configuration: const ExecutionConfiguration(documentId: 'doc-a'),
+      );
+
+      final wait = cubit.state.currentStep.inputWait;
+      expect(cubit.state.status, ExecutionStatus.pausedAwaitingInput);
+      expect(wait, isNotNull);
+
+      cubit.applyViewAction(const ExecutionViewAction.openDocument('doc-b'));
+
+      expect(cubit.state.status, ExecutionStatus.idle);
+      expect(cubit.state.currentStep.inputWait, isNull);
+      expect(cubit.state.outputLines, isEmpty);
+
+      await cubit.provideInput(wait!, '6');
+
+      expect(cubit.state.status, ExecutionStatus.idle);
+      expect(cubit.state.outputLines, isEmpty);
+    });
+
+    test('switching to another document clears stale output left after stop', () async {
+      final cubit = ExecutionCubit(
+        execution: nativeTestEngine.createProgramExecution(),
+      );
+      addTearDown(cubit.close);
+
+      cubit.applyViewAction(const ExecutionViewAction.openDocument('doc-a'));
+      await cubit.advance(
+        pace: StepPace.toEnd,
+        sourceCode: _immediate,
+        profileId: SyntaxProfileId.classicSpanish,
+        languageId: UiLanguageId.spanish,
+        configuration: const ExecutionConfiguration(documentId: 'doc-a'),
+      );
+      cubit.stop();
+
+      expect(cubit.state.isOutputStale, isTrue);
+      expect(cubit.state.outputLines, isNotEmpty);
+
+      cubit.applyViewAction(const ExecutionViewAction.openDocument('doc-b'));
+
+      expect(cubit.state.isOutputStale, isFalse);
+      expect(cubit.state.outputLines, isEmpty);
+      expect(cubit.state.isOutputPanelExpanded, isFalse);
+    });
   });
 }
 

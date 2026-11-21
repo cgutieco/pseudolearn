@@ -102,5 +102,25 @@ void main() {
       expect(shown.isTraceVisible, isTrue);
       expect(shown.isContinuous, isTrue);
     });
+
+    test('opening another document resets execution state for that document', () {
+      final state = _state(ExecutionStatus.finishedSuccess, isContinuous: true)
+          .copyWith(
+            runId: 3,
+            isOutputPanelExpanded: true,
+            isOutputStale: true,
+          );
+
+      final reset = state.applyViewAction(
+        const ExecutionViewAction.openDocument('doc-b'),
+      );
+
+      expect(reset.status, ExecutionStatus.idle);
+      expect(reset.outputLines, isEmpty);
+      expect(reset.runId, 0);
+      expect(reset.isOutputPanelExpanded, isFalse);
+      expect(reset.isOutputStale, isFalse);
+      expect(reset.configuration.documentId, 'doc-b');
+    });
   });
 }

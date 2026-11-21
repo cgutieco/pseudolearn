@@ -28,7 +28,12 @@ final class RustExecutionEventProgress {
 
   RustBatch drain(RustEffectGate gate, int execution, int batchSize) {
     final collected = <RustEvent>[];
-    final batch = gate.drain(execution, batchSize, collected);
+    final batch = gate.drain(
+      execution,
+      batchSize,
+      collected,
+      tape: _reproduction.tape,
+    );
     events.addAll(collected);
     observeBatch(batch);
     if (batch.termination
@@ -66,6 +71,7 @@ final class RustExecutionEventProgress {
       offsets: offsets,
       tracker: tracker,
       errorRanges: last?.errorRanges ?? const [],
+      rejectionMessage: last?.readRejectionMessage,
     );
     if (failure != null) {
       onFailure(failure);

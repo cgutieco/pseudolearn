@@ -85,6 +85,8 @@ final class _PurchaseNotice extends StatelessWidget {
           AppText(l10n.agentPurchaseContinuesOutside, key: const ValueKey('agent-purchase-outside'), variant: AppTextVariant.caption),
           AppButton(label: l10n.agentCreditsRefresh, variant: AppButtonVariant.tertiary, onPressed: () => context.read<CreditsCubit>().refresh()),
         ],
+        if (purchase.awaitsStorePayment(AgentProduct.monthly))
+          AppText(l10n.agentPurchaseAwaitingStorePayment, key: const ValueKey('agent-purchase-awaiting-store'), variant: AppTextVariant.caption),
         if (purchase.channel.sellsOwnTrial) AppText(l10n.agentOfferSimulated, variant: AppTextVariant.caption),
         if (failure != null) AppText(agentFailureText(l10n, failure), variant: AppTextVariant.caption),
       ],

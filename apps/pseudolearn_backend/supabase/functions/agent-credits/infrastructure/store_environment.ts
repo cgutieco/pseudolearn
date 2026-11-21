@@ -1,5 +1,6 @@
 import type { AppStoreCatalog } from "../domain/app_store_transaction.ts";
 import type { CheckoutPrice } from "../domain/checkout.ts";
+import { type GooglePlaySettings, readGooglePlayEnvironment } from "./google_play_environment.ts";
 
 export interface PaddleSettings {
   readonly apiBase: string;
@@ -10,6 +11,7 @@ export interface PaddleSettings {
 
 export interface StoreEnvironment {
   readonly appStore: AppStoreCatalog | null;
+  readonly googlePlay: GooglePlaySettings | null;
   readonly paddle: PaddleSettings | null;
 }
 
@@ -21,7 +23,11 @@ const paddleApiBases: Readonly<Record<string, string>> = {
 };
 
 export function readStoreEnvironment(read: EnvironmentReader): StoreEnvironment {
-  return { appStore: appStoreOf(read), paddle: paddleOf(read) };
+  return {
+    appStore: appStoreOf(read),
+    googlePlay: readGooglePlayEnvironment(read),
+    paddle: paddleOf(read),
+  };
 }
 
 function appStoreOf(read: EnvironmentReader): AppStoreCatalog | null {

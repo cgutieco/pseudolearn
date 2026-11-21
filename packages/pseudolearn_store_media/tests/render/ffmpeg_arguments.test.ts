@@ -58,6 +58,11 @@ describe("helper arguments", () => {
     expect(valueAfter(args, "-frames:v")).toBe("1");
     expect(args.at(-1)).toBe("shot.png");
   });
+
+  it("keeps the alpha channel when the slot asks for a 32-bit RGBA image", () => {
+    expect(valueAfter(flattenArguments("frame.png", "icon.png", "rgba"), "-pix_fmt")).toBe("rgba");
+    expect(valueAfter(flattenArguments("frame.png", "shot.png", "rgb"), "-pix_fmt")).toBe("rgb24");
+  });
 });
 
 describe("constant and variable rate", () => {

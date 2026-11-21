@@ -10,10 +10,15 @@ void main() {
   });
 
   test('an empty or unknown store leaves the plan without a manager', () {
-    for (final store in ['', 'google_play']) {
+    for (final store in ['', 'amazon_appstore']) {
       final headers = {'x-pseudolearn-credits-remaining': '0', 'x-pseudolearn-credits-store': store};
       expect(creditBalanceFromHeaders((name) => headers[name])?.managedBy, isNull);
     }
+  });
+
+  test('a plan bought in Google Play is managed there', () {
+    final headers = {'x-pseudolearn-credits-remaining': '0', 'x-pseudolearn-credits-store': 'google_play'};
+    expect(creditBalanceFromHeaders((name) => headers[name])?.managedBy, PurchaseChannel.googlePlay);
   });
 
   test('store refusals map to their own failures', () {

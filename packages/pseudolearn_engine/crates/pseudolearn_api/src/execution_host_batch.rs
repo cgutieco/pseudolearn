@@ -12,6 +12,7 @@ pub(super) struct HostBookkeeping {
     pub(super) limit_rejected_network: std::collections::BTreeSet<u64>,
     pub(super) completing_effect: bool,
     pub(super) shadow: super::execution_shadow::ShadowLog,
+    pub(super) delivered_tape: Vec<String>,
 }
 
 impl HostBookkeeping {

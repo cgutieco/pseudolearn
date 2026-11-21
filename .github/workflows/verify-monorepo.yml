@@ -39,7 +39,7 @@ jobs:
           targets: aarch64-apple-darwin
       - run: cargo build --release --locked --lib --manifest-path native/Cargo.toml
         working-directory: apps/pseudolearn_app
-      - run: flutter test && flutter analyze --fatal-infos --fatal-warnings && dart run tool/check_limits.dart && dart run tool/check_content.dart && dart run tool/check_design_system.dart
+      - run: flutter test && flutter analyze --fatal-infos --fatal-warnings && dart run tool/check_limits.dart && dart run tool/check_design_system.dart && dart run tool/check_syntax_coverage.dart && dart run tool/check_manual.dart && dart run tool/check_android_comments.dart
         working-directory: apps/pseudolearn_app
   brand:
     if: ${{ !inputs.native_targets_only }}

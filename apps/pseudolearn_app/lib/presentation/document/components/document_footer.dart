@@ -10,6 +10,7 @@ import '../../../application/trace/trace_state.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../shell/design_canvas.dart';
 import '../../shell/device_class.dart';
+import '../read_line/pending_read_line.dart';
 import 'execution_stepper.dart';
 import 'output_panel.dart';
 import 'tracking_strip.dart';
@@ -50,7 +51,12 @@ final class _FooterVisibility extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final canvas = DesignCanvasScope.of(context);
-    if (canvas.deviceClass == DeviceClass.compact && canvas.isKeyboardVisible) {
+    final isAwaitingInput = context.select<ExecutionCubit, bool>(
+      (cubit) => cubit.state.status == ExecutionStatus.pausedAwaitingInput,
+    );
+    if (canvas.deviceClass == DeviceClass.compact &&
+        canvas.isKeyboardVisible &&
+        !isAwaitingInput) {
       return const SizedBox.shrink();
     }
     return _FooterBody(
@@ -124,6 +130,11 @@ final class _FooterCommands extends StatelessWidget {
         onToggle: onToggleOutput,
         outcome: runOutcomeOf(executionState, AppLocalizations.of(context)!),
         onOutcomeTap: _revealHaltSite(context),
+        pendingRead:
+            executionState.status == ExecutionStatus.pausedAwaitingInput &&
+                executionState.currentStep.inputWait != null
+            ? PendingReadLine(step: executionState.currentStep)
+            : null,
       ),
       ExecutionStepper(
         state: executionState,
@@ -156,9 +167,11 @@ final class _CompactTrackingStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isCompact =
-        DesignCanvasScope.of(context).deviceClass == DeviceClass.compact;
-    if (!isCompact || !isVisible) return const SizedBox.shrink();
+    final canvas = DesignCanvasScope.of(context);
+    final isCompact = canvas.deviceClass == DeviceClass.compact;
+    if (!isCompact || !isVisible || canvas.isKeyboardVisible) {
+      return const SizedBox.shrink();
+    }
 
     return BlocBuilder<TraceCubit, TraceState>(
       builder: (context, traceState) => TrackingStrip(

@@ -1,11 +1,11 @@
 # pseudolearn_app
 
-Aplicación Flutter de PseudoLearn para iOS, macOS y Windows: editor de pseudocódigo con diagnósticos, ejecución paso a
+Aplicación Flutter de PseudoLearn para iOS, macOS, Windows y Android: editor de pseudocódigo con diagnósticos, ejecución paso a
 paso, diagramas, código equivalente, ruta de aprendizaje, cuenta con sincronización y el agente Nodo. Analiza y ejecuta
 los programas llamando al motor Rust a través de un puente generado (`native/`).
 
 **No hace:** definir ni interpretar el lenguaje en Dart (lo hace el motor), tener backend propio (usa las funciones de
-`apps/pseudolearn_backend`) ni publicarse en navegador: no existe carpeta `web/`, solo `ios/`, `macos/` y `windows/`.
+`apps/pseudolearn_backend`) ni publicarse en navegador: no existe carpeta `web/`, solo `ios/`, `macos/`, `windows/` y `android/`.
 
 ## Dónde encaja
 
@@ -97,12 +97,86 @@ flowchart LR
   durante la ejecución continua salvo que esa pestaña esté visible (como mucho cada 100 ms): cada consulta también
   reconstruye el pasado en el motor y frenaba la salida. Se carga al detenerse la ejecución. Paso a paso no cambia. El bucle cede el hilo cada
   8 ms y muestra una sola vez la espera de un efecto.
+- `Leer` no abre un diálogo: la consola termina en una línea de lectura (`numero <- ▍`) y el eco queda como
+  asignación con su línea. Un diálogo tapaba la salida y el estudiante perdía el hilo entre peticiones seguidas. El
+  tipo esperado y el rechazo por tipo vienen del motor (`input_requested` y `readValueTypeMismatch`), nunca de una
+  validación propia; el texto del designador sí sale del código fuente, solo para mostrarlo. Mientras se espera un
+  valor el pie no se oculta con el teclado en pantallas compactas, para que la línea siga a la vista.
+- El tope local de 10 000 avances cuenta solo los del tramo en curso: desde que se pulsa Ejecutar, Continuar o un paso,
+  o desde la última entrada respondida, hasta que el programa vuelve a esperar. Protege la interfaz de un bucle que no
+  pide nada; contar desde el inicio de la ejecución cortaba los programas interactivos largos (un juego de consola
+  consume unos 250 avances por orden y quedaba detenido tras unas 40).
+- El motor habla en bytes UTF-8 y el editor en unidades UTF-16. `SourceOffsetIndex` convierte entre ambos con un índice
+  por línea (`Utf8LineOffsets`) y no recodificando el prefijo del texto en cada posición: eso era cuadrático y, con
+  programas largos, se comía casi todo el tiempo de decodificar las respuestas del motor (abrir 3000 sentencias en un
+  Android de gama baja bajó de 201 s a 37 s).
+- Los diagramas y el código equivalente se calculan solo cuando su pestaña está a la vista. `CompanionCubit` recibe cada
+  cambio del programa, recalcula la vista visible y deja pendiente la otra hasta que se muestre; antes ambas se
+  recalculaban dos veces por tecla aunque estuvieran ocultas (con 1000 sentencias, 1,2 s por tecla en macOS; ahora
+  70 ms). Una vista calculada tarde vuelve a aplicar el foco de la ejecución en curso. Con la pestaña visible y el
+  editor al lado se recalcula en cada cambio, sin retardo, para no cambiar lo que se ve.
+- Diagrama de flujo, estructograma y diagrama de clases comparten un `RustProgramStructureCache`: el mismo programa,
+  perfil e idioma se analizan una sola vez (con el diagrama visible y 1000 sentencias, 0,3 s por tecla en macOS).
+  Recuerda el último resultado estable (vista o rechazo por sintaxis), nunca un fallo del puente.
+- La cinta reproducible solo se materializa cuando la ejecución continua se detiene, o en cada paso del paso a paso:
+  antes se serializaba entera en cada paso y 2499 líneas de salida tardaban 40 s en macOS; ahora 6 s.
+- Cada avance pide al motor solo las entradas de la cinta de efectos que aún no tiene (`effect_tape_from`) y las
+  empalma en la posición que el motor declara, que puede ser anterior si el motor sustituyó una entrada provisional.
+  Con la cinta completa en cada respuesta el costo crecía de forma cuadrática: las mismas 2499 líneas bajan de 6 s a
+  0,6 s.
 - Los colores y las duraciones literales solo existen en los archivos dueños que declara `architecture.yaml`.
-- `AGENT_PURCHASES` elige cómo se venden los productos de Nodo: `storekit` (iOS y macOS), `paddle`, `simulated`
-  (desarrollo) o `unavailable`. Este último no vende nada: la oferta y la recarga muestran un aviso en lugar del
-  checkout, y quien ya tenga Nodo activo en su cuenta lo sigue usando. Las versiones de Windows salen con `unavailable`
-  porque Paddle no aprobó la cuenta para Nodo; cuando haya un proveedor aprobado se cambia el valor en los dos flujos
-  de Windows, sin tocar código.
+- Los iconos y la pantalla de arranque de todas las plataformas salen de la geometría de marca: `tool/app_icon_canvas.dart`
+  dibuja el icono una sola vez y `tool/generate_app_icons.dart` y `tool/generate_android_resources.dart` lo escriben en
+  cada formato. En Android eso incluye el icono adaptativo con capa monocroma, el arranque previo a Android 12 y el de
+  `windowSplashScreen`, junto con los colores y temas de `res/values*`; nada de eso se edita a mano.
+- Android exige el permiso `INTERNET` en el manifiesto principal: Flutter solo lo añade en depuración, y sin él fallan
+  en release Supabase, Nodo, la comprobación de conectividad y la red de los programas.
+  El manifiesto retira `USE_BIOMETRIC` y `USE_FINGERPRINT`, que añade `flutter_secure_storage` aunque la app no usa
+  biometría, para no declarar en Google Play permisos sin uso.
+- El release de Android no ejecuta el lint vital (`lint.checkReleaseBuilds = false`): el lint de Android Gradle Plugin
+  9.3 falla internamente al analizar `in_app_purchase_android` y detiene el build. R8 sigue activo, y las clases que
+  solo se alcanzan por JNI (`PlatformCertificateVerifier` y `org.rustls.platformverifier`) se conservan con
+  `proguard-rules.pro`.
+- La carpeta de ejecución de un documento es un único segmento bajo `execution/`: el identificador se codifica, incluidos
+  los puntos, para que `.` o `..` no salgan de ella en ninguna plataforma.
+- El `applicationId` de Android es `com.pseudolearn.app` y no puede cambiar tras publicarse. La versión release se firma
+  con la clave de subida si existe `android/key.properties` (no versionado, igual que el almacén de claves); si no, con
+  la clave de depuración, que sirve para probar en un dispositivo pero no para Google Play.
+- Android se publica con el flujo manual `push-production-android.yml`: compila el AAB con `AGENT_PURCHASES=google_play`,
+  lo firma con la clave de subida, comprueba que el certificado del AAB es el de esa clave y que cada `.so` está
+  alineada a 16 KB, y lo sube a la pista interna con la Google Play Developer API (`.github/scripts/google_play.rb`).
+  El `versionCode` es el mayor que Play ya conoce más uno, igual que el número de build de iOS; el `versionName` sale de
+  `pubspec.yaml` y las notas, del resumen de `CHANGELOG.json` en `es-419` y `en-US`. Play firma lo que distribuye con
+  su propia clave (firma de apps de Play), así que la clave de subida solo autentica las subidas. La API solo acepta
+  cambios en una app que ya tiene un AAB, por eso la primera subida se hace a mano en Play Console, y mientras la app
+  no se haya lanzado en ninguna pista solo admite versiones en borrador (`release_status: draft`).
+  Secretos del flujo: `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64`, `ANDROID_UPLOAD_KEYSTORE_BASE64`,
+  `ANDROID_UPLOAD_KEYSTORE_PASSWORD`, `ANDROID_UPLOAD_KEY_ALIAS`, `ANDROID_UPLOAD_KEY_PASSWORD`, `SUPABASE_URL`,
+  `SUPABASE_ANON_KEY` y `GOOGLE_SERVER_CLIENT_ID`.
+- En Android, Google identifica la app por su paquete y la huella SHA-1 del certificado, y el token debe ir dirigido
+  al cliente web que Supabase ya acepta; por eso Android pide `GOOGLE_SERVER_CLIENT_ID` y no el cliente de iOS. Sin ese
+  valor, Google cae al inicio de sesión por navegador en vez de fallar en silencio. Apple usa siempre el navegador en
+  Android. Ambos vuelven a la app por `pseudolearn://auth-callback`, y el deep linking propio de Flutter está
+  desactivado para que ese enlace no llegue a `go_router` como si fuera una ruta.
+- El respaldo de Android conserva documentos, índice y progreso, pero excluye `SharedPreferences`: ahí
+  `flutter_secure_storage` guarda la sesión cifrada con una clave del Keystore que no viaja en el respaldo, y restaurarla
+  en otro equipo haría fallar el descifrado. Tras restaurar, los algoritmos están y solo hay que volver a iniciar sesión.
+- `AGENT_PURCHASES` elige cómo se venden los productos de Nodo: `storekit` (iOS y macOS), `google_play` (Android),
+  `paddle`, `simulated` (desarrollo) o `unavailable`. Este último no vende nada: la oferta y la recarga muestran un
+  aviso en lugar del checkout, y quien ya tenga Nodo activo en su cuenta lo sigue usando. Las versiones de Windows salen
+  con `unavailable` porque Paddle no aprobó la cuenta para Nodo; cuando haya un proveedor aprobado se cambia el valor en
+  los dos flujos de Windows, sin tocar código.
+- App Store y Google Play comparten la cola de transacciones y la tienda de `data/credits/`; lo que cambia entre ellas
+  se inyecta como datos (`StoreBillingProfile`: canal, página de suscripciones y significado de «pendiente») y como un
+  flujo por plataforma (`AppStorePurchaseFlow`, `GooglePlayPurchaseFlow`). En StoreKit «pendiente» es una compra en
+  curso y la tienda vuelve a entregar sola las transacciones sin terminar; en Google Play «pendiente» es un pago
+  diferido (efectivo, por ejemplo), así que la compra se cierra con un aviso y no otorga nada hasta pasar a comprada.
+- Google Play reembolsa en tres días lo que no se confirma. Por eso la suscripción se confirma y la recarga se consume
+  solo después de que el backend acreditó los créditos (la recarga se compra con `autoConsume: false`), y al abrir la
+  app se consultan las compras pasadas para canjear las suscripciones sin confirmar y las recargas sin consumir. Solo se
+  vende el plan base de la suscripción: la prueba gratuita la concede el backend, nunca una oferta de la tienda. El ID
+  de cuenta ofuscado de Play es el ID de usuario de Supabase, un UUID de 36 caracteres que no es un dato personal y cabe
+  en el límite de 64. Gestionar la suscripción abre la página de Play del plan (`sku` y `package`).
 - Límites: 250 líneas por archivo, 40 por función, 30 por `build`, 3 parámetros posicionales, anidación 3 y 5 métodos
   públicos por clase. Sin comentarios; `lib/engine/bridge/` y `lib/presentation/l10n/generated/` son generados.
 
@@ -113,22 +187,32 @@ flowchart LR
 | Instalar dependencias                        | `flutter pub get`                                                                                     |
 | Generar exportación, l10n y puente           | `bash tool/prepare_generated.sh`                                                                      |
 | Ejecutar en macOS                            | `flutter run -d macos --dart-define-from-file=dart_define.local.json`                                 |
+| Ejecutar en un dispositivo Android           | `flutter run -d <id de adb> --dart-define-from-file=dart_define.local.json`                           |
+| Iconos y arranque de Android                 | `flutter test tool/generate_android_resources.dart`                                                   |
+| Archivos, HTTPS y zona horaria en un equipo | `flutter test integration_test/platform_host_smoke_test.dart -d <id>` (necesita Internet)             |
+| Cuadros por flujo en un Android            | `flutter drive --profile --no-dds -d <id> --driver test_driver/integration_test.dart --target integration_test/frame_performance_test.dart` |
+| Campaña del puente en un Android           | `dart run tool/bridge_benchmark_device_worker.dart <id> < <configuración>.json` (misma entrada y salida que `tool/bridge_benchmark_worker.dart`) |
 | Análisis estático                            | `flutter analyze --fatal-infos --fatal-warnings`                                                      |
 | Tests de la app                              | `flutter test`                                                                                        |
 | Tests del puente contra la biblioteca nativa | `bash tool/test_bridge.sh`                                                                            |
 | Límites de `architecture.yaml`               | `dart run tool/check_limits.dart`                                                                     |
 | Sistema de diseño                            | `dart run tool/check_design_system.dart`                                                              |
+| Sin comentarios en `android/`                | `dart run tool/check_android_comments.dart`                                                           |
 | Cobertura de formas de la vista              | `dart run tool/check_syntax_coverage.dart`                                                            |
 | Manual de usuario en `es` y `en`             | `dart run tool/check_manual.dart`                                                                     |
 | Conformidad del sujeto `app`                 | `cargo run -p see_cli --bin see -- conform --subject app` (en `packages/pseudolearn_spec`)            |
 | Grabar las placas de las tiendas             | `flutter test tool/generate_store_plates.dart` (acotable con `--dart-define=STORE_PLATE_DEVICES=mac`) |
+| AAB firmado para la primera subida a Play    | `flutter build appbundle --release --dart-define=AGENT_PURCHASES=google_play --dart-define-from-file=dart_define.local.json` (con `android/key.properties`) |
 | Grabar la placa animada del tráiler          | `flutter test tool/generate_trailer_plates.dart`                                                      |
 | Regenerar las capturas de la web             | `flutter test tool/generate_product_shot.dart`                                                        |
-| Compilar                                     | `flutter build macos --release`, `flutter build ipa --no-codesign`, `flutter build windows --release` |
+| Compilar                                     | `flutter build macos --release`, `flutter build ipa --no-codesign`, `flutter build windows --release`, `flutter build appbundle --release` |
 
 Requisitos: Flutter 3.50.0 (fijado en `pubspec.yaml`), Dart `^3.14.0` y Rust según `native/rust-toolchain.toml` para
-compilar el puente. El inicio de sesión y la sincronización leen `SUPABASE_URL`, `SUPABASE_ANON_KEY` y
-`GOOGLE_IOS_CLIENT_ID` de `dart_define.local.json`, que no se versiona.
+compilar el puente. Android necesita además JDK 17 y el NDK `28.2.13676358` que fija Flutter. Para probar compras de
+Google Play hace falta `AGENT_PURCHASES=google_play`, una build instalada desde una pista de pruebas de Play y una
+cuenta de prueba de licencias. El inicio de sesión y la sincronización leen `SUPABASE_URL`, `SUPABASE_ANON_KEY`,
+`GOOGLE_IOS_CLIENT_ID` (iOS y macOS) y `GOOGLE_SERVER_CLIENT_ID` (Android) de `dart_define.local.json`, que no se
+versiona.
 
 ## Pendientes declarados
 

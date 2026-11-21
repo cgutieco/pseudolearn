@@ -2,13 +2,15 @@ import '../../domain/model/exercises/exercise_reference.dart';
 import '../../domain/model/execution/execution_configuration.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../application/companion/companion_cubit.dart';
+import '../../application/companion/companion_source.dart';
+import '../../application/companion/companion_view.dart';
 import '../../application/diagram/diagram_cubit.dart';
 import '../../application/editor/editor_cubit.dart';
 import '../../application/editor/editor_state.dart';
 import '../../application/execution/execution_cubit.dart';
 import '../../application/execution/execution_state.dart';
 import '../../application/execution/step_pace.dart';
-import '../../application/export/export_cubit.dart';
 import '../../application/route/session/exercise_session_cubit.dart';
 import '../../application/route/session/exercise_session_state.dart';
 import '../../domain/model/reference/reference_edition.dart';
@@ -16,19 +18,16 @@ import '../../application/settings/settings_cubit.dart';
 import '../../domain/model/profiles/syntax_profile_id.dart';
 import 'components/document_scaffold_body.dart';
 import 'components/tab_selector.dart';
-import 'dialogs/data_input_dialog.dart';
 
 bool _sourceChanged(EditorState previous, EditorState current) =>
     previous.sourceCode != current.sourceCode ||
     previous.document != current.document;
 
-bool _inputJustRequested(ExecutionState previous, ExecutionState current) =>
-    current.status == ExecutionStatus.pausedAwaitingInput &&
-    (previous.status != ExecutionStatus.pausedAwaitingInput ||
-        current.currentStep.inputWait?.requestId !=
-            previous.currentStep.inputWait?.requestId ||
-        current.currentStep.inputWait?.taskId !=
-            previous.currentStep.inputWait?.taskId);
+CompanionView _companionOf(DocumentTabKind tab) => switch (tab) {
+  DocumentTabKind.flowchart => CompanionView.diagram,
+  DocumentTabKind.equivalentCode => CompanionView.equivalentCode,
+  _ => CompanionView.none,
+};
 
 final class DocumentPage extends StatefulWidget {
   final String documentId;
@@ -47,10 +46,25 @@ final class _DocumentPageState extends State<DocumentPage> {
   @override
   void initState() {
     super.initState();
+    _openCurrentDocument();
+  }
+
+  @override
+  void didUpdateWidget(covariant DocumentPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.documentId != widget.documentId) {
+      _activeTab = DocumentTabKind.editor;
+      _exerciseStripExpansion = null;
+      _openCurrentDocument();
+    }
+  }
+
+  void _openCurrentDocument() {
     context.read<EditorCubit>().loadDocument(widget.documentId);
-    context.read<ExecutionCubit>().applyViewAction(
-      ExecutionViewAction.showOtherTab,
-    );
+    context.read<ExecutionCubit>()
+      ..applyViewAction(ExecutionViewAction.openDocument(widget.documentId))
+      ..applyViewAction(ExecutionViewAction.showOtherTab);
+    context.read<CompanionCubit>().show(_companionOf(_activeTab));
   }
 
   void _onTabSelected(DocumentTabKind tab) {
@@ -60,6 +74,7 @@ final class _DocumentPageState extends State<DocumentPage> {
       DocumentTabKind.tasks => ExecutionViewAction.showTasks,
       _ => ExecutionViewAction.showOtherTab,
     });
+    context.read<CompanionCubit>().show(_companionOf(tab));
   }
 
   void _onPace(BuildContext context, EditorState editorState, StepPace pace) {
@@ -89,14 +104,12 @@ final class _DocumentPageState extends State<DocumentPage> {
     final profileId =
         editorState.document?.profileId ?? SyntaxProfileId.classicSpanish;
     final languageId = context.read<SettingsCubit>().state.language;
-    context.read<ExportCubit>().updateSource(
-      sourceCode: editorState.sourceCode,
-      profileId: profileId,
-    );
-    context.read<DiagramCubit>().updateDiagram(
-      sourceCode: editorState.sourceCode,
-      profileId: profileId,
-      languageId: languageId,
+    context.read<CompanionCubit>().sourceChanged(
+      CompanionSource(
+        sourceCode: editorState.sourceCode,
+        profileId: profileId,
+        languageId: languageId,
+      ),
     );
     final exerciseId = editorState.document?.exerciseId;
     if (exerciseId != null) {
@@ -137,18 +150,6 @@ final class _DocumentPageState extends State<DocumentPage> {
     }
   }
 
-  void _onInputRequested(BuildContext context, ExecutionState execState) {
-    final request = execState.currentStep.inputWait;
-    if (request == null) return;
-    showDataInputDialog(
-      context: context,
-      prompt: execState.currentStep.inputPrompt,
-      inputWait: request,
-      onSubmit: (input) =>
-          context.read<ExecutionCubit>().provideInput(request, input),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final body = DocumentScaffoldBody(
@@ -171,7 +172,6 @@ final class _DocumentPageState extends State<DocumentPage> {
       },
       child: _EditorListeners(
         onEditorStateChanged: _onEditorStateChanged,
-        onInputRequested: _onInputRequested,
         onExerciseLoaded: _onExerciseLoaded,
         child: body,
       ),
@@ -182,13 +182,11 @@ final class _DocumentPageState extends State<DocumentPage> {
 final class _EditorListeners extends StatelessWidget {
   final Widget child;
   final void Function(BuildContext, EditorState) onEditorStateChanged;
-  final void Function(BuildContext, ExecutionState) onInputRequested;
   final void Function(BuildContext, ExerciseSessionState) onExerciseLoaded;
 
   const _EditorListeners({
     required this.child,
     required this.onEditorStateChanged,
-    required this.onInputRequested,
     required this.onExerciseLoaded,
   });
 
@@ -199,10 +197,6 @@ final class _EditorListeners extends StatelessWidget {
         BlocListener<EditorCubit, EditorState>(
           listenWhen: _sourceChanged,
           listener: onEditorStateChanged,
-        ),
-        BlocListener<ExecutionCubit, ExecutionState>(
-          listenWhen: _inputJustRequested,
-          listener: onInputRequested,
         ),
         BlocListener<ExecutionCubit, ExecutionState>(
           listenWhen: (p, c) => p.followedFocus != c.followedFocus,

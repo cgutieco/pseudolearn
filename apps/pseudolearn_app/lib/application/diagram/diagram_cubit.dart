@@ -11,6 +11,7 @@ import 'diagram_state.dart';
 
 final class DiagramCubit extends Cubit<DiagramState> {
   final DiagramProjection _projection;
+  ExecutionFocus? _focus;
 
   DiagramCubit({
     required FlowchartBuilder flowchartBuilder,
@@ -28,12 +29,13 @@ final class DiagramCubit extends Cubit<DiagramState> {
     required SyntaxProfileId profileId,
     required UiLanguageId languageId,
   }) {
-    emit(_projection.project(
+    final projected = _projection.project(
       previous: state,
       sourceCode: sourceCode,
       profileId: profileId,
       languageId: languageId,
-    ));
+    );
+    emit(DiagramProjection.followingFocus(projected, _focus));
   }
 
   void selectUnit(String unitId) {
@@ -47,6 +49,7 @@ final class DiagramCubit extends Cubit<DiagramState> {
   }
 
   void syncWithFocus(ExecutionFocus? focus) {
+    _focus = focus;
     emit(DiagramProjection.followingFocus(state, focus));
   }
 

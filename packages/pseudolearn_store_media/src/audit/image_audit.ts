@@ -1,11 +1,23 @@
-import type { Slot } from "../catalog/catalog_types.ts";
+import type { PixelFormat, Slot } from "../catalog/catalog_types.ts";
 import { finding, type Finding } from "./finding.ts";
-import { hasAlphaChannel, hasTransparencyChunk, readPngHeader } from "./png_header.ts";
+import { hasAlphaChannel, hasTransparencyChunk, readPngHeader, type PngHeader } from "./png_header.ts";
 
 export type ImageAuditRequest = {
   readonly slot: Slot;
   readonly target: string;
   readonly bytes: Uint8Array;
+};
+
+const RGBA_COLOR_TYPE = 6;
+
+const PIXEL_FORMAT_PROBLEMS: Readonly<Record<PixelFormat, (header: PngHeader, bytes: Uint8Array) => Finding["rule"] | null>> = {
+  rgb: (header, bytes) => (hasAlphaChannel(header) || hasTransparencyChunk(bytes) ? "MEDIA-ALPHA" : null),
+  rgba: (header) => (header.colorType === RGBA_COLOR_TYPE ? null : "MEDIA-FORMAT"),
+};
+
+const PIXEL_FORMAT_MESSAGES: Readonly<Record<PixelFormat, string>> = {
+  rgb: "the image carries transparency",
+  rgba: "the image is not a 32-bit RGBA PNG",
 };
 
 export function auditImage(request: ImageAuditRequest): readonly Finding[] {
@@ -20,8 +32,9 @@ export function auditImage(request: ImageAuditRequest): readonly Finding[] {
     findings.push(finding("MEDIA-DIMENSIONS", target,
       `${header.width}×${header.height} instead of ${slot.width}×${slot.height}`));
   }
-  if (hasAlphaChannel(header) || hasTransparencyChunk(bytes)) {
-    findings.push(finding("MEDIA-ALPHA", target, "the image carries transparency"));
+  const pixelFormatRule = PIXEL_FORMAT_PROBLEMS[slot.pixelFormat](header, bytes);
+  if (pixelFormatRule) {
+    findings.push(finding(pixelFormatRule, target, PIXEL_FORMAT_MESSAGES[slot.pixelFormat]));
   }
   if (header.bitDepth !== 8) {
     findings.push(finding("MEDIA-FORMAT", target, `bit depth ${header.bitDepth} instead of 8`));

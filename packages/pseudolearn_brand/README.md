@@ -76,8 +76,8 @@ flowchart LR
   que rasterizarla no depende de ninguna fuente instalada. El motor no produce el PNG que LinkedIn y X exigen (rechazan
   SVG): rasterizar no es su papel y añadiría una dependencia; la web lo hace con `sharp` a partir del SVG que recibe
   (`pnpm generate:og-image`).
-- **El módulo del motor de tienda** (`typescript_store_media`) repite el del símbolo y añade la paleta y los dos lockups
-  horizontales como documentos SVG completos. Ese motor compone vídeos en HTML y necesita la marca entera, no solo la
+- **El módulo del motor de tienda** (`typescript_store_media`) repite el del símbolo y añade la paleta, los dos lockups
+  horizontales y el icono de app (`app-icon`, el mismo de los lanzadores) como documentos SVG completos. Ese motor compone vídeos en HTML y necesita la marca entera, no solo la
   geometría; recibirla generada evita que pegue SVG a mano (`GEN-NO-HAND-COPY`). Un desvío se informa como
   `BRAND-TS-STALE`, igual que en la web. La marca no anima ni rasteriza: eso le toca al motor de tienda.
 - **El ícono de la extensión de VS Code** es una copia del `favicon` (`media/icons/pseudo-file.svg`): el mismo SVG sirve

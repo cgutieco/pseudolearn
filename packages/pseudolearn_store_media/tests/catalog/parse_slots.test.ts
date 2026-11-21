@@ -71,3 +71,35 @@ describe("seamless-loop", () => {
     }
   });
 });
+
+describe("pixel format", () => {
+  it("defaults every slot to opaque RGB and asks for RGBA only on the Google Play icon", () => {
+    expect(slot("apple.mac.screenshot").pixelFormat).toBe("rgb");
+    expect(slot("google-play.app-icon").pixelFormat).toBe("rgba");
+  });
+
+  it("rejects a pixel format the engine does not produce", () => {
+    const errors = errorsWithSlot("google-play.app-icon", (entry) => {
+      entry["pixelFormat"] = "cmyk";
+    });
+    expect(errors.some((error) => error.startsWith("google-play.app-icon.pixelFormat:"))).toBe(true);
+  });
+});
+
+describe("Google Play slots", () => {
+  it("keeps the phone screenshots between 320 and 3840 px, at most 2.3 times longer than wide, eight per language", () => {
+    const phone = slot("google-play.phone.screenshot");
+    expect(Math.min(phone.width, phone.height)).toBeGreaterThanOrEqual(1080);
+    expect(Math.max(phone.width, phone.height)).toBeLessThanOrEqual(3840);
+    expect(Math.max(phone.width, phone.height) / Math.min(phone.width, phone.height)).toBeLessThanOrEqual(2.3);
+    expect(phone.maxCount).toBe(8);
+    expect(phone.device?.frame).toBe("none");
+  });
+
+  it("sizes the icon at 512 px and the feature graphic at 1024×500 without text", () => {
+    expect([slot("google-play.app-icon").width, slot("google-play.app-icon").height]).toEqual([512, 512]);
+    const feature = slot("google-play.feature-graphic");
+    expect([feature.width, feature.height, feature.pixelFormat]).toEqual([1024, 500, "rgb"]);
+    expect(feature.rules).toEqual(expect.arrayContaining(["no-text", "key-info-centered"]));
+  });
+});

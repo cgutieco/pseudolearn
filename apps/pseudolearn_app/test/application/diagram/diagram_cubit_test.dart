@@ -188,6 +188,46 @@ FinAlgoritmo
     );
   });
 
+  group('DiagramCubit focus on a diagram built after it moved', () {
+    test('a diagram built late selects the unit already in focus', () {
+      final cubit = DiagramCubit(
+        flowchartBuilder: FakeFlowchartBuilder(),
+        structogramBuilder: FakeStructogramBuilder(),
+        classDiagramBuilder: FakeClassDiagramBuilder(),
+      );
+      addTearDown(cubit.close);
+
+      cubit.syncWithFocus(_focusIn('sub_B'));
+      expect(cubit.state.selectedUnitId, isNull);
+
+      cubit.updateDiagram(
+        sourceCode: 'cualquiera',
+        profileId: SyntaxProfileId.classicSpanish,
+        languageId: UiLanguageId.spanish,
+      );
+
+      expect(cubit.state.selectedUnitId, 'sub_B');
+    });
+
+    test('a diagram built with no focus keeps the default unit', () {
+      final cubit = DiagramCubit(
+        flowchartBuilder: FakeFlowchartBuilder(),
+        structogramBuilder: FakeStructogramBuilder(),
+        classDiagramBuilder: FakeClassDiagramBuilder(),
+      );
+      addTearDown(cubit.close);
+
+      cubit.syncWithFocus(null);
+      cubit.updateDiagram(
+        sourceCode: 'cualquiera',
+        profileId: SyntaxProfileId.classicSpanish,
+        languageId: UiLanguageId.spanish,
+      );
+
+      expect(cubit.state.selectedUnitId, 'alg_A');
+    });
+  });
+
   group('DiagramCubit notation, against hand-written port doubles', () {
     late FakeFlowchartBuilder flowchart;
     late FakeStructogramBuilder structogram;
@@ -298,3 +338,17 @@ FinAlgoritmo
     });
   });
 }
+
+ExecutionFocus _focusIn(String unitId) => ExecutionFocus(
+  nodeId: const ProgramNodeId(2),
+  range: const SourceRange(
+    startOffset: 0,
+    endOffset: 1,
+    startLine: 2,
+    startColumn: 1,
+    endLine: 2,
+    endColumn: 2,
+  ),
+  kind: ExecutionFocusKind.statement,
+  unitId: unitId,
+);

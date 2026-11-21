@@ -1,0 +1,197 @@
+name: Push Production Android
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_status:
+        description: "Release status on the internal track; an app that was never rolled out in Play Console only accepts draft"
+        required: true
+        default: completed
+        type: choice
+        options:
+          - completed
+          - draft
+
+permissions:
+  contents: read
+
+concurrency:
+  group: push-production-android
+  cancel-in-progress: false
+
+env:
+  PACKAGE_NAME: com.pseudolearn.app
+  PLAY_TRACK: internal
+  ANDROID_NDK_VERSION: 28.2.13676358
+
+jobs:
+  build-sign-upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    defaults:
+      run:
+        working-directory: apps/pseudolearn_app
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      - name: Require release secrets
+        env:
+          GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64 }}
+          ANDROID_UPLOAD_KEYSTORE_BASE64: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_BASE64 }}
+          ANDROID_UPLOAD_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_PASSWORD }}
+          ANDROID_UPLOAD_KEY_ALIAS: ${{ secrets.ANDROID_UPLOAD_KEY_ALIAS }}
+          ANDROID_UPLOAD_KEY_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEY_PASSWORD }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          GOOGLE_SERVER_CLIENT_ID: ${{ secrets.GOOGLE_SERVER_CLIENT_ID }}
+        run: |
+          for required in GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64 ANDROID_UPLOAD_KEYSTORE_BASE64 \
+            ANDROID_UPLOAD_KEYSTORE_PASSWORD ANDROID_UPLOAD_KEY_ALIAS ANDROID_UPLOAD_KEY_PASSWORD \
+            SUPABASE_URL SUPABASE_ANON_KEY GOOGLE_SERVER_CLIENT_ID; do
+            if [ -z "${!required}" ]; then
+              echo "Secret $required is empty or missing: add it under Settings > Secrets and variables > Actions > Repository secrets" >&2
+              exit 1
+            fi
+          done
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install pinned Android NDK
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "ndk;$ANDROID_NDK_VERSION" > /dev/null
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/$ANDROID_NDK_VERSION" >> "$GITHUB_ENV"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: apps/pseudolearn_app/pubspec.yaml
+
+      - name: Install app dependencies
+        run: flutter pub get
+
+      - name: Set up Rust bridge
+        uses: ./.github/actions/setup-rust-bridge
+        with:
+          targets: aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+
+      - name: Install Google Play service account
+        env:
+          GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64 }}
+        run: |
+          SERVICE_ACCOUNT_PATH="$RUNNER_TEMP/google-play-service-account.json"
+          echo "$GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64" | base64 --decode > "$SERVICE_ACCOUNT_PATH"
+          chmod 600 "$SERVICE_ACCOUNT_PATH"
+          echo "GOOGLE_PLAY_SERVICE_ACCOUNT_PATH=$SERVICE_ACCOUNT_PATH" >> "$GITHUB_ENV"
+
+      - name: Resolve version and next version code
+        run: |
+          APP_VERSION=$(sed -n 's/^version:[[:space:]]*\([^+[:space:]]*\).*/\1/p' pubspec.yaml | head -1)
+          if [ -z "$APP_VERSION" ]; then
+            echo "pubspec.yaml has no version field" >&2
+            exit 1
+          fi
+          VERSION_CODE=$(ruby "$GITHUB_WORKSPACE/.github/scripts/google_play.rb" next-version-code)
+          echo "Releasing Android $APP_VERSION version code $VERSION_CODE"
+          echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
+          echo "VERSION_CODE=$VERSION_CODE" >> "$GITHUB_ENV"
+
+      - name: Write build-time configuration
+        run: |
+          cat > dart_define.ci.json <<JSON
+          {
+            "SUPABASE_URL": "${{ secrets.SUPABASE_URL }}",
+            "SUPABASE_ANON_KEY": "${{ secrets.SUPABASE_ANON_KEY }}",
+            "GOOGLE_SERVER_CLIENT_ID": "${{ secrets.GOOGLE_SERVER_CLIENT_ID }}",
+            "AGENT_BACKEND": "proxy",
+            "AGENT_PROXY_URL": "${{ secrets.SUPABASE_URL }}/functions/v1",
+            "AGENT_PURCHASES": "google_play"
+          }
+          JSON
+
+      - name: Install upload keystore
+        env:
+          ANDROID_UPLOAD_KEYSTORE_BASE64: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_BASE64 }}
+          ANDROID_UPLOAD_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_PASSWORD }}
+          ANDROID_UPLOAD_KEY_ALIAS: ${{ secrets.ANDROID_UPLOAD_KEY_ALIAS }}
+          ANDROID_UPLOAD_KEY_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEY_PASSWORD }}
+        run: |
+          KEYSTORE_PATH="$RUNNER_TEMP/upload-keystore.jks"
+          echo "$ANDROID_UPLOAD_KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE_PATH"
+          chmod 600 "$KEYSTORE_PATH"
+          {
+            echo "storeFile=$KEYSTORE_PATH"
+            echo "storePassword=$ANDROID_UPLOAD_KEYSTORE_PASSWORD"
+            echo "keyAlias=$ANDROID_UPLOAD_KEY_ALIAS"
+            echo "keyPassword=$ANDROID_UPLOAD_KEY_PASSWORD"
+          } > android/key.properties
+          chmod 600 android/key.properties
+          UPLOAD_CERTIFICATE_SHA256=$(keytool -list -v -keystore "$KEYSTORE_PATH" -alias "$ANDROID_UPLOAD_KEY_ALIAS" \
+            -storepass "$ANDROID_UPLOAD_KEYSTORE_PASSWORD" | sed -n 's/^[[:space:]]*SHA256:[[:space:]]*//p' | head -1)
+          if [ -z "$UPLOAD_CERTIFICATE_SHA256" ]; then
+            echo "The upload keystore does not hold the alias ANDROID_UPLOAD_KEY_ALIAS names" >&2
+            exit 1
+          fi
+          echo "KEYSTORE_PATH=$KEYSTORE_PATH" >> "$GITHUB_ENV"
+          echo "UPLOAD_CERTIFICATE_SHA256=$UPLOAD_CERTIFICATE_SHA256" >> "$GITHUB_ENV"
+
+      - name: Build signed Android release bundle
+        run: |
+          flutter build appbundle --release --no-pub \
+            --dart-define-from-file=dart_define.ci.json \
+            --build-name="$APP_VERSION" \
+            --build-number="$VERSION_CODE"
+
+      - name: Verify the bundle is signed with the upload key
+        run: |
+          BUNDLE_CERTIFICATE_SHA256=$(keytool -printcert -jarfile build/app/outputs/bundle/release/app-release.aab \
+            | sed -n 's/^[[:space:]]*SHA256:[[:space:]]*//p' | head -1)
+          if [ "$BUNDLE_CERTIFICATE_SHA256" != "$UPLOAD_CERTIFICATE_SHA256" ]; then
+            echo "The bundle is signed with $BUNDLE_CERTIFICATE_SHA256, not with the upload key $UPLOAD_CERTIFICATE_SHA256" >&2
+            exit 1
+          fi
+
+      - name: Verify Rust asset in every ABI with 16 KB page alignment
+        run: |
+          bundle="build/app/outputs/bundle/release/app-release.aab"
+          extracted="$RUNNER_TEMP/android-bundle"
+          readelf="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf"
+          rm -rf "$extracted"
+          unzip -q "$bundle" -d "$extracted"
+          for abi in arm64-v8a armeabi-v7a x86_64; do
+            for library in "$extracted"/base/lib/$abi/*.so; do
+              if "$readelf" -lW "$library" | awk '$1 == "LOAD" && $NF != "0x4000" && $NF != "0x10000" { found = 1 } END { exit found }'; then
+                echo "$library is aligned for 16 KB pages"
+              else
+                echo "$library is not aligned for 16 KB pages" >&2
+                exit 1
+              fi
+            done
+            test -f "$extracted/base/lib/$abi/libpseudolearn_bridge.so"
+          done
+
+      - name: Upload bundle to the Google Play internal track
+        env:
+          RELEASE_STATUS: ${{ inputs.release_status }}
+        run: |
+          ruby "$GITHUB_WORKSPACE/.github/scripts/google_play.rb" upload \
+            build/app/outputs/bundle/release/app-release.aab \
+            "$PLAY_TRACK" "$RELEASE_STATUS" "$APP_VERSION ($VERSION_CODE)" "$GITHUB_WORKSPACE/CHANGELOG.json"
+
+      - name: Remove keystore, signing properties and service account
+        if: always()
+        run: |
+          rm -f android/key.properties dart_define.ci.json
+          if [ -n "$KEYSTORE_PATH" ]; then
+            rm -f "$KEYSTORE_PATH"
+          fi
+          if [ -n "$GOOGLE_PLAY_SERVICE_ACCOUNT_PATH" ]; then
+            rm -f "$GOOGLE_PLAY_SERVICE_ACCOUNT_PATH"
+          fi

@@ -122,6 +122,16 @@ pub fn tape_to_value(tape: &EffectTape) -> Value {
     json!(tape)
 }
 
+pub fn tape_window_to_value(tape: &EffectTape, start: usize) -> Value {
+    json!({
+        "format": tape.version,
+        "identity": tape.identity,
+        "status": tape.status,
+        "entries": tape.entries.get(start..).unwrap_or_default(),
+        "policy": tape.budget,
+    })
+}
+
 pub fn tape_from_value(value: &Value) -> Result<EffectTape, ApiError> {
     let format = value
         .get("format")

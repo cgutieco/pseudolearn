@@ -9,12 +9,20 @@ export function encodeBase64UrlText(text: string): string {
 }
 
 export function decodeBase64UrlText(encoded: string): string | null {
+  const bytes = decodeBase64UrlBytes(encoded);
+  if (bytes === null) return null;
+  try {
+    return new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+  } catch {
+    return null;
+  }
+}
+
+export function decodeBase64UrlBytes(encoded: string): Uint8Array | null {
   try {
     const padded = encoded.replaceAll("-", "+").replaceAll("_", "/")
       .padEnd(Math.ceil(encoded.length / 4) * 4, "=");
-    const binary = atob(padded);
-    const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
-    return new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+    return Uint8Array.from(atob(padded), (character) => character.charCodeAt(0));
   } catch {
     return null;
   }

@@ -24,6 +24,11 @@ class StoreMediaModuleTest(unittest.TestCase):
         expected = json.dumps(svg.document(self.composition, variant).strip())
         self.assertIn(f"export const BRAND_LOCKUP_HORIZONTAL_INVERSE_SVG =\n  {expected};", self.module)
 
+    def test_the_app_icon_is_the_engine_document_the_launchers_share(self):
+        variant = next(entry for entry in self.catalog.variants if entry.name == "app-icon")
+        expected = json.dumps(svg.document(self.composition, variant).strip())
+        self.assertIn(f"export const BRAND_APP_ICON_SVG =\n  {expected};", self.module)
+
     def test_every_constant_is_declared_once(self):
         names = re.findall(r"export const (\w+)", self.module)
         self.assertEqual(len(names), len(set(names)))

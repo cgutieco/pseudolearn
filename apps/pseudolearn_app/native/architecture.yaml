@@ -13,6 +13,9 @@ isolation:
       - aarch64-apple-darwin
       - x86_64-apple-darwin
       - x86_64-pc-windows-msvc
+      - aarch64-linux-android
+      - armv7-linux-androideabi
+      - x86_64-linux-android
     forbidden:
       - pseudolearn_runtime/test-host
       - pseudolearn_api/test-host
@@ -28,7 +31,7 @@ layers:
   - name: pseudolearn_bridge
     path: .
     may_import: []
-    external_dependencies: [flutter_rust_bridge, pseudolearn_api, pseudolearn_host, serde_json]
+    external_dependencies: [flutter_rust_bridge, jni, pseudolearn_api, pseudolearn_host, rustls-platform-verifier, serde_json]
     permitted_path_dependencies: [pseudolearn_api, pseudolearn_host]
     unsafe_allowed: true
 limits:

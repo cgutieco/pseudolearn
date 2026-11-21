@@ -22,6 +22,7 @@ String agentFailureText(AppLocalizations l10n, CreditFailure failure) => switch 
 String agentStoreName(AppLocalizations l10n, PurchaseChannel channel) => switch (channel) {
   PurchaseChannel.simulated => l10n.agentStoreSimulated,
   PurchaseChannel.appStore => l10n.agentStoreAppStore,
+  PurchaseChannel.googlePlay => l10n.agentStoreGooglePlay,
   PurchaseChannel.paddle => l10n.agentStorePaddle,
   PurchaseChannel.unavailable => l10n.agentStoreUnavailable,
 };

@@ -1,11 +1,12 @@
 enum AgentProduct {
-  trial('pseudolearn.nodo.trial'),
-  monthly('pseudolearn.nodo.monthly'),
-  topUp('pseudolearn.nodo.topup150');
+  trial('pseudolearn.nodo.trial', consumable: false),
+  monthly('pseudolearn.nodo.monthly', consumable: false),
+  topUp('pseudolearn.nodo.topup150', consumable: true);
 
   final String storeId;
+  final bool consumable;
 
-  const AgentProduct(this.storeId);
+  const AgentProduct(this.storeId, {required this.consumable});
 
   static AgentProduct? fromStoreId(String storeId) {
     for (final product in values) {

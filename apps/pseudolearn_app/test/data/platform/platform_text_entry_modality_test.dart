@@ -12,6 +12,18 @@ void main() {
       expect(const PlatformTextEntryModality().hasOnscreenTextEntry, isTrue);
     });
 
+    test('Android types on screen', () {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+
+      expect(const PlatformTextEntryModality().hasOnscreenTextEntry, isTrue);
+    });
+
+    test('Windows types on a physical keyboard', () {
+      debugDefaultTargetPlatformOverride = TargetPlatform.windows;
+
+      expect(const PlatformTextEntryModality().hasOnscreenTextEntry, isFalse);
+    });
+
     test('macOS types on a physical keyboard', () {
       debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
 

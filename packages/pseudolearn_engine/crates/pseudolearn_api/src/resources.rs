@@ -1,3 +1,4 @@
+use crate::argument_counts::{count, optional_count};
 use crate::execution_resource::{ExecutionResource, usage};
 use crate::{AnalyzeRequest, ApiError, ExecuteRequest, execute_analyze};
 use serde_json::{Value, json};
@@ -194,7 +195,10 @@ impl ApiSession {
             return Err(usage("invalid execution"));
         };
         match operation {
-            "advance" => execution.advance(count(arguments, "batch_size", Some(1))?),
+            "advance" => execution.advance_with_tape_from(
+                count(arguments, "batch_size", Some(1))?,
+                optional_count(arguments, "effect_tape_from")?,
+            ),
             "debug_configure" | "debug_control" | "debug_state" | "inspect_expression"
             | "history_events" => execution.debug_operation(operation, arguments),
             "input" | "effect_result" => handle_execution_feed(execution, operation, arguments),
@@ -284,14 +288,4 @@ pub(crate) fn failure(error: &ApiError) -> Value {
         _ => "usage",
     };
     json!({"failure":{"family":family,"detail":error.to_string()}})
-}
-
-fn count(arguments: &Value, name: &str, default: Option<usize>) -> Result<usize, ApiError> {
-    match arguments.get(name) {
-        Some(value) => value
-            .as_u64()
-            .and_then(|count| usize::try_from(count).ok())
-            .ok_or_else(|| usage("invalid count")),
-        None => default.ok_or_else(|| usage("missing count")),
-    }
 }

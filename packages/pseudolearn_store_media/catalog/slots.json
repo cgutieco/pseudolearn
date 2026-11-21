@@ -1,7 +1,8 @@
 {
   "localesByLanguage": {
     "app-store": { "es": ["es-MX"], "en": ["en-US"] },
-    "microsoft-store": { "es": ["es-ES"], "en": ["en-US"] }
+    "microsoft-store": { "es": ["es-ES"], "en": ["en-US"] },
+    "google-play": { "es": ["es-419"], "en": ["en-US"] }
   },
   "loudness": { "integratedLufs": -16, "toleranceLu": 1, "truePeakDb": -1 },
   "codecProfiles": {
@@ -27,7 +28,8 @@
     { "id": "ipad-13", "logicalWidth": 1032, "logicalHeight": 1376, "plateScale": 2, "cornerRadius": 18, "frame": "tablet", "fold": "none" },
     { "id": "mac", "logicalWidth": 1152, "logicalHeight": 720, "plateScale": 2.5, "cornerRadius": 10, "frame": "window", "fold": "none" },
     { "id": "windows-desktop", "logicalWidth": 1280, "logicalHeight": 720, "plateScale": 3, "cornerRadius": 0, "frame": "none", "fold": "none" },
-    { "id": "windows-trailer", "logicalWidth": 1280, "logicalHeight": 720, "plateScale": 1.5, "cornerRadius": 0, "frame": "none", "fold": "none" }
+    { "id": "windows-trailer", "logicalWidth": 1280, "logicalHeight": 720, "plateScale": 1.5, "cornerRadius": 0, "frame": "none", "fold": "none" },
+    { "id": "android-phone", "logicalWidth": 412, "logicalHeight": 915, "plateScale": 3, "cornerRadius": 28, "frame": "none", "fold": "none" }
   ],
   "slots": [
     { "id": "apple.iphone.screenshot", "store": "app-store", "surface": "iphone-dynamic-island-large", "kind": "screenshot", "width": 1320, "height": 2868, "maxCount": 10,
@@ -78,6 +80,11 @@
     { "id": "microsoft.poster-art", "store": "microsoft-store", "surface": "desktop", "kind": "poster-art", "width": 1440, "height": 2160, "maxCount": 1, "maxBytes": 52428800,
       "safeArea": { "x": 0.08, "y": 0.06, "width": 0.84, "height": 0.606667 }, "rules": ["critical-top-two-thirds"] },
     { "id": "microsoft.box-art", "store": "microsoft-store", "surface": "desktop", "kind": "box-art", "width": 2160, "height": 2160, "maxCount": 1, "maxBytes": 52428800,
-      "safeArea": { "x": 0.08, "y": 0.06, "width": 0.84, "height": 0.606667 }, "rules": ["critical-top-two-thirds"] }
+      "safeArea": { "x": 0.08, "y": 0.06, "width": 0.84, "height": 0.606667 }, "rules": ["critical-top-two-thirds"] },
+    { "id": "google-play.phone.screenshot", "store": "google-play", "surface": "phone", "kind": "screenshot", "width": 1440, "height": 2560, "maxCount": 8, "maxBytes": 8388608,
+      "device": "android-phone", "safeArea": { "x": 0.04, "y": 0.03, "width": 0.92, "height": 0.94 }, "rules": ["text-inside-margin"] },
+    { "id": "google-play.feature-graphic", "store": "google-play", "surface": "any", "kind": "feature-graphic", "width": 1024, "height": 500, "maxCount": 1, "maxBytes": 8388608,
+      "safeArea": { "x": 0.15, "y": 0.15, "width": 0.7, "height": 0.7 }, "rules": ["key-info-centered", "no-text", "no-interface"] },
+    { "id": "google-play.app-icon", "store": "google-play", "surface": "any", "kind": "app-icon", "width": 512, "height": 512, "maxCount": 1, "maxBytes": 1048576, "pixelFormat": "rgba" }
   ]
 }

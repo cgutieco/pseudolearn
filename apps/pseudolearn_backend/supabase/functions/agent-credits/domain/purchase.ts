@@ -9,7 +9,7 @@ import {
 
 export type Product = "trial" | "monthly" | "top_up";
 
-export type StoreName = "simulated" | "app_store" | "paddle";
+export type StoreName = "simulated" | "app_store" | "google_play" | "paddle";
 
 export interface ProductTerms {
   readonly milli: number;

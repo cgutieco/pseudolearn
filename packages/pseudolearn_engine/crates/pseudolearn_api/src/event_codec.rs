@@ -170,7 +170,7 @@ fn ordinary_payload(
         return text_payload(class, value);
     }
     Ok(match class {
-        TraceClass::StatementEntered | TraceClass::StatementExited | TraceClass::InputRequested => {
+        TraceClass::StatementEntered | TraceClass::StatementExited => {
             if value.is_some() {
                 return Err(usage("unexpected event payload"));
             }

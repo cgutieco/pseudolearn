@@ -1,6 +1,7 @@
 import 'rust_event_classes.dart';
 import 'rust_pending_effect_request.dart';
 import 'rust_pending_input_request.dart';
+import 'rust_read_rejection_message.dart';
 
 export 'rust_pending_effect_request.dart';
 export 'rust_pending_input_request.dart';
@@ -120,8 +121,10 @@ final class RustBatch {
   final List<PendingEffectRequest> pendingEffects;
   final List<Map<String, Object?>> pendingRequests;
   final Map<String, Object?>? effectTape;
+  final int effectTapeFrom;
   final List<(int, int)> errorRanges;
   final int? exitCode;
+  final String? readRejectionMessage;
 
   const RustBatch({
     required this.events,
@@ -134,8 +137,10 @@ final class RustBatch {
     this.pendingEffects = const [],
     this.pendingRequests = const [],
     this.effectTape,
+    this.effectTapeFrom = 0,
     this.errorRanges = const [],
     this.exitCode,
+    this.readRejectionMessage,
   });
 
   factory RustBatch.fromJson(Map<String, Object?> json) {
@@ -146,8 +151,10 @@ final class RustBatch {
     final pendingInput = _pendingInputOf(json['pending_input'], kind);
     return RustBatch(
       effectTape: _tapeOf(json['effect_tape']),
+      effectTapeFrom: json['effect_tape_from'] as int? ?? 0,
       errorRanges: _rangesOf(json['error_ranges']),
       exitCode: json['exit_code'] as int?,
+      readRejectionMessage: readRejectionMessageOf(diagnostics),
       events: (json['events'] as List<Object?>)
           .cast<Map<String, Object?>>()
           .map(RustEvent.fromJson)
@@ -222,8 +229,10 @@ final class RustBatch {
     events: events,
     termination: RustTerminationKind.running,
     effectTape: effectTape,
+    effectTapeFrom: effectTapeFrom,
     errorRanges: errorRanges,
     exitCode: exitCode,
+    readRejectionMessage: readRejectionMessage,
   );
 
   static RustTerminationKind _kindOf(String name) => switch (name) {

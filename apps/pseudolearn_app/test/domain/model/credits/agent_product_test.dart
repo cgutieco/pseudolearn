@@ -12,4 +12,8 @@ void main() {
     expect(AgentProduct.fromStoreId(''), isNull);
     expect(AgentProduct.fromStoreId('com.other.product'), isNull);
   });
+
+  test('only the top-up is consumed when its credits are granted', () {
+    expect(AgentProduct.values.where((product) => product.consumable), [AgentProduct.topUp]);
+  });
 }

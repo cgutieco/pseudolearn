@@ -5,19 +5,20 @@ import '../../domain/ports/class_diagram_builder.dart';
 import '../classdiagram/class_diagram_layout.dart';
 import 'rust_program_view.dart';
 import 'rust_member_signature.dart';
-import 'rust_program_view_source.dart';
+import 'rust_program_structure_cache.dart';
 import 'rust_type_contract_projection.dart';
 import 'rust_type_parameter_text.dart';
 import 'rust_transport.dart';
 
 final class RustClassDiagramBuilder implements ClassDiagramBuilder {
-  final RustProgramViewSource _views;
+  final RustProgramStructureCache _views;
   final ClassDiagramLayout _layout;
 
   RustClassDiagramBuilder(
     RustTransport transport, {
     this._layout = const ClassDiagramLayout(),
-  }) : _views = RustProgramViewSource(transport);
+    RustProgramStructureCache? structures,
+  }) : _views = structures ?? RustProgramStructureCache(transport);
 
   @override
   DiagramScene buildDiagram({

@@ -14,9 +14,12 @@ void main() {
     expect(PurchaseChannel.fromWireName('APP_STORE'), isNull);
   });
 
-  test('only the simulated store sells its own trial, and only the App Store restores', () {
+  test('only the simulated store sells its own trial, and only the platform stores restore', () {
     expect(PurchaseChannel.values.where((channel) => channel.sellsOwnTrial), [PurchaseChannel.simulated]);
-    expect(PurchaseChannel.values.where((channel) => channel.restoresPurchases), [PurchaseChannel.appStore]);
+    expect(
+      PurchaseChannel.values.where((channel) => channel.restoresPurchases),
+      [PurchaseChannel.appStore, PurchaseChannel.googlePlay],
+    );
     expect(PurchaseChannel.simulated.managesSubscriptions, isFalse);
   });
 
@@ -27,5 +30,11 @@ void main() {
 
   test('only Paddle quotes its price at its own checkout', () {
     expect(PurchaseChannel.values.where((channel) => channel.quotesPriceAtCheckout), [PurchaseChannel.paddle]);
+  });
+
+  test('Google Play uses its own wire name and manages its subscriptions', () {
+    expect(PurchaseChannel.fromWireName('google_play'), PurchaseChannel.googlePlay);
+    expect(PurchaseChannel.googlePlay.managesSubscriptions, isTrue);
+    expect(PurchaseChannel.googlePlay.sellsOwnTrial, isFalse);
   });
 }

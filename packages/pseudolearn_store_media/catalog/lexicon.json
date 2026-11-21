@@ -15,5 +15,9 @@
   "microsoft-store": [
     { "id": "other-platform", "pattern": "\\biphone\\b|\\bipad\\b|\\bmacos\\b|\\bmac\\b|\\bapp store\\b|\\bapple\\b|\\bandroid\\b|\\bgoogle play\\b" },
     { "id": "age-rating", "pattern": "\\biarc\\b|\\bpegi\\b|\\besrb\\b|\\bclasificación por edades\\b|\\bage rating\\b" }
+  ],
+  "google-play": [
+    { "id": "other-platform", "pattern": "\\biphone\\b|\\bipad\\b|\\bmacos\\b|\\bmac\\b|\\bapp store\\b|\\bapple\\b|\\bwindows\\b|\\bmicrosoft\\b" },
+    { "id": "play-recognition", "pattern": "editor'?s'? choice|elección de los editores|best of play|lo mejor de play|app of the year|app del año|\\bpopular\\b|\\btop\\b|\\bnew\\b|\\bnuev[oa]s?\\b|\\brebajas?\\b|million downloads|millones de descargas" }
   ]
 }

@@ -39,3 +39,19 @@ describe("auditImage", () => {
     expect(rules(new Uint8Array(0))).toEqual(["MEDIA-FORMAT"]);
   });
 });
+
+describe("auditImage on an RGBA slot", () => {
+  it("requires a 32-bit RGBA PNG for a slot that asks for an alpha channel", () => {
+    const icon = slot("google-play.app-icon");
+    expect(rules(pngBytes({ width: 512, height: 512, colorType: 6 }), icon)).toEqual([]);
+    expect(rules(pngBytes({ width: 512, height: 512, colorType: 2 }), icon)).toEqual(["MEDIA-FORMAT"]);
+    expect(rules(pngBytes({ width: 512, height: 512, colorType: 4 }), icon)).toEqual(["MEDIA-FORMAT"]);
+  });
+
+  it("rejects an icon over 1024 KB", () => {
+    const icon = slot("google-play.app-icon");
+    const oversized = new Uint8Array(icon.maxBytes + 1);
+    oversized.set(pngBytes({ width: 512, height: 512, colorType: 6 }));
+    expect(rules(oversized, icon)).toEqual(["MEDIA-SIZE"]);
+  });
+});
