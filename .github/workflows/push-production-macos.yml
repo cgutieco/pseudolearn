@@ -132,13 +132,13 @@ jobs:
           INSTALLED_IDENTITIES=$( { security find-identity -v "$KEYCHAIN_PATH"; security find-identity "$KEYCHAIN_PATH"; } \
             | sed -n 's/.*"\(.*\)".*/\1/p' | sort -u )
           APPLICATION_IDENTITY=$(printf '%s\n' "$INSTALLED_IDENTITIES" | grep -m1 -E "^(Apple Distribution|3rd Party Mac Developer Application):" || true)
-          INSTALLER_IDENTITY=$(printf '%s\n' "$INSTALLED_IDENTITIES" | grep -m1 -E "^3rd Party Mac Developer Installer:" || true)
+          INSTALLER_IDENTITY=$(printf '%s\n' "$INSTALLED_IDENTITIES" | grep -m1 -E "^(Mac Installer Distribution|3rd Party Mac Developer Installer):" || true)
           if [ -z "$APPLICATION_IDENTITY" ]; then
             echo "No Apple Distribution certificate in the keychain: APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64 must hold an Apple Distribution or 3rd Party Mac Developer Application certificate, not a Developer ID one" >&2
             exit 1
           fi
           if [ -z "$INSTALLER_IDENTITY" ]; then
-            echo "No Mac Installer Distribution certificate in the keychain: APPLE_INSTALLER_CERTIFICATE_P12_BASE64 must hold a 3rd Party Mac Developer Installer certificate" >&2
+            echo "No Mac Installer Distribution certificate in the keychain: APPLE_INSTALLER_CERTIFICATE_P12_BASE64 must hold a Mac Installer Distribution certificate" >&2
             exit 1
           fi
           echo "APPLICATION_IDENTITY=$APPLICATION_IDENTITY" >> "$GITHUB_ENV"
