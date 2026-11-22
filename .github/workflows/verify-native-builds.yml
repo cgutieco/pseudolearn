@@ -239,7 +239,7 @@ jobs:
       - name: Build Android release bundle
         run: flutter build appbundle --release
 
-      - name: Verify Rust asset in every ABI with 16 KB page alignment
+      - name: Verify Rust asset in every ABI and 16 KB alignment on 64-bit ABIs
         run: |
           bundle="build/app/outputs/bundle/release/app-release.aab"
           extracted="$RUNNER_TEMP/android-bundle"
@@ -247,6 +247,9 @@ jobs:
           rm -rf "$extracted"
           unzip -q "$bundle" -d "$extracted"
           for abi in arm64-v8a armeabi-v7a x86_64; do
+            test -f "$extracted/base/lib/$abi/libpseudolearn_bridge.so"
+          done
+          for abi in arm64-v8a x86_64; do
             for library in "$extracted"/base/lib/$abi/*.so; do
               if "$readelf" -lW "$library" | awk '$1 == "LOAD" && $NF != "0x4000" && $NF != "0x10000" { found = 1 } END { exit found }'; then
                 echo "$library is aligned for 16 KB pages"
@@ -255,5 +258,4 @@ jobs:
                 exit 1
               fi
             done
-            test -f "$extracted/base/lib/$abi/libpseudolearn_bridge.so"
           done
