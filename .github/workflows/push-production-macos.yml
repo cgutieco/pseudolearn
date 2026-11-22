@@ -12,6 +12,7 @@ env:
 jobs:
   build-sign-upload:
     runs-on: macos-26
+    timeout-minutes: 90
     defaults:
       run:
         working-directory: apps/pseudolearn_app
@@ -122,7 +123,7 @@ jobs:
           echo "$APPLE_DISTRIBUTION_CERTIFICATE_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/distribution.p12"
           echo "$APPLE_INSTALLER_CERTIFICATE_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/installer.p12"
           security import "$RUNNER_TEMP/distribution.p12" -k "$KEYCHAIN_PATH" -P "$APPLE_DISTRIBUTION_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
-          security import "$RUNNER_TEMP/installer.p12" -k "$KEYCHAIN_PATH" -P "$APPLE_INSTALLER_CERTIFICATE_PASSWORD" -T /usr/bin/productbuild
+          security import "$RUNNER_TEMP/installer.p12" -k "$KEYCHAIN_PATH" -P "$APPLE_INSTALLER_CERTIFICATE_PASSWORD" -A
           security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
           EXISTING_KEYCHAINS=$(security list-keychains -d user | sed 's/"//g')
           security list-keychains -d user -s "$KEYCHAIN_PATH" $EXISTING_KEYCHAINS
@@ -202,10 +203,11 @@ jobs:
           codesign --verify --deep --strict --verbose=2 "$APP_PATH"
 
       - name: Build signed installer package
+        timeout-minutes: 10
         run: |
           mkdir -p dist
           productbuild --component build/macos/Build/Products/Release/PseudoLearn.app /Applications \
-            --sign "$INSTALLER_IDENTITY" \
+            --sign "$INSTALLER_IDENTITY" --keychain "$KEYCHAIN_PATH" \
             dist/PseudoLearn.pkg
           pkgutil --check-signature dist/PseudoLearn.pkg
 
