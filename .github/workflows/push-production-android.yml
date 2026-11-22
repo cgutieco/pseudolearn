@@ -144,7 +144,7 @@ jobs:
 
       - name: Build signed Android release bundle
         run: |
-          flutter build appbundle --release --no-pub \
+          flutter build appbundle --release \
             --dart-define-from-file=dart_define.ci.json \
             --build-name="$APP_VERSION" \
             --build-number="$VERSION_CODE"

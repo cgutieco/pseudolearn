@@ -237,7 +237,7 @@ jobs:
           targets: aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
 
       - name: Build Android release bundle
-        run: flutter build appbundle --release --no-pub
+        run: flutter build appbundle --release
 
       - name: Verify Rust asset in every ABI with 16 KB page alignment
         run: |

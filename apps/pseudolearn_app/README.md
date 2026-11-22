@@ -150,6 +150,9 @@ flowchart LR
   su propia clave (firma de apps de Play), así que la clave de subida solo autentica las subidas. La API solo acepta
   cambios en una app que ya tiene un AAB, por eso la primera subida se hace a mano en Play Console, y mientras la app
   no se haya lanzado en ninguna pista solo admite versiones en borrador (`release_status: draft`).
+  El AAB se compila sin `--no-pub`: `flutter pub get` escribe `GeneratedPluginRegistrant.java` con los plugins de
+  `dev_dependencies` (`integration_test`), y solo `flutter build` en release lo regenera sin ellos; con el registro de
+  depuración, `compileReleaseJavaWithJavac` falla porque Gradle ya no incluye esos plugins.
   Secretos del flujo: `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64`, `ANDROID_UPLOAD_KEYSTORE_BASE64`,
   `ANDROID_UPLOAD_KEYSTORE_PASSWORD`, `ANDROID_UPLOAD_KEY_ALIAS`, `ANDROID_UPLOAD_KEY_PASSWORD`, `SUPABASE_URL`,
   `SUPABASE_ANON_KEY` y `GOOGLE_SERVER_CLIENT_ID`.
