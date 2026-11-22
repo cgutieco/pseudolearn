@@ -207,8 +207,26 @@ jobs:
         run: |
           mkdir -p dist
           productbuild --component build/macos/Build/Products/Release/PseudoLearn.app /Applications \
-            --sign "$INSTALLER_IDENTITY" --keychain "$KEYCHAIN_PATH" \
-            dist/PseudoLearn.pkg
+            "$RUNNER_TEMP/PseudoLearn-unsigned.pkg"
+          productsign --sign "$INSTALLER_IDENTITY" --keychain "$KEYCHAIN_PATH" --timestamp=none \
+            "$RUNNER_TEMP/PseudoLearn-unsigned.pkg" dist/PseudoLearn.pkg &
+          SIGNER_PID=$!
+          for elapsed in $(seq 1 120); do
+            if ! kill -0 "$SIGNER_PID" 2>/dev/null; then
+              break
+            fi
+            sleep 2
+          done
+          if kill -0 "$SIGNER_PID" 2>/dev/null; then
+            echo "productsign is still waiting after four minutes; its stack and the security log follow" >&2
+            sample "$SIGNER_PID" 5 -mayDie 2>&1 | head -80
+            log show --last 5m --style compact \
+              --predicate 'process == "productsign" OR process == "securityd" OR process == "SecurityAgent" OR process == "trustd"' \
+              | tail -60
+            kill "$SIGNER_PID"
+            exit 1
+          fi
+          wait "$SIGNER_PID"
           pkgutil --check-signature dist/PseudoLearn.pkg
 
       - name: Upload package to App Store Connect
