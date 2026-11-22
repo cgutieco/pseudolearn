@@ -143,13 +143,17 @@ flowchart LR
   con la clave de subida si existe `android/key.properties` (no versionado, igual que el almacén de claves); si no, con
   la clave de depuración, que sirve para probar en un dispositivo pero no para Google Play.
 - Android se publica con el flujo manual `push-production-android.yml`: compila el AAB con `AGENT_PURCHASES=google_play`,
-  lo firma con la clave de subida, comprueba que el certificado del AAB es el de esa clave y que cada `.so` está
-  alineada a 16 KB, y lo sube a la pista interna con la Google Play Developer API (`.github/scripts/google_play.rb`).
+  lo firma con la clave de subida, comprueba que el certificado del AAB es el de esa clave, que el puente Rust está en
+  los tres ABI y que cada `.so` de `arm64-v8a` y `x86_64` está alineada a 16 KB (Google Play solo exige páginas de
+  16 KB en dispositivos de 64 bits; el enlazador de Rust para `armeabi-v7a` alinea a 4 KB), y lo sube a la pista interna con la Google Play Developer API (`.github/scripts/google_play.rb`).
   El `versionCode` es el mayor que Play ya conoce más uno, igual que el número de build de iOS; el `versionName` sale de
   `pubspec.yaml` y las notas, del resumen de `CHANGELOG.json` en `es-419` y `en-US`. Play firma lo que distribuye con
   su propia clave (firma de apps de Play), así que la clave de subida solo autentica las subidas. La API solo acepta
   cambios en una app que ya tiene un AAB, por eso la primera subida se hace a mano en Play Console, y mientras la app
   no se haya lanzado en ninguna pista solo admite versiones en borrador (`release_status: draft`).
+  El AAB se compila sin `--no-pub`: `flutter pub get` escribe `GeneratedPluginRegistrant.java` con los plugins de
+  `dev_dependencies` (`integration_test`), y solo `flutter build` en release lo regenera sin ellos; con el registro de
+  depuración, `compileReleaseJavaWithJavac` falla porque Gradle ya no incluye esos plugins.
   Secretos del flujo: `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64`, `ANDROID_UPLOAD_KEYSTORE_BASE64`,
   `ANDROID_UPLOAD_KEYSTORE_PASSWORD`, `ANDROID_UPLOAD_KEY_ALIAS`, `ANDROID_UPLOAD_KEY_PASSWORD`, `SUPABASE_URL`,
   `SUPABASE_ANON_KEY` y `GOOGLE_SERVER_CLIENT_ID`.
