@@ -2,7 +2,7 @@
   "name": "pseudolearn-vscode",
   "displayName": "PseudoLearn",
   "publisher": "pseudolearn",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Write, check, run and debug PseudoLearn (.pseudo) programs in Spanish or English.",
   "categories": [

@@ -45,7 +45,7 @@ describe("artifact contract", () => {
     const windows = loadContract(root, "win32-x64");
     expect(windows.target.cargoTarget).toBe("x86_64-pc-windows-msvc");
     expect(windows.executable).toBe("bin/win32-x64/pseudo.exe");
-    expect(windows.artifactName).toBe("pseudolearn-0.1.0-win32-x64.vsix");
+    expect(windows.artifactName).toBe("pseudolearn-0.1.1-win32-x64.vsix");
     expect(windows.required).toContain("bin/win32-x64/pseudo.exe");
     expect(windows.required).not.toContain("bin/darwin-arm64/pseudo");
     const listing = ["extension.vsixmanifest", ...windows.required.map((name) => `extension/${name}`)];
@@ -62,7 +62,7 @@ describe("artifact contract", () => {
 
   it("matches the extension manifest", () => {
     const manifest = JSON.parse(
-      JSON.stringify({ publisher: "pseudolearn", name: "pseudolearn-vscode", version: "0.1.0", engines: { vscode: "^1.144.0" } }),
+      JSON.stringify({ publisher: "pseudolearn", name: "pseudolearn-vscode", version: "0.1.1", engines: { vscode: "^1.144.0" } }),
     );
     expect(manifestViolations(manifest, contract)).toEqual([]);
     expect(manifestViolations({ ...manifest, version: "9.9.9" }, contract)).not.toEqual([]);
@@ -75,7 +75,7 @@ describe("Linux x64 artifact contract", () => {
     const linux = loadContract(root, "linux-x64");
     expect(linux.target.cargoTarget).toBe("x86_64-unknown-linux-musl");
     expect(linux.executable).toBe("bin/linux-x64/pseudo");
-    expect(linux.artifactName).toBe("pseudolearn-0.1.0-linux-x64.vsix");
+    expect(linux.artifactName).toBe("pseudolearn-0.1.1-linux-x64.vsix");
     expect(linux.required).toContain("bin/linux-x64/pseudo");
     const listing = ["extension.vsixmanifest", ...linux.required.map((name) => `extension/${name}`)];
     expect(listingViolations(listing, linux)).toEqual([]);
@@ -119,10 +119,10 @@ describe("VSIX contents", () => {
   });
 
   it("checks the target platform declared by the VSIX itself", () => {
-    const manifest = `<Identity Version="0.1.0" TargetPlatform="darwin-arm64" />`;
+    const manifest = `<Identity Version="0.1.1" TargetPlatform="darwin-arm64" />`;
     expect(vsixManifestViolations(manifest, contract)).toEqual([]);
     expect(vsixManifestViolations(manifest.replace("darwin-arm64", "linux-x64"), contract)).not.toEqual([]);
-    expect(vsixManifestViolations(manifest.replace("0.1.0", "0.2.0"), contract)).not.toEqual([]);
+    expect(vsixManifestViolations(manifest.replace("0.1.1", "0.2.0"), contract)).not.toEqual([]);
   });
 });
 
