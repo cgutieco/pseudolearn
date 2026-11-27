@@ -148,7 +148,11 @@ artefactos. Con la casilla `publish` marcada, además comprueba sus hashes y los
   en este archivo de workflow y en el entorno `vscode-marketplace`; renombrar cualquiera de los tres rompe la
   publicación hasta actualizar la política en el publisher del Marketplace y en el namespace `pseudolearn` de Open VSX.
   Se eligió así porque los PAT globales de Azure DevOps dejan de existir el 1 de diciembre de 2026 y porque un token de
-  larga duración es un secreto más que rotar y que puede filtrarse.
+  larga duración es un secreto más que rotar y que puede filtrarse. Las políticas identifican el repositorio por su ID
+  numérico, no por su nombre: si el repositorio se borra y se vuelve a crear, ambas tiendas rechazan el token hasta
+  recrear la política.
+- **Publicación repetible:** las dos tiendas publican con `--skip-duplicate`. Si una tienda falla después de que la otra
+  aceptara la versión, volver a lanzar el workflow publica solo lo que falta en vez de fallar por versión duplicada.
 - **Primera publicación en Open VSX con token:** Open VSX solo deja registrar el editor de confianza de una extensión
   que ya tiene una versión publicada. Mientras exista el secreto `OVSX_PAT` en el entorno `vscode-marketplace`, el
   workflow publica con ese token; al borrarlo, vuelve a `--trusted-publishing`. El secreto se borra en cuanto el editor de

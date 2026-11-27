@@ -187,7 +187,7 @@ jobs:
 
       - name: Publish to Visual Studio Marketplace
         working-directory: apps/pseudolearn_vscode
-        run: pnpm exec vsce publish --oidc --packagePath ../../packages/*.vsix
+        run: pnpm exec vsce publish --oidc --skip-duplicate --packagePath ../../packages/*.vsix
 
       - name: Publish to Open VSX
         env:
@@ -196,5 +196,5 @@ jobs:
           authentication=(--trusted-publishing)
           if [ -n "$OVSX_PAT" ]; then authentication=(); fi
           for vsix in packages/*.vsix; do
-            pnpm dlx ovsx@1.4.0 publish "${authentication[@]}" --packagePath "$vsix"
+            pnpm dlx ovsx@1.4.0 publish "${authentication[@]}" --skip-duplicate --packagePath "$vsix"
           done
