@@ -11,7 +11,7 @@ export function collectPackageViolations(root) {
   if (JSON.stringify(manifest.files) !== JSON.stringify(architecture.package.included)) {
     violations.push("package files do not match the declared package inclusion list");
   }
-  if (!manifest.private || manifest.publisher !== "pseudolearn" || manifest.version !== "0.1.0") {
+  if (!manifest.private || manifest.publisher !== "pseudolearn" || manifest.version !== "0.1.1") {
     violations.push("extension identity or local-only publication settings are invalid");
   }
   if (manifest.engines?.node !== "26.13.1" || manifest.packageManager !== "pnpm@12.18.0") {

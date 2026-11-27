@@ -2,7 +2,7 @@
   "identity": {
     "publisher": "pseudolearn",
     "name": "pseudolearn-vscode",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "engines": {
     "vscode": "^1.144.0",
@@ -79,7 +79,7 @@
   "hashAlgorithm": "sha256",
   "web": {
     "vscodeTarget": "web",
-    "artifactName": "pseudolearn-0.1.0-web.vsix",
+    "artifactName": "pseudolearn-0.1.1-web.vsix",
     "browser": "dist/web/browser_extension.js",
     "workers": [
       "dist/web/language_worker.js",

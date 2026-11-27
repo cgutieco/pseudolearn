@@ -8,7 +8,7 @@ const extensionRoot = resolve(here, "../..");
 const application = "/Applications/Visual Studio Code.app/Contents/MacOS/Code";
 const commandLine = "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code";
 const mode = process.argv[2] === "restricted" ? "restricted" : "trusted";
-const vsix = resolve(extensionRoot, process.argv[3] ?? ".artifacts/pseudolearn-0.1.0-darwin-arm64.vsix");
+const vsix = resolve(extensionRoot, process.argv[3] ?? ".artifacts/pseudolearn-0.1.1-darwin-arm64.vsix");
 const base = mkdtempSync(join(realpathSync(process.env.PSEUDOLEARN_HOST_TMP ?? "/tmp"), "ps ñandú "));
 const userData = join(base, "user data");
 const extensions = join(base, "extensions");
@@ -25,7 +25,7 @@ writeFileSync(join(developmentPath, "package.json"), JSON.stringify({ name: "hos
 
 const runOutput = process.env.PSEUDOLEARN_HOST_RUN_OUTPUT ? resolve(process.env.PSEUDOLEARN_HOST_RUN_OUTPUT) : undefined;
 const transcriptDirectory = process.env.PSEUDOLEARN_HOST_TRANSCRIPT;
-const bundledServer = join(extensions, "pseudolearn.pseudolearn-vscode-0.1.0/bin/darwin-arm64/pseudo");
+const bundledServer = join(extensions, "pseudolearn.pseudolearn-vscode-0.1.1/bin/darwin-arm64/pseudo");
 const environment = { PATH: "/usr/bin:/bin", HOME: process.env.HOME, TMPDIR: process.env.TMPDIR };
 const install = spawnSync(commandLine, ["--user-data-dir", userData, "--extensions-dir", extensions, "--install-extension", vsix], { env: environment, encoding: "utf8" });
 process.stdout.write(install.stdout + install.stderr);
